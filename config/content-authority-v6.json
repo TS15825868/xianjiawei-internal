@@ -1,0 +1,10 @@
+{
+  "version":"2026-08-07-v6",
+  "publicRepository":"TS15825868/xianjiawei",
+  "publishingCenter":"https://ts15825868.github.io/xianjiawei/publishing-center.html",
+  "postBankManifest":"https://ts15825868.github.io/xianjiawei/content/post-bank-v6-manifest.json",
+  "visualSpec":"https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
+  "runtimePostCount":323,
+  "reviewRequired":true,
+  "weatherLiveCheck":true
+}
