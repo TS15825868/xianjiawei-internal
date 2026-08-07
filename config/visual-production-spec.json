@@ -1,15 +1,15 @@
 {
-  "version": "2026-08-07-visual-authority-v6",
+  "version": "2026-08-07-visual-authority-v7",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
   "contentAuthority": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
   "rules": {
     "brand": "公開只顯示仙加味；不主動顯示公司名稱、統編、公司電話或公司地址",
     "mascot": "官網版Q版小老闆；米白中式上衣、深綠圍裙、紅色直式仙加味印章；小老闆出現時小鹿與小烏龜必須一起出現",
-    "guiluDrink30": "30cc／罐（小玻璃罐）；裸罐無貼紙、金色蓋；同型外觀約42mm直徑×51mm高；不可拉高拉胖",
+    "guiluDrink30": "30cc／罐（小玻璃罐）；只允許裸罐本體，完全無貼紙、無標籤、無紙盒、無外盒、無外袋；金色蓋；同型外觀約42mm直徑×51mm高；不可拉高拉胖",
     "guiluDrink180": "180cc／包（鋁袋）；狹長直立，寬高比約0.64；不可拉寬或加高放大",
-    "guiluGao": "100g／罐；六角玻璃罐約51×78mm；只使用新版標籤，舊紅白直式貼紙禁止",
+    "guiluGao": "100g／罐；六角玻璃罐約51×78mm；必須使用2026-08-07實拍確認的新版米白標籤：中央金框龜鹿膏、深紅直式仙加味印章、側面黑色標示；舊紅白直式貼紙禁止；產品標籤不可AI重畫",
     "guiluJiao": "600g（1斤）／盒｜32塊裝｜每塊約18.75g；淡紫盒照原圖等比例，不可橫向拉長",
-    "productImage": "產品必須使用正式原圖等比例合成；AI只生成背景、角色、道具與情境",
+    "productImage": "產品必須使用正式原圖等比例合成；AI只生成背景、角色、道具與情境，不得重繪產品包裝或標籤",
     "review": ["品牌","產品","規格","價格／活動","季節","天氣","場合","地點","情境","環境","冷熱","表情","動作","小老闆與夥伴","比例尺寸","重複圖"],
     "newContentStatus": "pending_review",
     "weatherRequiresLiveCheck": true
