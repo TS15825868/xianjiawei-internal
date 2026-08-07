@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1f3b">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="xianjiawei-runtime" content="20260807-public-6">
+  <meta name="xianjiawei-runtime" content="20260807-public-7">
   <title>仙加味營運中控</title>
-  <link rel="stylesheet" href="/assets/css/internal-app.css?v=20260807-public-6">
+  <link rel="stylesheet" href="/assets/css/internal-app.css?v=20260807-public-7">
 </head>
 <body>
   <div class="app-shell">
@@ -43,22 +43,16 @@
   <div id="modalRoot"></div>
   <div id="toastRoot" class="toast-root" aria-live="polite"></div>
   <noscript><p class="noscript">此系統需要啟用 JavaScript 才能操作。</p></noscript>
-  <script type="module" src="/assets/js/internal-app.js?v=20260807-public-6"></script>
-  <script src="/assets/js/post-regenerate-v6.js?v=20260807-public-6"></script>
+  <script type="module" src="/assets/js/internal-app.js?v=20260807-public-7"></script>
+  <script src="/assets/js/post-regenerate-v6.js?v=20260807-public-7"></script>
   <script>
-    // Mobile Safari quick-menu compatibility layer.
-    // The main app closes route links before the browser can follow their hash.
-    // Handle quick-menu cards in capture phase so every card has a deterministic action.
     document.addEventListener('click', function (event) {
       var item = event.target && event.target.closest ? event.target.closest('.xjw-quick-grid a[href^="#"], .xjw-quick-grid [data-quick-action]') : null;
       if (!item) return;
-
       event.preventDefault();
       event.stopImmediatePropagation();
-
       var modalRoot = document.getElementById('modalRoot');
       if (modalRoot) modalRoot.innerHTML = '';
-
       var route = '';
       var openFab = false;
       var action = item.getAttribute('data-quick-action') || '';
@@ -71,20 +65,10 @@
         if (href.charAt(0) === '#') route = href.slice(1);
       }
       if (!route) return;
-
       var targetHash = '#' + route;
-      if (location.hash === targetHash) {
-        window.dispatchEvent(new Event('hashchange'));
-      } else {
-        location.hash = targetHash;
-      }
-
-      if (openFab) {
-        setTimeout(function () {
-          var fab = document.querySelector('.xjw-fab');
-          if (fab) fab.click();
-        }, 120);
-      }
+      if (location.hash === targetHash) window.dispatchEvent(new Event('hashchange'));
+      else location.hash = targetHash;
+      if (openFab) setTimeout(function () { var fab = document.querySelector('.xjw-fab'); if (fab) fab.click(); }, 120);
     }, true);
   </script>
 </body>
