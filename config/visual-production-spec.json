@@ -1,7 +1,14 @@
 {
-  "version": "2026-08-07-visual-authority-v7",
+  "version": "2026-08-07-visual-authority-v8-chatgpt-handoff",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
   "contentAuthority": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
+  "generationRouting": {
+    "mode": "chatgpt_handoff",
+    "paidOpenAIImageApiEnabled": false,
+    "paidOpenAITextApiEnabledForRegeneration": false,
+    "workflow": "圖或文案不符合時，ERP整理完整規格與錯誤原因並開啟ChatGPT；ChatGPT處理完成後放回待審核",
+    "noBackgroundPaidGeneration": true
+  },
   "rules": {
     "brand": "公開只顯示仙加味；不主動顯示公司名稱、統編、公司電話或公司地址",
     "mascot": "官網版Q版小老闆；米白中式上衣、深綠圍裙、紅色直式仙加味印章；小老闆出現時小鹿與小烏龜必須一起出現",
