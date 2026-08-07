@@ -1,11 +1,12 @@
 {
-  "version": "2026-08-08-ai-brand-control-v3",
+  "version": "2026-08-08-ai-brand-control-v4-queue",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/ai-brand-control-v20260807.json",
   "visualAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
   "brandGuardian": "https://ts15825868.github.io/xianjiawei/content/brand-guardian-rules.json",
   "annualCalendar": "https://ts15825868.github.io/xianjiawei/content/annual-content-calendar-v2026.json",
   "assetUsageLedger": "https://ts15825868.github.io/xianjiawei/content/asset-usage-ledger.json",
   "finalPublishedAssets": "https://ts15825868.github.io/xianjiawei/content/final-published-assets-v20260808.json",
+  "imageGenerationQueue": "https://ts15825868.github.io/xianjiawei/content/image-generation-queue-v20260808.json",
   "contentPerformance": "https://ts15825868.github.io/xianjiawei/content/content-performance-schema.json",
   "partnerMode": "https://ts15825868.github.io/xianjiawei/content/partner-mode-policy.json",
   "publishingCenter": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
@@ -14,14 +15,11 @@
   "generatedStatus": "pending_review",
   "regenerationMode": "chatgpt_handoff",
   "paidOpenAIApiEnabled": false,
+  "queueSummary": {"publishedLocked":3,"campaignHold":11,"activeGenerationRequired":471,"candidateReviewRequired":15},
   "finalPublishedLocks": [
-    {
-      "postId": "XJW-TRIAL-001",
-      "assetId": "guilu-drink-trial-final-20260808",
-      "status": "published_final_locked",
-      "doNotRegenerate": true,
-      "preventRepublish": true,
-      "confirmedOn": "2026-08-08"
-    }
+    {"postId":"XJW-TRIAL-001","assetId":"guilu-drink-trial-final-20260808","status":"published_final_locked","doNotRegenerate":true,"preventRepublish":true,"confirmedOn":"2026-08-08"}
+  ],
+  "campaignHolds": [
+    {"campaign":"龜鹿飲試喝組","postIds":"XJW-TRIAL-002..012","holdUntil":"2026-11-06","reason":"最終主圖已發布，避免90天內重複活動"}
   ]
 }
