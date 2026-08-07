@@ -1,12 +1,12 @@
 {
   "name": "xianjiawei-internal-public-runtime",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "type": "module",
   "scripts": {
-    "build:static": "rm -rf dist && mkdir -p dist/assets/css dist/assets/js && cp index.html dist/index.html && cp assets/css/internal-app.css dist/assets/css/internal-app.css && cp assets/js/internal-app.js dist/assets/js/internal-app.js && if [ -f robots.txt ]; then cp robots.txt dist/robots.txt; fi",
-    "deploy": "npm run check && npm run build:static && wrangler deploy --keep-vars",
-    "check": "node --check src/entry.js && node --check src/worker.js && node --check src/social-publisher.js && node --check assets/js/internal-app.js"
+    "check": "node --check src/entry.js && node --check src/worker.js && node --check src/social-publisher.js && node --check assets/js/internal-app.js",
+    "build:static": "npm run check && rm -rf dist && mkdir -p dist/assets/css dist/assets/js && cp index.html dist/index.html && cp assets/css/internal-app.css dist/assets/css/internal-app.css && cp assets/js/internal-app.js dist/assets/js/internal-app.js && if [ -f robots.txt ]; then cp robots.txt dist/robots.txt; fi",
+    "deploy": "npm run build:static && wrangler deploy --keep-vars"
   },
   "dependencies": {
     "jose": "6.0.0"
