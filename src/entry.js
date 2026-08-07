@@ -4,14 +4,79 @@ const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-entry':'2026-08-07-public-entry-v1'
+  'x-xianjiawei-entry':'2026-08-07-public-entry-v2'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value,fallback='')=>String(value??fallback).trim();
+const MODULE_PREFIX={products:'PRD',customers:'CUS',visits:'VIS',orders:'ORD',inventory:'INV',purchases:'PUR',suppliers:'SUP',finance:'FIN',tasks:'TSK',documents:'DOC',templates:'TPL',assets:'AST'};
+const WRITE_ROLES={products:['owner','admin'],customers:['owner','admin','sales'],visits:['owner','admin','sales'],orders:['owner','admin','sales','warehouse','accounting'],inventory:['owner','admin','warehouse'],purchases:['owner','admin','warehouse','accounting'],suppliers:['owner','admin','warehouse','accounting'],finance:['owner','admin','accounting'],tasks:['owner','admin','sales','warehouse','accounting','content'],documents:['owner','admin','content'],templates:['owner','admin','content'],assets:['owner','admin','content']};
+
+function splitSqlStatements(sql){
+  const source=String(sql||'');
+  const output=[];
+  let current='';
+  let quote='';
+  for(let index=0;index<source.length;index+=1){
+    const char=source[index];
+    if(quote){
+      current+=char;
+      if(char===quote){
+        if(source[index+1]===quote){current+=source[index+1];index+=1;}
+        else quote='';
+      }
+      continue;
+    }
+    if(char==="'"||char==='"'||char==='`'){quote=char;current+=char;continue;}
+    if(char===';'){
+      if(current.trim())output.push(current.trim());
+      current='';
+      continue;
+    }
+    current+=char;
+  }
+  if(current.trim())output.push(current.trim());
+  return output;
+}
+function compatibleDb(db){
+  if(!db)return db;
+  return new Proxy(db,{
+    get(target,property){
+      if(property==='exec'){
+        return async(sql)=>{
+          const statements=splitSqlStatements(sql);
+          if(!statements.length)return null;
+          let last=null;
+          for(const statement of statements)last=await target.prepare(statement).run();
+          return last;
+        };
+      }
+      const value=Reflect.get(target,property,target);
+      return typeof value==='function'?value.bind(target):value;
+    }
+  });
+}
+function compatibleEnv(env){
+  if(!env?.DB)return env;
+  const db=compatibleDb(env.DB);
+  return new Proxy(env,{get(target,property,receiver){if(property==='DB')return db;return Reflect.get(target,property,receiver);}});
+}
+function cleanRecord(value){
+  if(!value||Array.isArray(value)||typeof value!=='object')throw new Error('資料格式錯誤');
+  const output={};
+  for(const [key,item] of Object.entries(value)){
+    if(['__proto__','prototype','constructor','created_at','updated_at'].includes(key))continue;
+    if(typeof item==='string')output[key]=item.trim();
+    else if(typeof item==='number'||typeof item==='boolean'||item==null)output[key]=item;
+    else if(Array.isArray(item))output[key]=item.slice(0,100);
+  }
+  if(JSON.stringify(output).length>120000)throw new Error('單筆資料過大');
+  return output;
+}
+function canWrite(profile,module){return(WRITE_ROLES[module]||['owner','admin']).includes(profile?.role);}
 
 async function authorize(request,env,ctx){
   const url=new URL('/api/me',request.url);
-  return app.fetch(new Request(url,{method:'GET',headers:request.headers}),env,ctx);
+  return app.fetch(new Request(url,{method:'GET',headers:request.headers}),compatibleEnv(env),ctx);
 }
 async function safeSettings(request,env,ctx){
   const authorization=await authorize(request,env,ctx);
@@ -66,15 +131,35 @@ async function brandContent(request,env,ctx){
     return json({...payload,updatedBy:profile.email,updatedAt:now});
   }catch(error){return json({error:clean(error?.message||error,'品牌內容格式錯誤')},400);}
 }
+async function createCompatibleRecord(request,env,ctx,module){
+  const authorization=await authorize(request,env,ctx);
+  if(!authorization.ok)return authorization;
+  const profile=await authorization.json();
+  if(!canWrite(profile,module))return json({error:'沒有新增資料權限'},403);
+  try{
+    const body=cleanRecord(await request.json());
+    const id=clean(body.id)||`${MODULE_PREFIX[module]||'REC'}-${crypto.randomUUID()}`;
+    delete body.id;
+    const now=new Date().toISOString();
+    await env.DB.prepare('INSERT INTO app_records(module,id,data_json,archived,created_by,created_at,updated_at) VALUES(?,?,?,0,?,?,?)').bind(module,id,JSON.stringify(body),profile.email,now,now).run();
+    try{
+      await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)').bind(`AUD-${crypto.randomUUID()}`,profile.email,'新增',module,id,null,JSON.stringify({...body,id,created_at:now,updated_at:now}),request.headers.get('cf-connecting-ip')||'').run();
+    }catch{}
+    return json({...body,id,created_at:now,updated_at:now},201);
+  }catch(error){return json({error:clean(error?.message||error,'新增資料失敗')},400);}
+}
 
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
+    const moduleCreate=path.match(/^\/api\/modules\/([^/]+)$/);
+    if(request.method==='POST'&&moduleCreate&&WRITE_ROLES[moduleCreate[1]])return createCompatibleRecord(request,env,ctx,moduleCreate[1]);
+    if(request.method==='POST'&&path==='/api/assets')return createCompatibleRecord(request,env,ctx,'assets');
     if(path==='/api/settings'&&request.method==='GET')return safeSettings(request,env,ctx);
     if(path==='/api/brand-content')return brandContent(request,env,ctx);
-    return app.fetch(request,env,ctx);
+    return app.fetch(request,compatibleEnv(env),ctx);
   },
   async scheduled(controller,env,ctx){
-    if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);
+    if(typeof app.scheduled==='function')return app.scheduled(controller,compatibleEnv(env),ctx);
   }
 };
