@@ -1,0 +1,14 @@
+{
+  "version": "2026-08-07-ai-brand-control-v1",
+  "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/ai-brand-control-v20260807.json",
+  "visualAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
+  "brandGuardian": "https://ts15825868.github.io/xianjiawei/content/brand-guardian-rules.json",
+  "annualCalendar": "https://ts15825868.github.io/xianjiawei/content/annual-content-calendar-v2026.json",
+  "assetUsageLedger": "https://ts15825868.github.io/xianjiawei/content/asset-usage-ledger.json",
+  "contentPerformance": "https://ts15825868.github.io/xianjiawei/content/content-performance-schema.json",
+  "partnerMode": "https://ts15825868.github.io/xianjiawei/content/partner-mode-policy.json",
+  "publishingCenter": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
+  "contentTarget": 500,
+  "reviewDimensions": 16,
+  "generatedStatus": "pending_review"
+}
