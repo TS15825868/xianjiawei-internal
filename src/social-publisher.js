@@ -127,7 +127,7 @@ async function dispatchPlatform(env,post,platform){
     if(config.direct==='google_business') return dispatchGoogleBusiness(env,post);
   }
   if(webhookReady(env,config)) return dispatchWebhook(env,post,platform,config);
-  return{platform,ok:false,retryable:false,error:`尚未設定 ${platform} 官方 API 或 Webhook`};
+  return{platform,ok:false,retryable:false,manual_required:true,error:`尚未設定 ${platform} 官方 API 或 Webhook；已改走人工發布包，不阻擋其他已授權平台。`};
 }
 
 function retryDelayMs(attemptCount){const index=Math.min(Math.max(Number(attemptCount||1)-1,0),RETRY_DELAYS_MINUTES.length-1);return RETRY_DELAYS_MINUTES[index]*60000;}
@@ -156,11 +156,13 @@ async function publishOne(env,post,now){
     await saveDelivery(env,post.id,platform,result,now.toISOString());
     results.push(result);
   }
-  const automatic=results.filter((item)=>!item.manual_required&&item.reason!=='manual_required');
-  const failed=automatic.filter((item)=>item.ok===false&&!item.skipped);
   const manual=results.filter((item)=>item.manual_required||item.reason==='manual_required');
+  const automatic=results.filter((item)=>!item.manual_required&&item.reason!=='manual_required');
+  const failed=automatic.filter((item)=>item.ok===false||Boolean(item.skipped&&item.reason!=='published'));
   const allAutomaticDone=failed.length===0;
-  if(allAutomaticDone){
+  if(allAutomaticDone&&manual.length){
+    await env.DB.prepare("UPDATE social_posts SET status='manual_required',published_at=NULL,scheduled_at=NULL,updated_at=? WHERE id=?").bind(now.toISOString(),post.id).run();
+  }else if(allAutomaticDone){
     await env.DB.prepare("UPDATE social_posts SET status='published',published_at=COALESCE(NULLIF(published_at,''),?),scheduled_at=NULL,updated_at=? WHERE id=?").bind(now.toISOString(),now.toISOString(),post.id).run();
   }
   return{id:post.id,ok:allAutomaticDone,manual_required:manual.length>0,results};
@@ -172,9 +174,10 @@ export function publisherConfiguration(env){
     if(config.manual){platforms[name]={mode:'manual',ready:false,manualRequired:true,reason:config.manualReason};continue;}
     const directConfigured=config.direct&&directReadiness(env,config.direct);
     const webhookConfigured=webhookReady(env,config);
-    platforms[name]={mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured,webhookConfigured,tokenConfigured:directConfigured||webhookConfigured,ready:directConfigured||webhookConfigured,manualRequired:false,reason:directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定。'};
+    const ready=Boolean(directConfigured||webhookConfigured);
+    platforms[name]={mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured,webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,reason:directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
   }
-  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,lineVoomManualOnly:true,platforms,fullyConfigured:Object.values(platforms).filter((item)=>!item.manualRequired).every((item)=>item.ready)};
+  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
   const post=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status IN ('approved','scheduled') LIMIT 1").bind(postId).first();
