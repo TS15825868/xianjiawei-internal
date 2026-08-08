@@ -31,6 +31,17 @@ jobs:
           grep -q 'manual_required:true' src/social-publisher.js
           grep -q "'已核准','已排程','需人工發布','已發布'" assets/js/manual-publish-tools.js
           grep -q '/deliveries' assets/js/manual-publish-tools.js
+      - name: Confirm public publishing-center safe draft import contract
+        run: |
+          node --check assets/js/public-post-import.js
+          node --check assets/js/svg-candidate-rasterizer.js
+          grep -q "SOURCE_PREFIX='公開發布中心:'" assets/js/public-post-import.js
+          grep -q "startsWith(marker)" assets/js/public-post-import.js
+          grep -q "image_quality_status:'unknown'" assets/js/public-post-import.js
+          grep -q "image_approved=0" src/worker.js
+          grep -q "current.startsWith('公開發布中心:')" assets/js/svg-candidate-rasterizer.js
+          grep -q 'public-post-import.js' index.html
+          grep -q 'public-post-import.js' package.json
       - name: Check remaining ERP runtime
         run: |
           npm install --ignore-scripts --no-audit --no-fund --no-package-lock
