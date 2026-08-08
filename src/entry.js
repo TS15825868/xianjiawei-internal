@@ -1,10 +1,11 @@
 import app from './worker.js';
+import { uploadMedia, serveMedia } from './media-upload.js';
 
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-entry':'2026-08-07-public-entry-v2'
+  'x-xianjiawei-entry':'2026-08-08-device-upload-v1'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value,fallback='')=>String(value??fallback).trim();
@@ -152,6 +153,18 @@ async function createCompatibleRecord(request,env,ctx,module){
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
+    const mediaMatch=path.match(/^\/media\/([^/]+)$/);
+    if(request.method==='GET'&&mediaMatch){
+      try{return await serveMedia(request,compatibleEnv(env),decodeURIComponent(mediaMatch[1]));}
+      catch{return new Response('Not Found',{status:404,headers:{'cache-control':'no-store'}});}
+    }
+    if(request.method==='POST'&&path==='/api/media-upload'){
+      const authorization=await authorize(request,env,ctx);
+      if(!authorization.ok)return authorization;
+      const profile=await authorization.json();
+      try{return await uploadMedia(request,compatibleEnv(env),profile);}
+      catch(error){return json({error:clean(error?.message||error,'圖片上傳失敗')},500);}
+    }
     const moduleCreate=path.match(/^\/api\/modules\/([^/]+)$/);
     if(request.method==='POST'&&moduleCreate&&WRITE_ROLES[moduleCreate[1]])return createCompatibleRecord(request,env,ctx,moduleCreate[1]);
     if(request.method==='POST'&&path==='/api/assets')return createCompatibleRecord(request,env,ctx,'assets');
