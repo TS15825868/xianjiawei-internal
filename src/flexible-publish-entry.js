@@ -1,11 +1,12 @@
 import app from './authority-entry.js';
 import { publishPostById, publisherConfiguration } from './social-publisher.js';
+import { validatePostPayload } from './product-authority.js';
 
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-flex-publish':'2026-08-08-v1'
+  'x-xianjiawei-flex-publish':'2026-08-08-v2'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value)=>String(value??'').trim();
@@ -16,6 +17,13 @@ async function authorize(request,env,ctx){
 }
 function parsePlatforms(value){
   try{const parsed=JSON.parse(value||'[]');return Array.isArray(parsed)?parsed.map(clean).filter(Boolean):[];}catch{return[];}
+}
+function publishableImageUrl(value){
+  const url=clean(value);
+  if(!/^https:\/\//i.test(url))return false;
+  if(/\.svg(?:[?#]|$)/i.test(url))return false;
+  if(/\/media\/IMG-[A-Za-z0-9-]+(?:[?#]|$)/i.test(url))return true;
+  return /\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(url);
 }
 async function getPostRow(env,id){
   if(!env?.DB)return null;
@@ -50,7 +58,12 @@ async function flexiblePublishNow(request,env,ctx,id){
   const before=await getPostRow(env,id);
   if(!before)return json({error:'找不到貼文'},404);
   if(!['approved','scheduled'].includes(before.status))return json({error:'貼文必須先審核通過，才能立即發布'},409);
+
+  const authorityErrors=validatePostPayload(before);
+  if(authorityErrors.length)return json({error:'貼文仍含不符合正式產品母本的內容，不能發布',details:authorityErrors},409);
+
   if(!before.image_url||Number(before.image_approved||0)!==1)return json({error:'貼文圖片尚未完成審核，不能立即發布'},409);
+  if(!publishableImageUrl(before.image_url))return json({error:'正式發布圖片必須是已審核的 JPG、PNG 或 WebP；SVG／候選圖請先在 ERP 轉成發布圖'},409);
 
   const originalPlatforms=parsePlatforms(before.platforms_json);
   if(!originalPlatforms.length)return json({error:'尚未指定發布平台'},409);
@@ -134,4 +147,4 @@ export default{
   }
 };
 
-export { flexiblePublishNow, platformReady };
+export { flexiblePublishNow, platformReady, publishableImageUrl };
