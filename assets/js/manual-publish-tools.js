@@ -10,6 +10,7 @@
   const jsonHeaders={'content-type':'application/json'};
   const esc=(value='')=>String(value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const sleep=(ms)=>new Promise((resolve)=>setTimeout(resolve,ms));
+  let dashboardMetricLoading=false;
   function toast(message,error=false){
     const root=document.getElementById('toastRoot');
     if(!root){if(error)alert(message);return;}
@@ -102,6 +103,20 @@
     const card=button.closest('.xjw-row');const id=postId(card);if(!id)return;
     button.disabled=true;try{await manualMarkPublished(id);}catch(error){toast(error.message||String(error),true);}finally{button.disabled=false;}
   }
+  async function enhanceDashboard(){
+    const grid=document.querySelector('.metric-grid');
+    if(!grid||grid.querySelector('[data-manual-required-metric]')||dashboardMetricLoading)return;
+    dashboardMetricLoading=true;
+    try{
+      const data=await api('/overview');
+      const count=Number(data?.posts?.manual_required||0);
+      const article=document.createElement('article');
+      article.className='card metric';
+      article.dataset.manualRequiredMetric='1';
+      article.innerHTML=`<small>需人工發布</small><strong>${count}</strong><a href="#posts" data-manual-filter>查看待人工平台 →</a>`;
+      grid.appendChild(article);
+    }catch{}finally{dashboardMetricLoading=false;}
+  }
   function enhance(){
     const select=document.getElementById('listStatus');
     if(select&&!select.querySelector('option[value="manual_required"]')){
@@ -116,8 +131,11 @@
         const mark=document.createElement('button');mark.type='button';mark.className='btn small green';mark.textContent='手動補登已發布';mark.dataset.manualPublished='1';actions.appendChild(mark);
       }
     });
+    enhanceDashboard();
   }
   document.addEventListener('click',(event)=>{
+    const filter=event.target.closest('[data-manual-filter]');
+    if(filter){setTimeout(()=>{const select=document.getElementById('listStatus');if(select){select.value='manual_required';select.dispatchEvent(new Event('change',{bubbles:true}));}},250);return;}
     const pack=event.target.closest('[data-manual-package]');if(pack){event.preventDefault();event.stopPropagation();handlePackage(pack);return;}
     const mark=event.target.closest('[data-manual-published]');if(mark){event.preventDefault();event.stopPropagation();handleMark(mark);}
   },true);
