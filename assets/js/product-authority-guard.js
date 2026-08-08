@@ -1,14 +1,14 @@
 (()=>{
   const PRODUCTS=Object.freeze([
-    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐'},
-    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐'},
-    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包'},
-    {id:'guilu-tangkuai',name:'龜鹿湯塊',spec:'75g／盒'},
-    {id:'guilu-jiao',name:'龜鹿膠',spec:'600g（1斤）／盒｜32塊裝｜每塊約18.75g'},
-    {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐'}
+    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐']},
+    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐',allowedSpecs:['30cc／罐','30cc／罐（小玻璃罐）']},
+    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包',allowedSpecs:['180cc／包','180cc／包（鋁袋）']},
+    {id:'guilu-tangkuai',name:'龜鹿湯塊',spec:'75g／盒',allowedSpecs:['75g／盒','75g／盒｜8塊裝｜每塊約9.375g']},
+    {id:'guilu-jiao',name:'龜鹿膠',spec:'600g（1斤）／盒',allowedSpecs:['600g（1斤）／盒','600g（1斤）／盒｜32塊裝｜每塊約18.75g']},
+    {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐',allowedSpecs:['75g／罐']}
   ]);
   const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
-  window.XJW_PRODUCT_AUTHORITY=Object.freeze({version:'2026-08-08-v2',products:PRODUCTS,soupBlockOnly:'75g／盒',drink30Container:'小玻璃罐'});
+  window.XJW_PRODUCT_AUTHORITY=Object.freeze({version:'2026-08-08-v3',products:PRODUCTS,soupBlockOnly:'75g／盒',drink30Container:'小玻璃罐'});
 
   function toast(message,error=true){
     const root=document.getElementById('toastRoot');
@@ -40,7 +40,7 @@
     const normalized=name==='龜鹿飲'&&spec.startsWith('30cc')?'龜鹿飲30cc玻璃罐':name==='龜鹿飲'&&spec.startsWith('180cc')?'龜鹿飲180cc鋁袋':name;
     const expected=BY_NAME.get(normalized);
     if(!expected)return [`產品中心只允許六項正式產品，目前名稱「${name||'未填'}」不在正式清單。`];
-    if(spec!==expected.spec)return [`${expected.name}正式規格必須是「${expected.spec}」，目前為「${spec||'未填'}」。`];
+    if(!expected.allowedSpecs.includes(spec))return [`${expected.name}規格必須使用正式版本，目前為「${spec||'未填'}」。`];
     return contentErrors(`${normalized} ${spec}`);
   }
   function insertAuthorityNote(form){
