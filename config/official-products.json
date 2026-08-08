@@ -1,21 +1,29 @@
 {
-  "version": "2026-08-08-six-products-single-spec-v1",
+  "version": "2026-08-08-six-products-single-spec-v2",
   "authority": "user-confirmed",
   "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/config/official-products.json",
-  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項正式規格；任何舊規格一律標記deprecated並不得新建。",
+  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項正式規格；龜鹿湯塊深藍盒只允許75g／盒，任何未確認規格不得新建。",
   "products": [
     {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐"},
-    {"id":"guilu-drink-30","name":"龜鹿飲","spec":"30cc／罐"},
-    {"id":"guilu-drink-180","name":"龜鹿飲","spec":"180cc／包"},
+    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐"},
+    {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","spec":"180cc／包"},
     {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒"},
-    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g／盒"},
+    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g（1斤）／盒｜32塊裝｜每塊約18.75g"},
     {"id":"luerong-fen","name":"鹿茸粉","spec":"75g／罐"}
   ],
-  "deprecatedOrForbidden": ["龜鹿湯塊150g","龜鹿湯塊300g","龜鹿湯塊600g","300g／盒｜16塊裝｜每塊約18.75g","600g／盒｜32塊裝｜每塊約18.75g","龜鹿膠600g（1斤）／盒｜32塊裝｜每塊約18.75g","龜鹿飲30cc玻璃瓶","30cc／瓶"],
   "visualLocks": {
-    "guiluDrink30":"裸罐、無貼紙、無外盒、無外袋、金色蓋；高矮胖瘦照原圖",
-    "guiluDrink180":"狹長鋁袋，不拉寬、不加高",
+    "guiluDrink30":"小玻璃裸罐、無貼紙、無外盒、無外袋、金色蓋；高矮胖瘦照原圖；不得稱瓶",
+    "guiluDrink180":"180cc狹長鋁袋，不拉寬、不加高",
     "guiluGao":"100g六角罐，只用新版米白標籤",
-    "guiluJiao":"600g淡紫盒，等比例、不橫向拉長"
-  }
+    "guiluTangkuai":"75g深藍盒；8塊裝、每塊約9.375g；只用正式原圖；不得建立其他容量",
+    "guiluJiao":"600g（1斤）淡紫盒；32塊裝、每塊約18.75g；等比例、不橫向拉長",
+    "luerongFen":"75g白色塑膠罐；正式原圖等比例"
+  },
+  "guardRules": [
+    "不允許未在products清單中的產品規格",
+    "龜鹿湯塊只能使用75g深藍盒",
+    "龜鹿膠與龜鹿湯塊不得互換規格或包裝",
+    "30cc龜鹿飲只稱玻璃罐，不稱瓶",
+    "產品圖片不得重畫、裁切或改變比例"
+  ]
 }
