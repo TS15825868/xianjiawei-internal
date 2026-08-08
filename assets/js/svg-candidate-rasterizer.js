@@ -47,6 +47,12 @@
     const form=new FormData();form.append('file',blob,`${id}-approved-candidate.jpg`);form.append('width',String(TARGET_SIZE));form.append('height',String(TARGET_SIZE));
     return json(await fetch('/api/media-upload',{method:'POST',credentials:'same-origin',cache:'no-store',body:form}));
   }
+  function rasterSourceLabel(post){
+    const current=String(post?.image_source||'').trim();
+    if(current.startsWith('公開發布中心:'))return `${current}｜正式原圖候選自動轉JPEG`;
+    if(current)return `${current}｜自動轉JPEG`;
+    return 'GitHub正式原圖合成候選｜自動轉JPEG';
+  }
   async function ensureRaster(id){
     if(processing.has(id))return processing.get(id);
     const task=(async()=>{
@@ -55,7 +61,7 @@
       toast('正在把正式原圖候選轉成可發布 JPEG…');
       const blob=await renderSvgToJpeg(post.image_url);
       const uploaded=await upload(blob,id);
-      const patched=await patchPost(id,{image_url:uploaded.url,image_width:uploaded.width||TARGET_SIZE,image_height:uploaded.height||TARGET_SIZE,image_bytes:uploaded.bytes||blob.size,image_source:'GitHub正式原圖合成候選｜自動轉JPEG'});
+      const patched=await patchPost(id,{image_url:uploaded.url,image_width:uploaded.width||TARGET_SIZE,image_height:uploaded.height||TARGET_SIZE,image_bytes:uploaded.bytes||blob.size,image_source:rasterSourceLabel(post),image_quality_status:'ok'});
       toast('候選圖已自動轉成 JPEG 並存入 ERP 媒體庫。');
       return {changed:true,post:patched,uploaded};
     })().finally(()=>processing.delete(id));
@@ -75,5 +81,5 @@
     }catch(error){button.disabled=false;toast(error.message||String(error),true);}
   },true);
 
-  window.XJWExactOriginalRasterizer={version:'2026-08-08-v1',ensureRaster,isSvg,rawUrl};
+  window.XJWExactOriginalRasterizer={version:'2026-08-08-v2-source-preserved',ensureRaster,isSvg,rawUrl,rasterSourceLabel};
 })();
