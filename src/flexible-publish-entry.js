@@ -6,7 +6,7 @@ const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-flex-publish':'2026-08-08-v3-manual-required'
+  'x-xianjiawei-flex-publish':'2026-08-08-v4-delivery-state'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value)=>String(value??'').trim();
@@ -31,6 +31,29 @@ function publishableImageUrl(value){
 async function getPostRow(env,id){
   if(!env?.DB)return null;
   return env.DB.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first();
+}
+async function deliveryRows(env,id){
+  if(!env?.DB)return[];
+  const result=await env.DB.prepare('SELECT platform,status,attempt_count,last_attempt_at,published_at,remote_id,error_text,updated_at FROM social_publish_deliveries WHERE post_id=? ORDER BY platform').bind(id).all();
+  return result.results||[];
+}
+async function deliveryState(request,env,ctx,id){
+  const authorization=await authorize(request,env,ctx);
+  if(!authorization.ok)return authorization;
+  const post=await getPostRow(env,id);
+  if(!post)return json({error:'找不到貼文'},404);
+  const deliveries=await deliveryRows(env,id);
+  const configured=parsePlatforms(post.platforms_json);
+  const byPlatform=new Map(deliveries.map((item)=>[item.platform,item]));
+  const platforms=configured.map((platform)=>byPlatform.get(platform)||{platform,status:'pending',attempt_count:0,last_attempt_at:null,published_at:null,remote_id:'',error_text:'',updated_at:null});
+  return json({
+    id,
+    post_status:post.status,
+    platforms,
+    published_platforms:platforms.filter((item)=>item.status==='published').map((item)=>item.platform),
+    manual_required_platforms:platforms.filter((item)=>item.status==='manual_required').map((item)=>item.platform),
+    unresolved_platforms:platforms.filter((item)=>!['published','manual_required'].includes(item.status)).map((item)=>item.platform)
+  });
 }
 async function markManualDelivery(env,id,platform,reason){
   const now=new Date().toISOString();
@@ -106,7 +129,8 @@ async function flexiblePublishNow(request,env,ctx,id){
   if(!automaticPlatforms.length){
     await setManualRequired(env,id);
     const after=await getPostRow(env,id);
-    await audit(env,request,profile,id,before,{post:after,manual_platforms:manualPlatforms});
+    const deliveries=await deliveryRows(env,id);
+    await audit(env,request,profile,id,before,{post:after,deliveries,manual_platforms:manualPlatforms});
     return json({
       ok:true,
       partially_published:false,
@@ -134,7 +158,8 @@ async function flexiblePublishNow(request,env,ctx,id){
 
   if(result?.ok&&manualPlatforms.length)await setManualRequired(env,id);
   const after=await getPostRow(env,id);
-  await audit(env,request,profile,id,before,{post:after,result,automatic_platforms:automaticPlatforms,manual_platforms:manualPlatforms});
+  const deliveries=await deliveryRows(env,id);
+  await audit(env,request,profile,id,before,{post:after,result,deliveries,automatic_platforms:automaticPlatforms,manual_platforms:manualPlatforms});
 
   if(!result?.ok){
     return json({
@@ -143,6 +168,7 @@ async function flexiblePublishNow(request,env,ctx,id){
       automatic_platforms:automaticPlatforms,
       manual_platforms:manualPlatforms,
       manual_required:manualPlatforms.length>0,
+      deliveries,
       result
     },502);
   }
@@ -156,6 +182,7 @@ async function flexiblePublishNow(request,env,ctx,id){
     status:after?.status||(manualPlatforms.length?'manual_required':'published'),
     automatic_platforms:automaticPlatforms,
     manual_platforms:manualPlatforms,
+    deliveries,
     message:manualPlatforms.length
       ? `已完成可自動發布平台：${automaticPlatforms.join('、')}；仍需人工發布：${manualPlatforms.join('、')}。`
       : `立即發布完成：${automaticPlatforms.join('、')}。`,
@@ -171,6 +198,11 @@ export default{
       try{return await flexiblePublishNow(request,env,ctx,decodeURIComponent(publishMatch[1]));}
       catch(error){return json({error:clean(error?.message||error)||'立即發布失敗'},500);}
     }
+    const deliveryMatch=path.match(/^\/api\/posts\/([^/]+)\/deliveries$/);
+    if(request.method==='GET'&&deliveryMatch){
+      try{return await deliveryState(request,env,ctx,decodeURIComponent(deliveryMatch[1]));}
+      catch(error){return json({error:clean(error?.message||error)||'發布狀態讀取失敗'},500);}
+    }
     const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/);
     if(request.method==='POST'&&statusMatch){
       try{
@@ -185,4 +217,4 @@ export default{
   }
 };
 
-export { flexiblePublishNow, changeManualRequiredStatus, platformReady, publishableImageUrl };
+export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl };
