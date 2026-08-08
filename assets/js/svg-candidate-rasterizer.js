@@ -19,6 +19,7 @@
     svg=svg.replace(/href=(['"])(\.\.\/\.\.\/products-v3\/)/g,`href=$1${RAW_BASE}images/products-v3/`);
     svg=svg.replace(/href=(['"])(images\/products-v3\/)/g,`href=$1${RAW_BASE}$2`);
     svg=svg.replaceAll(PUBLIC_BASE+'images/products-v3/',RAW_BASE+'images/products-v3/');
+    svg=svg.replaceAll(PUBLIC_BASE+'images/brand/line-oa/',RAW_BASE+'images/brand/line-oa/');
     const svgBlob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),objectUrl=URL.createObjectURL(svgBlob);
     try{
       const image=await new Promise((resolve,reject)=>{const node=new Image();node.crossOrigin='anonymous';node.onload=()=>resolve(node);node.onerror=()=>reject(new Error('候選SVG轉圖失敗，請重新生成或改用裝置上傳。'));node.src=objectUrl});
@@ -30,5 +31,5 @@
   function rasterSourceLabel(post){const current=String(post?.image_source||'').trim();if(current.startsWith('公開發布中心:'))return `${current}｜候選自動轉JPEG`;if(current)return `${current}｜自動轉JPEG`;return '仙加味候選｜自動轉JPEG'}
   async function ensureRaster(id){if(processing.has(id))return processing.get(id);const task=(async()=>{const post=await getPost(id);if(!isSvg(post.image_url))return{changed:false,post};toast('正在把候選圖轉成可發布 JPEG…');const blob=await renderSvgToJpeg(post.image_url);const uploaded=await upload(blob,id);const patched=await patchPost(id,{image_url:uploaded.url,image_width:uploaded.width||TARGET_SIZE,image_height:uploaded.height||TARGET_SIZE,image_bytes:uploaded.bytes||blob.size,image_source:rasterSourceLabel(post),image_quality_status:'ok'});toast('候選圖已自動轉成 JPEG 並存入 ERP 媒體庫。');return{changed:true,post:patched,uploaded}})().finally(()=>processing.delete(id));processing.set(id,task);return task}
   document.addEventListener('click',async event=>{const button=event.target.closest('[data-post-publish-now], [data-post-status="approved"], [data-manual-package]');if(!button||button.dataset.xjwRasterReady==='1')return;const id=postIdFromButton(button);if(!id)return;event.preventDefault();event.stopImmediatePropagation();button.disabled=true;try{await ensureRaster(id);button.dataset.xjwRasterReady='1';button.disabled=false;button.click()}catch(error){button.disabled=false;toast(error.message||String(error),true)}},true);
-  window.XJWExactOriginalRasterizer={version:'2026-08-08-v3-data-svg',ensureRaster,isSvg,isDataSvg,rawUrl,rasterSourceLabel};
+  window.XJWExactOriginalRasterizer={version:'2026-08-08-v4-brand-line-oa',ensureRaster,isSvg,isDataSvg,rawUrl,rasterSourceLabel};
 })();
