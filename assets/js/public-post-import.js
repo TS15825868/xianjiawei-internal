@@ -65,7 +65,7 @@
     await waitForApi();
     const marker=sourceMarker(payload);
     const posts=await api('/posts');
-    const existing=(Array.isArray(posts)?posts:[]).find((post)=>String(post.image_source||'')===marker);
+    const existing=(Array.isArray(posts)?posts:[]).find((post)=>String(post.image_source||'').startsWith(marker));
     if(existing){
       removeImportParam();
       location.hash='#posts';
@@ -108,7 +108,7 @@
     toast('正在把公開發布中心貼文安全匯入 ERP 草稿…');
     try{await importDraft(payload);}catch(error){toast(error.message||String(error),true);}
   }
-  window.XJWPublicPostImport={version:'2026-08-08-v1',readPayload,importDraft};
+  window.XJWPublicPostImport={version:'2026-08-08-v2-source-dedupe',readPayload,importDraft};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(start,250),{once:true});
   else setTimeout(start,250);
 })();
