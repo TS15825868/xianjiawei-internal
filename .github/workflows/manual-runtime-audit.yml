@@ -1,0 +1,36 @@
+name: 仙加味 ERP 正式程式手動驗收
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-erp-manual-runtime-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies without deploy
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Check Worker, product authority and UI scripts
+        run: npm run check
+
+      - name: Build static ERP assets only
+        run: npm run build:static
+
+      - name: Ensure audit makes no repository changes
+        run: git diff --exit-code
