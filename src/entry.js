@@ -1,11 +1,12 @@
 import app from './worker.js';
 import { uploadMedia, serveMedia } from './media-upload.js';
+import { validateProductRecord, validatePostPayload, PRODUCT_AUTHORITY } from './product-authority.js';
 
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-entry':'2026-08-08-device-upload-v1'
+  'x-xianjiawei-entry':'2026-08-08-product-authority-v2'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value,fallback='')=>String(value??fallback).trim();
@@ -88,7 +89,8 @@ async function safeSettings(request,env,ctx){
     secrets:'Cloudflare Worker Secrets',
     access:'Cloudflare Access',
     public_runtime_repository:'TS15825868/xianjiawei-internal',
-    private_history_repository:'TS15825868/xianjiawei-internal-private'
+    private_history_repository:'TS15825868/xianjiawei-internal-private',
+    product_authority:PRODUCT_AUTHORITY
   };
   try{
     const result=await env.DB.prepare('SELECT setting_key,value_json,updated_by,updated_at FROM app_settings ORDER BY setting_key').all();
@@ -139,6 +141,10 @@ async function createCompatibleRecord(request,env,ctx,module){
   if(!canWrite(profile,module))return json({error:'沒有新增資料權限'},403);
   try{
     const body=cleanRecord(await request.json());
+    if(module==='products'){
+      const errors=validateProductRecord(body);
+      if(errors.length)return json({error:'正式產品規格檢查未通過',details:errors},400);
+    }
     const id=clean(body.id)||`${MODULE_PREFIX[module]||'REC'}-${crypto.randomUUID()}`;
     delete body.id;
     const now=new Date().toISOString();
@@ -148,6 +154,18 @@ async function createCompatibleRecord(request,env,ctx,module){
     }catch{}
     return json({...body,id,created_at:now,updated_at:now},201);
   }catch(error){return json({error:clean(error?.message||error,'新增資料失敗')},400);}
+}
+
+async function validateForwardedWrite(request){
+  if(!['POST','PUT','PATCH'].includes(request.method))return null;
+  const path=new URL(request.url).pathname;
+  const productMatch=path.match(/^\/api\/modules\/products(?:\/[^/]+)?$/);
+  const postMatch=path.match(/^\/api\/posts(?:\/[^/]+)?$/);
+  if(!productMatch&&!postMatch)return null;
+  let body;
+  try{body=await request.clone().json();}catch{return null;}
+  const errors=productMatch?validateProductRecord(body,{partial:Boolean(path.match(/^\/api\/modules\/products\/[^/]+$/))}):validatePostPayload(body);
+  return errors.length?json({error:'正式產品規格檢查未通過',details:errors},400):null;
 }
 
 export default{
@@ -165,6 +183,8 @@ export default{
       try{return await uploadMedia(request,compatibleEnv(env),profile);}
       catch(error){return json({error:clean(error?.message||error,'圖片上傳失敗')},500);}
     }
+    const authorityError=await validateForwardedWrite(request);
+    if(authorityError)return authorityError;
     const moduleCreate=path.match(/^\/api\/modules\/([^/]+)$/);
     if(request.method==='POST'&&moduleCreate&&WRITE_ROLES[moduleCreate[1]])return createCompatibleRecord(request,env,ctx,moduleCreate[1]);
     if(request.method==='POST'&&path==='/api/assets')return createCompatibleRecord(request,env,ctx,'assets');
