@@ -1,15 +1,15 @@
 {
-  "version": "2026-08-08-six-products-single-spec-v2",
+  "version": "2026-08-08-six-products-single-spec-v3",
   "authority": "user-confirmed",
-  "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/config/official-products.json",
-  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項正式規格；龜鹿湯塊深藍盒只允許75g／盒，任何未確認規格不得新建。",
+  "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/catalog-public.json",
+  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項正式規格；正式成分與已確認使用資料也不得寫入舊版本。",
   "products": [
-    {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐"},
-    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐"},
-    {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","spec":"180cc／包"},
-    {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒"},
-    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g（1斤）／盒｜32塊裝｜每塊約18.75g"},
-    {"id":"luerong-fen","name":"鹿茸粉","spec":"75g／罐"}
+    {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐","ingredients":["鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"],"usagePrimary":"每日早上及下午各一小匙"},
+    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
+    {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","spec":"180cc／包","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
+    {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒","ingredients":["龜板萃取物","鹿角萃取物"]},
+    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g（1斤）／盒｜32塊裝｜每塊約18.75g","ingredients":["龜板萃取物","鹿角萃取物"]},
+    {"id":"luerong-fen","name":"鹿茸粉","spec":"75g／罐","ingredients":["鹿茸"]}
   ],
   "visualLocks": {
     "guiluDrink30":"小玻璃裸罐、無貼紙、無外盒、無外袋、金色蓋；高矮胖瘦照原圖；不得稱瓶",
@@ -24,6 +24,8 @@
     "龜鹿湯塊只能使用75g深藍盒",
     "龜鹿膠與龜鹿湯塊不得互換規格或包裝",
     "30cc龜鹿飲只稱玻璃罐，不稱瓶",
+    "正式成分與順序不可寫入舊版本",
+    "龜鹿膏主要使用資料以每日早上及下午各一小匙為準",
     "產品圖片不得重畫、裁切或改變比例"
   ]
 }
