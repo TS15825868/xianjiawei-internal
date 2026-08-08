@@ -1,10 +1,10 @@
 {
   "name": "xianjiawei-internal-public-runtime",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "type": "module",
   "scripts": {
-    "check": "node --check src/entry.js && node --check src/worker.js && node --check src/social-publisher.js && node --check src/media-upload.js && node --check assets/js/internal-app.js && node --check assets/js/device-image-upload.js && node --check assets/js/product-authority-guard.js && node --check assets/js/post-regenerate-v6.js",
+    "check": "node --check src/entry.js && node --check src/worker.js && node --check src/social-publisher.js && node --check src/media-upload.js && node --check src/product-authority.js && node --check assets/js/internal-app.js && node --check assets/js/device-image-upload.js && node --check assets/js/product-authority-guard.js && node --check assets/js/post-regenerate-v6.js",
     "build:static": "npm run check && rm -rf dist && mkdir -p dist/assets/css dist/assets/js && cp index.html dist/index.html && cp assets/css/internal-app.css dist/assets/css/internal-app.css && cp assets/js/internal-app.js dist/assets/js/internal-app.js && cp assets/js/device-image-upload.js dist/assets/js/device-image-upload.js && cp assets/js/product-authority-guard.js dist/assets/js/product-authority-guard.js && cp assets/js/post-regenerate-v6.js dist/assets/js/post-regenerate-v6.js && cp assets/js/brand-control-nav.js dist/assets/js/brand-control-nav.js && if [ -f robots.txt ]; then cp robots.txt dist/robots.txt; fi",
     "deploy": "npm run build:static && wrangler deploy --keep-vars"
   },
