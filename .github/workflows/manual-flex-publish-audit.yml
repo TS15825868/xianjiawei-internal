@@ -24,7 +24,13 @@ jobs:
           grep -q 'automaticPlatforms' src/flexible-publish-entry.js
           grep -q 'manualPlatforms' src/flexible-publish-entry.js
           grep -q "status='manual_required'" src/flexible-publish-entry.js
+          grep -q '/deliveries' src/flexible-publish-entry.js
+          grep -q 'manual_required_platforms' src/flexible-publish-entry.js
           grep -q 'publishPostById' src/flexible-publish-entry.js
+          grep -q "status='manual_required'" src/social-publisher.js
+          grep -q 'manual_required:true' src/social-publisher.js
+          grep -q "'已核准','已排程','需人工發布','已發布'" assets/js/manual-publish-tools.js
+          grep -q '/deliveries' assets/js/manual-publish-tools.js
       - name: Check remaining ERP runtime
         run: |
           npm install --ignore-scripts --no-audit --no-fund --no-package-lock
