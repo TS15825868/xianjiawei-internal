@@ -29,6 +29,12 @@ jobs:
       - name: Check Worker, product authority and UI scripts
         run: npm run check
 
+      - name: Check exact-original SVG candidate rasterizer
+        run: |
+          node --check assets/js/svg-candidate-rasterizer.js
+          grep -q 'svg-candidate-rasterizer.js' index.html
+          grep -q '20260808-canonical-facts-3' index.html
+
       - name: Build static ERP assets only
         run: npm run build:static
 
