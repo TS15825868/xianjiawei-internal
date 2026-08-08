@@ -6,7 +6,7 @@ const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-flex-publish':'2026-08-08-v2'
+  'x-xianjiawei-flex-publish':'2026-08-08-v3-manual-required'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value)=>String(value??'').trim();
@@ -14,6 +14,9 @@ const clean=(value)=>String(value??'').trim();
 async function authorize(request,env,ctx){
   const url=new URL('/api/me',request.url);
   return app.fetch(new Request(url,{method:'GET',headers:request.headers}),env,ctx);
+}
+async function readJsonClone(request){
+  try{return await request.clone().json();}catch{return null;}
 }
 function parsePlatforms(value){
   try{const parsed=JSON.parse(value||'[]');return Array.isArray(parsed)?parsed.map(clean).filter(Boolean):[];}catch{return[];}
@@ -40,15 +43,41 @@ async function markManualDelivery(env,id,platform,reason){
       updated_at=excluded.updated_at
   `).bind(id,platform,reason,now,now).run();
 }
-async function audit(env,request,profile,id,before,after){
+async function audit(env,request,profile,id,before,after,action='彈性立即發布'){
   try{
     await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
-      .bind(`AUD-${crypto.randomUUID()}`,profile?.email||'', '彈性立即發布','貼文',id,JSON.stringify(before||{}),JSON.stringify(after||{}),request.headers.get('cf-connecting-ip')||'').run();
+      .bind(`AUD-${crypto.randomUUID()}`,profile?.email||'',action,'貼文',id,JSON.stringify(before||{}),JSON.stringify(after||{}),request.headers.get('cf-connecting-ip')||'').run();
   }catch(error){console.warn('flex publish audit failed',clean(error?.message||error));}
 }
 function platformReady(configuration,platform){
   return configuration?.platforms?.[platform]?.ready===true;
 }
+async function setManualRequired(env,id){
+  const now=new Date().toISOString();
+  await env.DB.prepare("UPDATE social_posts SET status='manual_required',scheduled_at=NULL,published_at=NULL,updated_at=? WHERE id=?").bind(now,id).run();
+}
+
+async function changeManualRequiredStatus(request,env,ctx,id){
+  const before=await getPostRow(env,id);
+  if(!before||before.status!=='manual_required')return null;
+  const authorization=await authorize(request,env,ctx);
+  if(!authorization.ok)return authorization;
+  const profile=await authorization.json();
+  if(!['owner','admin','content'].includes(profile?.role))return json({error:'沒有修改貼文狀態權限'},403);
+  const body=await readJsonClone(request);
+  const next=clean(body?.status);
+  if(!['published','draft'].includes(next))return json({error:'需人工發布的貼文只能補登為已發布，或退回草稿'},400);
+  const now=new Date().toISOString();
+  if(next==='published'){
+    await env.DB.prepare("UPDATE social_posts SET status='published',published_at=?,scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,now,id).run();
+  }else{
+    await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,published_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
+  }
+  const after=await getPostRow(env,id);
+  await audit(env,request,profile,id,before,after,next==='published'?'手動補登已發布':'人工發布退回草稿');
+  return json(after);
+}
+
 async function flexiblePublishNow(request,env,ctx,id){
   const authorization=await authorize(request,env,ctx);
   if(!authorization.ok)return authorization;
@@ -75,6 +104,7 @@ async function flexiblePublishNow(request,env,ctx,id){
   for(const platform of manualPlatforms)await markManualDelivery(env,id,platform,reason);
 
   if(!automaticPlatforms.length){
+    await setManualRequired(env,id);
     const after=await getPostRow(env,id);
     await audit(env,request,profile,id,before,{post:after,manual_platforms:manualPlatforms});
     return json({
@@ -83,7 +113,7 @@ async function flexiblePublishNow(request,env,ctx,id){
       automatic_published:false,
       manual_required:true,
       id,
-      status:after?.status||before.status,
+      status:'manual_required',
       manual_platforms:manualPlatforms,
       message:`目前沒有可自動發布的平台；已轉為人工發布：${manualPlatforms.join('、')}。請使用「手動發布包」，完成後補登已發布。`,
       publisher:configuration
@@ -102,6 +132,7 @@ async function flexiblePublishNow(request,env,ctx,id){
       .bind(JSON.stringify(originalPlatforms),new Date().toISOString(),id).run();
   }
 
+  if(result?.ok&&manualPlatforms.length)await setManualRequired(env,id);
   const after=await getPostRow(env,id);
   await audit(env,request,profile,id,before,{post:after,result,automatic_platforms:automaticPlatforms,manual_platforms:manualPlatforms});
 
@@ -122,7 +153,7 @@ async function flexiblePublishNow(request,env,ctx,id){
     automatic_published:true,
     manual_required:manualPlatforms.length>0,
     id,
-    status:after?.status||'published',
+    status:after?.status||(manualPlatforms.length?'manual_required':'published'),
     automatic_platforms:automaticPlatforms,
     manual_platforms:manualPlatforms,
     message:manualPlatforms.length
@@ -135,10 +166,17 @@ async function flexiblePublishNow(request,env,ctx,id){
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
-    const match=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/);
-    if(request.method==='POST'&&match){
-      try{return await flexiblePublishNow(request,env,ctx,decodeURIComponent(match[1]));}
+    const publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/);
+    if(request.method==='POST'&&publishMatch){
+      try{return await flexiblePublishNow(request,env,ctx,decodeURIComponent(publishMatch[1]));}
       catch(error){return json({error:clean(error?.message||error)||'立即發布失敗'},500);}
+    }
+    const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/);
+    if(request.method==='POST'&&statusMatch){
+      try{
+        const handled=await changeManualRequiredStatus(request,env,ctx,decodeURIComponent(statusMatch[1]));
+        if(handled)return handled;
+      }catch(error){return json({error:clean(error?.message||error)||'狀態更新失敗'},500);}
     }
     return app.fetch(request,env,ctx);
   },
@@ -147,4 +185,4 @@ export default{
   }
 };
 
-export { flexiblePublishNow, platformReady, publishableImageUrl };
+export { flexiblePublishNow, changeManualRequiredStatus, platformReady, publishableImageUrl };
