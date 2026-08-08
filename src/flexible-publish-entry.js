@@ -231,7 +231,7 @@ async function currentHealth(request,env,ctx){
     blindRetryAfterImmediateFailure:false,
     lineRenderFreeKeepWarm:true,
     lineHealthUrl:LINE_HEALTH_URL,
-    uiRuntime:'20260808-canonical-facts-10'
+    uiRuntime:'20260808-canonical-facts-12'
   },response.status);
 }
 
