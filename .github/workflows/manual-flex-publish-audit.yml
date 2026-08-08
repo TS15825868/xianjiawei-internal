@@ -16,7 +16,8 @@ jobs:
         with:
           node-version: 22
       - name: Confirm Cloudflare Worker uses flexible publishing entry
-        run: grep -q '"main": "src/flexible-publish-entry.js"' wrangler.jsonc
+        run: >-
+          grep -q '"main": "src/flexible-publish-entry.js"' wrangler.jsonc
       - name: Check flexible publishing entry syntax
         run: node --check src/flexible-publish-entry.js
       - name: Confirm mixed-platform manual fallback contract
