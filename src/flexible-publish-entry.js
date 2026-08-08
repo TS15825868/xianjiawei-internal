@@ -2,11 +2,12 @@ import app from './authority-entry.js';
 import { publishPostById, publisherConfiguration } from './social-publisher.js';
 import { validatePostPayload } from './product-authority.js';
 
+const FLEX_VERSION='2026-08-08-v5-manual-delivery-reconcile';
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-flex-publish':'2026-08-08-v4-delivery-state'
+  'x-xianjiawei-flex-publish':FLEX_VERSION
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value)=>String(value??'').trim();
@@ -66,6 +67,15 @@ async function markManualDelivery(env,id,platform,reason){
       updated_at=excluded.updated_at
   `).bind(id,platform,reason,now,now).run();
 }
+async function completeManualDeliveries(env,id){
+  const now=new Date().toISOString();
+  const result=await env.DB.prepare(`
+    UPDATE social_publish_deliveries
+    SET status='published',published_at=COALESCE(published_at,?),last_attempt_at=COALESCE(last_attempt_at,?),error_text='',updated_at=?
+    WHERE post_id=? AND status='manual_required'
+  `).bind(now,now,now,id).run();
+  return Number(result?.meta?.changes||0);
+}
 async function audit(env,request,profile,id,before,after,action='彈性立即發布'){
   try{
     await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
@@ -91,14 +101,17 @@ async function changeManualRequiredStatus(request,env,ctx,id){
   const next=clean(body?.status);
   if(!['published','draft'].includes(next))return json({error:'需人工發布的貼文只能補登為已發布，或退回草稿'},400);
   const now=new Date().toISOString();
+  let manualDeliveriesCompleted=0;
   if(next==='published'){
+    manualDeliveriesCompleted=await completeManualDeliveries(env,id);
     await env.DB.prepare("UPDATE social_posts SET status='published',published_at=?,scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,now,id).run();
   }else{
     await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,published_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
   }
   const after=await getPostRow(env,id);
-  await audit(env,request,profile,id,before,after,next==='published'?'手動補登已發布':'人工發布退回草稿');
-  return json(after);
+  const deliveries=await deliveryRows(env,id);
+  await audit(env,request,profile,id,before,{post:after,deliveries,manualDeliveriesCompleted},next==='published'?'手動補登已發布':'人工發布退回草稿');
+  return json({...after,manual_deliveries_completed:manualDeliveriesCompleted,deliveries});
 }
 
 async function flexiblePublishNow(request,env,ctx,id){
@@ -190,9 +203,31 @@ async function flexiblePublishNow(request,env,ctx,id){
   });
 }
 
+async function currentHealth(request,env,ctx){
+  const response=await app.fetch(request,env,ctx);
+  const text=await response.text();
+  let payload={};
+  try{payload=text?JSON.parse(text):{};}catch{return new Response(text,{status:response.status,headers:response.headers});}
+  return json({
+    ...payload,
+    runtimeEntry:'src/flexible-publish-entry.js',
+    flexiblePublishingVersion:FLEX_VERSION,
+    fixedPostingFrequency:'每週兩篇（週二 19:30、週六 09:30，Asia/Taipei）',
+    immediatePublishingBypassesFixedSchedule:true,
+    unreadyPlatformFallsBackToManual:true,
+    manualDeliveryReconciliation:true,
+    blindRetryAfterImmediateFailure:false,
+    uiRuntime:'20260808-canonical-facts-10'
+  },response.status);
+}
+
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
+    if(request.method==='GET'&&path==='/healthz'){
+      try{return await currentHealth(request,env,ctx);}
+      catch(error){return json({ok:false,error:clean(error?.message||error)||'健康檢查失敗',flexiblePublishingVersion:FLEX_VERSION},500);}
+    }
     const publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/);
     if(request.method==='POST'&&publishMatch){
       try{return await flexiblePublishNow(request,env,ctx,decodeURIComponent(publishMatch[1]));}
@@ -217,4 +252,4 @@ export default{
   }
 };
 
-export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl };
+export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl, completeManualDeliveries, currentHealth };
