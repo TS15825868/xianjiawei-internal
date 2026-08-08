@@ -2,7 +2,8 @@ import app from './authority-entry.js';
 import { publishPostById, publisherConfiguration } from './social-publisher.js';
 import { validatePostPayload } from './product-authority.js';
 
-const FLEX_VERSION='2026-08-08-v5-manual-delivery-reconcile';
+const FLEX_VERSION='2026-08-08-v6-line-free-keepwarm';
+const LINE_HEALTH_URL='https://ts-line.onrender.com/healthz';
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
@@ -203,6 +204,17 @@ async function flexiblePublishNow(request,env,ctx,id){
   });
 }
 
+async function keepLineWarm(){
+  try{
+    const response=await fetch(LINE_HEALTH_URL,{headers:{'user-agent':'xianjiawei-erp-keepwarm/1.0','cache-control':'no-cache'},cf:{cacheTtl:0}});
+    console.log('仙加味 LINE keep-warm',response.status,response.ok?'ok':'not-ok');
+    return response.ok;
+  }catch(error){
+    console.warn('仙加味 LINE keep-warm failed',clean(error?.message||error));
+    return false;
+  }
+}
+
 async function currentHealth(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   const text=await response.text();
@@ -217,6 +229,8 @@ async function currentHealth(request,env,ctx){
     unreadyPlatformFallsBackToManual:true,
     manualDeliveryReconciliation:true,
     blindRetryAfterImmediateFailure:false,
+    lineRenderFreeKeepWarm:true,
+    lineHealthUrl:LINE_HEALTH_URL,
     uiRuntime:'20260808-canonical-facts-10'
   },response.status);
 }
@@ -248,8 +262,9 @@ export default{
     return app.fetch(request,env,ctx);
   },
   async scheduled(controller,env,ctx){
+    ctx.waitUntil(keepLineWarm());
     if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);
   }
 };
 
-export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl, completeManualDeliveries, currentHealth };
+export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl, completeManualDeliveries, currentHealth, keepLineWarm };
