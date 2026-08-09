@@ -1,6 +1,6 @@
 import { publisherConfiguration } from './social-publisher.js';
 
-const VERSION='2026-08-09-system-readiness-v1';
+const VERSION='2026-08-09-system-readiness-v2-platform-safe-open';
 const CORE_TIMEOUT_MS=3500;
 const PLATFORM_TIMEOUT_MS=5500;
 const clean=value=>String(value??'').trim();
@@ -60,30 +60,34 @@ async function fetchProbe(url,options={},timeoutMs=PLATFORM_TIMEOUT_MS){
   }finally{clearTimeout(timer)}
 }
 
+async function configuredProbe(name,work){
+  const result=await timed(name,work,PLATFORM_TIMEOUT_MS);
+  return{...result,configured:true,mode:'official_api'};
+}
 async function probeLine(env){
   const token=clean(env?.LINE_CHANNEL_ACCESS_TOKEN);
   if(!token)return{ok:false,mode:'manual',configured:false,reason:'LINE_CHANNEL_ACCESS_TOKEN 未設定'};
-  return timed('LINE OA API',async()=>{await fetchProbe('https://api.line.me/v2/bot/info',{headers:{authorization:`Bearer ${token}`}});return{configured:true,reachable:true}},PLATFORM_TIMEOUT_MS);
+  return configuredProbe('LINE OA API',async()=>{await fetchProbe('https://api.line.me/v2/bot/info',{headers:{authorization:`Bearer ${token}`}});return{reachable:true}});
 }
 async function probeFacebook(env){
   const page=clean(env?.META_PAGE_ID),token=clean(env?.META_PAGE_ACCESS_TOKEN),version=clean(env?.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');
   if(!page||!token)return{ok:false,mode:'manual',configured:false,reason:'Facebook Page ID／Access Token 未設定完整'};
-  return timed('Facebook API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(page)}?fields=id,name&access_token=${encodeURIComponent(token)}`);return{configured:true,reachable:true}},PLATFORM_TIMEOUT_MS);
+  return configuredProbe('Facebook API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(page)}?fields=id,name&access_token=${encodeURIComponent(token)}`);return{reachable:true}});
 }
 async function probeInstagram(env){
   const user=clean(env?.META_INSTAGRAM_USER_ID),token=clean(env?.META_PAGE_ACCESS_TOKEN),version=clean(env?.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');
   if(!user||!token)return{ok:false,mode:'manual',configured:false,reason:'Instagram User ID／Access Token 未設定完整'};
-  return timed('Instagram API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(user)}?fields=id,username&access_token=${encodeURIComponent(token)}`);return{configured:true,reachable:true}},PLATFORM_TIMEOUT_MS);
+  return configuredProbe('Instagram API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(user)}?fields=id,username&access_token=${encodeURIComponent(token)}`);return{reachable:true}});
 }
 async function probeGoogle(env){
   const names=['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'];
   const missing=names.filter(name=>!clean(env?.[name]));
   if(missing.length)return{ok:false,mode:'manual',configured:false,reason:`Google 商家設定未完成：${missing.join('、')}`};
-  return timed('Google 商家 API',async()=>{
+  return configuredProbe('Google 商家 API',async()=>{
     const response=await fetchProbe('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:clean(env.GOOGLE_OAUTH_CLIENT_ID),client_secret:clean(env.GOOGLE_OAUTH_CLIENT_SECRET),refresh_token:clean(env.GOOGLE_OAUTH_REFRESH_TOKEN),grant_type:'refresh_token'})});
     if(!clean(response?.data?.access_token))throw new Error('Google OAuth 未回傳 access token');
-    return{configured:true,reachable:true};
-  },PLATFORM_TIMEOUT_MS);
+    return{reachable:true};
+  });
 }
 
 export async function probePlatforms(env){
@@ -102,6 +106,15 @@ export async function probePlatforms(env){
   };
 }
 
+export function blockingPlatformFailures(probe){
+  const out=[];
+  for(const [name,item] of Object.entries(probe?.platforms||{})){
+    if(item?.mode==='manual'||item?.configured===false)continue;
+    if(item?.configured===true&&item?.ok!==true)out.push({platform:name,error:item.error||item.reason||'API健康檢查未通過'});
+  }
+  return out;
+}
+
 export async function runReadiness(request,env,ctx,app,{probeExternal=false}={}){
   const access=checkAccessConfig(env);
   const [d1,login]=await Promise.all([checkD1(env),checkCurrentLogin(request,env,ctx,app)]);
@@ -115,7 +128,10 @@ export async function runReadiness(request,env,ctx,app,{probeExternal=false}={})
     login,
     safeMode:Boolean(!(d1.ok&&access.ok&&login.ok)),
   };
-  if(probeExternal)result.platformProbe=await probePlatforms(env);
+  if(probeExternal){
+    result.platformProbe=await probePlatforms(env);
+    result.blockingPlatformFailures=blockingPlatformFailures(result.platformProbe);
+  }
   return result;
 }
 
