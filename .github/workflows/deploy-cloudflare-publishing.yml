@@ -68,6 +68,7 @@ jobs:
         if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
+          expected_ui='"uiRuntime":"20260810-standalone-v16-latest-product-photos"'
           expected_image='"productImageVersion":"20260810-products-v3-latest-originals-v3"'
           expected_sync='"postBankSyncVersion":"2026-08-10-post-bank-sync-v5-retired-assets-removed"'
           expected_regen='"knownRegenerationMinimum":121'
@@ -75,15 +76,16 @@ jobs:
             response="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
             if [ -n "$response" ]; then
               echo "$response"
-              image_ok=0; sync_ok=0; regen_ok=0
+              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0
+              printf '%s' "$response" | grep -Fq "$expected_ui" && ui_ok=1
               printf '%s' "$response" | grep -Fq "$expected_image" && image_ok=1
               printf '%s' "$response" | grep -Fq "$expected_sync" && sync_ok=1
               printf '%s' "$response" | grep -Fq "$expected_regen" && regen_ok=1
-              if [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ]; then
-                echo 'Worker core is healthy; latest products-v3 images, post-bank sync v5 and 121-regeneration gate are live.'
+              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ]; then
+                echo 'Worker core is healthy; v16 UI, latest products-v3 images, post-bank sync v5 and 121-regeneration gate are live.'
                 exit 0
               fi
-              echo "Worker responded but production bundle is not current yet (image=$image_ok sync=$sync_ok regen=$regen_ok)." >&2
+              echo "Worker responded but production bundle is not current yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok)." >&2
             fi
             sleep 4
           done
