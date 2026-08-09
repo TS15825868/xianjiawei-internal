@@ -18,6 +18,9 @@ must(gate.includes("body?.status==='approved'"),'審核通過必須經過review 
 must(gate.includes("body?.status==='scheduled'"),'排程前必須經過review gate');
 must(gate.includes("publishMatch&&request.method==='POST'"),'立即發布前必須經過review gate');
 must(gate.includes('copy_image_match!==true'),'必須明確確認文案與圖片一致');
+must(gate.includes("['PUT','PATCH'].includes(request.method)"),'文案或圖片PUT/PATCH修改必須立即使舊審核失效');
+must(gate.includes('invalidateEditedPost'),'缺少貼文修改後立即退回草稿與清核准機制');
+must(gate.includes("status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0"),'修改後未完整清除排程／核准／圖片核准狀態');
 must(gate.includes('30cc正式名稱必須是小玻璃罐'),'30cc玻璃罐正式名稱守門缺失');
 must(gate.includes('龜鹿湯塊正式規格只有75g'),'龜鹿湯塊75g唯一規格守門缺失');
 const required=(gate.match(/'brand','product','specification','pricing_activity','season','weather','occasion','location'/)||[]).length;
@@ -34,4 +37,4 @@ must(raster.includes("RAW_BASE}images/products-v3/"),'SVG轉圖沒有鎖到produ
 must(!raster.includes('LEGACY_PRODUCT_MAP'),'SVG轉圖器不得再保留products-v3反向映射products-v2');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：獨立貼文系統具備products-v3-only候選轉JPEG、持久16項圖文審核、內容指紋、排程與立即發布硬守門。');
+console.log('PASS：獨立貼文系統具備products-v3-only候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
