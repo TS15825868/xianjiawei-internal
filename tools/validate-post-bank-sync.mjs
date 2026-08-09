@@ -42,8 +42,9 @@ must(sync.includes('event.data.product_image_version!==PRODUCT_IMAGE_VERSION'),'
 must(!sync.includes('/publish-now'),'500篇同步不得呼叫立即發布');
 must(!sync.includes("status:'approved'")&&!sync.includes("status:'scheduled'")&&!sync.includes("status:'published'"),'500篇同步不得自行建立已核准／排程／發布狀態');
 must(gate.includes('/regeneration-ready')&&gate.includes("status='pending_review'"),'安全候選送待審核必須由正式review gate處理');
-must(html.includes('post-bank-sync.js'),'貼文系統沒有載入500篇母庫同步工具');
+must(html.includes('post-bank-sync.js?v=20260810-post-bank-sync-v3-true-originals'),'貼文系統沒有載入真正產品原圖版500篇母庫同步工具');
 must(html.includes('同步500篇母庫'),'貼文系統沒有向使用者說明500篇母庫同步');
+must(html.includes('20260810-products-v3-true-originals-v2'),'貼文系統沒有顯示目前正式產品圖版本');
 must(pkg.includes('assets/js/post-bank-sync.js'),'部署包沒有包含500篇母庫同步工具');
 
-console.log('PASS：500篇母庫以可信postMessage來源重建，且 exporter 必須回報20260810真正products-v3原圖版本；正式內容依source id去重，只有無source id舊資料才以標題相容去重。同標題不同ID可保留；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布。');
+console.log('PASS：500篇母庫以可信postMessage來源重建，且 exporter 必須回報20260810真正products-v3原圖版本；正式頁面也鎖定v3同步runtime。正式內容依source id去重，只有無source id舊資料才以標題相容去重。同標題不同ID可保留；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布。');
