@@ -1,4 +1,4 @@
-name: 仙加味 ERP 彈性發布手動驗收
+name: 仙加味貼文系統正式上線手動驗收
 
 on:
   workflow_dispatch:
@@ -15,38 +15,27 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Confirm Cloudflare Worker uses flexible publishing entry
+      - name: Confirm production Worker entry
         run: >-
-          grep -q '"main": "src/flexible-publish-entry.js"' wrangler.jsonc
-      - name: Check flexible publishing entry syntax
-        run: node --check src/flexible-publish-entry.js
-      - name: Confirm mixed-platform manual fallback contract
+          grep -q '"main": "src/production-entry.js"' wrangler.jsonc
+      - name: Check production and review-gate entry syntax
         run: |
-          grep -q 'automaticPlatforms' src/flexible-publish-entry.js
-          grep -q 'manualPlatforms' src/flexible-publish-entry.js
-          grep -q "status='manual_required'" src/flexible-publish-entry.js
-          grep -q '/deliveries' src/flexible-publish-entry.js
-          grep -q 'manual_required_platforms' src/flexible-publish-entry.js
-          grep -q 'publishPostById' src/flexible-publish-entry.js
-          grep -q "status='manual_required'" src/social-publisher.js
-          grep -q 'manual_required:true' src/social-publisher.js
-          grep -q "'已核准','已排程','需人工發布','已發布'" assets/js/manual-publish-tools.js
-          grep -q '/deliveries' assets/js/manual-publish-tools.js
-      - name: Confirm public publishing-center safe draft import contract
+          node --check src/production-entry.js
+          node --check src/publishing-review-gate-entry.js
+          node --check src/flexible-publish-entry.js
+      - name: Confirm standalone publishing hard gates
         run: |
-          node --check assets/js/public-post-import.js
-          node --check assets/js/svg-candidate-rasterizer.js
-          grep -q "SOURCE_PREFIX='公開發布中心:'" assets/js/public-post-import.js
-          grep -q "startsWith(marker)" assets/js/public-post-import.js
-          grep -q "image_quality_status:'unknown'" assets/js/public-post-import.js
-          grep -q "image_approved=0" src/worker.js
-          grep -q "current.startsWith('公開發布中心:')" assets/js/svg-candidate-rasterizer.js
-          grep -q 'public-post-import.js' index.html
-          grep -q 'public-post-import.js' package.json
-      - name: Check remaining ERP runtime
-        run: |
-          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-          npm run check
-          npm run build:static
+          grep -q 'social_post_review_gates' src/publishing-review-gate-entry.js
+          grep -q "copy_image_match!==true" src/publishing-review-gate-entry.js
+          grep -q "gateState(env,row)" src/production-entry.js
+          grep -q "status='draft'" src/production-entry.js
+          grep -q 'publishing-review-gate.js' publishing.html
+          grep -q 'publishing.html' assets/js/erp-publishing-separation.js
+      - name: Install checker dependencies only
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Run complete standalone publishing release checks
+        run: npm run check
+      - name: Build the exact static assets that will deploy
+        run: npm run build:static
       - name: Ensure audit makes no repository changes
         run: git diff --exit-code
