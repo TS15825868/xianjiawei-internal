@@ -5,7 +5,7 @@ const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-authority-entry':'2026-08-09-post-paging-approval-gate-v2'
+  'x-xianjiawei-authority-entry':'2026-08-09-post-paging-approval-gate-v3-batched'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value)=>String(value??'').trim();
@@ -36,6 +36,19 @@ function mapPost(row){
   let platforms=[];try{platforms=JSON.parse(row.platforms_json||'[]');}catch{}
   return{id:row.id,title:row.title||'',headline:row.headline||'',copy:row.copy||'',category:row.category||'日常節奏',platforms,status:row.status||'draft',scheduled_at:row.scheduled_at||'',proposed_scheduled_at:row.proposed_scheduled_at||'',approved_by:row.approved_by||'',approved_at:row.approved_at||'',published_at:row.published_at||'',image_url:row.image_url||'',image_alt:row.image_alt||'',image_source:row.image_source||'官方素材',image_approved:Number(row.image_approved||0)===1,image_width:int(row.image_width),image_height:int(row.image_height),image_bytes:int(row.image_bytes),image_quality_status:row.image_quality_status||'unknown',created_by:row.created_by||'',created_at:row.created_at||'',updated_at:row.updated_at||'',owner_review_required:!['published','archived'].includes(row.status),auto_approve:false,auto_schedule:false,auto_publish:false,line_voom_manual_only:true};
 }
+async function queryPostPage(env,clause,binds,limit,offset){
+  const rowsStmt=env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY datetime(updated_at) DESC,datetime(created_at) DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset);
+  const totalStmt=env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds);
+  const groupedStmt=env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status");
+  if(typeof env.DB.batch==='function'){
+    const [rows,total,grouped]=await env.DB.batch([rowsStmt,totalStmt,groupedStmt]);
+    return{rows:rows?.results||[],total:Number(total?.results?.[0]?.count||0),grouped:grouped?.results||[],mode:'batch'};
+  }
+  const rows=await rowsStmt.all();
+  const total=await totalStmt.first();
+  const grouped=await groupedStmt.all();
+  return{rows:rows.results||[],total:Number(total?.count||0),grouped:grouped.results||[],mode:'sequential'};
+}
 async function fastPostList(request,env,ctx){
   if(!env?.DB)return json({error:'D1資料庫尚未綁定'},503);
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
@@ -46,12 +59,17 @@ async function fastPostList(request,env,ctx){
   if(allowed.has(status)){where.push('status=?');binds.push(status);}
   if(q){where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');const like=`%${q}%`;binds.push(like,like,like,like,like);}
   const clause=where.join(' AND ');
-  const rows=await env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY datetime(updated_at) DESC,datetime(created_at) DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all();
-  const totalRow=await env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds).first();
-  const grouped=await env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status").all();
+  let result;
+  try{result=await queryPostPage(env,clause,binds,limit,offset)}catch(error){
+    console.warn('D1 batch post list failed; retry sequential',clean(error?.message||error));
+    const rows=await env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY datetime(updated_at) DESC,datetime(created_at) DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all();
+    const total=await env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds).first();
+    const grouped=await env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status").all();
+    result={rows:rows.results||[],total:Number(total?.count||0),grouped:grouped.results||[],mode:'fallback'};
+  }
   const counts={draft:0,pending_review:0,approved:0,scheduled:0,published:0,manual_required:0,failed:0};
-  for(const row of grouped.results||[])counts[row.status]=Number(row.count||0);
-  return json({items:(rows.results||[]).map(mapPost),total:Number(totalRow?.count||0),limit,offset,counts,query:q,status:allowed.has(status)?status:'all'});
+  for(const row of result.grouped||[])counts[row.status]=Number(row.count||0);
+  return json({items:(result.rows||[]).map(mapPost),total:result.total,limit,offset,counts,query:q,status:allowed.has(status)?status:'all',queryMode:result.mode});
 }
 async function validateMergedWrite(request,env){
   if(!['PUT','PATCH'].includes(request.method))return null;
@@ -97,4 +115,4 @@ export default{
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);}
 };
 
-export { validateMergedWrite, validateApproval, fastPostList };
+export { validateMergedWrite, validateApproval, fastPostList, queryPostPage };
