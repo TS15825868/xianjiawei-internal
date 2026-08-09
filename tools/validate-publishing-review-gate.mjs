@@ -30,11 +30,13 @@ must(ui.includes('最終確認：文案與圖片一致'),'前端缺少最終圖�
 must(ui.includes('stopImmediatePropagation'),'原本的一鍵審核按鈕必須被完整審核流程攔截');
 must(html.includes('publishing-review-gate.js'),'獨立貼文系統沒有載入16項圖文審核UI');
 must(html.includes('原核准自動失效'),'獨立貼文系統沒有清楚提示重新審核規則');
-must(raster.includes("version:'2026-08-09-v6-products-v3-only'"),'SVG轉JPEG工具不是products-v3-only正式版本');
+must(raster.includes("version:'2026-08-09-v7-raster-invalidates-review'"),'SVG轉JPEG工具不是目前正式v7重新審核版本');
 must(raster.includes("throw new Error('這張候選圖仍內嵌舊 products-v2"),'舊products-v2候選沒有被SVG轉圖器硬拒絕');
 must(raster.includes("throw new Error('這張候選圖仍內嵌LINE OA專用角色素材"),'LINE OA角色素材沒有被貼文轉圖器硬拒絕');
 must(raster.includes("RAW_BASE}images/products-v3/"),'SVG轉圖沒有鎖到products-v3正式原圖');
 must(!raster.includes('LEGACY_PRODUCT_MAP'),'SVG轉圖器不得再保留products-v3反向映射products-v2');
+must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.click();return}"),'審核按鈕轉JPEG後應繼續進16項審核');
+must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：獨立貼文系統具備products-v3-only候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
+console.log('PASS：獨立貼文系統具備products-v3-only候選轉JPEG、轉圖後重新審核、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
