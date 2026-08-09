@@ -1,6 +1,6 @@
 import app from './flexible-publish-entry.js';
 
-const VERSION='2026-08-09-publishing-review-gate-v2-edit-invalidates';
+const VERSION='2026-08-09-publishing-review-gate-v3-regeneration-roundtrip';
 const REQUIRED_CHECKS=Object.freeze([
   'brand','product','specification','pricing_activity','season','weather','occasion','location',
   'scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'
@@ -13,6 +13,7 @@ const PRODUCT_RULES=Object.freeze([
   {id:'guilu-jiao',name:'龜鹿膠',terms:['龜鹿膠'],image:['guilu-jiao','龜鹿膠']},
   {id:'luerong-fen',name:'鹿茸粉',terms:['鹿茸粉'],image:['luerong-fen','鹿茸粉']},
 ]);
+const REGENERATION_ROLES=new Set(['owner','admin','content']);
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-publishing-review-gate':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -30,7 +31,42 @@ async function saveGate(env,row,body,profile){const checklist=checklistFrom(body
 async function clearGate(env,id){try{await ensureSchema(env);await env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=?').bind(id).run()}catch{}}
 async function invalidateEditedPost(env,id,before){await clearGate(env,id);if(!before||before.status==='published'||before.status==='archived')return;await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run()}
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
+function canRegenerate(profile){return REGENERATION_ROLES.has(clean(profile?.role))}
+async function regenerationAudit(env,request,profile,action,id,before,after,mode=''){
+  try{
+    const ip=request.headers.get('cf-connecting-ip')||'';
+    const beforeJson=before?JSON.stringify({status:before.status||'',title:before.title||'',image_url:before.image_url||''}):null;
+    const afterJson=after?JSON.stringify({status:after.status||'',title:after.title||'',image_url:after.image_url||'',regeneration_mode:clean(mode)}):null;
+    await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)').bind(`AUD-${crypto.randomUUID()}`,clean(profile?.email),action,'貼文',id,beforeJson,afterJson,ip).run();
+  }catch{}
+}
+async function regenerationStart(request,env,ctx,id){
+  const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+  const profile=await authorization.json();if(!canRegenerate(profile))return json({error:'沒有重新生成貼文的權限'},403);
+  const before=await postRow(env,id);if(!before)return json({error:'找不到貼文'},404);
+  if(['published','archived'].includes(clean(before.status)))return json({error:'已發布／封存內容已鎖定，不能直接重新生成'},409);
+  const body=await readBody(request),mode=['image','copy','all'].includes(clean(body?.mode))?clean(body.mode):'image';
+  await clearGate(env,id);
+  const now=new Date().toISOString();
+  await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
+  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'開始重新生成並撤銷舊核准','貼文',before,after,mode);
+  return json({ok:true,id,status:'draft',mode,review_invalidated:true,scheduled_at:null,message:'已撤銷舊核准與排程；生成完成並回填後會進入待審核。'});
+}
+async function regenerationReady(request,env,ctx,id){
+  const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+  const profile=await authorization.json();if(!canRegenerate(profile))return json({error:'沒有送回待審核的權限'},403);
+  const before=await postRow(env,id);if(!before)return json({error:'找不到貼文'},404);
+  if(['published','archived'].includes(clean(before.status)))return json({error:'已發布／封存內容已鎖定，不能送回待審核'},409);
+  if(!clean(before.copy)&&!clean(before.headline))return json({error:'重新生成後仍沒有文案，請先回填文案'},409);
+  if(!clean(before.image_url))return json({error:'重新生成後仍沒有圖片，請先上傳或填入圖片'},409);
+  const body=await readBody(request),mode=['image','copy','all'].includes(clean(body?.mode))?clean(body.mode):'';
+  await clearGate(env,id);
+  const now=new Date().toISOString();
+  await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
+  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核','貼文',before,after,mode);
+  return json({ok:true,id,status:'pending_review',mode,review_required:true,required_checks:REQUIRED_CHECKS,message:'新文案／圖片已送回待審核；必須重新完成16項圖文審核。'});
+}
 
-export default{async fetch(request,env,ctx){const url=new URL(request.url),path=url.pathname;if(request.method==='GET'&&path==='/healthz'){const response=await app.fetch(request,env,ctx),text=await response.text();let body={};try{body=text?JSON.parse(text):{}}catch{return response}return json({...body,publishingReviewGateVersion:VERSION,publishingReviewChecklistCount:REQUIRED_CHECKS.length,copyImageMatchHardGate:true,editImmediatelyInvalidatesApproval:true},response.status)}const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/);if(gateMatch&&request.method==='GET'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;await ensureSchema(env);const id=decodeURIComponent(gateMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);return json({id,...await gateState(env,row),errors:productMatchErrors(row),required_checks:REQUIRED_CHECKS})}if(statusMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const profile=await authorization.json(),id=decodeURIComponent(statusMatch[1]),body=await readBody(request),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);if(body?.status==='approved'){try{await saveGate(env,row,body,profile)}catch(error){return json({error:clean(error?.message||error)},409)}const response=await app.fetch(request,env,ctx);if(!response.ok)await clearGate(env,id);return response}if(body?.status==='scheduled'||body?.status==='published'){const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409)}const response=await app.fetch(request,env,ctx);if(response.ok&&body?.status==='draft')await clearGate(env,id);return response}if(publishMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const id=decodeURIComponent(publishMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409);const errors=productMatchErrors(row);if(errors.length)return json({error:'正式發布守門：圖文檢查未通過',details:errors},409);return app.fetch(request,env,ctx)}if(postMatch&&['PUT','PATCH'].includes(request.method)){const id=decodeURIComponent(postMatch[1]),before=await postRow(env,id),response=await app.fetch(request,env,ctx);if(response.ok)await invalidateEditedPost(env,id,before);return response}return app.fetch(request,env,ctx)},async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
+export default{async fetch(request,env,ctx){const url=new URL(request.url),path=url.pathname;if(request.method==='GET'&&path==='/healthz'){const response=await app.fetch(request,env,ctx),text=await response.text();let body={};try{body=text?JSON.parse(text):{}}catch{return response}return json({...body,publishingReviewGateVersion:VERSION,publishingReviewChecklistCount:REQUIRED_CHECKS.length,copyImageMatchHardGate:true,editImmediatelyInvalidatesApproval:true,freeRegenerationRoundTrip:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready',regenerationReturnsToPendingReview:true},response.status)}const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));if(gateMatch&&request.method==='GET'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;await ensureSchema(env);const id=decodeURIComponent(gateMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);return json({id,...await gateState(env,row),errors:productMatchErrors(row),required_checks:REQUIRED_CHECKS})}if(statusMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const profile=await authorization.json(),id=decodeURIComponent(statusMatch[1]),body=await readBody(request),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);if(body?.status==='approved'){try{await saveGate(env,row,body,profile)}catch(error){return json({error:clean(error?.message||error)},409)}const response=await app.fetch(request,env,ctx);if(!response.ok)await clearGate(env,id);return response}if(body?.status==='scheduled'||body?.status==='published'){const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409)}const response=await app.fetch(request,env,ctx);if(response.ok&&body?.status==='draft')await clearGate(env,id);return response}if(publishMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const id=decodeURIComponent(publishMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409);const errors=productMatchErrors(row);if(errors.length)return json({error:'正式發布守門：圖文檢查未通過',details:errors},409);return app.fetch(request,env,ctx)}if(postMatch&&['PUT','PATCH'].includes(request.method)){const id=decodeURIComponent(postMatch[1]),before=await postRow(env,id),response=await app.fetch(request,env,ctx);if(response.ok)await invalidateEditedPost(env,id,before);return response}return app.fetch(request,env,ctx)},async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
 
-export { VERSION, REQUIRED_CHECKS, PRODUCT_RULES, productMatchErrors, checklistFrom, fingerprint, gateState, invalidateEditedPost };
+export { VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, productMatchErrors, checklistFrom, fingerprint, gateState, invalidateEditedPost, regenerationStart, regenerationReady };
