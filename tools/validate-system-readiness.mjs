@@ -20,13 +20,15 @@ for(const token of ['checkD1','checkAccessConfig','checkCurrentLogin','probeFace
 must(readiness.includes("SELECT 1 AS ok"),'D1 readiness 沒有使用非破壞性查詢');
 must(readiness.includes('LINE VOOM 依正式規則採人工發布'),'LINE VOOM 手動發布狀態沒有納入診斷');
 must(readiness.includes("configured:true,mode:'official_api'"),'已設定平台API失敗時無法與未設定人工平台區分');
-for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','開啟頁面先進安全模式']){
+for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','開啟頁面先進安全模式','平台 API 背景檢查通過後自動解鎖']){
   must(html.includes(token),`publishing.html 缺少安全診斷UI：${token}`)
 }
-for(const token of ['publishingSafeMode','MUTATION_SELECTOR','/healthz/core','/healthz/readiness','xjw-publishing-readiness']){
-  must(ui.includes(token),`publishing-readiness-ui 缺少安全模式契約：${token}`)
+for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','blockingPlatformFailures','/healthz/core','/healthz/readiness','xjw-publishing-readiness']){
+  must(ui.includes(token),`publishing-readiness-ui 缺少安全模式／平台發布鎖契約：${token}`)
 }
+must(ui.includes("PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]'"),'平台健康檢查未完成時必須只鎖正式發布按鈕');
+must(ui.includes('5*60*1000'),'平台API必須週期性自動重檢');
 must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'連線失敗時沒有最近成功資料唯讀備援');
 must(pkg.includes('src/system-readiness.js'),'package check 沒有驗 system-readiness');
 must(pkg.includes('assets/js/publishing-readiness-ui.js'),'package check/build 沒有驗 publishing-readiness-ui');
-console.log('PASS：Worker、D1、Cloudflare Access、登入與平台API採分層診斷；核心異常自動安全模式，平台API先探測再發布，離線保留唯讀快取。');
+console.log('PASS：Worker、D1、Cloudflare Access、登入與平台API採分層診斷；核心異常自動安全模式，正式發布等平台API檢查通過才自動開放，離線保留唯讀快取。');
