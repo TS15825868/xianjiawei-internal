@@ -49,7 +49,7 @@ async function regenerationStart(request,env,ctx,id){
   await clearGate(env,id);
   const now=new Date().toISOString();
   await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
-  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'開始重新生成並撤銷舊核准','貼文',before,after,mode);
+  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'開始重新生成並撤銷舊核准',id,before,after,mode);
   return json({ok:true,id,status:'draft',mode,review_invalidated:true,scheduled_at:null,message:'已撤銷舊核准與排程；生成完成並回填後會進入待審核。'});
 }
 async function regenerationReady(request,env,ctx,id){
@@ -63,7 +63,7 @@ async function regenerationReady(request,env,ctx,id){
   await clearGate(env,id);
   const now=new Date().toISOString();
   await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
-  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核','貼文',before,after,mode);
+  const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核',id,before,after,mode);
   return json({ok:true,id,status:'pending_review',mode,review_required:true,required_checks:REQUIRED_CHECKS,message:'新文案／圖片已送回待審核；必須重新完成16項圖文審核。'});
 }
 
