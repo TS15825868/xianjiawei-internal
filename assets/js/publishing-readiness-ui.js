@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20260809-publishing-readiness-ui-v3-auto-safe-open';
+  const VERSION='20260809-publishing-readiness-ui-v4-no-healthcheck-flicker';
   const MUTATION_SELECTOR='[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]';
   const PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]';
   let safeMode=true,publishReady=false,platformChecked=false,report=null,running=null,lastFullProbe=0;
@@ -61,7 +61,7 @@
   async function run({full=false}={}){
     if(running)return running;
     running=(async()=>{
-      if(!full||!report?.ok){safeMode=true;applySafeMode()}
+      if(!report?.ok){safeMode=true;applySafeMode()}
       if(full){platformChecked=false;publishReady=false;applySafeMode()}
       render();
       try{
