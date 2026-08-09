@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='2026-08-09-post-bank-sync-v1-free-safe';
+  const VERSION='2026-08-10-post-bank-sync-v2-source-id-safe';
   const PUBLIC_ORIGIN='https://ts15825868.github.io';
   const SITE='https://ts15825868.github.io/xianjiawei/';
   const EXPORT_URL=`${SITE}post-bank-export.html?v=20260809-export-v1`;
@@ -32,6 +32,27 @@
   function sourceId(post){
     const source=String(post?.image_source||''),match=source.match(/(?:公開500母庫|公開發布中心):([^|]+)/);return match?match[1].trim():'';
   }
+  function titleOf(post){return String(post?.title||'').trim()}
+  function existingIdentity(existing){
+    const existingIds=new Set();
+    const legacyTitles=new Set();
+    for(const post of existing||[]){
+      const id=sourceId(post);
+      if(id)existingIds.add(id);
+      else{const title=titleOf(post);if(title)legacyTitles.add(title)}
+    }
+    return{existingIds,legacyTitles};
+  }
+  function missingPosts(active,existing){
+    const {existingIds,legacyTitles}=existingIdentity(existing);
+    return active.filter(post=>{
+      const id=String(post?.id||'').trim(),title=titleOf(post);
+      if(id&&existingIds.has(id))return false;
+      // 舊系統資料沒有母庫source id時才用標題作相容去重；母庫內不同ID即使同標題仍應各自保留。
+      if(title&&legacyTitles.has(title))return false;
+      return true;
+    });
+  }
   function platforms(value){const list=Array.isArray(value)?value:[];const safe=[...new Set(list.map(v=>String(v||'').trim()).filter(v=>ALLOWED_PLATFORMS.has(v)))];return safe.length?safe:['Facebook','Instagram']}
   function protectedPost(post){return post?.status==='published'||post?.status==='archived'||post?.prevent_republish===true||post?.do_not_republish===true||/published.*locked/i.test(String(post?.image_status||''))}
   function campaignHold(post){return post?.campaign_hold===true||Boolean(post?.hold_until)||String(post?.status||'')==='campaign_hold'}
@@ -53,6 +74,8 @@
         if(event.data.error)return reject(new Error(event.data.error));
         const posts=Array.isArray(event.data.posts)?event.data.posts:[];
         if(posts.length!==500)return reject(new Error(`母庫數量不正確：${posts.length}/500`));
+        const ids=posts.map(post=>String(post?.id||'').trim());
+        if(ids.some(id=>!id)||new Set(ids).size!==posts.length)return reject(new Error('500篇母庫存在空白或重複ID，已停止同步避免資料互相覆蓋。'));
         resolve(event.data);
       }
       window.addEventListener('message',onMessage);iframe.src=EXPORT_URL;document.body.appendChild(iframe);
@@ -65,14 +88,13 @@
   }
   async function sync(button){
     if(button.dataset.busy==='1')return;
-    if(!window.confirm('同步正式500篇母庫？系統會自動去重、略過已發布鎖定與活動冷卻；安全候選進待審核，需要重生成的只建立草稿，不會自動發布。'))return;
+    if(!window.confirm('同步正式500篇母庫？系統會以母庫ID安全去重、略過已發布鎖定與活動冷卻；安全候選進待審核，需要重生成的只建立草稿，不會自動發布。'))return;
     button.dataset.busy='1';button.disabled=true;const original=button.textContent;button.textContent='重建500篇母庫…';
     try{
       const [bank,existing]=await Promise.all([loadBank(),allExisting()]);
-      const existingIds=new Set(existing.map(sourceId).filter(Boolean)),existingTitles=new Set(existing.map(p=>String(p.title||'').trim()).filter(Boolean));
       const protectedCount=bank.posts.filter(protectedPost).length,holdCount=bank.posts.filter(p=>!protectedPost(p)&&campaignHold(p)).length;
       const active=bank.posts.filter(p=>!protectedPost(p)&&!campaignHold(p));
-      const missing=active.filter(p=>!existingIds.has(String(p.id||''))&&!existingTitles.has(String(p.title||'').trim()));
+      const missing=missingPosts(active,existing);
       if(!missing.length){toast(`母庫已同步完成：現有${existing.length}篇；已發布鎖定${protectedCount}篇、活動冷卻${holdCount}篇均維持保護。`);return}
       let created=0,pending=0,generation=0;
       const errors=await runPool(missing,async post=>{
@@ -92,5 +114,5 @@
     const add=actions.querySelector('[data-add-post]');actions.insertBefore(button,add||null);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-  window.XJWPostBankSync=Object.freeze({version:VERSION,exportUrl:EXPORT_URL,loadBank,allExisting,needsGeneration,protectedPost,campaignHold,payload});
+  window.XJWPostBankSync=Object.freeze({version:VERSION,exportUrl:EXPORT_URL,loadBank,allExisting,sourceId,existingIdentity,missingPosts,needsGeneration,protectedPost,campaignHold,payload});
 })();
