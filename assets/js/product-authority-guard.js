@@ -1,23 +1,25 @@
 (()=>{
   const SITE='https://ts15825868.github.io/xianjiawei/';
+  const IMAGE_VERSION='20260810-products-v3-true-originals-v2';
   const PRODUCTS=Object.freeze([
-    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙',image:`${SITE}images/products-v3/guilu-gao.jpg?v=20260809-25`,dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
-    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐','30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:`${SITE}images/products-v3/guilu-drink-30.jpg?v=20260809-25`,dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小罐感；裸罐、無貼紙、金色蓋；不可改成瓶型、做高、做胖或放大成接近100g龜鹿膏罐。'},
-    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包（鋁袋）',allowedSpecs:['180cc／包','180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:`${SITE}images/products-v3/guilu-drink-180.jpg?v=20260809-25`,aspectRatio:{min:0.60,target:0.64,max:0.68},scaleRule:'狹長直立鋁袋；禁止橫向拉寬、加高或誇張放大。'},
-    {id:'guilu-tangkuai',name:'龜鹿湯塊',spec:'75g／盒',allowedSpecs:['75g／盒','75g／盒｜8塊裝｜每塊約9.375g'],ingredients:['龜板萃取物','鹿角萃取物'],image:`${SITE}images/products-v3/guilu-tangkuai.jpg?v=20260809-25`,dimensions:null,scaleRule:'深藍正式盒；盒體毫米尺寸未知時不得自行猜測，只依核准原圖等比例呈現；不得建立其他湯塊容量。'},
-    {id:'guilu-jiao',name:'龜鹿膠',spec:'600g（1斤）／盒',allowedSpecs:['600g（1斤）／盒','600g（1斤）／盒｜32塊裝｜每塊約18.75g'],ingredients:['龜板萃取物','鹿角萃取物'],image:`${SITE}images/products-v3/guilu-jiao.jpg?v=20260809-25`,dimensions:null,scaleRule:'淡紫正式盒；毫米尺寸未知時不得自行猜測；不得橫向拉長，也不得縮成與75g湯塊相近尺寸。'},
-    {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐',allowedSpecs:['75g／罐'],ingredients:['鹿茸'],image:`${SITE}images/products-v3/luerong-fen.jpg?v=20260809-25`,dimensions:null,scaleRule:'白色正式塑膠罐；毫米尺寸未知時不得自行猜測，只依核准原圖等比例呈現。'}
+    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙',image:`${SITE}images/products-v3/guilu-gao.jpg?v=${IMAGE_VERSION}`,dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
+    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐','30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:`${SITE}images/products-v3/guilu-drink-30.jpg?v=${IMAGE_VERSION}`,dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小罐感；裸罐、無貼紙、金色蓋；不可改成瓶型、做高、做胖或放大成接近100g龜鹿膏罐。'},
+    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包（鋁袋）',allowedSpecs:['180cc／包','180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:`${SITE}images/products-v3/guilu-drink-180.jpg?v=${IMAGE_VERSION}`,aspectRatio:{min:0.60,target:0.64,max:0.68},scaleRule:'狹長直立鋁袋；禁止橫向拉寬、加高或誇張放大。'},
+    {id:'guilu-tangkuai',name:'龜鹿湯塊',spec:'75g／盒',allowedSpecs:['75g／盒','75g／盒｜8塊裝｜每塊約9.375g'],ingredients:['龜板萃取物','鹿角萃取物'],image:`${SITE}images/products-v3/guilu-tangkuai.jpg?v=${IMAGE_VERSION}`,dimensions:null,scaleRule:'深藍正式盒；盒體毫米尺寸未知時不得自行猜測，只依核准原圖等比例呈現；不得建立其他湯塊容量。'},
+    {id:'guilu-jiao',name:'龜鹿膠',spec:'600g（1斤）／盒',allowedSpecs:['600g（1斤）／盒','600g（1斤）／盒｜32塊裝｜每塊約18.75g'],ingredients:['龜板萃取物','鹿角萃取物'],image:`${SITE}images/products-v3/guilu-jiao.jpg?v=${IMAGE_VERSION}`,dimensions:null,scaleRule:'淡紫正式盒；毫米尺寸未知時不得自行猜測；不得橫向拉長，也不得縮成與75g湯塊相近尺寸。'},
+    {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐',allowedSpecs:['75g／罐'],ingredients:['鹿茸'],image:`${SITE}images/products-v3/luerong-fen.jpg?v=${IMAGE_VERSION}`,dimensions:null,scaleRule:'白色正式塑膠罐；毫米尺寸未知時不得自行猜測，只依核准原圖等比例呈現。'}
   ]);
   const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
   const BY_ID=new Map(PRODUCTS.map(item=>[item.id,item]));
   window.XJW_PRODUCT_AUTHORITY=Object.freeze({
-    version:'2026-08-09-v5-products-v3-physical-scale',
+    version:'2026-08-10-v6-products-v3-true-originals',
+    productImageVersion:IMAGE_VERSION,
     products:PRODUCTS,
     byId:BY_ID,
     soupBlockOnly:'75g／盒',
     drink30Container:'小玻璃罐',
     guiluGaoUsagePrimary:'每日早上及下午各一小匙',
-    imageAuthority:'products-v3-user-approved-originals',
+    imageAuthority:'products-v3-true-original-product-photos',
     physicalScaleAuthority:'data/product-physical-scale-authority-v20260809.json',
     hardScaleRule:'產品本體只能使用核准實拍並整體等比例縮放；禁止拉寬、拉高、裁切、AI重畫或把不同產品強制等高／等寬。',
     unknownScaleRule:'沒有可信尺寸或相對尺度依據時不得自行猜測，改用單品原圖或送人工審核。'
@@ -72,7 +74,7 @@
     if(form.querySelector('[data-product-authority-note]'))return;
     const grid=form.querySelector('.form-grid');if(!grid)return;
     const note=document.createElement('div');note.dataset.productAuthorityNote='1';note.className='xjw-ok';
-    note.textContent='正式資料鎖定：六個產品／六個規格；產品本體只用products-v3核准實拍並等比例顯示。30cc約Ø42×H51mm；龜鹿膏約51×78mm；180cc維持狹長鋁袋約0.64比例；其他包裝尺寸未知時不猜、不拉伸。';
+    note.textContent='正式資料鎖定：六個產品／六個規格；產品本體只用products-v3真正產品實拍並等比例顯示。30cc約Ø42×H51mm；龜鹿膏約51×78mm；180cc維持狹長鋁袋約0.64比例；其他包裝尺寸未知時不猜、不拉伸。';
     grid.prepend(note);
   }
   function autofillProduct(form){
