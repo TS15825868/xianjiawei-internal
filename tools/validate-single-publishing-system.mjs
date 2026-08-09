@@ -14,7 +14,7 @@ must(publishing.includes('禁止拼貼')&&publishing.includes('AI 不得重畫�
 must(publishing.indexOf('post-regenerate-policy-v1.js')>=0,'未載入最高優先生成規格守門');
 must(publishing.indexOf('post-regenerate-policy-v1.js')<publishing.indexOf('post-regenerate-v6.js'),'正式生成規格守門必須先於舊重生成工具載入');
 
-for(const token of ['禁止拼貼','products-v3','AI絕對不得重畫','30cc','Ø42×H51mm','180cc','0.60～0.68','小老闆','完整不裁切','16項','待審核']){
+for(const token of ['禁止拼貼','products-v3','AI絕對不得重畫','30cc','Ø42×H51mm','180cc','0.60～0.68','小老闆','不可裁切','16項','待審核']){
   must(policy.includes(token),`生成守門缺少硬規格：${token}`)
 }
 for(const token of ['禁止拼湊','products-v3','AI 重畫產品','30cc','180cc','小老闆','完整成圖／非拼湊','16 項正式審核','禁止回退']){
