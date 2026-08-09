@@ -1,11 +1,12 @@
 (()=>{
   'use strict';
-  const VERSION='2026-08-10-post-bank-sync-v4-regeneration-handshake';
+  const VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
+  const EXPORT_RUNTIME='20260810-export-v3-retired-assets-removed';
   const PRODUCT_IMAGE_VERSION='20260810-products-v3-true-originals-v2';
   const KNOWN_REGENERATION_MINIMUM=121;
   const PUBLIC_ORIGIN='https://ts15825868.github.io';
   const SITE='https://ts15825868.github.io/xianjiawei/';
-  const EXPORT_URL=`${SITE}post-bank-export.html?v=20260810-export-v2-true-originals`;
+  const EXPORT_URL=`${SITE}post-bank-export.html?v=${EXPORT_RUNTIME}`;
   const SOURCE_PREFIX='公開500母庫:';
   const PAGE_SIZE=60;
   const WRITE_CONCURRENCY=4;
@@ -73,6 +74,8 @@
         if(done||event.origin!==PUBLIC_ORIGIN||event.data?.schema!=='xjw-post-bank-export-v1')return;
         done=true;clearTimeout(timer);cleanup();
         if(event.data.error)return reject(new Error(event.data.error));
+        if(event.data.runtime!==EXPORT_RUNTIME)return reject(new Error(`500篇母庫 exporter 版本不同步：${event.data.runtime||'未提供'}；要求 ${EXPORT_RUNTIME}`));
+        if(event.data.retired_assets_removed!==true)return reject(new Error('500篇母庫尚未確認退役產品卡片資產已移除，停止同步。'));
         if(event.data.product_image_version!==PRODUCT_IMAGE_VERSION)return reject(new Error(`500篇母庫產品圖版本不同步：${event.data.product_image_version||'未提供'}；要求 ${PRODUCT_IMAGE_VERSION}`));
         const knownMinimum=Number(event.data?.known_regeneration?.knownMinimum||0);
         if(knownMinimum<KNOWN_REGENERATION_MINIMUM)return reject(new Error(`500篇母庫已知重生成數量不足：${knownMinimum}/${KNOWN_REGENERATION_MINIMUM}`));
@@ -92,7 +95,7 @@
   }
   async function sync(button){
     if(button.dataset.busy==='1')return;
-    if(!window.confirm(`同步正式500篇母庫？系統會先驗證真正產品原圖版本與至少${KNOWN_REGENERATION_MINIMUM}篇已知重生成內容，再以母庫ID安全去重；已發布鎖定與活動冷卻不動，不會自動發布。`))return;
+    if(!window.confirm(`同步正式500篇母庫？系統會先驗證 exporter v3、退役卡片已移除、真正產品原圖版本與至少${KNOWN_REGENERATION_MINIMUM}篇已知重生成內容，再以母庫ID安全去重；已發布鎖定與活動冷卻不動，不會自動發布。`))return;
     button.dataset.busy='1';button.disabled=true;const original=button.textContent;button.textContent='重建500篇母庫…';
     try{
       const [bank,existing]=await Promise.all([loadBank(),allExisting()]);
@@ -108,7 +111,7 @@
       },(done,total)=>{button.textContent=`同步中 ${done}/${total}`});
       const failed=errors.length;
       toast(`500篇母庫同步：新增${created}篇（待審核${pending}、需重生成草稿${generation}），略過已存在${active.length-missing.length}篇、已發布鎖定${protectedCount}篇、活動冷卻${holdCount}篇${failed?`；失敗${failed}篇`:''}。`,failed>0);
-      document.dispatchEvent(new CustomEvent('xjw-post-bank-synced',{detail:{created,pending,generation,failed,protectedCount,holdCount,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM}}));
+      document.dispatchEvent(new CustomEvent('xjw-post-bank-synced',{detail:{created,pending,generation,failed,protectedCount,holdCount,exportRuntime:EXPORT_RUNTIME,retiredAssetsRemoved:true,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM}}));
       document.querySelector('[data-refresh]')?.click();
     }catch(error){toast(error?.message||String(error),true)}finally{button.dataset.busy='0';button.disabled=false;button.textContent=original}
   }
@@ -118,5 +121,5 @@
     const add=actions.querySelector('[data-add-post]');actions.insertBefore(button,add||null);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-  window.XJWPostBankSync=Object.freeze({version:VERSION,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,exportUrl:EXPORT_URL,loadBank,allExisting,sourceId,existingIdentity,missingPosts,needsGeneration,protectedPost,campaignHold,payload});
+  window.XJWPostBankSync=Object.freeze({version:VERSION,exportRuntime:EXPORT_RUNTIME,retiredAssetsRemoved:true,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,exportUrl:EXPORT_URL,loadBank,allExisting,sourceId,existingIdentity,missingPosts,needsGeneration,protectedPost,campaignHold,payload});
 })();
