@@ -2,7 +2,7 @@
   'use strict';
   const VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
   const EXPORT_RUNTIME='20260810-export-v3-retired-assets-removed';
-  const PRODUCT_IMAGE_VERSION='20260810-products-v3-true-originals-v2';
+  const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
   const KNOWN_REGENERATION_MINIMUM=121;
   const PUBLIC_ORIGIN='https://ts15825868.github.io';
   const SITE='https://ts15825868.github.io/xianjiawei/';
@@ -95,7 +95,7 @@
   }
   async function sync(button){
     if(button.dataset.busy==='1')return;
-    if(!window.confirm(`同步正式500篇母庫？系統會先驗證 exporter v3、退役卡片已移除、真正產品原圖版本與至少${KNOWN_REGENERATION_MINIMUM}篇已知重生成內容，再以母庫ID安全去重；已發布鎖定與活動冷卻不動，不會自動發布。`))return;
+    if(!window.confirm(`同步正式500篇母庫？系統會先驗證 exporter v3、退役卡片已移除、最新真正產品原圖版本與至少${KNOWN_REGENERATION_MINIMUM}篇已知重生成內容，再以母庫ID安全去重；已發布鎖定與活動冷卻不動，不會自動發布。`))return;
     button.dataset.busy='1';button.disabled=true;const original=button.textContent;button.textContent='重建500篇母庫…';
     try{
       const [bank,existing]=await Promise.all([loadBank(),allExisting()]);
