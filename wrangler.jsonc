@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "xianjiawei-internal",
-  "main": "src/flexible-publish-entry.js",
+  "main": "src/publishing-review-gate-entry.js",
   "compatibility_date": "2026-07-24",
   "keep_vars": true,
   "assets": {
