@@ -3,6 +3,7 @@ import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.j
 
 const VERSION='2026-08-10-publishing-only-entry-v3-ui-runtime-authority';
 const UI_RUNTIME='20260809-standalone-v15-single-regeneration';
+const PRODUCT_IMAGE_VERSION='20260810-products-v3-true-originals-v2';
 const RETIRED_EXACT=new Set([
   '/api/overview',
   '/api/settings',
@@ -37,6 +38,8 @@ export default{
         return json({
           ...body,
           uiRuntime:UI_RUNTIME,
+          productImageVersion:PRODUCT_IMAGE_VERSION,
+          productImageAuthority:'products-v3-true-original-product-photos',
           publishingOnly:true,
           publishingOnlyVersion:VERSION,
           retiredErpApisBlocked:true,
