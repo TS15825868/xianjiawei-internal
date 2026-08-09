@@ -4,7 +4,7 @@ const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
 const authority=fs.readFileSync('src/authority-entry.js','utf8');
 const production=fs.readFileSync('src/production-entry.js','utf8');
 const publisher=fs.readFileSync('src/social-publisher.js','utf8');
-const requiredHtml=['貼文審核發佈系統','data-refresh','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','publishing-performance.css','publishing-app-v2.js','publishing-review-gate.js','post-regenerate-v6.js','manual-publish-tools.js','standalone-v10-fast-mobile'];
+const requiredHtml=['貼文審核發佈系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-resilience.js','publishing-readiness-ui.js','publishing-app-v2.js','publishing-review-gate.js','post-regenerate-v6.js','manual-publish-tools.js','standalone-v12-safe-readiness'];
 for(const token of requiredHtml){if(!html.includes(token))throw new Error(`publishing.html缺少必要功能入口：${token}`)}
 const requiredJs=['PAGE_SIZE=18','data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts'];
 for(const token of requiredJs){if(!js.includes(token))throw new Error(`publishing-app-v2.js缺少必要功能契約：${token}`)}
@@ -26,6 +26,10 @@ for(const token of [
   "path==='/api/me'",
   "path==='/api/posts'",
   "path==='/api/platform-authorization'",
+  "path==='/healthz/core'",
+  "path==='/healthz/readiness'",
+  'mutationCoreGate(env)',
+  'automaticSafeModeOnD1Failure:true',
   'accessProfileCacheSeconds:300',
   'parallelPostQueries:true',
   'ctx.waitUntil(keepLineWarm())',
@@ -33,21 +37,21 @@ for(const token of [
   'lineKeepWarmBeforePublishingScheduler:true',
   '但LINE keep-warm不受影響',
 ]){
-  if(!production.includes(token))throw new Error(`手機快速讀取／LINE在線契約缺失：${token}`)
+  if(!production.includes(token))throw new Error(`手機快速讀取／安全診斷／LINE在線契約缺失：${token}`)
 }
 for(const token of [
   "'LINE VOOM':{manual:true",
-  "manual_required:true",
-  "尚未設定 ${platform} 官方 API 或 Webhook；已改走人工發布包",
+  'manual_required:true',
+  '尚未設定 ${platform} 官方 API 或 Webhook；已改走人工發布包',
   "['published','manual_required','permanent_failed'].includes(prior.status)",
-  "social_publish_deliveries",
-  "dispatchFacebook",
-  "dispatchInstagram",
-  "dispatchLineOfficialAccount",
-  "dispatchGoogleBusiness",
+  'social_publish_deliveries',
+  'dispatchFacebook',
+  'dispatchInstagram',
+  'dispatchLineOfficialAccount',
+  'dispatchGoogleBusiness',
 ]){
   if(!publisher.includes(token))throw new Error(`平台發布安全契約缺失：${token}`)
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：獨立貼文系統具備共用Access驗證、平行D1快速讀取、server pagination、獨立LINE keep-warm，以及官方API/Webhook/人工 fallback 與逐平台發布結果。');
+console.log('PASS：獨立貼文系統具備快速Access驗證、D1安全模式、分層健康診斷、server pagination、離線快取、LINE keep-warm，以及官方API/Webhook/人工fallback與逐平台發布結果。');
