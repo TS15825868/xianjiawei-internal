@@ -1,6 +1,7 @@
 import app from './production-entry.js';
+import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-09-publishing-only-entry-v1';
+const VERSION='2026-08-09-publishing-only-entry-v2-regeneration-health';
 const RETIRED_EXACT=new Set([
   '/api/overview',
   '/api/settings',
@@ -29,10 +30,22 @@ export default{
       },404);
     }
     const response=await app.fetch(request,env,ctx);
-    if(request.method==='GET'&&url.pathname==='/healthz/core'&&response.ok){
+    if(request.method==='GET'&&['/healthz','/healthz/core'].includes(url.pathname)){
       try{
         const body=await response.clone().json();
-        return json({...body,publishingOnly:true,publishingOnlyVersion:VERSION,retiredErpApisBlocked:true},response.status);
+        return json({
+          ...body,
+          publishingOnly:true,
+          publishingOnlyVersion:VERSION,
+          retiredErpApisBlocked:true,
+          ...(url.pathname==='/healthz'?{
+            publishingReviewGateVersion:REVIEW_GATE_VERSION,
+            freeRegenerationRoundTrip:true,
+            regenerationReturnsToPendingReview:true,
+            regenerationStartEndpoint:'/api/posts/:id/regeneration-start',
+            regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready'
+          }:{})
+        },response.status);
       }catch{return response;}
     }
     return response;
