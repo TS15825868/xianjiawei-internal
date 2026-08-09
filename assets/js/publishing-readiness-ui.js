@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20260809-publishing-readiness-ui-v1';
+  const VERSION='20260809-publishing-readiness-ui-v2-fast-core-background-platforms';
   const MUTATION_SELECTOR='[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]';
   let safeMode=true,report=null,running=null,lastFullProbe=0;
   const $=s=>document.querySelector(s);
@@ -20,6 +20,7 @@
     if(!report){root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查中…</small></span>';return}
     const base=[statusChip('Worker',report.worker),statusChip('D1',report.d1),statusChip('Access',report.access),statusChip('登入',report.login)];
     const p=report.platformProbe?.platforms||{};
+    if(!Object.keys(p).length)base.push('<span class="readiness-chip checking"><strong>平台 API</strong><small>背景檢查中</small></span>');
     for(const name of ['Facebook','Instagram','LINE OA','LINE VOOM','Google 商家'])if(p[name])base.push(statusChip(name,p[name]));
     root.innerHTML=base.join('');
   }
@@ -47,10 +48,9 @@
       render();safeMode=true;applySafeMode();
       try{
         const core=await timeoutFetch('/healthz/core',4500);if(!core.ok)throw new Error(`Worker HTTP ${core.status}`);
-        const doFull=full||Date.now()-lastFullProbe>5*60*1000;
-        const readiness=await timeoutFetch(`/healthz/readiness${doFull?'?probe=1':''}`,doFull?10000:6500);
+        const readiness=await timeoutFetch(`/healthz/readiness${full?'?probe=1':''}`,full?10000:6500);
         const parsed=await readJson(readiness);report=parsed.data||{};
-        if(doFull)lastFullProbe=Date.now();
+        if(full)lastFullProbe=Date.now();
         safeMode=!Boolean(report.ok);
       }catch(error){
         report={ok:false,worker:{ok:navigator.onLine!==false},d1:{ok:false,error:String(error?.message||error)},access:{ok:false},login:{ok:false},safeMode:true};
@@ -62,9 +62,11 @@
     })().finally(()=>{running=null});
     return running;
   }
+  function schedulePlatformProbe(delay=900){setTimeout(()=>{if(Date.now()-lastFullProbe>5*60*1000)run({full:true})},delay)}
   document.addEventListener('click',event=>{if(event.target.closest('[data-diagnose]'))run({full:true})});
   document.addEventListener('xjw-publishing-list-rendered',applySafeMode);
-  document.addEventListener('DOMContentLoaded',()=>{render();applySafeMode();run({full:true})});
-  const timer=setInterval(()=>run({full:false}),60000);if(typeof timer?.unref==='function')timer.unref();
-  window.XJWPublishingReadiness={version:VERSION,run,getReport:()=>report,isSafeMode:()=>safeMode,applySafeMode};
+  document.addEventListener('DOMContentLoaded',()=>{render();applySafeMode();run({full:false}).then(()=>schedulePlatformProbe(900))});
+  const coreTimer=setInterval(()=>run({full:false}),60000);if(typeof coreTimer?.unref==='function')coreTimer.unref();
+  const platformTimer=setInterval(()=>run({full:true}),5*60*1000);if(typeof platformTimer?.unref==='function')platformTimer.unref();
+  window.XJWPublishingReadiness={version:VERSION,run,getReport:()=>report,isSafeMode:()=>safeMode,applySafeMode,schedulePlatformProbe};
 })();
