@@ -4,7 +4,7 @@ import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publisherConfiguration } from './social-publisher.js';
 import { checkD1, runReadiness, probePlatforms, blockingPlatformFailures, VERSION as READINESS_VERSION } from './system-readiness.js';
 
-const VERSION='2026-08-09-production-entry-v11-platform-safe-open';
+const VERSION='2026-08-09-production-entry-v12-shared-readiness-login';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v2-edit-invalidates';
 const RASTER_VERSION='2026-08-09-v7-raster-invalidates-review';
@@ -131,7 +131,7 @@ async function productionHealth(request,env,ctx){
     service:'仙加味貼文審核發佈系統',
     productionEntry:'src/production-entry.js',
     productionEntryVersion:VERSION,
-    uiRuntime:'20260809-standalone-v12-readiness-safe',
+    uiRuntime:'20260809-standalone-v14-safe-first-load',
     standalonePublishingPath:PUBLISHING_PATH,
     publishingReviewGateVersion:REVIEW_GATE_VERSION,
     publishingReviewChecklistCount:16,
@@ -144,6 +144,7 @@ async function productionHealth(request,env,ctx){
     serverPageSize:18,
     fastReadApiVersion:FAST_API_VERSION,
     sharedAccessVerification:true,
+    readinessUsesSharedFastAccess:true,
     accessProfileCacheSeconds:300,
     parallelPostQueries:true,
     automaticSafeModeOnD1Failure:true,
@@ -164,7 +165,7 @@ export default{
     if(request.method==='GET'&&path==='/healthz/core')return json({ok:true,worker:true,service:'仙加味貼文審核發佈系統',productionEntryVersion:VERSION,readinessVersion:READINESS_VERSION,checkedAt:new Date().toISOString()});
     if(request.method==='GET'&&path==='/healthz/readiness'){
       const probeExternal=['1','true','yes'].includes(String(url.searchParams.get('probe')||'').toLowerCase());
-      const report=await runReadiness(request,env,ctx,app,{probeExternal});
+      const report=await runReadiness(request,env,ctx,app,{probeExternal,loginCheck:()=>verifyFastAccess(request,env)});
       return json(report,report.ok?200:503);
     }
     if(request.method==='GET'&&path==='/healthz')return productionHealth(request,env,ctx);
