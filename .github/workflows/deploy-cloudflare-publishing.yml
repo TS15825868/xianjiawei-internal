@@ -64,24 +64,30 @@ jobs:
         if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler deploy --keep-vars
 
-      - name: Verify deployed Worker core and product image authority
+      - name: Verify deployed Worker core and production bundle authority
         if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
-          expected='"productImageVersion":"20260810-products-v3-true-originals-v2"'
+          expected_image='"productImageVersion":"20260810-products-v3-true-originals-v2"'
+          expected_sync='"postBankSyncVersion":"2026-08-10-post-bank-sync-v4-regeneration-handshake"'
+          expected_regen='"knownRegenerationMinimum":121'
           for attempt in 1 2 3 4 5; do
             response="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
             if [ -n "$response" ]; then
               echo "$response"
-              if printf '%s' "$response" | grep -Fq "$expected"; then
-                echo 'Worker core is healthy and true products-v3 image authority is live.'
+              image_ok=0; sync_ok=0; regen_ok=0
+              printf '%s' "$response" | grep -Fq "$expected_image" && image_ok=1
+              printf '%s' "$response" | grep -Fq "$expected_sync" && sync_ok=1
+              printf '%s' "$response" | grep -Fq "$expected_regen" && regen_ok=1
+              if [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ]; then
+                echo 'Worker core is healthy; true products-v3 images, post-bank sync v4 and 121-regeneration gate are live.'
                 exit 0
               fi
-              echo 'Worker responded, but the expected product image authority version is not live yet.' >&2
+              echo "Worker responded but production bundle is not current yet (image=$image_ok sync=$sync_ok regen=$regen_ok)." >&2
             fi
             sleep 4
           done
-          echo 'Worker deployment verification failed: core health or expected product image authority version did not become current in time.' >&2
+          echo 'Worker deployment verification failed: the current production bundle did not become live in time.' >&2
           exit 1
 
       - name: Deployment summary
