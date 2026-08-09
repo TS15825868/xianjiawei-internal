@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260809-publishing-review-ui-v1';
+  const VERSION='20260809-publishing-review-ui-v2';
   const CHECKS=[
     ['brand','品牌與整體風格','符合仙加味正式品牌風格，沒有錯誤Logo／不合品牌元素'],
     ['product','產品','文案提到的產品與圖片中的產品完全一致'],
@@ -18,7 +18,7 @@
     ['duplicate','重複圖','沒有短期重複使用同一張不合適圖片，亦非舊版／淘汰素材'],
     ['compliance_final','法規與最終確認','沒有療效宣稱、錯字、錯規格、錯資訊，整張圖可正式對外'],
   ];
-  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function toast(message,error=false){const root=document.getElementById('toastRoot');if(!root){if(error)alert(message);return}const n=document.createElement('div');n.className=`toast ${error?'error':''}`;n.textContent=message;root.appendChild(n);setTimeout(()=>n.remove(),4500)}
   async function api(path,options={}){const response=await fetch(`/api${path}`,{credentials:'same-origin',cache:'no-store',...options,headers:{...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}});const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{data={message:text}}if(!response.ok)throw new Error(data.error||data.detail||data.message||`HTTP ${response.status}`);return data}
   function cardId(button){return button?.dataset?.id||button?.closest('.publish-card,.xjw-row')?.querySelector('[data-post-view]')?.dataset?.postView||''}
