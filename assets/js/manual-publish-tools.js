@@ -7,6 +7,7 @@
     'LINE VOOM':'https://manager.line.biz/',
     'Google 商家':'https://business.google.com/'
   };
+  const PUBLISHING_URL='/publishing.html';
   const jsonHeaders={'content-type':'application/json'};
   const esc=(value='')=>String(value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const sleep=(ms)=>new Promise((resolve)=>setTimeout(resolve,ms));
@@ -54,7 +55,7 @@
       links,
       '',
       published.length?'注意：上方「已由系統完成」的平台不要再次人工發布。':'',
-      '人工平台發布完成後，回 ERP 按「手動補登已發布」。',
+      '人工平台發布完成後，回獨立貼文發佈系統按「手動補登已發布」。',
       'LINE VOOM 維持人工發布；其他沒有官方 API／Token 的平台也會自動轉到這個人工流程。'
     ].filter(Boolean).join('\n');
   }
@@ -76,15 +77,12 @@
     root.querySelectorAll('[data-manual-close]').forEach((button)=>button.addEventListener('click',()=>{root.innerHTML='';}));
   }
   async function getPost(id){return api(`/posts/${encodeURIComponent(id)}`);}
-  async function getDeliveries(id){
-    try{return await api(`/posts/${encodeURIComponent(id)}/deliveries`);}catch{return{};}
-  }
+  async function getDeliveries(id){try{return await api(`/posts/${encodeURIComponent(id)}/deliveries`);}catch{return{};}}
   async function manualMarkPublished(id){
     const post=await getPost(id);
     if(post.status==='published'){toast('此貼文已是已發布狀態');return;}
     if(!['approved','scheduled','manual_required'].includes(post.status))throw new Error('貼文必須先完成審核，才能手動補登已發布。');
-    const delivery=await getDeliveries(id);
-    const manual=manualPlatformsFor(post,delivery);
+    const delivery=await getDeliveries(id),manual=manualPlatformsFor(post,delivery);
     if(!confirm(`確認已完成人工發布「${post.title||id}」？\n\n人工平台：${manual.join('、')||'未指定'}\n此動作只補登發布結果，不會再次呼叫已完成的社群 API。`))return;
     if(post.status==='approved'){
       const scheduledAt=new Date(Date.now()+1500).toISOString();
@@ -95,50 +93,29 @@
     toast('已手動補登為已發布；已自動完成的平台不會重複發布。');
     setTimeout(()=>location.reload(),500);
   }
-  async function handlePackage(button){
-    const card=button.closest('.xjw-row');const id=postId(card);if(!id)return;
-    try{const [post,delivery]=await Promise.all([getPost(id),getDeliveries(id)]);openPackage(post,delivery);}catch(error){toast(error.message||String(error),true);}
-  }
-  async function handleMark(button){
-    const card=button.closest('.xjw-row');const id=postId(card);if(!id)return;
-    button.disabled=true;try{await manualMarkPublished(id);}catch(error){toast(error.message||String(error),true);}finally{button.disabled=false;}
-  }
+  async function handlePackage(button){const card=button.closest('.xjw-row'),id=postId(card);if(!id)return;try{const [post,delivery]=await Promise.all([getPost(id),getDeliveries(id)]);openPackage(post,delivery);}catch(error){toast(error.message||String(error),true);}}
+  async function handleMark(button){const card=button.closest('.xjw-row'),id=postId(card);if(!id)return;button.disabled=true;try{await manualMarkPublished(id);}catch(error){toast(error.message||String(error),true);}finally{button.disabled=false;}}
   async function enhanceDashboard(){
     const grid=document.querySelector('.metric-grid');
     if(!grid||grid.querySelector('[data-manual-required-metric]')||dashboardMetricLoading)return;
     dashboardMetricLoading=true;
-    try{
-      const data=await api('/overview');
-      const count=Number(data?.posts?.manual_required||0);
-      const article=document.createElement('article');
-      article.className='card metric';
-      article.dataset.manualRequiredMetric='1';
-      article.innerHTML=`<small>需人工發布</small><strong>${count}</strong><a href="#posts" data-manual-filter>查看待人工平台 →</a>`;
-      grid.appendChild(article);
-    }catch{}finally{dashboardMetricLoading=false;}
+    try{const data=await api('/overview'),count=Number(data?.posts?.manual_required||0),article=document.createElement('article');article.className='card metric';article.dataset.manualRequiredMetric='1';article.innerHTML=`<small>需人工發布</small><strong>${count}</strong><a href="${PUBLISHING_URL}">開啟獨立貼文系統 →</a>`;grid.appendChild(article);}catch{}finally{dashboardMetricLoading=false;}
   }
   function enhance(){
     const select=document.getElementById('listStatus');
-    if(select&&!select.querySelector('option[value="manual_required"]')){
-      const option=document.createElement('option');option.value='manual_required';option.textContent='需人工發布';select.appendChild(option);
-    }
+    if(select&&!select.querySelector('option[value="manual_required"]')){const option=document.createElement('option');option.value='manual_required';option.textContent='需人工發布';select.appendChild(option);}
     document.querySelectorAll('.xjw-row').forEach((card)=>{
       const actions=card.querySelector('.xjw-actions');if(!actions||!postId(card)||!eligible(card))return;
-      if(!actions.querySelector('[data-manual-package]')){
-        const pack=document.createElement('button');pack.type='button';pack.className='btn small';pack.textContent=statusText(card)==='需人工發布'?'只看待人工平台':'手動發布包';pack.dataset.manualPackage='1';actions.appendChild(pack);
-      }
-      if(statusText(card)!=='已發布'&&!actions.querySelector('[data-manual-published]')){
-        const mark=document.createElement('button');mark.type='button';mark.className='btn small green';mark.textContent='手動補登已發布';mark.dataset.manualPublished='1';actions.appendChild(mark);
-      }
+      if(!actions.querySelector('[data-manual-package]')){const pack=document.createElement('button');pack.type='button';pack.className='btn small';pack.textContent=statusText(card)==='需人工發布'?'只看待人工平台':'手動發布包';pack.dataset.manualPackage='1';actions.appendChild(pack);}
+      if(statusText(card)!=='已發布'&&!actions.querySelector('[data-manual-published]')){const mark=document.createElement('button');mark.type='button';mark.className='btn small green';mark.textContent='手動補登已發布';mark.dataset.manualPublished='1';actions.appendChild(mark);}
     });
     enhanceDashboard();
   }
   document.addEventListener('click',(event)=>{
-    const filter=event.target.closest('[data-manual-filter]');
-    if(filter){setTimeout(()=>{const select=document.getElementById('listStatus');if(select){select.value='manual_required';select.dispatchEvent(new Event('change',{bubbles:true}));}},250);return;}
     const pack=event.target.closest('[data-manual-package]');if(pack){event.preventDefault();event.stopPropagation();handlePackage(pack);return;}
     const mark=event.target.closest('[data-manual-published]');if(mark){event.preventDefault();event.stopPropagation();handleMark(mark);}
   },true);
   const observer=new MutationObserver(enhance);observer.observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
+  window.XJWManualPublishTools=Object.freeze({version:'2026-08-09-v2-standalone-publishing',publishingUrl:PUBLISHING_URL,packageText});
 })();
