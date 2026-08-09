@@ -51,7 +51,7 @@ must(generation.includes("window.open('about:blank'"),'iPhone/Safari重生成必
 must(!generation.includes('api.openai.com'),'免費重新生成流程不得直接呼叫付費OpenAI API');
 must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');
 must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
-must(html.includes('single-system-v2-free-roundtrip'),'貼文中心仍可能載入舊重生成快取版本');
+must(html.includes('single-system-v4-latest-originals'),'貼文中心沒有載入最新重生成快取版本');
 
 must(generationButtons.includes("data-xjw-regenerate")||generationButtons.includes('dataset.xjwRegenerate'),'純按鈕層沒有建立重生成操作入口');
 must(!generationButtons.includes('window.open('),'純按鈕層不得另外開啟ChatGPT');
