@@ -1,6 +1,6 @@
 import { publisherConfiguration } from './social-publisher.js';
 
-const VERSION='2026-08-09-system-readiness-v2-platform-safe-open';
+const VERSION='2026-08-09-system-readiness-v3-shared-fast-login';
 const CORE_TIMEOUT_MS=3500;
 const PLATFORM_TIMEOUT_MS=5500;
 const clean=value=>String(value??'').trim();
@@ -45,6 +45,14 @@ export async function checkCurrentLogin(request,env,ctx,app){
     }
     const profile=await response.json().catch(()=>({}));
     return{authenticated:true,role:clean(profile?.role||profile?.role_label)};
+  },5000);
+}
+
+async function sharedLogin(loginCheck){
+  if(typeof loginCheck!=='function')return null;
+  return timed('登入',async()=>{
+    const profile=await loginCheck();
+    return{authenticated:true,role:clean(profile?.role||profile?.role_label),sharedFastAccess:true};
   },5000);
 }
 
@@ -115,18 +123,19 @@ export function blockingPlatformFailures(probe){
   return out;
 }
 
-export async function runReadiness(request,env,ctx,app,{probeExternal=false}={}){
+export async function runReadiness(request,env,ctx,app,{probeExternal=false,loginCheck=null}={}){
   const access=checkAccessConfig(env);
-  const [d1,login]=await Promise.all([checkD1(env),checkCurrentLogin(request,env,ctx,app)]);
+  const loginPromise=typeof loginCheck==='function'?sharedLogin(loginCheck):checkCurrentLogin(request,env,ctx,app);
+  const [d1,login]=await Promise.all([checkD1(env),loginPromise]);
   const result={
-    ok:Boolean(d1.ok&&access.ok&&login.ok),
+    ok:Boolean(d1.ok&&access.ok&&login?.ok),
     version:VERSION,
     checkedAt:now(),
     worker:{ok:true,name:'Worker',reachable:true},
     d1,
     access,
-    login,
-    safeMode:Boolean(!(d1.ok&&access.ok&&login.ok)),
+    login:login||{ok:false,name:'登入',error:'登入檢查沒有結果'},
+    safeMode:Boolean(!(d1.ok&&access.ok&&login?.ok)),
   };
   if(probeExternal){
     result.platformProbe=await probePlatforms(env);
