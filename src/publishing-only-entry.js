@@ -1,10 +1,10 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v5-latest-product-photos';
+const VERSION='2026-08-10-publishing-only-entry-v6-latest-production-bundle';
 const UI_RUNTIME='20260809-standalone-v15-single-regeneration';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
-const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v4-regeneration-handshake';
+const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
 const KNOWN_REGENERATION_MINIMUM=121;
 const RETIRED_EXACT=new Set([
   '/api/overview',
