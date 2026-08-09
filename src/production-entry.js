@@ -1,8 +1,9 @@
 import app,{gateState} from './publishing-review-gate-entry.js';
+import { keepLineWarm } from './flexible-publish-entry.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publisherConfiguration } from './social-publisher.js';
 
-const VERSION='2026-08-09-production-entry-v8-fast-mobile-api';
+const VERSION='2026-08-09-production-entry-v9-fast-mobile-line-first';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v2-edit-invalidates';
 const RASTER_VERSION='2026-08-09-v7-raster-invalidates-review';
@@ -124,6 +125,8 @@ async function productionHealth(request,env,ctx){
     sharedAccessVerification:true,
     accessProfileCacheSeconds:300,
     parallelPostQueries:true,
+    lineKeepWarmIndependent:true,
+    lineKeepWarmBeforePublishingScheduler:true,
     scheduledPublishRequiresCurrentReviewFingerprint:true,
     erpFrontendSeparated:true,
   }),{status:response.status,headers:HEADERS});
@@ -144,10 +147,19 @@ export default{
     return app.fetch(request,env,ctx)
   },
   async scheduled(controller,env,ctx){
+    ctx.waitUntil(keepLineWarm());
     ctx.waitUntil((async()=>{
-      const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
-      if(guarded.quarantined)console.warn('仙加味排程圖文守門已退回草稿',JSON.stringify(guarded));
-      if(typeof app.scheduled==='function')await app.scheduled(controller,env,ctx);
+      try{
+        const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
+        if(guarded.quarantined)console.warn('仙加味排程圖文守門已退回草稿',JSON.stringify(guarded));
+      }catch(error){
+        console.warn('貼文排程守門檢查失敗，但LINE keep-warm不受影響',clean(error?.message||error));
+      }
+      try{
+        if(typeof app.scheduled==='function')await app.scheduled(controller,env,ctx);
+      }catch(error){
+        console.error('貼文排程執行失敗',clean(error?.message||error));
+      }
     })());
   }
 };
