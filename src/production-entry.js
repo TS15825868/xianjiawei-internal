@@ -1,6 +1,9 @@
 import app,{gateState} from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-09-production-entry-v1';
+const VERSION='2026-08-09-production-entry-v2-health';
+const PUBLISHING_PATH='/publishing.html';
+const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v1';
+const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-production-entry':VERSION};
 
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
@@ -18,8 +21,31 @@ async function quarantineUngatedDuePosts(env,scheduledTime){
   return{checked:(result.results||[]).length,quarantined};
 }
 
+async function productionHealth(request,env,ctx){
+  const response=await app.fetch(request,env,ctx),raw=await response.text();
+  let body={};
+  try{body=raw?JSON.parse(raw):{}}catch{return new Response(raw,{status:response.status,headers:response.headers})}
+  return new Response(JSON.stringify({
+    ...body,
+    service:'仙加味貼文審核發佈系統',
+    productionEntry:'src/production-entry.js',
+    productionEntryVersion:VERSION,
+    uiRuntime:'20260809-standalone-v4-review-gate',
+    standalonePublishingPath:PUBLISHING_PATH,
+    publishingReviewGateVersion:REVIEW_GATE_VERSION,
+    publishingReviewChecklistCount:16,
+    copyImageMatchHardGate:true,
+    scheduledPublishRequiresCurrentReviewFingerprint:true,
+    erpFrontendSeparated:true,
+  }),{status:response.status,headers:HEADERS});
+}
+
 export default{
-  async fetch(request,env,ctx){return app.fetch(request,env,ctx)},
+  async fetch(request,env,ctx){
+    const path=new URL(request.url).pathname;
+    if(request.method==='GET'&&path==='/healthz')return productionHealth(request,env,ctx);
+    return app.fetch(request,env,ctx)
+  },
   async scheduled(controller,env,ctx){
     ctx.waitUntil((async()=>{
       const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
@@ -29,4 +55,4 @@ export default{
   }
 };
 
-export { VERSION, quarantineUngatedDuePosts };
+export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, quarantineUngatedDuePosts, productionHealth };
