@@ -4,12 +4,19 @@ const read=(path)=>fs.readFileSync(path,'utf8');
 const must=(cond,message)=>{if(!cond)throw new Error(message)};
 const wrangler=read('wrangler.jsonc');
 const production=read('src/production-entry.js');
+const wrapper=fs.existsSync('src/publishing-only-entry.js')?read('src/publishing-only-entry.js'):'';
 const gate=read('src/publishing-review-gate-entry.js');
 const ui=read('assets/js/publishing-review-gate.js');
 const raster=read('assets/js/svg-candidate-rasterizer.js');
 const html=read('publishing.html');
 
-must(wrangler.includes('"main": "src/production-entry.js"'),'Worker正式入口必須是production-entry.js');
+const productionMain=wrangler.includes('"main": "src/production-entry.js"');
+const publishingOnlyMain=wrangler.includes('"main": "src/publishing-only-entry.js"');
+must(productionMain||publishingOnlyMain,'Worker正式入口必須是production-entry.js或publishing-only-entry.js');
+if(publishingOnlyMain){
+  must(wrapper.includes("from './production-entry.js'"),'publishing-only入口必須沿用正式production-entry安全邏輯');
+  must(wrapper.includes("'/api/modules/'")&&wrapper.includes('XJW_PUBLISHING_ONLY'),'publishing-only入口沒有封鎖已停用ERP API');
+}
 must(production.includes("gateState(env,row)"),'排程發布前必須檢查持久圖文審核指紋');
 must(production.includes("status='draft'"),'無有效審核的到期排程必須退回草稿');
 must(gate.includes('social_post_review_gates'),'必須建立持久圖文審核紀錄表');
@@ -39,4 +46,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：獨立貼文系統具備products-v3-only候選轉JPEG、轉圖後重新審核、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
+console.log('PASS：唯一貼文系統具備products-v3-only候選轉JPEG、轉圖後重新審核、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
