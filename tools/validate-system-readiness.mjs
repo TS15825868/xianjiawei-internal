@@ -24,10 +24,10 @@ must(readiness.includes('LINE VOOM 依正式規則採人工發布'),'LINE VOOM �
 must(readiness.includes("configured:true,mode:'official_api'"),'已設定平台API失敗時無法與未設定人工平台區分');
 for(const token of [
   'PRODUCT_IMAGE_VERSION',
-  '20260810-products-v3-true-originals-v2',
+  '20260810-products-v3-latest-originals-v3',
   'productImageVersion:PRODUCT_IMAGE_VERSION',
-  "productImageAuthority:'products-v3-true-original-product-photos'",
-  "POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v4-regeneration-handshake'",
+  "productImageAuthority:'products-v3-latest-original-product-photos'",
+  "POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed'",
   'postBankSyncVersion:POST_BANK_SYNC_VERSION',
   'KNOWN_REGENERATION_MINIMUM=121',
   'knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM'
@@ -45,4 +45,4 @@ must(ui.includes('5*60*1000'),'平台API必須週期性自動重檢');
 must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'連線失敗時沒有最近成功資料唯讀備援');
 must(pkg.includes('src/system-readiness.js'),'package check 沒有驗 system-readiness');
 must(pkg.includes('assets/js/publishing-readiness-ui.js'),'package check/build 沒有驗 publishing-readiness-ui');
-console.log('PASS：Worker、D1、Cloudflare Access、共享快速登入與平台API採分層診斷；健康端點同步回報真正products-v3產品圖版本、500篇同步v4與至少121篇重生成門檻；核心異常自動安全模式，正式發布等平台API檢查通過才自動開放，離線保留唯讀快取。');
+console.log('PASS：Worker、D1、Cloudflare Access、共享快速登入與平台API採分層診斷；健康端點同步回報最新products-v3產品圖版本、500篇同步v5與至少121篇重生成門檻；核心異常自動安全模式，正式發布等平台API檢查通過才自動開放，離線保留唯讀快取。');
