@@ -64,17 +64,24 @@ jobs:
         if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler deploy --keep-vars
 
-      - name: Verify deployed Worker core
+      - name: Verify deployed Worker core and product image authority
         if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
+          expected='"productImageVersion":"20260810-products-v3-true-originals-v2"'
           for attempt in 1 2 3 4 5; do
-            if curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core'; then
-              exit 0
+            response="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
+            if [ -n "$response" ]; then
+              echo "$response"
+              if printf '%s' "$response" | grep -Fq "$expected"; then
+                echo 'Worker core is healthy and true products-v3 image authority is live.'
+                exit 0
+              fi
+              echo 'Worker responded, but the expected product image authority version is not live yet.' >&2
             fi
             sleep 4
           done
-          echo 'Worker deployed but core health endpoint did not become reachable in time.' >&2
+          echo 'Worker deployment verification failed: core health or expected product image authority version did not become current in time.' >&2
           exit 1
 
       - name: Deployment summary
