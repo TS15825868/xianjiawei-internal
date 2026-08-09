@@ -28,8 +28,12 @@ for(const token of [
   "path==='/api/platform-authorization'",
   'accessProfileCacheSeconds:300',
   'parallelPostQueries:true',
+  'ctx.waitUntil(keepLineWarm())',
+  'lineKeepWarmIndependent:true',
+  'lineKeepWarmBeforePublishingScheduler:true',
+  '但LINE keep-warm不受影響',
 ]){
-  if(!production.includes(token))throw new Error(`手機快速讀取契約缺失：${token}`)
+  if(!production.includes(token))throw new Error(`手機快速讀取／LINE在線契約缺失：${token}`)
 }
 for(const token of [
   "'LINE VOOM':{manual:true",
@@ -46,4 +50,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：獨立貼文系統具備共用Access驗證、平行D1快速讀取、server pagination、完整核心按鈕，以及官方API/Webhook/人工 fallback 與逐平台發布結果。');
+console.log('PASS：獨立貼文系統具備共用Access驗證、平行D1快速讀取、server pagination、獨立LINE keep-warm，以及官方API/Webhook/人工 fallback 與逐平台發布結果。');
