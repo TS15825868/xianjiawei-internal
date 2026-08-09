@@ -8,6 +8,7 @@ on:
       - 'assets/**'
       - 'publishing.html'
       - 'package.json'
+      - 'package-lock.json'
       - 'wrangler.jsonc'
       - 'tools/**'
       - '.github/workflows/deploy-cloudflare-publishing.yml'
