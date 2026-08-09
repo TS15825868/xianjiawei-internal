@@ -2,9 +2,9 @@ import app,{gateState} from './publishing-review-gate-entry.js';
 import { keepLineWarm } from './flexible-publish-entry.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publisherConfiguration } from './social-publisher.js';
-import { checkD1, runReadiness, VERSION as READINESS_VERSION } from './system-readiness.js';
+import { checkD1, runReadiness, probePlatforms, blockingPlatformFailures, VERSION as READINESS_VERSION } from './system-readiness.js';
 
-const VERSION='2026-08-09-production-entry-v10-safe-readiness-fast-mobile';
+const VERSION='2026-08-09-production-entry-v11-platform-safe-open';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v2-edit-invalidates';
 const RASTER_VERSION='2026-08-09-v7-raster-invalidates-review';
@@ -15,6 +15,7 @@ const MUTATING_METHODS=new Set(['POST','PUT','PATCH','DELETE']);
 const accessProfiles=new Map();
 const accessPromises=new Map();
 const accessJwks=new Map();
+let platformProbeCache={at:0,result:null};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
 const int=(value,fallback=0)=>{const n=Number(value);return Number.isFinite(n)?Math.trunc(n):fallback;};
@@ -92,6 +93,18 @@ async function mutationCoreGate(env){
   if(d1.ok)return null;
   return json({error:'系統目前處於安全模式，D1健康檢查未通過；新增、修改、審核、排程與發布已暫停。',code:'XJW_SAFE_MODE_D1_NOT_READY',retryable:true,d1:{ok:false,error:d1.error||'D1 unavailable'},checkedAt:new Date().toISOString()},503);
 }
+async function currentPlatformProbe(env,{force=false}={}){
+  if(!force&&platformProbeCache.result&&Date.now()-platformProbeCache.at<120000)return platformProbeCache.result;
+  const result=await probePlatforms(env);
+  platformProbeCache={at:Date.now(),result};
+  return result;
+}
+async function platformPublishGate(env,{force=false}={}){
+  const probe=await currentPlatformProbe(env,{force});
+  const failures=blockingPlatformFailures(probe);
+  if(!failures.length)return null;
+  return json({error:'平台 API 安全檢查未通過，本次正式發布已暫停；未設定的平台仍維持人工發布。',code:'XJW_SAFE_MODE_PLATFORM_NOT_READY',retryable:true,failures,checkedAt:probe.checkedAt},503);
+}
 
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
@@ -134,6 +147,9 @@ async function productionHealth(request,env,ctx){
     accessProfileCacheSeconds:300,
     parallelPostQueries:true,
     automaticSafeModeOnD1Failure:true,
+    platformProbeBeforeImmediatePublish:true,
+    platformProbeBeforeScheduledPublish:true,
+    platformProbeCacheSeconds:120,
     readinessVersion:READINESS_VERSION,
     lineKeepWarmIndependent:true,
     lineKeepWarmBeforePublishingScheduler:true,
@@ -154,6 +170,9 @@ export default{
     if(request.method==='GET'&&path==='/healthz')return productionHealth(request,env,ctx);
     if(MUTATING_METHODS.has(request.method)&&path.startsWith('/api/')){
       const blocked=await mutationCoreGate(env);if(blocked)return blocked;
+    }
+    if(request.method==='POST'&&/^\/api\/posts\/[^/]+\/publish-now$/.test(path)){
+      const blocked=await platformPublishGate(env);if(blocked)return blocked;
     }
     try{
       if(request.method==='GET'&&path==='/api/me')return await fastMe(request,env);
@@ -177,6 +196,11 @@ export default{
         console.warn('貼文排程守門檢查失敗，但LINE keep-warm不受影響',clean(error?.message||error));
       }
       try{
+        const probe=await currentPlatformProbe(env,{force:true});
+        const failures=blockingPlatformFailures(probe);
+        if(failures.length){console.error('貼文排程平台安全模式：已設定平台API健康檢查未通過，本輪不發布',JSON.stringify(failures));return;}
+      }catch(error){console.error('貼文排程平台安全檢查失敗，本輪不發布',clean(error?.message||error));return;}
+      try{
         if(typeof app.scheduled==='function')await app.scheduled(controller,env,ctx);
       }catch(error){
         console.error('貼文排程執行失敗',clean(error?.message||error));
@@ -185,4 +209,4 @@ export default{
   }
 };
 
-export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, RASTER_VERSION, FAST_API_VERSION, verifyFastAccess, fastPostList, fastMe, fastPlatformAuthorization, mutationCoreGate, quarantineUngatedDuePosts, productionHealth };
+export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, RASTER_VERSION, FAST_API_VERSION, verifyFastAccess, fastPostList, fastMe, fastPlatformAuthorization, mutationCoreGate, currentPlatformProbe, platformPublishGate, quarantineUngatedDuePosts, productionHealth };
