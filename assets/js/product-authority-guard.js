@@ -1,6 +1,6 @@
 (()=>{
   const SITE='https://ts15825868.github.io/xianjiawei/';
-  const IMAGE_VERSION='20260810-products-v3-true-originals-v2';
+  const IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
   const PRODUCTS=Object.freeze([
     {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙',image:`${SITE}images/products-v3/guilu-gao.jpg?v=${IMAGE_VERSION}`,dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
     {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐','30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:`${SITE}images/products-v3/guilu-drink-30.jpg?v=${IMAGE_VERSION}`,dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小罐感；裸罐、無貼紙、金色蓋；不可改成瓶型、做高、做胖或放大成接近100g龜鹿膏罐。'},
@@ -12,14 +12,14 @@
   const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
   const BY_ID=new Map(PRODUCTS.map(item=>[item.id,item]));
   window.XJW_PRODUCT_AUTHORITY=Object.freeze({
-    version:'2026-08-10-v6-products-v3-true-originals',
+    version:'2026-08-10-v7-products-v3-latest-originals',
     productImageVersion:IMAGE_VERSION,
     products:PRODUCTS,
     byId:BY_ID,
     soupBlockOnly:'75g／盒',
     drink30Container:'小玻璃罐',
     guiluGaoUsagePrimary:'每日早上及下午各一小匙',
-    imageAuthority:'products-v3-true-original-product-photos',
+    imageAuthority:'products-v3-latest-original-product-photos',
     physicalScaleAuthority:'data/product-physical-scale-authority-v20260809.json',
     hardScaleRule:'產品本體只能使用核准實拍並整體等比例縮放；禁止拉寬、拉高、裁切、AI重畫或把不同產品強制等高／等寬。',
     unknownScaleRule:'沒有可信尺寸或相對尺度依據時不得自行猜測，改用單品原圖或送人工審核。'
@@ -74,7 +74,7 @@
     if(form.querySelector('[data-product-authority-note]'))return;
     const grid=form.querySelector('.form-grid');if(!grid)return;
     const note=document.createElement('div');note.dataset.productAuthorityNote='1';note.className='xjw-ok';
-    note.textContent='正式資料鎖定：六個產品／六個規格；產品本體只用products-v3真正產品實拍並等比例顯示。30cc約Ø42×H51mm；龜鹿膏約51×78mm；180cc維持狹長鋁袋約0.64比例；其他包裝尺寸未知時不猜、不拉伸。';
+    note.textContent='正式資料鎖定：六個產品／六個規格；產品本體只用products-v3最新真正產品實拍並等比例顯示。30cc約Ø42×H51mm；龜鹿膏約51×78mm；180cc維持狹長鋁袋約0.64比例；其他包裝尺寸未知時不猜、不拉伸。';
     grid.prepend(note);
   }
   function autofillProduct(form){
