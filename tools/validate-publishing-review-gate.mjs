@@ -8,6 +8,7 @@ const wrapper=fs.existsSync('src/publishing-only-entry.js')?read('src/publishing
 const gate=read('src/publishing-review-gate-entry.js');
 const ui=read('assets/js/publishing-review-gate.js');
 const raster=read('assets/js/svg-candidate-rasterizer.js');
+const generation=read('assets/js/post-regenerate-policy-v1.js');
 const html=read('publishing.html');
 
 const productionMain=wrangler.includes('"main": "src/production-entry.js"');
@@ -30,6 +31,25 @@ must(gate.includes('invalidateEditedPost'),'缺少貼文修改後立即退回草
 must(gate.includes("status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0"),'修改後未完整清除排程／核准／圖片核准狀態');
 must(gate.includes('30cc正式名稱必須是小玻璃罐'),'30cc玻璃罐正式名稱守門缺失');
 must(gate.includes('龜鹿湯塊正式規格只有75g'),'龜鹿湯塊75g唯一規格守門缺失');
+
+must(gate.includes('/regeneration-start'),'缺少重新生成開始端點');
+must(gate.includes('/regeneration-ready'),'缺少重新生成完成回待審核端點');
+must(gate.includes("status='pending_review'"),'重新生成完成後必須進入待審核，不得直接核准');
+must(gate.includes("approved_by=NULL,approved_at=NULL,image_approved=0"),'重新生成流程必須持續清除舊核准與圖片核准');
+must(gate.includes('REGENERATION_ROLES'),'重新生成端點缺少角色權限限制');
+must(gate.includes('已發布／封存內容已鎖定'),'重新生成不得修改已發布／封存內容');
+must(gate.includes('重新生成完成送回待審核'),'重新生成完成缺少稽核紀錄');
+
+must(generation.includes('/regeneration-start'),'前端重生成按鈕沒有先撤銷舊核准');
+must(generation.includes('/regeneration-ready'),'前端儲存後沒有自動送回待審核');
+must(generation.includes('生成後回填／上傳'),'前端缺少生成後回填入口');
+must(generation.includes('window.fetch=async function xjwGenerationAwareFetch'),'前端沒有監看重新生成內容儲存完成');
+must(generation.includes('localStorage'),'免費跨ChatGPT回填流程缺少本機續接狀態');
+must(!generation.includes('api.openai.com'),'免費重新生成流程不得直接呼叫付費OpenAI API');
+must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');
+must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
+must(html.includes('single-system-v2-free-roundtrip'),'貼文中心仍可能載入舊重生成快取版本');
+
 const required=(gate.match(/'brand','product','specification','pricing_activity','season','weather','occasion','location'/)||[]).length;
 must(required===1,'16項審核欄位母本缺失');
 must((ui.match(/\['[a-z_]+','/g)||[]).length===16,'前端必須剛好顯示16項審核');
@@ -46,4 +66,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統具備products-v3-only候選轉JPEG、轉圖後重新審核、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
+console.log('PASS：唯一貼文系統具備products-v3-only候選轉JPEG、免費ChatGPT重生成回填→待審核閉環、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
