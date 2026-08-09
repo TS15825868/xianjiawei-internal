@@ -9,7 +9,9 @@ const gate=read('src/publishing-review-gate-entry.js');
 const ui=read('assets/js/publishing-review-gate.js');
 const raster=read('assets/js/svg-candidate-rasterizer.js');
 const generation=read('assets/js/post-regenerate-policy-v1.js');
+const generationButtons=read('assets/js/post-regenerate-buttons.js');
 const html=read('publishing.html');
+const pkg=read('package.json');
 
 const productionMain=wrangler.includes('"main": "src/production-entry.js"');
 const publishingOnlyMain=wrangler.includes('"main": "src/publishing-only-entry.js"');
@@ -45,10 +47,20 @@ must(generation.includes('/regeneration-ready'),'前端儲存後沒有自動送�
 must(generation.includes('生成後回填／上傳'),'前端缺少生成後回填入口');
 must(generation.includes('window.fetch=async function xjwGenerationAwareFetch'),'前端沒有監看重新生成內容儲存完成');
 must(generation.includes('localStorage'),'免費跨ChatGPT回填流程缺少本機續接狀態');
+must(generation.includes("window.open('about:blank'"),'iPhone/Safari重生成必須在點擊當下先建立分頁，避免彈窗被阻擋');
 must(!generation.includes('api.openai.com'),'免費重新生成流程不得直接呼叫付費OpenAI API');
 must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');
 must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
 must(html.includes('single-system-v2-free-roundtrip'),'貼文中心仍可能載入舊重生成快取版本');
+
+must(generationButtons.includes("data-xjw-regenerate")||generationButtons.includes('dataset.xjwRegenerate'),'純按鈕層沒有建立重生成操作入口');
+must(!generationButtons.includes('window.open('),'純按鈕層不得另外開啟ChatGPT');
+must(!generationButtons.includes('/api/posts/'),'純按鈕層不得另外呼叫貼文API');
+must(!generationButtons.includes('navigator.clipboard'),'純按鈕層不得保存第二套prompt流程');
+must(html.includes('post-regenerate-buttons.js'),'正式頁沒有載入純按鈕層');
+must(!html.includes('post-regenerate-v6.js'),'正式頁不得再載入舊v6第二套重生成邏輯');
+must(pkg.includes('post-regenerate-buttons.js'),'部署包沒有包含純按鈕層');
+must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署包不得再複製舊v6重生成邏輯');
 
 const required=(gate.match(/'brand','product','specification','pricing_activity','season','weather','occasion','location'/)||[]).length;
 must(required===1,'16項審核欄位母本缺失');
@@ -66,4 +78,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統具備products-v3-only候選轉JPEG、免費ChatGPT重生成回填→待審核閉環、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
+console.log('PASS：唯一貼文系統只保留一套免費ChatGPT重生成邏輯＋純按鈕呈現層，並具備products-v3候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
