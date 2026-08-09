@@ -2,14 +2,16 @@ import app,{gateState} from './publishing-review-gate-entry.js';
 import { keepLineWarm } from './flexible-publish-entry.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publisherConfiguration } from './social-publisher.js';
+import { checkD1, runReadiness, VERSION as READINESS_VERSION } from './system-readiness.js';
 
-const VERSION='2026-08-09-production-entry-v9-fast-mobile-line-first';
+const VERSION='2026-08-09-production-entry-v10-safe-readiness-fast-mobile';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v2-edit-invalidates';
 const RASTER_VERSION='2026-08-09-v7-raster-invalidates-review';
 const FAST_API_VERSION='2026-08-09-fast-read-v1-shared-access';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-production-entry':VERSION};
 const POST_STATUSES=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed']);
+const MUTATING_METHODS=new Set(['POST','PUT','PATCH','DELETE']);
 const accessProfiles=new Map();
 const accessPromises=new Map();
 const accessJwks=new Map();
@@ -85,6 +87,12 @@ async function fastPostList(request,env){
 async function fastMe(request,env){const profile=await verifyFastAccess(request,env);return json({...profile,role_label:roleLabel(profile.role),fast_api:FAST_API_VERSION});}
 async function fastPlatformAuthorization(request,env){await verifyFastAccess(request,env);return json({...publisherConfiguration(env),fast_api:FAST_API_VERSION});}
 
+async function mutationCoreGate(env){
+  const d1=await checkD1(env);
+  if(d1.ok)return null;
+  return json({error:'系統目前處於安全模式，D1健康檢查未通過；新增、修改、審核、排程與發布已暫停。',code:'XJW_SAFE_MODE_D1_NOT_READY',retryable:true,d1:{ok:false,error:d1.error||'D1 unavailable'},checkedAt:new Date().toISOString()},503);
+}
+
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
   const at=new Date(scheduledTime||Date.now()).toISOString();
@@ -110,7 +118,7 @@ async function productionHealth(request,env,ctx){
     service:'仙加味貼文審核發佈系統',
     productionEntry:'src/production-entry.js',
     productionEntryVersion:VERSION,
-    uiRuntime:'20260809-standalone-v10-fast-mobile',
+    uiRuntime:'20260809-standalone-v12-readiness-safe',
     standalonePublishingPath:PUBLISHING_PATH,
     publishingReviewGateVersion:REVIEW_GATE_VERSION,
     publishingReviewChecklistCount:16,
@@ -125,6 +133,8 @@ async function productionHealth(request,env,ctx){
     sharedAccessVerification:true,
     accessProfileCacheSeconds:300,
     parallelPostQueries:true,
+    automaticSafeModeOnD1Failure:true,
+    readinessVersion:READINESS_VERSION,
     lineKeepWarmIndependent:true,
     lineKeepWarmBeforePublishingScheduler:true,
     scheduledPublishRequiresCurrentReviewFingerprint:true,
@@ -135,13 +145,22 @@ async function productionHealth(request,env,ctx){
 export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url),path=url.pathname;
+    if(request.method==='GET'&&path==='/healthz/core')return json({ok:true,worker:true,service:'仙加味貼文審核發佈系統',productionEntryVersion:VERSION,readinessVersion:READINESS_VERSION,checkedAt:new Date().toISOString()});
+    if(request.method==='GET'&&path==='/healthz/readiness'){
+      const probeExternal=['1','true','yes'].includes(String(url.searchParams.get('probe')||'').toLowerCase());
+      const report=await runReadiness(request,env,ctx,app,{probeExternal});
+      return json(report,report.ok?200:503);
+    }
     if(request.method==='GET'&&path==='/healthz')return productionHealth(request,env,ctx);
+    if(MUTATING_METHODS.has(request.method)&&path.startsWith('/api/')){
+      const blocked=await mutationCoreGate(env);if(blocked)return blocked;
+    }
     try{
       if(request.method==='GET'&&path==='/api/me')return await fastMe(request,env);
       if(request.method==='GET'&&path==='/api/posts')return await fastPostList(request,env);
       if(request.method==='GET'&&path==='/api/platform-authorization')return await fastPlatformAuthorization(request,env);
     }catch(error){
-      const message=clean(error?.message||error),status=/登入|Access|帳號|憑證|電子郵件/.test(message)?401:500;
+      const message=clean(error?.message||error),status=/登入|Access|帳號|憑證|電子郵件/.test(message)?401:/D1|database|資料庫/i.test(message)?503:500;
       return json({error:message||'快速讀取失敗',fast_api:FAST_API_VERSION},status);
     }
     return app.fetch(request,env,ctx)
@@ -149,6 +168,8 @@ export default{
   async scheduled(controller,env,ctx){
     ctx.waitUntil(keepLineWarm());
     ctx.waitUntil((async()=>{
+      const d1=await checkD1(env);
+      if(!d1.ok){console.error('貼文排程安全模式：D1未就緒，本輪不發布，但LINE keep-warm不受影響',d1.error||'D1 unavailable');return;}
       try{
         const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
         if(guarded.quarantined)console.warn('仙加味排程圖文守門已退回草稿',JSON.stringify(guarded));
@@ -164,4 +185,4 @@ export default{
   }
 };
 
-export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, RASTER_VERSION, FAST_API_VERSION, verifyFastAccess, fastPostList, fastMe, fastPlatformAuthorization, quarantineUngatedDuePosts, productionHealth };
+export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, RASTER_VERSION, FAST_API_VERSION, verifyFastAccess, fastPostList, fastMe, fastPlatformAuthorization, mutationCoreGate, quarantineUngatedDuePosts, productionHealth };
