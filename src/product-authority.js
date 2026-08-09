@@ -8,6 +8,14 @@ const PRODUCTS=Object.freeze([
 ]);
 const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
 const clean=value=>String(value??'').trim();
+const POST_IMAGE_RULES=Object.freeze([
+  {id:'guilu-gao',copy:[/龜鹿膏/i],image:[/guilu-gao/i,/龜鹿膏/i]},
+  {id:'guilu-drink-30',copy:[/龜鹿飲\s*30\s*cc/i,/30\s*cc/i],image:[/guilu-drink-30/i,/龜鹿飲\s*30\s*cc/i,/30\s*cc/i]},
+  {id:'guilu-drink-180',copy:[/龜鹿飲\s*180\s*cc/i,/180\s*cc/i],image:[/guilu-drink-180/i,/龜鹿飲\s*180\s*cc/i,/180\s*cc/i]},
+  {id:'guilu-tangkuai',copy:[/龜鹿湯塊/i,/湯塊/i],image:[/guilu-tangkuai/i,/龜鹿湯塊/i,/湯塊/i]},
+  {id:'guilu-jiao',copy:[/龜鹿膠/i],image:[/guilu-jiao/i,/龜鹿膠/i]},
+  {id:'luerong-fen',copy:[/鹿茸粉/i],image:[/luerong-fen/i,/鹿茸粉/i]}
+]);
 
 function normalizedName(name,spec=''){
   const value=clean(name),size=clean(spec);
@@ -38,7 +46,7 @@ function soupWeightErrors(text=''){
 
 export function validatePublicProductText(text=''){
   const source=String(text||''),errors=[...soupWeightErrors(source)];
-  if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶)/i.test(source))errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐」，不得稱瓶。');
+  if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source))errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐」，不得稱瓶。');
   if(source.includes('龜鹿膏')&&source.includes('每天一次，每次一小匙'))errors.push('龜鹿膏正式使用資料已更新為「每日早上及下午各一小匙」，不得使用舊的一日一次版本。');
   return [...new Set(errors)];
 }
@@ -58,16 +66,43 @@ export function validateProductRecord(body={},options={}){
   return [...new Set(errors)];
 }
 
+function detectedIds(value='',field='copy'){
+  const source=String(value||'');
+  return POST_IMAGE_RULES.filter(rule=>(rule[field]||[]).some(re=>re.test(source))).map(rule=>rule.id);
+}
+export function validatePostImageMatch(body={}){
+  const copyText=[body?.title,body?.headline,body?.copy,body?.category].filter(Boolean).join('\n');
+  const imageText=[body?.image_url,body?.image_alt,body?.image_source].filter(Boolean).join('\n');
+  const imageUrl=clean(body?.image_url);
+  const errors=[];
+  if(/\/images\/products-v2\//i.test(imageText))errors.push('圖片仍引用舊 products-v2，不能作為正式貼文產品圖。');
+  if(/\/images\/dm-final\//i.test(imageText)||/legacy/i.test(imageText))errors.push('圖片仍引用舊DM／歷史產品圖，不能作為正式貼文產品圖。');
+  if(/generated-v20260808-(?:priority1|preflight)/i.test(imageText)&&/\.svg(?:[?#]|$)/i.test(imageText))errors.push('圖片仍是已退回的舊候選SVG，請重新生成或換正式候選圖。');
+  const mentioned=[...new Set(detectedIds(copyText,'copy'))];
+  const imageIds=[...new Set(detectedIds(imageText,'image'))];
+  if(mentioned.length===1&&imageIds.length&& !imageIds.includes(mentioned[0])){
+    const expected=PRODUCTS.find(p=>p.id===mentioned[0])?.name||mentioned[0];
+    const actual=imageIds.map(id=>PRODUCTS.find(p=>p.id===id)?.name||id).join('、');
+    errors.push(`圖文產品不匹配：文案主產品是「${expected}」，圖片資訊卻指向「${actual}」。`);
+  }
+  if(mentioned.length&&/\/images\/products-v3\//i.test(imageUrl)&&imageIds.length&&!imageIds.some(id=>mentioned.includes(id))){
+    errors.push('正式產品主圖與貼文提到的產品不一致，請換成對應 products-v3 原圖。');
+  }
+  return [...new Set(errors)];
+}
+
 export function validatePostPayload(body={}){
-  return validatePublicProductText([
+  const textErrors=validatePublicProductText([
     body?.title,body?.headline,body?.copy,body?.category,body?.image_alt,body?.image_source
   ].filter(Boolean).join('\n'));
+  return [...new Set([...textErrors,...validatePostImageMatch(body)])];
 }
 
 export const PRODUCT_AUTHORITY=Object.freeze({
-  version:'2026-08-08-server-v2-canonical-facts',
+  version:'2026-08-09-server-v3-copy-image-match',
   productCount:6,
   soupBlockOnly:'75g／盒',
   guiluGaoUsagePrimary:'每日早上及下午各一小匙',
+  postImageMatchBlocking:true,
   products:PRODUCTS
 });
