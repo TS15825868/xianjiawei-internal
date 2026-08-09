@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { PRODUCT_AUTHORITY, validateProductRecord, validatePublicProductText } from './product-authority.js';
+import { PRODUCT_AUTHORITY, validateProductRecord, validatePublicProductText, validatePostPayload, validatePostImageMatch } from './product-authority.js';
 
 assert.equal(PRODUCT_AUTHORITY.productCount,6);
 assert.equal(PRODUCT_AUTHORITY.soupBlockOnly,'75g／盒');
 assert.equal(PRODUCT_AUTHORITY.guiluGaoUsagePrimary,'每日早上及下午各一小匙');
+assert.equal(PRODUCT_AUTHORITY.postImageMatchBlocking,true);
 
 const validProducts=[
   {name:'龜鹿膏',specification:'100g／罐',ingredients:'鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'每日早上及下午各一小匙；初次可先從半匙開始'},
@@ -24,4 +25,10 @@ assert.ok(validatePublicProductText('龜鹿湯塊300g／盒').length>0);
 assert.ok(validatePublicProductText('龜鹿飲30cc玻璃瓶').length>0);
 assert.ok(validatePublicProductText('龜鹿膏每天一次，每次一小匙').length>0);
 
-console.log('PASS ERP六項正式產品規格、正式成分、龜鹿膏使用方式與龜鹿湯塊75g唯一規格');
+assert.deepEqual(validatePostImageMatch({title:'龜鹿膏日常',image_url:'https://example.com/images/products-v3/guilu-gao.jpg',image_alt:'龜鹿膏'}),[]);
+assert.ok(validatePostPayload({title:'龜鹿飲30cc日常',image_url:'https://example.com/images/products-v3/guilu-drink-180.jpg',image_alt:'龜鹿飲180cc鋁袋'}).some(x=>x.includes('圖文產品不匹配')));
+assert.ok(validatePostPayload({title:'龜鹿膏日常',image_url:'https://example.com/images/products-v2/guilu-gao.jpg',image_alt:'龜鹿膏'}).some(x=>x.includes('products-v2')));
+assert.ok(validatePostPayload({title:'龜鹿飲30cc玻璃瓶',image_url:'https://example.com/images/products-v3/guilu-drink-30.jpg',image_alt:'龜鹿飲30cc玻璃罐'}).some(x=>x.includes('不得稱瓶')));
+assert.deepEqual(validatePostPayload({title:'雨天的日常節奏',copy:'下雨天慢一點也很好',image_url:'https://example.com/media/IMG-123',image_alt:'窗邊雨天情境'}),[]);
+
+console.log('PASS ERP六項正式產品規格、正式成分、龜鹿膏使用方式、湯塊75g與貼文圖文產品匹配守門');
