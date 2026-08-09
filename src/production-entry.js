@@ -1,10 +1,10 @@
 import app,{gateState} from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-09-production-entry-v4-v3-raster-health';
+const VERSION='2026-08-09-production-entry-v5-lean-health';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v1';
 const RASTER_VERSION='2026-08-09-v6-products-v3-only';
-const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-production-entry':VERSION};
+const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosiff','x-xianjiawei-production-entry':VERSION};
 
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
@@ -31,7 +31,7 @@ async function productionHealth(request,env,ctx){
     service:'仙加味貼文審核發佈系統',
     productionEntry:'src/production-entry.js',
     productionEntryVersion:VERSION,
-    uiRuntime:'20260809-standalone-v6-v3-raster-review',
+    uiRuntime:'20260809-standalone-v7-lean-review',
     standalonePublishingPath:PUBLISHING_PATH,
     publishingReviewGateVersion:REVIEW_GATE_VERSION,
     publishingReviewChecklistCount:16,
