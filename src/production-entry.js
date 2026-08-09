@@ -4,7 +4,7 @@ const VERSION='2026-08-09-production-entry-v5-lean-health';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v1';
 const RASTER_VERSION='2026-08-09-v6-products-v3-only';
-const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosiff','x-xianjiawei-production-entry':VERSION};
+const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-production-entry':VERSION};
 
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
