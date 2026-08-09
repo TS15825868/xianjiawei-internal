@@ -1,8 +1,9 @@
 import app,{gateState} from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-09-production-entry-v3-server-paged-health';
+const VERSION='2026-08-09-production-entry-v4-v3-raster-health';
 const PUBLISHING_PATH='/publishing.html';
 const REVIEW_GATE_VERSION='2026-08-09-publishing-review-gate-v1';
+const RASTER_VERSION='2026-08-09-v6-products-v3-only';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-production-entry':VERSION};
 
 async function quarantineUngatedDuePosts(env,scheduledTime){
@@ -30,11 +31,13 @@ async function productionHealth(request,env,ctx){
     service:'仙加味貼文審核發佈系統',
     productionEntry:'src/production-entry.js',
     productionEntryVersion:VERSION,
-    uiRuntime:'20260809-standalone-v5-server-paged-review-gate',
+    uiRuntime:'20260809-standalone-v6-v3-raster-review',
     standalonePublishingPath:PUBLISHING_PATH,
     publishingReviewGateVersion:REVIEW_GATE_VERSION,
     publishingReviewChecklistCount:16,
     copyImageMatchHardGate:true,
+    rasterizerVersion:RASTER_VERSION,
+    rasterizerProductsV3Only:true,
     serverPagedPostList:true,
     serverPageSize:18,
     scheduledPublishRequiresCurrentReviewFingerprint:true,
@@ -57,4 +60,4 @@ export default{
   }
 };
 
-export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, quarantineUngatedDuePosts, productionHealth };
+export { VERSION, PUBLISHING_PATH, REVIEW_GATE_VERSION, RASTER_VERSION, quarantineUngatedDuePosts, productionHealth };
