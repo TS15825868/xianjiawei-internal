@@ -1,9 +1,11 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v3-ui-runtime-authority';
+const VERSION='2026-08-10-publishing-only-entry-v4-post-bank-health';
 const UI_RUNTIME='20260809-standalone-v15-single-regeneration';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-true-originals-v2';
+const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v4-regeneration-handshake';
+const KNOWN_REGENERATION_MINIMUM=121;
 const RETIRED_EXACT=new Set([
   '/api/overview',
   '/api/settings',
@@ -40,6 +42,8 @@ export default{
           uiRuntime:UI_RUNTIME,
           productImageVersion:PRODUCT_IMAGE_VERSION,
           productImageAuthority:'products-v3-true-original-product-photos',
+          postBankSyncVersion:POST_BANK_SYNC_VERSION,
+          knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,
           publishingOnly:true,
           publishingOnlyVersion:VERSION,
           retiredErpApisBlocked:true,
