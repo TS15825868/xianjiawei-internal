@@ -1,7 +1,8 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-09-publishing-only-entry-v2-regeneration-health';
+const VERSION='2026-08-10-publishing-only-entry-v3-ui-runtime-authority';
+const UI_RUNTIME='20260809-standalone-v15-single-regeneration';
 const RETIRED_EXACT=new Set([
   '/api/overview',
   '/api/settings',
@@ -35,6 +36,7 @@ export default{
         const body=await response.clone().json();
         return json({
           ...body,
+          uiRuntime:UI_RUNTIME,
           publishingOnly:true,
           publishingOnlyVersion:VERSION,
           retiredErpApisBlocked:true,
