@@ -68,7 +68,7 @@ jobs:
         if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
-          expected_image='"productImageVersion":"20260810-products-v3-true-originals-v2"'
+          expected_image='"productImageVersion":"20260810-products-v3-latest-originals-v3"'
           expected_sync='"postBankSyncVersion":"2026-08-10-post-bank-sync-v4-regeneration-handshake"'
           expected_regen='"knownRegenerationMinimum":121'
           for attempt in 1 2 3 4 5; do
@@ -80,7 +80,7 @@ jobs:
               printf '%s' "$response" | grep -Fq "$expected_sync" && sync_ok=1
               printf '%s' "$response" | grep -Fq "$expected_regen" && regen_ok=1
               if [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ]; then
-                echo 'Worker core is healthy; true products-v3 images, post-bank sync v4 and 121-regeneration gate are live.'
+                echo 'Worker core is healthy; latest products-v3 images, post-bank sync v4 and 121-regeneration gate are live.'
                 exit 0
               fi
               echo "Worker responded but production bundle is not current yet (image=$image_ok sync=$sync_ok regen=$regen_ok)." >&2
