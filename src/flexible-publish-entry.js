@@ -129,14 +129,14 @@ async function flexiblePublishNow(request,env,ctx,id){
   if(authorityErrors.length)return json({error:'貼文仍含不符合正式產品母本的內容，不能發布',details:authorityErrors},409);
 
   if(!before.image_url||Number(before.image_approved||0)!==1)return json({error:'貼文圖片尚未完成審核，不能立即發布'},409);
-  if(!publishableImageUrl(before.image_url))return json({error:'正式發布圖片必須是已審核的 JPG、PNG 或 WebP；SVG／候選圖請先在 ERP 轉成發布圖'},409);
+  if(!publishableImageUrl(before.image_url))return json({error:'正式發布圖片必須是已審核的 JPG、PNG 或 WebP；SVG／候選圖請先在貼文審核發佈系統轉成正式發布圖，或上傳 JPG、PNG、WebP。'},409);
 
   const originalPlatforms=parsePlatforms(before.platforms_json);
   if(!originalPlatforms.length)return json({error:'尚未指定發布平台'},409);
   const configuration=publisherConfiguration(env);
   const automaticPlatforms=originalPlatforms.filter((platform)=>platformReady(configuration,platform));
   const manualPlatforms=originalPlatforms.filter((platform)=>!automaticPlatforms.includes(platform));
-  const reason='此平台尚未完成官方自動發布授權，或目前採人工發布流程；請使用ERP手動發布包，完成後補登已發布。';
+  const reason='此平台尚未完成官方自動發布授權，或目前採人工發布流程；請使用貼文審核發佈系統的「手動發布包」，完成後補登已發布。';
 
   for(const platform of manualPlatforms)await markManualDelivery(env,id,platform,reason);
 
@@ -206,7 +206,7 @@ async function flexiblePublishNow(request,env,ctx,id){
 
 async function keepLineWarm(){
   try{
-    const response=await fetch(LINE_HEALTH_URL,{headers:{'user-agent':'xianjiawei-erp-keepwarm/1.0','cache-control':'no-cache'},cf:{cacheTtl:0}});
+    const response=await fetch(LINE_HEALTH_URL,{headers:{'user-agent':'xianjiawei-publishing-keepwarm/1.0','cache-control':'no-cache'},cf:{cacheTtl:0}});
     console.log('仙加味 LINE keep-warm',response.status,response.ok?'ok':'not-ok');
     return response.ok;
   }catch(error){
