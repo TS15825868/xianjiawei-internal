@@ -1,11 +1,12 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v11-formal-media-assistant';
-const UI_RUNTIME='20260810-standalone-v21-formal-media-assistant';
+const VERSION='2026-08-10-publishing-only-entry-v12-latest-user-media';
+const UI_RUNTIME='20260810-standalone-v22-latest-user-media';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
 const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
-const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v4-semantic-match';
+const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v5-latest-user-batch';
+const FORMAL_MEDIA_APPROVAL_BATCH='20260810-latest-user-dm-and-trial';
 const LATEST_POST_ZIP='2.zip';
 const LATEST_POST_ZIP_CANDIDATES=22;
 const KNOWN_REGENERATION_MINIMUM=121;
@@ -56,6 +57,7 @@ export default{
           productImageAuthority:'products-v3-latest-original-product-photos',
           postBankSyncVersion:POST_BANK_SYNC_VERSION,
           formalMediaRuntime:FORMAL_MEDIA_RUNTIME,
+          formalMediaApprovalBatch:FORMAL_MEDIA_APPROVAL_BATCH,
           latestPostZip:LATEST_POST_ZIP,
           latestPostZipCandidates:LATEST_POST_ZIP_CANDIDATES,
           postImagePriority:'user_zip_approved',
