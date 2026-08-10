@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const CONFIG=Object.freeze({
-  runtime:'20260810-formal-media-policy-v3-binary-aware',
+  runtime:'20260810-formal-media-policy-v4-semantic-match',
   productAuthority:'products-v3-latest-original-product-photos',
   productSpecs:Object.freeze({
     guiluGao:'100g／罐',
@@ -11,6 +11,15 @@ const CONFIG=Object.freeze({
     guiluJiao:'600g／盒｜32塊裝',
     lurongFen:'75g／罐'
   }),
+  formalProductMedia:Object.freeze([
+    Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-trial.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'龜鹿飲試喝組｜先試喝，再決定'}),
+    Object.freeze({id:'guilu-gao',keywords:['龜鹿膏'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-gao-100g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膏100g正式DM'}),
+    Object.freeze({id:'guilu-drink-30',keywords:['龜鹿飲30cc','30cc','小玻璃罐'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-30cc.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿飲30cc小玻璃罐正式DM'}),
+    Object.freeze({id:'guilu-drink-180',keywords:['龜鹿飲180cc','180cc','鋁袋'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-180cc.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿飲180cc鋁袋正式DM'}),
+    Object.freeze({id:'guilu-tangkuai',keywords:['龜鹿湯塊','湯塊75g','湯塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-tangkuai-75g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿湯塊75g正式DM'}),
+    Object.freeze({id:'guilu-jiao',keywords:['龜鹿膠','600g','32塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-jiao-600g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膠600g正式DM'}),
+    Object.freeze({id:'lurong-fen',keywords:['鹿茸粉','鹿茸','75g'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/lurong-fen-75g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味鹿茸粉75g正式DM'})
+  ]),
   latestZipCatalog:'/data/latest-user-post-zip.json',
   publicZipCatalog:'https://ts15825868.github.io/xianjiawei/data/post-library-userzip2-v20260810.json',
   imageSourcePriority:Object.freeze(['user_zip_approved','approved_existing','regenerate_if_missing']),
@@ -21,18 +30,26 @@ const CONFIG=Object.freeze({
 const normalize=s=>String(s||'').toLowerCase();
 const rejected=c=>c?.rejected===true||c?.status==='rejected'||c?.product_redrawn===true;
 const publishable=c=>c?.binary_ready===true&&/^https?:\/\//.test(String(c?.public_url||''));
-const scoreCandidate=(copy,candidate)=>{
+const semanticScore=(copy,candidate)=>{
   const text=normalize(copy);
   const c=candidate||{};
-  if(rejected(c))return -Infinity;
-  let score=0;
-  const source=normalize(c.source||c.origin||c.source_file||'');
-  if(source.includes('zip')||source.includes('user')||c.source_file)score+=100;
-  if(c.approved===true||c.status==='approved')score+=60;
-  for(const keyword of Array.isArray(c.keywords)?c.keywords:[]){if(keyword&&text.includes(normalize(keyword)))score+=12;}
+  let semantic=0;
+  for(const keyword of Array.isArray(c.keywords)?c.keywords:[]){if(keyword&&text.includes(normalize(keyword)))semantic+=12;}
   const scene=normalize(c.scene||c.title||c.alt||c.id||'');
-  for(const token of text.split(/[\s，。！？、；：,.!?;:]+/).filter(x=>x.length>=2))if(scene.includes(token))score+=2;
-  return score;
+  for(const token of text.split(/[\s，。！？、；：,.!?;:]+/).filter(x=>x.length>=2))if(scene.includes(token))semantic+=2;
+  return semantic;
+};
+const scoreCandidate=(copy,candidate)=>{
+  const c=candidate||{};
+  if(rejected(c))return -Infinity;
+  const semantic=semanticScore(copy,c);
+  if(semantic<=0)return -Infinity;
+  let priority=0;
+  const source=normalize(c.source||c.origin||c.source_file||'');
+  if(source.includes('user-approved-formal-media'))priority+=220;
+  else if(source.includes('zip')||source.includes('user')||c.source_file)priority+=100;
+  if(c.approved===true||c.status==='approved')priority+=60;
+  return semantic+priority;
 };
 const rank=(copy,candidates)=>{
   const list=Array.isArray(candidates)?candidates:[];
@@ -41,11 +58,13 @@ const rank=(copy,candidates)=>{
 const chooseSource=(copy,candidates)=>rank(copy,candidates)[0]?.item||null;
 const choosePublishable=(copy,candidates)=>rank(copy,candidates).find(x=>publishable(x.item))?.item||null;
 const resolveMedia=(copy,candidates)=>{
+  const product=choosePublishable(copy,CONFIG.formalProductMedia);
+  if(product)return{status:'approved_existing',candidate:product,action:'use',authority:'formal_product_media'};
   const usable=choosePublishable(copy,candidates);
-  if(usable)return{status:'approved_existing',candidate:usable,action:'use'};
+  if(usable)return{status:'approved_existing',candidate:usable,action:'use',authority:'user_zip_approved'};
   const source=chooseSource(copy,candidates);
-  if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary'};
-  return{status:'regenerate_if_missing',candidate:null,action:'regenerate'};
+  if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary',authority:'user_zip_approved'};
+  return{status:'regenerate_if_missing',candidate:null,action:'regenerate',authority:'none'};
 };
 const loadJson=async(url)=>{
   const response=await fetch(url,{cache:'no-store',credentials:'same-origin'});
@@ -69,6 +88,7 @@ const loadLatestZipCatalog=async()=>{
 const runtime={
   ...CONFIG,
   latestCatalog:null,
+  semanticScore,
   chooseSourceCandidate:chooseSource,
   chooseBestCandidate:choosePublishable,
   resolveMedia,
@@ -85,7 +105,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(!host||host.querySelector('[data-formal-media-policy-note]'))return;
   const note=document.createElement('p');
   note.dataset.formalMediaPolicyNote='true';
-  note.innerHTML='<strong>貼文配圖最新原則：</strong>先比對最新使用者 ZIP；若有合格圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成或換圖都回待審核並重新完成16項審核。產品本體只允許正式原圖，AI不得重畫。';
+  note.innerHTML='<strong>貼文配圖最新原則：</strong>產品／試喝文案優先使用使用者核准正式DM；生活情境文先比對最新 ZIP，而且必須真的命中季節、情境、冷熱、動作或道具才算合格。若有合格 ZIP 圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成或換圖都回待審核並重新完成16項審核。';
   host.appendChild(document.createElement('br'));
   host.appendChild(note);
 });
