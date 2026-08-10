@@ -33,13 +33,13 @@ for(const token of [
   "window.confirm",
 ]) must(sync.includes(token),`500篇母庫同步缺少安全契約：${token}`);
 
-const exporterRuntime=sync.match(/const EXPORT_RUNTIME=['"]([^'"]+)['"]/i)?.[1]||'';
+const exporterRuntime=sync.match(/const EXPORT_RUNTIME=['\"]([^'\"]+)['\"]/i)?.[1]||'';
 must(exporterRuntime&&/export/i.test(exporterRuntime)&&/retired-assets-removed/i.test(exporterRuntime),'500篇 exporter runtime 必須保留「退役資產已移除」能力識別');
-const productImageVersion=sync.match(/const PRODUCT_IMAGE_VERSION=['"]([^'"]+)['"]/i)?.[1]||'';
+const productImageVersion=sync.match(/const PRODUCT_IMAGE_VERSION=['\"]([^'\"]+)['\"]/i)?.[1]||'';
 must(productImageVersion&&/products-v3/i.test(productImageVersion)&&!/products-v2/i.test(productImageVersion),'500篇同步產品圖權威必須維持products-v3正式原圖系列');
 const knownMinimum=Number(sync.match(/KNOWN_REGENERATION_MINIMUM=(\d+)/)?.[1]||0);
 must(knownMinimum>=121,`500篇母庫已知重生成安全門檻不得低於121，目前${knownMinimum}`);
-const syncVersion=sync.match(/const VERSION=['"]([^'"]+)['"]/i)?.[1]||'';
+const syncVersion=sync.match(/const VERSION=['\"]([^'\"]+)['\"]/i)?.[1]||'';
 must(syncVersion&&/post-bank-sync/i.test(syncVersion),'500篇母庫同步工具必須有正式版本識別');
 
 must(sync.includes("if(posts.length!==500)"),'母庫不是500篇時必須拒絕同步');
@@ -57,9 +57,18 @@ must(sync.includes('knownMinimum<KNOWN_REGENERATION_MINIMUM'),'500篇同步必�
 must(!sync.includes('/publish-now'),'500篇同步不得呼叫立即發布');
 must(!sync.includes("status:'approved'")&&!sync.includes("status:'scheduled'")&&!sync.includes("status:'published'"),'500篇同步不得自行建立已核准／排程／發布狀態');
 must(gate.includes('/regeneration-ready')&&gate.includes("status='pending_review'"),'安全候選送待審核必須由正式review gate處理');
-must(/post-bank-sync\.js\?v=[^"']+/.test(html),'貼文系統沒有載入正式500篇母庫同步工具或缺少快取版本');
-must(html.includes('已知需重生成內容維持無舊錯圖狀態'),'貼文系統沒有向使用者說明重生成安全門檻');
+must(/post-bank-sync\.js\?v=[^\"']+/.test(html),'貼文系統沒有載入正式500篇母庫同步工具或缺少快取版本');
+
+// 重生成守門改驗正式能力，不再綁舊版固定文案字串。
+for(const token of [
+  '圖不符合／文案不符合／全部重新生成',
+  '原核准自動失效',
+  '儲存後會自動回到「待審核」',
+  '不會自動核准或發布',
+  '需要重新生成的內容不得沿用舊錯圖',
+]) must(html.includes(token),`貼文系統缺少重生成安全能力說明：${token}`);
+
 must(html.includes('products-v3')&&!html.includes('products-v2-actual-photos'),'貼文系統沒有維持目前products-v3正式產品圖權威');
 must(pkg.includes('assets/js/post-bank-sync.js'),'部署包沒有包含500篇母庫同步工具');
 
-console.log(`PASS：500篇母庫以可信postMessage來源重建；exporter與內部sync雙邊驗證退役資產已移除、products-v3正式原圖與至少${knownMinimum}篇已知重生成。正式內容依source id去重，只有無source id舊資料才以標題相容去重；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布；升級新版不再被舊v3/v5字串誤擋。`);
+console.log(`PASS：500篇母庫以可信postMessage來源重建；exporter與內部sync雙邊驗證退役資產已移除、products-v3正式原圖與至少${knownMinimum}篇已知重生成。正式內容依source id去重，只有無source id舊資料才以標題相容去重；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布；重生成守門驗正式能力，不再被舊固定文案誤擋。`);
