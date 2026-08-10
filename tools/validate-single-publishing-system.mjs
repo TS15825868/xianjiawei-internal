@@ -7,6 +7,8 @@ const buttons=read('assets/js/post-regenerate-buttons.js');
 const policy=read('assets/js/post-regenerate-policy-v1.js');
 const productGuard=read('assets/js/product-authority-guard.js');
 const mediaPolicy=read('assets/js/formal-media-policy-v20260810.js');
+const zipAssistant=read('assets/js/zip-media-assistant.js');
+const mediaSuggestion=read('assets/js/post-media-suggestion-ui-v1.js');
 const standard=read('docs/CONTENT_IMAGE_GENERATION_STANDARD.md');
 const formalMedia=read('docs/FORMAL_MEDIA_POLICY_20260810.md');
 const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
@@ -19,9 +21,11 @@ must(publishing.includes('禁止拼貼')&&publishing.includes('AI 不得重畫�
 must(publishing.includes('post-regenerate-buttons.js'),'正式系統缺少重生成按鈕呈現層');
 must(publishing.includes('post-regenerate-policy-v1.js'),'未載入唯一免費重生成流程');
 must(publishing.includes('formal-media-policy-v20260810.js'),'正式系統沒有載入最新媒體權威流程');
+must(publishing.includes('zip-media-assistant.js'),'正式系統沒有載入每篇貼文ZIP配圖判斷層');
 must(/post-regenerate-policy-v1\.js\?v=[^"']+/.test(publishing),'貼文系統重生成流程缺少正式快取版本識別');
 must(/product-authority-guard\.js\?v=[^"']+/.test(publishing),'貼文系統產品守門缺少正式快取版本識別');
 must(/formal-media-policy-v20260810\.js\?v=[^"']+/.test(publishing),'貼文系統最新媒體權威缺少快取版本識別');
+must(/zip-media-assistant\.js\?v=[^"']+/.test(publishing),'ZIP配圖判斷層缺少正式快取版本識別');
 must(!/single-system-v2-free-roundtrip|single-system-v3-true-originals/.test(publishing),'貼文系統不得回退已退役重生成版本');
 must(!/product-authority-v6-true-originals/.test(publishing),'貼文系統不得回退已退役產品守門版本');
 must(!publishing.includes('post-regenerate-v6.js'),'正式系統不得再載入舊v6第二套重生成邏輯');
@@ -42,6 +46,12 @@ for(const token of ['禁止拼湊','products-v3','AI 重畫產品','30cc','180cc
 for(const token of ['user_zip_approved','approved_existing','regenerate_if_missing','pending_review','reviewItems:16','ai-redrawn-product','copy-image-mismatch','needs_binary_sync','binary_ready','public_url']){
   must(mediaPolicy.includes(token),`最新媒體權威 runtime 缺少能力：${token}`)
 }
+for(const token of ['resolveMedia','approved_existing','needs_binary_sync','regenerate_if_missing','套用 ZIP 合格圖','xjw-publishing-list-rendered']){
+  must(zipAssistant.includes(token),`每篇貼文ZIP判斷層缺少能力：${token}`)
+}
+for(const token of ['resolveMedia','可直接使用','待同步原圖','需要重新生成','16項']){
+  must(mediaSuggestion.includes(token),`貼文編輯器媒體建議層缺少能力：${token}`)
+}
 for(const token of ['最新提供的 zip','沒有合格圖才進重新生成','16項審核','AI 不得重畫產品','不驗舊版固定句子']){
   must(formalMedia.includes(token),`最新媒體權威文件缺少：${token}`)
 }
@@ -59,6 +69,8 @@ must(!pkg.includes('cp assets/js/internal-app.js dist/assets/js/internal-app.js'
 must(!pkg.includes('cp assets/js/erp-publishing-separation.js'),'正式部署不得再帶出ERP分流工具');
 must(pkg.includes('post-regenerate-buttons.js')&&pkg.includes('post-regenerate-policy-v1.js'),'正式部署缺少單一重生成按鈕＋流程');
 must(pkg.includes('formal-media-policy-v20260810.js'),'正式部署沒有包含最新媒體權威 runtime');
+must(pkg.includes('zip-media-assistant.js'),'正式部署沒有包含每篇貼文ZIP配圖判斷層');
+must(pkg.includes('post-media-suggestion-ui-v1.js'),'正式部署沒有包含貼文編輯器媒體建議層');
 must(pkg.includes('latest-user-post-zip.json'),'正式部署沒有包含最新 ZIP 素材目錄');
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得再帶出舊v6第二套重生成邏輯');
-console.log('PASS：正式部署使用最新2.zip；區分可直接用／待同步原圖／真的缺圖才生成，products-v3、圖文一致與16項重審均保留；守門不綁舊版號或舊固定文案。');
+console.log('PASS：正式部署使用最新2.zip；每篇貼文顯示可直接用／待同步原圖／真的缺圖才生成，products-v3、圖文一致與16項重審均保留；守門不綁舊版號或舊固定文案。');
