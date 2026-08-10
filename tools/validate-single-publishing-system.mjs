@@ -9,6 +9,7 @@ const productGuard=read('assets/js/product-authority-guard.js');
 const mediaPolicy=read('assets/js/formal-media-policy-v20260810.js');
 const standard=read('docs/CONTENT_IMAGE_GENERATION_STANDARD.md');
 const formalMedia=read('docs/FORMAL_MEDIA_POLICY_20260810.md');
+const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 const pkg=read('package.json');
 
 must(index.includes("location.replace('/publishing.html')"),'首頁必須直接進唯一貼文審核發佈系統');
@@ -44,11 +45,18 @@ for(const token of ['user_zip_approved','approved_existing','regenerate_if_missi
 for(const token of ['最新提供的 zip','沒有合格圖才進重新生成','16項審核','AI 不得重畫產品','不驗舊版固定句子']){
   must(formalMedia.includes(token),`最新媒體權威文件缺少：${token}`)
 }
+must(latestZip.source==='2.zip','貼文中心尚未鎖定使用者最新 2.zip 素材批次');
+must(Number(latestZip.candidate_count)>=22,'最新 ZIP 候選數不足，不能偷偷退回舊圖庫');
+must(latestZip.priority==='user_zip_approved','最新 ZIP 必須優先於舊候選／重新生成');
+must(/post-library-userzip2-v20260810\.json/.test(latestZip.public_catalog||''),'貼文中心未指向官網最新 ZIP 公開目錄');
+must(/regenerate only if no approved candidate matches/.test(latestZip.selection_rule||''),'缺少「無合格圖才生成」能力規則');
+must(/pending_review/.test(latestZip.review_rule||'')&&/16/.test(latestZip.review_rule||''),'最新 ZIP 配圖後必須回待審核並保留16項審核');
 must(publishing.includes('最新貼文圖來源')&&publishing.includes('不合格不得硬配')&&publishing.includes('找不到合格圖才重新生成'),'貼文中心顧客可見說明沒有同步最新zip優先配圖原則');
 must(!pkg.includes('cp brand-control.html dist/brand-control.html'),'正式部署不得再帶出品牌控制台');
 must(!pkg.includes('cp assets/js/internal-app.js dist/assets/js/internal-app.js'),'正式部署不得再帶出ERP前端');
 must(!pkg.includes('cp assets/js/erp-publishing-separation.js'),'正式部署不得再帶出ERP分流工具');
 must(pkg.includes('post-regenerate-buttons.js')&&pkg.includes('post-regenerate-policy-v1.js'),'正式部署缺少單一重生成按鈕＋流程');
 must(pkg.includes('formal-media-policy-v20260810.js'),'正式部署沒有包含最新媒體權威 runtime');
+must(pkg.includes('latest-user-post-zip.json'),'正式部署沒有包含最新 ZIP 素材目錄');
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得再帶出舊v6第二套重生成邏輯');
-console.log('PASS：正式部署只保留仙加味唯一貼文審核發佈系統；守門驗最新使用者ZIP優先配圖、缺圖才重生成、products-v3權威、尺寸、禁止拼湊、產品不得AI重畫與16項重審能力，不再因正確新版快取版本號或舊固定文案更新而誤擋。');
+console.log('PASS：正式部署使用最新2.zip素材目錄；ZIP優先、無合格圖才重生成、products-v3產品權威、圖文一致與16項重審均保留；守門不綁舊版號或舊固定文案。');
