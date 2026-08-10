@@ -1,13 +1,16 @@
 {
-  "runtime":"20260810-userzip2-post-catalog-v2-binary-aware",
+  "runtime":"20260810-userzip2-post-catalog-v3-latest-authority",
+  "approval_batch":"20260810-latest-user-dm-and-trial",
   "public_catalog":"https://ts15825868.github.io/xianjiawei/data/post-library-userzip2-v20260810.json",
+  "formal_media_authority":"https://ts15825868.github.io/xianjiawei/data/formal-media-authority-v20260810.json",
   "source":"2.zip",
   "candidate_count":22,
   "priority":"user_zip_approved",
   "binary_sync":{"status":"pending","publishable_count":0},
-  "selection_rule":"match copy by season, scene, environment, temperature, expression, action, props and product context; reject mismatch; if a suitable ZIP source exists but binary is not online, mark needs_binary_sync; regenerate only if no approved source candidate matches",
-  "product_rule":"product-specific copy uses approved formal DM/products-v3 first; ZIP post art must never redefine product package identity",
-  "review_rule":"any selected, regenerated or edited media returns to pending_review and must pass all 16 review items before scheduling or publishing",
+  "selection_rule":"product and trial copy uses the newest approved formal DM/trial media first; lifestyle copy then matches 2.zip by season, scene, environment, temperature, expression, action, props and product context; reject mismatch; if a suitable ZIP source exists but binary is not online, mark needs_binary_sync; regenerate only if no approved source candidate matches",
+  "product_rule":"products-v3 remains package identity authority; customer-facing approved DM may be displayed but must never redefine product shape, package, label or proportion",
+  "review_rule":"any selected, regenerated, replaced or edited media invalidates prior approval, returns to pending_review and must pass all 16 review items before scheduling or publishing",
+  "guard_rule":"guards follow current authority and semantic capabilities; do not require retired version numbers, old filenames or obsolete fixed wording",
   "safe_scene_priority":[
     {"id":"self-care","source_file":"242A0279-4C5B-4FF6-B3B6-4878597E09FF.PNG","public_url":"","binary_ready":false,"keywords":["照顧自己","日常","安心","休息"]},
     {"id":"storage","source_file":"2AC9FB02-1BE8-4309-9F03-848FB93CCF2E.PNG","public_url":"","binary_ready":false,"keywords":["開封","保存","冷藏","保存提醒"]},
@@ -18,6 +21,6 @@
     {"id":"hot-weather","source_file":"ADF0816E-E061-4831-9273-608585F065F7.PNG","public_url":"","binary_ready":false,"keywords":["天氣悶熱","夏天","外出","補水"]},
     {"id":"daily-warm","source_file":"D3D39324-8BB5-4748-AE3A-168EE4F3A1CF.PNG","public_url":"","binary_ready":false,"keywords":["想暖一點","熱飲","日常安排","溫暖"]},
     {"id":"work-break","source_file":"E9C7429D-27F7-457C-94C3-5FD0368C58FC.PNG","public_url":"","binary_ready":false,"keywords":["工作再忙","休息","上班","小休息"]},
-    {"id":"rainy-day","source_file":"F90B4AE1-51C1-441A-8EA8-4E28CB410456.PNG","public_url":"","binary_ready":false,"keywords":["下雨天","雨天","溫暖","在家"]}
+    {"id":"rainy-day","source_file":"F90B4AE1-51C1-441A-8EA8-E07F20FE238D.PNG","public_url":"","binary_ready":false,"keywords":["下雨天","雨天","溫暖","在家"]}
   ]
 }
