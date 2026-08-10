@@ -1,10 +1,13 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v6-latest-production-bundle';
-const UI_RUNTIME='20260810-standalone-v16-latest-product-photos';
+const VERSION='2026-08-10-publishing-only-entry-v7-zip2-media';
+const UI_RUNTIME='20260810-standalone-v19-zip2-media';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
 const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
+const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v2-zip2';
+const LATEST_POST_ZIP='2.zip';
+const LATEST_POST_ZIP_CANDIDATES=22;
 const KNOWN_REGENERATION_MINIMUM=121;
 const RETIRED_EXACT=new Set([
   '/api/overview',
@@ -43,6 +46,12 @@ export default{
           productImageVersion:PRODUCT_IMAGE_VERSION,
           productImageAuthority:'products-v3-latest-original-product-photos',
           postBankSyncVersion:POST_BANK_SYNC_VERSION,
+          formalMediaRuntime:FORMAL_MEDIA_RUNTIME,
+          latestPostZip:LATEST_POST_ZIP,
+          latestPostZipCandidates:LATEST_POST_ZIP_CANDIDATES,
+          postImagePriority:'user_zip_approved',
+          regenerateOnlyIfNoApprovedMatch:true,
+          reviewItemsAfterMediaChange:16,
           knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,
           publishingOnly:true,
           publishingOnlyVersion:VERSION,
