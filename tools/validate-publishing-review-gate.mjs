@@ -51,7 +51,8 @@ must(generation.includes("window.open('about:blank'"),'iPhone/Safari重生成必
 must(!generation.includes('api.openai.com'),'免費重新生成流程不得直接呼叫付費OpenAI API');
 must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');
 must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
-must(html.includes('single-system-v4-latest-originals'),'貼文中心沒有載入最新重生成快取版本');
+must(/post-regenerate-policy-v1\.js\?v=[^"']+/.test(html),'貼文中心重生成流程缺少正式快取版本識別');
+must(!/single-system-v2-free-roundtrip|single-system-v3-true-originals/.test(html),'貼文中心不得回退已退役重生成版本');
 
 must(generationButtons.includes("data-xjw-regenerate")||generationButtons.includes('dataset.xjwRegenerate'),'純按鈕層沒有建立重生成操作入口');
 must(!generationButtons.includes('window.open('),'純按鈕層不得另外開啟ChatGPT');
@@ -69,7 +70,7 @@ must(ui.includes('最終確認：文案與圖片一致'),'前端缺少最終圖�
 must(ui.includes('stopImmediatePropagation'),'原本的一鍵審核按鈕必須被完整審核流程攔截');
 must(html.includes('publishing-review-gate.js'),'獨立貼文系統沒有載入16項圖文審核UI');
 must(html.includes('原核准自動失效'),'獨立貼文系統沒有清楚提示重新審核規則');
-must(raster.includes("version:'2026-08-09-v7-raster-invalidates-review'"),'SVG轉JPEG工具不是目前正式v7重新審核版本');
+must(/version:'[^']*raster-invalidates-review'/.test(raster),'SVG轉JPEG工具必須標示「轉圖後審核失效」正式能力，不得只鎖某一版號');
 must(raster.includes("throw new Error('這張候選圖仍內嵌舊 products-v2"),'舊products-v2候選沒有被SVG轉圖器硬拒絕');
 must(raster.includes("throw new Error('這張候選圖仍內嵌LINE OA專用角色素材"),'LINE OA角色素材沒有被貼文轉圖器硬拒絕');
 must(raster.includes("RAW_BASE}images/products-v3/"),'SVG轉圖沒有鎖到products-v3正式原圖');
@@ -78,4 +79,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統只保留一套免費ChatGPT重生成邏輯＋純按鈕呈現層，並具備products-v3候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門。');
+console.log('PASS：唯一貼文系統保留一套免費ChatGPT重生成邏輯＋純按鈕呈現層，並具備products-v3候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門；驗收改看正式能力，不再綁死正確新版版本號。');
