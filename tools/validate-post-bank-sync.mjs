@@ -59,16 +59,17 @@ must(!sync.includes("status:'approved'")&&!sync.includes("status:'scheduled'")&&
 must(gate.includes('/regeneration-ready')&&gate.includes("status='pending_review'"),'安全候選送待審核必須由正式review gate處理');
 must(/post-bank-sync\.js\?v=[^\"']+/.test(html),'貼文系統沒有載入正式500篇母庫同步工具或缺少快取版本');
 
-// 重生成守門改驗正式能力，不再綁舊版固定文案字串。
-for(const token of [
-  '圖不符合／文案不符合／全部重新生成',
-  '原核准自動失效',
-  '儲存後會自動回到「待審核」',
-  '不會自動核准或發布',
-  '需要重新生成的內容不得沿用舊錯圖',
-]) must(html.includes(token),`貼文系統缺少重生成安全能力說明：${token}`);
+// 重生成守門只驗正式能力與安全語意，不再綁任何單一句子的逐字版本。
+const normalized=html.replace(/\s+/g,'');
+const hasAny=(patterns)=>patterns.some(p=>p.test(normalized));
+must(hasAny([/圖不符合.*文案不符合.*全部重新生成/,/重新生成.*圖.*文案/]),'貼文系統沒有提供圖／文案重新生成入口');
+must(/原核准自動失效/.test(normalized)||/撤銷舊核准/.test(normalized),'貼文系統沒有說明修改／重生成後舊核准會失效');
+must(hasAny([/儲存後(?:會)?自動回到[「"]?待審核/,/生成完成後.*待審核/,/重新生成後.*待審核/]),'貼文系統沒有說明重生成完成後必須回待審核');
+must(/不會自動核准(?:或|／)發布/.test(normalized)||/不會自動核准.*不會自動發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／發布');
+must(/不得沿用舊錯圖/.test(normalized)||/舊錯圖.*不得沿用/.test(normalized),'貼文系統沒有防止重生成內容沿用舊錯圖');
+must(/16項/.test(normalized)&&(/重新完成/.test(normalized)||/重跑/.test(normalized)||/審核/.test(normalized)),'貼文系統沒有保留16項重新審核能力說明');
 
 must(html.includes('products-v3')&&!html.includes('products-v2-actual-photos'),'貼文系統沒有維持目前products-v3正式產品圖權威');
 must(pkg.includes('assets/js/post-bank-sync.js'),'部署包沒有包含500篇母庫同步工具');
 
-console.log(`PASS：500篇母庫以可信postMessage來源重建；exporter與內部sync雙邊驗證退役資產已移除、products-v3正式原圖與至少${knownMinimum}篇已知重生成。正式內容依source id去重，只有無source id舊資料才以標題相容去重；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布；重生成守門驗正式能力，不再被舊固定文案誤擋。`);
+console.log(`PASS：500篇母庫以可信postMessage來源重建；exporter與內部sync雙邊驗證退役資產已移除、products-v3正式原圖與至少${knownMinimum}篇已知重生成。正式內容依source id去重，只有無source id舊資料才以標題相容去重；已發布／活動冷卻不動，安全候選只進待審核，需重生成只建草稿，絕不自動發布；重生成守門驗正式能力與安全語意，不再被舊固定文案誤擋。`);
