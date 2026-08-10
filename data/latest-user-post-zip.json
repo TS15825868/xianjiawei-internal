@@ -1,10 +1,23 @@
 {
-  "runtime":"20260810-userzip2-post-catalog-v1",
+  "runtime":"20260810-userzip2-post-catalog-v2-binary-aware",
   "public_catalog":"https://ts15825868.github.io/xianjiawei/data/post-library-userzip2-v20260810.json",
   "source":"2.zip",
   "candidate_count":22,
   "priority":"user_zip_approved",
-  "selection_rule":"match copy by season, scene, environment, temperature, expression, action, props and product context; reject mismatch; regenerate only if no approved candidate matches",
+  "binary_sync":{"status":"pending","publishable_count":0},
+  "selection_rule":"match copy by season, scene, environment, temperature, expression, action, props and product context; reject mismatch; if a suitable ZIP source exists but binary is not online, mark needs_binary_sync; regenerate only if no approved source candidate matches",
   "product_rule":"product-specific copy uses approved formal DM/products-v3 first; ZIP post art must never redefine product package identity",
-  "review_rule":"any selected, regenerated or edited media returns to pending_review and must pass all 16 review items before scheduling or publishing"
+  "review_rule":"any selected, regenerated or edited media returns to pending_review and must pass all 16 review items before scheduling or publishing",
+  "safe_scene_priority":[
+    {"id":"self-care","source_file":"242A0279-4C5B-4FF6-B3B6-4878597E09FF.PNG","public_url":"","binary_ready":false,"keywords":["照顧自己","日常","安心","休息"]},
+    {"id":"storage","source_file":"2AC9FB02-1BE8-4309-9F03-848FB93CCF2E.PNG","public_url":"","binary_ready":false,"keywords":["開封","保存","冷藏","保存提醒"]},
+    {"id":"temperature","source_file":"37A166A8-A2E0-4AE1-9207-3064390B1FB6.PNG","public_url":"","binary_ready":false,"keywords":["早晚溫差","換季","外套","秋天"]},
+    {"id":"warm-rhythm","source_file":"928E2F46-2107-4160-A79F-B540FA7CD18B.PNG","public_url":"","binary_ready":false,"keywords":["暖一點","日常","慢慢安排","溫熱"]},
+    {"id":"choose-type","source_file":"92BDF325-BF85-4336-8004-595E0388BD35.PNG","public_url":"","binary_ready":false,"keywords":["怎麼選","產品選擇","依作息","型態"]},
+    {"id":"hydration","source_file":"9A5C0228-E916-4227-88F9-C6E3C106B177.PNG","public_url":"","binary_ready":false,"keywords":["補水","喝水","日常提醒","水分"]},
+    {"id":"hot-weather","source_file":"ADF0816E-E061-4831-9273-608585F065F7.PNG","public_url":"","binary_ready":false,"keywords":["天氣悶熱","夏天","外出","補水"]},
+    {"id":"daily-warm","source_file":"D3D39324-8BB5-4748-AE3A-168EE4F3A1CF.PNG","public_url":"","binary_ready":false,"keywords":["想暖一點","熱飲","日常安排","溫暖"]},
+    {"id":"work-break","source_file":"E9C7429D-27F7-457C-94C3-5FD0368C58FC.PNG","public_url":"","binary_ready":false,"keywords":["工作再忙","休息","上班","小休息"]},
+    {"id":"rainy-day","source_file":"F90B4AE1-51C1-441A-8EA8-4E28CB410456.PNG","public_url":"","binary_ready":false,"keywords":["下雨天","雨天","溫暖","在家"]}
+  ]
 }
