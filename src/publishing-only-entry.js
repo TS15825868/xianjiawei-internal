@@ -1,7 +1,7 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v7-zip2-media';
+const VERSION='2026-08-10-publishing-only-entry-v8-zip2-assets';
 const UI_RUNTIME='20260810-standalone-v19-zip2-media';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
 const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
@@ -35,6 +35,15 @@ export default{
         publishing_path:'/publishing.html',
         version:VERSION
       },404);
+    }
+    if(request.method==='GET'&&url.pathname==='/data/latest-user-post-zip.json'&&env?.ASSETS?.fetch){
+      const asset=await env.ASSETS.fetch(request);
+      if(asset.ok){
+        const headers=new Headers(asset.headers);
+        headers.set('cache-control','no-store');
+        headers.set('x-xianjiawei-publishing-only',VERSION);
+        return new Response(asset.body,{status:asset.status,headers});
+      }
     }
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(url.pathname)){
