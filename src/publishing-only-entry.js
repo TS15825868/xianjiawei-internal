@@ -1,11 +1,11 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v10-zip-media-editor';
-const UI_RUNTIME='20260810-standalone-v21-zip-media-editor';
+const VERSION='2026-08-10-publishing-only-entry-v11-formal-media-assistant';
+const UI_RUNTIME='20260810-standalone-v21-formal-media-assistant';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
 const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
-const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v3-binary-aware';
+const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v4-semantic-match';
 const LATEST_POST_ZIP='2.zip';
 const LATEST_POST_ZIP_CANDIDATES=22;
 const KNOWN_REGENERATION_MINIMUM=121;
@@ -59,8 +59,10 @@ export default{
           latestPostZip:LATEST_POST_ZIP,
           latestPostZipCandidates:LATEST_POST_ZIP_CANDIDATES,
           postImagePriority:'user_zip_approved',
-          zipMediaDecisionOnPostCard:true,
-          zipMediaSuggestionInEditor:true,
+          formalMediaDecisionOnPostCard:true,
+          singleMediaAssistant:true,
+          semanticImageMatchRequired:true,
+          formalProductMediaPreferred:true,
           regenerateOnlyIfNoApprovedMatch:true,
           zipSourceMatchCanWaitForBinarySync:true,
           reviewItemsAfterMediaChange:16,
