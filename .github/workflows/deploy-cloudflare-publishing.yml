@@ -56,9 +56,11 @@ jobs:
           must(d.source==='2.zip','建置輸出沒有最新2.zip素材批次');
           must(Number(d.candidate_count)>=22,'建置輸出ZIP候選數不足');
           must(d.priority==='user_zip_approved','建置輸出沒有維持ZIP優先');
-          must(/regenerate only if no approved candidate matches/.test(d.selection_rule||''),'建置輸出沒有維持缺圖才生成');
+          const rule=String(d.selection_rule||'');
+          must(/regenerate only if no approved .*candidate matches/.test(rule),'建置輸出沒有維持「無合格來源才生成」能力');
+          must(/needs_binary_sync/.test(rule),'建置輸出沒有區分「合格來源待同步原圖」狀態');
           must(/pending_review/.test(d.review_rule||'')&&/16/.test(d.review_rule||''),'建置輸出沒有維持待審核＋16項審核');
-          console.log('PASS: latest ZIP catalog is included in production assets.');
+          console.log('PASS: latest ZIP catalog and fallback capabilities are included in production assets.');
           NODE
 
       - name: Detect Cloudflare deploy credentials
@@ -90,19 +92,20 @@ jobs:
             catalog="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/data/latest-user-post-zip.json' || true)"
             if [ -n "$response" ]; then
               echo "$response"
-              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0; zip_ok=0
+              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0; media_ok=0; zip_ok=0
               printf '%s' "$response" | grep -Eq '"uiRuntime"[[:space:]]*:[[:space:]]*"[^"]+"' && ui_ok=1
               printf '%s' "$response" | grep -Eq '"productImageVersion"[[:space:]]*:[[:space:]]*"[^"]*products-v3[^"]*"' && image_ok=1
               printf '%s' "$response" | grep -Eq '"postBankSyncVersion"[[:space:]]*:[[:space:]]*"[^"]+"' && sync_ok=1
               RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); const v=Number(d.knownRegenerationMinimum ?? d?.publishing?.knownRegenerationMinimum ?? 0); process.exit(v>=121?0:1)' && regen_ok=1 || true
+              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(d.latestPostZip==="2.zip"&&Number(d.latestPostZipCandidates)>=22&&d.postImagePriority==="user_zip_approved"&&d.regenerateOnlyIfNoApprovedMatch===true&&Number(d.reviewItemsAfterMediaChange)===16&&String(d.formalMediaRuntime||"").length>0?0:1)' && media_ok=1 || true
               if [ -n "$catalog" ]; then
-                CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); process.exit(d.source==="2.zip"&&Number(d.candidate_count)>=22&&d.priority==="user_zip_approved"?0:1)' && zip_ok=1 || true
+                CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); const r=String(d.selection_rule||""); process.exit(d.source==="2.zip"&&Number(d.candidate_count)>=22&&d.priority==="user_zip_approved"&&/needs_binary_sync/.test(r)&&/regenerate only if no approved .*candidate matches/.test(r)?0:1)' && zip_ok=1 || true
               fi
-              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ]; then
-                echo 'Worker core is healthy: UI runtime exists, products-v3 authority is live, post-bank sync is present, regeneration minimum is safe, and the latest ZIP catalog is deployed.'
+              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ]; then
+                echo 'Worker core is healthy: current UI, products-v3, post-bank sync, regeneration safety, latest ZIP catalog and binary-aware media fallback are live.'
                 exit 0
               fi
-              echo "Worker responded but formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok zip=$zip_ok)." >&2
+              echo "Worker responded but formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok media=$media_ok zip=$zip_ok)." >&2
             fi
             sleep 4
           done
