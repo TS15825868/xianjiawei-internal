@@ -21,10 +21,12 @@ must(publishing.includes('禁止拼貼')&&publishing.includes('AI 不得重畫�
 must(publishing.includes('post-regenerate-buttons.js'),'正式系統缺少重生成按鈕呈現層');
 must(publishing.includes('post-regenerate-policy-v1.js'),'未載入唯一免費重生成流程');
 must(publishing.includes('formal-media-policy-v20260810.js'),'正式系統沒有載入最新媒體權威流程');
+must(publishing.includes('post-media-suggestion-ui-v1.js'),'正式系統沒有載入貼文編輯器媒體建議層');
 must(publishing.includes('zip-media-assistant.js'),'正式系統沒有載入每篇貼文ZIP配圖判斷層');
 must(/post-regenerate-policy-v1\.js\?v=[^"']+/.test(publishing),'貼文系統重生成流程缺少正式快取版本識別');
 must(/product-authority-guard\.js\?v=[^"']+/.test(publishing),'貼文系統產品守門缺少正式快取版本識別');
 must(/formal-media-policy-v20260810\.js\?v=[^"']+/.test(publishing),'貼文系統最新媒體權威缺少快取版本識別');
+must(/post-media-suggestion-ui-v1\.js\?v=[^"']+/.test(publishing),'貼文編輯器媒體建議層缺少正式快取版本識別');
 must(/zip-media-assistant\.js\?v=[^"']+/.test(publishing),'ZIP配圖判斷層缺少正式快取版本識別');
 must(!/single-system-v2-free-roundtrip|single-system-v3-true-originals/.test(publishing),'貼文系統不得回退已退役重生成版本');
 must(!/product-authority-v6-true-originals/.test(publishing),'貼文系統不得回退已退役產品守門版本');
@@ -73,4 +75,4 @@ must(pkg.includes('zip-media-assistant.js'),'正式部署沒有包含每篇貼�
 must(pkg.includes('post-media-suggestion-ui-v1.js'),'正式部署沒有包含貼文編輯器媒體建議層');
 must(pkg.includes('latest-user-post-zip.json'),'正式部署沒有包含最新 ZIP 素材目錄');
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得再帶出舊v6第二套重生成邏輯');
-console.log('PASS：正式部署使用最新2.zip；每篇貼文顯示可直接用／待同步原圖／真的缺圖才生成，products-v3、圖文一致與16項重審均保留；守門不綁舊版號或舊固定文案。');
+console.log('PASS：正式部署使用最新2.zip；每篇貼文卡與編輯器都顯示可直接用／待同步原圖／真的缺圖才生成，products-v3、圖文一致與16項重審均保留；守門不綁舊版號或舊固定文案。');
