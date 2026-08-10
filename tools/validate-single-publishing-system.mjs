@@ -19,7 +19,7 @@ must(publishing.includes('唯一正式內容系統'),'貼文系統缺少唯一�
 must(publishing.includes('禁止拼貼')&&publishing.includes('AI 不得重畫產品'),'主畫面沒有清楚顯示圖片硬規則');
 for(const script of ['post-regenerate-buttons.js','post-regenerate-policy-v1.js','formal-media-policy-v20260810.js','zip-media-assistant.js']){
   must(publishing.includes(script),`正式系統缺少必要能力層：${script}`);
-  must(new RegExp(script.replaceAll('.','\\.')+'\\?v=[^"\\\']+').test(publishing),`必要能力層缺少快取識別：${script}`);
+  must(publishing.includes(script+'?v='),`必要能力層缺少快取識別：${script}`);
 }
 must(!publishing.includes('post-media-suggestion-ui-v1.js'),'正式系統不得同時載入第二套媒體建議層');
 must(!publishing.includes('post-regenerate-v6.js'),'正式系統不得再載入舊v6第二套重生成邏輯');
