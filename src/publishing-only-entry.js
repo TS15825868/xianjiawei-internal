@@ -1,11 +1,11 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v8-zip2-assets';
+const VERSION='2026-08-10-publishing-only-entry-v9-binary-aware';
 const UI_RUNTIME='20260810-standalone-v19-zip2-media';
 const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
 const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
-const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v2-zip2';
+const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v3-binary-aware';
 const LATEST_POST_ZIP='2.zip';
 const LATEST_POST_ZIP_CANDIDATES=22;
 const KNOWN_REGENERATION_MINIMUM=121;
@@ -60,6 +60,7 @@ export default{
           latestPostZipCandidates:LATEST_POST_ZIP_CANDIDATES,
           postImagePriority:'user_zip_approved',
           regenerateOnlyIfNoApprovedMatch:true,
+          zipSourceMatchCanWaitForBinarySync:true,
           reviewItemsAfterMediaChange:16,
           knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,
           publishingOnly:true,
