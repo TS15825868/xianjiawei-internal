@@ -1,0 +1,64 @@
+name: Publishing Center Closeout Audit Once
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/closeout-audit-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install and audit current release
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --ignore-scripts
+          npm run check
+          npm run guard:full
+      - name: Verify 15 current ZIP lifestyle scenes are connected
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('data/latest-user-post-zip.json').read_text(encoding='utf-8'))
+          expected={'warm-rhythm','storage','warm-water','work-break','rainy-warm','hot-weather-hydration','daily-hydration','self-care-family','hot-weather-hydration-2','temperature-coat','choose-by-routine','rainy-home','work-break-2','self-care-family-2','temperature-coat-2'}
+          found={}
+          def walk(x):
+            if isinstance(x,dict):
+              sid=x.get('scene_id')
+              if sid in expected: found[sid]=x
+              for v in x.values(): walk(v)
+            elif isinstance(x,list):
+              for v in x: walk(v)
+          walk(data)
+          assert set(found)==expected, sorted(expected-set(found))
+          for sid,x in found.items():
+            url=x.get('online_src') or x.get('source_url') or x.get('public_url')
+            assert isinstance(url,str) and url.startswith('https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/'), (sid,url)
+            assert x.get('needs_binary_sync') is not True, sid
+            assert x.get('availability','online') != 'needs_binary_sync', sid
+          print('15 lifestyle scenes connected')
+          PY
+      - name: Remove one-time audit workflow
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/closeout-audit-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m 'audit: confirm current publishing-center release'
+          git push
