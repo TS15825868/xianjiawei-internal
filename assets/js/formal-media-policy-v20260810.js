@@ -8,8 +8,8 @@ const CONFIG=Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙）',
     guiluDrink180:'180cc／包（鋁袋）',
-    guiluTangkuai:'75g／盒｜8塊裝｜每塊約9.375g',
-    guiluJiao:'600g（1斤）／盒｜32塊裝｜每塊約18.75g',
+    guiluTangkuai:'75g／盒｜8塊裝',
+    guiluJiao:'600g／盒｜32塊裝',
     luerongFen:'75g／罐'
   }),
   formalProductMedia:Object.freeze([
@@ -24,7 +24,7 @@ const CONFIG=Object.freeze({
   latestZipCatalog:'/data/latest-user-post-zip.json',
   imageSourcePriority:Object.freeze(['formal_product_media','user_zip_approved','approved_existing','regenerate_if_missing']),
   regeneration:Object.freeze({invalidateApproval:true,invalidateSchedule:true,returnStatus:'pending_review',autoApprove:false,autoPublish:false,reviewItems:16}),
-  hardReject:Object.freeze(['products-v2','ai-redrawn-product','wrong-30cc-container','wrong-180cc-package','collage','cropped-character','stretched-product','copy-image-mismatch'])
+  hardReject:Object.freeze(['products-v2','ai-redrawn-product','wrong-30cc-container','wrong-180cc-package','collage','cropped-character','stretched-product','copy-image-mismatch','dm-copy-conflict'])
 });
 
 const normalize=s=>String(s||'').toLowerCase();
@@ -109,7 +109,7 @@ function installNote(catalog){
   const count=Number(catalog?.candidate_count||0);
   const note=document.createElement('p');
   note.dataset.formalMediaPolicyNote='true';
-  note.innerHTML=`<strong>貼文配圖最新原則：</strong>產品／試喝文案優先使用目前合格正式媒體與 products-v3；生活情境文再比對 ${source}${count?`（${count}張唯一候選）`:''}，而且必須真的命中季節、情境、環境、冷熱、表情、動作或道具才算合格。若有合格 ZIP 圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成或換圖都讓舊核准失效、回待審核並重新完成16項審核。`;
+  note.innerHTML=`<strong>貼文配圖最新原則：</strong>產品／試喝文案優先使用目前合格正式媒體與 products-v3；30cc內嵌「30cc／瓶」舊字樣的DM維持隔離。生活情境文再比對 ${source}${count?`（${count}張唯一候選）`:''}，而且必須真的命中季節、情境、環境、冷熱、表情、動作或道具才算合格。若有合格 ZIP 圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成或換圖都讓舊核准失效、回待審核並重新完成16項審核。`;
   host.appendChild(document.createElement('br'));
   host.appendChild(note);
 }
