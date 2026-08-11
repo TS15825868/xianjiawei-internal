@@ -5,6 +5,7 @@ assert.equal(PRODUCT_AUTHORITY.productCount,6);
 assert.equal(PRODUCT_AUTHORITY.soupBlockOnly,'75g／盒｜8塊裝');
 assert.equal(PRODUCT_AUTHORITY.guiluGaoUsagePrimary,'一天一次一小匙');
 assert.equal(PRODUCT_AUTHORITY.postImageMatchBlocking,true);
+assert.match(String(PRODUCT_AUTHORITY.mediaGuardPolicy||''),/current.*asset.*product|directory names are not rejection/i);
 
 const validProducts=[
   {name:'龜鹿膏',specification:'100g／罐',ingredients:'鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'一天一次一小匙；初次可先從半匙開始'},
@@ -36,9 +37,11 @@ assert.ok(validatePublicProductText('龜鹿飲30cc玻璃瓶').length>0);
 assert.ok(validatePublicProductText('龜鹿膏每日早上及下午各一小匙').length>0);
 
 assert.deepEqual(validatePostImageMatch({title:'龜鹿膏日常',image_url:'https://example.com/images/products-v3/guilu-gao.jpg',image_alt:'龜鹿膏'}),[]);
+assert.deepEqual(validatePostImageMatch({title:'龜鹿膏日常',image_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/01_guilu-gao-100g-dm.jpg?v=current',image_alt:'龜鹿膏100g目前核准正式展示圖',image_source:'current-approved-formal-media'}),[], '目前核准DM不得只因位於dm-final目錄就被舊守門誤擋');
 assert.ok(validatePostPayload({title:'龜鹿飲30cc日常',image_url:'https://example.com/images/products-v3/guilu-drink-180.jpg',image_alt:'龜鹿飲180cc鋁袋'}).some(x=>x.includes('圖文產品不匹配')));
 assert.ok(validatePostPayload({title:'龜鹿膏日常',image_url:'https://example.com/images/products-v2/guilu-gao.jpg',image_alt:'龜鹿膏'}).some(x=>x.includes('products-v2')));
 assert.ok(validatePostPayload({title:'龜鹿飲30cc玻璃瓶',image_url:'https://example.com/images/products-v3/guilu-drink-30.jpg',image_alt:'龜鹿飲30cc玻璃罐'}).some(x=>x.includes('不得稱瓶')));
+assert.ok(validatePostPayload({title:'龜鹿膏日常',image_url:'https://example.com/media/guilu-gao.jpg',image_alt:'龜鹿膏',image_source:'deprecated-reference-only'}).some(x=>x.includes('退役')));
 assert.deepEqual(validatePostPayload({title:'雨天的日常節奏',copy:'下雨天慢一點也很好',image_url:'https://example.com/media/IMG-123',image_alt:'窗邊雨天情境'}),[]);
 
-console.log('PASS ERP六項目前正式產品規格、正式成分、龜鹿膏目前使用方式與貼文圖文產品匹配守門；舊延伸規格與舊用法不再反向要求新版。');
+console.log('PASS 目前六項產品規格、正式成分、龜鹿膏使用方式與貼文圖文產品匹配守門；目前核准DM可用，退役狀態／products-v2／舊延伸規格與舊用法仍拒絕，不再以dm-final資料夾名稱誤擋新版。');
