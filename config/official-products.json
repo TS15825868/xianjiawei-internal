@@ -1,33 +1,34 @@
 {
-  "version": "current-six-products-authority",
-  "authority": "user-confirmed",
+  "version": "2026-08-11-current-six-products-authority",
+  "authority": "user-confirmed-current",
   "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/catalog-public.json",
-  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項正式完整規格；正式成分與已確認使用資料也不得寫入舊版本。",
+  "visualAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/content/visual-production-spec-current.json",
+  "rule": "ERP產品、貼文、排程、審核與圖片守門只允許以下6項目前正式顧客規格；守門依目前權威與能力，不回退舊版號、舊延伸規格或舊使用資料。",
   "products": [
-    {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐","ingredients":["鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"],"usagePrimary":"每日早上及下午各一小匙"},
+    {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐","ingredients":["鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"],"usagePrimary":"一天一次一小匙"},
     {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐（小玻璃罐）","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
     {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","spec":"180cc／包（鋁袋）","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
-    {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒｜8塊裝｜每塊約9.375g","ingredients":["龜板萃取物","鹿角萃取物"]},
-    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g（1斤）／盒｜32塊裝｜每塊約18.75g","ingredients":["龜板萃取物","鹿角萃取物"]},
+    {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒｜8塊裝","ingredients":["龜板萃取物","鹿角萃取物"]},
+    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g／盒｜32塊裝","ingredients":["龜板萃取物","鹿角萃取物"]},
     {"id":"luerong-fen","name":"鹿茸粉","spec":"75g／罐","ingredients":["鹿茸"]}
   ],
   "visualLocks": {
-    "guiluDrink30":"小玻璃裸罐、無貼紙、無外盒、無外袋、金色蓋；高矮胖瘦照原圖；不得稱瓶",
+    "guiluDrink30":"小玻璃裸罐、無貼紙、無外盒、無外袋、金色蓋；高矮胖瘦照原圖；不得稱瓶；目前內嵌30cc／瓶字樣的DM不得作正式顧客圖",
     "guiluDrink180":"180cc狹長鋁袋，不拉寬、不加高",
     "guiluGao":"100g六角罐，只用目前正式產品原圖",
-    "guiluTangkuai":"75g深藍盒；8塊裝、每塊約9.375g；只用正式原圖；不得建立其他容量",
-    "guiluJiao":"600g（1斤）淡紫盒；32塊裝、每塊約18.75g；等比例、不橫向拉長",
+    "guiluTangkuai":"75g深藍盒｜8塊裝；只用正式原圖；不得建立其他容量或硬帶舊每塊重量延伸",
+    "guiluJiao":"600g淡紫盒｜32塊裝；等比例、不橫向拉長；不得硬帶舊1斤／每塊重量延伸",
     "luerongFen":"75g白色塑膠罐；正式原圖等比例"
   },
   "guardRules": [
     "不允許未在products清單中的產品規格",
-    "產品中心只接受目前完整正式規格，不再把舊縮短規格當正式值",
-    "龜鹿湯塊只能使用75g／盒｜8塊裝｜每塊約9.375g深藍盒",
+    "龜鹿湯塊目前正式顧客規格為75g／盒｜8塊裝；不得回退300g／600g或硬帶舊每塊重量延伸",
+    "龜鹿膠目前正式顧客規格為600g／盒｜32塊裝；不得回退舊1斤／每塊重量延伸",
     "龜鹿膠與龜鹿湯塊不得互換規格或包裝",
     "30cc龜鹿飲只稱玻璃罐，不稱瓶",
     "正式成分與順序不可寫入舊版本",
-    "龜鹿膏主要使用資料以每日早上及下午各一小匙為準",
-    "產品圖片不得重畫、裁切或改變比例",
-    "守門依目前權威與功能能力驗收，不綁歷史版號"
+    "龜鹿膏目前主要使用資料為一天一次一小匙；不得回退早晚各一次舊用法",
+    "產品圖片不得重畫、裁切或改變比例；DM內嵌文字與目前規格衝突時必須隔離",
+    "守門依目前權威與功能能力驗收，不綁歷史版號、舊檔名、固定候選數或退役衍生規格"
   ]
 }
