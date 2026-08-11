@@ -33,6 +33,11 @@ for(const token of [
   'FORMAL_MEDIA_RUNTIME','formalMediaRuntime:FORMAL_MEDIA_RUNTIME',
   'LATEST_POST_ZIP_MANIFEST','latestPostZipManifest:LATEST_POST_ZIP_MANIFEST',
   'latestPostZipDynamic:true',
+  'currentMediaAuthority(request,env)',
+  'latestPostZip:media.latestPostZip',
+  'latestPostZipCandidates:media.latestPostZipCandidates',
+  'formalMediaApprovalBatch:media.formalMediaApprovalBatch',
+  'latestPostZipBinaryStatus:media.latestPostZipBinaryStatus',
   "postImagePriority:'user_zip_approved'",
   'regenerateOnlyIfNoApprovedMatch:true',
   'reviewItemsAfterMediaChange:16',
@@ -50,12 +55,14 @@ const formalMediaRuntime=publishingOnly.match(/const FORMAL_MEDIA_RUNTIME=['"]([
 must(formalMediaRuntime&&/formal-media-policy/i.test(formalMediaRuntime),'publishing health 缺少正式媒體能力識別');
 must(!publishingOnly.includes("LATEST_POST_ZIP='2.zip'")&&!publishingOnly.includes('KNOWN_REGENERATION_MINIMUM=121'),'publishing health 不得再硬鎖舊ZIP或歷史重生成數量');
 must(publishingOnly.includes("url.pathname===LATEST_POST_ZIP_MANIFEST")&&publishingOnly.includes('env?.ASSETS?.fetch'),'Worker必須明確提供最新ZIP目錄資產');
+must(publishingOnly.includes('u.pathname=LATEST_POST_ZIP_MANIFEST')&&publishingOnly.includes('catalog?.source')&&publishingOnly.includes('catalog?.candidate_count')&&publishingOnly.includes('catalog?.approval_batch'),'Worker health必須從目前部署素材目錄動態回報來源／候選數／核准批次，不得寫死歷史值');
 
 must(typeof latestZip.source==='string'&&latestZip.source.trim(),'最新 ZIP 目錄缺少來源名稱');
 must(Number(latestZip.candidate_count)>0,'最新 ZIP 目錄必須有候選圖');
 must(Number(latestZip.original_file_count||latestZip.candidate_count)>=Number(latestZip.candidate_count),'最新 ZIP 原始檔數不得小於唯一候選數');
 must(latestZip.priority==='user_zip_approved','最新 ZIP 必須維持使用者素材優先');
 must(/^https:\/\//.test(String(latestZip.public_catalog||'')),'最新 ZIP 必須提供公開目錄位置');
+must(String(latestZip.approval_batch||'').trim(),'最新 ZIP 必須提供目前核准批次');
 must(/needs_binary_sync/.test(String(latestZip.selection_rule||'')),'最新 ZIP 必須區分有合格來源但原圖待同步');
 must(/regenerate only if no approved source candidate matches/i.test(String(latestZip.selection_rule||'')),'最新 ZIP 缺少「真的沒有合格來源才生成」規則');
 must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(latestZip.review_rule||'')),'最新 ZIP 配圖後必須回待審核並保留16項審核');
@@ -73,4 +80,4 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'�
 must(pkg.includes('src/system-readiness.js'),'package check 沒有驗 system-readiness');
 must(pkg.includes('assets/js/publishing-readiness-ui.js'),'package check/build 沒有驗 publishing-readiness-ui');
 must(pkg.includes('latest-user-post-zip.json'),'package check/build 沒有帶入最新ZIP目錄');
-console.log(`PASS：Worker、D1、Access、平台API與媒體來源採分層能力診斷；standalone UI、products-v3、500篇同步、最新 ${latestZip.source}/${latestZip.candidate_count} 張唯一候選、ZIP優先、缺圖才生成與16項重審一致；不再因舊ZIP名稱、舊版號或歷史重生成數量誤擋。`);
+console.log(`PASS：Worker、D1、Access、平台API與媒體來源採分層能力診斷；health動態讀目前素材authority；standalone UI、products-v3、能力式500篇同步、目前 ${latestZip.source}/${latestZip.candidate_count} 張唯一候選、ZIP優先、缺圖才生成與16項重審一致；不再因舊ZIP名稱、舊版號或歷史重生成數量誤擋。`);
