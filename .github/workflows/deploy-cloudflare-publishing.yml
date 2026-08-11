@@ -96,21 +96,21 @@ jobs:
             catalog="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/data/latest-user-post-zip.json' || true)"
             if [ -n "$response" ]; then
               echo "$response"
-              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0; media_ok=0; zip_ok=0; authority_ok=0
+              ui_ok=0; image_ok=0; sync_ok=0; bank_ok=0; media_ok=0; zip_ok=0; authority_ok=0
               printf '%s' "$response" | grep -Eq '"uiRuntime"[[:space:]]*:[[:space:]]*"[^"]+"' && ui_ok=1
               printf '%s' "$response" | grep -Eq '"productImageVersion"[[:space:]]*:[[:space:]]*"[^"]*products-v3[^"]*"' && image_ok=1
               printf '%s' "$response" | grep -Eq '"postBankSyncVersion"[[:space:]]*:[[:space:]]*"[^"]+"' && sync_ok=1
-              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); const v=Number(d.knownRegenerationMinimum ?? d?.publishing?.knownRegenerationMinimum ?? 0); process.exit(v>=121?0:1)' && regen_ok=1 || true
+              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(d.postBankValidation==="capability-based"?0:1)' && bank_ok=1 || true
               RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(String(d.latestPostZip||"").length>0&&Number(d.latestPostZipCandidates)>0&&d.postImagePriority==="user_zip_approved"&&d.regenerateOnlyIfNoApprovedMatch===true&&Number(d.reviewItemsAfterMediaChange)===16&&String(d.formalMediaRuntime||"").length>0&&String(d.formalMediaApprovalBatch||"").length>0?0:1)' && media_ok=1 || true
               if [ -n "$catalog" ]; then
                 CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); const r=String(d.selection_rule||""); process.exit(String(d.source||"").length>0&&Number(d.candidate_count)>0&&d.priority==="user_zip_approved"&&String(d.approval_batch||"").length>0&&/needs_binary_sync/.test(r)&&/regenerate only if no approved .*candidate matches/.test(r)&&/pending_review/.test(String(d.review_rule||""))&&/16/.test(String(d.review_rule||""))?0:1)' && zip_ok=1 || true
                 RESPONSE="$response" CATALOG="$catalog" node -e 'const h=JSON.parse(process.env.RESPONSE||"{}"); const c=JSON.parse(process.env.CATALOG||"{}"); const sameBatch=String(h.formalMediaApprovalBatch||"")!==""&&h.formalMediaApprovalBatch===c.approval_batch; const sameSource=h.latestPostZip===c.source; const sameCount=Number(h.latestPostZipCandidates)===Number(c.candidate_count); process.exit(sameBatch&&sameSource&&sameCount?0:1)' && authority_ok=1 || true
               fi
-              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ] && [ "$authority_ok" -eq 1 ]; then
-                echo 'Worker core is healthy: current UI, products-v3, post-bank sync, regeneration safety and the exact current user media authority are live.'
+              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$bank_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ] && [ "$authority_ok" -eq 1 ]; then
+                echo 'Worker core is healthy: current UI, products-v3, capability-based 500-post sync, regeneration safety and the exact current user media authority are live.'
                 exit 0
               fi
-              echo "Worker responded but current formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok media=$media_ok zip=$zip_ok authority=$authority_ok)." >&2
+              echo "Worker responded but current formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok bank=$bank_ok media=$media_ok zip=$zip_ok authority=$authority_ok)." >&2
             fi
             sleep 4
           done
