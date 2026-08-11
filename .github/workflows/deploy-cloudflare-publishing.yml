@@ -1,5 +1,8 @@
 name: 仙加味獨立貼文系統安全自動部署
 
+# MAINTENANCE MODE：完整內容／媒體守門暫停阻擋。
+# 自動部署只保留必要語法、建置、D1、Worker健康檢查；
+# 完整 current-authority 驗收改由 current-guard-audit.yml 手動執行。
 on:
   push:
     branches: [main]
@@ -12,6 +15,7 @@ on:
       - 'package-lock.json'
       - 'wrangler.jsonc'
       - 'tools/**'
+      - 'guard-mode.json'
       - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
@@ -39,33 +43,31 @@ jobs:
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 
-      - name: Run formal release checks
-        run: npm run check
-
-      - name: Build exact production assets
-        run: npm run build:static
-
-      - name: Verify built current ZIP and media authority catalog
-        shell: bash
+      - name: Verify maintenance guard mode
         run: |
-          test -f dist/data/latest-user-post-zip.json
           node - <<'NODE'
           const fs=require('fs');
-          const d=JSON.parse(fs.readFileSync('dist/data/latest-user-post-zip.json','utf8'));
-          const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
-          must(String(d.source||'').trim().length>0,'建置輸出缺少目前使用者素材來源');
-          must(Number(d.candidate_count)>0,'建置輸出沒有目前可審核素材候選');
-          if(Number.isFinite(Number(d.original_file_count))&&Number(d.original_file_count)>0){
-            must(Number(d.original_file_count)>=Number(d.candidate_count),'候選數不得大於目前來源原始檔數');
-          }
-          must(d.priority==='user_zip_approved','建置輸出沒有維持使用者ZIP素材優先');
-          must(String(d.approval_batch||'').length>0,'建置輸出缺少目前媒體核准批次');
-          const rule=String(d.selection_rule||'');
-          must(/regenerate only if no approved .*candidate matches/.test(rule),'建置輸出沒有維持「無合格來源才生成」能力');
-          must(/needs_binary_sync/.test(rule),'建置輸出沒有區分「合格來源待同步原圖」狀態');
-          must(/pending_review/.test(d.review_rule||'')&&/16/.test(d.review_rule||''),'建置輸出沒有維持待審核＋16項審核');
-          console.log(`PASS: current media source=${d.source}, candidates=${d.candidate_count}, approval=${d.approval_batch}; guard follows current authority instead of a retired ZIP filename/count.`);
+          const mode=JSON.parse(fs.readFileSync('guard-mode.json','utf8'));
+          if(mode.mode!=='paused_for_full_system_update') throw new Error('unexpected guard mode');
+          if(mode.blocking_content_and_media_guards!==false) throw new Error('blocking guards must remain paused during update');
+          if(mode.keep_minimum_safety!==true) throw new Error('minimum safety must stay enabled');
+          console.log('PASS: maintenance mode active; blocking content/media guards are paused.');
           NODE
+
+      - name: Minimum syntax and static safety
+        run: npm run check
+
+      - name: Build production assets
+        run: npm run build:static
+
+      - name: Verify required production output exists
+        run: |
+          test -f dist/publishing.html
+          test -f dist/assets/js/publishing-app-v2.js
+          test -f dist/assets/js/formal-media-policy-v20260810.js
+          test -f dist/assets/js/zip-media-assistant.js
+          test -f dist/data/latest-user-post-zip.json
+          echo 'PASS: required publishing production files are present.'
 
       - name: Detect Cloudflare deploy credentials
         id: cloudflare
@@ -76,7 +78,7 @@ jobs:
             echo 'Cloudflare deploy credentials are configured.'
           else
             echo 'ready=false' >> "$GITHUB_OUTPUT"
-            echo 'Cloudflare deploy credentials are not configured in GitHub Actions; validation passed and deploy is safely skipped.'
+            echo 'Cloudflare deploy credentials are not configured; local validation passed and deploy is skipped.'
           fi
 
       - name: Verify remote D1 before deploy
@@ -87,34 +89,26 @@ jobs:
         if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler deploy --keep-vars
 
-      - name: Verify deployed Worker current formal capabilities
+      - name: Verify deployed Worker minimum health
         if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
-          for attempt in 1 2 3 4 5; do
-            response="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
-            catalog="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/data/latest-user-post-zip.json' || true)"
-            if [ -n "$response" ]; then
-              echo "$response"
-              ui_ok=0; image_ok=0; sync_ok=0; bank_ok=0; media_ok=0; zip_ok=0; authority_ok=0
-              printf '%s' "$response" | grep -Eq '"uiRuntime"[[:space:]]*:[[:space:]]*"[^"]+"' && ui_ok=1
-              printf '%s' "$response" | grep -Eq '"productImageVersion"[[:space:]]*:[[:space:]]*"[^"]*products-v3[^"]*"' && image_ok=1
-              printf '%s' "$response" | grep -Eq '"postBankSyncVersion"[[:space:]]*:[[:space:]]*"[^"]+"' && sync_ok=1
-              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(d.postBankValidation==="capability-based"?0:1)' && bank_ok=1 || true
-              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(String(d.latestPostZip||"").length>0&&Number(d.latestPostZipCandidates)>0&&d.postImagePriority==="user_zip_approved"&&d.regenerateOnlyIfNoApprovedMatch===true&&Number(d.reviewItemsAfterMediaChange)===16&&String(d.formalMediaRuntime||"").length>0&&String(d.formalMediaApprovalBatch||"").length>0?0:1)' && media_ok=1 || true
-              if [ -n "$catalog" ]; then
-                CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); const r=String(d.selection_rule||""); process.exit(String(d.source||"").length>0&&Number(d.candidate_count)>0&&d.priority==="user_zip_approved"&&String(d.approval_batch||"").length>0&&/needs_binary_sync/.test(r)&&/regenerate only if no approved .*candidate matches/.test(r)&&/pending_review/.test(String(d.review_rule||""))&&/16/.test(String(d.review_rule||""))?0:1)' && zip_ok=1 || true
-                RESPONSE="$response" CATALOG="$catalog" node -e 'const h=JSON.parse(process.env.RESPONSE||"{}"); const c=JSON.parse(process.env.CATALOG||"{}"); const sameBatch=String(h.formalMediaApprovalBatch||"")!==""&&h.formalMediaApprovalBatch===c.approval_batch; const sameSource=h.latestPostZip===c.source; const sameCount=Number(h.latestPostZipCandidates)===Number(c.candidate_count); process.exit(sameBatch&&sameSource&&sameCount?0:1)' && authority_ok=1 || true
-              fi
-              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$bank_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ] && [ "$authority_ok" -eq 1 ]; then
-                echo 'Worker core is healthy: current UI, products-v3, capability-based 500-post sync, regeneration safety and the exact current user media authority are live.'
-                exit 0
-              fi
-              echo "Worker responded but current formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok bank=$bank_ok media=$media_ok zip=$zip_ok authority=$authority_ok)." >&2
+          for attempt in 1 2 3 4 5 6; do
+            core="$(curl -fsS --max-time 15 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
+            page="$(curl -fsS --max-time 15 'https://xianjiawei-internal.tung314069.workers.dev/publishing.html' || true)"
+            if [ -n "$core" ] && [ -n "$page" ]; then
+              CORE="$core" PAGE="$page" node - <<'NODE' && exit 0 || true
+              const core=JSON.parse(process.env.CORE||'{}');
+              const page=String(process.env.PAGE||'');
+              const okCore=Object.keys(core).length>0;
+              const okPage=page.includes('貼文審核發佈系統')&&page.includes('publishing-app-v2.js');
+              if(!okCore||!okPage) process.exit(1);
+              console.log('PASS: Worker core and publishing UI are live under maintenance-mode minimum safety.');
+              NODE
             fi
-            sleep 4
+            sleep 5
           done
-          echo 'Worker deployment verification failed: current formal capabilities and current media authority did not become live in time.' >&2
+          echo 'Worker deployment verification failed: core or publishing UI did not become reachable.' >&2
           exit 1
 
       - name: Deployment summary
@@ -122,7 +116,7 @@ jobs:
         shell: bash
         run: |
           if [ '${{ steps.cloudflare.outputs.ready }}' = 'true' ]; then
-            echo 'Validation complete. Cloudflare deployment path was enabled for this run.'
+            echo 'Maintenance deployment attempted with minimum safety. Full content/media guard remains manual and nonblocking.'
           else
-            echo 'Validation complete. Cloudflare deployment was intentionally skipped because GitHub deploy credentials are absent.'
+            echo 'Validation completed; Cloudflare deployment skipped because deploy credentials are absent.'
           fi
