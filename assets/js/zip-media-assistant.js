@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260810-zip-media-assistant-v2-authority-aware';
+const VERSION='current-zip-media-assistant-authority-aware';
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const postId=card=>card?.querySelector('[data-post-view]')?.getAttribute('data-post-view')||'';
 const copyOf=card=>[card?.querySelector('h3')?.textContent||'',card?.querySelector('h4')?.textContent||'',card?.querySelector('.xjw-copy')?.textContent||'',card?.querySelector('.eyebrow')?.textContent||''].join(' ');
@@ -15,7 +15,8 @@ function label(result){
   if(result.status==='approved_existing'&&result.authority==='formal_product_media')return{kind:'ok',text:`正式產品DM／試喝圖符合文案：${result.candidate?.alt||result.candidate?.id||'正式圖'}`,button:'套用正式圖'};
   if(result.status==='approved_existing')return{kind:'ok',text:`最新 ZIP 已找到可直接使用的合格情境圖：${result.candidate?.id||result.candidate?.source_file||'候選圖'}`,button:'套用 ZIP 合格圖'};
   if(result.status==='needs_binary_sync')return{kind:'warning',text:`最新 ZIP 已找到符合文案的原圖：${result.candidate?.id||result.candidate?.source_file||'候選圖'}｜目前只差原圖同步，不應亂換圖或重生成。`,button:''};
-  return{kind:'danger',text:'正式產品DM與最新 ZIP 都找不到足夠吻合的圖｜這種情況才進重新生成。',button:''};
+  if(result.status==='regenerate_if_missing')return{kind:'danger',text:'正式產品DM與最新 ZIP 都找不到足夠吻合的圖｜確認為真正無合格來源，這種情況才進重新生成。',button:''};
+  return{kind:'danger',text:'配圖狀態無法判定｜保持待審核，不自動核准、不自動發布。',button:''};
 }
 async function apply(id,result,button){
   const candidate=result?.candidate;
@@ -35,6 +36,7 @@ function renderCard(card){
   const result=decision(card),meta=label(result),id=postId(card);
   const node=document.createElement('div');
   node.dataset.zipMediaAssistant=VERSION;
+  node.dataset.mediaDecision=result?.status||'loading';
   node.className=`xjw-${meta.kind==='neutral'?'warning':meta.kind}`;
   node.innerHTML=`<strong>正式配圖判斷：</strong>${esc(meta.text)}`;
   if(meta.button&&result?.candidate?.public_url&&id){
