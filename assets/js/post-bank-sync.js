@@ -1,12 +1,10 @@
 (()=>{
   'use strict';
-  const VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
-  const EXPORT_RUNTIME='20260810-export-v3-retired-assets-removed';
-  const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
-  const KNOWN_REGENERATION_MINIMUM=121;
+  const VERSION='post-bank-sync-current-capabilities';
+  const PRODUCT_IMAGE_AUTHORITY='products-v3';
   const PUBLIC_ORIGIN='https://ts15825868.github.io';
   const SITE='https://ts15825868.github.io/xianjiawei/';
-  const EXPORT_URL=`${SITE}post-bank-export.html?v=${EXPORT_RUNTIME}`;
+  const EXPORT_URL=`${SITE}post-bank-export.html?authority=current`;
   const SOURCE_PREFIX='公開500母庫:';
   const PAGE_SIZE=60;
   const WRITE_CONCURRENCY=4;
@@ -58,12 +56,33 @@
   function platforms(value){const list=Array.isArray(value)?value:[];const safe=[...new Set(list.map(v=>String(v||'').trim()).filter(v=>ALLOWED_PLATFORMS.has(v)))];return safe.length?safe:['Facebook','Instagram']}
   function protectedPost(post){return post?.status==='published'||post?.status==='archived'||post?.prevent_republish===true||post?.do_not_republish===true||/published.*locked/i.test(String(post?.image_status||''))}
   function campaignHold(post){return post?.campaign_hold===true||Boolean(post?.hold_until)||String(post?.status||'')==='campaign_hold'}
-  function needsGeneration(post){const status=String(post?.image_status||''),mode=String(post?.candidate_generation_mode||post?.regeneration_mode||'');return status==='needs_generation'||post?.requires_image_generation===true||/chatgpt-.*-required|chatgpt_handoff/.test(mode)||!String(post?.image_url||'').trim()}
+  function needsGeneration(post){const status=String(post?.image_status||''),mode=String(post?.candidate_generation_mode||post?.regeneration_mode||'');return status==='needs_generation'||status==='replace-required'||post?.requires_image_generation===true||/chatgpt.*required|chatgpt_handoff/i.test(mode)||!String(post?.image_url||'').trim()}
   function absoluteImage(value){const text=String(value||'').trim();if(!text)return'';if(/^https:\/\//i.test(text)||/^data:image\//i.test(text))return text;return `${SITE}${text.replace(/^\//,'')}`}
   function marker(post,requires){const refs=(post?.product_refs||[]).map(v=>String(v||'').trim()).filter(Boolean).join(',');return `${SOURCE_PREFIX}${post.id}|${requires?'needs-generation':String(post.image_status||'candidate')}|${refs}`.slice(0,480)}
   function payload(post){
     const requires=needsGeneration(post),image=requires?'':absoluteImage(post.image_url);
     return{title:String(post.title||'仙加味貼文').slice(0,180),headline:String(post.headline||'').slice(0,300),copy:String(post.copy||'').slice(0,10000),category:String(post.category||'日常節奏').slice(0,80),platforms:platforms(post.platforms),image_url:image,image_alt:String(post.image_alt||post.title||'仙加味待審核候選圖').slice(0,300),image_source:marker(post,requires),image_width:Number(post.image_width||0)||0,image_height:Number(post.image_height||0)||0,image_bytes:Number(post.image_bytes||0)||0,image_quality_status:requires?'needs-generation':'unknown'};
+  }
+  function validateExport(data){
+    if(!data||data.schema!=='xjw-post-bank-export-v1')throw new Error('500篇母庫 exporter schema 不符合正式契約');
+    if(!String(data.runtime||'').trim()||!/export/i.test(String(data.runtime)))throw new Error('500篇母庫 exporter 缺少正式能力識別');
+    if(data.retired_assets_removed!==true)throw new Error('500篇母庫尚未確認退役錯圖已移除，停止同步。');
+    const authority=`${data.product_image_authority||''} ${data.product_image_version||''}`;
+    if(!/products-v3/i.test(authority)||/products-v2/i.test(authority))throw new Error('500篇母庫沒有維持 products-v3 正式產品圖權威');
+    const caps=data.capabilities||{};
+    for(const key of ['post_count_500','unique_post_ids','products_v3_authority','products_v2_forbidden','regeneration_clears_old_image']){
+      if(caps[key]!==true)throw new Error(`500篇母庫 exporter 缺少安全能力：${key}`);
+    }
+    const posts=Array.isArray(data.posts)?data.posts:[];
+    if(posts.length!==500)throw new Error(`母庫數量不正確：${posts.length}/500`);
+    const ids=posts.map(post=>String(post?.id||'').trim());
+    if(ids.some(id=>!id)||new Set(ids).size!==posts.length)throw new Error('500篇母庫存在空白或重複ID，已停止同步避免資料互相覆蓋。');
+    for(const post of posts){
+      const image=String(post?.image_url||'').trim();
+      if(/\/images\/products-v2\//i.test(image))throw new Error(`${post.id} 仍帶 products-v2 舊產品圖`);
+      if(needsGeneration(post)&&image)throw new Error(`${post.id} 需重生成但仍帶舊錯圖`);
+    }
+    return data;
   }
   function loadBank(){
     return new Promise((resolve,reject)=>{
@@ -74,16 +93,7 @@
         if(done||event.origin!==PUBLIC_ORIGIN||event.data?.schema!=='xjw-post-bank-export-v1')return;
         done=true;clearTimeout(timer);cleanup();
         if(event.data.error)return reject(new Error(event.data.error));
-        if(event.data.runtime!==EXPORT_RUNTIME)return reject(new Error(`500篇母庫 exporter 版本不同步：${event.data.runtime||'未提供'}；要求 ${EXPORT_RUNTIME}`));
-        if(event.data.retired_assets_removed!==true)return reject(new Error('500篇母庫尚未確認退役產品卡片資產已移除，停止同步。'));
-        if(event.data.product_image_version!==PRODUCT_IMAGE_VERSION)return reject(new Error(`500篇母庫產品圖版本不同步：${event.data.product_image_version||'未提供'}；要求 ${PRODUCT_IMAGE_VERSION}`));
-        const knownMinimum=Number(event.data?.known_regeneration?.knownMinimum||0);
-        if(knownMinimum<KNOWN_REGENERATION_MINIMUM)return reject(new Error(`500篇母庫已知重生成數量不足：${knownMinimum}/${KNOWN_REGENERATION_MINIMUM}`));
-        const posts=Array.isArray(event.data.posts)?event.data.posts:[];
-        if(posts.length!==500)return reject(new Error(`母庫數量不正確：${posts.length}/500`));
-        const ids=posts.map(post=>String(post?.id||'').trim());
-        if(ids.some(id=>!id)||new Set(ids).size!==posts.length)return reject(new Error('500篇母庫存在空白或重複ID，已停止同步避免資料互相覆蓋。'));
-        resolve(event.data);
+        try{resolve(validateExport(event.data))}catch(error){reject(error)}
       }
       window.addEventListener('message',onMessage);iframe.src=EXPORT_URL;document.body.appendChild(iframe);
     });
@@ -95,7 +105,7 @@
   }
   async function sync(button){
     if(button.dataset.busy==='1')return;
-    if(!window.confirm(`同步正式500篇母庫？系統會先驗證 exporter v3、退役卡片已移除、最新真正產品原圖版本與至少${KNOWN_REGENERATION_MINIMUM}篇已知重生成內容，再以母庫ID安全去重；已發布鎖定與活動冷卻不動，不會自動發布。`))return;
+    if(!window.confirm('同步正式500篇母庫？系統會驗證500篇完整性、ID唯一、products-v3正式產品圖權威、退役錯圖已移除，以及需重生成貼文不得沿用舊圖；不核准、不排程、不自動發布。'))return;
     button.dataset.busy='1';button.disabled=true;const original=button.textContent;button.textContent='重建500篇母庫…';
     try{
       const [bank,existing]=await Promise.all([loadBank(),allExisting()]);
@@ -111,7 +121,7 @@
       },(done,total)=>{button.textContent=`同步中 ${done}/${total}`});
       const failed=errors.length;
       toast(`500篇母庫同步：新增${created}篇（待審核${pending}、需重生成草稿${generation}），略過已存在${active.length-missing.length}篇、已發布鎖定${protectedCount}篇、活動冷卻${holdCount}篇${failed?`；失敗${failed}篇`:''}。`,failed>0);
-      document.dispatchEvent(new CustomEvent('xjw-post-bank-synced',{detail:{created,pending,generation,failed,protectedCount,holdCount,exportRuntime:EXPORT_RUNTIME,retiredAssetsRemoved:true,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM}}));
+      document.dispatchEvent(new CustomEvent('xjw-post-bank-synced',{detail:{created,pending,generation,failed,protectedCount,holdCount,exportRuntime:bank.runtime,retiredAssetsRemoved:true,productImageAuthority:PRODUCT_IMAGE_AUTHORITY}}));
       document.querySelector('[data-refresh]')?.click();
     }catch(error){toast(error?.message||String(error),true)}finally{button.dataset.busy='0';button.disabled=false;button.textContent=original}
   }
@@ -121,5 +131,5 @@
     const add=actions.querySelector('[data-add-post]');actions.insertBefore(button,add||null);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-  window.XJWPostBankSync=Object.freeze({version:VERSION,exportRuntime:EXPORT_RUNTIME,retiredAssetsRemoved:true,productImageVersion:PRODUCT_IMAGE_VERSION,knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,exportUrl:EXPORT_URL,loadBank,allExisting,sourceId,existingIdentity,missingPosts,needsGeneration,protectedPost,campaignHold,payload});
+  window.XJWPostBankSync=Object.freeze({version:VERSION,productImageAuthority:PRODUCT_IMAGE_AUTHORITY,exportUrl:EXPORT_URL,loadBank,validateExport,allExisting,sourceId,existingIdentity,missingPosts,needsGeneration,protectedPost,campaignHold,payload});
 })();
