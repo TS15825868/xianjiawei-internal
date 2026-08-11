@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: xianjiawei-publishing-production
@@ -35,6 +35,8 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v5
         with:
@@ -110,6 +112,32 @@ jobs:
           done
           echo 'Worker deployment verification failed: core or publishing UI did not become reachable.' >&2
           exit 1
+
+      - name: Record verified production deployment
+        if: steps.cloudflare.outputs.ready == 'true'
+        shell: bash
+        run: |
+          cat > deployment-status.json <<EOF
+          {
+            "status": "verified_live",
+            "source_commit": "${GITHUB_SHA}",
+            "runtime": "cloudflare-worker",
+            "health": "healthz/core + publishing.html",
+            "guard_mode": "paused_for_full_system_update",
+            "blocking_content_media_guards": false,
+            "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add deployment-status.json
+          if git diff --cached --quiet; then
+            echo 'Deployment status already current.'
+            exit 0
+          fi
+          git commit -m 'deploy: record verified publishing Worker release'
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Deployment summary
         if: always()
