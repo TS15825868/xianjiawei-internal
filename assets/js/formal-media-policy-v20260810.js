@@ -2,8 +2,8 @@
 'use strict';
 const CONFIG=Object.freeze({
   runtime:'formal-media-policy-current',
-  approvalBatch:'current-user-approved-formal-media',
-  productAuthority:'products-v3-latest-original-product-photos',
+  approvalBatch:'current-user-approved-media',
+  productAuthority:'products-v3-current-original-product-photos',
   productSpecs:Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙）',
@@ -14,12 +14,12 @@ const CONFIG=Object.freeze({
   }),
   formalProductMedia:Object.freeze([
     Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-trial.webp?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'龜鹿飲試喝組｜先試喝，再決定'}),
-    Object.freeze({id:'guilu-gao',keywords:['龜鹿膏'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-gao-100g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膏100g正式展示圖'}),
+    Object.freeze({id:'guilu-gao',keywords:['龜鹿膏'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/01_guilu-gao-100g-dm.jpg?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膏100g正式展示圖'}),
     Object.freeze({id:'guilu-drink-30',keywords:['龜鹿飲30cc','30cc','小玻璃罐'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-30cc.webp?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿飲30cc／罐（小玻璃罐）正式DM',validation:'current-copy-product-shape-approved'}),
-    Object.freeze({id:'guilu-drink-180',keywords:['龜鹿飲180cc','180cc','鋁袋'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-drink-180cc.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿飲180cc鋁袋正式展示圖'}),
-    Object.freeze({id:'guilu-tangkuai',keywords:['龜鹿湯塊','湯塊75g','湯塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-tangkuai-75g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿湯塊75g正式展示圖'}),
-    Object.freeze({id:'guilu-jiao',keywords:['龜鹿膠','600g','32塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/guilu-jiao-600g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膠600g正式展示圖'}),
-    Object.freeze({id:'luerong-fen',keywords:['鹿茸粉','鹿茸','75g'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-approved-v20260810/lurong-fen-75g.webp',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味鹿茸粉75g正式展示圖'})
+    Object.freeze({id:'guilu-drink-180',keywords:['龜鹿飲180cc','180cc','鋁袋'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/03_guilu-drink-180cc-dm.jpg?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿飲180cc鋁袋正式展示圖'}),
+    Object.freeze({id:'guilu-tangkuai',keywords:['龜鹿湯塊','湯塊75g','湯塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/05_guilu-tangkuai-75g-dm.jpg?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿湯塊75g正式展示圖'}),
+    Object.freeze({id:'guilu-jiao',keywords:['龜鹿膠','600g','32塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/06_guilu-jiao-600g-dm.jpg?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味龜鹿膠600g正式展示圖'}),
+    Object.freeze({id:'luerong-fen',keywords:['鹿茸粉','鹿茸','75g'],public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/04_luerong-fen-75g-dm.jpg?v=current',binary_ready:true,approved:true,source:'user-approved-formal-media',alt:'仙加味鹿茸粉75g正式展示圖'})
   ]),
   latestZipCatalog:'/data/latest-user-post-zip.json',
   imageSourcePriority:Object.freeze(['formal_product_media','user_zip_approved','approved_existing','regenerate_if_missing']),
@@ -109,7 +109,7 @@ function installNote(catalog){
   const count=Number(catalog?.candidate_count||0);
   const note=document.createElement('p');
   note.dataset.formalMediaPolicyNote='true';
-  note.innerHTML=`<strong>貼文配圖最新原則：</strong>產品／試喝文案優先使用目前合格正式媒體與 products-v3；30cc目前核准DM已通過「30cc／罐（小玻璃罐）」文字與產品外觀驗證，後續若有新DM與正式規格衝突仍要隔離。生活情境文再比對 ${source}${count?`（${count}張唯一候選）`:''}，而且必須真的命中季節、情境、環境、冷熱、表情、動作或道具才算合格。若有合格 ZIP 圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成或換圖都讓舊核准失效、回待審核並重新完成16項審核。`;
+  note.innerHTML=`<strong>貼文配圖目前原則：</strong>產品／試喝文案優先使用目前核准正式媒體與 products-v3；生活情境文再比對 ${source}${count?`（${count}張唯一候選）`:''}，必須真的命中季節、情境、環境、冷熱、表情、動作、道具或文案語意才算合格。若有合格 ZIP 圖但原圖尚未同步，標記「待同步原圖」，不亂換圖也不重生成；只有真的沒有合格來源才重新生成。任何生成、換圖或文案修改都讓舊核准失效、回待審核並重新完成16項審核。`;
   host.appendChild(document.createElement('br'));
   host.appendChild(note);
 }
