@@ -1,0 +1,15 @@
+{
+  "status": "updated_in_supabase",
+  "project": "xianjiawei",
+  "project_id": "iphexhvjhsmelbgwzhhr",
+  "updated_at": "2026-08-11T10:24:00Z",
+  "pending_review_posts": 12,
+  "uploaded_lifestyle_posts": 6,
+  "uploaded_formal_dm_or_trial_posts": 6,
+  "legacy_render_media_posts": 0,
+  "approval_policy": "all media-changed posts remain pending_review and unapproved until owner completes the 16-item review",
+  "product_identity_policy": "products-v3 user-uploaded original product photos remain the product identity authority",
+  "customer_dm_policy": "current approved uploaded product DMs and trial image are used for product/trial posts",
+  "blocking_guards": false,
+  "guard_mode": "paused_for_full_system_update"
+}
