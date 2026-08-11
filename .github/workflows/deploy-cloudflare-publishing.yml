@@ -45,7 +45,7 @@ jobs:
       - name: Build exact production assets
         run: npm run build:static
 
-      - name: Verify built latest ZIP and media authority catalog
+      - name: Verify built current ZIP and media authority catalog
         shell: bash
         run: |
           test -f dist/data/latest-user-post-zip.json
@@ -53,15 +53,18 @@ jobs:
           const fs=require('fs');
           const d=JSON.parse(fs.readFileSync('dist/data/latest-user-post-zip.json','utf8'));
           const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
-          must(d.source==='2.zip','建置輸出沒有目前2.zip素材批次');
-          must(Number(d.candidate_count)>=22,'建置輸出ZIP候選數不足');
-          must(d.priority==='user_zip_approved','建置輸出沒有維持ZIP優先');
+          must(String(d.source||'').trim().length>0,'建置輸出缺少目前使用者素材來源');
+          must(Number(d.candidate_count)>0,'建置輸出沒有目前可審核素材候選');
+          if(Number.isFinite(Number(d.original_file_count))&&Number(d.original_file_count)>0){
+            must(Number(d.original_file_count)>=Number(d.candidate_count),'候選數不得大於目前來源原始檔數');
+          }
+          must(d.priority==='user_zip_approved','建置輸出沒有維持使用者ZIP素材優先');
           must(String(d.approval_batch||'').length>0,'建置輸出缺少目前媒體核准批次');
           const rule=String(d.selection_rule||'');
           must(/regenerate only if no approved .*candidate matches/.test(rule),'建置輸出沒有維持「無合格來源才生成」能力');
           must(/needs_binary_sync/.test(rule),'建置輸出沒有區分「合格來源待同步原圖」狀態');
           must(/pending_review/.test(d.review_rule||'')&&/16/.test(d.review_rule||''),'建置輸出沒有維持待審核＋16項審核');
-          console.log('PASS: current ZIP catalog, approval batch and fallback capabilities are included in production assets.');
+          console.log(`PASS: current media source=${d.source}, candidates=${d.candidate_count}, approval=${d.approval_batch}; guard follows current authority instead of a retired ZIP filename/count.`);
           NODE
 
       - name: Detect Cloudflare deploy credentials
@@ -93,25 +96,25 @@ jobs:
             catalog="$(curl -fsS --max-time 12 'https://xianjiawei-internal.tung314069.workers.dev/data/latest-user-post-zip.json' || true)"
             if [ -n "$response" ]; then
               echo "$response"
-              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0; media_ok=0; zip_ok=0; batch_ok=0
+              ui_ok=0; image_ok=0; sync_ok=0; regen_ok=0; media_ok=0; zip_ok=0; authority_ok=0
               printf '%s' "$response" | grep -Eq '"uiRuntime"[[:space:]]*:[[:space:]]*"[^"]+"' && ui_ok=1
               printf '%s' "$response" | grep -Eq '"productImageVersion"[[:space:]]*:[[:space:]]*"[^"]*products-v3[^"]*"' && image_ok=1
               printf '%s' "$response" | grep -Eq '"postBankSyncVersion"[[:space:]]*:[[:space:]]*"[^"]+"' && sync_ok=1
               RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); const v=Number(d.knownRegenerationMinimum ?? d?.publishing?.knownRegenerationMinimum ?? 0); process.exit(v>=121?0:1)' && regen_ok=1 || true
-              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(d.latestPostZip==="2.zip"&&Number(d.latestPostZipCandidates)>=22&&d.postImagePriority==="user_zip_approved"&&d.regenerateOnlyIfNoApprovedMatch===true&&Number(d.reviewItemsAfterMediaChange)===16&&String(d.formalMediaRuntime||"").length>0&&String(d.formalMediaApprovalBatch||"").length>0?0:1)' && media_ok=1 || true
+              RESPONSE="$response" node -e 'const d=JSON.parse(process.env.RESPONSE||"{}"); process.exit(String(d.latestPostZip||"").length>0&&Number(d.latestPostZipCandidates)>0&&d.postImagePriority==="user_zip_approved"&&d.regenerateOnlyIfNoApprovedMatch===true&&Number(d.reviewItemsAfterMediaChange)===16&&String(d.formalMediaRuntime||"").length>0&&String(d.formalMediaApprovalBatch||"").length>0?0:1)' && media_ok=1 || true
               if [ -n "$catalog" ]; then
-                CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); const r=String(d.selection_rule||""); process.exit(d.source==="2.zip"&&Number(d.candidate_count)>=22&&d.priority==="user_zip_approved"&&String(d.approval_batch||"").length>0&&/needs_binary_sync/.test(r)&&/regenerate only if no approved .*candidate matches/.test(r)?0:1)' && zip_ok=1 || true
-                RESPONSE="$response" CATALOG="$catalog" node -e 'const h=JSON.parse(process.env.RESPONSE||"{}"); const c=JSON.parse(process.env.CATALOG||"{}"); process.exit(String(h.formalMediaApprovalBatch||"")!==""&&h.formalMediaApprovalBatch===c.approval_batch?0:1)' && batch_ok=1 || true
+                CATALOG="$catalog" node -e 'const d=JSON.parse(process.env.CATALOG||"{}"); const r=String(d.selection_rule||""); process.exit(String(d.source||"").length>0&&Number(d.candidate_count)>0&&d.priority==="user_zip_approved"&&String(d.approval_batch||"").length>0&&/needs_binary_sync/.test(r)&&/regenerate only if no approved .*candidate matches/.test(r)&&/pending_review/.test(String(d.review_rule||""))&&/16/.test(String(d.review_rule||""))?0:1)' && zip_ok=1 || true
+                RESPONSE="$response" CATALOG="$catalog" node -e 'const h=JSON.parse(process.env.RESPONSE||"{}"); const c=JSON.parse(process.env.CATALOG||"{}"); const sameBatch=String(h.formalMediaApprovalBatch||"")!==""&&h.formalMediaApprovalBatch===c.approval_batch; const sameSource=h.latestPostZip===c.source; const sameCount=Number(h.latestPostZipCandidates)===Number(c.candidate_count); process.exit(sameBatch&&sameSource&&sameCount?0:1)' && authority_ok=1 || true
               fi
-              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ] && [ "$batch_ok" -eq 1 ]; then
-                echo 'Worker core is healthy: current UI, products-v3, post-bank sync, regeneration safety, ZIP catalog and the same current user-approved media batch are live.'
+              if [ "$ui_ok" -eq 1 ] && [ "$image_ok" -eq 1 ] && [ "$sync_ok" -eq 1 ] && [ "$regen_ok" -eq 1 ] && [ "$media_ok" -eq 1 ] && [ "$zip_ok" -eq 1 ] && [ "$authority_ok" -eq 1 ]; then
+                echo 'Worker core is healthy: current UI, products-v3, post-bank sync, regeneration safety and the exact current user media authority are live.'
                 exit 0
               fi
-              echo "Worker responded but current formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok media=$media_ok zip=$zip_ok batch=$batch_ok)." >&2
+              echo "Worker responded but current formal capabilities are not all live yet (ui=$ui_ok image=$image_ok sync=$sync_ok regen=$regen_ok media=$media_ok zip=$zip_ok authority=$authority_ok)." >&2
             fi
             sleep 4
           done
-          echo 'Worker deployment verification failed: current formal capabilities and approval batch did not become live in time.' >&2
+          echo 'Worker deployment verification failed: current formal capabilities and current media authority did not become live in time.' >&2
           exit 1
 
       - name: Deployment summary
