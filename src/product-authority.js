@@ -1,9 +1,9 @@
 const PRODUCTS=Object.freeze([
-  {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙'},
+  {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'一天一次一小匙'},
   {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
   {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝｜每塊約9.375g'],ingredients:['龜板萃取物','鹿角萃取物']},
-  {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g（1斤）／盒｜32塊裝｜每塊約18.75g'],ingredients:['龜板萃取物','鹿角萃取物']},
+  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝'],ingredients:['龜板萃取物','鹿角萃取物']},
+  {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g／盒｜32塊裝'],ingredients:['龜板萃取物','鹿角萃取物']},
   {id:'luerong-fen',name:'鹿茸粉',allowedSpecs:['75g／罐'],ingredients:['鹿茸']}
 ]);
 const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
@@ -47,7 +47,9 @@ function soupWeightErrors(text=''){
 export function validatePublicProductText(text=''){
   const source=String(text||''),errors=[...soupWeightErrors(source)];
   if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source))errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
-  if(source.includes('龜鹿膏')&&/(每天一次，每次一小匙|一天一次一小匙)/.test(source))errors.push('龜鹿膏正式使用資料已更新為「每日早上及下午各一小匙」，不得使用舊的一日一次版本。');
+  if(source.includes('龜鹿膏')&&/(每日早上及下午各一小匙|早上及下午各一小匙|早晚各一小匙)/.test(source))errors.push('龜鹿膏目前正式使用資料為「一天一次一小匙」，不得回退舊的早晚各一次版本。');
+  if(source.includes('龜鹿湯塊')&&/(每塊約?\s*9\.375\s*g)/i.test(source))errors.push('龜鹿湯塊顧客正式規格目前統一為「75g／盒｜8塊裝」，不要再硬帶舊每塊重量延伸字樣。');
+  if(source.includes('龜鹿膠')&&/(1\s*斤|每塊約?\s*18\.75\s*g)/i.test(source))errors.push('龜鹿膠顧客正式規格目前統一為「600g／盒｜32塊裝」，不要再硬帶舊1斤／每塊重量延伸字樣。');
   return [...new Set(errors)];
 }
 
@@ -101,8 +103,8 @@ export function validatePostPayload(body={}){
 export const PRODUCT_AUTHORITY=Object.freeze({
   version:'current-server-product-authority',
   productCount:6,
-  soupBlockOnly:'75g／盒｜8塊裝｜每塊約9.375g',
-  guiluGaoUsagePrimary:'每日早上及下午各一小匙',
+  soupBlockOnly:'75g／盒｜8塊裝',
+  guiluGaoUsagePrimary:'一天一次一小匙',
   postImageMatchBlocking:true,
   products:PRODUCTS
 });
