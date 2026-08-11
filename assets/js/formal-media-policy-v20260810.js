@@ -2,14 +2,14 @@
 'use strict';
 const CONFIG=Object.freeze({
   runtime:'formal-media-policy-current',
-  approvalBatch:'current-user-approved-formal-media',
+  approvalBatch:'20260810-latest-user-dm-and-trial',
   productAuthority:'products-v3-latest-original-product-photos',
   productSpecs:Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙）',
     guiluDrink180:'180cc／包（鋁袋）',
-    guiluTangkuai:'75g／盒｜8塊裝｜每塊約9.375g',
-    guiluJiao:'600g（1斤）／盒｜32塊裝｜每塊約18.75g',
+    guiluTangkuai:'75g／盒｜8塊裝',
+    guiluJiao:'600g／盒｜32塊裝',
     luerongFen:'75g／罐'
   }),
   formalProductMedia:Object.freeze([
@@ -61,10 +61,10 @@ const resolveMedia=(copy,candidates)=>{
   const product=choosePublishable(copy,CONFIG.formalProductMedia);
   if(product)return{status:'approved_existing',candidate:product,action:'use',authority:'formal_product_media',approvalBatch:CONFIG.approvalBatch};
   const usable=choosePublishable(copy,candidates);
-  if(usable)return{status:'approved_existing',candidate:usable,action:'use',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch};
+  if(usable)return{status:'approved_existing',candidate:usable,action:'use',authority:'user_zip_approved'};
   const source=chooseSource(copy,candidates);
-  if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch};
-  return{status:'regenerate_if_missing',candidate:null,action:'regenerate',authority:'none',approvalBatch:CONFIG.approvalBatch};
+  if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary',authority:'user_zip_approved'};
+  return{status:'regenerate_if_missing',candidate:null,action:'regenerate',authority:'none'};
 };
 const loadJson=async(url)=>{
   const response=await fetch(url,{cache:'no-store',credentials:'same-origin'});
@@ -83,7 +83,7 @@ const loadLatestZipCatalog=async()=>{
   runtime.latestCatalog=catalog;
   document.documentElement.dataset.latestPostZip=local.source||'user-zip';
   document.documentElement.dataset.latestPostZipBinary=local.binary_sync?.status||'unknown';
-  document.documentElement.dataset.formalMediaApprovalBatch=local.approval_batch||CONFIG.approvalBatch;
+  document.documentElement.dataset.formalMediaApprovalBatch=local.approval_batch||'';
   window.dispatchEvent(new CustomEvent('xjw-latest-post-zip-ready',{detail:catalog}));
   return catalog;
 };
