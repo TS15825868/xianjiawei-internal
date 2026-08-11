@@ -9,7 +9,6 @@ const productGuard=read('assets/js/product-authority-guard.js');
 const mediaPolicy=read('assets/js/formal-media-policy-v20260810.js');
 const mediaAssistant=read('assets/js/zip-media-assistant.js');
 const standard=read('docs/CONTENT_IMAGE_GENERATION_STANDARD.md');
-const formalMedia=read('docs/FORMAL_MEDIA_POLICY_20260810.md');
 const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 const pkg=read('package.json');
 
@@ -32,20 +31,22 @@ for(const token of ['products-v3','Ø42','H51','0.60','0.68'])must(productGuard.
 must(!productGuard.includes('/images/products-v2/'),'產品圖片守門不得把products-v2當正式來源');
 for(const token of ['禁止拼湊','products-v3','AI 重畫產品','30cc','180cc','小老闆','完整成圖／非拼湊','16 項正式審核','禁止回退'])must(standard.includes(token),`生成母規格文件缺少：${token}`);
 
-for(const token of ['formalProductMedia','semanticScore','user_zip_approved','approved_existing','regenerate_if_missing','pending_review','reviewItems:16','needs_binary_sync','binary_ready','public_url','formal_product_media'])must(mediaPolicy.includes(token),`最新媒體權威 runtime 缺少能力：${token}`);
+for(const token of ['formalProductMedia','semanticScore','user_zip_approved','approved_existing','regenerate_if_missing','pending_review','reviewItems:16','needs_binary_sync','binary_ready','public_url','formal_product_media','latestZipCatalog','local?.public_catalog'])must(mediaPolicy.includes(token),`最新媒體權威 runtime 缺少能力：${token}`);
 must(mediaPolicy.includes('if(semantic<=0)return -Infinity'),'ZIP來源權重不得讓未命中文案的圖片被誤判為合格');
+must(!mediaPolicy.includes('post-library-userzip2-v20260810.json'),'媒體政策不得再綁死舊ZIP公開目錄');
 for(const token of ['resolveMedia','approved_existing','needs_binary_sync','regenerate_if_missing','formal_product_media','套用正式圖','套用 ZIP 合格圖','xjw-publishing-list-rendered'])must(mediaAssistant.includes(token),`唯一正式配圖助理缺少能力：${token}`);
-for(const token of ['2.zip','approved_existing','needs_binary_sync','regenerate_if_missing','pending_review','16項','products-v3','不驗舊版固定句子'])must(formalMedia.includes(token),`最新媒體權威文件缺少目前正式能力：${token}`);
 
-must(latestZip.source==='2.zip','貼文中心尚未鎖定使用者最新 2.zip 素材批次');
-must(Number(latestZip.candidate_count)>=22,'最新 ZIP 候選數不足，不能偷偷退回舊圖庫');
+must(typeof latestZip.source==='string'&&latestZip.source.trim(),'最新貼文 ZIP 來源名稱不可為空');
+must(Number(latestZip.candidate_count)>0,'最新 ZIP 必須有唯一候選圖');
+must(Number(latestZip.original_file_count||latestZip.candidate_count)>=Number(latestZip.candidate_count),'最新 ZIP 原始檔數不得小於唯一候選數');
 must(latestZip.priority==='user_zip_approved','最新 ZIP 必須優先於舊候選／重新生成');
-must(/post-library-userzip2-v20260810\.json/.test(latestZip.public_catalog||''),'貼文中心未指向官網最新 ZIP 公開目錄');
+must(/^https:\/\//.test(String(latestZip.public_catalog||'')),'貼文中心未指向目前最新 ZIP 公開目錄');
 const selectionRule=String(latestZip.selection_rule||'');
 must(/needs_binary_sync/.test(selectionRule),'最新ZIP必須區分有合格來源但原圖待同步');
-must(/regenerate only if no approved .*candidate matches/.test(selectionRule),'缺少「真的沒有合格來源才生成」能力規則');
+must(/regenerate only if no approved source candidate matches/i.test(selectionRule),'缺少「真的沒有合格來源才生成」能力規則');
 must(/pending_review/.test(latestZip.review_rule||'')&&/16/.test(latestZip.review_rule||''),'最新 ZIP 配圖後必須回待審核並保留16項審核');
 must(publishing.includes('最新貼文圖來源')&&publishing.includes('待同步原圖')&&publishing.includes('正式圖與 ZIP 都沒有合格來源'),'顧客可見說明沒有同步正式圖／ZIP／待同步／重生成能力');
+must(publishing.includes('最新使用者 ZIP 素材')&&!publishing.includes('2.zip（22張候選）'),'主畫面不得再硬寫舊ZIP批次與舊候選數');
 
 must(!pkg.includes('cp brand-control.html dist/brand-control.html'),'正式部署不得再帶出品牌控制台');
 must(!pkg.includes('cp assets/js/internal-app.js dist/assets/js/internal-app.js'),'正式部署不得再帶出ERP前端');
@@ -53,4 +54,4 @@ must(!pkg.includes('cp assets/js/erp-publishing-separation.js'),'正式部署不
 for(const file of ['post-regenerate-buttons.js','post-regenerate-policy-v1.js','formal-media-policy-v20260810.js','zip-media-assistant.js','latest-user-post-zip.json'])must(pkg.includes(file),`正式部署缺少能力檔：${file}`);
 must(!pkg.includes('post-media-suggestion-ui-v1.js'),'正式部署不得保留第二套媒體建議層');
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得再帶出舊v6第二套重生成邏輯');
-console.log('PASS：唯一正式配圖助理會先判產品／試喝正式圖，再做真正語意命中的ZIP配圖；有來源待同步不誤生成，真的無合格來源才生成；products-v3、16項重審與能力式守門均保留。');
+console.log(`PASS：唯一正式配圖助理先判產品／試喝正式圖，再依目前 ${latestZip.source} 做語意命中；有來源待同步不誤生成，真的無合格來源才生成；products-v3、16項重審與能力式守門均保留，不綁舊ZIP名稱或歷史版號。`);
