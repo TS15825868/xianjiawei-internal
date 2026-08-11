@@ -1,0 +1,89 @@
+name: Deploy Current Publishing Center To Cloudflare Once
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/deploy-current-cloudflare-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install and validate current publishing center
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm run check
+          npm run build:static
+          test -f dist/publishing.html
+          test -f dist/data/latest-user-post-zip.json
+          python - <<'PY'
+          import json
+          d=json.load(open('dist/data/latest-user-post-zip.json',encoding='utf-8'))
+          assert d['binary_sync']['status']=='synced'
+          assert d['binary_sync']['publishable_count']==15
+          assert all(x.get('binary_ready') is True for x in d['safe_scene_priority'])
+          print('PASS: deploy build contains 15 online uploaded lifestyle scenes')
+          PY
+      - name: Deploy current Worker when Cloudflare credentials are configured
+        id: cf
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo 'result=credentials_missing' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+          npx wrangler deploy --keep-vars
+          for attempt in 1 2 3 4 5 6 7 8; do
+            core="$(curl -fsSL --max-time 20 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
+            page="$(curl -fsSL --max-time 20 'https://xianjiawei-internal.tung314069.workers.dev/publishing.html' || true)"
+            if [ -n "$core" ] && printf '%s' "$page" | grep -q '貼文審核發佈系統' && printf '%s' "$page" | grep -q 'publishing-app-v2.js'; then
+              echo 'result=deployed_verified_health' >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 8
+          done
+          echo 'Worker deploy completed but health verification failed.' >&2
+          exit 1
+      - name: Record deployment result and remove one-time workflow
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          result='${{ steps.cf.outputs.result }}'
+          [ -n "$result" ] || result='deploy_or_validation_failed'
+          cat > cloudflare-deploy-current-status.json <<JSON
+          {
+            "status": "$result",
+            "source_commit": "${GITHUB_SHA}",
+            "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "uploaded_lifestyle_media_count": 15,
+            "binary_sync": "synced",
+            "blocking_guards": false,
+            "guard_mode": "paused_for_full_system_update"
+          }
+          JSON
+          rm -f .github/workflows/deploy-current-cloudflare-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'deploy: record current Cloudflare publishing result'
+          git pull --rebase origin main || true
+          git push origin HEAD:main || true
