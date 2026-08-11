@@ -1,9 +1,9 @@
 const PRODUCTS=Object.freeze([
   {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙'},
-  {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐','30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包','180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒','75g／盒｜8塊裝｜每塊約9.375g'],ingredients:['龜板萃取物','鹿角萃取物']},
-  {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g（1斤）／盒','600g（1斤）／盒｜32塊裝｜每塊約18.75g'],ingredients:['龜板萃取物','鹿角萃取物']},
+  {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
+  {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
+  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝｜每塊約9.375g'],ingredients:['龜板萃取物','鹿角萃取物']},
+  {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g（1斤）／盒｜32塊裝｜每塊約18.75g'],ingredients:['龜板萃取物','鹿角萃取物']},
   {id:'luerong-fen',name:'鹿茸粉',allowedSpecs:['75g／罐'],ingredients:['鹿茸']}
 ]);
 const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
@@ -46,8 +46,8 @@ function soupWeightErrors(text=''){
 
 export function validatePublicProductText(text=''){
   const source=String(text||''),errors=[...soupWeightErrors(source)];
-  if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source))errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐」，不得稱瓶。');
-  if(source.includes('龜鹿膏')&&source.includes('每天一次，每次一小匙'))errors.push('龜鹿膏正式使用資料已更新為「每日早上及下午各一小匙」，不得使用舊的一日一次版本。');
+  if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source))errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
+  if(source.includes('龜鹿膏')&&/(每天一次，每次一小匙|一天一次一小匙)/.test(source))errors.push('龜鹿膏正式使用資料已更新為「每日早上及下午各一小匙」，不得使用舊的一日一次版本。');
   return [...new Set(errors)];
 }
 
@@ -57,7 +57,7 @@ export function validateProductRecord(body={},options={}){
   const normalized=normalizedName(name,spec),product=BY_NAME.get(normalized);
   if(!product)return [`產品中心只允許六項正式產品，目前名稱「${name||'未填'}」不在正式清單。`];
   const errors=[];
-  if(!product.allowedSpecs.includes(spec))errors.push(`${product.name}規格不在目前正式規格清單。`);
+  if(!product.allowedSpecs.includes(spec))errors.push(`${product.name}規格不在目前完整正式規格清單。`);
   const ingredients=ingredientList(body?.ingredients);
   if(ingredients.length&&!sameList(ingredients,product.ingredients))errors.push(`${product.name}正式成分或順序不同步；請使用目前確認的正式成分。`);
   const usage=clean(body?.usage);
@@ -80,7 +80,7 @@ export function validatePostImageMatch(body={}){
   if(/generated-v20260808-(?:priority1|preflight)/i.test(imageText)&&/\.svg(?:[?#]|$)/i.test(imageText))errors.push('圖片仍是已退回的舊候選SVG，請重新生成或換正式候選圖。');
   const mentioned=[...new Set(detectedIds(copyText,'copy'))];
   const imageIds=[...new Set(detectedIds(imageText,'image'))];
-  if(mentioned.length===1&&imageIds.length&& !imageIds.includes(mentioned[0])){
+  if(mentioned.length===1&&imageIds.length&&!imageIds.includes(mentioned[0])){
     const expected=PRODUCTS.find(p=>p.id===mentioned[0])?.name||mentioned[0];
     const actual=imageIds.map(id=>PRODUCTS.find(p=>p.id===id)?.name||id).join('、');
     errors.push(`圖文產品不匹配：文案主產品是「${expected}」，圖片資訊卻指向「${actual}」。`);
@@ -99,9 +99,9 @@ export function validatePostPayload(body={}){
 }
 
 export const PRODUCT_AUTHORITY=Object.freeze({
-  version:'2026-08-09-server-v3-copy-image-match',
+  version:'current-server-product-authority',
   productCount:6,
-  soupBlockOnly:'75g／盒',
+  soupBlockOnly:'75g／盒｜8塊裝｜每塊約9.375g',
   guiluGaoUsagePrimary:'每日早上及下午各一小匙',
   postImageMatchBlocking:true,
   products:PRODUCTS
