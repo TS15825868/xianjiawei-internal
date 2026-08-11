@@ -16,6 +16,9 @@ const POST_IMAGE_RULES=Object.freeze([
   {id:'guilu-jiao',copy:[/龜鹿膠/i],image:[/guilu-jiao/i,/龜鹿膠/i]},
   {id:'luerong-fen',copy:[/鹿茸粉/i],image:[/luerong-fen/i,/鹿茸粉/i]}
 ]);
+const RETIRED_MEDIA_MARKERS=Object.freeze([
+  'legacy-reference-only','deprecated-reference-only','preflight-rejected-reference-only','superseded-reference-only'
+]);
 
 function normalizedName(name,spec=''){
   const value=clean(name),size=clean(spec);
@@ -78,7 +81,7 @@ export function validatePostImageMatch(body={}){
   const imageUrl=clean(body?.image_url);
   const errors=[];
   if(/\/images\/products-v2\//i.test(imageText))errors.push('圖片仍引用舊 products-v2，不能作為正式貼文產品圖。');
-  if(/\/images\/dm-final\//i.test(imageText)||/legacy/i.test(imageText))errors.push('圖片仍引用舊DM／歷史產品圖，不能作為正式貼文產品圖。');
+  if(RETIRED_MEDIA_MARKERS.some(marker=>imageText.toLowerCase().includes(marker)))errors.push('圖片來源已由目前資產權威標記為退役／只供參考，不能作為正式貼文媒體。');
   if(/generated-v20260808-(?:priority1|preflight)/i.test(imageText)&&/\.svg(?:[?#]|$)/i.test(imageText))errors.push('圖片仍是已退回的舊候選SVG，請重新生成或換正式候選圖。');
   const mentioned=[...new Set(detectedIds(copyText,'copy'))];
   const imageIds=[...new Set(detectedIds(imageText,'image'))];
@@ -106,5 +109,6 @@ export const PRODUCT_AUTHORITY=Object.freeze({
   soupBlockOnly:'75g／盒｜8塊裝',
   guiluGaoUsagePrimary:'一天一次一小匙',
   postImageMatchBlocking:true,
+  mediaGuardPolicy:'current-asset-status-and-product-match; directory names are not rejection criteria',
   products:PRODUCTS
 });
