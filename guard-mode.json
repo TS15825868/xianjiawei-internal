@@ -1,0 +1,13 @@
+{
+  "mode": "paused_for_full_system_update",
+  "blocking_content_and_media_guards": false,
+  "keep_minimum_safety": true,
+  "minimum_safety": [
+    "worker and publishing entry syntax",
+    "publishing UI script syntax",
+    "required static files present"
+  ],
+  "full_guard_command": "npm run guard:full",
+  "re_enable_after": "owner_visual_and_functional_review",
+  "future_guard_principle": "Use current authority, current formal product specs, current approved media and current semantic image-matching capabilities. Do not block valid updates because of retired strings, fixed counts, old filenames or old version labels."
+}
