@@ -23,6 +23,25 @@ function retired(path){
   return RETIRED_EXACT.has(path)||RETIRED_PREFIXES.some(prefix=>path.startsWith(prefix));
 }
 
+async function currentMediaAuthority(request,env){
+  const fallback={latestPostZip:'',latestPostZipCandidates:0,formalMediaApprovalBatch:'',latestPostZipBinaryStatus:'unknown'};
+  if(!env?.ASSETS?.fetch)return fallback;
+  try{
+    const u=new URL(request.url);
+    u.pathname=LATEST_POST_ZIP_MANIFEST;
+    u.search='';
+    const response=await env.ASSETS.fetch(new Request(u,{method:'GET'}));
+    if(!response.ok)return fallback;
+    const catalog=await response.json();
+    return{
+      latestPostZip:String(catalog?.source||''),
+      latestPostZipCandidates:Number(catalog?.candidate_count||0),
+      formalMediaApprovalBatch:String(catalog?.approval_batch||''),
+      latestPostZipBinaryStatus:String(catalog?.binary_sync?.status||'unknown')
+    };
+  }catch{return fallback;}
+}
+
 export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url);
@@ -46,7 +65,7 @@ export default{
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(url.pathname)){
       try{
-        const body=await response.clone().json();
+        const [body,media]=await Promise.all([response.clone().json(),currentMediaAuthority(request,env)]);
         return json({
           ...body,
           uiRuntime:UI_RUNTIME,
@@ -57,6 +76,10 @@ export default{
           formalMediaRuntime:FORMAL_MEDIA_RUNTIME,
           latestPostZipManifest:LATEST_POST_ZIP_MANIFEST,
           latestPostZipDynamic:true,
+          latestPostZip:media.latestPostZip,
+          latestPostZipCandidates:media.latestPostZipCandidates,
+          formalMediaApprovalBatch:media.formalMediaApprovalBatch,
+          latestPostZipBinaryStatus:media.latestPostZipBinaryStatus,
           postImagePriority:'user_zip_approved',
           formalMediaDecisionOnPostCard:true,
           singleMediaAssistant:true,
@@ -85,3 +108,5 @@ export default{
     if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);
   }
 };
+
+export { currentMediaAuthority };
