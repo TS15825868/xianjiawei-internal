@@ -1,15 +1,12 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-10-publishing-only-entry-v12-latest-user-media';
-const UI_RUNTIME='20260810-standalone-v22-latest-user-media';
-const PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3';
-const POST_BANK_SYNC_VERSION='2026-08-10-post-bank-sync-v5-retired-assets-removed';
-const FORMAL_MEDIA_RUNTIME='20260810-formal-media-policy-v5-latest-user-batch';
-const FORMAL_MEDIA_APPROVAL_BATCH='20260810-latest-user-dm-and-trial';
-const LATEST_POST_ZIP='2.zip';
-const LATEST_POST_ZIP_CANDIDATES=22;
-const KNOWN_REGENERATION_MINIMUM=121;
+const VERSION='publishing-only-current';
+const UI_RUNTIME='standalone-current';
+const PRODUCT_IMAGE_VERSION='products-v3-current-authority';
+const POST_BANK_SYNC_VERSION='post-bank-sync-current-capabilities';
+const FORMAL_MEDIA_RUNTIME='formal-media-policy-current';
+const LATEST_POST_ZIP_MANIFEST='/data/latest-user-post-zip.json';
 const RETIRED_EXACT=new Set([
   '/api/overview',
   '/api/settings',
@@ -37,7 +34,7 @@ export default{
         version:VERSION
       },404);
     }
-    if(request.method==='GET'&&url.pathname==='/data/latest-user-post-zip.json'&&env?.ASSETS?.fetch){
+    if(request.method==='GET'&&url.pathname===LATEST_POST_ZIP_MANIFEST&&env?.ASSETS?.fetch){
       const asset=await env.ASSETS.fetch(request);
       if(asset.ok){
         const headers=new Headers(asset.headers);
@@ -56,10 +53,10 @@ export default{
           productImageVersion:PRODUCT_IMAGE_VERSION,
           productImageAuthority:'products-v3-latest-original-product-photos',
           postBankSyncVersion:POST_BANK_SYNC_VERSION,
+          postBankValidation:'capability-based',
           formalMediaRuntime:FORMAL_MEDIA_RUNTIME,
-          formalMediaApprovalBatch:FORMAL_MEDIA_APPROVAL_BATCH,
-          latestPostZip:LATEST_POST_ZIP,
-          latestPostZipCandidates:LATEST_POST_ZIP_CANDIDATES,
+          latestPostZipManifest:LATEST_POST_ZIP_MANIFEST,
+          latestPostZipDynamic:true,
           postImagePriority:'user_zip_approved',
           formalMediaDecisionOnPostCard:true,
           singleMediaAssistant:true,
@@ -68,7 +65,7 @@ export default{
           regenerateOnlyIfNoApprovedMatch:true,
           zipSourceMatchCanWaitForBinarySync:true,
           reviewItemsAfterMediaChange:16,
-          knownRegenerationMinimum:KNOWN_REGENERATION_MINIMUM,
+          guardVersionPolicy:'current-authority-not-historical-version-pin',
           publishingOnly:true,
           publishingOnlyVersion:VERSION,
           retiredErpApisBlocked:true,
