@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260812-dm-binary-fix-v2';
+const VERSION='20260812-small-boss-trial-v1';
 const SITE='https://ts15825868.github.io/xianjiawei';
 const product=(id,file,keywords,alt,extra={})=>Object.freeze({id,keywords,public_url:`${SITE}/images/customer-display-v20260812/${file}?v=20260812-screenshot-fix-v1`,binary_ready:true,approved:true,source:'user-confirmed-six-product-valid-webp',role:'official-product-image',alt,...extra});
 const dm=(id,productId,file,keywords,alt,extra={})=>Object.freeze({id,productId,keywords,public_url:`${SITE}/images/dm-approved-v20260810/${file}?v=20260812-dm-binary-fix-v2`,binary_ready:true,approved:true,source:'valid-detailed-dm',role:'detailed-dm',alt,...extra});
@@ -9,7 +9,7 @@ const CONFIG=Object.freeze({
   runtime:`formal-media-policy-${VERSION}`,
   approvalBatch:VERSION,
   productAuthority:'six-user-confirmed-product-visuals-valid-binary-with-products-v3-identity-reference',
-  displayPolicy:'產品貼文固定使用六張正式產品圖；只有明確DM／詳細DM意圖才使用獨立且可解碼的詳細DM；試喝貼文固定使用獨立試喝主圖。三種角色不可互相誤代。products-v3只作實物外觀、包裝與比例校正。',
+  displayPolicy:'產品貼文固定使用六張正式產品圖；只有明確DM／詳細DM意圖才使用獨立且可解碼的詳細DM；試喝貼文固定使用使用者20260812提供的小老闆試喝主圖。三種角色不可互相誤代。products-v3只作實物外觀、包裝與比例校正。',
   productSpecs:Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙、金色蓋）',
@@ -20,7 +20,7 @@ const CONFIG=Object.freeze({
     guiluJiaoDetail:'每塊約18.75g（僅詳細資料；不放產品圖／DM主規格）',
     luerongFen:'75g／罐'
   }),
-  trialMedia:Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:`${SITE}/images/customer-display-v20260812/trial.webp?v=20260812-screenshot-fix-v1`,binary_ready:true,approved:true,source:'user-confirmed-separate-trial-master-valid-webp',role:'fixed-full-trial-master-only',alt:'龜鹿飲試喝組｜先試喝，再決定'}),
+  trialMedia:Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:`${SITE}/images/customer-display-v20260812/trial-small-boss.webp?v=${VERSION}`,binary_ready:true,approved:true,source:'user-provided-small-boss-trial-master-20260812',role:'fixed-full-trial-master-only',alt:'仙加味龜鹿飲試喝組小老闆正式主圖｜先試喝，再決定',validation:'do-not-regenerate-do-not-use-retired-trial'}),
   formalProductMedia:Object.freeze([
     product('guilu-gao','guilu-gao.webp',['龜鹿膏'],'仙加味龜鹿膏100g正式產品圖'),
     product('guilu-drink-30','guilu-drink-30cc.webp',['龜鹿飲30cc','30cc','小玻璃罐'],'仙加味龜鹿飲30cc／罐（小玻璃罐）正式產品圖',{validation:'actual-small-glass-jar-no-label-gold-lid-no-shape-or-proportion-change'}),
@@ -40,13 +40,13 @@ const CONFIG=Object.freeze({
   latestZipCatalog:'/data/latest-user-post-zip.json',
   imageSourcePriority:Object.freeze(['trial_media','formal_dm_media_when_explicit_dm_intent','formal_product_media','user_zip_approved','approved_existing','regenerate_if_missing']),
   regeneration:Object.freeze({invalidateApproval:true,invalidateSchedule:true,returnStatus:'pending_review',autoApprove:false,autoPublish:false,reviewItems:16,actualProductReference:'products-v3'}),
-  hardReject:Object.freeze(['products-v2','products-v4-final-as-customer-main','ai-redrawn-wrong-product','wrong-30cc-container','wrong-180cc-package','collage','cropped-character','stretched-product','copy-image-mismatch','dm-copy-conflict','piece-weight-on-main-image','invalid-image-binary','guilu-gao-100g.webp'])
+  hardReject:Object.freeze(['products-v2','products-v4-final-as-customer-main','ai-redrawn-wrong-product','wrong-30cc-container','wrong-180cc-package','collage','cropped-character','stretched-product','copy-image-mismatch','dm-copy-conflict','piece-weight-on-main-image','invalid-image-binary','guilu-gao-100g.webp','/trial.webp','trial-clean-v4.svg'])
 });
 const normalize=s=>String(s||'').toLowerCase();
-const rejected=c=>c?.rejected===true||c?.status==='rejected'||c?.product_redrawn===true||c?.status==='not_zip_authority'||/guilu-gao-100g\.webp/i.test(String(c?.public_url||''));
+const rejected=c=>c?.rejected===true||c?.status==='rejected'||c?.product_redrawn===true||c?.status==='not_zip_authority'||/guilu-gao-100g\.webp|\/trial\.webp|trial-clean-v4\.svg/i.test(String(c?.public_url||''));
 const publishable=c=>c?.binary_ready===true&&/^https?:\/\//.test(String(c?.public_url||''))&&!rejected(c);
 const semanticScore=(copy,candidate)=>{const text=normalize(copy),c=candidate||{};let score=0;for(const keyword of Array.isArray(c.keywords)?c.keywords:[]){if(keyword&&text.includes(normalize(keyword)))score+=12;}const scene=normalize(c.scene||c.title||c.alt||c.id||'');for(const token of text.split(/[\s，。！？、；：,.!?;:]+/).filter(x=>x.length>=2)){if(scene.includes(token))score+=2;}return score;};
-const scoreCandidate=(copy,candidate)=>{const c=candidate||{};if(rejected(c))return-Infinity;const semantic=semanticScore(copy,c);if(semantic<=0)return-Infinity;let priority=0;const source=normalize(c.source||c.origin||c.source_file||'');if(source.includes('trial-master'))priority+=300;else if(source.includes('valid-approved-jpeg')||source.includes('valid-detailed-dm'))priority+=280;else if(source.includes('six-product'))priority+=260;else if(source.includes('formal-media'))priority+=240;else if(source.includes('zip')||source.includes('user')||c.source_file)priority+=100;if(c.approved===true||c.status==='approved')priority+=60;return semantic+priority;};
+const scoreCandidate=(copy,candidate)=>{const c=candidate||{};if(rejected(c))return-Infinity;const semantic=semanticScore(copy,c);if(semantic<=0)return-Infinity;let priority=0;const source=normalize(c.source||c.origin||c.source_file||'');if(source.includes('small-boss-trial-master'))priority+=340;else if(source.includes('trial-master'))priority+=300;else if(source.includes('valid-approved-jpeg')||source.includes('valid-detailed-dm'))priority+=280;else if(source.includes('six-product'))priority+=260;else if(source.includes('formal-media'))priority+=240;else if(source.includes('zip')||source.includes('user')||c.source_file)priority+=100;if(c.approved===true||c.status==='approved')priority+=60;return semantic+priority;};
 const rank=(copy,candidates)=>(Array.isArray(candidates)?candidates:[]).map(item=>({item,score:scoreCandidate(copy,item)})).filter(x=>Number.isFinite(x.score)&&x.score>0).sort((a,b)=>b.score-a.score);
 const chooseSource=(copy,candidates)=>rank(copy,candidates)[0]?.item||null;
 const choosePublishable=(copy,candidates)=>rank(copy,candidates).find(x=>publishable(x.item))?.item||null;
@@ -56,6 +56,6 @@ const loadJson=async url=>{const response=await fetch(url,{cache:'no-store',cred
 const runtime={...CONFIG,latestCatalog:null,semanticScore,chooseSourceCandidate:chooseSource,chooseBestCandidate:choosePublishable,detectRole,resolveMedia,needsBinarySync:(copy,candidates)=>resolveMedia(copy,candidates).status==='needs_binary_sync',needsGeneration:(copy,candidates)=>resolveMedia(copy,candidates).status==='regenerate_if_missing'};
 runtime.loadLatestZipCatalog=async()=>{const local=await loadJson(CONFIG.latestZipCatalog);let publicCatalog=null;const publicUrl=String(local?.public_catalog||'').trim();if(publicUrl){try{publicCatalog=await fetch(publicUrl,{cache:'no-store'}).then(r=>r.ok?r.json():null);}catch{publicCatalog=null;}}const catalog={...local,public:publicCatalog,safeScenes:Array.isArray(publicCatalog?.safe_scene_priority)&&publicCatalog.safe_scene_priority.length?publicCatalog.safe_scene_priority:(Array.isArray(local.safe_scene_priority)?local.safe_scene_priority:[])};runtime.latestCatalog=catalog;document.documentElement.dataset.latestPostZip=local.source||'user-zip';document.documentElement.dataset.latestPostZipBinary=local.binary_sync?.status||'unknown';document.documentElement.dataset.formalMediaApprovalBatch=CONFIG.approvalBatch;window.dispatchEvent(new CustomEvent('xjw-latest-post-zip-ready',{detail:catalog}));return catalog;};
 window.XJWFormalMediaPolicy=runtime;document.documentElement.dataset.formalMediaPolicy=CONFIG.runtime;
-function installNote(){const host=document.querySelector('.publish-separation-note');if(!host||host.querySelector('[data-formal-media-policy-note]'))return;const note=document.createElement('p');note.dataset.formalMediaPolicyNote='true';note.innerHTML='<strong>目前配圖規則：</strong>一般產品貼文固定使用六張正式產品圖；明確「DM／詳細DM」才使用可正常解碼的詳細DM；試喝文固定使用獨立試喝主圖。龜鹿膏詳細DM已停用損壞WebP並改用核准JPG母圖。龜鹿湯塊與龜鹿膠的每塊約重量只留詳細資料。任何換圖、重生成或改文案後一律回待審核並重新完成16項。';host.appendChild(document.createElement('br'));host.appendChild(note);}
+function installNote(){const host=document.querySelector('.publish-separation-note');if(!host||host.querySelector('[data-formal-media-policy-note]'))return;const note=document.createElement('p');note.dataset.formalMediaPolicyNote='true';note.innerHTML='<strong>目前配圖規則：</strong>一般產品貼文固定使用六張正式產品圖；明確「DM／詳細DM」才使用可正常解碼的詳細DM；試喝文固定使用使用者最新提供的「小老闆＋小鹿＋小烏龜」試喝主圖，舊試喝圖不得恢復。龜鹿湯塊與龜鹿膠的每塊約重量只留詳細資料。任何換圖、重生成或改文案後一律回待審核並重新完成16項。';host.appendChild(document.createElement('br'));host.appendChild(note);}
 window.addEventListener('DOMContentLoaded',()=>{runtime.loadLatestZipCatalog().then(installNote).catch(installNote);});
 })();
