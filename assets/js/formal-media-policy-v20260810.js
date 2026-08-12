@@ -1,10 +1,10 @@
 (()=>{
 'use strict';
 const CONFIG=Object.freeze({
-  runtime:'formal-media-policy-20260812-six-product-final-v2',
-  approvalBatch:'20260812-six-product-final-v2',
+  runtime:'formal-media-policy-20260812-six-product-final-v3-clean',
+  approvalBatch:'20260812-six-product-final-v3-clean',
   productAuthority:'six-user-confirmed-product-visuals-with-products-v3-identity-reference',
-  displayPolicy:'產品貼文使用六張正式產品圖；DM貼文使用各產品正式DM；試喝貼文固定使用獨立試喝主圖。三種角色不可互相誤代。products-v3只作實物外觀、包裝與比例校正。',
+  displayPolicy:'產品貼文使用六張正式產品圖；DM貼文使用各產品正式DM；試喝貼文固定使用獨立試喝主圖。三種角色不可互相誤代。20260812 final-v3 已清除龜鹿湯塊主規格區殘影；products-v3只作實物外觀、包裝與比例校正。',
   productSpecs:Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙、金色蓋）',
@@ -16,13 +16,13 @@ const CONFIG=Object.freeze({
     luerongFen:'75g／罐'
   }),
   formalProductMedia:Object.freeze([
-    Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/trial.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-separate-trial-master',role:'fixed-full-trial-master-only',alt:'龜鹿飲試喝組｜先試喝，再決定'}),
-    Object.freeze({id:'guilu-gao',keywords:['龜鹿膏'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-gao.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿膏100g正式產品圖'}),
-    Object.freeze({id:'guilu-drink-30',keywords:['龜鹿飲30cc','30cc','小玻璃罐'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-30cc.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿飲30cc／罐（小玻璃罐）正式產品圖',validation:'actual-small-glass-jar-no-label-gold-lid-no-shape-or-proportion-change'}),
-    Object.freeze({id:'guilu-drink-180',keywords:['龜鹿飲180cc','180cc','鋁袋'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-180cc.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿飲180cc鋁袋正式產品圖',validation:'actual-foil-pouch-no-shape-or-proportion-change'}),
-    Object.freeze({id:'guilu-tangkuai',keywords:['龜鹿湯塊','湯塊75g','湯塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-tangkuai.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿湯塊75g／盒｜8塊裝正式產品圖'}),
-    Object.freeze({id:'guilu-jiao',keywords:['龜鹿膠','600g','1斤','32塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-jiao.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿膠600g（1斤）／盒｜32塊裝正式產品圖'}),
-    Object.freeze({id:'luerong-fen',keywords:['鹿茸粉','鹿茸','75g'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/luerong-fen.webp?v=20260812-six-product-final-v2',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味鹿茸粉75g正式產品圖'})
+    Object.freeze({id:'trial',keywords:['試喝','3罐免費','試喝組','先試喝'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/trial.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-separate-trial-master',role:'fixed-full-trial-master-only',alt:'龜鹿飲試喝組｜先試喝，再決定'}),
+    Object.freeze({id:'guilu-gao',keywords:['龜鹿膏'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-gao.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿膏100g正式產品圖'}),
+    Object.freeze({id:'guilu-drink-30',keywords:['龜鹿飲30cc','30cc','小玻璃罐'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-30cc.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿飲30cc／罐（小玻璃罐）正式產品圖',validation:'actual-small-glass-jar-no-label-gold-lid-no-shape-or-proportion-change'}),
+    Object.freeze({id:'guilu-drink-180',keywords:['龜鹿飲180cc','180cc','鋁袋'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-180cc.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿飲180cc鋁袋正式產品圖',validation:'actual-foil-pouch-no-shape-or-proportion-change'}),
+    Object.freeze({id:'guilu-tangkuai',keywords:['龜鹿湯塊','湯塊75g','湯塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-tangkuai.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final-clean-v3',role:'official-product-image',alt:'仙加味龜鹿湯塊75g／盒｜8塊裝正式產品圖'}),
+    Object.freeze({id:'guilu-jiao',keywords:['龜鹿膠','600g','1斤','32塊'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-jiao.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味龜鹿膠600g（1斤）／盒｜32塊裝正式產品圖'}),
+    Object.freeze({id:'luerong-fen',keywords:['鹿茸粉','鹿茸','75g'],public_url:'https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/luerong-fen.webp?v=20260812-six-product-final-v3-clean',binary_ready:true,approved:true,source:'user-confirmed-six-product-final',role:'official-product-image',alt:'仙加味鹿茸粉75g正式產品圖'})
   ]),
   latestZipCatalog:'/data/latest-user-post-zip.json',
   imageSourcePriority:Object.freeze(['formal_product_media','user_zip_approved','approved_existing','regenerate_if_missing']),
