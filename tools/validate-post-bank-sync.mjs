@@ -5,6 +5,8 @@ const sync=read('assets/js/post-bank-sync.js');
 const html=read('publishing.html');
 const pkg=read('package.json');
 const gate=read('src/publishing-review-gate-entry.js');
+const productGuard=read('assets/js/product-authority-guard.js');
+const mediaPolicy=read('assets/js/formal-media-policy-v20260810.js');
 
 for(const token of ['post-bank-export.html',"schema!=='xjw-post-bank-export-v1'",'validateExport(data)',"retired_assets_removed!==true",'products-v3','products-v2','post_count_matches_current_catalog','new Set(ids).size!==posts.length',"PUBLIC_ORIGIN='https://ts15825868.github.io'",'WRITE_CONCURRENCY=4','protectedPost(post)','campaignHold(post)','existingIdentity(existing)','existingIds','legacyTitles','missingPosts(active,existing)',"SOURCE_PREFIX='公開母庫:'",'needs_generation','/regeneration-ready','data-sync-post-bank','window.confirm']) must(sync.includes(token),`目前貼文母庫同步缺少安全能力：${token}`);
 
@@ -28,9 +30,9 @@ must(sync.includes("caps[key]!==true"),'同步端必須驗 exporter 目前安全
 must(!sync.includes('/publish-now'),'母庫同步不得呼叫立即發布');
 must(!sync.includes("status:'approved'")&&!sync.includes("status:'scheduled'")&&!sync.includes("status:'published'"),'母庫同步不得自行建立已核准／排程／發布狀態');
 must(gate.includes('/regeneration-ready')&&gate.includes("status='pending_review'"),'安全候選送待審核必須由正式review gate處理');
-must(/post-bank-sync\.js\?v=[^\"']+/.test(html),'貼文系統沒有載入正式母庫同步工具或缺少快取識別');
-must(html.includes('目前正式貼文母庫')&&html.includes('不再限制必須剛好500篇'),'主畫面必須清楚說明母庫可持續增加、不固定500篇');
 
+must(/post-bank-sync\.js\?v=[^\"']+/.test(html),'貼文系統沒有載入正式母庫同步工具或缺少快取識別');
+must(html.includes('母庫可持續增加')&&html.includes('不設固定篇數上限'),'貼文中心必須清楚表達母庫可持續增加且不鎖歷史固定篇數');
 const normalized=html.replace(/\s+/g,'');
 const hasAny=patterns=>patterns.some(p=>p.test(normalized));
 must(hasAny([/圖不符合.*文案不符合.*全部重新生成/,/重新生成.*圖.*文案/]),'貼文系統沒有提供圖／文案重新生成入口');
@@ -38,7 +40,14 @@ must(/原核准自動失效/.test(normalized)||/撤銷舊核准/.test(normalized
 must(hasAny([/儲存後(?:會)?自動回到[「"]?待審核/,/生成完成後.*待審核/,/重新生成後.*待審核/]),'貼文系統沒有說明重生成完成後必須回待審核');
 must(/不會自動核准(?:或|／)發布/.test(normalized)||/不會自動核准.*不會自動發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／發布');
 must(/16項/.test(normalized)&&(/重新完成/.test(normalized)||/重跑/.test(normalized)||/審核/.test(normalized)),'貼文系統沒有保留16項重新審核能力說明');
-must(html.includes('products-v3')&&!html.includes('products-v2-actual-photos'),'貼文系統沒有維持目前products-v3正式產品圖權威');
+
+// Current four media roles: customer product image, detailed DM, trial poster, products-v3 identity reference.
+for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3']) must(productGuard.includes(token),`目前產品媒體角色權威缺少：${token}`);
+must(!productGuard.includes('/images/products-v2/'),'產品媒體權威不得回退products-v2');
+for(const token of ['formalProductMedia','actualProductReference','products-v3','user_zip_approved','needs_binary_sync','regenerate_if_missing']) must(mediaPolicy.includes(token),`正式媒體政策缺少目前能力：${token}`);
+must(html.includes('products-v3只作產品本體身份、包裝與比例校正'),'貼文中心必須把products-v3說明為身份／包裝／比例校正，而不是一般顧客主圖');
+must(html.includes('一般產品貼文只用六張正式產品圖')&&html.includes('詳細DM')&&html.includes('試喝文固定用目前核准'),'貼文中心必須清楚分離一般產品圖、詳細DM與試喝圖角色');
+
 must(pkg.includes('assets/js/post-bank-sync.js'),'部署包沒有包含母庫同步工具');
 
-console.log('PASS：貼文母庫守門改為目前能力驗收：張數跟隨目前公開catalog、ID唯一、products-v3權威、products-v2禁用、需重生成不沿用舊圖、已發布鎖定與活動冷卻保護；不再硬限制500篇、舊runtime、產品圖舊快取版號或歷史重生成數量。');
+console.log('PASS：貼文母庫採目前能力驗收：張數動態、ID唯一、需重生成清舊圖、已發布／活動冷卻保護、不自動發布；UI不鎖歷史500篇，且一般產品圖、詳細DM、試喝海報與products-v3身份／比例參考四種媒體角色分離。');
