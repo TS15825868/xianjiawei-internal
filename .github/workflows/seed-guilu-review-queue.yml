@@ -93,7 +93,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          schema="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT sql FROM sqlite_master WHERE type='table' AND name='social_posts'; SELECT email,active FROM profiles WHERE email='${XJW_CONTENT_SEED_CREATED_BY}' LIMIT 1;\")"
+          schema="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT sql FROM sqlite_master WHERE type='table' AND name='social_posts'; SELECT email,active FROM profiles WHERE email='${XJW_CONTENT_SEED_CREATED_BY}' LIMIT 1;")"
           echo "$schema"
           echo "$schema" | grep -q 'pending_review'
           echo "$schema" | grep -q 'manual_required'
@@ -114,7 +114,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS social_total FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE status IN ('draft','pending_review') AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）%' OR copy LIKE '%每塊約18.75g%');\")"
+          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS social_total FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE status IN ('draft','pending_review') AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）%' OR copy LIKE '%每塊約18.75g%');")"
           echo "$result"
           echo "$result" | grep -q 'social_total'
           echo "$result" | grep -Eq 'products_v3_live[^0-9]*0|products_v3_live[[:space:]]+0'
