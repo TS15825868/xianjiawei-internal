@@ -1,12 +1,8 @@
-name: 仙加味龜鹿內容母庫送待審核
+name: 仙加味龜鹿內容母庫手動送待審核
 
+# 只有 Cloudflare D1 正式憑證存在時才執行。
+# 平常不因 push 自動跑，避免缺憑證時出現誤導性的綠色 success。
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'assets/data/guilu-content-topic-bank-v20260814.json'
-      - 'tools/build-guilu-review-seed.mjs'
-      - '.github/workflows/seed-guilu-review-queue.yml'
   workflow_dispatch:
 
 permissions:
@@ -30,42 +26,38 @@ jobs:
         with:
           node-version: 22
 
+      - name: Require Cloudflare D1 credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing CLOUDFLARE_API_TOKEN' >&2; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing CLOUDFLARE_ACCOUNT_ID' >&2; exit 1; }
+          echo 'PASS: Cloudflare D1 credentials are configured.'
+
       - name: Install Wrangler
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 
       - name: Validate topic bank and build idempotent D1 seed
         run: |
           node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
-          test "$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)" -ge 1
-          echo "PASS: 龜鹿題庫已通過品牌、字詞、圖片來源與去重規則。"
-
-      - name: Detect Cloudflare credentials
-        id: cloudflare
-        shell: bash
-        run: |
-          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo 'ready=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'ready=false' >> "$GITHUB_OUTPUT"
-            echo 'Cloudflare credentials missing; seed will not run.'
-          fi
+          count="$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)"
+          test "$count" -eq 28
+          echo "PASS: 28篇已有正式圖片的龜鹿內容通過品牌、字詞、圖片來源與去重規則。"
 
       - name: Verify remote D1
-        if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
 
       - name: Seed complete topics into pending review
-        if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/guilu-review-seed.sql
 
       - name: Verify review queue
-        if: steps.cloudflare.outputs.ready == 'true'
         run: |
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status"
-          echo "PASS: 只建立待審核內容；未自動核准、未排程、未發布。"
+          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status\")"
+          echo "$result"
+          echo "$result" | grep -q 'pending_review'
+          echo 'PASS: 龜鹿母庫已建立待審核內容；未自動核准、未排程、未發布。'
 
       - name: Summary
         if: always()
         run: |
-          echo "龜鹿母庫只使用 seedToReview=true 且具有正式網站圖片來源的題目。"
-          echo "INSERT OR IGNORE 保證重跑不會重複灌入同一題目，也不會覆蓋人工修改後的既有貼文。"
+          echo '只使用 seedToReview=true 且具有正式網站圖片來源的題目。'
+          echo 'INSERT OR IGNORE 保證重跑不重複灌入同一題目，也不覆蓋人工修改後的既有貼文。'
