@@ -1,5 +1,5 @@
 const PRODUCTS=Object.freeze([
-  {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙'},
+  {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'食用時間與份量可依個人使用習慣與作息安排'},
   {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
   {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
   {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約9.375g'},
@@ -56,8 +56,12 @@ function publicProductContextErrors(text=''){
   if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source)){
     errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
   }
+  if(/建議白天飲用/.test(source))errors.push('龜鹿飲不設定固定白天時段；飲用時間請依個人使用習慣與作息安排。');
   for(const segment of productSegments(source,'龜鹿膏')){
-    if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙)/.test(segment))errors.push('龜鹿膏目前正式使用資料為「每日早上及下午各一小匙」，不得回退舊的一天一次／早晚用法。');
+    if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間與份量可依個人使用習慣與作息安排。');
+  }
+  for(const segment of productSegments(source,'龜鹿飲30cc玻璃罐')){
+    if(/(每日一罐|每日\s*1\s*罐)/.test(segment))errors.push('龜鹿飲30cc目前使用方式為「每日 1-2罐」；飲用時間依個人使用習慣與作息安排。');
   }
   for(const segment of productSegments(source,'龜鹿湯塊')){
     if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g／盒｜8塊裝」。');
@@ -117,13 +121,15 @@ export function validatePostPayload(body={}){
 }
 
 export const PRODUCT_AUTHORITY=Object.freeze({
-  version:'current-server-product-authority-v2-20260814',
+  version:'current-server-product-authority-v3-20260815',
   productCount:6,
   soupBlockMain:'75g／盒｜8塊裝',
   soupBlockDetail:'每塊約9.375g（僅產品詳細／內部資料）',
   guiluJiaoMain:'600g（1斤）／盒｜32塊裝',
   guiluJiaoDetail:'每塊約18.75g（僅產品詳細／內部資料）',
-  guiluGaoUsagePrimary:'每日早上及下午各一小匙',
+  guiluGaoUsagePrimary:'食用時間與份量可依個人使用習慣與作息安排',
+  guiluDrink30UsagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息安排',
+  guiluDrink180UsagePrimary:'每日一包；飲用時間可依個人使用習慣與作息安排',
   postImageMatchBlocking:true,
   mediaGuardPolicy:'current-media-role-and-product-match; customer-display main / dm-final detailed DM / 8-14 trial / products-v3 identity-reference; no historical-version pin',
   products:PRODUCTS
