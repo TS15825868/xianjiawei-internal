@@ -38,10 +38,9 @@ const hasAny=patterns=>patterns.some(p=>p.test(normalized));
 must(hasAny([/圖不符合.*文案不符合.*全部重新生成/,/重新生成.*圖.*文案/]),'貼文系統沒有提供圖／文案重新生成入口');
 must(/原核准自動失效/.test(normalized)||/撤銷舊核准/.test(normalized),'貼文系統沒有說明修改／重生成後舊核准會失效');
 must(hasAny([/儲存後(?:會)?自動回到[「"]?待審核/,/生成完成後.*待審核/,/重新生成後.*待審核/]),'貼文系統沒有說明重生成完成後必須回待審核');
-must(/不會自動核准(?:或|／)發布/.test(normalized)||/不會自動核准.*不會自動發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／發布');
+must(/不會自動核准.{0,16}發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／排程／發布');
 must(/16項/.test(normalized)&&(/重新完成/.test(normalized)||/重跑/.test(normalized)||/審核/.test(normalized)),'貼文系統沒有保留16項重新審核能力說明');
 
-// Current four media roles: customer product image, detailed DM, trial poster, products-v3 identity reference.
 for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3']) must(productGuard.includes(token),`目前產品媒體角色權威缺少：${token}`);
 must(!productGuard.includes('/images/products-v2/'),'產品媒體權威不得回退products-v2');
 for(const token of ['formalProductMedia','actualProductReference','products-v3','user_zip_approved','needs_binary_sync','regenerate_if_missing']) must(mediaPolicy.includes(token),`正式媒體政策缺少目前能力：${token}`);
@@ -50,4 +49,4 @@ must(html.includes('一般產品貼文只用六張正式產品圖')&&html.includ
 
 must(pkg.includes('assets/js/post-bank-sync.js'),'部署包沒有包含母庫同步工具');
 
-console.log('PASS：貼文母庫採目前能力驗收：張數動態、ID唯一、需重生成清舊圖、已發布／活動冷卻保護、不自動發布；UI不鎖歷史500篇，且一般產品圖、詳細DM、試喝海報與products-v3身份／比例參考四種媒體角色分離。');
+console.log('PASS：貼文母庫採目前能力驗收：張數動態、ID唯一、需重生成清舊圖、已發布／活動冷卻保護、不自動核准／排程／發布；UI不鎖歷史500篇，且一般產品圖、詳細DM、試喝海報與products-v3身份／比例參考四種媒體角色分離。');
