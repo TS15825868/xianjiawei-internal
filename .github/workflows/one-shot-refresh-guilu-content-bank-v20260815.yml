@@ -28,7 +28,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import json, re
+          import json
 
           path=Path('assets/data/guilu-content-topic-bank-v20260814.json')
           bank=json.loads(path.read_text(encoding='utf-8'))
@@ -140,7 +140,7 @@ jobs:
           node tools/build-guilu-review-seed.mjs > /tmp/guilu-seed.sql
           npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/guilu-seed.sql
           python - <<'PY'
-          import json
+          import json,re
           from pathlib import Path
           bank=json.loads(Path('assets/data/guilu-content-topic-bank-v20260814.json').read_text(encoding='utf-8'))
           site='https://ts15825868.github.io/xianjiawei'
@@ -154,9 +154,7 @@ jobs:
             'luerong-fen':f'{site}/images/customer-display-v20260812/luerong-fen.avif?v={ver}',
           }
           def q(v): return "'"+str(v or '').replace("'","''")+"'"
-          def safe(v):
-              import re
-              return re.sub(r'[^a-z0-9-]+','-',str(v or '').strip().lower()).strip('-')
+          def safe(v): return re.sub(r'[^a-z0-9-]+','-',str(v or '').strip().lower()).strip('-')
           rows=[]
           for t in bank.get('topics',[]):
               if t.get('seedToReview') is not True: continue
@@ -169,11 +167,11 @@ jobs:
               image_source=f'{source}|題庫:{slug}|{bank.get("version","")}|media:{ver}'
               rows.append("UPDATE social_posts SET title={title},headline={headline},copy={copy},category={cat},platforms_json={platforms},image_url={url},image_alt={alt},image_source={source},updated_at=CURRENT_TIMESTAMP WHERE id={id} AND status IN ('draft','pending_review');".format(
                   title=q(t.get('title')),headline=q(t.get('headline')),copy=q(t.get('copy')),cat=q(t.get('category') or '龜鹿知識'),platforms=q(platforms),url=q(url),alt=q(t.get('imageAlt') or t.get('title')),source=q(image_source),id=q(post)))
-          Path('/tmp/guilu-sync-pending.sql').write_text('BEGIN TRANSACTION;\n'+'\n'.join(rows)+'\nCOMMIT;\n',encoding='utf-8')
+          Path('/tmp/guilu-sync-pending.sql').write_text('\n'.join(rows)+'\n',encoding='utf-8')
           print(f'prepared {len(rows)} pending/draft updates')
           PY
           npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/guilu-sync-pending.sql
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS stale_count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' AND status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）/%' OR copy LIKE '%每塊約18.75g%')" > /tmp/guilu-audit.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS stale_count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' AND status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）%' OR copy LIKE '%每塊約18.75g%')" > /tmp/guilu-audit.json
           node - <<'NODE'
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('/tmp/guilu-audit.json','utf8'));
