@@ -1,0 +1,145 @@
+{
+  "version": "2026-08-15-batch03-v1",
+  "brand": "仙加味",
+  "status": "pending_review",
+  "purpose": "第三批12篇正式社群貼文；補強品牌工序、規格教育、保存、溫熱使用與諮詢內容，全部使用官網核准素材並進貼文中心待審核。",
+  "rules": {
+    "mascotAuthority": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/",
+    "productImageRule": "產品本體只用官網核准產品情境圖或正式原圖；30cc維持小玻璃裸罐、180cc維持狹長鋁袋，其他盒罐亦不得重畫或改比例。",
+    "copyRule": "避免療效與疾病宣稱；聚焦品牌故事、工序、產品知識、飲食文化、保存、溫熱飲用與日常使用情境。"
+  },
+  "posts": [
+    {
+      "id": "four-generation-work",
+      "title": "四代做同一門工作，留下的是什麼？",
+      "headline": "從看料、鹿角與熬製經驗，到今天更清楚的產品資訊",
+      "category": "品牌故事",
+      "copy": "仙加味從萬華一路走到第四代。不同世代面對的生活方式不一樣，但對原料、工序與產品本身的重視沒有改變。今天我們做的，是把過去熟悉的經驗整理成更清楚的規格、使用方式與飲食文化內容，讓第一次接觸的人也能慢慢看懂。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味網站同款Q版小老闆在萬華品牌傳承情境",
+      "imageSource": "官網核准品牌故事情境圖：brand-story.webp"
+    },
+    {
+      "id": "craft-time-and-heat",
+      "title": "傳統熬製，為什麼總是在談時間與火候？",
+      "headline": "前處理、時間、火候與濃縮節奏，都是工序的一部分",
+      "category": "傳統工序",
+      "copy": "傳統熬製不是只看最後完成的樣子。從前處理開始，到加熱、時間與濃縮節奏，每一段都需要逐步確認。仙加味希望把這些過去靠經驗累積的工序，整理成今天更容易理解的內容，而不是只留下一句模糊的傳統說法。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味小老闆在傳統工序與品牌故事情境",
+      "imageSource": "官網核准品牌故事情境圖：brand-story.webp"
+    },
+    {
+      "id": "why-exact-specs",
+      "title": "為什麼規格要寫得這麼清楚？",
+      "headline": "容量、重量、包裝與每盒數量分開寫，才不會把不同產品混在一起",
+      "category": "產品知識",
+      "copy": "龜鹿系列有即飲、小罐膏、湯塊、大盒龜鹿膠與粉狀產品，不同型態的容量、重量和包裝都不一樣。把規格寫完整，是為了讓30cc小玻璃罐、180cc鋁袋、75g湯塊與600g龜鹿膠不再被混為一談。\n\n看懂規格，再看使用方式，選擇會更簡單。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味六項正式產品總覽與Q版小老闆",
+      "imageSource": "官網核准六產品情境圖：products-all.webp"
+    },
+    {
+      "id": "thirty-cc-package-detail",
+      "title": "30cc為什麼一直強調「小玻璃罐」？",
+      "headline": "因為真實包裝就是小玻璃裸罐，不是大瓶，也沒有貼紙",
+      "category": "產品知識",
+      "copy": "龜鹿飲30cc正式規格是30cc／罐（小玻璃罐）。產品外觀維持小玻璃裸罐、無貼紙、金色蓋，不另外把它畫成大瓶，也不自行增加不存在的外包裝。\n\n產品資訊與圖片一致，是仙加味整理內容時最基本的原則。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味龜鹿飲30cc小玻璃裸罐正式比例與Q版小老闆",
+      "imageSource": "官網核准產品情境圖：product-guilu-drink-30cc.webp"
+    },
+    {
+      "id": "one-eighty-pouch-detail",
+      "title": "180cc鋁袋，重點不是畫得大，而是比例要對。",
+      "headline": "狹長直立的正式包裝，才能呈現真實產品樣子",
+      "category": "產品知識",
+      "copy": "龜鹿飲180cc正式規格為180cc／包（鋁袋）。圖片呈現時維持狹長直立的正式比例，不把鋁袋拉寬，也不為了版面效果誇張放大。\n\n情境可以改變，產品本體的包裝與比例不改變。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味龜鹿飲180cc狹長鋁袋正式比例與Q版小老闆",
+      "imageSource": "官網核准產品情境圖：product-guilu-drink-180cc.webp"
+    },
+    {
+      "id": "gao-half-spoon-start",
+      "title": "龜鹿膏第一次怎麼安排？",
+      "headline": "先從半匙開始，也可以直接取用或用溫熱水化開",
+      "category": "使用方式",
+      "copy": "龜鹿膏正式規格為100g／罐。食用時間可依個人使用習慣與作息安排；第一次接觸可先從半匙開始，可直接取用，也可加入約100～300mL溫熱水化開。\n\n不必把固定早上或下午當成唯一使用時間，依自己的生活節奏安排即可。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味龜鹿膏100g正式產品與Q版小老闆使用情境",
+      "imageSource": "官網核准產品情境圖：product-guilu-gao-100g.webp"
+    },
+    {
+      "id": "warm-not-iced",
+      "title": "想喝溫一點，可以怎麼安排？",
+      "headline": "龜鹿飲可直接飲用，也可隔水加熱或溫熱後飲用",
+      "category": "日常飲用",
+      "copy": "龜鹿飲不需要綁在固定白天時段。30cc目前為每日 1-2罐，180cc目前為每日一包，飲用時間都可依個人使用習慣與作息安排。\n\n可以直接飲用，也可以隔水加熱或溫熱後飲用；仙加味目前的使用說明以避免冰飲為原則。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/guide-how-to-use.webp",
+      "imageAlt": "仙加味小老闆示範溫熱飲用的日常使用情境",
+      "imageSource": "官網核准使用方式情境圖：guide-how-to-use.webp"
+    },
+    {
+      "id": "storage-basics",
+      "title": "產品買回家，保存方式先看清楚。",
+      "headline": "不同產品型態，開封前後的保存方式也不一樣",
+      "category": "保存方式",
+      "copy": "龜鹿膏未開封置於陰涼乾燥處，開封後密封冷藏並使用乾淨湯匙取用；龜鹿飲未開封避免高溫與日光直射，開罐或開封後請儘速飲用完畢；鹿茸粉開封後密封保存、避免受潮。\n\n龜鹿湯塊與龜鹿膠則依實際包裝標示保存。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/faq.webp",
+      "imageAlt": "仙加味Q版小老闆FAQ與產品保存說明情境",
+      "imageSource": "官網核准FAQ情境圖：faq.webp"
+    },
+    {
+      "id": "trial-first-then-decide",
+      "title": "先試喝，再決定。",
+      "headline": "龜鹿飲30cc試喝組：3罐免費，運費自付",
+      "category": "試喝",
+      "copy": "如果想先從即飲型態開始認識，可以申請仙加味龜鹿飲30cc試喝組：3罐免費，運費自付。每位顧客、電話、地址限申請一次。\n\n龜鹿飲採接單後製作，約5～7個工作天完成並安排出貨；物流配送時間另計。\n\n先試喝，再決定。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg",
+      "imageAlt": "仙加味龜鹿飲30cc試喝組正式小老闆海報",
+      "imageSource": "官網2026-08-14核准試喝海報"
+    },
+    {
+      "id": "ingredient-info-clear",
+      "title": "看產品，不只看名稱，也要看成分與型態。",
+      "headline": "把產品名稱、規格、成分與使用方式分開看，資訊會更清楚",
+      "category": "產品知識",
+      "copy": "同樣在龜鹿系列裡，膏、即飲、湯塊、龜鹿膠與粉狀產品的型態不同，成分整理方式也不同。仙加味希望把名稱、規格、成分、保存與使用方式分開說明，讓每一項產品都能被清楚理解，而不是只靠一張圖或一句話介紹。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味六項正式產品與Q版小老闆資訊整理情境",
+      "imageSource": "官網核准六產品情境圖：products-all.webp"
+    },
+    {
+      "id": "wanhua-visit-brand",
+      "title": "從萬華開始，也歡迎從萬華認識我們。",
+      "headline": "把四代累積的鹿角與漢方飲食文化，整理成今天的仙加味",
+      "category": "品牌故事",
+      "copy": "仙加味的故事從萬華開始。這裡是家族一路工作與累積經驗的地方，也是我們今天重新整理品牌、產品與內容的起點。\n\n如果剛好經過萬華，或想先在線上了解產品與使用方式，都可以慢慢認識這個從在地長出來的品牌。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味小老闆在萬華品牌故事場景與小鹿小烏龜",
+      "imageSource": "官網核准品牌故事情境圖：brand-story.webp"
+    },
+    {
+      "id": "ask-line-before-order",
+      "title": "下單前，有問題先問就好。",
+      "headline": "規格、使用方式、試喝、製作交期與下單流程，都可以先從官方LINE確認",
+      "category": "客服諮詢",
+      "copy": "產品型態很多，不需要一次把所有資訊記住。想確認規格、一般使用方式、龜鹿飲試喝、製作交期或下單流程，都可以先私訊仙加味官方LINE。\n\n我們會依你想了解的產品與使用情境，把目前正式資訊整理清楚，再慢慢選擇。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/contact-line.webp",
+      "imageAlt": "仙加味網站同款Q版小老闆客服LINE諮詢情境",
+      "imageSource": "官網核准聯絡客服情境圖：contact-line.webp"
+    }
+  ]
+}
