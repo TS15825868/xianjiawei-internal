@@ -59,3 +59,5 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'�
 for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
 
 console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷，不再以publishing-only、固定張數或舊版號作正式條件。`);
+
+// 20260814 synced-ZIP mirror validation trigger; no runtime behavior.
