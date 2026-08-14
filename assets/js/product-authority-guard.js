@@ -4,9 +4,9 @@
   const MEDIA_VERSION='20260814-product-modal-media-v3';
   const image=path=>`${SITE}${path}?v=${MEDIA_VERSION}`;
   const PRODUCTS=Object.freeze([
-    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'每日早上及下午各一小匙',image:image('images/customer-display-v20260812/guilu-gao.avif'),identity:image('images/products-v3/guilu-gao.jpg'),dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
-    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:image('images/customer-display-v20260812/guilu-drink-30cc.avif'),identity:image('images/products-v3/guilu-drink-30.jpg'),dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小玻璃裸罐原罐型與比例；無貼紙，不得稱瓶、做高、做胖或放大。'},
-    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包（鋁袋）',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],image:image('images/customer-display-v20260812/guilu-drink-180cc-product.jpg'),identity:image('images/products-v3/guilu-drink-180.jpg'),aspectRatio:{min:0.60,target:0.64,max:0.68},scaleRule:'狹長直立鋁袋；禁止橫向拉寬、加高或誇張放大。'},
+    {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'食用時間與份量可依個人使用習慣與作息安排',image:image('images/customer-display-v20260812/guilu-gao.avif'),identity:image('images/products-v3/guilu-gao.jpg'),dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
+    {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],usagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息安排',image:image('images/customer-display-v20260812/guilu-drink-30cc.avif'),identity:image('images/products-v3/guilu-drink-30.jpg'),dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小玻璃裸罐原罐型與比例；無貼紙，不得稱瓶、做高、做胖或放大。'},
+    {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包（鋁袋）',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],usagePrimary:'每日一包；飲用時間可依個人使用習慣與作息安排',image:image('images/customer-display-v20260812/guilu-drink-180cc-product.jpg'),identity:image('images/products-v3/guilu-drink-180.jpg'),aspectRatio:{min:0.60,target:0.64,max:0.68},scaleRule:'狹長直立鋁袋；禁止橫向拉寬、加高或誇張放大。'},
     {id:'guilu-tangkuai',name:'龜鹿湯塊',spec:'75g／盒｜8塊裝',allowedSpecs:['75g／盒｜8塊裝'],detailUnitApprox:'每塊約9.375g（僅產品詳細／內部資料）',ingredients:['龜板萃取物','鹿角萃取物'],image:image('images/customer-display-v20260812/guilu-tangkuai.avif'),identity:image('images/products-v3/guilu-tangkuai.jpg'),dimensions:null,scaleRule:'盒體毫米尺寸未知時不得自行猜測，只依正式產品圖等比例呈現。'},
     {id:'guilu-jiao',name:'龜鹿膠',spec:'600g（1斤）／盒｜32塊裝',allowedSpecs:['600g（1斤）／盒｜32塊裝'],detailUnitApprox:'每塊約18.75g（僅產品詳細／內部資料）',ingredients:['龜板萃取物','鹿角萃取物'],image:image('images/customer-display-v20260812/guilu-jiao.avif'),identity:image('images/products-v3/guilu-jiao.jpg'),dimensions:null,scaleRule:'毫米尺寸未知時不得自行猜測；不得與75g龜鹿湯塊混用或做成相近尺寸。'},
     {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐',allowedSpecs:['75g／罐'],ingredients:['鹿茸'],image:image('images/customer-display-v20260812/luerong-fen.avif'),identity:image('images/products-v3/luerong-fen.jpg'),dimensions:null,scaleRule:'毫米尺寸未知時不得自行猜測，只依正式產品圖等比例呈現。'}
@@ -21,7 +21,9 @@
     soupBlockMain:'75g／盒｜8塊裝',
     guiluJiaoMain:'600g（1斤）／盒｜32塊裝',
     drink30Container:'小玻璃罐',
-    guiluGaoUsagePrimary:'每日早上及下午各一小匙',
+    guiluGaoUsagePrimary:'食用時間與份量可依個人使用習慣與作息安排',
+    guiluDrink30UsagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息安排',
+    guiluDrink180UsagePrimary:'每日一包；飲用時間可依個人使用習慣與作息安排',
     customerProductImageAuthority:'customer-display-v20260812-current-approved',
     detailedDmAuthority:'dm-final-current-approved-high-resolution',
     trialAuthority:'trial-poster-small-boss-official-v20260814',
@@ -51,8 +53,10 @@
   }
   function contentErrors(text=''){
     const value=String(text||''),errors=[];
+    if(/建議白天飲用/.test(value))errors.push('龜鹿飲不設定固定白天時段；飲用時間可依個人使用習慣與作息安排。');
+    for(const segment of productSegments(value,'龜鹿飲30cc玻璃罐'))if(/(每日一罐|每日\s*1\s*罐)/.test(segment))errors.push('龜鹿飲30cc目前使用方式為「每日 1-2罐」；飲用時間可依個人使用習慣與作息安排。');
     if(/30\s*cc/i.test(value)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(value))errors.push('30cc正式名稱與包裝必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
-    for(const segment of productSegments(value,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙)/.test(segment))errors.push('龜鹿膏目前正式使用方式為「每日早上及下午各一小匙」。');
+    for(const segment of productSegments(value,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間與份量可依個人使用習慣與作息安排。');
     for(const segment of productSegments(value,'龜鹿湯塊')){
       if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊目前正式主規格只有「75g／盒｜8塊裝」。');
       if(/每塊約?\s*9\.375\s*g/i.test(segment))errors.push('龜鹿湯塊每塊約9.375g只留產品詳細／內部資料，不放對外貼文、產品圖或DM主規格。');
@@ -80,7 +84,7 @@
     if(form.querySelector('[data-product-authority-note]'))return;
     const grid=form.querySelector('.form-grid');if(!grid)return;
     const note=document.createElement('div');note.dataset.productAuthorityNote='1';note.className='xjw-ok';
-    note.textContent='目前正式主規格：龜鹿膏100g／罐；30cc／罐（小玻璃罐）；180cc／包（鋁袋）；龜鹿湯塊75g／盒｜8塊裝；龜鹿膠600g（1斤）／盒｜32塊裝；鹿茸粉75g／罐。龜鹿膏目前使用方式為每日早上及下午各一小匙。一般顧客產品圖使用customer-display；詳細DM、試喝海報與products-v3身份／比例參考分開。未知尺寸不猜、不拉伸。';
+    note.textContent='目前正式主規格：龜鹿膏100g／罐；30cc／罐（小玻璃罐）；180cc／包（鋁袋）；龜鹿湯塊75g／盒｜8塊裝；龜鹿膠600g（1斤）／盒｜32塊裝；鹿茸粉75g／罐。所有產品使用時間依個人使用習慣與作息安排；30cc為每日 1-2罐；180cc保留每日一包；龜鹿飲不設定固定白天時段。一般顧客產品圖使用customer-display；詳細DM、試喝海報與products-v3身份／比例參考分開。未知尺寸不猜、不拉伸。';
     grid.prepend(note);
   }
   function autofillProduct(form){
@@ -91,7 +95,7 @@
     if(!item)return;
     if(!spec.value.trim())spec.value=item.spec;
     if(ingredients&&!ingredients.value.trim())ingredients.value=item.ingredients.join('、');
-    if(item.usagePrimary&&usage&&!usage.value.trim())usage.value=`${item.usagePrimary}；初次可先從半匙開始；可直接取用或以約100～300mL溫熱水化開；避免接近睡前食用。`;
+    if(item.usagePrimary&&usage&&!usage.value.trim())usage.value=item.id==='guilu-gao'?`${item.usagePrimary}；初次可先從半匙開始；可直接取用或以約100～300mL溫熱水化開。`:item.usagePrimary;
   }
   function enforceProductImageDisplay(root=document){
     root.querySelectorAll?.('img[data-product-id],img[data-product]').forEach(img=>{

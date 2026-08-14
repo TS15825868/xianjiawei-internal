@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "status": "credentials_missing",
-  "updated_at_utc": "2026-08-14T15:21:00Z",
+  "updated_at_utc": "2026-08-14T16:35:00Z",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "current_architecture": {
@@ -14,14 +14,16 @@
     "erp_core": "src/worker.js"
   },
   "current_product_authority": {
-    "guilu_gao_usage": "每日早上及下午各一小匙",
+    "guilu_gao_usage": "食用時間與份量可依個人使用習慣與作息安排",
     "drink_30": "30cc／罐（小玻璃罐）",
     "drink_180": "180cc／包（鋁袋）",
     "soup_block_main": "75g／盒｜8塊裝",
     "soup_block_detail_only": "每塊約9.375g",
     "guilu_jiao_main": "600g（1斤）／盒｜32塊裝",
     "guilu_jiao_detail_only": "每塊約18.75g",
-    "luerong": "75g／罐"
+    "luerong": "75g／罐",
+    "drink_30_usage": "每日 1-2罐｜飲用時間可依個人使用習慣與作息安排",
+    "drink_180_usage": "每日一包｜飲用時間可依個人使用習慣與作息安排"
   },
   "current_media_roles": {
     "customer_product_image": "https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/",
