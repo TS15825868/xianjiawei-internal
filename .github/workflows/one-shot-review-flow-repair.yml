@@ -1,0 +1,96 @@
+name: 仙加味貼文送審流程一次性整理
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-shot-review-flow-repair.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-review-flow-repair
+  cancel-in-progress: true
+
+jobs:
+  repair-review-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Repair backend state machine, UI actions and cache version
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          worker=Path('src/worker.js')
+          text=worker.read_text(encoding='utf-8')
+          old="const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['approved'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};"
+          new="const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['pending_review'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};"
+          if old not in text: raise SystemExit('src/worker.js 找不到舊 draft→approved 狀態機')
+          text=text.replace(old,new)
+          needle="  if(next==='approved'){\n    if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能審核通過'},400);"
+          replacement="  if(next==='pending_review'){\n    if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能送待審核'},400);\n    if(!before.image_url)return json({error:'貼文沒有圖片，不能送待審核'},400);\n    if(!before.platforms.length)return json({error:'貼文沒有發布平台，不能送待審核'},400);\n  }\n  if(next==='approved'){\n    if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能審核通過'},400);"
+          if needle not in text: raise SystemExit('src/worker.js 找不到 approved 檢查區段')
+          worker.write_text(text.replace(needle,replacement),encoding='utf-8')
+
+          app=Path('assets/js/publishing-app-v2.js')
+          text=app.read_text(encoding='utf-8')
+          old="      ${['draft','pending_review'].includes(post.status)?`<button class=\"btn small green\" data-post-status=\"approved\" data-id=\"${esc(post.id)}\" ${a.level==='danger'?'disabled':''}>16項審核通過</button>`:''}"
+          new="      ${post.status==='draft'?`<button class=\"btn small green\" data-post-status=\"pending_review\" data-id=\"${esc(post.id)}\" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}\n      ${post.status==='pending_review'?`<button class=\"btn small green\" data-post-status=\"approved\" data-id=\"${esc(post.id)}\" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class=\"btn small\" data-post-status=\"draft\" data-id=\"${esc(post.id)}\">退回草稿</button>`:''}"
+          if old not in text: raise SystemExit('publishing-app-v2.js 找不到舊直接核准按鈕')
+          text=text.replace(old,new)
+          text=text.replace("toast(status==='draft'?'已取消排程並退回草稿':'狀態已更新');","toast(status==='pending_review'?'已送待審核':status==='draft'?'已退回草稿／取消排程':'狀態已更新');")
+          text=text.replace("document.documentElement.dataset.publishingRuntime='20260810-standalone-v16-latest-product-photos';","document.documentElement.dataset.publishingRuntime='20260814-standalone-v17-review-flow';")
+          app.write_text(text,encoding='utf-8')
+
+          html=Path('publishing.html')
+          text=html.read_text(encoding='utf-8')
+          old='assets/js/publishing-app-v2.js?v=20260812-formal-image-fix-v3'
+          new='assets/js/publishing-app-v2.js?v=20260814-review-flow-v1'
+          if old not in text: raise SystemExit('publishing.html 找不到舊主程式快取版本')
+          html.write_text(text.replace(old,new),encoding='utf-8')
+
+          package=Path('package.json')
+          text=package.read_text(encoding='utf-8')
+          old='node --check tools/build-guilu-review-seed.mjs && node --check tools/validate-client-product-authority.mjs'
+          new='node --check tools/build-guilu-review-seed.mjs && node tools/validate-review-workflow.mjs && node --check tools/validate-client-product-authority.mjs'
+          if old not in text: raise SystemExit('package.json 找不到 check 插入點')
+          package.write_text(text.replace(old,new),encoding='utf-8')
+          PY
+
+      - name: Run current source validation
+        run: npm run check
+
+      - name: Run review flow lock test explicitly
+        run: node tools/validate-review-workflow.mjs
+
+      - name: Verify production static build contains updated UI
+        run: |
+          npm run build:static
+          grep -q 'publishing-app-v2.js?v=20260814-review-flow-v1' dist/publishing.html
+          grep -q '送待審核' dist/assets/js/publishing-app-v2.js
+          grep -q '16項審核通過' dist/assets/js/publishing-app-v2.js
+          echo 'PASS: 正式 dist 已包含草稿→待審核→人工核准流程。'
+
+      - name: Commit repaired review flow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/worker.js assets/js/publishing-app-v2.js publishing.html package.json
+          if git diff --cached --quiet; then
+            echo 'Review flow already current.'
+            exit 0
+          fi
+          git commit -m 'fix(publishing): enforce draft pending-review approval flow'
+          git push origin HEAD:main
