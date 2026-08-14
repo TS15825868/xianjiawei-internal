@@ -1,0 +1,28 @@
+name: 仙加味貼文D1限制診斷
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-shot-diagnose-social-post-constraints-v20260815.yml'
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Inspect constraints, indexes and triggers
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE tbl_name='social_posts' OR name='social_posts' ORDER BY type,name;"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "PRAGMA index_list(social_posts); PRAGMA foreign_key_list(social_posts);"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES('XJW-DIAG-INSERT-20260815','診斷','診斷','診斷','診斷','[]','pending_review','https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-gao.avif','診斷','診斷',0,0,0,0,'unknown','diagnostic',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP); SELECT id,status FROM social_posts WHERE id='XJW-DIAG-INSERT-20260815'; DELETE FROM social_posts WHERE id='XJW-DIAG-INSERT-20260815';"
