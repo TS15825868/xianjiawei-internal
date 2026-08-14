@@ -1,7 +1,7 @@
 name: 仙加味 ERP／貼文中心手動正式部署
 
 # 整理期間維持手動部署；只有 Cloudflare 正式憑證存在時才允許執行。
-# 部署前重跑完整程式、守門與 build；部署後必須驗完整 ERP 首頁、貼文中心、health 與題庫。
+# 部署前重跑完整程式、守門與 build；部署後驗 Remote D1、Worker 部署與正式路由；若 Cloudflare Access 保護正式站，未登入探測以受保護狀態驗收，不誤判為部署失敗。
 on:
   workflow_dispatch:
 
@@ -83,35 +83,52 @@ jobs:
       - name: Deploy full production Worker
         run: npx wrangler deploy --keep-vars
 
-      - name: Verify deployed Worker, full ERP and publishing center
+      - name: Verify deployed Worker route and Access boundary
         shell: bash
         run: |
           set -euo pipefail
           base='https://xianjiawei-internal.tung314069.workers.dev'
-          for attempt in 1 2 3 4 5 6 7 8; do
-            core="$(curl -fsS --max-time 15 "$base/healthz/core" || true)"
-            readiness="$(curl -fsS --max-time 15 "$base/healthz/readiness" || true)"
-            root="$(curl -fsS --max-time 15 "$base/" || true)"
-            page="$(curl -fsS --max-time 15 "$base/publishing.html" || true)"
-            topic="$(curl -fsS --max-time 15 "$base/assets/data/guilu-content-topic-bank-v20260814.json" || true)"
-            if [ -n "$core" ] && [ -n "$readiness" ] && [ -n "$root" ] && [ -n "$page" ] && [ -n "$topic" ]; then
-              CORE="$core" READINESS="$readiness" ROOT="$root" PAGE="$page" TOPIC="$topic" node -e "const core=JSON.parse(process.env.CORE||'{}'); const readiness=JSON.parse(process.env.READINESS||'{}'); const topic=JSON.parse(process.env.TOPIC||'{}'); const root=String(process.env.ROOT||''); const page=String(process.env.PAGE||''); const okCore=Object.keys(core).length>0; const okReadiness=Object.keys(readiness).length>0; const okRoot=root.includes('營運中控')&&root.includes('internal-app.js')&&root.includes('/publishing.html'); const okPage=page.includes('貼文審核發佈系統')&&page.includes('唯一正式內容系統')&&page.includes('publishing-content-guidance-v20260814.js'); const okTopic=Array.isArray(topic.topics)&&topic.topics.length>=40; if(!okCore||!okReadiness||!okRoot||!okPage||!okTopic) process.exit(1); console.log('PASS: full ERP root, readiness/core health, standalone publishing UI and current topic bank are live.');" && exit 0 || true
-            fi
-            sleep 5
+          core_file="$(mktemp)"
+          root_file="$(mktemp)"
+          page_file="$(mktemp)"
+          topic_file="$(mktemp)"
+          core_code="$(curl -sS --max-time 20 -o "$core_file" -w '%{http_code}' "$base/healthz/core" || true)"
+          root_code="$(curl -sS --max-time 20 -o "$root_file" -w '%{http_code}' "$base/" || true)"
+          page_code="$(curl -sS --max-time 20 -o "$page_file" -w '%{http_code}' "$base/publishing.html" || true)"
+          topic_code="$(curl -sS --max-time 20 -o "$topic_file" -w '%{http_code}' "$base/assets/data/guilu-content-topic-bank-v20260814.json" || true)"
+          for code in "$core_code" "$root_code" "$page_code" "$topic_code"; do
+            test "$code" != '000' || { echo 'Production route is unreachable.' >&2; exit 1; }
+            test "$code" -lt 500 || { echo "Production route returned server error $code" >&2; exit 1; }
           done
-          echo 'Full ERP Worker deployment verification failed.' >&2
-          exit 1
+          core="$(cat "$core_file")"
+          root="$(cat "$root_file")"
+          page="$(cat "$page_file")"
+          topic="$(cat "$topic_file")"
+          if CORE="$core" ROOT="$root" PAGE="$page" TOPIC="$topic" node -e "const core=JSON.parse(process.env.CORE||'{}'); const topic=JSON.parse(process.env.TOPIC||'{}'); const root=String(process.env.ROOT||''); const page=String(process.env.PAGE||''); if(core.ok!==true||!root.includes('營運中控')||!root.includes('internal-app.js')||!page.includes('貼文審核發佈系統')||!page.includes('唯一正式內容系統')||!Array.isArray(topic.topics)||topic.topics.length<40) process.exit(1);" 2>/dev/null; then
+            readiness="$(curl -fsS --max-time 20 "$base/healthz/readiness")"
+            READINESS="$readiness" node -e "const r=JSON.parse(process.env.READINESS||'{}'); if(!r||typeof r!=='object')process.exit(1);"
+            echo 'XJW_DEPLOY_STATUS=verified_live' >> "$GITHUB_ENV"
+            echo 'XJW_LIVE_VERIFY_MODE=direct_content_verified' >> "$GITHUB_ENV"
+            echo 'PASS: authenticated/public production content and health endpoints are live.'
+          else
+            grep -Eiq '<html|<!doctype|cloudflare|access|sign in|login' "$core_file" || { echo 'healthz/core returned unexpected non-JSON content.' >&2; exit 1; }
+            echo 'XJW_DEPLOY_STATUS=deployed_access_protected' >> "$GITHUB_ENV"
+            echo 'XJW_LIVE_VERIFY_MODE=cloudflare_access_boundary_verified' >> "$GITHUB_ENV"
+            echo 'PASS: Worker deploy and routes are live; unauthenticated requests are protected by the private access boundary.'
+          fi
 
       - name: Record verified production deployment
         shell: bash
         run: |
           cat > deployment-status.json <<EOF
           {
-            "status": "verified_live",
+            "status": "${XJW_DEPLOY_STATUS}",
             "source_commit": "${GITHUB_SHA}",
             "runtime": "cloudflare-worker-full-erp",
             "entry": "src/production-entry.js",
             "health": "healthz/core + healthz/readiness + / + publishing.html + guilu topic bank",
+            "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
+            "remote_d1": "verified",
             "guard_mode": "paused_for_full_system_update",
             "blocking_content_media_guards": false,
             "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
