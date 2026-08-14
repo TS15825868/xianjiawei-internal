@@ -1,4 +1,5 @@
 name: 仙加味 ERP 20260815 使用時間一致性更新
+# exact-timing-only-v2
 on:
   push:
     branches: [main]
@@ -16,38 +17,11 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Align current timing copy
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import subprocess
-          suffixes={'.js','.mjs','.json','.md','.html','.txt','.py'}
-          replacements=[
-            ('食用時間與份量可依個人使用習慣與作息安排','食用時間可依個人使用習慣與作息時間安排'),
-            ('食用時間可依個人使用習慣與作息安排','食用時間可依個人使用習慣與作息時間安排'),
-            ('飲用時間可依個人使用習慣與作息安排','飲用時間可依個人使用習慣與作息時間安排'),
-            ('所有產品使用時間依個人使用習慣與作息安排','所有產品使用時間依個人使用習慣與作息時間安排'),
-          ]
-          changed=[]
-          for rel in subprocess.check_output(['git','ls-files'],text=True).splitlines():
-            if rel.startswith('.github/') or Path(rel).suffix.lower() not in suffixes: continue
-            p=Path(rel)
-            try: old=p.read_text(encoding='utf-8')
-            except Exception: continue
-            new=old
-            for a,b in replacements:new=new.replace(a,b)
-            if new!=old:
-              p.write_text(new,encoding='utf-8');changed.append(rel)
-          print('changed',len(changed));print('\n'.join(changed))
-          required=['src/product-authority.js','assets/js/product-authority-guard.js','cloudflare-deploy-current-status.json']
-          joined='\n'.join(Path(x).read_text(encoding='utf-8') for x in required if Path(x).exists())
-          assert '食用時間與份量可依個人使用習慣與作息安排' not in joined
-          assert '食用時間可依個人使用習慣與作息時間安排' in joined
-          assert '每日 1-2罐' in joined
-          assert '飲用時間可依個人使用習慣與作息時間安排' in joined
-          assert '建議白天飲用' not in joined
-          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply exact current timing authority
+        run: python tools/apply-usage-flex-v20260815.py
       - name: Validate ERP and publishing contracts
         run: |
           npm install
@@ -59,7 +33,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A ':!.github/workflows/one-shot-usage-timing-only-v20260815.yml'
-          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
-          git commit -m 'fix(erp): align product usage timing wording'
+          git add -A ':!.github/workflows/one-shot-usage-timing-only-v20260815.yml' ':!tools/apply-usage-flex-v20260815.py'
+          if git diff --cached --quiet; then echo 'No verified changes'; exit 0; fi
+          git commit -m 'fix(erp): align exact personal timing authority'
           git push origin HEAD:main
