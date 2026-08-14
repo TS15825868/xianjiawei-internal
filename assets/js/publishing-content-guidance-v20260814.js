@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260814-content-guidance-v2';
+  const VERSION='20260814-content-guidance-v3-current-media';
   const TOPIC_URL='/assets/data/guilu-content-topic-bank-v20260814.json?v='+VERSION;
   const LEGACY_BRAND=['台興山產・仙加味','台興山產有限公司','台興山產'];
   const REJECTED=['不是每個人都一定需要'];
@@ -53,26 +53,35 @@
     if(form){bindForm(form);callback?.(form);return;}
     if(attempt<20)setTimeout(()=>waitForForm(callback,attempt+1),60);
   }
+  function currentTopicMedia(topic){
+    const policy=window.XJWFormalMediaPolicy;
+    const current=policy?.mediaForTopic?.(topic);
+    if(current?.public_url)return current;
+    const fallback=String(topic?.imageUrl||'').trim();
+    return fallback?{public_url:fallback,alt:topic?.imageAlt||topic?.title||'',source:topic?.imageSource||'題庫既有素材',role:topic?.imageMode||'topic-fallback'}:null;
+  }
   function applyTopic(topic){
     document.querySelector('[data-topic-modal]')?.remove();
     document.querySelector('[data-add-post]')?.click();
     waitForForm(form=>{
+      const media=currentTopicMedia(topic);
       if(form.elements.title)form.elements.title.value=topic.title||'';
       if(form.elements.headline)form.elements.headline.value=topic.headline||'';
       if(form.elements.copy)form.elements.copy.value=topic.copy||'';
       if(form.elements.category)form.elements.category.value=topic.category||'龜鹿入門';
-      if(topic.imageUrl&&form.elements.image_url)form.elements.image_url.value=topic.imageUrl;
-      if(topic.imageAlt&&form.elements.image_alt)form.elements.image_alt.value=topic.imageAlt;
+      if(media?.public_url&&form.elements.image_url)form.elements.image_url.value=media.public_url;
+      if(form.elements.image_alt)form.elements.image_alt.value=media?.alt||topic.imageAlt||'';
+      if(form.elements.image_source&&media?.source)form.elements.image_source.value=`${media.source}|題庫:${topic.id||''}`;
       updateGuidance(form);
       form.elements.title?.focus();
-      toast(topic.imageUrl?'已帶入龜鹿題目與目前正式圖片；儲存後仍需完成圖文審核。':'已帶入龜鹿題目；此題需依文案配對既有情境圖或重新生成後再送審。');
+      toast(media?.public_url?'已帶入龜鹿題目與目前正式圖片；儲存後先送待審核，再完成16項圖文審核。':'已帶入龜鹿題目；此題需依文案配對既有情境圖或重新生成後再送審。');
     });
   }
   function openTopics(){
     document.querySelector('[data-topic-modal]')?.remove();
     const root=document.createElement('div');root.className='xjw-modal';root.dataset.topicModal='1';
     const ready=topics.filter(topic=>topic.seedToReview===true).length;
-    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>龜鹿長青主題</h2><p class="muted">共 ${topics.length} 題；其中 ${ready} 題已有可安全沿用的正式圖片。其餘題目不硬湊產品圖，需配對既有情境圖或重新生成。</p><div style="display:grid;gap:10px;max-height:60vh;overflow:auto">${topics.map((topic,index)=>`<button type="button" class="btn" data-topic-index="${index}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${topic.seedToReview===true?'✓ 已有正式圖，可送審':'○ 需配對情境圖'}</small></button>`).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
+    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>龜鹿長青主題</h2><p class="muted">共 ${topics.length} 題；其中 ${ready} 題已有可安全沿用的目前正式圖片。其餘題目不硬湊產品圖，需配對既有情境圖或重新生成。</p><div style="display:grid;gap:10px;max-height:60vh;overflow:auto">${topics.map((topic,index)=>`<button type="button" class="btn" data-topic-index="${index}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${topic.seedToReview===true?'✓ 已有目前正式圖，可送審':'○ 需配對情境圖'}</small></button>`).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
     document.body.appendChild(root);
     root.querySelectorAll('[data-topic-close]').forEach(n=>n.addEventListener('click',()=>root.remove()));
     root.querySelectorAll('[data-topic-index]').forEach(n=>n.addEventListener('click',()=>applyTopic(topics[Number(n.dataset.topicIndex)])));
@@ -99,5 +108,5 @@
   document.addEventListener('click',event=>{if(event.target.closest('[data-add-post],[data-post-edit]'))setTimeout(()=>waitForForm(),80)},true);
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{loadTopics();enhance()},{once:true});else{loadTopics();enhance()}
-  window.XJWPublishingContentGuidance=Object.freeze({version:VERSION,scan,get topics(){return topics}});
+  window.XJWPublishingContentGuidance=Object.freeze({version:VERSION,scan,currentTopicMedia,get topics(){return topics}});
 })();
