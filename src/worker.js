@@ -1,3 +1,4 @@
+import { ensureSocialPostStatusSchema } from './social-post-schema-migration.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publishDuePosts, publishPostById, publisherConfiguration } from './social-publisher.js';
 
@@ -64,7 +65,7 @@ async function ensureSchema(env){
         setting_key TEXT PRIMARY KEY,setting_value TEXT NOT NULL DEFAULT '',updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
       CREATE TABLE IF NOT EXISTS social_posts(
-        id TEXT PRIMARY KEY,title TEXT NOT NULL DEFAULT '',headline TEXT NOT NULL DEFAULT '',copy TEXT NOT NULL DEFAULT '',category TEXT NOT NULL DEFAULT '日常節奏',platforms_json TEXT NOT NULL DEFAULT '[]',status TEXT NOT NULL DEFAULT 'draft',scheduled_at TEXT,proposed_scheduled_at TEXT,approved_by TEXT,approved_at TEXT,published_at TEXT,image_url TEXT NOT NULL DEFAULT '',image_alt TEXT NOT NULL DEFAULT '',image_source TEXT NOT NULL DEFAULT '官方素材',image_approved INTEGER NOT NULL DEFAULT 0,image_width INTEGER NOT NULL DEFAULT 0,image_height INTEGER NOT NULL DEFAULT 0,image_bytes INTEGER NOT NULL DEFAULT 0,image_quality_status TEXT NOT NULL DEFAULT 'unknown',created_by TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        id TEXT PRIMARY KEY,title TEXT NOT NULL DEFAULT '',headline TEXT NOT NULL DEFAULT '',copy TEXT NOT NULL DEFAULT '',category TEXT NOT NULL DEFAULT '日常節奏',platforms_json TEXT NOT NULL DEFAULT '[]',status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')),scheduled_at TEXT,proposed_scheduled_at TEXT,approved_by TEXT,approved_at TEXT,published_at TEXT,image_url TEXT NOT NULL DEFAULT '',image_alt TEXT NOT NULL DEFAULT '',image_source TEXT NOT NULL DEFAULT '官方素材',image_approved INTEGER NOT NULL DEFAULT 0,image_width INTEGER NOT NULL DEFAULT 0,image_height INTEGER NOT NULL DEFAULT 0,image_bytes INTEGER NOT NULL DEFAULT 0,image_quality_status TEXT NOT NULL DEFAULT 'unknown',created_by TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
       CREATE TABLE IF NOT EXISTS social_publish_deliveries(
         post_id TEXT NOT NULL,platform TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'pending',attempt_count INTEGER NOT NULL DEFAULT 0,last_attempt_at TEXT,published_at TEXT,remote_id TEXT NOT NULL DEFAULT '',response_json TEXT NOT NULL DEFAULT '',error_text TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(post_id,platform)
@@ -73,8 +74,9 @@ async function ensureSchema(env){
         id TEXT PRIMARY KEY,actor_email TEXT NOT NULL DEFAULT '',action TEXT NOT NULL DEFAULT '',entity_type TEXT NOT NULL DEFAULT '',entity_id TEXT NOT NULL DEFAULT '',before_json TEXT,after_json TEXT,ip TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
     `);
-    for(const definition of ["proposed_scheduled_at TEXT","image_alt TEXT NOT NULL DEFAULT ''","image_source TEXT NOT NULL DEFAULT '官方素材'","image_approved INTEGER NOT NULL DEFAULT 0","image_width INTEGER NOT NULL DEFAULT 0","image_height INTEGER NOT NULL DEFAULT 0","image_bytes INTEGER NOT NULL DEFAULT 0","image_quality_status TEXT NOT NULL DEFAULT 'unknown'","approved_by TEXT","approved_at TEXT","published_at TEXT"]){await addColumn(env,'social_posts',definition);}
+    for(const definition of ["proposed_scheduled_at TEXT","image_alt TEXT NOT NULL DEFAULT ''","image_source TEXT NOT NULL DEFAULT '官方素材'","image_approved INTEGER NOT NULL DEFAULT 0","image_width INTEGER NOT NULL DEFAULT 0","image_height INTEGER NOT NULL DEFAULT 0","image_bytes INTEGER NOT NULL DEFAULT 0","image_quality_status TEXT NOT NULL DEFAULT 'unknown'","approved_by TEXT","approved_at TEXT","published_at TEXT","media_id TEXT","review_note TEXT NOT NULL DEFAULT ''","brand_check_json TEXT NOT NULL DEFAULT '{}'","rejection_reason TEXT NOT NULL DEFAULT ''"]){await addColumn(env,'social_posts',definition);}
     for(const definition of ["attempt_count INTEGER NOT NULL DEFAULT 0","last_attempt_at TEXT","published_at TEXT","remote_id TEXT NOT NULL DEFAULT ''","response_json TEXT NOT NULL DEFAULT ''","error_text TEXT NOT NULL DEFAULT ''","created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP","updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP"]){await addColumn(env,'social_publish_deliveries',definition);}
+    await ensureSocialPostStatusSchema(env);
   })().catch((error)=>{schemaPromise=null;throw error;});
   return schemaPromise;
 }

@@ -18,6 +18,7 @@ const CURRENT_PRODUCT_MEDIA = Object.freeze({
 });
 const CURRENT_TRIAL_MEDIA = `${SITE}/images/trial/trial-poster-small-boss-official-v20260814.jpg?v=${MEDIA_VERSION}`;
 const REQUIRED_IMAGE_PREFIX = `${SITE}/images/`;
+const SEED_CREATED_BY = process.env.XJW_CONTENT_SEED_CREATED_BY || 'tung314069@gmail.com';
 const rows = Array.isArray(bank?.topics) ? bank.topics.filter(topic => topic?.seedToReview === true) : [];
 
 const ids = new Set();
@@ -73,15 +74,22 @@ for (const topic of rows) {
   const platforms = Array.isArray(topic.platforms) && topic.platforms.length ? topic.platforms : ['Facebook','Instagram'];
   const media = resolveMedia(topic);
   const imageSource = `${media.source}|題庫:${slug}|${bank.version || ''}|media:${MEDIA_VERSION}`;
-  statements.push(`INSERT OR IGNORE INTO social_posts(
+  statements.push(`INSERT INTO social_posts(
     id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,
     image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at
   ) VALUES(
     ${sqlString(postId)},${sqlString(topic.title)},${sqlString(topic.headline)},${sqlString(topic.copy)},${sqlString(topic.category || '龜鹿知識')},
     ${jsonString(platforms)},'pending_review',NULL,NULL,NULL,NULL,NULL,
     ${sqlString(media.url)},${sqlString(topic.imageAlt || topic.title)},${sqlString(imageSource)},0,0,0,0,'unknown',
-    'github-actions-content-bank',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-  );`);
+    ${sqlString(SEED_CREATED_BY)},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+  )
+  ON CONFLICT(id) DO UPDATE SET
+    title=excluded.title,headline=excluded.headline,copy=excluded.copy,category=excluded.category,platforms_json=excluded.platforms_json,
+    status='pending_review',scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,
+    image_url=excluded.image_url,image_alt=excluded.image_alt,image_source=excluded.image_source,image_approved=0,
+    image_width=excluded.image_width,image_height=excluded.image_height,image_bytes=excluded.image_bytes,image_quality_status=excluded.image_quality_status,
+    updated_at=CURRENT_TIMESTAMP
+  WHERE social_posts.status IN ('draft','pending_review');`);
   statements.push(`INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip)
     VALUES(${sqlString(auditId)},'github-actions-content-bank','龜鹿母庫建立待審核','貼文',${sqlString(postId)},NULL,${sqlString(JSON.stringify({topic_id: slug, bank_version: bank.version || '', media_version: MEDIA_VERSION, status: 'pending_review'}))},'');`);
 }
