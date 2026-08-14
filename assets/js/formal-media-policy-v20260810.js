@@ -14,10 +14,10 @@ const CONFIG=Object.freeze({
     guiluGao:'100g／罐',
     guiluDrink30:'30cc／罐（小玻璃罐、裸罐、無貼紙、金色蓋）',
     guiluDrink180:'180cc／包（鋁袋）',
-    guiluTangkuai:'75g／盒｜8塊裝',
+    guiluTangkuai:'75g （2兩）／盒｜8塊裝',
     guiluTangkuaiDetail:'每塊約9.375g（僅詳細資料；不放產品圖／DM主規格）',
-    guiluJiao:'600g（1斤）／盒｜32塊裝',
-    guiluJiaoDetail:'每塊約18.75g（僅詳細資料；不放產品圖／DM主規格）',
+    guiluJiao:'600g （1斤）／盒｜32塊裝',
+    guiluJiaoDetail:'每塊約18.75 g（僅詳細資料；不放產品圖／DM主規格）',
     luerongFen:'75g／罐'
   }),
   trialMedia:Object.freeze({
@@ -31,16 +31,16 @@ const CONFIG=Object.freeze({
     product('guilu-gao','/images/customer-display-v20260812/guilu-gao.avif',['龜鹿膏'],'仙加味龜鹿膏100g目前正式產品圖'),
     product('guilu-drink-30','/images/customer-display-v20260812/guilu-drink-30cc.avif',['龜鹿飲30cc','30cc','小玻璃罐'],'仙加味龜鹿飲30cc／罐（小玻璃罐）目前正式產品圖',{validation:'actual-small-glass-jar-no-label-gold-lid-no-shape-or-proportion-change'}),
     product('guilu-drink-180','/images/customer-display-v20260812/guilu-drink-180cc-product.jpg',['龜鹿飲180cc','180cc','鋁袋'],'仙加味龜鹿飲180cc鋁袋目前正式產品圖',{validation:'actual-foil-pouch-no-shape-or-proportion-change'}),
-    product('guilu-tangkuai','/images/customer-display-v20260812/guilu-tangkuai.avif',['龜鹿湯塊','湯塊75g','湯塊'],'仙加味龜鹿湯塊75g／盒｜8塊裝目前正式產品圖'),
-    product('guilu-jiao','/images/customer-display-v20260812/guilu-jiao.avif',['龜鹿膠','600g','1斤','32塊'],'仙加味龜鹿膠600g（1斤）／盒｜32塊裝目前正式產品圖'),
+    product('guilu-tangkuai','/images/customer-display-v20260812/guilu-tangkuai.avif',['龜鹿湯塊','湯塊75g','湯塊'],'仙加味龜鹿湯塊75g （2兩）／盒｜8塊裝目前正式產品圖'),
+    product('guilu-jiao','/images/customer-display-v20260812/guilu-jiao.avif',['龜鹿膠','600g','1斤','32塊'],'仙加味龜鹿膠600g （1斤）／盒｜32塊裝目前正式產品圖'),
     product('luerong-fen','/images/customer-display-v20260812/luerong-fen.avif',['鹿茸粉','鹿茸','75g'],'仙加味鹿茸粉75g目前正式產品圖')
   ]),
   formalDmMedia:Object.freeze([
     dm('guilu-gao-dm','guilu-gao','/images/dm-final/01_guilu-gao-100g-dm.jpg',['龜鹿膏'],'仙加味龜鹿膏100g詳細DM',{validation:'retired-invalid-webp-must-not-be-used'}),
     dm('guilu-drink-30-dm','guilu-drink-30','/images/dm-final/02_guilu-drink-30cc-dm-official-v20260814.jpg',['龜鹿飲30cc','30cc','小玻璃罐'],'仙加味龜鹿飲30cc／罐（小玻璃罐）目前正式詳細DM',{validation:'exact-user-approved-1122x1402-no-bottle-wording'}),
     dm('guilu-drink-180-dm','guilu-drink-180','/images/dm-final/03_guilu-drink-180cc-dm.jpg',['龜鹿飲180cc','180cc','鋁袋'],'仙加味龜鹿飲180cc鋁袋詳細DM'),
-    dm('guilu-tangkuai-dm','guilu-tangkuai','/images/dm-final/05_guilu-tangkuai-75g-dm.jpg',['龜鹿湯塊','湯塊75g','湯塊'],'仙加味龜鹿湯塊75g／盒｜8塊裝詳細DM',{validation:'no-piece-weight-on-main-spec'}),
-    dm('guilu-jiao-dm','guilu-jiao','/images/dm-final/06_guilu-jiao-600g-dm.jpg',['龜鹿膠','600g','1斤','32塊'],'仙加味龜鹿膠600g（1斤）／盒｜32塊裝詳細DM',{validation:'no-piece-weight-on-main-spec'}),
+    dm('guilu-tangkuai-dm','guilu-tangkuai','/images/dm-final/05_guilu-tangkuai-75g-dm.jpg',['龜鹿湯塊','湯塊75g','湯塊'],'仙加味龜鹿湯塊75g （2兩）／盒｜8塊裝詳細DM',{validation:'no-piece-weight-on-main-spec'}),
+    dm('guilu-jiao-dm','guilu-jiao','/images/dm-final/06_guilu-jiao-600g-dm.jpg',['龜鹿膠','600g','1斤','32塊'],'仙加味龜鹿膠600g （1斤）／盒｜32塊裝詳細DM',{validation:'no-piece-weight-on-main-spec'}),
     dm('luerong-fen-dm','luerong-fen','/images/dm-final/04_luerong-fen-75g-dm.jpg',['鹿茸粉','鹿茸','75g'],'仙加味鹿茸粉75g詳細DM')
   ]),
   latestZipCatalog:'/data/latest-user-post-zip.json',
