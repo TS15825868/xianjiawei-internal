@@ -31,10 +31,11 @@ for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','dir
 for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
 // Full ERP core must remain available behind the same production entry.
-for(const token of ["new Set(['products','customers','visits','orders','inventory','purchases','suppliers','finance','tasks','documents','templates','assets'])",'/api/overview','/api/modules/','/api/settings','audit_logs'])must(worker.includes(token),`ERP核心能力缺少：${token}`);
+for(const token of ["new Set(['products','customers','visits','orders','inventory','purchases','suppliers','finance','tasks','documents','templates','assets'])",'/api/overview','/api/settings','audit_logs'])must(worker.includes(token),`ERP核心能力缺少：${token}`);
+must(worker.includes("path.match(/^\\/api\\/modules\\/([^/]+)(?:\\/([^/]+))?$/)"),'ERP核心缺少動態 /api/modules/:module/:id 路由');
+for(const token of ['MODULES.has(module)','listRecords(env,module)','createRecord(request,env,profile,module)','updateRecord(request,env,profile,module,id)','deleteRecord(request,env,profile,module,id)'])must(worker.includes(token),`ERP模組路由缺少CRUD能力：${token}`);
 for(const token of ['app-shell','internal-app.js','erp-publishing-separation.js','/publishing.html'])must(index.includes(token),`ERP根介面缺少：${token}`);
 
-// Current product/media roles.
 for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`前端產品媒體權威缺少：${token}`);
 for(const token of ['formalProductMedia','user_zip_approved','needs_binary_sync','regenerate_if_missing','reviewItems:16'])must(formalMedia.includes(token),`正式媒體政策缺少：${token}`);
 must(!productGuard.includes('/images/products-v2/'),'產品權威不得引用products-v2');
@@ -57,4 +58,4 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'�
 
 for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
 
-console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷，不再以publishing-only、固定張數或舊版號作正式條件。`);
+console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷，不再以publishing-only、固定張數或舊版號作正式條件。`);
