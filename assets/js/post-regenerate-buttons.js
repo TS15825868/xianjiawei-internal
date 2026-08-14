@@ -1,16 +1,22 @@
 (()=>{
   'use strict';
-  const VERSION='2026-08-09-regenerate-buttons-v1-presentation-only';
+  const VERSION='2026-08-15-regenerate-buttons-v2-missing-image-aware';
   function locked(card){
     const status=String(card?.dataset?.status||'');
     const text=String(card?.textContent||'').replace(/\s+/g,' ');
     return status==='published'||status==='archived'||card?.dataset?.locked==='true'||/已發布鎖定|published_final_locked/.test(text);
   }
   function addButton(actions,mode,label,className='btn small'){
-    if(actions.querySelector(`[data-xjw-regenerate="${mode}"]`))return;
+    const existing=actions.querySelector(`[data-xjw-regenerate="${mode}"]`);
+    if(existing){existing.textContent=label;existing.className=className;return existing;}
     const button=document.createElement('button');
     button.type='button';button.className=className;button.dataset.xjwRegenerate=mode;button.textContent=label;
-    actions.appendChild(button);
+    actions.appendChild(button);return button;
+  }
+  function missingImage(card){
+    const preview=card?.querySelector('.xjw-image-preview');
+    const src=String(preview?.getAttribute('src')||'').trim();
+    return !src;
   }
   function enhance(root=document){
     const cards=[];
@@ -20,7 +26,7 @@
       const actions=card.querySelector('.xjw-actions');if(!actions)return;
       if(locked(card)){actions.querySelectorAll('[data-xjw-regenerate]').forEach(node=>node.remove());return;}
       if(actions.dataset.xjwRegenerateButtons===VERSION)return;
-      addButton(actions,'image','圖不符合｜ChatGPT重生成','btn small orange');
+      addButton(actions,'image',missingImage(card)?'缺圖｜ChatGPT生成':'圖不符合｜ChatGPT重生成','btn small orange');
       addButton(actions,'copy','文案不符合｜ChatGPT重生成');
       addButton(actions,'all','全部重新生成','btn small orange');
       actions.dataset.xjwRegenerateButtons=VERSION;
