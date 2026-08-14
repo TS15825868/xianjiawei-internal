@@ -24,6 +24,13 @@ must(production.includes("gateState(env,row)"),'排程發布前必須檢查持�
 must(production.includes("status='draft'"),'無有效審核的到期排程必須退回草稿');
 must(gate.includes('social_post_review_gates'),'必須建立持久圖文審核紀錄表');
 must(gate.includes("crypto.subtle.digest('SHA-256'"),'文案圖片核准必須綁定內容指紋');
+must(gate.includes("body?.status==='pending_review'"),'草稿必須有明確送待審核狀態端點');
+must(gate.includes('submitForReview'),'草稿送待審核必須由正式review gate處理');
+must(gate.includes("status='pending_review'"),'送待審核必須實際寫入pending_review');
+must(gate.includes("clean(row.status)!=='pending_review'"),'16項核准必須只允許從pending_review進入');
+must(gate.includes('請先將草稿送待審核'),'直接從草稿核准必須被明確拒絕');
+must(gate.includes('draftToPendingReviewRequired:true'),'健康狀態必須公開draft→pending_review正式流程能力');
+must(gate.includes('directDraftApprovalBlocked:true'),'健康狀態必須公開禁止草稿直核准能力');
 must(gate.includes("body?.status==='approved'"),'審核通過必須經過review gate');
 must(gate.includes("body?.status==='scheduled'"),'排程前必須經過review gate');
 must(gate.includes("publishMatch&&request.method==='POST'"),'立即發布前必須經過review gate');
@@ -67,7 +74,11 @@ const required=(gate.match(/'brand','product','specification','pricing_activity'
 must(required===1,'16項審核欄位母本缺失');
 must((ui.match(/\['[a-z_]+','/g)||[]).length===16,'前端必須剛好顯示16項審核');
 must(ui.includes('最終確認：文案與圖片一致'),'前端缺少最終圖文一致確認');
-must(ui.includes('stopImmediatePropagation'),'原本的一鍵審核按鈕必須被完整審核流程攔截');
+must(ui.includes('data-post-status="pending_review"'),'草稿前端缺少「送待審核」狀態操作');
+must(ui.includes("button.textContent='送待審核'"),'草稿前端按鈕必須清楚顯示「送待審核」');
+must(ui.includes('draftToPendingReview:true'),'前端能力標記缺少draft→pending_review');
+must(ui.includes('directDraftApproval:false'),'前端不得宣告草稿可直接核准');
+must(ui.includes('stopImmediatePropagation'),'狀態／審核按鈕必須由正式review gate完整攔截');
 must(html.includes('publishing-review-gate.js'),'獨立貼文系統沒有載入16項圖文審核UI');
 must(html.includes('原核准自動失效'),'獨立貼文系統沒有清楚提示重新審核規則');
 must(/version:'[^']*raster-invalidates-review'/.test(raster),'SVG轉JPEG工具必須標示「轉圖後審核失效」正式能力，不得只鎖某一版號');
@@ -79,4 +90,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統保留一套免費ChatGPT重生成邏輯＋純按鈕呈現層，並具備products-v3候選轉JPEG、持久16項圖文審核、內容指紋、修改立即失效、排程與立即發布硬守門；驗收改看正式能力，不再綁死正確新版版本號。');
+console.log('PASS：唯一貼文系統固定使用 draft → pending_review → 16項人工審核 → approved → 排程／立即發布；重生成也回 pending_review。草稿不得直接核准，並保留products-v3候選轉JPEG、內容指紋、修改立即失效與發布硬守門。');
