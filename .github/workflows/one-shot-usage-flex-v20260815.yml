@@ -1,4 +1,5 @@
 name: 仙加味 ERP／貼文中心 20260815 使用方式一次性更新
+# rerun-v2-exact-confirmed-copy
 on:
   push:
     branches: [main]
@@ -32,10 +33,11 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A ':!.github/workflows/one-shot-usage-flex-v20260815.yml' ':!tools/apply-usage-flex-v20260815.py'
+          git add -A
+          git reset -- .github tools/apply-usage-flex-v20260815.py || true
           if git diff --cached --quiet; then
             echo 'No verified changes to commit.'
             exit 0
           fi
-          git commit -m 'fix(erp): use personal routine timing in product and regeneration authority'
+          git commit -m 'fix(erp): use exact personal-routine product authority'
           git push origin HEAD:main
