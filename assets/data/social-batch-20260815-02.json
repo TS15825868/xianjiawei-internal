@@ -1,0 +1,145 @@
+{
+  "version": "2026-08-15-batch02-v1",
+  "brand": "仙加味",
+  "status": "pending_review",
+  "purpose": "第二批12篇正式社群貼文；延續第一批但避免重複主題，文案與官網核准圖片一一配對，只進貼文中心待審核。",
+  "rules": {
+    "mascotAuthority": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/",
+    "productImageRule": "產品包裝、標籤、尺寸比例與規格不得改變；產品本體只用正式原圖或官網核准產品情境圖，不由AI重畫。",
+    "copyRule": "不做療效宣稱；以生活節奏、產品型態、溫熱飲用、料理、傳統飲食文化、萬華品牌故事與諮詢導流為主。"
+  },
+  "posts": [
+    {
+      "id": "choose-by-routine-first",
+      "title": "第一次認識仙加味，先從生活方式開始。",
+      "headline": "不用先背產品名稱，先想自己平常怎麼使用會更容易",
+      "category": "挑選方式",
+      "copy": "第一次接觸龜鹿系列，不用急著一次看完所有資訊。可以先想自己比較習慣方便即飲、小匙取用、沖泡，還是放進家常料理，再從對應的產品型態往下看規格與使用方式。\n\n把選擇放回自己的生活裡，會更容易找到順手的方式。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/choose.webp",
+      "imageAlt": "仙加味網站同款Q版小老闆指向挑選說明板",
+      "imageSource": "官網核准小老闆情境圖：choose.webp"
+    },
+    {
+      "id": "drink-30-vs-180",
+      "title": "30cc小玻璃罐與180cc鋁袋，差別先看哪裡？",
+      "headline": "同樣是龜鹿飲，容量、包裝與使用情境不同",
+      "category": "產品比較",
+      "copy": "龜鹿飲30cc是30cc／罐（小玻璃罐），小玻璃裸罐、無貼紙；180cc則是180cc／包（鋁袋），維持狹長直立包裝。\n\n兩者都屬即飲型態，可以從自己習慣的份量、外出攜帶或居家安排來比較。飲用時間都可依個人使用習慣與作息安排。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味六項正式產品情境，用於比較30cc小玻璃罐與180cc鋁袋",
+      "imageSource": "官網核准六產品情境圖：products-all.webp"
+    },
+    {
+      "id": "tangkuai-vs-jiao",
+      "title": "龜鹿湯塊與龜鹿膠，從規格開始分清楚。",
+      "headline": "75g（2兩）8塊裝，與600g（1斤）32塊裝，是兩種不同盒裝",
+      "category": "產品比較",
+      "copy": "龜鹿湯塊正式規格為75g （2兩）／盒｜8塊裝，每塊約9.375g；龜鹿膠正式規格為600g （1斤）／盒｜32塊裝，每塊約18.75 g。\n\n兩者都可以從溫熱沖泡或料理情境理解，但盒裝份量與每次取用方式不同。先把規格分清楚，再依家庭使用習慣選擇。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味六產品總覽情境，用於比較龜鹿湯塊與龜鹿膠正式規格",
+      "imageSource": "官網核准六產品情境圖：products-all.webp"
+    },
+    {
+      "id": "drink-30-outside",
+      "title": "30cc小玻璃罐，適合放進外出的日常。",
+      "headline": "小玻璃裸罐、輕巧即飲，依自己的工作與外出節奏安排",
+      "category": "生活情境",
+      "copy": "龜鹿飲30cc玻璃罐是30cc／罐（小玻璃罐），正式呈現維持裸罐、無貼紙。小份量的好處，是更容易依外出、工作空檔或自己的日常安排使用。\n\n目前使用方式為每日 1-2罐，飲用時間可依個人使用習慣與作息安排。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味龜鹿飲30cc小玻璃裸罐正式比例與Q版小老闆情境",
+      "imageSource": "官網核准產品情境圖：product-guilu-drink-30cc.webp"
+    },
+    {
+      "id": "drink-180-home",
+      "title": "180cc鋁袋，把完整份量留給居家與工作空檔。",
+      "headline": "180cc／包（鋁袋），可直接飲用，也可溫熱後飲用",
+      "category": "生活情境",
+      "copy": "龜鹿飲180cc鋁袋正式規格為180cc／包（鋁袋），包裝維持狹長直立比例。適合想要完整一包份量、在家或工作空檔安排的人。\n\n目前使用方式為每日一包，飲用時間可依個人使用習慣與作息安排；可直接飲用，也可隔水加熱或溫熱後飲用。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味龜鹿飲180cc狹長鋁袋正式比例與Q版小老闆情境",
+      "imageSource": "官網核准產品情境圖：product-guilu-drink-180cc.webp"
+    },
+    {
+      "id": "tangkuai-thermos-soup",
+      "title": "龜鹿湯塊，可以怎麼放進日常？",
+      "headline": "熱水沖泡、保溫壺悶泡，或搭配雞湯與排骨湯",
+      "category": "使用方式",
+      "copy": "龜鹿湯塊正式規格為75g （2兩）／盒｜8塊裝，每塊約9.375g。使用時間可依個人使用習慣與作息安排；可取1塊加入約300～500mL熱水沖泡，也可以放進保溫壺悶泡，或搭配雞湯、排骨湯等家常料理。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageAlt": "仙加味龜鹿湯塊75g（2兩）8塊裝正式產品情境",
+      "imageSource": "官網核准產品情境圖：product-guilu-tangkuai-75g.webp"
+    },
+    {
+      "id": "jiao-family-cooking",
+      "title": "龜鹿膠，一斤大盒怎麼理解？",
+      "headline": "600g（1斤）／盒｜32塊裝，適合家庭大規格與料理安排",
+      "category": "使用方式",
+      "copy": "龜鹿膠正式規格為600g （1斤）／盒｜32塊裝，每塊約18.75 g。使用時間可依個人使用習慣與作息安排，可取適量加入約300～500mL熱水化開，也可搭配雞湯或排骨湯等料理。\n\n大盒規格與75g龜鹿湯塊不同，選擇前先確認自己需要的盒裝份量與使用方式。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp",
+      "imageAlt": "仙加味龜鹿膠600g（1斤）32塊裝正式產品情境",
+      "imageSource": "官網核准產品情境圖：product-guilu-jiao-600g.webp"
+    },
+    {
+      "id": "luerong-daily-drink",
+      "title": "鹿茸粉，保留自己調整份量的彈性。",
+      "headline": "75g／罐，粉狀型態可依日常習慣自行搭配",
+      "category": "產品介紹",
+      "copy": "仙加味鹿茸粉正式規格為75g／罐，成分為鹿茸。粉狀型態的特色，是可以依個人習慣取適量，再搭配溫開水、牛奶、豆漿或其他日常飲品攪拌。\n\n使用時間同樣可依個人使用習慣與作息安排。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-luerong-fen-75g.webp",
+      "imageAlt": "仙加味鹿茸粉75g正式產品與Q版小老闆情境",
+      "imageSource": "官網核准產品情境圖：product-luerong-fen-75g.webp"
+    },
+    {
+      "id": "drink-made-to-order",
+      "title": "龜鹿飲為什麼需要5～7個工作天？",
+      "headline": "接單後安排製作，完成後才安排出貨",
+      "category": "出貨說明",
+      "copy": "仙加味龜鹿飲30cc與180cc皆採接單後安排製作。訂單資料與付款方式確認後，製作約需5～7個工作天，完成後才安排出貨，物流配送時間另計。\n\n這個交期只適用龜鹿飲；其他產品依現貨狀況安排。下單前若想確認目前製作與出貨進度，可直接私訊官方LINE。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/contact-line.webp",
+      "imageAlt": "仙加味Q版小老闆客服與出貨諮詢情境",
+      "imageSource": "官網核准聯絡情境圖：contact-line.webp"
+    },
+    {
+      "id": "faq-flexible-time",
+      "title": "一定要固定早上、下午或白天使用嗎？",
+      "headline": "不需要把固定時段當成唯一規則",
+      "category": "常見問題",
+      "copy": "仙加味目前的正式使用原則，是依個人使用習慣與作息時間安排。龜鹿膏不限定固定早上或下午；龜鹿飲也不限定固定白天時段。\n\n30cc龜鹿飲目前為每日 1-2罐，180cc龜鹿飲為每日一包；實際飲用時間可放進自己習慣的生活節奏。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/faq.webp",
+      "imageAlt": "仙加味網站同款Q版小老闆FAQ說明情境",
+      "imageSource": "官網核准FAQ情境圖：faq.webp"
+    },
+    {
+      "id": "real-product-image-policy",
+      "title": "為什麼仙加味堅持產品本體用真實原圖？",
+      "headline": "包裝、尺寸比例與標籤，應該讓你看到真實的產品樣子",
+      "category": "品牌原則",
+      "copy": "產品資訊說得再清楚，圖片如果把包裝、比例或標籤改掉，還是會讓人混淆。仙加味目前產品本體以正式真實原圖為準：30cc維持小玻璃裸罐、180cc維持狹長鋁袋，龜鹿湯塊與龜鹿膠也依各自正式盒裝呈現。\n\n情境可以變，產品本體不亂改。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味六項正式產品與網站同款Q版小老闆情境",
+      "imageSource": "官網核准六產品情境圖：products-all.webp"
+    },
+    {
+      "id": "line-consult-and-trial",
+      "title": "想先了解，再決定怎麼選。",
+      "headline": "規格、使用方式、龜鹿飲試喝與下單，都可以先從官方LINE詢問",
+      "category": "諮詢導流",
+      "copy": "如果還不確定自己適合從哪一項開始，可以先把想了解的產品、使用方式或生活情境告訴我們。龜鹿飲目前也有30cc試喝組：3罐免費，運費自付；每位顧客、電話、地址限申請一次，接單後製作約5～7個工作天。\n\n先了解，再慢慢選擇。\n\n仙加味｜補養，是一種節奏。",
+      "platforms": ["Facebook", "Instagram", "LINE VOOM"],
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg",
+      "imageAlt": "仙加味龜鹿飲30cc試喝組正式小老闆海報",
+      "imageSource": "官網2026-08-14核准試喝海報"
+    }
+  ]
+}
