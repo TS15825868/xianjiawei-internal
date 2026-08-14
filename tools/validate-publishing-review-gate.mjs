@@ -57,11 +57,20 @@ must(generation.includes('localStorage'),'免費跨ChatGPT回填流程缺少本�
 must(generation.includes("window.open('about:blank'"),'iPhone/Safari重生成必須在點擊當下先建立分頁，避免彈窗被阻擋');
 must(!generation.includes('api.openai.com'),'免費重新生成流程不得直接呼叫付費OpenAI API');
 must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');
+must(!generation.includes('每日早上及下午各一小匙'),'ChatGPT生成規則不得回退龜鹿膏固定早上／下午時段');
+must(generation.includes('食用時間可依個人使用習慣與作息時間安排'),'ChatGPT生成規則缺少龜鹿膏目前個人作息原則');
+must(generation.includes('每日 1-2罐'),'ChatGPT生成規則缺少30cc目前每日 1-2罐');
+must(generation.includes('龜鹿飲180cc目前使用方式為每日一包'),'ChatGPT生成規則缺少180cc目前每日一包');
+must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g'),'ChatGPT生成規則沒有允許湯塊目前完整顧客文字規格');
+must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g'),'ChatGPT生成規則沒有允許龜鹿膠目前完整顧客文字規格');
 must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
 must(/post-regenerate-policy-v1\.js\?v=[^"']+/.test(html),'貼文中心重生成流程缺少正式快取版本識別');
+must(html.includes('20260815-regeneration-policy-v6'),'貼文中心仍載入舊ChatGPT生成快取版本');
 must(!/single-system-v2-free-roundtrip|single-system-v3-true-originals/.test(html),'貼文中心不得回退已退役重生成版本');
 
 must(generationButtons.includes("data-xjw-regenerate")||generationButtons.includes('dataset.xjwRegenerate'),'純按鈕層沒有建立重生成操作入口');
+must(generationButtons.includes('缺圖｜ChatGPT生成'),'缺圖草稿沒有清楚的ChatGPT生成按鈕');
+must(generationButtons.includes('missingImage(card)'),'缺圖按鈕沒有依圖片存在狀態判斷');
 must(!generationButtons.includes('window.open('),'純按鈕層不得另外開啟ChatGPT');
 must(!generationButtons.includes('/api/posts/'),'純按鈕層不得另外呼叫貼文API');
 must(!generationButtons.includes('navigator.clipboard'),'純按鈕層不得保存第二套prompt流程');
