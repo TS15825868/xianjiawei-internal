@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260809-publishing-review-ui-v3-cohesive-visual';
+  const VERSION='20260814-publishing-review-ui-v4-draft-pending-approved';
   const CHECKS=[
     ['brand','品牌與整體風格','符合仙加味正式品牌風格，沒有錯誤Logo／不合品牌元素'],
     ['product','產品','文案提到的產品與圖片中的產品完全一致'],
@@ -22,6 +22,15 @@
   function toast(message,error=false){const root=document.getElementById('toastRoot');if(!root){if(error)alert(message);return}const n=document.createElement('div');n.className=`toast ${error?'error':''}`;n.textContent=message;root.appendChild(n);setTimeout(()=>n.remove(),4500)}
   async function api(path,options={}){const response=await fetch(`/api${path}`,{credentials:'same-origin',cache:'no-store',...options,headers:{...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}});const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{data={message:text}}if(!response.ok)throw new Error(data.error||data.detail||data.message||`HTTP ${response.status}`);return data}
   function cardId(button){return button?.dataset?.id||button?.closest('.publish-card,.xjw-row')?.querySelector('[data-post-view]')?.dataset?.postView||''}
+  async function submitForReview(button){
+    const id=cardId(button);if(!id){toast('找不到貼文ID，請重新整理',true);return}
+    button.disabled=true;const old=button.textContent;button.textContent='送審中…';
+    try{
+      await api(`/posts/${encodeURIComponent(id)}/status`,{method:'POST',body:JSON.stringify({status:'pending_review'})});
+      toast('已送待審核；接下來請完成人工16項圖文審核。');
+      document.querySelector('[data-refresh]')?.click();
+    }catch(error){button.disabled=false;button.textContent=old;toast(error.message||String(error),true)}
+  }
   function render(post){
     const root=document.getElementById('modalRoot');if(!root)return;
     root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-review-close></div><div class="xjw-modal-card publishing-review-card"><h2>16項完整圖文審核</h2><p class="muted">這次核准會綁定目前這份文案與圖片。之後只要文案或圖片修改，核准會自動失效，必須重新檢查。</p><div class="publishing-review-preview"><div><strong>${esc(post.title||'未命名貼文')}</strong><div class="publishing-review-copy">${esc(post.copy||post.headline||'尚無文案')}</div></div>${post.image_url?`<img src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文候選圖')}" loading="eager" decoding="async">`:'<div class="xjw-danger">缺少圖片</div>'}</div><div class="publishing-review-checks">${CHECKS.map(([id,label,help])=>`<label class="publishing-review-check"><input type="checkbox" data-review-check="${id}"><span><strong>${label}</strong><small>${help}</small></span></label>`).join('')}</div><label class="publishing-review-match"><input type="checkbox" id="copyImageMatch"><span><strong>最終確認：文案與圖片一致</strong><small>產品、情境、季節、環境、冷熱、表情、動作、產品比例與完整視覺都已逐項比對。</small></span></label><div class="xjw-modal-footer"><button type="button" class="btn" data-review-close>取消</button><button type="button" class="btn" id="reviewSelectAll">全部符合</button><button type="button" class="btn green" id="reviewApprove" disabled>完成審核並核准</button></div></div></div>`;
@@ -33,9 +42,28 @@
     approve.addEventListener('click',async()=>{approve.disabled=true;const old=approve.textContent;approve.textContent='審核送出中…';try{const checklist=Object.fromEntries(boxes.map(box=>[box.dataset.reviewCheck,box.checked]));await api(`/posts/${encodeURIComponent(post.id)}/status`,{method:'POST',body:JSON.stringify({status:'approved',review_checklist:checklist,copy_image_match:match.checked})});root.innerHTML='';toast('16項圖文審核完成，貼文已核准');document.querySelector('[data-refresh]')?.click()}catch(error){approve.disabled=false;approve.textContent=old;toast(error.message||String(error),true)}});
   }
   async function openReview(button){const id=cardId(button);if(!id){toast('找不到貼文ID，請重新整理',true);return}button.disabled=true;const old=button.textContent;button.textContent='載入審核…';try{const post=await api(`/posts/${encodeURIComponent(id)}`);render(post)}catch(error){toast(error.message||String(error),true)}finally{button.disabled=false;button.textContent=old}}
-  document.addEventListener('click',event=>{const button=event.target.closest('[data-post-status="approved"]');if(!button||button.disabled)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReview(button)},true);
-  function enhance(){document.querySelectorAll('[data-post-status="approved"]').forEach(button=>{if(button.dataset.reviewGateReady)return;button.dataset.reviewGateReady='1';button.textContent='16項審核通過';button.title='必須完成品牌、產品、規格、情境、季節、天氣、冷熱、表情、動作、產品比例、完整非拼湊視覺與圖文一致等檢查後才能核准。'})}
+  document.addEventListener('click',event=>{
+    const submit=event.target.closest('[data-post-status="pending_review"]');
+    if(submit&&!submit.disabled){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();submitForReview(submit);return}
+    const button=event.target.closest('[data-post-status="approved"]');
+    if(!button||button.disabled)return;
+    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReview(button);
+  },true);
+  function enhance(){
+    document.querySelectorAll('.publish-card[data-status="draft"] [data-post-status="approved"]').forEach(button=>{
+      button.dataset.postStatus='pending_review';
+      delete button.dataset.reviewGateReady;
+      button.textContent='送待審核';
+      button.title='先送入待審核，再由人工完成16項圖文審核；草稿不能直接核准。';
+    });
+    document.querySelectorAll('.publish-card[data-status="pending_review"] [data-post-status="approved"]').forEach(button=>{
+      if(button.dataset.reviewGateReady)return;
+      button.dataset.reviewGateReady='1';
+      button.textContent='16項審核通過';
+      button.title='必須完成品牌、產品、規格、情境、季節、天氣、冷熱、表情、動作、產品比例、完整非拼湊視覺與圖文一致等檢查後才能核准。';
+    });
+  }
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance,{once:true});else enhance();
-  window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0])});
+  window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0]),draftToPendingReview:true,directDraftApproval:false});
 })();
