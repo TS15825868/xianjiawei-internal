@@ -1,34 +1,54 @@
 # 仙加味營運中控｜公開部署程式
 
-這個公開倉庫只保存 Cloudflare Worker 與 ERP 前端介面原始碼。正式營運資料存放於 Cloudflare D1；登入由 Cloudflare Access 保護。
+這個公開倉庫只保存 Cloudflare Worker 與內部系統前端原始碼。正式營運資料存放於 Cloudflare D1；登入由 Cloudflare Access 保護。GitHub 不保存真實客戶、訂單、付款、成本、庫存、拜訪或平台 Token。
 
-## 正式執行入口
+## 正式執行架構
 
-- Cloudflare Worker 入口：`src/authority-entry.js`
-- 既有 ERP API／媒體／產品權威入口：`src/entry.js`
+- Cloudflare Worker 正式入口：`src/production-entry.js`
+- 16項貼文審核與重新生成閉環：`src/publishing-review-gate-entry.js`
+- 立即發布／人工平台分流：`src/flexible-publish-entry.js`
+- 產品與貼文寫入權威：`src/authority-entry.js`
+- 既有 ERP API／媒體入口：`src/entry.js`
 - ERP 核心 API：`src/worker.js`
 - 社群發布：`src/social-publisher.js`
 - 正式產品權威：`src/product-authority.js` + `config/official-products.json`
 
-`authority-entry.js` 會在產品或貼文的部分更新送進核心 API 前，先讀取 D1 現有資料並合併後再驗證，避免只改成分／使用方式時繞過六項正式產品權威。
+`production-entry.js` 是完整頂層入口；它保留 ERP 模組、Cloudflare Access、D1、產品權威、16項圖文審核、平台健康檢查、排程與真正立即發布。`src/publishing-only-entry.js` 只保留作相容／歷史程式檢查，不再作正式 Wrangler 入口。
+
+## 介面分工
+
+- `/`：完整「仙加味營運中控」，保留產品、庫存、客戶、拜訪、訂單、採購、供應商、財務、任務、範本、文件、素材與設定等內部模組。
+- `/publishing.html`：唯一正式貼文審核發佈介面。
+- ERP 的貼文／排程快捷入口會導向 `/publishing.html`，避免同時維護兩套貼文操作邏輯。
+
+官網不公開的成本、批發、庫存、合作商與歷史營運資料，仍可保留於 ERP／D1；不得因官網不顯示就刪除或限制。
 
 ## 正式產品資料原則
 
-- 六個正式產品、六個正式規格。
-- 龜鹿湯塊只有 75g／盒深藍盒；8塊裝、每塊約9.375g。
-- 600g（1斤）／盒是龜鹿膠淡紫盒，不是龜鹿湯塊。
-- 30cc正式名稱為「龜鹿飲30cc玻璃罐」，不可稱瓶；裸罐、無貼紙、無外盒、無外袋、金色蓋。
-- 正式成分順序與龜鹿膏「每日早上及下午各一小匙」也納入後端驗證。
-- 產品圖片只使用正式原圖等比例呈現，不重畫、不裁切、不改包裝。
+- 六個正式產品、六個正式主規格。
+- 龜鹿膏：100g／罐；目前使用方式為「每日早上及下午各一小匙」。
+- 龜鹿飲30cc玻璃罐：30cc／罐（小玻璃罐）；小玻璃裸罐、無貼紙，不得稱瓶、不得改罐型或比例。
+- 龜鹿飲180cc鋁袋：180cc／包（鋁袋）；維持狹長鋁袋原比例。
+- 龜鹿湯塊：75g／盒｜8塊裝；每塊約9.375g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
+- 龜鹿膠：600g（1斤）／盒｜32塊裝；每塊約18.75g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
+- 鹿茸粉：75g／罐。
+- 正式成分順序納入後端驗證。
+
+## 正式圖片角色
+
+- 一般產品顧客主圖：官網目前 `images/customer-display-v20260812/` 正式產品圖。
+- 詳細 DM：官網目前 `images/dm-final/` 六張高解析正式 DM。
+- 試喝：`images/trial/trial-poster-small-boss-official-v20260814.jpg`。
+- `images/products-v3/`：只作真實產品身份、包裝與比例校正參考，不再當一般顧客主圖。
+- 產品本體不得 AI 重畫、裁切、拉伸、改標籤、改包裝或改比例。
 
 ## 貼文與發布
 
-- 新文案與新圖先進待審核。
-- AI／品牌守門在整套系統尚未完成最終驗收前維持提示模式。
-- 正式產品主檔硬性錯誤仍會阻止寫入。
-- 審核通過後可排程或使用 ERP 真正的「立即發布」。
-- LINE VOOM 保留人工發布／補登流程。
-- 公開 GitHub Pages 發布中心不保存平台 Token，也不假裝本機紀錄等於真正平台發布成功。
+- 草稿 → 待審核 → 16項人工圖文審核 → 已核准 → 排程或立即發布。
+- 立即發布不受固定排程時段卡住；已核准或已排程貼文都可直接走 `/api/posts/:id/publish-now`。
+- 文案或圖片被修改、重新生成時，舊核准與排程自動失效；完成回填後回待審核。
+- LINE VOOM 與沒有官方 API／Token 的平台保留人工發布／補登流程。
+- 阻擋型內容／圖片守門在整套系統最終驗收前維持暫停，最低程式與資料安全檢查仍保留。
 
 ## 不會存放在 GitHub 的內容
 
@@ -47,11 +67,12 @@ npm run deploy
 
 部署時必須保留現有 Worker Variables、Secrets、D1 綁定與 Cloudflare Access 規則。
 
-不想部署時，可只做本機／手動驗收：
+不部署時可先做完整程式驗收：
 
 ```bash
 npm run check
 npm run build:static
+npm run guard:full
 ```
 
-GitHub Actions 的 `仙加味 ERP 正式程式手動驗收` 只在人工觸發時執行，不會自動部署 Cloudflare。
+GitHub Actions 的程式驗收不等於 Cloudflare 已正式部署；只有實際 deploy workflow 成功且 live health／deployment status 驗證通過，才可稱為正式上線。
