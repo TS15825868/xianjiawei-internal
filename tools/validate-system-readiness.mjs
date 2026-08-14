@@ -30,7 +30,6 @@ must(readiness.includes('LINE VOOM 依正式規則採人工發布'),'LINE VOOM�
 for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
 for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
-// Full ERP core must remain available behind the same production entry.
 for(const token of ["new Set(['products','customers','visits','orders','inventory','purchases','suppliers','finance','tasks','documents','templates','assets'])",'/api/overview','/api/settings','audit_logs'])must(worker.includes(token),`ERP核心能力缺少：${token}`);
 must(worker.includes("path.match(/^\\/api\\/modules\\/([^/]+)(?:\\/([^/]+))?$/)"),'ERP核心缺少動態 /api/modules/:module/:id 路由');
 for(const token of ['MODULES.has(module)','listRecords(env,module)','createRecord(request,env,profile,module)','updateRecord(request,env,profile,module,id)','deleteRecord(request,env,profile,module,id)'])must(worker.includes(token),`ERP模組路由缺少CRUD能力：${token}`);
@@ -49,6 +48,10 @@ must(String(latestZip.approval_batch||'').trim(),'最新ZIP必須提供目前核
 must(/needs_binary_sync/.test(String(latestZip.selection_rule||'')),'最新ZIP必須區分有合格來源但原圖待同步');
 must(/regenerate only if no approved source candidate matches/i.test(String(latestZip.selection_rule||'')),'最新ZIP缺少「真的沒有合格來源才生成」規則');
 must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(latestZip.review_rule||'')),'最新ZIP配圖後必須回待審核並保留16項審核');
+const sync=latestZip.binary_sync||{};
+must(['pending','ready','synced'].includes(String(sync.status||'')),`最新ZIP binary_sync狀態不可判斷：${sync.status}`);
+if(sync.status==='synced')must(Number(sync.publishable_count||0)>0,'最新ZIP標示synced但沒有可用的已同步生活情境圖');
+for(const role of ['customer_product_image','detailed_dm','trial','product_identity_reference'])must(String(latestZip.media_roles?.[role]||'').trim(),`最新ZIP缺少目前媒體角色：${role}`);
 
 must(html.includes('standalone')&&/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html沒有使用正式standalone runtime／主程式快取識別');
 for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','最新使用者 ZIP 素材','目前正式貼文母庫'])must(html.includes(token),`publishing.html缺少最新安全診斷／媒體／母庫UI：${token}`);
@@ -58,6 +61,4 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'�
 
 for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
 
-console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷，不再以publishing-only、固定張數或舊版號作正式條件。`);
-
-// 20260814 synced-ZIP mirror validation trigger; no runtime behavior.
+console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷；synced批次必須有可用上線圖，不再以publishing-only、固定張數或舊版號作正式條件。`);
