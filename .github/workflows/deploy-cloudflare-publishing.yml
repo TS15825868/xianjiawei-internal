@@ -95,20 +95,7 @@ jobs:
             page="$(curl -fsS --max-time 15 "$base/publishing.html" || true)"
             topic="$(curl -fsS --max-time 15 "$base/assets/data/guilu-content-topic-bank-v20260814.json" || true)"
             if [ -n "$core" ] && [ -n "$readiness" ] && [ -n "$root" ] && [ -n "$page" ] && [ -n "$topic" ]; then
-              CORE="$core" READINESS="$readiness" ROOT="$root" PAGE="$page" TOPIC="$topic" node - <<'NODE' && exit 0 || true
-              const core=JSON.parse(process.env.CORE||'{}');
-              const readiness=JSON.parse(process.env.READINESS||'{}');
-              const topic=JSON.parse(process.env.TOPIC||'{}');
-              const root=String(process.env.ROOT||'');
-              const page=String(process.env.PAGE||'');
-              const okCore=Object.keys(core).length>0;
-              const okReadiness=Object.keys(readiness).length>0;
-              const okRoot=root.includes('營運中控')&&root.includes('internal-app.js')&&root.includes('/publishing.html');
-              const okPage=page.includes('貼文審核發佈系統')&&page.includes('唯一正式內容系統')&&page.includes('publishing-content-guidance-v20260814.js');
-              const okTopic=Array.isArray(topic.topics)&&topic.topics.length>=40;
-              if(!okCore||!okReadiness||!okRoot||!okPage||!okTopic) process.exit(1);
-              console.log('PASS: full ERP root, readiness/core health, standalone publishing UI and current topic bank are live.');
-              NODE
+              CORE="$core" READINESS="$readiness" ROOT="$root" PAGE="$page" TOPIC="$topic" node -e "const core=JSON.parse(process.env.CORE||'{}'); const readiness=JSON.parse(process.env.READINESS||'{}'); const topic=JSON.parse(process.env.TOPIC||'{}'); const root=String(process.env.ROOT||''); const page=String(process.env.PAGE||''); const okCore=Object.keys(core).length>0; const okReadiness=Object.keys(readiness).length>0; const okRoot=root.includes('營運中控')&&root.includes('internal-app.js')&&root.includes('/publishing.html'); const okPage=page.includes('貼文審核發佈系統')&&page.includes('唯一正式內容系統')&&page.includes('publishing-content-guidance-v20260814.js'); const okTopic=Array.isArray(topic.topics)&&topic.topics.length>=40; if(!okCore||!okReadiness||!okRoot||!okPage||!okTopic) process.exit(1); console.log('PASS: full ERP root, readiness/core health, standalone publishing UI and current topic bank are live.');" && exit 0 || true
             fi
             sleep 5
           done
