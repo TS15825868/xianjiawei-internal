@@ -53,7 +53,9 @@ must(['pending','ready','synced'].includes(String(sync.status||'')),`最新ZIP b
 if(sync.status==='synced')must(Number(sync.publishable_count||0)>0,'最新ZIP標示synced但沒有可用的已同步生活情境圖');
 for(const role of ['customer_product_image','detailed_dm','trial','product_identity_reference'])must(String(latestZip.media_roles?.[role]||'').trim(),`最新ZIP缺少目前媒體角色：${role}`);
 
-must(html.includes('standalone')&&/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html沒有使用正式standalone runtime／主程式快取識別');
+must(/<meta name="xianjiawei-publishing-runtime" content="review-flow-[^"]+">/.test(html),'publishing.html缺少目前正式runtime識別');
+must(html.includes('唯一正式內容系統'),'publishing.html沒有標示唯一正式內容系統');
+must(/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html主程式缺少快取／版本識別');
 for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','最新使用者 ZIP 素材','目前正式貼文母庫'])must(html.includes(token),`publishing.html缺少最新安全診斷／媒體／母庫UI：${token}`);
 for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
 must(ui.includes("PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]'"),'平台健康檢查未完成時必須只鎖正式發布按鈕');
@@ -61,4 +63,4 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'�
 
 for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
 
-console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷；synced批次必須有可用上線圖，不再以publishing-only、固定張數或舊版號作正式條件。`);
+console.log(`PASS：完整ERP與唯一正式貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、正式runtime識別、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷；synced批次必須有可用上線圖，不再以publishing-only、固定張數或舊版號作正式條件。`);
