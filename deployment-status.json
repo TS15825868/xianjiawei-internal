@@ -1,7 +1,6 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "e3e33de35f4e0631e93a8db3a0cd27c50facbe2d",
-  "cloudflare_version_id": "4d7fb6f7-e589-4c4f-bb39-cf0f9661be99",
+  "source_commit": "8148605b329c6ca579d6d34feec514fc1a038c7d",
   "runtime": "cloudflare-worker-full-erp",
   "entry": "src/production-entry.js",
   "health": "healthz/core + healthz/readiness + / + publishing.html + guilu topic bank",
@@ -9,5 +8,5 @@
   "remote_d1": "verified",
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-14T17:19:36Z"
+  "verified_at_utc": "2026-08-14T18:50:21Z"
 }
