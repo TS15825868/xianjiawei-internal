@@ -32,6 +32,8 @@ jobs:
   validate-only:
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    env:
+      XJW_CONTENT_SEED_CREATED_BY: tung314069@gmail.com
     steps:
       - uses: actions/checkout@v5
 
@@ -79,12 +81,13 @@ jobs:
           test -f dist/data/latest-user-post-zip.json
           echo 'PASS: full ERP console and current standalone publishing assets exist in dist.'
 
-      - name: Validate idempotent review seed against current bank count
+      - name: Validate safe idempotent review seed against current bank count
         shell: bash
         run: |
           set -euo pipefail
-          node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
-          actual="$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)"
+          XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
+          actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-review-seed.sql)"
+          upserts="$(grep -c '^  ON CONFLICT(id) DO UPDATE SET' /tmp/guilu-review-seed.sql)"
           expected="$(node - <<'NODE'
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
@@ -93,7 +96,13 @@ jobs:
           )"
           test "$expected" -gt 0
           test "$actual" -eq "$expected"
-          echo "PASS: current ${expected} image-ready topics produce idempotent pending-review seed SQL."
+          test "$upserts" -eq "$expected"
+          grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/guilu-review-seed.sql
+          if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql; then
+            echo 'ERROR: social_posts seed must surface CHECK/FK errors.' >&2
+            exit 1
+          fi
+          echo "PASS: current ${expected} image-ready topics produce safe idempotent pending-review upserts without overwriting approved/published posts."
 
       - name: Confirm this run did not deploy
         run: |
@@ -102,6 +111,7 @@ jobs:
             echo ''
             echo '- ✅ 完整 ERP／獨立貼文中心／靜態建置／目前題庫驗證'
             echo '- ✅ draft → pending_review → 16項人工審核 → approved 流程契約'
+            echo '- ✅ 待審核 seed 只新增／同步 draft、pending_review，CHECK／FK 錯誤不再靜默忽略'
             echo '- ✅ 已核准／已排程可走真正立即發布能力'
             echo '- ⏸ Cloudflare Worker 未部署'
             echo '- ⏸ Remote D1 未寫入'
