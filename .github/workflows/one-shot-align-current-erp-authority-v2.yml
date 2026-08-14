@@ -1,6 +1,6 @@
 name: 仙加味 ERP 目前權威 Runtime 一次性對齊 v2
 
-# rerun-3: only commit formal runtime files; connector cleans temporary workflows after success
+# rerun-4: dynamic post-bank guard aligned; only formal runtime files are committed by Actions
 on:
   push:
     branches: [main]
