@@ -1,14 +1,9 @@
-name: 仙加味 ERP／貼文中心正式部署
+name: 仙加味 ERP／貼文中心手動正式部署
 
-# 正常維護仍以手動部署為主。
-# `.github/deploy-current-erp.flag` 只供本次正式收尾由 GitHub Connector 建立一次；
-# 驗證部署成功後會移除這個 push 入口與 flag，不留下長期自動部署。
+# 整理期間維持手動部署；只有 Cloudflare 正式憑證存在時才允許執行。
+# 部署前重跑完整程式、守門與 build；部署後必須驗完整 ERP 首頁、貼文中心、health 與題庫。
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/deploy-current-erp.flag'
 
 permissions:
   contents: write
