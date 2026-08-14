@@ -1,12 +1,14 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "8148605b329c6ca579d6d34feec514fc1a038c7d",
+  "source_commit": "20db5dadd0047dcc4f932de2bf7ab88e70453b4c",
   "runtime": "cloudflare-worker-full-erp",
   "entry": "src/production-entry.js",
-  "health": "healthz/core + healthz/readiness + / + publishing.html + guilu topic bank",
+  "health": "healthz/core + publishing.html + current guilu content bank + ChatGPT regeneration flow",
   "live_verify_mode": "cloudflare_access_boundary_verified",
-  "remote_d1": "verified",
+  "remote_d1": "verified_current_bank_40_topics_28_pending_review_12_image_needed_drafts",
+  "regeneration_policy": "2026-08-15-current-authority-generation-policy-v6",
+  "missing_image_action": "缺圖｜ChatGPT生成",
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-14T18:50:21Z"
+  "verified_at_utc": "2026-08-14T19:05:30Z"
 }
