@@ -1,13 +1,9 @@
 name: 仙加味貼文中心手動正式部署
 
 # 整理期間維持手動部署；只有 Cloudflare 正式憑證存在時才允許執行。
-# 本次 push 入口只用於驗證目前憑證／正式部署一次，完成後立即恢復純手動。
+# 不再讓缺少憑證的 push 顯示成綠色 success。
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-cloudflare-publishing.yml'
 
 permissions:
   contents: write
