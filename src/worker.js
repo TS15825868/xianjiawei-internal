@@ -173,8 +173,13 @@ async function updatePost(request,env,profile,id){
 async function changePostStatus(request,env,profile,id){
   if(!canWrite(profile,'posts'))return json({error:'沒有貼文審核權限'},403);
   const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
-  const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['approved'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};
+  const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['pending_review'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};
   if(!(allowed[before.status]||[]).includes(next))return json({error:`不允許由「${before.status}」變更為「${next}」`},400);
+  if(next==='pending_review'){
+    if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能送待審核'},400);
+    if(!before.image_url)return json({error:'貼文沒有圖片，不能送待審核'},400);
+    if(!before.platforms.length)return json({error:'貼文沒有發布平台，不能送待審核'},400);
+  }
   if(next==='approved'){
     if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能審核通過'},400);
     if(!before.image_url)return json({error:'貼文沒有圖片，不能審核通過'},400);

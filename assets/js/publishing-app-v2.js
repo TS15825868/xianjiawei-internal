@@ -163,7 +163,8 @@ function card(post){
     <div class="xjw-actions">
       <button class="btn small" data-post-view="${esc(post.id)}">查看／發布結果</button>
       ${!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
-      ${['draft','pending_review'].includes(post.status)?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button>`:''}
+      ${post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}
+      ${post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
       ${post.status==='approved'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${post.status==='scheduled'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">修改時間</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">取消排程</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${post.status==='manual_required'?`<button class="btn small" data-post-deliveries="${esc(post.id)}">查看各平台狀態</button>`:''}
@@ -370,7 +371,7 @@ async function changeStatus(id,status,button){
   const done=setButtonBusy(button,'更新中…');
   try{
     await api(`/posts/${encodeURIComponent(id)}/status`,{method:'POST',body:JSON.stringify({status})});
-    toast(status==='draft'?'已取消排程並退回草稿':'狀態已更新');
+    toast(status==='pending_review'?'已送待審核':status==='draft'?'已退回草稿／取消排程':'狀態已更新');
     await load();
   }catch(error){
     toast(error.message||String(error),true);
@@ -474,7 +475,7 @@ async function init(){
   renderPlatforms();
   if(window.XJWPublishingReadiness?.run)await window.XJWPublishingReadiness.run({full:false});
   await Promise.allSettled([loadMe(),load()]);
-  document.documentElement.dataset.publishingRuntime='20260810-standalone-v16-latest-product-photos';
+  document.documentElement.dataset.publishingRuntime='20260814-standalone-v17-review-flow';
 }
 
 if(document.readyState==='loading'){
