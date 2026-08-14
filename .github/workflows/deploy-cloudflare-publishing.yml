@@ -1,22 +1,8 @@
-name: 仙加味獨立貼文系統安全自動部署
+name: 仙加味貼文中心手動正式部署
 
-# MAINTENANCE MODE：完整內容／媒體守門暫停阻擋。
-# 自動部署只保留必要語法、建置、D1、Worker健康檢查；
-# 完整 current-authority 驗收改由 current-guard-audit.yml 手動執行。
+# 整理期間維持手動部署；只有 Cloudflare 正式憑證存在時才允許執行。
+# 不再讓缺少憑證的 push 顯示成綠色 success。
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'assets/**'
-      - 'data/**'
-      - 'publishing.html'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'wrangler.jsonc'
-      - 'tools/**'
-      - 'guard-mode.json'
-      - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +28,13 @@ jobs:
         with:
           node-version: 22
 
+      - name: Require Cloudflare production credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing CLOUDFLARE_API_TOKEN' >&2; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing CLOUDFLARE_ACCOUNT_ID' >&2; exit 1; }
+          echo 'PASS: Cloudflare production credentials are configured.'
+
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 
@@ -66,55 +59,44 @@ jobs:
         run: |
           test -f dist/publishing.html
           test -f dist/assets/js/publishing-app-v2.js
+          test -f dist/assets/js/publishing-content-guidance-v20260814.js
+          test -f dist/assets/data/guilu-content-topic-bank-v20260814.json
           test -f dist/assets/js/formal-media-policy-v20260810.js
           test -f dist/assets/js/zip-media-assistant.js
           test -f dist/data/latest-user-post-zip.json
-          echo 'PASS: required publishing production files are present.'
-
-      - name: Detect Cloudflare deploy credentials
-        id: cloudflare
-        shell: bash
-        run: |
-          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo 'ready=true' >> "$GITHUB_OUTPUT"
-            echo 'Cloudflare deploy credentials are configured.'
-          else
-            echo 'ready=false' >> "$GITHUB_OUTPUT"
-            echo 'Cloudflare deploy credentials are not configured; local validation passed and deploy is skipped.'
-          fi
+          echo 'PASS: current publishing UI, content guidance, topic bank and media policy are all in production dist.'
 
       - name: Verify remote D1 before deploy
-        if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
 
       - name: Deploy standalone publishing Worker
-        if: steps.cloudflare.outputs.ready == 'true'
         run: npx wrangler deploy --keep-vars
 
       - name: Verify deployed Worker minimum health
-        if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
           for attempt in 1 2 3 4 5 6; do
             core="$(curl -fsS --max-time 15 'https://xianjiawei-internal.tung314069.workers.dev/healthz/core' || true)"
             page="$(curl -fsS --max-time 15 'https://xianjiawei-internal.tung314069.workers.dev/publishing.html' || true)"
-            if [ -n "$core" ] && [ -n "$page" ]; then
-              CORE="$core" PAGE="$page" node - <<'NODE' && exit 0 || true
+            topic="$(curl -fsS --max-time 15 'https://xianjiawei-internal.tung314069.workers.dev/assets/data/guilu-content-topic-bank-v20260814.json' || true)"
+            if [ -n "$core" ] && [ -n "$page" ] && [ -n "$topic" ]; then
+              CORE="$core" PAGE="$page" TOPIC="$topic" node - <<'NODE' && exit 0 || true
               const core=JSON.parse(process.env.CORE||'{}');
+              const topic=JSON.parse(process.env.TOPIC||'{}');
               const page=String(process.env.PAGE||'');
               const okCore=Object.keys(core).length>0;
-              const okPage=page.includes('貼文審核發佈系統')&&page.includes('publishing-app-v2.js');
-              if(!okCore||!okPage) process.exit(1);
-              console.log('PASS: Worker core and publishing UI are live under maintenance-mode minimum safety.');
+              const okPage=page.includes('貼文審核發佈系統')&&page.includes('publishing-content-guidance-v20260814.js');
+              const okTopic=Array.isArray(topic.topics)&&topic.topics.length>=40;
+              if(!okCore||!okPage||!okTopic) process.exit(1);
+              console.log('PASS: Worker core, publishing UI and 40-topic current bank are live.');
               NODE
             fi
             sleep 5
           done
-          echo 'Worker deployment verification failed: core or publishing UI did not become reachable.' >&2
+          echo 'Worker deployment verification failed.' >&2
           exit 1
 
       - name: Record verified production deployment
-        if: steps.cloudflare.outputs.ready == 'true'
         shell: bash
         run: |
           cat > deployment-status.json <<EOF
@@ -122,7 +104,7 @@ jobs:
             "status": "verified_live",
             "source_commit": "${GITHUB_SHA}",
             "runtime": "cloudflare-worker",
-            "health": "healthz/core + publishing.html",
+            "health": "healthz/core + publishing.html + guilu topic bank",
             "guard_mode": "paused_for_full_system_update",
             "blocking_content_media_guards": false,
             "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -138,13 +120,3 @@ jobs:
           git commit -m 'deploy: record verified publishing Worker release'
           git pull --rebase origin main
           git push origin HEAD:main
-
-      - name: Deployment summary
-        if: always()
-        shell: bash
-        run: |
-          if [ '${{ steps.cloudflare.outputs.ready }}' = 'true' ]; then
-            echo 'Maintenance deployment attempted with minimum safety. Full content/media guard remains manual and nonblocking.'
-          else
-            echo 'Validation completed; Cloudflare deployment skipped because deploy credentials are absent.'
-          fi
