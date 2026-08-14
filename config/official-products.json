@@ -1,30 +1,94 @@
 {
-  "version": "20260812-formal-image-fix-v3",
+  "version": "20260814-full-erp-current-authority-v4",
   "authority": "user-confirmed-current",
   "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/catalog-public.json",
   "visualAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/data/formal-media-authority-v20260810.json",
   "rule": "ERP產品、貼文、排程、審核與圖片守門只允許目前正式6項顧客規格；六張產品圖、六張詳細DM、試喝主圖分開管理。守門依最新權威與能力，不回退舊版號、舊圖片或舊延伸規格。",
   "products": [
-    {"id":"guilu-gao","name":"龜鹿膏","spec":"100g／罐","ingredients":["鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"]},
-    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐（小玻璃罐）","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
-    {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","spec":"180cc／包","ingredients":["水","龜板萃取物","鹿角萃取物","粉光蔘","枸杞","紅棗","黃耆"]},
-    {"id":"guilu-tangkuai","name":"龜鹿湯塊","spec":"75g／盒｜8塊裝","detailSpec":"每塊約9.375g（僅詳細資料）","ingredients":["龜板萃取物","鹿角萃取物"]},
-    {"id":"guilu-jiao","name":"龜鹿膠","spec":"600g（1斤）／盒｜32塊裝","detailSpec":"每塊約18.75g（僅詳細資料）","ingredients":["龜板萃取物","鹿角萃取物"]},
-    {"id":"luerong-fen","name":"鹿茸粉","spec":"75g／罐","ingredients":["鹿茸"]}
+    {
+      "id": "guilu-gao",
+      "name": "龜鹿膏",
+      "spec": "100g／罐",
+      "ingredients": [
+        "鹿角萃取物",
+        "龜板萃取物",
+        "枸杞",
+        "紅棗",
+        "黃耆",
+        "粉光蔘"
+      ]
+    },
+    {
+      "id": "guilu-drink-30",
+      "name": "龜鹿飲30cc玻璃罐",
+      "spec": "30cc／罐（小玻璃罐）",
+      "ingredients": [
+        "水",
+        "龜板萃取物",
+        "鹿角萃取物",
+        "粉光蔘",
+        "枸杞",
+        "紅棗",
+        "黃耆"
+      ]
+    },
+    {
+      "id": "guilu-drink-180",
+      "name": "龜鹿飲180cc鋁袋",
+      "spec": "180cc／包（鋁袋）",
+      "ingredients": [
+        "水",
+        "龜板萃取物",
+        "鹿角萃取物",
+        "粉光蔘",
+        "枸杞",
+        "紅棗",
+        "黃耆"
+      ]
+    },
+    {
+      "id": "guilu-tangkuai",
+      "name": "龜鹿湯塊",
+      "spec": "75g／盒｜8塊裝",
+      "detailSpec": "每塊約9.375g（僅詳細資料）",
+      "ingredients": [
+        "龜板萃取物",
+        "鹿角萃取物"
+      ]
+    },
+    {
+      "id": "guilu-jiao",
+      "name": "龜鹿膠",
+      "spec": "600g（1斤）／盒｜32塊裝",
+      "detailSpec": "每塊約18.75g（僅詳細資料）",
+      "ingredients": [
+        "龜板萃取物",
+        "鹿角萃取物"
+      ]
+    },
+    {
+      "id": "luerong-fen",
+      "name": "鹿茸粉",
+      "spec": "75g／罐",
+      "ingredients": [
+        "鹿茸"
+      ]
+    }
   ],
   "visualLocks": {
-    "guiluDrink30":"小玻璃裸罐、無貼紙；高矮胖瘦照正式原圖，不改瓶罐比例與外觀，不得稱瓶",
-    "guiluDrink180":"180cc鋁袋，不拉寬、不加高、不改袋型與比例",
-    "guiluGao":"100g／罐，只使用目前正式產品圖；不得重畫產品",
-    "guiluTangkuai":"75g／盒｜8塊裝；每塊約9.375g只屬詳細資料，不放主圖／DM主規格",
-    "guiluJiao":"600g（1斤）／盒｜32塊裝；每塊約18.75g只屬詳細資料，不放主圖／DM主規格；等比例呈現",
-    "luerongFen":"75g／罐；正式原圖等比例"
+    "guiluDrink30": "小玻璃裸罐、無貼紙；高矮胖瘦照正式原圖，不改罐型與比例，不得稱瓶",
+    "guiluDrink180": "180cc鋁袋，不拉寬、不加高、不改袋型與比例",
+    "guiluGao": "100g／罐，只使用目前正式產品圖；不得重畫產品",
+    "guiluTangkuai": "75g／盒｜8塊裝；每塊約9.375g只屬詳細資料，不放主圖／DM主規格",
+    "guiluJiao": "600g（1斤）／盒｜32塊裝；每塊約18.75g只屬詳細資料，不放主圖／DM主規格；等比例呈現",
+    "luerongFen": "75g／罐；正式原圖等比例"
   },
   "mediaRoles": {
-    "product":"六張正式產品圖",
-    "dm":"六張正式詳細DM",
-    "trial":"trial-small-boss正式試喝主圖",
-    "rule":"三者不可混用；小老闆情境圖不可嵌入產品主圖"
+    "product": "官網目前六張customer-display正式顧客產品圖",
+    "dm": "官網目前images/dm-final六張高解析正式詳細DM",
+    "trial": "images/trial/trial-poster-small-boss-official-v20260814.jpg",
+    "identityReference": "images/products-v3/真實產品身份、包裝與比例校正參考",
+    "rule": "一般產品圖、詳細DM、試喝海報與products-v3身份參考四種角色分離，不得互相取代；產品本體不得AI重畫或變形"
   },
   "guardRules": [
     "不允許未在products清單中的產品規格",
