@@ -1,7 +1,7 @@
 name: 仙加味龜鹿內容母庫手動送待審核
 
-# 只有 Cloudflare D1 正式憑證存在時才執行。
-# 平常不因 push 自動跑，避免缺憑證時出現誤導性的綠色 success。
+# 只有 Cloudflare D1 正式憑證存在且人工觸發時才執行。
+# 不因 push 自動跑；題數依目前 seedToReview=true 的正式題庫動態決定，不鎖歷史固定張數。
 on:
   workflow_dispatch:
 
@@ -36,17 +36,26 @@ jobs:
       - name: Install Wrangler
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 
-      - name: Validate topic bank and build idempotent D1 seed
+      - name: Validate current topic bank and build idempotent D1 seed
+        shell: bash
         run: |
+          set -euo pipefail
           node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
-          count="$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)"
-          test "$count" -eq 28
-          echo "PASS: 28篇已有正式圖片的龜鹿內容通過品牌、字詞、圖片來源與去重規則。"
+          actual="$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)"
+          expected="$(node - <<'NODE'
+          const fs=require('fs');
+          const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
+          process.stdout.write(String((bank.topics||[]).filter(x=>x&&x.seedToReview===true).length));
+          NODE
+          )"
+          test "$expected" -gt 0
+          test "$actual" -eq "$expected"
+          echo "PASS: current ${expected} image-ready topics passed current brand, copy, media-role and dedup rules."
 
       - name: Verify remote D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
 
-      - name: Seed complete topics into pending review
+      - name: Seed current complete topics into pending review
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/guilu-review-seed.sql
 
       - name: Verify review queue
@@ -54,10 +63,10 @@ jobs:
           result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status\")"
           echo "$result"
           echo "$result" | grep -q 'pending_review'
-          echo 'PASS: 龜鹿母庫已建立待審核內容；未自動核准、未排程、未發布。'
+          echo 'PASS: current龜鹿母庫已建立待審核內容；未自動核准、未排程、未發布。'
 
       - name: Summary
         if: always()
         run: |
-          echo '只使用 seedToReview=true 且具有正式網站圖片來源的題目。'
+          echo '只使用目前 seedToReview=true 且具有目前正式網站圖片來源的題目。'
           echo 'INSERT OR IGNORE 保證重跑不重複灌入同一題目，也不覆蓋人工修改後的既有貼文。'
