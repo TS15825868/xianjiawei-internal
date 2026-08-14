@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Remove nonexistent optional replacement and retrigger v2
+      - name: Remove only the nonexistent optional replacement and retrigger v2
         shell: bash
         run: |
           set -euo pipefail
@@ -25,7 +25,7 @@ jobs:
           from pathlib import Path
           path=Path('.github/workflows/one-shot-align-current-erp-authority-v2.yml')
           lines=path.read_text(encoding='utf-8').splitlines()
-          needle='使用products-v3最新正式實拍完整等比例融入'
+          needle='("使用products-v3最新正式實拍完整等比例融入"'
           kept=[]
           removed=0
           for line in lines:
@@ -37,7 +37,7 @@ jobs:
               raise SystemExit(f'expected exactly one obsolete optional replacement, removed={removed}')
           for i,line in enumerate(kept):
               if line.startswith('# rerun-2:'):
-                  kept[i]='# rerun-3: removed one nonexistent optional regeneration replacement; all real current-authority targets remain'
+                  kept[i]='# rerun-3: removed only the nonexistent optional regeneration replacement; all real current-authority targets remain'
                   break
           path.write_text('\n'.join(kept)+'\n',encoding='utf-8')
           PY
