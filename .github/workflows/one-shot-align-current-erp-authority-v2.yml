@@ -1,6 +1,6 @@
 name: 仙加味 ERP 目前權威 Runtime 一次性對齊 v2
 
-# rerun-2: use checklistFrom as the real productMatchErrors boundary
+# rerun-3: only commit formal runtime files; connector cleans temporary workflows after success
 on:
   push:
     branches: [main]
@@ -64,8 +64,7 @@ jobs:
             ("5. 龜鹿膠：600g（1斤）／盒｜32塊裝｜每塊約18.75g。","5. 龜鹿膠：600g（1斤）／盒｜32塊裝；每塊約18.75g只屬產品詳細／內部資料，不放貼文、產品圖或DM主規格。"),
             ("- 30cc：小玻璃裸罐、金色蓋、無貼紙、無外盒、無外袋；約Ø42×H51mm；不可叫瓶、不可放大成100g罐大小。","- 30cc：小玻璃裸罐、無貼紙；約Ø42×H51mm；不可叫瓶、不可改罐型或比例、不可放大成100g罐大小。"),
             ("只能使用products-v3最新正式實拍等比例融入同一場景","只能使用目前核准正式產品圖完整等比例融入同一場景；products-v3只作真實產品身份與比例校正參考"),
-            ("需要產品時只能使用products-v3最新正式實拍完整等比例融入單一場景","需要產品時只能使用目前核准正式產品圖完整等比例融入單一場景；products-v3只作真實產品身份與比例校正參考"),
-            ("使用products-v3最新正式實拍完整等比例融入","使用目前核准正式產品圖完整等比例融入；products-v3只作身份與比例校正")
+            ("需要產品時只能使用products-v3最新正式實拍完整等比例融入單一場景","需要產品時只能使用目前核准正式產品圖完整等比例融入單一場景；products-v3只作真實產品身份與比例校正參考")
           ]
           for i,(old,new) in enumerate(pairs,1): text=replace_required(text,old,new,f'regeneration-{i}')
           anchor='- 若目前無法安全讀取或合成正式實拍，寧可生成「不含產品本體」的完整場景並預留乾淨產品位置，也不得虛構產品。'
@@ -105,14 +104,13 @@ jobs:
           npm run guard:full
           npm run build:static
 
-      - name: Commit current runtime alignment and clean one-shot files
+      - name: Commit validated current runtime files
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add src/publishing-review-gate-entry.js assets/js/post-regenerate-policy-v1.js assets/js/formal-media-policy-v20260810.js config/official-products.json
-          git rm -f .github/workflows/one-shot-align-current-erp-authority.yml .github/workflows/one-shot-align-current-erp-authority-v2.yml
           git commit -m 'fix(erp): align review regeneration and media runtime to current authority'
           git pull --rebase origin main
           git push origin HEAD:main
