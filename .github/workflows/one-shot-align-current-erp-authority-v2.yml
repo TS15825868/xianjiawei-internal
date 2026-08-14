@@ -1,11 +1,14 @@
 name: 仙加味 ERP 目前權威 Runtime 一次性對齊 v2
 
-# rerun-4: dynamic post-bank guard aligned; only formal runtime files are committed by Actions
+# rerun-5: guard fixes retrigger the same validated runtime alignment until all current checks pass
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/one-shot-align-current-erp-authority-v2.yml'
+      - 'tools/validate-post-bank-sync.mjs'
+      - 'tools/validate-system-readiness.mjs'
+      - 'tools/validate-single-publishing-system.mjs'
 
 permissions:
   contents: write
