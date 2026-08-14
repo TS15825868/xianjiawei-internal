@@ -1,0 +1,95 @@
+name: 仙加味貼文中心程式驗證（不代表已部署）
+
+# 這個 workflow 只證明 main 的程式、靜態資產與題庫可建置。
+# 它不使用 Cloudflare 憑證、不寫 D1、不部署 Worker，也不應被解讀成正式上線成功。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'assets/**'
+      - 'data/**'
+      - 'publishing.html'
+      - 'index.html'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'wrangler.jsonc'
+      - 'tools/**'
+      - 'guard-mode.json'
+      - '.github/workflows/publishing-local-validation.yml'
+      - '.github/workflows/deploy-cloudflare-publishing.yml'
+      - '.github/workflows/seed-guilu-review-queue.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-publishing-local-validation
+  cancel-in-progress: true
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies without deployment
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Verify maintenance guard mode
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const mode=JSON.parse(fs.readFileSync('guard-mode.json','utf8'));
+          if(mode.mode!=='paused_for_full_system_update') throw new Error('unexpected guard mode');
+          if(mode.blocking_content_and_media_guards!==false) throw new Error('blocking guards must remain paused during update');
+          if(mode.keep_minimum_safety!==true) throw new Error('minimum safety must stay enabled');
+          console.log('PASS: maintenance mode is nonblocking with minimum safety enabled.');
+          NODE
+
+      - name: Run current code checks
+        run: npm run check
+
+      - name: Build exact static publishing assets
+        run: npm run build:static
+
+      - name: Verify current publishing outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f dist/publishing.html
+          test -f dist/assets/js/publishing-app-v2.js
+          test -f dist/assets/js/publishing-content-guidance-v20260814.js
+          test -f dist/assets/data/guilu-content-topic-bank-v20260814.json
+          test -f dist/assets/js/formal-media-policy-v20260810.js
+          test -f dist/assets/js/zip-media-assistant.js
+          test -f dist/data/latest-user-post-zip.json
+          echo 'PASS: current publishing UI, guidance, topic bank and media assets exist in dist.'
+
+      - name: Validate idempotent review seed locally only
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
+          count="$(grep -c 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql)"
+          test "$count" -eq 28
+          echo 'PASS: 28 image-ready topics produce idempotent pending-review seed SQL.'
+
+      - name: Confirm this run did not deploy
+        run: |
+          {
+            echo '## 程式驗證完成'
+            echo ''
+            echo '- ✅ 程式／靜態建置／題庫驗證'
+            echo '- ⏸ Cloudflare Worker 未部署'
+            echo '- ⏸ Remote D1 未寫入'
+            echo '- ⏸ 28 篇尚未因本 workflow 送入待審核'
+            echo ''
+            echo '正式發布只認 deploy-cloudflare-publishing.yml 的成功執行與 deployment-status.json = verified_live。'
+          } >> "$GITHUB_STEP_SUMMARY"
