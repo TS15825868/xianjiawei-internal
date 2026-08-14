@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "status": "deployed_access_protected",
-  "updated_at_utc": "2026-08-14T17:19:36Z",
+  "updated_at_utc": "2026-08-14T18:50:21Z",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "current_architecture": {
@@ -20,7 +20,7 @@
     "soup_block_main": "75g （2兩）／盒｜8塊裝",
     "soup_block_detail_only": "每塊約9.375g",
     "guilu_jiao_main": "600g （1斤）／盒｜32塊裝",
-    "guilu_jiao_detail_only": "每塊約18.75 g",
+    "guilu_jiao_detail_only": "每塊約18.75g",
     "luerong": "75g／罐",
     "drink_30_usage": "每日 1-2罐｜飲用時間可依個人使用習慣與作息時間安排",
     "drink_180_usage": "每日一包｜飲用時間可依個人使用習慣與作息時間安排"
@@ -41,21 +41,21 @@
   },
   "local_code_validation": {
     "status": "success",
-    "workflow_run_id": 31823048749,
+    "workflow_run_id": 31830489147,
     "checks": [
       "Cloudflare Secrets present",
       "npm run check",
       "npm run guard:full",
       "npm run build:static",
-      "full ERP output",
-      "standalone publishing output"
+      "required production dist outputs",
+      "Remote D1 SELECT 1"
     ]
   },
   "cloudflare_deployment": {
     "status": "deployed",
-    "workflow_run_id": 31823048749,
-    "source_commit": "e3e33de35f4e0631e93a8db3a0cd27c50facbe2d",
-    "cloudflare_version_id": "4d7fb6f7-e589-4c4f-bb39-cf0f9661be99",
+    "workflow_run_id": 31830489147,
+    "source_commit": "8148605b329c6ca579d6d34feec514fc1a038c7d",
+    "cloudflare_version_id": "f23f9a77-f7b2-44d5-be91-cb4302d31f6e",
     "cloudflare_api_token_present": true,
     "cloudflare_account_id_present": true,
     "remote_d1_verified": true,
@@ -68,7 +68,7 @@
   },
   "post_deploy_verification": {
     "status": "success",
-    "workflow_run_id": 31823439060,
+    "workflow_run_id": 31830489147,
     "remote_d1_verified": true,
     "production_route_reachable": true,
     "live_verify_mode": "cloudflare_access_boundary_verified",
