@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Patch regeneration prompt buttons cache and permanent validator
+      - name: Patch current ChatGPT generation authority
         shell: bash
         run: |
           set -euo pipefail
@@ -37,50 +37,28 @@ jobs:
 
           policy=Path('assets/js/post-regenerate-policy-v1.js')
           s=policy.read_text(encoding='utf-8')
-          old="2026-08-14-current-media-role-generation-policy-v5"
-          new="2026-08-15-current-authority-generation-policy-v6"
-          if old not in s and new not in s: raise SystemExit('regeneration policy version marker not found')
-          s=s.replace(old,new)
-          old_t='4. 龜鹿湯塊：75g （2兩）／盒｜8塊裝；每塊約9.375g只屬產品詳細／內部資料，不放貼文、產品圖或DM主規格。'
-          new_t='4. 龜鹿湯塊：75g （2兩）／盒｜8塊裝；顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g；產品主圖與DM主規格維持正式原圖與主規格，不自行加字。'
-          old_j='5. 龜鹿膠：600g （1斤）／盒｜32塊裝；每塊約18.75 g只屬產品詳細／內部資料，不放貼文、產品圖或DM主規格。'
-          new_j='5. 龜鹿膠：600g （1斤）／盒｜32塊裝；顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g；產品主圖與DM主規格維持正式原圖與主規格，不自行加字。'
-          old_g='- 龜鹿膏目前使用方式為「每日早上及下午各一小匙」，不得回退一天一次／早晚用法。'
-          new_g='- 龜鹿膏食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始。不得設定固定早上／下午、一天一次或早晚固定時段。\\n- 龜鹿飲30cc目前使用方式為每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排。\\n- 龜鹿飲180cc目前使用方式為每日一包；飲用時間可依個人使用習慣與作息時間安排。'
-          for old_value,new_value,label in [(old_t,new_t,'湯塊完整規格'),(old_j,new_j,'龜鹿膠完整規格'),(old_g,new_g,'龜鹿膏／龜鹿飲目前用法')]:
-            if old_value in s:s=s.replace(old_value,new_value)
-            elif new_value not in s:raise SystemExit(f'{label} marker not found')
-          if '每日早上及下午各一小匙' in s: raise SystemExit('regeneration policy still contains retired fixed gao timing')
-          if '每塊約18.75 g' in s: raise SystemExit('regeneration policy still contains retired jiao spacing/rule')
+          s=s.replace('2026-08-14-current-media-role-generation-policy-v5','2026-08-15-current-authority-generation-policy-v6')
+          pairs=[
+            ('4. 龜鹿湯塊：75g （2兩）／盒｜8塊裝；每塊約9.375g只屬產品詳細／內部資料，不放貼文、產品圖或DM主規格。','4. 龜鹿湯塊：75g （2兩）／盒｜8塊裝；顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g；產品主圖與DM主規格維持正式原圖與主規格，不自行加字。'),
+            ('5. 龜鹿膠：600g （1斤）／盒｜32塊裝；每塊約18.75 g只屬產品詳細／內部資料，不放貼文、產品圖或DM主規格。','5. 龜鹿膠：600g （1斤）／盒｜32塊裝；顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g；產品主圖與DM主規格維持正式原圖與主規格，不自行加字。'),
+            ('- 龜鹿膏目前使用方式為「每日早上及下午各一小匙」，不得回退一天一次／早晚用法。','- 龜鹿膏食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始。不得設定固定早上／下午、一天一次或早晚固定時段。\\n- 龜鹿飲30cc目前使用方式為每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排。\\n- 龜鹿飲180cc目前使用方式為每日一包；飲用時間可依個人使用習慣與作息時間安排。')
+          ]
+          for old,new in pairs:
+            if old in s:s=s.replace(old,new)
+            elif new not in s:raise SystemExit('regeneration policy patch marker not found: '+old[:24])
+          if '每日早上及下午各一小匙' in s:raise SystemExit('retired fixed gao timing remains')
+          if '每塊約18.75 g' in s:raise SystemExit('retired jiao detail spacing/rule remains')
+          for required in ['每日 1-2罐','龜鹿飲180cc目前使用方式為每日一包','顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g','顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g']:
+            if required not in s:raise SystemExit('missing current generation rule: '+required)
           policy.write_text(s,encoding='utf-8')
 
           buttons=Path('assets/js/post-regenerate-buttons.js')
           b=buttons.read_text(encoding='utf-8')
-          b=b.replace("2026-08-09-regenerate-buttons-v1-presentation-only","2026-08-15-regenerate-buttons-v2-missing-image-aware")
-          old_add="""  function addButton(actions,mode,label,className='btn small'){
-    if(actions.querySelector(`[data-xjw-regenerate=\"${mode}\"]`))return;
-    const button=document.createElement('button');
-    button.type='button';button.className=className;button.dataset.xjwRegenerate=mode;button.textContent=label;
-    actions.appendChild(button);
-  }
-"""
-          new_add="""  function addButton(actions,mode,label,className='btn small'){
-    const existing=actions.querySelector(`[data-xjw-regenerate=\"${mode}\"]`);
-    if(existing){existing.textContent=label;existing.className=className;return existing;}
-    const button=document.createElement('button');
-    button.type='button';button.className=className;button.dataset.xjwRegenerate=mode;button.textContent=label;
-    actions.appendChild(button);return button;
-  }
-  function missingImage(card){
-    const preview=card?.querySelector('.xjw-image-preview');
-    const src=String(preview?.getAttribute('src')||'').trim();
-    return !src;
-  }
-"""
-          if old_add in b:b=b.replace(old_add,new_add)
-          elif 'function missingImage(card)' not in b:raise SystemExit('button addButton marker not found')
+          b=b.replace('2026-08-09-regenerate-buttons-v1-presentation-only','2026-08-15-regenerate-buttons-v2-missing-image-aware')
+          b=b.replace("if(actions.querySelector(`[data-xjw-regenerate=\"${mode}\"]`))return;","const existing=actions.querySelector(`[data-xjw-regenerate=\"${mode}\"]`);\\n    if(existing){existing.textContent=label;existing.className=className;return existing;}")
+          b=b.replace('actions.appendChild(button);\\n  }','actions.appendChild(button);return button;\\n  }\\n  function missingImage(card){\\n    const preview=card?.querySelector(\'.xjw-image-preview\');\\n    const src=String(preview?.getAttribute(\'src\')||\'\').trim();\\n    return !src;\\n  }',1)
           b=b.replace("addButton(actions,'image','圖不符合｜ChatGPT重生成','btn small orange');","addButton(actions,'image',missingImage(card)?'缺圖｜ChatGPT生成':'圖不符合｜ChatGPT重生成','btn small orange');")
-          if '缺圖｜ChatGPT生成' not in b:raise SystemExit('missing-image button label not installed')
+          if '缺圖｜ChatGPT生成' not in b or 'function missingImage(card)' not in b:raise SystemExit('missing-image button patch failed')
           buttons.write_text(b,encoding='utf-8')
 
           html=Path('publishing.html')
@@ -88,40 +66,37 @@ jobs:
           h=h.replace('review-flow-20260814-v4','review-flow-20260815-v5-current-regeneration')
           h=h.replace('post-regenerate-buttons.js?v=20260812-formal-image-fix-v3','post-regenerate-buttons.js?v=20260815-regeneration-policy-v6')
           h=h.replace('post-regenerate-policy-v1.js?v=20260812-formal-image-fix-v3','post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6')
-          old_note='<strong>免費重新生成流程（ChatGPT 回填）：</strong>已有符合文案的正式圖片優先沿用；沒有合格來源才重新生成。開始重新生成會先撤銷舊核准與排程，生成完成後回填或上傳並回到待審核，不會自動核准、排程或發布。'
-          new_note='<strong>免費重新生成流程（ChatGPT 回填）：</strong>已有符合文案的正式圖片優先沿用；沒有合格來源才重新生成。缺圖草稿會顯示「缺圖｜ChatGPT生成」；已有圖片但不符合則顯示「圖不符合｜ChatGPT重生成」。開始生成／重新生成會先撤銷舊核准與排程，完成後回填或上傳並回到待審核，不會自動核准、排程或發布。'
-          if old_note in h:h=h.replace(old_note,new_note)
-          elif new_note not in h:raise SystemExit('publishing regeneration note marker not found')
-          if '20260815-regeneration-policy-v6' not in h:raise SystemExit('regeneration cache version not updated')
+          h=h.replace('已有符合文案的正式圖片優先沿用；沒有合格來源才重新生成。開始重新生成會先撤銷舊核准與排程，生成完成後回填或上傳並回到待審核，不會自動核准、排程或發布。','已有符合文案的正式圖片優先沿用；沒有合格來源才重新生成。缺圖草稿會顯示「缺圖｜ChatGPT生成」；已有圖片但不符合則顯示「圖不符合｜ChatGPT重生成」。開始生成／重新生成會先撤銷舊核准與排程，完成後回填或上傳並回到待審核，不會自動核准、排程或發布。')
+          if '20260815-regeneration-policy-v6' not in h or '缺圖｜ChatGPT生成' not in h:raise SystemExit('publishing cache/note patch failed')
           html.write_text(h,encoding='utf-8')
 
           validator=Path('tools/validate-publishing-review-gate.mjs')
           v=validator.read_text(encoding='utf-8')
           anchor="must(!generation.includes('/publish-now'),'重新生成流程不得自行觸發正式發布');"
-          extra="""
-must(!generation.includes('每日早上及下午各一小匙'),'ChatGPT生成規則不得回退龜鹿膏固定早上／下午時段');
-must(generation.includes('食用時間可依個人使用習慣與作息時間安排'),'ChatGPT生成規則缺少龜鹿膏目前個人作息原則');
-must(generation.includes('每日 1-2罐'),'ChatGPT生成規則缺少30cc目前每日 1-2罐');
-must(generation.includes('龜鹿飲180cc目前使用方式為每日一包'),'ChatGPT生成規則缺少180cc目前每日一包');
-must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g'),'ChatGPT生成規則沒有允許湯塊目前完整顧客文字規格');
-must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g'),'ChatGPT生成規則沒有允許龜鹿膠目前完整顧客文字規格');
-must(!generation.includes('每塊約18.75 g'),'ChatGPT生成規則仍含退役龜鹿膠約重空格／舊限制');
-"""
-          if extra.strip() not in v:
-            if anchor not in v:raise SystemExit('validator generation anchor not found')
-            v=v.replace(anchor,anchor+extra)
+          checks=[
+            "must(!generation.includes('每日早上及下午各一小匙'),'ChatGPT生成規則不得回退龜鹿膏固定早上／下午時段');",
+            "must(generation.includes('食用時間可依個人使用習慣與作息時間安排'),'ChatGPT生成規則缺少龜鹿膏目前個人作息原則');",
+            "must(generation.includes('每日 1-2罐'),'ChatGPT生成規則缺少30cc目前每日 1-2罐');",
+            "must(generation.includes('龜鹿飲180cc目前使用方式為每日一包'),'ChatGPT生成規則缺少180cc目前每日一包');",
+            "must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g'),'ChatGPT生成規則沒有允許湯塊目前完整顧客文字規格');",
+            "must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g'),'ChatGPT生成規則沒有允許龜鹿膠目前完整顧客文字規格');",
+            "must(!generation.includes('每塊約18.75 g'),'ChatGPT生成規則仍含退役龜鹿膠約重空格／舊限制');"
+          ]
+          if checks[0] not in v:
+            if anchor not in v:raise SystemExit('validator generation anchor missing')
+            v=v.replace(anchor,anchor+'\\n'+'\\n'.join(checks))
           button_anchor="must(generationButtons.includes(\"data-xjw-regenerate\")||generationButtons.includes('dataset.xjwRegenerate'),'純按鈕層沒有建立重生成操作入口');"
-          button_extra="\nmust(generationButtons.includes('缺圖｜ChatGPT生成'),'缺圖草稿沒有清楚的ChatGPT生成按鈕');\nmust(generationButtons.includes('missingImage(card)'),'缺圖按鈕沒有依圖片存在狀態判斷');"
-          if "缺圖草稿沒有清楚的ChatGPT生成按鈕" not in v:
-            if button_anchor not in v:raise SystemExit('validator button anchor not found')
-            v=v.replace(button_anchor,button_anchor+button_extra)
+          button_checks=["must(generationButtons.includes('缺圖｜ChatGPT生成'),'缺圖草稿沒有清楚的ChatGPT生成按鈕');","must(generationButtons.includes('missingImage(card)'),'缺圖按鈕沒有依圖片存在狀態判斷');"]
+          if button_checks[0] not in v:
+            if button_anchor not in v:raise SystemExit('validator button anchor missing')
+            v=v.replace(button_anchor,button_anchor+'\\n'+'\\n'.join(button_checks))
           html_anchor="must(/post-regenerate-policy-v1\\.js\\?v=[^\"']+/.test(html),'貼文中心重生成流程缺少正式快取版本識別');"
-          html_extra="\nmust(html.includes('20260815-regeneration-policy-v6'),'貼文中心仍載入舊ChatGPT生成快取版本');"
-          if '貼文中心仍載入舊ChatGPT生成快取版本' not in v:
-            if html_anchor not in v:raise SystemExit('validator html anchor not found')
-            v=v.replace(html_anchor,html_anchor+html_extra)
+          html_check="must(html.includes('20260815-regeneration-policy-v6'),'貼文中心仍載入舊ChatGPT生成快取版本');"
+          if html_check not in v:
+            if html_anchor not in v:raise SystemExit('validator html anchor missing')
+            v=v.replace(html_anchor,html_anchor+'\\n'+html_check)
           validator.write_text(v,encoding='utf-8')
-          print('PASS: current regeneration prompt, missing-image button, cache and permanent validator patched.')
+          print('PASS: current regeneration authority patched.')
           PY
 
       - name: Validate current publishing system
@@ -132,20 +107,7 @@ must(!generation.includes('每塊約18.75 g'),'ChatGPT生成規則仍含退役�
           npm run check
           npm run guard:full
           npm run build:static
-          node - <<'NODE'
-          const fs=require('fs');
-          const p=fs.readFileSync('assets/js/post-regenerate-policy-v1.js','utf8');
-          const b=fs.readFileSync('assets/js/post-regenerate-buttons.js','utf8');
-          const h=fs.readFileSync('publishing.html','utf8');
-          const must=(v,m)=>{if(!v)throw new Error(m)};
-          must(!p.includes('每日早上及下午各一小匙'),'retired gao timing remains');
-          must(p.includes('每日 1-2罐'),'30cc current usage missing');
-          must(p.includes('龜鹿飲180cc目前使用方式為每日一包'),'180cc current usage missing');
-          must(p.includes('每塊約9.375g')&&p.includes('每塊約18.75g'),'current unit details missing');
-          must(b.includes('缺圖｜ChatGPT生成'),'missing-image button missing');
-          must(h.includes('20260815-regeneration-policy-v6'),'cache version missing');
-          console.log('PASS: ChatGPT generation UI and prompt now follow current product authority.');
-          NODE
+          node -e "const fs=require('fs');const p=fs.readFileSync('assets/js/post-regenerate-policy-v1.js','utf8'),b=fs.readFileSync('assets/js/post-regenerate-buttons.js','utf8'),h=fs.readFileSync('publishing.html','utf8');if(p.includes('每日早上及下午各一小匙')||!p.includes('每日 1-2罐')||!p.includes('每塊約18.75g')||!b.includes('缺圖｜ChatGPT生成')||!h.includes('20260815-regeneration-policy-v6'))throw Error('current regeneration verification failed');console.log('PASS: ChatGPT generation UI/prompt follow current authority.');"
           git diff --check
 
       - name: Commit permanent repair and remove one-shot workflow
@@ -169,7 +131,7 @@ must(!generation.includes('每塊約18.75 g'),'ChatGPT生成規則仍含退役�
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           npx wrangler deploy --keep-vars
 
-      - name: Verify production route is reachable
+      - name: Verify production routes
         shell: bash
         run: |
           set -euo pipefail
