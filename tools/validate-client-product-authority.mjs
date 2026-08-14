@@ -20,9 +20,9 @@ for(const spec of [
   '75g／罐'
 ]) must(source.includes(spec),`前端產品權威缺少目前完整正式主規格：${spec}`);
 
-must(source.includes("usagePrimary:'食用時間與份量可依個人使用習慣與作息安排'"),'前端龜鹿膏主要使用資料必須依個人習慣與作息');
-must(source.includes("usagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息安排'"),'前端30cc使用方式必須是目前確認版本');
-must(source.includes("usagePrimary:'每日一包；飲用時間可依個人使用習慣與作息安排'"),'前端180cc需保留每日一包並依個人作息安排時間');
+must(source.includes("usagePrimary:'食用時間可依個人使用習慣與作息時間安排'"),'前端龜鹿膏主要使用資料必須依個人習慣與作息');
+must(source.includes("usagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排'"),'前端30cc使用方式必須是目前確認版本');
+must(source.includes("usagePrimary:'每日一包；飲用時間可依個人使用習慣與作息時間安排'"),'前端180cc需保留每日一包並依個人作息安排時間');
 for(const retired of ['一天一次一小匙','每日一次一小匙','早晚各一小匙'])must(source.includes(retired),`前端需保留對舊龜鹿膏用法的拒絕判斷：${retired}`);
 for(const retired of [
   "allowedSpecs:['30cc／罐']",
@@ -42,7 +42,7 @@ must(source.includes('不得稱瓶'),'前端必須拒絕30cc瓶型退役稱呼')
 must(source.includes('龜鹿湯塊目前正式主規格只有')&&source.includes('75g／盒｜8塊裝'),'前端必須拒絕龜鹿湯塊退役容量');
 must(source.includes('每塊約9.375g只留產品詳細／內部資料'),'湯塊每塊重量必須是detail-only');
 must(source.includes('每塊約18.75g只留產品詳細／內部資料'),'龜鹿膠每塊重量必須是detail-only');
-must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間與份量可依個人使用習慣與作息安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
+must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
 must(source.includes('龜鹿飲不設定固定白天時段'),'前端必須移除龜鹿飲固定白天時段');
 must(source.includes('龜鹿飲30cc目前使用方式為「每日 1-2罐」'),'前端必須拒絕30cc舊每日一罐用法');
 must(source.includes("image:image('images/customer-display-v20260812/guilu-drink-30cc.avif')"),'30cc一般顧客產品圖必須使用目前customer-display');
