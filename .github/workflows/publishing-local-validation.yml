@@ -56,6 +56,9 @@ jobs:
       - name: Run current code checks
         run: npm run check
 
+      - name: Verify review workflow contract
+        run: node tools/validate-publishing-review-gate.mjs
+
       - name: Build exact static publishing assets
         run: npm run build:static
 
@@ -87,6 +90,7 @@ jobs:
             echo '## 程式驗證完成'
             echo ''
             echo '- ✅ 程式／靜態建置／題庫驗證'
+            echo '- ✅ draft → pending_review → 16項人工審核 → approved 流程契約'
             echo '- ⏸ Cloudflare Worker 未部署'
             echo '- ⏸ Remote D1 未寫入'
             echo '- ⏸ 28 篇尚未因本 workflow 送入待審核'
