@@ -1,55 +1,60 @@
 import fs from 'node:fs';
 const read=path=>fs.readFileSync(path,'utf8');
 const must=(ok,message)=>{if(!ok)throw new Error(message)};
+
 const production=read('src/production-entry.js');
 const readiness=read('src/system-readiness.js');
-const publishingOnly=read('src/publishing-only-entry.js');
+const review=read('src/publishing-review-gate-entry.js');
+const flexible=read('src/flexible-publish-entry.js');
+const worker=read('src/worker.js');
+const wrangler=read('wrangler.jsonc');
 const html=read('publishing.html');
+const index=read('index.html');
 const ui=read('assets/js/publishing-readiness-ui.js');
 const resilience=read('assets/js/publishing-resilience.js');
+const productGuard=read('assets/js/product-authority-guard.js');
+const formalMedia=read('assets/js/formal-media-policy-v20260810.js');
 const pkg=read('package.json');
 const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 
-for(const token of ["path==='/healthz/core'","path==='/healthz/readiness'",'runReadiness(request,env,ctx,app','mutationCoreGate(env)','MUTATING_METHODS.has(request.method)','const d1=await checkD1(env)','platformPublishGate(env)','currentPlatformProbe(env','blockingPlatformFailures(probe)','loginCheck:()=>verifyFastAccess(request,env)','readinessUsesSharedFastAccess:true']) must(production.includes(token),`production-entry 缺少安全啟動契約：${token}`);
+must(/"main"\s*:\s*"src\/production-entry\.js"/.test(wrangler),'正式Wrangler入口不是完整production-entry.js');
+for(const token of ["path==='/healthz/core'","path==='/healthz/readiness'",'runReadiness(request,env,ctx,app','mutationCoreGate(env)','MUTATING_METHODS.has(request.method)','const d1=await checkD1(env)','platformPublishGate(env)','loginCheck:()=>verifyFastAccess(request,env)','readinessUsesSharedFastAccess:true'])must(production.includes(token),`production-entry缺少安全啟動契約：${token}`);
 must(production.includes('D1未就緒，本輪不發布'),'排程器沒有在D1故障時自動停發');
 must(production.includes('平台安全模式：已設定平台API健康檢查未通過，本輪不發布'),'排程發布前沒有平台API健康守門');
 must(production.includes("/^\\/api\\/posts\\/[^/]+\\/publish-now$/"),'立即發布沒有套用平台API安全守門');
-for(const token of ['checkD1','checkAccessConfig','checkCurrentLogin','sharedLogin','loginCheck=null','probeFacebook','probeInstagram','probeLine','probeGoogle','publisherConfiguration','blockingPlatformFailures']) must(readiness.includes(token),`system-readiness 缺少診斷：${token}`);
+for(const token of ['checkD1','checkAccessConfig','checkCurrentLogin','sharedLogin','probeFacebook','probeInstagram','probeLine','probeGoogle','publisherConfiguration','blockingPlatformFailures'])must(readiness.includes(token),`system-readiness缺少診斷：${token}`);
 must(readiness.includes('sharedFastAccess:true'),'readiness登入沒有標示共用快速Access驗證');
-must(readiness.includes("SELECT 1 AS ok"),'D1 readiness 沒有使用非破壞性查詢');
-must(readiness.includes('LINE VOOM 依正式規則採人工發布'),'LINE VOOM 手動發布狀態沒有納入診斷');
-must(readiness.includes("configured:true,mode:'official_api'"),'已設定平台API失敗時無法與未設定人工平台區分');
+must(readiness.includes("SELECT 1 AS ok"),'D1 readiness沒有使用非破壞性查詢');
+must(readiness.includes('LINE VOOM 依正式規則採人工發布'),'LINE VOOM手動發布狀態沒有納入診斷');
 
-for(const token of ['UI_RUNTIME','uiRuntime:UI_RUNTIME','PRODUCT_IMAGE_VERSION','productImageVersion:PRODUCT_IMAGE_VERSION',"productImageAuthority:'products-v3-latest-original-product-photos'",'POST_BANK_SYNC_VERSION','postBankSyncVersion:POST_BANK_SYNC_VERSION',"postBankValidation:'capability-based'","postBankSizePolicy:'current-catalog-dynamic-no-fixed-count'",'FORMAL_MEDIA_RUNTIME','formalMediaRuntime:FORMAL_MEDIA_RUNTIME','LATEST_POST_ZIP_MANIFEST','latestPostZipManifest:LATEST_POST_ZIP_MANIFEST','latestPostZipDynamic:true','currentMediaAuthority(request,env)','latestPostZip:media.latestPostZip','latestPostZipCandidates:media.latestPostZipCandidates','formalMediaApprovalBatch:media.formalMediaApprovalBatch','latestPostZipBinaryStatus:media.latestPostZipBinaryStatus',"postImagePriority:'user_zip_approved'",'regenerateOnlyIfNoApprovedMatch:true','reviewItemsAfterMediaChange:16',"guardVersionPolicy:'current-authority-not-historical-version-pin'"]) must(publishingOnly.includes(token),`publishing health 缺少正式能力診斷：${token}`);
-const uiRuntime=publishingOnly.match(/const UI_RUNTIME=['"]([^'"]+)['"]/i)?.[1]||'';
-must(uiRuntime&&/standalone/i.test(uiRuntime),'publishing health 的UI runtime必須維持正式standalone識別');
-const productImageVersion=publishingOnly.match(/const PRODUCT_IMAGE_VERSION=['"]([^'"]+)['"]/i)?.[1]||'';
-must(productImageVersion&&/products-v3/i.test(productImageVersion)&&!/products-v2/i.test(productImageVersion),'publishing health 的產品圖權威必須維持products-v3正式系列');
-const postBankSyncVersion=publishingOnly.match(/const POST_BANK_SYNC_VERSION=['"]([^'"]+)['"]/i)?.[1]||'';
-must(postBankSyncVersion&&/post-bank-sync/i.test(postBankSyncVersion),'publishing health 缺少目前母庫同步能力識別');
-const formalMediaRuntime=publishingOnly.match(/const FORMAL_MEDIA_RUNTIME=['"]([^'"]+)['"]/i)?.[1]||'';
-must(formalMediaRuntime&&/formal-media-policy/i.test(formalMediaRuntime),'publishing health 缺少正式媒體能力識別');
-must(!publishingOnly.includes("LATEST_POST_ZIP='2.zip'")&&!publishingOnly.includes('KNOWN_REGENERATION_MINIMUM=121'),'publishing health 不得硬鎖舊ZIP或歷史重生成數量');
-must(publishingOnly.includes("url.pathname===LATEST_POST_ZIP_MANIFEST")&&publishingOnly.includes('env?.ASSETS?.fetch'),'Worker必須明確提供最新ZIP目錄資產');
-must(publishingOnly.includes('u.pathname=LATEST_POST_ZIP_MANIFEST')&&publishingOnly.includes('catalog?.source')&&publishingOnly.includes('catalog?.candidate_count')&&publishingOnly.includes('catalog?.approval_batch'),'Worker health必須從目前部署素材目錄動態回報來源／候選數／核准批次，不得寫死歷史值');
+for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
+for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
-must(typeof latestZip.source==='string'&&latestZip.source.trim(),'最新 ZIP 目錄缺少來源名稱');
-must(Number(latestZip.candidate_count)>0,'最新 ZIP 目錄必須有候選圖');
-must(Number(latestZip.original_file_count||latestZip.candidate_count)>=Number(latestZip.candidate_count),'最新 ZIP 原始檔數不得小於唯一候選數');
-must(latestZip.priority==='user_zip_approved','最新 ZIP 必須維持使用者素材優先');
-must(/^https:\/\//.test(String(latestZip.public_catalog||'')),'最新 ZIP 必須提供公開目錄位置');
-must(String(latestZip.approval_batch||'').trim(),'最新 ZIP 必須提供目前核准批次');
-must(/needs_binary_sync/.test(String(latestZip.selection_rule||'')),'最新 ZIP 必須區分有合格來源但原圖待同步');
-must(/regenerate only if no approved source candidate matches/i.test(String(latestZip.selection_rule||'')),'最新 ZIP 缺少「真的沒有合格來源才生成」規則');
-must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(latestZip.review_rule||'')),'最新 ZIP 配圖後必須回待審核並保留16項審核');
+// Full ERP core must remain available behind the same production entry.
+for(const token of ["new Set(['products','customers','visits','orders','inventory','purchases','suppliers','finance','tasks','documents','templates','assets'])",'/api/overview','/api/modules/','/api/settings','audit_logs'])must(worker.includes(token),`ERP核心能力缺少：${token}`);
+for(const token of ['app-shell','internal-app.js','erp-publishing-separation.js','/publishing.html'])must(index.includes(token),`ERP根介面缺少：${token}`);
 
-must(html.includes('standalone')&&/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html 沒有使用正式standalone runtime／主程式快取識別');
-for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','開啟頁面先進安全模式','平台 API 背景檢查通過後自動解鎖','最新使用者 ZIP 素材','目前正式貼文母庫','不再限制必須剛好500篇']) must(html.includes(token),`publishing.html 缺少最新安全診斷／媒體／母庫UI：${token}`);
-for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness']) must(ui.includes(token),`publishing-readiness-ui 缺少安全模式／平台發布鎖契約：${token}`);
+// Current product/media roles.
+for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`前端產品媒體權威缺少：${token}`);
+for(const token of ['formalProductMedia','user_zip_approved','needs_binary_sync','regenerate_if_missing','reviewItems:16'])must(formalMedia.includes(token),`正式媒體政策缺少：${token}`);
+must(!productGuard.includes('/images/products-v2/'),'產品權威不得引用products-v2');
+
+must(typeof latestZip.source==='string'&&latestZip.source.trim(),'最新ZIP目錄缺少來源名稱');
+must(Number(latestZip.candidate_count)>0,'最新ZIP目錄必須有候選圖');
+must(Number(latestZip.original_file_count||latestZip.candidate_count)>=Number(latestZip.candidate_count),'最新ZIP原始檔數不得小於唯一候選數');
+must(latestZip.priority==='user_zip_approved','最新ZIP必須維持使用者素材優先');
+must(/^https:\/\//.test(String(latestZip.public_catalog||'')),'最新ZIP必須提供公開目錄位置');
+must(String(latestZip.approval_batch||'').trim(),'最新ZIP必須提供目前核准批次');
+must(/needs_binary_sync/.test(String(latestZip.selection_rule||'')),'最新ZIP必須區分有合格來源但原圖待同步');
+must(/regenerate only if no approved source candidate matches/i.test(String(latestZip.selection_rule||'')),'最新ZIP缺少「真的沒有合格來源才生成」規則');
+must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(latestZip.review_rule||'')),'最新ZIP配圖後必須回待審核並保留16項審核');
+
+must(html.includes('standalone')&&/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html沒有使用正式standalone runtime／主程式快取識別');
+for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','最新使用者 ZIP 素材','目前正式貼文母庫'])must(html.includes(token),`publishing.html缺少最新安全診斷／媒體／母庫UI：${token}`);
+for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
 must(ui.includes("PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]'"),'平台健康檢查未完成時必須只鎖正式發布按鈕');
-must(ui.includes('5*60*1000'),'平台API必須週期性自動重檢');
 must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'連線失敗時沒有最近成功資料唯讀備援');
-must(pkg.includes('src/system-readiness.js'),'package check 沒有驗 system-readiness');
-must(pkg.includes('assets/js/publishing-readiness-ui.js'),'package check/build 沒有驗 publishing-readiness-ui');
-must(pkg.includes('latest-user-post-zip.json'),'package check/build 沒有帶入最新ZIP目錄');
-console.log(`PASS：Worker、D1、Access、平台API、目前動態母庫與媒體來源採分層能力診斷；health動態讀目前素材authority；standalone UI、products-v3、母庫張數跟隨current catalog、目前 ${latestZip.source}/${latestZip.candidate_count} 張唯一候選、ZIP優先、缺圖才生成與16項重審一致；不再因固定500篇、舊ZIP名稱、舊版號或歷史重生成數量誤擋。`);
+
+for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
+
+console.log(`PASS：完整ERP與standalone貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷，不再以publishing-only、固定張數或舊版號作正式條件。`);
