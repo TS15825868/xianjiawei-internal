@@ -56,11 +56,11 @@ for(const role of ['customer_product_image','detailed_dm','trial','product_ident
 must(/<meta name="xianjiawei-publishing-runtime" content="review-flow-[^"]+">/.test(html),'publishing.html缺少目前正式runtime識別');
 must(html.includes('唯一正式內容系統'),'publishing.html沒有標示唯一正式內容系統');
 must(/publishing-app-v2\.js\?v=[^"']+/.test(html),'publishing.html主程式缺少快取／版本識別');
-for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','最新使用者 ZIP 素材','目前正式貼文母庫'])must(html.includes(token),`publishing.html缺少最新安全診斷／媒體／母庫UI：${token}`);
+for(const token of ['readinessSummary','data-diagnose','publishing-readiness-ui.js','post-bank-sync.js','zip-media-assistant.js','formal-media-policy-v20260810.js','母庫可持續增加','一般產品貼文只用六張正式產品圖'])must(html.includes(token),`publishing.html缺少目前安全診斷／母庫／配圖能力：${token}`);
 for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
 must(ui.includes("PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]'"),'平台健康檢查未完成時必須只鎖正式發布按鈕');
 must(resilience.includes('localStorage')&&resilience.includes('快取模式'),'連線失敗時沒有最近成功資料唯讀備援');
 
 for(const token of ['src/production-entry.js','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/publishing-readiness-ui.js','latest-user-post-zip.json'])must(pkg.includes(token),`package check/build缺少目前正式能力檔：${token}`);
 
-console.log(`PASS：完整ERP與唯一正式貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、正式runtime識別、目前產品／媒體角色與動態 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷；synced批次必須有可用上線圖，不再以publishing-only、固定張數或舊版號作正式條件。`);
+console.log(`PASS：完整ERP與唯一正式貼文中心共用production-entry安全鏈；D1、Access、平台API、立即發布、16項審核、完整模組CRUD、正式runtime、動態母庫與ZIP配圖助理、目前產品／媒體角色及 ${latestZip.source}/${latestZip.candidate_count} 張ZIP候選均採能力式診斷；synced批次必須有可用上線圖，不再以publishing-only、固定張數、特定歷史標語或舊版號作正式條件。`);
