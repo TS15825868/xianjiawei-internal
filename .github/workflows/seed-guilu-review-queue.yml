@@ -1,17 +1,22 @@
-name: 仙加味龜鹿內容母庫手動同步待審核／待配圖草稿
+name: 仙加味內容母庫與社群批次同步待審核
 
-# 只有 Cloudflare D1 正式憑證存在且人工觸發時才執行。
-# 不因 push 自動跑；題數依目前題庫動態決定，不鎖歷史固定張數。
-# 有正式圖片的題目可安全進 pending_review；缺情境圖的題目只建立 draft，等待配圖／重新生成。
-# 已核准、已排程、已發布內容不覆寫。
+# 只把「文案＋正式配圖都完整」的內容寫入 Cloudflare D1 待審核。
+# 新 social-batch JSON push 到 main 時自動執行；也保留人工手動同步。
+# 不自動核准、不自動排程、不自動發布；已核准、已排程、已發布內容不覆寫。
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/social-batch-*.json'
+      - 'tools/build-social-batches-review-seed.mjs'
+      - '.github/workflows/seed-guilu-review-queue.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: xianjiawei-guilu-review-seed
+  group: xianjiawei-review-seed
   cancel-in-progress: true
 
 jobs:
@@ -42,37 +47,47 @@ jobs:
           npm run check
           npm run guard:full
 
-      - name: Build safe image-ready and image-needed seeds
+      - name: Build guilu bank and social batch seeds
         shell: bash
         run: |
           set -euo pipefail
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-review-seed.mjs > /tmp/guilu-review-seed.sql
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-draft-seed.mjs > /tmp/guilu-draft-seed.sql
+          XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-social-batches-review-seed.mjs > /tmp/social-batches-review-seed.sql
+
           review_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-review-seed.sql)"
           draft_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-draft-seed.sql)"
-          read -r expected_review expected_draft expected_total <<EOF
+          social_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/social-batches-review-seed.sql)"
+
+          read -r expected_review expected_draft expected_total expected_social <<EOF
           $(node - <<'NODE'
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
           const topics=(bank.topics||[]).filter(Boolean);
           const review=topics.filter(x=>x.seedToReview===true).length;
           const draft=topics.filter(x=>x.seedToReview!==true&&x.imageMode==='context_required').length;
-          process.stdout.write(`${review} ${draft} ${topics.length}`);
+          const batchFiles=fs.readdirSync('assets/data').filter(x=>/^social-batch-\d{8}-\d{2}\.json$/.test(x));
+          const social=batchFiles.reduce((sum,file)=>sum+((JSON.parse(fs.readFileSync(`assets/data/${file}`,'utf8')).posts||[]).length),0);
+          process.stdout.write(`${review} ${draft} ${topics.length} ${social}`);
           NODE
           )
           EOF
+
           test "$expected_review" -gt 0
           test "$expected_draft" -gt 0
+          test "$expected_social" -gt 0
           test "$review_actual" -eq "$expected_review"
           test "$draft_actual" -eq "$expected_draft"
+          test "$social_actual" -eq "$expected_social"
           test "$((expected_review+expected_draft))" -eq "$expected_total"
           grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/guilu-review-seed.sql
           grep -Fq "WHERE social_posts.status='draft'" /tmp/guilu-draft-seed.sql
-          if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql /tmp/guilu-draft-seed.sql; then
+          grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/social-batches-review-seed.sql
+          if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql /tmp/guilu-draft-seed.sql /tmp/social-batches-review-seed.sql; then
             echo 'ERROR: social_posts seed must surface CHECK/FK errors.' >&2
             exit 1
           fi
-          echo "PASS: ${expected_review} image-ready topics + ${expected_draft} image-needed drafts = ${expected_total} current guilu topics."
+          echo "PASS: guilu ${expected_total} topics + social ${expected_social} posts are safe and idempotent."
 
       - name: Verify remote D1 schema and creator
         shell: bash
@@ -86,27 +101,29 @@ jobs:
           echo "$schema" | grep -q "$XJW_CONTENT_SEED_CREATED_BY"
           echo 'PASS: remote D1 status schema and seed creator are valid.'
 
-      - name: Seed image-ready topics into pending review
+      - name: Seed guilu image-ready topics into pending review
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/guilu-review-seed.sql
 
-      - name: Seed image-needed topics as drafts only
+      - name: Seed guilu image-needed topics as drafts only
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/guilu-draft-seed.sql
 
-      - name: Verify current bank coverage and media authority
+      - name: Seed social production batches into pending review
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/social-batches-review-seed.sql
+
+      - name: Verify current bank and social batch coverage
         shell: bash
         run: |
           set -euo pipefail
-          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS missing_image_drafts FROM social_posts WHERE id LIKE 'XJW-GUILU-%' AND status='draft' AND trim(image_url)=''; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE id LIKE 'XJW-GUILU-%' AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' AND status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）%' OR copy LIKE '%每塊約18.75g%');\")"
+          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS social_total FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE status IN ('draft','pending_review') AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE status IN ('draft','pending_review') AND (copy LIKE '%早上及下午各一小匙%' OR copy LIKE '%75g／盒、8塊裝%' OR copy LIKE '%600g（1斤）%' OR copy LIKE '%每塊約18.75g%');\")"
           echo "$result"
-          echo "$result" | grep -q 'pending_review'
-          echo "$result" | grep -q 'draft'
+          echo "$result" | grep -q 'social_total'
           echo "$result" | grep -Eq 'products_v3_live[^0-9]*0|products_v3_live[[:space:]]+0'
           echo "$result" | grep -Eq 'stale_count[^0-9]*0|stale_count[[:space:]]+0'
-          echo 'PASS: image-ready內容停在待審核；缺圖內容停在草稿等待配圖；未自動核准、排程或發布。'
+          echo 'PASS: 文案＋正式配圖內容已同步至待審核；缺圖母庫內容仍停草稿；未自動核准、排程或發布。'
 
       - name: Summary
         if: always()
         run: |
-          echo '目前題庫完整進入內容中心：有正式圖的進待審核；缺情境圖的進草稿等待配圖／ChatGPT重生成。'
-          echo '已核准、已排程、已發布內容不覆寫；草稿若已有人工配圖也不清掉圖片。'
-          echo '任何 CHECK／FK 錯誤會直接失敗，不再靜默吞錯。'
+          echo '社群批次現在會在 push 到 main 後自動同步到 Cloudflare D1 貼文中心待審核。'
+          echo '只有文案與正式圖片完整的 social-batch 才能通過 builder。'
+          echo '已核准、已排程、已發布內容不覆寫；CHECK／FK 錯誤直接失敗。'
