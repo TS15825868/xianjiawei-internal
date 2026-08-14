@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const worker=fs.readFileSync('src/worker.js','utf8');
 const ui=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
+const reviewGate=fs.readFileSync('assets/js/publishing-review-gate.js','utf8');
 
 const requiredWorker=[
   "pending_review:['approved','draft']",
@@ -31,4 +32,18 @@ for(const token of requiredUi){
 if(ui.includes("['draft','pending_review'].includes(post.status)?`<button class=\"btn small green\" data-post-status=\"approved\"")){
   throw new Error('UI 不得讓 draft 與 pending_review 共用直接核准按鈕');
 }
-console.log('PASS：正式貼文流程固定為草稿 → 待審核 → 16項人工審核通過 → 排程／立即發布；草稿不得直接核准。');
+
+const requiredGate=[
+  'submitForReview',
+  "status:'pending_review'",
+  '已送待審核',
+  'data-post-status="pending_review"',
+  'data-post-status="approved"',
+  'draftToPendingReview:true',
+  'directDraftApproval:false'
+];
+for(const token of requiredGate){
+  if(!reviewGate.includes(token))throw new Error(`16項審核攔截層缺少正式流程能力：${token}`);
+}
+
+console.log('PASS：正式貼文流程三層一致：草稿 → 待審核 → 16項人工審核通過 → 排程／立即發布；草稿不得直接核准。');
