@@ -1,0 +1,142 @@
+name: One-shot fix mobile loaded state and review UX
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-shot-fix-mobile-loaded-state-v20260815.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-publishing-mobile-loaded-state-fix
+  cancel-in-progress: true
+
+jobs:
+  fix-validate-deploy-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Patch false loaded warning, multi-product audit and mobile actions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p=Path(path)
+              text=p.read_text()
+              if old not in text:
+                  raise SystemExit(f'missing expected source in {path}: {old[:90]}')
+              text=text.replace(old,new,1)
+              p.write_text(text)
+
+          replace_once(
+              'publishing.html',
+              "function stillLoading(){var root=document.getElementById('listRoot');return !!(root&&/載入|啟動|正在連線|安全檢查/.test(root.textContent||''))}",
+              "function stillLoading(){var root=document.getElementById('listRoot');if(!root)return true;var loading=root.querySelector('.loading-card');return !!(loading&&/正在載入|正在啟動|啟動中|讀取中/.test(loading.textContent||''))}"
+          )
+          replace_once('publishing.html', "window.__XJW_BOOT_VERSION__='20260815-lean-boot-v1';", "window.__XJW_BOOT_VERSION__='20260815-lean-boot-v2-loaded-state';")
+          replace_once('publishing.html', '/assets/css/publishing-base.css?v=20260815-app-v1', '/assets/css/publishing-base.css?v=20260815-app-v2-mobile')
+          replace_once('publishing.html', '/assets/js/publishing-app-v2.js?v=20260815-lean-core-v1', '/assets/js/publishing-app-v2.js?v=20260815-lean-core-v2-audit')
+
+          replace_once(
+              'assets/js/publishing-app-v2.js',
+              "  const mentioned=rules.filter(([,keys])=>keys.some(k=>copy.includes(norm(k))));\n  if(!post.image_url)return{level:'danger',text:'缺少圖片，不能通過審核。'};\n  if(mentioned.length&&!mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))))){\n    return{level:'danger',text:`文案提到「${mentioned.map(x=>x[0]).join('、')}」，圖片資訊無法確認對應產品，請先修正。`};\n  }",
+              "  const mentioned=rules.filter(([,keys])=>keys.some(k=>copy.includes(norm(k))));\n  const productMatched=mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))));\n  const multiProductImage=mentioned.length>=2&&['六項','全系列','產品總覽','products-all','all-products','全品項','產品合照','產品情境圖'].some(k=>image.includes(norm(k)));\n  if(!post.image_url)return{level:'danger',text:'缺少圖片，不能通過審核。'};\n  if(mentioned.length&&!productMatched&&!multiProductImage){\n    return{level:'danger',text:`文案提到「${mentioned.map(x=>x[0]).join('、')}」，圖片資訊無法確認對應產品，請先修正。`};\n  }"
+          )
+          replace_once(
+              'assets/js/publishing-app-v2.js',
+              "document.documentElement.dataset.publishingRuntime='20260814-standalone-v17-review-flow';",
+              "document.documentElement.dataset.publishingRuntime='20260815-standalone-v18-mobile-review-ready';"
+          )
+
+          replace_once(
+              'assets/css/publishing-base.css',
+              'body{margin:0;color:var(--ink);background:var(--cream);font-size:15px;line-height:1.55;overscroll-behavior-y:none}',
+              'body{margin:0;color:var(--ink);background:var(--cream);font-size:15px;line-height:1.55;overscroll-behavior-y:none;overflow-x:hidden}'
+          )
+          replace_once(
+              'assets/css/publishing-base.css',
+              '.xjw-row{padding:15px}',
+              '.xjw-row{padding:15px;min-width:0;max-width:100%;overflow:hidden}'
+          )
+          replace_once(
+              'assets/css/publishing-base.css',
+              '.xjw-actions .btn{flex:1 1 calc(50% - 8px);min-width:0}',
+              '.xjw-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.xjw-actions .btn{width:100%;min-width:0;white-space:normal}'
+          )
+
+          validator=Path('tools/validate-publishing-app-contract.mjs')
+          v=validator.read_text()
+          anchor="if(!js.includes('setButtonBusy'))throw new Error('操作按鈕必須提供處理中狀態');"
+          extra="\nif(!js.includes('multiProductImage')||!js.includes('products-all'))throw new Error('多產品總覽貼文不得被單一產品預檢規則誤擋');\nif(!html.includes(\"root.querySelector('.loading-card')\"))throw new Error('載入完成判斷必須只依實際 loading-card，不得被「載入下一批」文字誤判');\nif(html.includes('/載入|啟動|正在連線|安全檢查/.test(root.textContent'))throw new Error('不得用整份貼文文字判斷載入中，否則「載入下一批」會觸發假錯誤');"
+          if anchor not in v:
+              raise SystemExit('validator anchor missing')
+          v=v.replace(anchor,anchor+extra,1)
+          validator.write_text(v)
+          PY
+      - name: Validate and build posting center
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm run check
+          npm run guard:full
+          npm run build:static
+      - name: Verify remote D1 remains healthy
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status, COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status"
+      - name: Commit permanent fixes before deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add publishing.html assets/js/publishing-app-v2.js assets/css/publishing-base.css tools/validate-publishing-app-contract.mjs
+          git commit -m 'fix(publishing): remove false loaded warning and multi-product review block'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Deploy verified posting center
+        run: npx wrangler deploy --keep-vars
+      - name: Verify protected production routes without redirect storm
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://xianjiawei-internal.tung314069.workers.dev'
+          for path in '/' '/publishing' '/publishing/' '/publishing.html' '/healthz/core'; do
+            body="$(mktemp)"
+            result="$(curl -LsS --max-redirs 6 --max-time 25 -o "$body" -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
+            code="${result%% *}"
+            rest="${result#* }"
+            redirects="${rest%% *}"
+            echo "$path -> $result"
+            test "$code" -ge 200
+            test "$code" -lt 500
+            test "$redirects" -le 1
+            grep -Eiq '貼文中心系統 App|<html|<!doctype|cloudflare|access|sign in|login|publishing' "$body"
+          done
+      - name: Remove this one-shot workflow
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          git checkout -B main origin/main
+          git rm -f .github/workflows/one-shot-fix-mobile-loaded-state-v20260815.yml
+          git commit -m 'chore(publishing): remove completed mobile loaded-state fix workflow'
+          git push origin HEAD:main
