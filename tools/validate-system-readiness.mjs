@@ -26,7 +26,7 @@ must(readiness.includes("SELECT 1 AS ok"),'D1 readiness沒有使用非破壞性�
 for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
 for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
-for(const token of ["path==='/'||path==='/index.html'","redirect('/publishing.html')","blockedApi(path)","path==='/api/me'","path==='/api/platform-authorization'","path==='/api/media-upload'","path==='/api/posts'","path.startsWith('/api/posts/')",'erpUiDisabled:true','erpApisBlocked:true','publishingCenterApp:true'])must(publishingOnly.includes(token),`publishing-only隔離層缺少：${token}`);
+for(const token of ["path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/'","redirect('/publishing.html')","blockedApi(path)","path==='/api/me'","path==='/api/platform-authorization'","path==='/api/media-upload'","path==='/api/posts'","path.startsWith('/api/posts/')",'erpUiDisabled:true','erpApisBlocked:true','publishingCenterApp:true','canonicalPublishingPath'])must(publishingOnly.includes(token),`publishing-only隔離層缺少：${token}`);
 must(index.includes("location.replace('/publishing.html')"),'根網址必須直接進入貼文中心');
 must(!index.includes('internal-app.js')&&!index.includes('營運中控'),'根頁不得再載入ERP介面');
 
@@ -42,11 +42,15 @@ must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(
 
 must(/<meta name="xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+">/.test(html),'publishing.html缺少貼文中心App runtime識別');
 must(html.includes('唯一正式內容系統'),'publishing.html沒有標示唯一正式內容系統');
-for(const token of ['貼文中心系統 App','其他 ERP 功能目前暫停','readinessSummary','data-diagnose','publishing-readiness-ui.js','post-bank-sync.js','zip-media-assistant.js','formal-media-policy-v20260810.js','publishing-base.css'])must(html.includes(token),`publishing.html缺少貼文中心能力：${token}`);
-for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
-must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&resilience.includes('pageshow'),'iPhone/Safari連線與恢復備援不足');
+for(const token of ['貼文中心系統 App','其他 ERP 功能目前暫停','readinessSummary','data-diagnose','data-refresh','20260815-lean-boot-v1','/healthz/core','/healthz/readiness','publishing-app-v2.js','publishing-review-gate.js','publishing-base.css'])must(html.includes(token),`publishing.html缺少貼文中心能力：${token}`);
+must(!html.includes('<script src="/assets/js/publishing-readiness-ui.js'),'iPhone首屏不得啟動週期性readiness檢查');
+must(!html.includes('<script src="/assets/js/publishing-resilience.js'),'iPhone首屏不得啟動全域fetch覆寫／週期性重連');
+must(!html.includes('<script src="/assets/js/post-bank-sync.js'),'iPhone首屏不得啟動母庫同步工具');
+must(html.includes('XJWLoadOptionalScript')&&html.includes('device-image-upload.js')&&html.includes('post-regenerate-policy-v1.js'),'非核心操作工具必須延後載入');
+for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`備用publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
+must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&resilience.includes('pageshow'),'備用iPhone/Safari恢復模組能力不足');
 
-for(const token of ['src/publishing-only-entry.js','assets/css/publishing-base.css','assets/js/publishing-readiness-ui.js','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少正式貼文App檔：${token}`);
+for(const token of ['src/publishing-only-entry.js','assets/css/publishing-base.css','assets/js/publishing-readiness-ui.js','assets/js/publishing-resilience.js','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少正式貼文App檔：${token}`);
 for(const retired of ['assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/loading-watchdog-v20260809.js'])must(!pkg.includes(retired),`正式部署仍帶入已停用ERP前端：${retired}`);
 
-console.log(`PASS：正式系統已切為貼文中心系統App；根網址直接進貼文中心，ERP UI/API不對外提供，保留D1、Access、16項審核、排程／立即發布、媒體與母庫同步、iOS恢復與平台安全檢查。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
+console.log(`PASS：正式系統為貼文中心系統App；根網址與/publishing均正規化到/publishing.html，ERP UI/API不對外；iPhone首屏採輕量核心、診斷手動觸發，保留D1、Access、16項審核、排程／立即發布與延後載入媒體工具。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
