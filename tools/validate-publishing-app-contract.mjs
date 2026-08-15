@@ -5,6 +5,7 @@ const authority=fs.readFileSync('src/authority-entry.js','utf8');
 const production=fs.readFileSync('src/production-entry.js','utf8');
 const publisher=fs.readFileSync('src/social-publisher.js','utf8');
 const publishingOnly=fs.readFileSync('src/publishing-only-entry.js','utf8');
+const wrangler=fs.readFileSync('wrangler.jsonc','utf8');
 const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-app-v2.js','publishing-review-gate.js','device-image-upload.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js','20260815-lean-boot-v1','XJWLoadOptionalScript'];
 for(const token of requiredHtml){if(!html.includes(token))throw new Error(`publishing.html缺少必要功能入口：${token}`)}
 if(!/publishing-app-v2\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的正式主程式缺少快取識別');
@@ -23,9 +24,11 @@ if(!js.includes('setButtonBusy'))throw new Error('操作按鈕必須提供處理
 for(const token of ['limit=Math.min(60','offset=Math.max(0','LIMIT ? OFFSET ?','COUNT(*) AS count']){
   if(!authority.includes(token)&&!production.includes(token))throw new Error(`後端分頁契約缺失：${token}`)
 }
-for(const token of ["path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/'","redirect('/publishing.html')","canonicalPublishingPath:'/publishing.html'"]){
-  if(!publishingOnly.includes(token))throw new Error(`iPhone正式入口正規化契約缺失：${token}`)
+for(const token of ['publishingUiAlias(path)','servePublishingAsset(request,env)','rootServesPublishingDirectly:true','redirectLoopPrevention:true','canonicalPublishingPath:CANONICAL_PUBLISHING_PATH']){
+  if(!publishingOnly.includes(token))throw new Error(`iPhone正式入口無重新導向循環契約缺失：${token}`)
 }
+if(!/"html_handling"\s*:\s*"none"/.test(wrangler))throw new Error('Cloudflare Assets 必須停用內建 HTML canonical redirect，避免 /publishing.html 與 /publishing 互相重新導向');
+if(publishingOnly.includes("return redirect('/publishing.html')"))throw new Error('正式貼文入口不得再用 302 導向 /publishing.html，避免 Safari/Cloudflare Access 重導循環');
 if(!/FAST_API_VERSION=['"][^'"]*fast-read[^'"]*['"]/.test(production))throw new Error('手機快速讀取契約缺少 fast-read 能力識別');
 for(const token of [
   'const accessProfiles=new Map()',
@@ -69,4 +72,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：貼文中心系統 App 使用輕量正式首屏：只先載核心與16項審核，診斷改為手動，裝置上圖／重生成／人工發布延後載入；保留快速Access、D1安全模式、server pagination、立即發布與逐平台發布結果。');
+console.log('PASS：貼文中心系統 App 使用輕量正式首屏且入口不再重新導向：Cloudflare HTML handling=none，/、/publishing、/publishing/、/publishing.html 皆由 Worker 直接回傳同一正式 App；保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
