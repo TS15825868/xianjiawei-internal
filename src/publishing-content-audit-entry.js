@@ -1,7 +1,7 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-15-content-image-audit-v1';
+const VERSION='2026-08-15-content-image-audit-v2-topic-intent';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -23,6 +23,12 @@ function productErrors(row){
   if(isOverviewImage(row)&&isOverviewCopy(row))return errors.filter(error=>!String(error).startsWith('文案提到「'));
   return errors;
 }
+function repeatedBrandInsideField(row){return [row?.title,row?.headline,row?.copy,row?.image_alt].filter(Boolean).some(value=>/仙加味\s*仙加味/.test(String(value)))}
+function isHotWeatherTopic(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['天氣悶熱','天氣炎熱','炎熱天氣','悶熱天氣','高溫天氣','炎熱外出','悶熱外出'])}
+function isRainTopic(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['下雨天','雨天','下雨','雨勢'])}
+function isTemperatureTopic(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['早晚溫差','溫差提醒','換季','薄外套'])}
+function isStorageTopic(row){return hasAny(row?.title,['保存方式','保存提醒','保存要','開封前後','開封後','保存重點','怎麼保存'])||['保存','保存方式','保存提醒'].includes(clean(row?.category))}
+function isWarmTopic(row){return hasAny([row?.title,row?.category].join(' '),['溫熱飲用','想喝溫一點','溫熱後飲用','溫熱方式','溫飲'])}
 
 function semanticErrors(row,liveRows=[]){
   const text=publicText(row),image=imageText(row),errors=[];
@@ -31,7 +37,7 @@ function semanticErrors(row,liveRows=[]){
 
   const risky=RISKY.find(term=>text.includes(term));
   if(risky)errors.push(`公開文案含不適合食品廣告的字詞「${risky}」`);
-  if(/仙加味\s*仙加味/.test([row?.title,row?.headline,row?.copy,row?.image_alt].filter(Boolean).join(' ')))errors.push('顧客可見文字出現重複品牌字樣「仙加味仙加味」');
+  if(repeatedBrandInsideField(row))errors.push('顧客可見單一欄位出現重複品牌字樣「仙加味仙加味」');
 
   if(imageUrl&&status!=='published'&&!isFixedReusableImage(imageUrl)){
     const duplicated=liveRows.filter(other=>other.id!==row.id&&clean(other.status)!=='published'&&normalizedImageUrl(other.image_url)===imageUrl);
@@ -44,18 +50,18 @@ function semanticErrors(row,liveRows=[]){
   if(hasAny(image,['faq.webp','faq情境'])&&!hasAny([row?.title,row?.headline,row?.category].join(' '),['faq','常見問題','問答']))errors.push('目前使用FAQ情境圖，但本篇不是FAQ主題；需改成對應本篇內容的圖片');
   if(hasAny(image,['recipes.webp','料理情境'])&&!hasAny([row?.title,row?.headline,row?.category].join(' '),['料理','燉湯','雞湯','排骨湯']))errors.push('目前使用料理圖，但本篇不是料理主題');
 
-  if(hasAny(text,['下雨天','雨天','下雨'])&&!hasAny(image,['rain','雨天','下雨','雨景','雨']))errors.push('文案是下雨／雨天情境，但圖片資訊沒有對應雨天場景');
-  if(hasAny(text,['天氣悶熱','天氣炎熱','炎熱','高溫'])&&!hasAny(image,['hot-weather','hydration','悶熱','炎熱','夏天','補水','水壺']))errors.push('文案是炎熱／悶熱天氣，但圖片資訊沒有對應炎熱、外出或補水情境');
-  if(hasAny(text,['早晚溫差','換季','薄外套'])&&!hasAny(image,['temperature-coat','溫差','換季','外套']))errors.push('文案是早晚溫差／換季情境，但圖片資訊沒有對應薄外套或溫差場景');
+  if(isRainTopic(row)&&!hasAny(image,['rain','雨天','下雨','雨景','雨']))errors.push('文案主題是下雨／雨天情境，但圖片資訊沒有對應雨天場景');
+  if(isHotWeatherTopic(row)&&!hasAny(image,['hot-weather','hydration','悶熱','炎熱','夏天','補水','水壺']))errors.push('文案主題是炎熱／悶熱天氣，但圖片資訊沒有對應炎熱、外出或補水情境');
+  if(isTemperatureTopic(row)&&!hasAny(image,['temperature-coat','溫差','換季','外套']))errors.push('文案主題是早晚溫差／換季情境，但圖片資訊沒有對應薄外套或溫差場景');
 
   const seasons=[['春天',['spring','春天','春季']],['夏天',['summer','夏天','夏季']],['秋天',['autumn','fall','秋天','秋季']],['冬天',['winter','冬天','冬季']]].filter(([label])=>text.includes(label));
   if(seasons.length>1){if(!hasAny(image,['four-seasons','四季','春夏秋冬']))errors.push('文案同時描述多個季節，但圖片不是清楚的四季／多季節情境');}
   else if(seasons.length===1&&!hasAny(image,seasons[0][1]))errors.push(`文案指定「${seasons[0][0]}」，但圖片資訊沒有對應季節`);
 
-  if(hasAny([row?.title,row?.headline,row?.category].join(' '),['保存方式','保存提醒','保存'])&&!hasAny(image,['storage','保存','冷藏','密封','冰箱','收納']))errors.push('本篇主題是保存方式，但圖片資訊沒有對應保存／冷藏／密封情境');
-  if(hasAny([row?.title,row?.headline,row?.category].join(' '),['料理搭配','日常料理','燉湯'])&&!hasAny(image,['recipe','recipes','soup','料理','燉湯','雞湯','排骨湯','廚房']))errors.push('本篇主題是料理／燉湯，但圖片資訊沒有對應料理場景');
-  if(hasAny([row?.title,row?.headline].join(' '),['溫熱飲用','想喝溫一點','溫熱後飲用'])&&!hasAny(image,['warm','溫熱','熱水','guide-how-to-use','combo']))errors.push('文案主題是溫熱飲用，但圖片資訊沒有對應溫熱／熱水情境');
-  if(clean(row?.category)==='生活情境'&&hasAny([row?.title,row?.headline,row?.copy].join(' '),['外出','工作空檔'])&&!hasAny(image,['outside','outdoor','work','外出','工作','通勤','隨身']))errors.push('本篇強調外出／工作空檔，但圖片資訊沒有對應外出或工作場景');
+  if(isStorageTopic(row)&&!hasAny(image,['storage','保存','冷藏','密封','冰箱','收納']))errors.push('本篇主題是保存方式，但圖片資訊沒有對應保存／冷藏／密封情境');
+  if(hasAny([row?.title,row?.category].join(' '),['料理搭配','日常料理','燉湯','家庭料理'])&&!hasAny(image,['recipe','recipes','soup','料理','燉湯','雞湯','排骨湯','廚房','cooking']))errors.push('本篇主題是料理／燉湯，但圖片資訊沒有對應料理場景');
+  if(isWarmTopic(row)&&!hasAny(image,['warm','溫熱','熱水','guide-how-to-use','combo','drink']))errors.push('文案主題是溫熱飲用，但圖片資訊沒有對應溫熱／熱水情境');
+  if(clean(row?.category)==='生活情境'&&hasAny([row?.title,row?.headline,row?.copy].join(' '),['外出','工作空檔'])&&!hasAny(image,['outside','outdoor','work','外出','工作','通勤','隨身','home']))errors.push('本篇強調外出／工作空檔，但圖片資訊沒有對應外出、工作或居家工作場景');
 
   return uniq(errors);
 }
@@ -105,11 +111,11 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true},response.status)}catch{return response}
+      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true},response.status)}catch{return response}
     }
     return response;
   },
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}
 };
 
-export {VERSION,normalizedImageUrl,isFixedReusableImage,semanticErrors,auditOne};
+export {VERSION,normalizedImageUrl,isFixedReusableImage,semanticErrors,auditOne,isHotWeatherTopic,isRainTopic,isTemperatureTopic,isStorageTopic,isWarmTopic};
