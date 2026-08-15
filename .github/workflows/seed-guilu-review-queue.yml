@@ -64,11 +64,12 @@ jobs:
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
           const topics=(bank.topics||[]).filter(Boolean);
-          const review=topics.filter(x=>x.seedToReview===true).length;
-          const draft=topics.filter(x=>x.seedToReview!==true&&x.imageMode==='context_required').length;
+          const activeTopics=topics.filter(x=>x.queueEnabled!==false);
+          const review=activeTopics.filter(x=>x.seedToReview===true).length;
+          const draft=activeTopics.filter(x=>x.seedToReview!==true&&x.imageMode==='context_required').length;
           const batchFiles=fs.readdirSync('assets/data').filter(x=>/^social-batch-\d{8}-\d{2}\.json$/.test(x));
           const social=batchFiles.reduce((sum,file)=>sum+((JSON.parse(fs.readFileSync(`assets/data/${file}`,'utf8')).posts||[]).length),0);
-          process.stdout.write(`${review} ${draft} ${topics.length} ${social}`);
+          process.stdout.write(`${review} ${draft} ${activeTopics.length} ${social}`);
           NODE
           )
           EOF
@@ -87,7 +88,7 @@ jobs:
             echo 'ERROR: social_posts seed must surface CHECK/FK errors.' >&2
             exit 1
           fi
-          echo "PASS: guilu ${expected_total} topics + social ${expected_social} posts are safe and idempotent."
+          echo "PASS: guilu ${expected_total} active topics + social ${expected_social} posts are safe, deduplicated, and idempotent."
 
       - name: Verify remote D1 schema and creator
         shell: bash
@@ -125,5 +126,5 @@ jobs:
         if: always()
         run: |
           echo '社群批次現在會在 push 到 main 後自動同步到 Cloudflare D1 貼文中心待審核。'
-          echo '只有文案與正式圖片完整的 social-batch 才能通過 builder。'
+          echo '只有文案與正式圖片完整、未重複且顧客文案不含內部作業字樣的 social-batch 才能通過 builder。'
           echo '已核准、已排程、已發布內容不覆寫；CHECK／FK 錯誤直接失敗。'
