@@ -1,6 +1,6 @@
 {
-  "version": "2026-08-15-social-image-audit-v3-smallboss-runtime",
-  "purpose": "社群貼文以目前正式小老闆媒體綁定覆蓋舊產品單圖與顯示不完整SVG；保留既有試喝、FAQ、品牌故事與已核准生活情境規則。",
+  "version": "2026-08-15-social-image-audit-v4-one-shot",
+  "purpose": "社群貼文使用完整單一情境小老闆圖或正式產品小老闆情境圖；舊拼湊式 smallboss-v20260815 圖全面停用。",
   "policy": {
     "generic_image_must_be_unique_per_topic": true,
     "fixed_trial_media_may_repeat": true,
@@ -9,7 +9,10 @@
     "product_body_never_ai_redrawn": true,
     "missing_match_returns_to_draft": true,
     "current_media_overrides_legacy_batch_binding": true,
-    "owner_review_required_after_rebinding": true
+    "owner_review_required_after_rebinding": true,
+    "one_shot_scene_only": true,
+    "no_collage": true,
+    "blocked_display_name": "台興山產"
   },
   "overrides": {
     "brand-rhythm": {
@@ -35,38 +38,38 @@
     },
     "daily-cooking": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-daily-cooking.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜料理，也是一種日常搭配。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
+      "imageAlt": "仙加味｜料理，也是一種日常搭配。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "six-products-overview": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-six-products-overview.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜六項產品，一次認識。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
+      "imageAlt": "仙加味｜六項產品，一次認識。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "product-guilu-gao": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-product-guilu-gao.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿膏｜100g／罐",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味｜龜鹿膏｜100g／罐｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "product-drink-30": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-product-drink-30.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿飲30cc玻璃罐｜小玻璃裸罐",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜龜鹿飲30cc玻璃罐｜小玻璃裸罐｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "product-drink-180": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-product-drink-180.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿飲180cc鋁袋｜完整份量即飲",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜龜鹿飲180cc鋁袋｜完整份量即飲｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "product-guilu-tangkuai": {
       "action": "replace",
@@ -84,10 +87,10 @@
     },
     "product-guilu-jiao": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-01-product-guilu-jiao.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿膠｜600g （1斤）／盒｜32塊裝",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp",
+      "imageAlt": "仙加味｜龜鹿膠｜600g （1斤）／盒｜32塊裝｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "product-luerong-fen": {
       "action": "replace",
@@ -119,59 +122,59 @@
     },
     "drink-30-vs-180": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-30-vs-180.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜30cc小玻璃罐與180cc鋁袋，差別先看哪裡？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜30cc小玻璃罐與180cc鋁袋，差別先看哪裡？｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "tangkuai-vs-jiao": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-tangkuai-vs-jiao.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿湯塊與龜鹿膠，從規格開始分清楚。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageAlt": "仙加味｜龜鹿湯塊與龜鹿膠，從規格開始分清楚。｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "drink-30-outside": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-30-outside.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜30cc小玻璃罐，適合放進外出的日常。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜30cc小玻璃罐，適合放進外出的日常。｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "drink-180-home": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-180-home.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜180cc鋁袋，把完整份量留給居家與工作空檔。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
+      "imageAlt": "仙加味｜180cc鋁袋，把完整份量留給居家與工作空檔。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "tangkuai-thermos-soup": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-tangkuai-thermos-soup.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿湯塊，可以怎麼放進日常？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
+      "imageAlt": "仙加味｜龜鹿湯塊，可以怎麼放進日常？｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "jiao-family-cooking": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-jiao-family-cooking.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿膠，一斤大盒怎麼理解？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family-2.webp",
+      "imageAlt": "仙加味｜龜鹿膠，一斤大盒怎麼理解？｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "luerong-daily-drink": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-luerong-daily-drink.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜鹿茸粉，保留自己調整份量的彈性。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-luerong-fen-75g.webp",
+      "imageAlt": "仙加味｜鹿茸粉，保留自己調整份量的彈性。｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "drink-made-to-order": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-made-to-order.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿飲為什麼需要5～7個工作天？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味｜龜鹿飲為什麼需要5～7個工作天？｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "faq-flexible-time": {
       "action": "replace",
@@ -196,45 +199,45 @@
     },
     "craft-time-and-heat": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-craft-time-and-heat.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜傳統熬製，為什麼總是在談時間與火候？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味｜傳統熬製，為什麼總是在談時間與火候？｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "why-exact-specs": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-why-exact-specs.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜為什麼規格要寫得這麼清楚？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味｜為什麼規格要寫得這麼清楚？｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "thirty-cc-package-detail": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-thirty-cc-package-detail.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜30cc小玻璃罐，輕巧的即飲選擇。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜30cc小玻璃罐，輕巧的即飲選擇。｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "gao-half-spoon-start": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-gao-half-spoon-start.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜龜鹿膏第一次怎麼安排？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味｜龜鹿膏第一次怎麼安排？｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "warm-not-iced": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-warm-not-iced.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜想喝溫一點，可以怎麼安排？",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
+      "imageAlt": "仙加味｜想喝溫一點，可以怎麼安排？｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "storage-basics": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-storage-basics.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜產品買回家，保存方式先看清楚。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
+      "imageAlt": "仙加味｜產品買回家，保存方式先看清楚。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "trial-first-then-decide": {
       "action": "replace",
@@ -245,24 +248,24 @@
     },
     "ingredient-info-clear": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-ingredient-info-clear.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜看產品，不只看名稱，也要看成分與型態。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味｜看產品，不只看名稱，也要看成分與型態。｜正式產品與小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "wanhua-visit-brand": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-wanhua-visit-brand.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜從萬華開始，也歡迎從萬華認識我們。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageAlt": "仙加味｜從萬華開始，也歡迎從萬華認識我們。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     },
     "ask-line-before-order": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/smallboss-v20260815/xjw-social-20260815-03-ask-line-before-order.jpg",
-      "imageAlt": "仙加味小老闆情境圖｜下單前，有問題先問就好。",
-      "imageSource": "2026-08-15小老闆正式貼文重製｜正式產品原圖與核准情境素材｜繁體中文",
-      "reason": "依目前正式文案重製為仙加味小老闆貼文圖，取代產品單圖、空白SVG或圖文不符版本。"
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/contact-line.webp",
+      "imageAlt": "仙加味｜下單前，有問題先問就好。｜完整單一小老闆情境",
+      "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核",
+      "reason": "依目前正式文案改綁仙加味完整單一情境／正式產品小老闆情境圖；禁止拼湊。"
     }
   }
 }
