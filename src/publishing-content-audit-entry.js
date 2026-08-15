@@ -1,7 +1,7 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-15-content-image-audit-v3-render-integrity';
+const VERSION='2026-08-15-content-image-audit-v4-svg-render-integrity';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -18,7 +18,7 @@ function isFixedReusableImage(url=''){
 }
 function isVisuallyIncompleteSvg(url=''){
   const value=normalizedImageUrl(url);
-  return /\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(value);
+  return /(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(value);
 }
 function isOverviewImage(row){return hasAny(imageText(row),['products-all','all-products','產品總覽','六項正式產品','六產品','全系列比較','全品項'])}
 function isOverviewCopy(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['產品總覽','系列介紹','六項產品','全系列介紹','一次認識'])}
@@ -44,7 +44,7 @@ function semanticErrors(row,liveRows=[]){
   if(repeatedBrandInsideField(row))errors.push('顧客可見單一欄位出現重複品牌字樣「仙加味仙加味」');
 
   if(isVisuallyIncompleteSvg(imageUrl)){
-    errors.push('目前圖片是2026-08-15 SVG資訊卡候選；實際貼文中心會出現空白產品框、加號、只有文字或缺少完整情境，不能進待審核／核准／排程／發布，需改用完整情境圖或正式產品圖');
+    errors.push('目前圖片屬於已確認在貼文中心實際顯示不完整的SVG合成圖；可能出現空白產品框、加號、只有文字或情境不足，不能進待審核／核准／排程／發布，需改用完整情境圖或正式產品圖');
   }
 
   if(imageUrl&&status!=='published'&&!isFixedReusableImage(imageUrl)){
@@ -119,7 +119,7 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafeCurrentSvgBlocked:true},response.status)}catch{return response}
+      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true},response.status)}catch{return response}
     }
     return response;
   },
