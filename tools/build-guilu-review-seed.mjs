@@ -10,7 +10,7 @@ const BLOCKED = [
   '保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'
 ];
 const SITE = 'https://ts15825868.github.io/xianjiawei';
-const MEDIA_VERSION = '20260815-context-media-v2-render-integrity';
+const MEDIA_VERSION = '20260815-context-media-v3-svg-render-integrity';
 const CURRENT_PRODUCT_MEDIA = Object.freeze({
   'guilu-gao': `${SITE}/images/customer-display-v20260812/guilu-gao.avif?v=${MEDIA_VERSION}`,
   'guilu-drink-30': `${SITE}/images/customer-display-v20260812/guilu-drink-30cc.avif?v=${MEDIA_VERSION}`,
@@ -35,21 +35,21 @@ const fixedReusable = value => {
   const url=normalizeImage(value);
   return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url);
 };
-const visuallyIncompleteSvg = value => /\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(normalizeImage(value));
-const VISUAL_HOLD_REASON='2026-08-15 SVG資訊卡在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新生成完整情境圖或改用正式產品圖';
+const visuallyIncompleteSvg = value => /(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(normalizeImage(value));
+const VISUAL_HOLD_REASON='SVG合成圖在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新製作完整情境圖或改用正式產品圖';
 const resolveMedia = topic => {
   const override=contextOverrides?.[String(topic?.id||'')];
   if(override?.action==='replace'){
     const url=String(override.imageUrl||'').trim();
-    return url?{url,source:String(override.imageSource||'2026-08-15龜鹿專屬情境圖'),alt:String(override.imageAlt||topic?.imageAlt||topic?.title||'')}:null;
+    return url?{url,source:String(override.imageSource||'龜鹿專屬情境圖'),alt:String(override.imageAlt||topic?.imageAlt||topic?.title||'')}:null;
   }
-  if (topic?.imageMode === 'official_trial') return { url: CURRENT_TRIAL_MEDIA, source: '仙加味8/14目前正式試喝主圖', alt:String(topic?.imageAlt||topic?.title||'') };
+  if (topic?.imageMode === 'official_trial') return { url: CURRENT_TRIAL_MEDIA, source: '仙加味目前正式試喝主圖', alt:String(topic?.imageAlt||topic?.title||'') };
   if (topic?.imageMode === 'official_product') {
     const productIds = Array.isArray(topic?.productIds) ? topic.productIds.filter(Boolean) : [];
     if (productIds.length !== 1) throw new Error(`題目 ${topic?.id || 'unknown'} 的正式產品圖必須只對應一項產品`);
     const url = CURRENT_PRODUCT_MEDIA[productIds[0]];
     if (!url) throw new Error(`題目 ${topic?.id || 'unknown'} 找不到目前正式產品圖：${productIds[0]}`);
-    return { url, source: `仙加味8/15目前正式產品圖:${productIds[0]}`, alt:String(topic?.imageAlt||topic?.title||'') };
+    return { url, source: `仙加味目前正式產品圖:${productIds[0]}`, alt:String(topic?.imageAlt||topic?.title||'') };
   }
   const fallback = String(topic?.imageUrl || '').trim();
   return fallback ? { url: fallback, source: topic?.imageSource || '仙加味正式素材', alt:String(topic?.imageAlt||topic?.title||'') } : null;
@@ -67,7 +67,7 @@ for (const topic of rows) {
   const lower=text.toLowerCase();
   const hit = [...BLOCKED,...CUSTOMER_INTERNAL].find(term => lower.includes(term.toLowerCase()));
   if (hit) throw new Error(`題目 ${id} 含禁止公開字詞：${hit}`);
-  if(/仙加味\s*仙加味/.test([topic.title,topic.headline,topic.copy,media?.alt||topic.imageAlt].filter(Boolean).some(value=>/仙加味\s*仙加味/.test(String(value)))?'仙加味仙加味':''))throw new Error(`題目 ${id} 顧客文字含重複品牌字樣「仙加味仙加味」`);
+  if ([topic.title,topic.headline,topic.copy,media?.alt||topic.imageAlt].filter(Boolean).some(value=>/仙加味\s*仙加味/.test(String(value)))) throw new Error(`題目 ${id} 顧客文字含重複品牌字樣「仙加味仙加味」`);
   if (!media?.url?.startsWith(REQUIRED_IMAGE_PREFIX)) throw new Error(`題目 ${id} 沒有目前正式網站圖片來源`);
   if (/\/images\/products-v3\//.test(media.url)) throw new Error(`題目 ${id} 不得把 products-v3 身份參考直接當目前一般貼文主圖`);
   if (/trial-small-boss\.webp|\/trial\.webp|trial-clean-v4\.svg/.test(media.url)) throw new Error(`題目 ${id} 使用退役試喝圖`);
@@ -105,9 +105,9 @@ for (const topic of rows) {
   const held=visuallyIncompleteSvg(media.url);
   const status=held?'draft':'pending_review';
   if(held)draftCount++;else pendingCount++;
-  const visibleAlt=held?`${topic.title}｜目前候選圖顯示不完整，需重新生成完整情境圖`:(media.alt || topic.imageAlt || topic.title);
+  const visibleAlt=held?String(topic.title||'').trim():(media.alt || topic.imageAlt || topic.title);
   const imageSource = held
-    ? `圖文完整檢查：${VISUAL_HOLD_REASON}|原候選:${media.url}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`
+    ? `圖文完整檢查：${VISUAL_HOLD_REASON}|原圖:${media.url}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`
     : `${media.source}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`;
   statements.push(`INSERT INTO social_posts(
     id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,
