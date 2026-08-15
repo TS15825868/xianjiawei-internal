@@ -81,6 +81,13 @@ function chooseAuthority(id, item) {
   if (id === 'POST-LUERONG') return approved.luerong;
   if (id === 'POST-SEASONS-RHYTHM') return uniqueScene(id, [approved.temperature]);
 
+  // Final three social rows get a dedicated, non-shared formal image before generic matching.
+  // Cooking uses the actual recipe scene; craft uses the heat/cooking combo scene;
+  // Wanhua uses the formal brand-story scene. All three are reserved in the social image pool.
+  if (id === 'XJW-SOCIAL-20260815-01-daily-cooking') return uniqueScene(id, [approved.recipes]);
+  if (id === 'XJW-SOCIAL-20260815-03-craft-time-and-heat') return uniqueScene(id, [approved.combo]);
+  if (id === 'XJW-SOCIAL-20260815-03-wanhua-visit-brand') return uniqueScene(id, [approved.brand]);
+
   // Product-specific copy always keeps the real approved product appearance.
   // These are fixed product authority images and may repeat within the same product family.
   if (/drink180|drink-180|product-drink-180|180cc/.test(text)) return approved.drink180;
@@ -95,12 +102,12 @@ function chooseAuthority(id, item) {
   if (/rain|雨天|下雨/.test(text)) return uniqueScene(id, [approved.rainy, approved.rainyHome]);
   if (/temperature|溫差|換季|季節|seasons/.test(text)) return uniqueScene(id, [approved.temperature, approved.temperature2, approved.hot, approved.hot2]);
   if (/warm|hot-water|溫熱|熱水|沖泡/.test(text)) return uniqueScene(id, [approved.warm, approved.warmWater, approved.use]);
+  if (/cooking|料理|燉|雞湯|排骨湯|soup|recipe/.test(text)) return uniqueScene(id, [approved.recipes, approved.combo]);
   if (/work-break|工作空檔|居家日常|home|family|家庭使用|routine|日常節奏|日常/.test(text)) return uniqueScene(id, [approved.family, approved.family2, approved.routine, approved.home]);
   if (/choose|怎麼選|哪三件事|first-three/.test(text)) return uniqueScene(id, [approved.routine, approved.choose]);
-  if (/cooking|料理|燉|雞湯|排骨湯|soup|recipe/.test(text)) return uniqueScene(id, [approved.recipes]);
   if (/consult|諮詢|line|聯絡/.test(text)) return uniqueScene(id, [approved.contact]);
   if (/萬華|wanhua|四代|品牌故事|傳承/.test(text)) return uniqueScene(id, [approved.brand, approved.home]);
-  if (/made-order|5～7|工作天|熬製|火候|craft|傳統|modern-tradition/.test(text)) return uniqueScene(id, [approved.home, approved.brand]);
+  if (/made-order|5～7|工作天|熬製|火候|craft|傳統|modern-tradition/.test(text)) return uniqueScene(id, [approved.combo, approved.home, approved.brand]);
   if (/forms|比較|總覽|規格|型態|成分|一次認識/.test(text)) return uniqueScene(id, [approved.all, approved.choose]);
 
   return uniqueScene(id, [approved.home]);
@@ -121,7 +128,7 @@ function altFor(id, item, url) {
 const entries = Object.entries(media.overrides || {});
 if (entries.length !== 59) throw new Error(`expected 59 media bindings, got ${entries.length}`);
 
-media.version = '2026-08-15-one-shot-non-collage-v2';
+media.version = '2026-08-15-one-shot-non-collage-v3';
 media.brandDisplay = '仙加味';
 media.policy = {
   oneShotSceneOnly: true,
@@ -142,7 +149,7 @@ for (const [id, item] of entries) {
   item.imageSource = '2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核';
 }
 
-guilu.version = '2026-08-15-guilu-context-media-v5-one-shot';
+guilu.version = '2026-08-15-guilu-context-media-v6-one-shot';
 guilu.purpose = '龜鹿母庫改用完整單一情境小老闆圖或正式產品小老闆情境圖；禁止拼湊，產品文章保留正式產品外觀，泛用生活圖不得重複套不同主題。';
 guilu.policy = {
   ...(guilu.policy || {}),
@@ -166,8 +173,8 @@ for (const [id, item] of Object.entries(media.overrides)) {
   };
 }
 
-social.version = '2026-08-15-social-image-audit-v5-one-shot';
-social.purpose = '社群貼文改用完整單一情境小老闆圖或正式產品小老闆情境圖；產品文章維持正式產品外觀，泛用情境圖不跨不同貼文重複；舊拼湊圖停用。';
+social.version = '2026-08-15-social-image-audit-v6-one-shot';
+social.purpose = '社群貼文改用完整單一情境小老闆圖或正式產品小老闆情境圖；產品文章維持正式產品外觀，泛用情境圖不跨不同貼文重複；料理、工序、萬華品牌三篇改用各自專屬正式圖；舊拼湊圖停用。';
 social.policy = {
   ...(social.policy || {}),
   one_shot_scene_only: true,
@@ -208,4 +215,5 @@ fs.writeFileSync(socialPath, JSON.stringify(social, null, 2) + '\n', 'utf8');
 
 console.log(`PASS: rebound ${entries.length} bindings to approved non-collage media.`);
 console.log(`PASS: unique generic scenes used — guilu=${genericUsed.get('guilu')?.size||0}, social=${genericUsed.get('social')?.size||0}, legacy=${genericUsed.get('legacy')?.size||0}.`);
+console.log('PASS: final three social drafts now reserve recipes/combo/brand-story respectively.');
 console.log('PASS: product-specific copy keeps approved product authority media; retired collage path count = 0.');
