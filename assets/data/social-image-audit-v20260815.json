@@ -1,0 +1,73 @@
+{
+  "version": "2026-08-15-social-image-audit-v1",
+  "purpose": "把社群批次中重複泛用圖或明顯圖文情境不符的項目移出待審核；有已核准且真正符合文案的既有情境圖就直接替換，沒有就清除舊圖並回草稿等待專屬圖片。",
+  "policy": {
+    "generic_image_must_be_unique_per_topic": true,
+    "fixed_trial_media_may_repeat": true,
+    "same_product_authority_media_may_repeat": true,
+    "season_weather_scene_temperature_expression_action_must_match_copy": true,
+    "product_body_never_ai_redrawn": true,
+    "missing_match_returns_to_draft": true
+  },
+  "overrides": {
+    "warm-not-iced": {
+      "action": "replace",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
+      "imageAlt": "仙加味溫熱飲用與熱水日常情境",
+      "imageSource": "2026-08-11使用者核准貼文圖：warm-water.webp",
+      "reason": "原guide-how-to-use與另一篇使用方式貼文重複；改用已同步且語意符合溫熱／熱水的正式情境圖。"
+    },
+    "storage-basics": {
+      "action": "replace",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
+      "imageAlt": "仙加味產品開封、冷藏、密封與保存提醒情境",
+      "imageSource": "2026-08-11使用者核准貼文圖：storage.webp",
+      "reason": "原FAQ圖片與保存文案不夠直接且與FAQ貼文重複；改用正式保存情境圖。"
+    },
+    "drink-30-vs-180": {
+      "action": "regenerate",
+      "reason": "不能再用六項產品總覽圖代替30cc與180cc比較圖。",
+      "prompt": "製作30cc小玻璃裸罐與180cc狹長鋁袋的清楚比較情境；產品本體只可合成正式原圖，30cc維持小罐比例、裸罐無貼紙，180cc維持狹長鋁袋比例；不得AI重畫產品。"
+    },
+    "tangkuai-vs-jiao": {
+      "action": "regenerate",
+      "reason": "不能再用六項產品總覽圖代替龜鹿湯塊與龜鹿膠比較圖。",
+      "prompt": "製作龜鹿湯塊75g／8塊與龜鹿膠600g／32塊的雙產品比較情境；產品盒裝只可使用正式原圖，不能自行猜測盒體實際毫米尺寸或強制等高。"
+    },
+    "craft-time-and-heat": {
+      "action": "regenerate",
+      "reason": "傳統熬製工序不能沿用品牌故事人物圖。",
+      "prompt": "傳統熬製工作場景，呈現前處理、火候、時間與濃縮節奏；小老闆動作要與查看火候／工序相符，小鹿與小烏龜分開；不放錯誤產品包裝。"
+    },
+    "why-exact-specs": {
+      "action": "regenerate",
+      "reason": "規格教育不能反覆沿用六項產品總覽圖。",
+      "prompt": "小老闆指向乾淨規格看板的教育情境，清楚區分30cc小玻璃罐、180cc鋁袋、75g湯塊與600g龜鹿膠；若出現產品只能合成正式原圖，不重畫、不改比例。"
+    },
+    "ingredient-info-clear": {
+      "action": "regenerate",
+      "reason": "成分與型態資訊主題不能再使用同一張六項產品總覽圖。",
+      "prompt": "乾淨桌面與資訊整理情境，小老闆整理產品名稱、規格、成分、保存與使用方式分類；產品本體不是必要元素，避免使用六項產品總覽舊圖。"
+    },
+    "wanhua-visit-brand": {
+      "action": "regenerate",
+      "reason": "萬華在地品牌主題需有自己的萬華場景，不能與四代品牌故事重複同圖。",
+      "prompt": "萬華在地街區與品牌故事情境，仙加味小老闆、小鹿、小烏龜完整入鏡且彼此分開；風格高級乾淨、現代漢方，不使用醫療場景。"
+    },
+    "ask-line-before-order": {
+      "action": "regenerate",
+      "reason": "客服諮詢圖與龜鹿飲交期貼文重複使用contact-line圖。",
+      "prompt": "小老闆拿手機或指向LINE諮詢看板，表情親切，呈現下單前詢問規格、使用方式、試喝與交期；不需要放產品本體。"
+    },
+    "drink-30-outside": {
+      "action": "regenerate",
+      "reason": "文案強調外出與工作空檔，不能只重複產品介紹主圖。",
+      "prompt": "外出／工作空檔生活情境，30cc小玻璃裸罐以正式原圖等比例合成，小老闆自然攜帶或取用；瓶身不得變大、不得加貼紙、不得改罐型。"
+    },
+    "drink-180-home": {
+      "action": "regenerate",
+      "reason": "文案強調居家與工作空檔，不能只重複180cc產品介紹主圖。",
+      "prompt": "居家或工作空檔日常情境，180cc狹長鋁袋以正式原圖等比例合成；不得拉寬、放大成巨大鋁包或重畫包裝。"
+    }
+  }
+}
