@@ -20,8 +20,8 @@ const sqlString=value=>`'${String(value??'').replaceAll("'","''")}'`;
 const jsonString=value=>sqlString(JSON.stringify(value??[]));
 const normalizeImage=value=>String(value||'').trim().split('#')[0].split('?')[0].toLowerCase();
 const fixedReusable=value=>{const url=normalizeImage(value);return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url)};
-const visuallyIncompleteSvg=value=>/\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(normalizeImage(value));
-const VISUAL_HOLD_REASON='2026-08-15 SVG資訊卡在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新生成完整情境圖或改用正式產品圖';
+const visuallyIncompleteSvg=value=>/(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(normalizeImage(value));
+const VISUAL_HOLD_REASON='SVG合成圖在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新製作完整情境圖或改用正式產品圖';
 const genericMismatch=(post,imageUrl)=>{
   const image=String(imageUrl||'').toLowerCase(),topic=[post.title,post.headline,post.category].join(' ').toLowerCase();
   if(/products-all|all-products/.test(image)&&!/產品總覽|六項產品|一次認識|系列介紹/.test(topic))return'全系列／產品總覽圖只保留給真正的產品總覽主題';
@@ -56,7 +56,7 @@ for(const file of files){
     if(override?.action==='replace'){
       imageUrl=String(override.imageUrl||'').trim();imageAlt=String(override.imageAlt||imageAlt).trim();imageSource=String(override.imageSource||imageSource).trim();reviewReason=String(override.reason||'').trim();
     }else if(override?.action==='regenerate'){
-      imageUrl='';imageAlt=`${post.title}｜需依文案建立專屬情境圖`;imageSource=`圖文完整檢查：${String(override.reason||'需重新生成符合文案圖片').trim()}`;status='draft';reviewReason=String(override.reason||'').trim();
+      imageUrl='';imageAlt=String(post.title||'').trim();imageSource=`圖文完整檢查：${String(override.reason||'需重新製作符合文案圖片').trim()}`;status='draft';reviewReason=String(override.reason||'').trim();
     }
     if(imageUrl){
       if(!imageUrl.startsWith(REQUIRED_IMAGE_PREFIX))throw new Error(`${file}/${slug} 圖片必須來自仙加味正式官網 images 路徑`);
@@ -65,10 +65,10 @@ for(const file of files){
       if(visuallyIncompleteSvg(imageUrl)){
         status='draft';
         reviewReason=VISUAL_HOLD_REASON;
-        imageAlt=`${post.title}｜目前候選圖顯示不完整，需重新生成完整情境圖`;
-        imageSource=`圖文完整檢查：${VISUAL_HOLD_REASON}|原候選:${imageUrl}`;
+        imageAlt=String(post.title||'').trim();
+        imageSource=`圖文完整檢查：${VISUAL_HOLD_REASON}|原圖:${imageUrl}`;
       }else{
-        const mismatch=genericMismatch(post,imageUrl);if(mismatch){status='draft';reviewReason=mismatch;imageUrl='';imageAlt=`${post.title}｜需依文案建立專屬情境圖`;imageSource=`圖文完整檢查：${mismatch}`;}
+        const mismatch=genericMismatch(post,imageUrl);if(mismatch){status='draft';reviewReason=mismatch;imageUrl='';imageAlt=String(post.title||'').trim();imageSource=`圖文完整檢查：${mismatch}`;}
       }
     }
     if(!String(post.copy||'').trim())throw new Error(`${file}/${slug} 缺少文案`);
@@ -81,7 +81,7 @@ for(const row of rows){if(!row.imageUrl||row.status==='draft'||fixedReusable(row
 for(const group of imageGroups.values()){
   if(group.length<2)continue;
   for(const row of group.slice(1)){
-    row.status='draft';row.reviewReason=`泛用情境圖與「${group[0].post.title}」重複使用，需改成本篇專屬圖片`;row.imageUrl='';row.imageAlt=`${row.post.title}｜需依文案建立專屬情境圖`;row.imageSource=`圖文完整檢查：${row.reviewReason}`;
+    row.status='draft';row.reviewReason=`泛用情境圖與「${group[0].post.title}」重複使用，需改成本篇專屬圖片`;row.imageUrl='';row.imageAlt=String(row.post.title||'').trim();row.imageSource=`圖文完整檢查：${row.reviewReason}`;
   }
 }
 
