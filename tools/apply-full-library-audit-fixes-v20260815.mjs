@@ -69,12 +69,4 @@ replaceExact('tools/build-social-batches-review-seed.mjs',
   "if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用/.test(topic))return'使用方式圖不可代替其他日常主題';",
   "if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用|熬製|火候|工序|傳統工藝/.test(topic))return'使用方式／工序圖不可代替其他日常主題';");
 
-// Production deploy must run for UI/CSS changes too.
-replaceExact('.github/workflows/deploy-cloudflare-publishing.yml',
-  "    paths:\n      - 'src/publishing-content-audit-entry.js'",
-  "    paths:\n      - 'publishing.html'\n      - 'assets/css/publishing-base.css'\n      - 'assets/css/publishing-app.css'\n      - 'assets/js/publishing-readiness-ui.js'\n      - 'assets/js/publishing-content-guidance-v20260814.js'\n      - 'src/publishing-content-audit-entry.js'");
-replaceExact('.github/workflows/deploy-cloudflare-publishing.yml',
-  "          grep -q '貼文中心系統 App' dist/publishing.html",
-  "          grep -q '貼文中心系統 App' dist/publishing.html\n          ! grep -q 'body:before' dist/publishing.html\n          grep -q 'fullLibraryAudit:true' src/publishing-content-audit-entry.js\n          grep -q 'strictUniqueImagePerPost:true' src/publishing-content-audit-entry.js");
-
-console.log('PASS: full-library UI/audit/strict-unique patches applied.');
+console.log('PASS: full-library UI/audit/strict-unique source patches applied.');
