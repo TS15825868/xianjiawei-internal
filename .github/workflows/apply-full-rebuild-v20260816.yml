@@ -35,7 +35,7 @@ jobs:
           if(Number(m.count)!==77)throw new Error(`website visual count ${m.count}`);
           console.log('PASS website has 77 rebuilt visuals');
           NODE
-          for id in POST-WORK-PAUSE XJW-GUILU-drink30-small-jar XJW-SOCIAL-20260815-03-craft-time-and-heat; do
+          for id in XJW-WORK-REST-001 XJW-GUILU-drink30-small-jar XJW-SOCIAL-20260815-03-craft-time-and-heat; do
             curl -fsSL --retry 5 --retry-delay 3 "https://ts15825868.github.io/xianjiawei/images/posts/rebuild-v20260816/${id}.webp" -o "/tmp/${id}.webp"
             test -s "/tmp/${id}.webp"
           done
