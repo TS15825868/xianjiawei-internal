@@ -1,6 +1,6 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "c5adbe9eb80a1c8bd4decf7932b711a2497135c1",
+  "source_commit": "42fc6f93ee78ddad7bddf78258309a93f824f289",
   "runtime": "cloudflare-worker-publishing-center-app",
   "entry": "src/publishing-content-audit-entry.js",
   "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
@@ -9,12 +9,12 @@
   "redirect_loop_prevention": true,
   "access_jwt_verification": "configured_and_api_cross_checked",
   "health": "healthz/core + healthz/readiness + direct publishing aliases",
-  "content_image_audit": "duplicate image + season + weather + context semantic hard gate",
+  "content_image_audit": "full-library copy uniqueness + strict unique image per post + season + weather + context semantic hard gate",
   "live_verify_mode": "cloudflare_access_boundary_verified_no_redirect_storm",
   "remote_d1": "verified",
   "erp_ui": "disabled",
   "erp_api": "blocked_except_publishing",
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-15T11:02:45Z"
+  "verified_at_utc": "2026-08-15T16:18:02Z"
 }
