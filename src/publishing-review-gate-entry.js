@@ -1,6 +1,6 @@
 import app from './flexible-publish-entry.js';
 
-const VERSION='2026-08-15-publishing-review-gate-v6-semantic-dedupe-weather';
+const VERSION='2026-08-15-publishing-review-gate-v7-full-library-strict-unique';
 const REQUIRED_CHECKS=Object.freeze([
   'brand','product','specification','pricing_activity','season','weather','occasion','location',
   'scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'
@@ -49,17 +49,17 @@ function mentionedProducts(row){const text=[row?.title,row?.headline,row?.copy,r
 function visualProducts(row){const image=[row?.image_url,row?.image_alt,row?.image_source].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.image.some(term=>image.includes(term.toLowerCase())))}
 function semanticSceneErrors(row){if(officialProductMedia(row))return[];const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();const image=[row?.image_alt,row?.image_source,row?.image_url].filter(Boolean).join(' ').toLowerCase();const errors=[];for(const group of SCENE_GROUPS){if(!group.copy.some(term=>text.includes(term.toLowerCase())))continue;if(!group.image.some(term=>image.includes(term.toLowerCase())))errors.push(`文案屬「${group.id}」情境，但圖片說明／來源沒有對應情境線索`)}return errors}
 function isWeatherPost(row){const text=[row?.title,row?.headline,row?.copy,row?.category,row?.image_alt].filter(Boolean).join(' ');return /(天氣|悶熱|炎熱|下雨|雨天|溫差|換季|寒冷|轉涼|颱風|豪雨)/.test(text)}
-async function duplicatePostErrors(env,row){
+async function duplicatePostErrors(env,row,liveRows=null){
   const title=publicNorm(row?.title),copy=publicNorm(row?.copy),image=imageNorm(row?.image_url);
-  const result=await env.DB.prepare("SELECT id,title,copy,status,image_url,image_source FROM social_posts WHERE id<>? AND status<>'archived'").bind(row.id).all();
+  let others=Array.isArray(liveRows)?liveRows.filter(other=>other.id!==row.id):null;
+  if(!others){const result=await env.DB.prepare("SELECT id,title,copy,status,image_url,image_source FROM social_posts WHERE id<>? AND status<>'archived'").bind(row.id).all();others=result.results||[];}
   const errors=[];
-  for(const other of result.results||[]){
+  for(const other of others){
     const otherTitle=publicNorm(other.title),otherCopy=publicNorm(other.copy);
     if(title&&title===otherTitle)errors.push(`貼文標題與「${other.title}」重複`);
     else if(copy.length>=40&&otherCopy.length>=40&&diceSimilarity(copy,otherCopy)>=0.90)errors.push(`貼文內容與「${other.title}」過度相似`);
     const otherImage=imageNorm(other.image_url);
-    const bothNonProduct=!officialProductMedia(row)&&!officialProductMedia(other);
-    if(image&&otherImage&&image===otherImage&&bothNonProduct)errors.push(`生活／情境主圖與「${other.title}」重複，請改用符合該篇文案的不同圖片`);
+    if(image&&otherImage&&image===otherImage)errors.push(`主圖與「${other.title}」重複；每篇貼文需使用符合各自文案的不同圖片`);
   }
   return[...new Set(errors)]
 }
@@ -72,7 +72,7 @@ function productMatchErrors(row){
     for(const rule of visual){if(mentioned.length&&!mentioned.some(m=>m.id===rule.id))errors.push(`圖片呈現「${rule.name}」，但文案沒有對應該產品`) }
   }
   if(/30\s*cc/i.test(combined)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(combined))errors.push('30cc正式名稱必須是小玻璃罐／30cc／罐，不得稱瓶');
-  for(const segment of reviewProductSegments(combined,'龜鹿湯塊'))if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式規格只有75g （2兩）／盒｜8塊裝');
+  for(const segment of reviewProductSegments(combined,'龜鹿湯塊'))if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式規格只有75g／盒｜8塊裝');
   for(const segment of reviewProductSegments(combined,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排');
   if(!clean(row?.image_url))errors.push('缺少圖片');
   if(!clean(row?.image_alt))errors.push('缺少圖片說明，無法完成圖文一致審核');

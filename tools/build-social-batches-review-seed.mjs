@@ -26,7 +26,7 @@ const genericMismatch=(post,imageUrl)=>{
   const image=String(imageUrl||'').toLowerCase(),topic=[post.title,post.headline,post.category].join(' ').toLowerCase();
   if(/products-all|all-products/.test(image)&&!/產品總覽|六項產品|一次認識|系列介紹/.test(topic))return'全系列／產品總覽圖只保留給真正的產品總覽主題';
   if(/brand-story/.test(image)&&!/品牌故事|萬華|四代|傳承/.test(topic))return'品牌故事圖不可代替工序或其他主題';
-  if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用/.test(topic))return'使用方式圖不可代替其他日常主題';
+  if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用|熬製|火候|工序|傳統工藝/.test(topic))return'使用方式／工序圖不可代替其他日常主題';
   if(/\/faq\./.test(image)&&!/faq|常見問題|問答/.test(topic))return'FAQ圖不可代替保存或其他主題';
   if(/recipes/.test(image)&&!/料理|燉湯|雞湯|排骨湯/.test(topic))return'料理圖只用於料理主題';
   return'';
@@ -77,7 +77,7 @@ for(const file of files){
 }
 
 const imageGroups=new Map();
-for(const row of rows){if(!row.imageUrl||row.status==='draft'||fixedReusable(row.imageUrl))continue;const key=normalizeImage(row.imageUrl);if(!imageGroups.has(key))imageGroups.set(key,[]);imageGroups.get(key).push(row)}
+for(const row of rows){if(!row.imageUrl||row.status==='draft')continue;const key=normalizeImage(row.imageUrl);if(!imageGroups.has(key))imageGroups.set(key,[]);imageGroups.get(key).push(row)}
 for(const group of imageGroups.values()){
   if(group.length<2)continue;
   for(const row of group.slice(1)){

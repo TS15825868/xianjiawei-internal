@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260815-publishing-review-ui-v5-semantic-audit';
+  const VERSION='20260815-publishing-review-ui-v6-full-library-audit';
   const CHECKS=[
     ['brand','品牌與整體風格','符合仙加味正式品牌風格，沒有錯誤Logo／不合品牌元素'],
     ['product','產品','文案提到的產品與圖片中的產品完全一致'],
@@ -28,7 +28,7 @@
     const root=document.getElementById('readinessSummary');if(!root)return;
     let chip=root.querySelector('[data-content-audit-summary]');if(!chip){chip=document.createElement('span');chip.dataset.contentAuditSummary='1';root.appendChild(chip)}
     chip.className=`readiness-chip ${problem?'bad':'ok'}`;
-    chip.innerHTML=`<strong>圖文完整檢查</strong><small>${problem?`${problem}／${total} 篇需修正`:`${total} 篇自動檢查通過`}</small>`;
+    chip.innerHTML=`<strong>全庫圖文完整檢查</strong><small>${problem?`${problem}／${total} 篇需修正`:`${total} 篇自動檢查通過`}</small>`;
   }
   function applyAudit(item){
     const card=cardFor(item.id);if(!card)return;
@@ -54,8 +54,12 @@
     const run=++auditRun;
     const ids=[...document.querySelectorAll('.publish-card [data-post-view],.xjw-row [data-post-view]')].map(node=>node.dataset.postView).filter(Boolean);
     if(!ids.length)return;
-    try{const result=await auditIds(ids);if(run!==auditRun)return;(result.items||[]).forEach(applyAudit);auditSummary(Number(result.problem_count||0),Number(result.total||ids.length));}
-    catch(error){console.warn('圖文完整檢查暫時無法載入',error)}
+    try{
+      const [visibleResult,allResult]=await Promise.all([auditIds(ids),api('/posts/content-audit?all=1',{timeout:20000})]);
+      if(run!==auditRun)return;
+      (visibleResult.items||[]).forEach(applyAudit);
+      auditSummary(Number(allResult.problem_count||0),Number(allResult.total||0));
+    }catch(error){console.warn('全庫圖文完整檢查暫時無法載入',error)}
   }
   async function submitForReview(button){
     const id=cardId(button);if(!id){toast('找不到貼文ID，請重新整理',true);return}
@@ -102,5 +106,5 @@
   window.addEventListener('xjw-publishing-list-rendered',()=>setTimeout(auditVisible,40));
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhance();setTimeout(auditVisible,250)},{once:true});else{enhance();setTimeout(auditVisible,250)}
-  window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0]),draftToPendingReview:true,directDraftApproval:false,semanticAudit:true,duplicateImageAudit:true});
+  window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0]),draftToPendingReview:true,directDraftApproval:false,semanticAudit:true,duplicateImageAudit:true,fullLibraryAudit:true,strictUniqueImagePerPost:true});
 })();
