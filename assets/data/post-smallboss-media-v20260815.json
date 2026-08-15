@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-15-one-shot-non-collage-v1",
+  "version": "2026-08-15-one-shot-non-collage-v2",
   "brandDisplay": "仙加味",
   "overrides": {
     "POST-COMBO": {
@@ -33,13 +33,13 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink180-home": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
-      "imageAlt": "仙加味｜180cc放在居家日常，怎麼理解比較簡單？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜180cc放在居家日常，怎麼理解比較簡單？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink180-made-order": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
-      "imageAlt": "仙加味｜180cc也是接單後製作嗎？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜180cc也是接單後製作嗎？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink180-pouch": {
@@ -48,18 +48,18 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink180-storage": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
-      "imageAlt": "仙加味｜180cc鋁袋開封前後，保存怎麼看？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜180cc鋁袋開封前後，保存怎麼看？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink180-warm": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
-      "imageAlt": "仙加味｜180cc想喝溫熱的，可以怎麼安排？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜180cc想喝溫熱的，可以怎麼安排？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink30-made-order": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
-      "imageAlt": "仙加味｜為什麼龜鹿飲要等5～7個工作天？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜為什麼龜鹿飲要等5～7個工作天？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink30-small-jar": {
@@ -68,18 +68,18 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink30-storage": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
-      "imageAlt": "仙加味｜30cc開罐前後，保存要注意什麼？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜30cc開罐前後，保存要注意什麼？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink30-warm": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
-      "imageAlt": "仙加味｜30cc想溫熱飲用，怎麼安排比較簡單？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜30cc想溫熱飲用，怎麼安排比較簡單？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-drink30-work-break": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
-      "imageAlt": "仙加味｜工作空檔想簡單安排，可以怎麼看30cc？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp",
+      "imageAlt": "仙加味｜工作空檔想簡單安排，可以怎麼看30cc？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-gao-100g": {
@@ -93,18 +93,18 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-gao-routine": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family-2.webp",
-      "imageAlt": "仙加味｜龜鹿膏適合怎麼安排在一天裡？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味｜龜鹿膏適合怎麼安排在一天裡？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-gao-storage": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
-      "imageAlt": "仙加味｜龜鹿膏開罐後為什麼要注意保存？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味｜龜鹿膏開罐後為什麼要注意保存？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-gao-warm-water": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
-      "imageAlt": "仙加味｜龜鹿膏直接吃，還是搭配溫熱水？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp",
+      "imageAlt": "仙加味｜龜鹿膏直接吃，還是搭配溫熱水？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-guilu-first-three": {
@@ -128,17 +128,17 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-jiao-family": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
-      "imageAlt": "仙加味｜龜鹿膠比較適合怎麼從家庭使用理解？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp",
+      "imageAlt": "仙加味｜龜鹿膠比較適合怎麼從家庭使用理解？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-jiao-hot-water": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
-      "imageAlt": "仙加味｜龜鹿膠除了料理，也能怎麼安排？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp",
+      "imageAlt": "仙加味｜龜鹿膠除了料理，也能怎麼安排？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-luerong-75g": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-luerong-fen-75g.webp",
       "imageAlt": "仙加味｜鹿茸粉75g／罐，先從哪裡開始認識？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
@@ -148,12 +148,12 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-luerong-storage": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
-      "imageAlt": "仙加味｜鹿茸粉開封後，保存重點是什麼？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-luerong-fen-75g.webp",
+      "imageAlt": "仙加味｜鹿茸粉開封後，保存重點是什麼？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-modern-tradition": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
       "imageAlt": "仙加味｜傳統龜鹿文化，怎麼變得更方便理解？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
@@ -163,27 +163,27 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-tangkuai-hot-water": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-rhythm.webp",
-      "imageAlt": "仙加味｜不煮湯時，龜鹿湯塊也可以怎麼用？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageAlt": "仙加味｜不煮湯時，龜鹿湯塊也可以怎麼用？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-tangkuai-soup": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
-      "imageAlt": "仙加味｜龜鹿湯塊怎麼放進家常湯品？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageAlt": "仙加味｜龜鹿湯塊怎麼放進家常湯品？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-warm-food-culture": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-rhythm.webp",
       "imageAlt": "仙加味｜龜鹿與溫熱飲食、燉煮文化有什麼關係？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-GUILU-why-guilu-daily": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family-2.webp",
       "imageAlt": "仙加味｜為什麼有人把龜鹿放進日常？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-01-daily-cooking": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
       "imageAlt": "仙加味｜料理，也是一種日常搭配。｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
@@ -208,13 +208,13 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-01-six-products-overview": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
-      "imageAlt": "仙加味｜六項產品，一次認識。｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
+      "imageAlt": "仙加味｜六項產品，一次認識。｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-drink-180-home": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp",
-      "imageAlt": "仙加味｜180cc鋁袋，把完整份量留給居家與工作空檔。｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp",
+      "imageAlt": "仙加味｜180cc鋁袋，把完整份量留給居家與工作空檔。｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-drink-30-outside": {
@@ -228,13 +228,13 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-drink-made-to-order": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
       "imageAlt": "仙加味｜龜鹿飲為什麼需要5～7個工作天？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-jiao-family-cooking": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family-2.webp",
-      "imageAlt": "仙加味｜龜鹿膠，一斤大盒怎麼理解？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp",
+      "imageAlt": "仙加味｜龜鹿膠，一斤大盒怎麼理解？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-luerong-daily-drink": {
@@ -243,8 +243,8 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-tangkuai-thermos-soup": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
-      "imageAlt": "仙加味｜龜鹿湯塊，可以怎麼放進日常？｜完整單一小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp",
+      "imageAlt": "仙加味｜龜鹿湯塊，可以怎麼放進日常？｜正式產品與小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-02-tangkuai-vs-jiao": {
@@ -268,8 +268,8 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-03-ingredient-info-clear": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
-      "imageAlt": "仙加味｜看產品，不只看名稱，也要看成分與型態。｜正式產品與小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/choose.webp",
+      "imageAlt": "仙加味｜看產品，不只看名稱，也要看成分與型態。｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-03-storage-basics": {
@@ -283,18 +283,18 @@
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-03-wanhua-visit-brand": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/choose-by-routine.webp",
       "imageAlt": "仙加味｜從萬華開始，也歡迎從萬華認識我們。｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-03-warm-not-iced": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-rhythm.webp",
       "imageAlt": "仙加味｜想喝溫一點，可以怎麼安排？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
     "XJW-SOCIAL-20260815-03-why-exact-specs": {
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp",
-      "imageAlt": "仙加味｜為什麼規格要寫得這麼清楚？｜正式產品與小老闆情境",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/daily-hydration.webp",
+      "imageAlt": "仙加味｜為什麼規格要寫得這麼清楚？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     }
   },
@@ -304,6 +304,7 @@
     "useExistingApprovedMediaFirst": true,
     "realProductAppearanceIsAuthority": true,
     "sameProductAuthorityMediaMayRepeat": true,
+    "genericLifestyleMediaUniqueWithinBank": true,
     "seasonWeatherTemperatureContextMustMatchCopy": true,
     "ownerReviewRequired": true,
     "blockedDisplayName": "台興山產"
