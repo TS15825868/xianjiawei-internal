@@ -58,7 +58,6 @@ jobs:
           bank['version']='2026-08-15-guilu-publishing-v6-customer-visible-clean'
           bank_path.write_text(json.dumps(bank,ensure_ascii=False,separators=(',',':'))+'\n')
 
-          # 顧客可見文字守門再補上容易混入的內部圖檔／校稿語氣。
           paths=['assets/js/publishing-app-v2.js','src/publishing-review-gate-entry.js','tools/build-social-batches-review-seed.mjs','tools/build-guilu-review-seed.mjs','tools/build-guilu-draft-seed.mjs']
           for path in paths:
               p=Path(path);s=p.read_text()
@@ -83,7 +82,8 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/data/guilu-content-topic-bank-v20260814.json assets/js/publishing-app-v2.js src/publishing-review-gate-entry.js tools/build-social-batches-review-seed.mjs tools/build-guilu-review-seed.mjs tools/build-guilu-draft-seed.mjs
+          git add -f assets/data/guilu-content-topic-bank-v20260814.json
+          git add assets/js/publishing-app-v2.js src/publishing-review-gate-entry.js tools/build-social-batches-review-seed.mjs tools/build-guilu-review-seed.mjs tools/build-guilu-draft-seed.mjs
           git commit -m 'fix(publishing): clean customer-visible alt text and internal wording'
           git pull --rebase origin main
           git push origin HEAD:main
