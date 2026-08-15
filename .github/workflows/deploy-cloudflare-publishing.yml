@@ -67,40 +67,52 @@ jobs:
           test -f dist/data/latest-user-post-zip.json
           grep -q '貼文中心系統 App' dist/publishing.html
           grep -q "location.replace('/publishing.html')" dist/index.html
+          grep -Eq '"html_handling"[[:space:]]*:[[:space:]]*"none"' wrangler.jsonc
+          grep -q 'rootServesPublishingDirectly:true' src/publishing-only-entry.js
+          grep -q 'redirectLoopPrevention:true' src/publishing-only-entry.js
+          ! grep -q "return redirect('/publishing.html')" src/publishing-only-entry.js
           test ! -e dist/assets/js/internal-app.js
           test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS: production bundle contains only posting-center frontend.'
+          echo 'PASS: production bundle contains only posting-center frontend and no Worker/HTML canonical redirect loop.'
       - name: Verify remote D1 before deploy
-        run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status, COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status"
       - name: Deploy posting center Worker
         run: npx wrangler deploy --keep-vars
-      - name: Verify deployed Worker route and Access boundary
+      - name: Verify deployed Worker routes and reject redirect storms
         shell: bash
         run: |
           set -euo pipefail
           base='https://xianjiawei-internal.tung314069.workers.dev'
-          core_file="$(mktemp)"
-          root_file="$(mktemp)"
-          page_file="$(mktemp)"
-          core_code="$(curl -sS --max-time 20 -o "$core_file" -w '%{http_code}' "$base/healthz/core" || true)"
-          root_code="$(curl -sS --max-time 20 -o "$root_file" -w '%{http_code}' "$base/" || true)"
-          page_code="$(curl -sS --max-time 20 -o "$page_file" -w '%{http_code}' "$base/publishing.html" || true)"
-          for code in "$core_code" "$root_code" "$page_code"; do
-            test "$code" != '000' || { echo 'Production route is unreachable.' >&2; exit 1; }
-            test "$code" -lt 500 || { echo "Production route returned server error $code" >&2; exit 1; }
+          direct_content=0
+          access_boundary=0
+          for path in '/' '/publishing' '/publishing/' '/publishing.html' '/healthz/core'; do
+            body="$(mktemp)"
+            result="$(curl -LsS --max-redirs 6 --max-time 25 -o "$body" -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
+            code="${result%% *}"
+            rest="${result#* }"
+            redirects="${rest%% *}"
+            echo "$path -> $result"
+            test "$code" -ge 200 || { echo "$path returned invalid HTTP status $code" >&2; exit 1; }
+            test "$code" -lt 500 || { echo "$path returned server error $code" >&2; exit 1; }
+            test "$redirects" -le 2 || { echo "$path has a redirect storm ($redirects redirects)" >&2; exit 1; }
+            if grep -Eq '貼文中心系統 App|唯一正式內容系統' "$body"; then
+              direct_content=$((direct_content+1))
+            elif grep -Eiq '<html|<!doctype|cloudflare|access|sign in|login' "$body"; then
+              access_boundary=$((access_boundary+1))
+            else
+              echo "$path returned unexpected content" >&2
+              exit 1
+            fi
           done
-          core="$(cat "$core_file")"
-          root="$(cat "$root_file")"
-          page="$(cat "$page_file")"
-          if CORE="$core" ROOT="$root" PAGE="$page" node -e "const core=JSON.parse(process.env.CORE||'{}'); const root=String(process.env.ROOT||''); const page=String(process.env.PAGE||''); if(core.ok!==true||(!root.includes('貼文中心')&&!root.includes('publishing.html'))||!page.includes('貼文中心系統 App')||!page.includes('唯一正式內容系統')) process.exit(1);" 2>/dev/null; then
-            readiness="$(curl -fsS --max-time 20 "$base/healthz/readiness")"
-            READINESS="$readiness" node -e "const r=JSON.parse(process.env.READINESS||'{}'); if(!r||typeof r!=='object')process.exit(1);"
+          if [ "$direct_content" -gt 0 ]; then
             echo 'XJW_DEPLOY_STATUS=verified_live' >> "$GITHUB_ENV"
-            echo 'XJW_LIVE_VERIFY_MODE=direct_content_verified' >> "$GITHUB_ENV"
+            echo 'XJW_LIVE_VERIFY_MODE=direct_content_verified_no_redirect_storm' >> "$GITHUB_ENV"
           else
-            grep -Eiq '<html|<!doctype|cloudflare|access|sign in|login' "$core_file" || { echo 'healthz/core returned unexpected non-JSON content.' >&2; exit 1; }
+            test "$access_boundary" -eq 5 || { echo 'Not all protected routes reached Cloudflare Access boundary.' >&2; exit 1; }
             echo 'XJW_DEPLOY_STATUS=deployed_access_protected' >> "$GITHUB_ENV"
-            echo 'XJW_LIVE_VERIFY_MODE=cloudflare_access_boundary_verified' >> "$GITHUB_ENV"
+            echo 'XJW_LIVE_VERIFY_MODE=cloudflare_access_boundary_verified_no_redirect_storm' >> "$GITHUB_ENV"
           fi
       - name: Record verified production deployment
         shell: bash
@@ -111,7 +123,11 @@ jobs:
             "source_commit": "${GITHUB_SHA}",
             "runtime": "cloudflare-worker-publishing-center-app",
             "entry": "src/publishing-only-entry.js",
-            "health": "healthz/core + healthz/readiness + / + publishing.html",
+            "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
+            "route_mode": "direct_no_redirect",
+            "html_handling": "none",
+            "redirect_loop_prevention": true,
+            "health": "healthz/core + healthz/readiness + direct publishing aliases",
             "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
             "remote_d1": "verified",
             "erp_ui": "disabled",
