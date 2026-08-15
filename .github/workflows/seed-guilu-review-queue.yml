@@ -11,6 +11,7 @@ on:
       - 'assets/data/social-batch-*.json'
       - 'assets/data/social-image-audit-v20260815.json'
       - 'assets/data/guilu-content-topic-bank-v20260814.json'
+      - 'assets/data/guilu-context-media-v20260815.json'
       - 'tools/build-social-batches-review-seed.mjs'
       - 'tools/build-guilu-review-seed.mjs'
       - 'tools/build-guilu-draft-seed.mjs'
@@ -60,18 +61,21 @@ jobs:
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-draft-seed.mjs > /tmp/guilu-draft-seed.sql
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-social-batches-review-seed.mjs > /tmp/social-batches-review-seed.sql
 
-          review_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-review-seed.sql)"
-          draft_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-draft-seed.sql)"
-          social_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/social-batches-review-seed.sql)"
+          review_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-review-seed.sql || true)"
+          draft_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/guilu-draft-seed.sql || true)"
+          social_actual="$(grep -c '^INSERT INTO social_posts(' /tmp/social-batches-review-seed.sql || true)"
 
           read -r expected_review expected_draft expected_total expected_social <<EOF
           $(node - <<'NODE'
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
+          const context=fs.existsSync('assets/data/guilu-context-media-v20260815.json')?JSON.parse(fs.readFileSync('assets/data/guilu-context-media-v20260815.json','utf8')):{overrides:{}};
+          const overrides=context?.overrides||{};
+          const ready=x=>x.seedToReview===true||overrides?.[String(x.id||'')]?.action==='replace';
           const topics=(bank.topics||[]).filter(Boolean);
           const activeTopics=topics.filter(x=>x.queueEnabled!==false);
-          const review=activeTopics.filter(x=>x.seedToReview===true).length;
-          const draft=activeTopics.filter(x=>x.seedToReview!==true&&x.imageMode==='context_required').length;
+          const review=activeTopics.filter(ready).length;
+          const draft=activeTopics.filter(x=>!ready(x)&&x.imageMode==='context_required').length;
           const batchFiles=fs.readdirSync('assets/data').filter(x=>/^social-batch-\d{8}-\d{2}\.json$/.test(x));
           const social=batchFiles.reduce((sum,file)=>sum+((JSON.parse(fs.readFileSync(`assets/data/${file}`,'utf8')).posts||[]).length),0);
           process.stdout.write(`${review} ${draft} ${activeTopics.length} ${social}`);
@@ -80,20 +84,20 @@ jobs:
           EOF
 
           test "$expected_review" -gt 0
-          test "$expected_draft" -gt 0
+          test "$expected_draft" -ge 0
           test "$expected_social" -gt 0
           test "$review_actual" -eq "$expected_review"
           test "$draft_actual" -eq "$expected_draft"
           test "$social_actual" -eq "$expected_social"
           test "$((expected_review+expected_draft))" -eq "$expected_total"
           grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/guilu-review-seed.sql
-          grep -Fq "WHERE social_posts.status='draft'" /tmp/guilu-draft-seed.sql
+          if [ "$expected_draft" -gt 0 ]; then grep -Fq "WHERE social_posts.status='draft'" /tmp/guilu-draft-seed.sql; fi
           grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/social-batches-review-seed.sql
           if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql /tmp/guilu-draft-seed.sql /tmp/social-batches-review-seed.sql; then
             echo 'ERROR: social_posts seed must surface CHECK/FK errors.' >&2
             exit 1
           fi
-          echo "PASS: guilu ${expected_total} active topics + social ${expected_social} posts are safe, deduplicated, and idempotent."
+          echo "PASS: guilu ${expected_total} active topics (${expected_review} image-ready / ${expected_draft} still missing) + social ${expected_social} posts are safe, deduplicated, and idempotent."
 
       - name: Verify remote D1 schema and creator
         shell: bash
@@ -120,12 +124,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS social_total FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE (id LIKE 'XJW-GUILU-%' OR id LIKE 'XJW-SOCIAL-%') AND status IN ('draft','pending_review') AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND (copy LIKE '%每日早上及下午各一小匙%' OR copy LIKE '%建議白天飲用%' OR copy LIKE '%30cc／瓶%' OR copy LIKE '%30cc玻璃瓶%' OR copy LIKE '%舊的300g%');")"
+          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS guilu_total FROM social_posts WHERE id LIKE 'XJW-GUILU-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS social_total FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%'; SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS products_v3_live FROM social_posts WHERE (id LIKE 'XJW-GUILU-%' OR id LIKE 'XJW-SOCIAL-%') AND status IN ('draft','pending_review') AND image_url LIKE '%/images/products-v3/%'; SELECT COUNT(*) AS stale_count FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND (copy LIKE '%每日早上及下午各一小匙%' OR copy LIKE '%建議白天飲用%' OR copy LIKE '%30cc／瓶%' OR copy LIKE '%30cc玻璃瓶%' OR copy LIKE '%舊的300g%'); SELECT COUNT(*) AS missing_image_count FROM social_posts WHERE status<>'archived' AND trim(COALESCE(copy,''))<>'' AND trim(COALESCE(image_url,''))='';")"
           echo "$result"
           echo "$result" | grep -q 'social_total'
           echo "$result" | grep -Eq 'products_v3_live[^0-9]*0|products_v3_live[[:space:]]+0'
           echo "$result" | grep -Eq 'stale_count[^0-9]*0|stale_count[[:space:]]+0'
-          echo 'PASS: 文案＋正式配圖內容已同步至待審核；缺圖母庫內容仍停草稿；未自動核准、排程或發布。'
+          echo "$result" | grep -Eq 'missing_image_count[^0-9]*0|missing_image_count[[:space:]]+0'
+          echo 'PASS: 所有目前未封存且有文案的貼文都有圖片；未自動核准、排程或發布。'
 
       - name: Verify live customer-facing copy is clean and duplicate-free
         shell: bash
@@ -146,11 +151,13 @@ jobs:
           const bigrams=s=>{const out=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);out.set(k,(out.get(k)||0)+1)}return out};
           const dice=(a,b)=>{if(!a||!b)return 0;if(a===b)return 1;const A=bigrams(a),B=bigrams(b);let ai=0,bi=0,hit=0;for(const n of A.values())ai+=n;for(const n of B.values())bi+=n;for(const [k,n] of A)hit+=Math.min(n,B.get(k)||0);return ai+bi?2*hit/(ai+bi):0};
           const leaks=[];
+          const missingImages=[];
           for(const row of rows){
             const text=[row.title,row.headline,row.copy,row.image_alt].filter(Boolean).join(' ');
             const lower=text.toLowerCase();
             const hits=[...internal,...publicBlocked].filter(term=>lower.includes(term.toLowerCase()));
             if(hits.length)leaks.push({id:row.id,hits:[...new Set(hits)]});
+            if(String(row.copy||'').trim()&&!imageNorm(row.image_url))missingImages.push({id:row.id,title:row.title});
           }
           const duplicates=[];
           const imageSeen=new Map();
@@ -166,18 +173,19 @@ jobs:
               else if(ac.length>=40&&bc.length>=40){const score=dice(ac,bc);if(score>=0.90)duplicates.push({type:`near-${score.toFixed(3)}`,a:a.id,b:b.id});}
             }
           }
-          if(leaks.length||duplicates.length){
+          if(leaks.length||duplicates.length||missingImages.length){
             console.error('CUSTOMER_COPY_LEAKS',JSON.stringify(leaks));
             console.error('DUPLICATES',JSON.stringify(duplicates));
+            console.error('MISSING_IMAGES',JSON.stringify(missingImages));
             process.exit(1);
           }
-          console.log(`PASS: ${rows.length} live non-archived posts have customer-safe copy, no duplicate/near-duplicate content, and no duplicate lifestyle image.`);
+          console.log(`PASS: ${rows.length} live non-archived posts have images, customer-safe copy, no duplicate/near-duplicate content, and no duplicate lifestyle image.`);
           NODE
 
       - name: Summary
         if: always()
         run: |
           echo '社群批次、圖片稽核與目前有效母庫內容會在 push 到 main 後自動同步到 Cloudflare D1 貼文中心。'
-          echo '只有文案與正式圖片完整、未重複且顧客可見文字不含內部作業字樣／禁止公開字詞的內容才能通過。'
+          echo '所有有文案的未封存貼文都必須有圖片；圖文完整、未重複且顧客可見文字安全才可進待審核。'
           echo '生活／情境主圖不得跨不同主題重複；固定正式產品圖與試喝活動圖除外。'
           echo '圖片替代文字也視為顧客可見文字一起檢查；已核准、已排程、已發布內容不覆寫。'
