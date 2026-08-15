@@ -20,6 +20,8 @@ const sqlString=value=>`'${String(value??'').replaceAll("'","''")}'`;
 const jsonString=value=>sqlString(JSON.stringify(value??[]));
 const normalizeImage=value=>String(value||'').trim().split('#')[0].split('?')[0].toLowerCase();
 const fixedReusable=value=>{const url=normalizeImage(value);return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url)};
+const visuallyIncompleteSvg=value=>/\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(normalizeImage(value));
+const VISUAL_HOLD_REASON='2026-08-15 SVG資訊卡在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新生成完整情境圖或改用正式產品圖';
 const genericMismatch=(post,imageUrl)=>{
   const image=String(imageUrl||'').toLowerCase(),topic=[post.title,post.headline,post.category].join(' ').toLowerCase();
   if(/products-all|all-products/.test(image)&&!/產品總覽|六項產品|一次認識|系列介紹/.test(topic))return'全系列／產品總覽圖只保留給真正的產品總覽主題';
@@ -60,7 +62,14 @@ for(const file of files){
       if(!imageUrl.startsWith(REQUIRED_IMAGE_PREFIX))throw new Error(`${file}/${slug} 圖片必須來自仙加味正式官網 images 路徑`);
       if(/\/images\/products-v3\//.test(imageUrl))throw new Error(`${file}/${slug} 不得直接使用 products-v3 作一般貼文主圖`);
       if(/trial-small-boss\.webp|\/trial\.webp|trial-clean-v4\.svg/.test(imageUrl))throw new Error(`${file}/${slug} 使用退役試喝圖`);
-      const mismatch=genericMismatch(post,imageUrl);if(mismatch){status='draft';reviewReason=mismatch;imageUrl='';imageAlt=`${post.title}｜需依文案建立專屬情境圖`;imageSource=`圖文完整檢查：${mismatch}`;}
+      if(visuallyIncompleteSvg(imageUrl)){
+        status='draft';
+        reviewReason=VISUAL_HOLD_REASON;
+        imageAlt=`${post.title}｜目前候選圖顯示不完整，需重新生成完整情境圖`;
+        imageSource=`圖文完整檢查：${VISUAL_HOLD_REASON}|原候選:${imageUrl}`;
+      }else{
+        const mismatch=genericMismatch(post,imageUrl);if(mismatch){status='draft';reviewReason=mismatch;imageUrl='';imageAlt=`${post.title}｜需依文案建立專屬情境圖`;imageSource=`圖文完整檢查：${mismatch}`;}
+      }
     }
     if(!String(post.copy||'').trim())throw new Error(`${file}/${slug} 缺少文案`);
     rows.push({file,batchVersion:String(batch.version||file.replace(/\.json$/,'')),slug,post,imageUrl,imageAlt,imageSource,platforms,status,reviewReason,override});
@@ -68,7 +77,7 @@ for(const file of files){
 }
 
 const imageGroups=new Map();
-for(const row of rows){if(!row.imageUrl||fixedReusable(row.imageUrl))continue;const key=normalizeImage(row.imageUrl);if(!imageGroups.has(key))imageGroups.set(key,[]);imageGroups.get(key).push(row)}
+for(const row of rows){if(!row.imageUrl||row.status==='draft'||fixedReusable(row.imageUrl))continue;const key=normalizeImage(row.imageUrl);if(!imageGroups.has(key))imageGroups.set(key,[]);imageGroups.get(key).push(row)}
 for(const group of imageGroups.values()){
   if(group.length<2)continue;
   for(const row of group.slice(1)){
@@ -106,10 +115,10 @@ for(const row of rows){
     image_width=excluded.image_width,image_height=excluded.image_height,image_bytes=excluded.image_bytes,image_quality_status=excluded.image_quality_status,updated_at=CURRENT_TIMESTAMP
   WHERE social_posts.status IN ('draft','pending_review');`);
   statements.push(`INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip)
-    VALUES(${sqlString(auditId)},'github-actions-social-batch','社群批次圖文完整檢查同步','貼文',${sqlString(postId)},NULL,${sqlString(JSON.stringify({batch:batchVersion,file,status,image_ready:!!imageUrl,review_reason:reviewReason,image_audit:imageAudit.version||''}))},'');`);
+    VALUES(${sqlString(auditId)},'github-actions-social-batch','社群批次圖文完整檢查同步','貼文',${sqlString(postId)},NULL,${sqlString(JSON.stringify({batch:batchVersion,file,status,image_ready:status==='pending_review'&&!!imageUrl,review_reason:reviewReason,image_audit:imageAudit.version||''}))},'');`);
 }
 
 statements.push(`SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-SOCIAL-%' GROUP BY status ORDER BY status;`);
 process.stdout.write(statements.join('\n\n')+'\n');
 const pending=rows.filter(row=>row.status==='pending_review').length,draft=rows.length-pending;
-console.error(`PASS: ${files.length} 個社群批次共 ${rows.length} 篇完成圖文完整檢查；${pending} 篇有匹配圖片進待審核，${draft} 篇重複／不符圖片已清除並退回草稿，不自動核准、不排程、不發布。`);
+console.error(`PASS: ${files.length} 個社群批次共 ${rows.length} 篇完成圖文完整檢查；${pending} 篇有匹配圖片進待審核，${draft} 篇重複／不符／顯示不完整圖片已退回草稿，不自動核准、不排程、不發布。`);
