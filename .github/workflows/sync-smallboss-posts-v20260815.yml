@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/data/social-image-audit-v20260815.json
+          git add -f assets/data/social-image-audit-v20260815.json
           if ! git diff --cached --quiet; then
             git commit -m 'feat(posts): bind social batch to formal small-boss visuals'
             git push origin HEAD:main
