@@ -1,5 +1,6 @@
 name: One-shot deploy iOS Safari publishing cache fix
 
+# Retry after aligning the existing regeneration cache authority with the new iOS cache-bust version.
 on:
   push:
     branches: [main]
