@@ -1,8 +1,8 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "49eae2997dfa0828b293b26ac6ea4014e84c9668",
-  "content_commit": "31d59d1432367570912acbc17d7d86dbac6beca7",
-  "cloudflare_version_id": "90dec56e-458e-4f55-947b-3f12018a00ce",
+  "source_commit": "8f0ab3a90d430b9b2b2aea8e4e7e8340c13579e4",
+  "content_commit": "1e1cdb4094297d5be8f54439144bc9458f4eac12",
+  "cloudflare_version_id": "bd1aacb2-6757-4ea3-ba51-871b91d75f15",
   "runtime": "cloudflare-worker-publishing-center-app",
   "entry": "src/publishing-only-entry.js",
   "root_behavior": "redirect_to_/publishing.html",
@@ -19,10 +19,14 @@
   "erp_ui": "disabled",
   "erp_api": "blocked_except_publishing",
   "publishing_center_app": true,
-  "ios_safari_resilience": true,
+  "ios_safari_resilience": "20260815-publishing-resilience-v3-ios-recovery",
   "mobile_initial_post_limit": 6,
+  "resume_hard_reload_fallback": true,
+  "api_timeout_alignment": true,
+  "validation_workflow_run_id": 31863010051,
+  "deployment_workflow_run_id": 31863037119,
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
   "minimum_safety_guards": true,
-  "verified_at_utc": "2026-08-15T03:50:02Z"
+  "verified_at_utc": "2026-08-15T03:54:45Z"
 }
