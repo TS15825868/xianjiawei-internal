@@ -17,7 +17,7 @@ const wrangler=read('wrangler.jsonc');
 const production=read('src/production-entry.js');
 const reviewEntry=read('src/publishing-review-gate-entry.js');
 
-must(index.includes("location.replace('/publishing.html')"),'根網址必須直接開啟貼文中心');
+must(index.includes("location.replace('/publishing.html')"),'備用index頁必須仍能開啟貼文中心');
 must(!index.includes('營運中控')&&!index.includes('internal-app.js')&&!index.includes('erp-publishing-separation.js'),'根頁仍殘留ERP介面');
 must(publishing.includes('唯一正式內容系統'),'貼文中心缺少唯一正式系統標示');
 must(publishing.includes('貼文中心系統 App'),'貼文中心沒有App定位');
@@ -31,7 +31,9 @@ must(!publishing.includes('post-regenerate-v6.js'),'正式貼文系統不得再�
 must(!buttons.includes('window.open(')&&!buttons.includes('/api/posts/'),'按鈕呈現層不得偷偷保留第二套ChatGPT/API邏輯');
 
 must(/"main"\s*:\s*"src\/publishing-only-entry\.js"/.test(wrangler),'Wrangler正式入口必須是publishing-only-entry.js');
-for(const token of ["from './production-entry.js'","blockedApi(path)","redirect('/publishing.html')",'publishingCenterApp:true','erpUiDisabled:true','erpApisBlocked:true'])must(publishingOnly.includes(token),`publishing-only入口缺少：${token}`);
+must(/"html_handling"\s*:\s*"none"/.test(wrangler),'Wrangler 靜態 HTML 必須使用 none，禁止 Cloudflare 自動把 /publishing.html 導向 /publishing');
+for(const token of ["from './production-entry.js'","blockedApi(path)",'publishingUiAlias(path)','servePublishingAsset(request,env)','rootServesPublishingDirectly:true','redirectLoopPrevention:true','publishingCenterApp:true','erpUiDisabled:true','erpApisBlocked:true'])must(publishingOnly.includes(token),`publishing-only入口缺少：${token}`);
+must(!publishingOnly.includes("return redirect('/publishing.html')"),'貼文中心入口不得再依賴302重新導向');
 for(const token of ["from './publishing-review-gate-entry.js'","from './flexible-publish-entry.js'",'runReadiness','platformPublishGate'])must(production.includes(token),`production安全鏈缺少：${token}`);
 for(const token of ['draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationReturnsToPendingReview','copyImageMatchHardGate'])must(reviewEntry.includes(token),`16項貼文審核入口缺少能力：${token}`);
 
@@ -54,4 +56,4 @@ for(const file of ['index.html','publishing.html','manifest.webmanifest','publis
 for(const retired of ['internal-app.js','erp-publishing-separation.js','loading-watchdog-v20260809.js'])must(!pkg.includes(retired),`正式build仍包含ERP前端：${retired}`);
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得帶出舊v6第二套重生成邏輯');
 
-console.log(`PASS：正式介面只保留仙加味貼文中心系統App；其他ERP UI/API已停用，貼文審核、配圖、重生成、排程、立即發布、D1與平台安全能力保留。最新 ${latestZip.source}/${latestZip.candidate_count} 張候選採能力式驗收。`);
+console.log(`PASS：正式介面只保留仙加味貼文中心系統App；Cloudflare HTML handling 已關閉自動重新導向，所有入口由 Worker 直接回傳正式App；其他ERP UI/API停用，貼文審核、配圖、重生成、排程、立即發布、D1與平台安全能力保留。最新 ${latestZip.source}/${latestZip.candidate_count} 張候選採能力式驗收。`);
