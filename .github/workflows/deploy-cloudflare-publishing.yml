@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
     paths:
+      - 'publishing.html'
+      - 'assets/css/publishing-base.css'
+      - 'assets/css/publishing-app.css'
+      - 'assets/js/publishing-readiness-ui.js'
+      - 'assets/js/publishing-content-guidance-v20260814.js'
       - 'src/publishing-content-audit-entry.js'
       - 'src/publishing-only-entry.js'
       - 'src/production-entry.js'
@@ -85,6 +90,7 @@ jobs:
           test -f dist/data/latest-user-post-zip.json
           test -f src/publishing-content-audit-entry.js
           grep -q '貼文中心系統 App' dist/publishing.html
+          ! grep -q 'body:before' dist/publishing.html
           grep -q "location.replace('/publishing.html')" dist/index.html
           grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/publishing-content-audit-entry.js"' wrangler.jsonc
           grep -Eq '"html_handling"[[:space:]]*:[[:space:]]*"none"' wrangler.jsonc
@@ -93,12 +99,14 @@ jobs:
           grep -q 'duplicateImageHardGate:true' src/publishing-content-audit-entry.js
           grep -q 'seasonWeatherContextAudit:true' src/publishing-content-audit-entry.js
           grep -q 'semanticImageMatchHardGate:true' src/publishing-content-audit-entry.js
+          grep -q 'fullLibraryAudit:true' src/publishing-content-audit-entry.js
+          grep -q 'strictUniqueImagePerPost:true' src/publishing-content-audit-entry.js
           grep -q 'rootServesPublishingDirectly:true' src/publishing-only-entry.js
           grep -q 'redirectLoopPrevention:true' src/publishing-only-entry.js
           ! grep -q "return redirect('/publishing.html')" src/publishing-only-entry.js
           test ! -e dist/assets/js/internal-app.js
           test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS: production bundle contains posting-center frontend plus duplicate-image/season/weather/context semantic audit, Access JWT config, and no Worker/HTML canonical redirect loop.'
+          echo 'PASS: production bundle contains posting-center frontend plus full-library duplicate-image/copy, season, weather and semantic audit, Access JWT config, and no Worker/HTML canonical redirect loop.'
       - name: Cross-check current Cloudflare Access application
         shell: bash
         run: |
@@ -172,7 +180,7 @@ jobs:
             "redirect_loop_prevention": true,
             "access_jwt_verification": "configured_and_api_cross_checked",
             "health": "healthz/core + healthz/readiness + direct publishing aliases",
-            "content_image_audit": "duplicate image + season + weather + context semantic hard gate",
+            "content_image_audit": "full-library copy uniqueness + strict unique image per post + season + weather + context semantic hard gate",
             "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
             "remote_d1": "verified",
             "erp_ui": "disabled",
