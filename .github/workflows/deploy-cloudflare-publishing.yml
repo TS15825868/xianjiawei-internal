@@ -16,6 +16,7 @@ on:
       - 'assets/js/publishing-review-gate.js'
       - 'assets/js/publishing-app-v2.js'
       - 'assets/data/social-image-audit-v20260815.json'
+      - 'tools/validate-publishing-app-contract.mjs'
       - 'tools/validate-publishing-review-gate.mjs'
       - 'tools/validate-system-readiness.mjs'
       - 'tools/validate-single-publishing-system.mjs'
