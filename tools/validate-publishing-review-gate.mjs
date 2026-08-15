@@ -5,6 +5,7 @@ const must=(cond,message)=>{if(!cond)throw new Error(message)};
 const wrangler=read('wrangler.jsonc');
 const production=read('src/production-entry.js');
 const wrapper=fs.existsSync('src/publishing-only-entry.js')?read('src/publishing-only-entry.js'):'';
+const contentAudit=fs.existsSync('src/publishing-content-audit-entry.js')?read('src/publishing-content-audit-entry.js'):'';
 const gate=read('src/publishing-review-gate-entry.js');
 const ui=read('assets/js/publishing-review-gate.js');
 const raster=read('assets/js/svg-candidate-rasterizer.js');
@@ -15,10 +16,15 @@ const pkg=read('package.json');
 
 const productionMain=wrangler.includes('"main": "src/production-entry.js"');
 const publishingOnlyMain=wrangler.includes('"main": "src/publishing-only-entry.js"');
-must(productionMain||publishingOnlyMain,'Worker正式入口必須是production-entry.js或publishing-only-entry.js');
-if(publishingOnlyMain){
+const contentAuditMain=wrangler.includes('"main": "src/publishing-content-audit-entry.js"');
+must(productionMain||publishingOnlyMain||contentAuditMain,'Worker正式入口必須沿用production-entry／publishing-only安全鏈，並可在其外層增加目前內容語意守門能力');
+if(publishingOnlyMain||contentAuditMain){
   must(wrapper.includes("from './production-entry.js'"),'publishing-only入口必須沿用正式production-entry安全邏輯');
   must(wrapper.includes("'/api/modules/'")&&wrapper.includes('XJW_PUBLISHING_ONLY'),'publishing-only入口沒有封鎖已停用ERP API');
+}
+if(contentAuditMain){
+  must(contentAudit.includes("from './publishing-only-entry.js'"),'內容語意守門入口必須包在publishing-only正式安全鏈外層，不能繞過既有權限／發布流程');
+  for(const token of ['duplicateImageHardGate','seasonWeatherContextAudit','semanticImageMatchHardGate','/api/posts/content-audit','isFixedReusableImage','semanticErrors'])must(contentAudit.includes(token),`內容語意守門缺少目前能力：${token}`);
 }
 must(production.includes("gateState(env,row)"),'排程發布前必須檢查持久圖文審核指紋');
 must(production.includes("status='draft'"),'無有效審核的到期排程必須退回草稿');
@@ -92,6 +98,7 @@ must(ui.includes('data-post-status="pending_review"'),'草稿前端缺少「送�
 must(ui.includes("button.textContent='送待審核'"),'草稿前端按鈕必須清楚顯示「送待審核」');
 must(ui.includes('draftToPendingReview:true'),'前端能力標記缺少draft→pending_review');
 must(ui.includes('directDraftApproval:false'),'前端不得宣告草稿可直接核准');
+must(ui.includes('semanticAudit:true')&&ui.includes('duplicateImageAudit:true'),'前端缺少目前圖文語意／重複圖片預檢能力標記');
 must(ui.includes('stopImmediatePropagation'),'狀態／審核按鈕必須由正式review gate完整攔截');
 must(html.includes('publishing-review-gate.js'),'獨立貼文系統沒有載入16項圖文審核UI');
 must(html.includes('原核准自動失效'),'獨立貼文系統沒有清楚提示重新審核規則');
@@ -104,4 +111,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統固定使用 draft → pending_review → 16項人工審核 → approved → 排程／立即發布；重生成也回 pending_review。草稿不得直接核准，並保留products-v3候選轉JPEG、內容指紋、修改立即失效與發布硬守門。');
+console.log('PASS：唯一貼文系統固定使用 draft → pending_review → 16項人工審核 → approved → 排程／立即發布；重生成也回 pending_review。草稿不得直接核准；目前內容語意守門可在既有正式安全鏈外層增加重複圖片、季節、天氣與情境檢查，不鎖死舊入口檔名。');
