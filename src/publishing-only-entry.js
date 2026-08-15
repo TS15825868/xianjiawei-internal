@@ -1,7 +1,7 @@
 import app from './production-entry.js';
 import { VERSION as REVIEW_GATE_VERSION } from './publishing-review-gate-entry.js';
 
-const VERSION='20260815-publishing-center-app-v1';
+const VERSION='20260815-publishing-center-app-v2-canonical-route';
 const UI_RUNTIME='publishing-center-app';
 const PRODUCT_IMAGE_VERSION='products-v3-current-authority';
 const POST_BANK_SYNC_VERSION='post-bank-sync-current-capabilities';
@@ -17,7 +17,7 @@ function allowedApi(path){
 }
 function blockedApi(path){return path.startsWith('/api/')&&!allowedApi(path)}
 function retiredPage(path){
-  if(path==='/'||path==='/index.html')return false;
+  if(path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/')return false;
   return /\.(?:html?)$/i.test(path)&&path!=='/publishing.html';
 }
 async function currentMediaAuthority(request,env){
@@ -29,7 +29,7 @@ async function currentMediaAuthority(request,env){
 export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url),path=url.pathname;
-    if(request.method==='GET'&&(path==='/'||path==='/index.html'))return redirect('/publishing.html');
+    if(request.method==='GET'&&(path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/'))return redirect('/publishing.html');
     if(retiredPage(path))return redirect('/publishing.html');
     if(blockedApi(path))return json({error:'此功能目前已從正式 App 停用。仙加味目前只保留貼文中心系統。',code:'XJW_PUBLISHING_CENTER_ONLY',publishing_path:'/publishing.html',version:VERSION},404);
     if(request.method==='GET'&&path===LATEST_POST_ZIP_MANIFEST&&env?.ASSETS?.fetch){
@@ -40,7 +40,7 @@ export default{
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
       try{
         const [body,media]=await Promise.all([response.clone().json(),currentMediaAuthority(request,env)]);
-        return json({...body,uiRuntime:UI_RUNTIME,productImageVersion:PRODUCT_IMAGE_VERSION,productImageAuthority:'products-v3-latest-original-product-photos',postBankSyncVersion:POST_BANK_SYNC_VERSION,postBankValidation:'capability-based',postBankSizePolicy:'current-catalog-dynamic-no-fixed-count',formalMediaRuntime:FORMAL_MEDIA_RUNTIME,latestPostZipManifest:LATEST_POST_ZIP_MANIFEST,latestPostZipDynamic:true,latestPostZip:media.latestPostZip,latestPostZipCandidates:media.latestPostZipCandidates,formalMediaApprovalBatch:media.formalMediaApprovalBatch,latestPostZipBinaryStatus:media.latestPostZipBinaryStatus,postImagePriority:'user_zip_approved',formalMediaDecisionOnPostCard:true,singleMediaAssistant:true,semanticImageMatchRequired:true,formalProductMediaPreferred:true,regenerateOnlyIfNoApprovedMatch:true,zipSourceMatchCanWaitForBinarySync:true,reviewItemsAfterMediaChange:16,guardVersionPolicy:'current-authority-not-historical-version-pin',publishingOnly:true,publishingOnlyVersion:VERSION,publishingCenterApp:true,erpUiDisabled:true,erpApisBlocked:true,rootRedirectsToPublishing:true,legacyBlockMarkers:LEGACY_BLOCK_MARKERS,...(path==='/healthz'?{publishingReviewGateVersion:REVIEW_GATE_VERSION,freeRegenerationRoundTrip:true,regenerationReturnsToPendingReview:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready'}:{})},response.status)
+        return json({...body,uiRuntime:UI_RUNTIME,productImageVersion:PRODUCT_IMAGE_VERSION,productImageAuthority:'products-v3-latest-original-product-photos',postBankSyncVersion:POST_BANK_SYNC_VERSION,postBankValidation:'capability-based',postBankSizePolicy:'current-catalog-dynamic-no-fixed-count',formalMediaRuntime:FORMAL_MEDIA_RUNTIME,latestPostZipManifest:LATEST_POST_ZIP_MANIFEST,latestPostZipDynamic:true,latestPostZip:media.latestPostZip,latestPostZipCandidates:media.latestPostZipCandidates,formalMediaApprovalBatch:media.formalMediaApprovalBatch,latestPostZipBinaryStatus:media.latestPostZipBinaryStatus,postImagePriority:'user_zip_approved',formalMediaDecisionOnPostCard:true,singleMediaAssistant:true,semanticImageMatchRequired:true,formalProductMediaPreferred:true,regenerateOnlyIfNoApprovedMatch:true,zipSourceMatchCanWaitForBinarySync:true,reviewItemsAfterMediaChange:16,guardVersionPolicy:'current-authority-not-historical-version-pin',publishingOnly:true,publishingOnlyVersion:VERSION,publishingCenterApp:true,erpUiDisabled:true,erpApisBlocked:true,rootRedirectsToPublishing:true,canonicalPublishingPath:'/publishing.html',legacyBlockMarkers:LEGACY_BLOCK_MARKERS,...(path==='/healthz'?{publishingReviewGateVersion:REVIEW_GATE_VERSION,freeRegenerationRoundTrip:true,regenerationReturnsToPendingReview:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready'}:{})},response.status)
       }catch{return response}
     }
     return response;
