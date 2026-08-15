@@ -6,15 +6,16 @@ const production=fs.readFileSync('src/production-entry.js','utf8');
 const publisher=fs.readFileSync('src/social-publisher.js','utf8');
 const publishingOnly=fs.readFileSync('src/publishing-only-entry.js','utf8');
 const wrangler=fs.readFileSync('wrangler.jsonc','utf8');
-const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-app-v2.js','publishing-review-gate.js','device-image-upload.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js','20260815-lean-boot-v1','XJWLoadOptionalScript'];
+const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-app-v2.js','publishing-review-gate.js','device-image-upload.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js','window.__XJW_BOOT_VERSION__=','XJWLoadOptionalScript'];
 for(const token of requiredHtml){if(!html.includes(token))throw new Error(`publishing.html缺少必要功能入口：${token}`)}
+if(!/window\.__XJW_BOOT_VERSION__=['"][^'"]+['"]/.test(html))throw new Error('publishing.html 缺少正式 Boot 版本識別');
 if(!/publishing-app-v2\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的正式主程式缺少快取識別');
 if(!/post-regenerate-policy-v1\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的重生成流程缺少快取識別');
 if(html.includes('post-regenerate-v6.js'))throw new Error('正式publishing.html不得再載入舊v6第二套重生成邏輯');
 if(html.includes('<script src="/assets/js/publishing-resilience.js'))throw new Error('手機正式首屏不得再同步載入舊fetch覆寫 resilience；恢復能力應由核心與可見重連負責');
 if(html.includes('<script src="/assets/js/publishing-readiness-ui.js'))throw new Error('手機正式首屏不得再同步載入週期性 readiness；診斷改為使用者觸發');
 if(html.includes('<script src="/assets/js/post-bank-sync.js'))throw new Error('手機正式首屏不得載入母庫同步工具；母庫同步應由後端/Workflow處理');
-if(!html.includes('fetch(\'/healthz/core\'')||!html.includes('fetch(\'/healthz/readiness\''))throw new Error('系統診斷按鈕必須保留核心與readiness檢查');
+if(!html.includes("fetch('/healthz/core'")||!html.includes("fetch('/healthz/readiness'"))throw new Error('系統診斷按鈕必須保留核心與readiness檢查');
 const requiredJs=['PAGE_SIZE=18','data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','data-publish-now-from-modal','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts','document.documentElement.dataset.publishingRuntime=','立即發布不受固定時段限制'];
 for(const token of requiredJs){if(!js.includes(token))throw new Error(`publishing-app-v2.js缺少必要功能契約：${token}`)}
 if(!/dataset\.publishingRuntime=['"][^'"]*standalone[^'"]*['"]/.test(js))throw new Error('publishing-app-v2.js 缺少正式 standalone runtime 識別');
