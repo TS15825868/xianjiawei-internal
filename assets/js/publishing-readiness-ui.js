@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20260809-publishing-readiness-ui-v6-explain-failures';
+  const VERSION='20260815-publishing-readiness-ui-v7-nonblocking-boot';
   const MUTATION_SELECTOR='[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]';
   const PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]';
   let safeMode=true,publishReady=false,platformChecked=false,report=null,running=null,lastFullProbe=0;
@@ -12,7 +12,7 @@
   function issue(label,item){if(!item||item.ok===true||item.mode==='manual'||item.configured===false)return'';const reason=item.error||item.reason||(Array.isArray(item.missing)&&item.missing.length?`缺少 ${item.missing.join('、')}`:'健康檢查未通過');return`<div class="readiness-issue"><strong>${esc(label)}</strong><span>${esc(reason)}</span></div>`}
   function render(){
     const root=$('#readinessSummary');if(!root)return;
-    if(!report){root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查中…</small></span>';return}
+    if(!report){root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>背景檢查中…</small></span>';return}
     const base=[statusChip('Worker',report.worker),statusChip('D1',report.d1),statusChip('Access',report.access),statusChip('登入',report.login)],issues=[issue('Worker',report.worker),issue('D1',report.d1),issue('Cloudflare Access',report.access),issue('登入',report.login)].filter(Boolean);
     const p=report.platformProbe?.platforms||{};
     if(!Object.keys(p).length)base.push('<span class="readiness-chip checking"><strong>平台 API</strong><small>背景檢查中</small></span>');
@@ -24,7 +24,7 @@
     document.documentElement.dataset.publishingSafeMode=safeMode?'true':'false';document.documentElement.dataset.publishingPublishReady=publishReady?'true':'false';
     document.querySelectorAll(MUTATION_SELECTOR).forEach(button=>{if(safeMode){if(!button.disabled)button.dataset.xjwSafetyDisabled='1';button.disabled=true;if(!button.dataset.xjwOfflineDisabled)button.title='核心服務尚未通過安全診斷，目前僅供查看。'}else if(button.dataset.xjwSafetyDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwSafetyDisabled;button.disabled=false;if(button.title==='核心服務尚未通過安全診斷，目前僅供查看。')button.removeAttribute('title')}});
     document.querySelectorAll(PUBLISH_SELECTOR).forEach(button=>{if(!safeMode&&!publishReady){if(!button.disabled)button.dataset.xjwPlatformDisabled='1';button.disabled=true;button.title=platformChecked?'已設定的平台 API 尚未全部通過健康檢查，正式發布暫停。':'平台 API 正在背景安全檢查，確認後自動開放正式發布。'}else if(button.dataset.xjwPlatformDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwPlatformDisabled;button.disabled=false;if(/平台 API/.test(button.title||''))button.removeAttribute('title')}});
-    const state=$('#connectionState');if(state&&safeMode&&document.documentElement.dataset.publishingOffline!=='true'){state.textContent='安全檢查中｜暫停寫入';state.classList.add('safe-mode')}else if(state&&!safeMode){state.classList.remove('safe-mode');if(platformChecked&&!publishReady&&document.documentElement.dataset.publishingOffline!=='true')state.textContent='核心正常｜平台發布暫停'}
+    const state=$('#connectionState');if(state&&safeMode&&document.documentElement.dataset.publishingOffline!=='true'){if(!/已連線|讀取貼文|載入更多/.test(state.textContent||''))state.textContent='安全檢查背景執行中｜資料可先載入';state.classList.add('safe-mode')}else if(state&&!safeMode){state.classList.remove('safe-mode');if(platformChecked&&!publishReady&&document.documentElement.dataset.publishingOffline!=='true'&&!/已連線/.test(state.textContent||''))state.textContent='核心正常｜平台發布暫停'}
   }
   async function run({full=false}={}){
     if(running)return running;
@@ -36,7 +36,13 @@
     })().finally(()=>{running=null});return running
   }
   function schedulePlatformProbe(delay=900){setTimeout(()=>{if(Date.now()-lastFullProbe>5*60*1000)run({full:true})},delay)}
-  document.addEventListener('click',event=>{if(event.target.closest('[data-diagnose]'))run({full:true})});document.addEventListener('xjw-publishing-list-rendered',applySafeMode);document.addEventListener('DOMContentLoaded',()=>{render();applySafeMode();run({full:false}).then(()=>schedulePlatformProbe(900))});
+  function publicRun(options={}){
+    if(options?.full)return run({full:true});
+    if(report)return Promise.resolve(report);
+    queueMicrotask(()=>run({full:false}).then(()=>schedulePlatformProbe(900)).catch(()=>{}));
+    return Promise.resolve({ok:null,bootDeferred:true,version:VERSION});
+  }
+  document.addEventListener('click',event=>{if(event.target.closest('[data-diagnose]'))run({full:true})});document.addEventListener('xjw-publishing-list-rendered',applySafeMode);document.addEventListener('DOMContentLoaded',()=>{render();applySafeMode();setTimeout(()=>run({full:false}).then(()=>schedulePlatformProbe(900)).catch(()=>{}),120)});
   const coreTimer=setInterval(()=>run({full:false}),60000);if(typeof coreTimer?.unref==='function')coreTimer.unref();const platformTimer=setInterval(()=>run({full:true}),5*60*1000);if(typeof platformTimer?.unref==='function')platformTimer.unref();
-  window.XJWPublishingReadiness={version:VERSION,run,getReport:()=>report,isSafeMode:()=>safeMode,isPublishReady:()=>publishReady,applySafeMode,schedulePlatformProbe};
+  window.XJWPublishingReadiness={version:VERSION,run:publicRun,runBlocking:run,getReport:()=>report,isSafeMode:()=>safeMode,isPublishReady:()=>publishReady,applySafeMode,schedulePlatformProbe};
 })();
