@@ -4,13 +4,17 @@ const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
 const authority=fs.readFileSync('src/authority-entry.js','utf8');
 const production=fs.readFileSync('src/production-entry.js','utf8');
 const publisher=fs.readFileSync('src/social-publisher.js','utf8');
-const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-resilience.js','publishing-readiness-ui.js','publishing-app-v2.js','publishing-review-gate.js','post-bank-sync.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js'];
+const publishingOnly=fs.readFileSync('src/publishing-only-entry.js','utf8');
+const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-app-v2.js','publishing-review-gate.js','device-image-upload.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js','20260815-lean-boot-v1','XJWLoadOptionalScript'];
 for(const token of requiredHtml){if(!html.includes(token))throw new Error(`publishing.html缺少必要功能入口：${token}`)}
 if(!/publishing-app-v2\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的正式主程式缺少快取識別');
-if(!/post-bank-sync\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的目前母庫同步工具缺少快取識別');
 if(!/post-regenerate-policy-v1\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的重生成流程缺少快取識別');
 if(html.includes('post-regenerate-v6.js'))throw new Error('正式publishing.html不得再載入舊v6第二套重生成邏輯');
-const requiredJs=['PAGE_SIZE=18','data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','data-publish-now-from-modal','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts','XJWPublishingReadiness?.run','document.documentElement.dataset.publishingRuntime=','立即發布不受固定時段限制'];
+if(html.includes('<script src="/assets/js/publishing-resilience.js'))throw new Error('手機正式首屏不得再同步載入舊fetch覆寫 resilience；恢復能力應由核心與可見重連負責');
+if(html.includes('<script src="/assets/js/publishing-readiness-ui.js'))throw new Error('手機正式首屏不得再同步載入週期性 readiness；診斷改為使用者觸發');
+if(html.includes('<script src="/assets/js/post-bank-sync.js'))throw new Error('手機正式首屏不得載入母庫同步工具；母庫同步應由後端/Workflow處理');
+if(!html.includes('fetch(\'/healthz/core\'')||!html.includes('fetch(\'/healthz/readiness\''))throw new Error('系統診斷按鈕必須保留核心與readiness檢查');
+const requiredJs=['PAGE_SIZE=18','data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','data-publish-now-from-modal','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts','document.documentElement.dataset.publishingRuntime=','立即發布不受固定時段限制'];
 for(const token of requiredJs){if(!js.includes(token))throw new Error(`publishing-app-v2.js缺少必要功能契約：${token}`)}
 if(!/dataset\.publishingRuntime=['"][^'"]*standalone[^'"]*['"]/.test(js))throw new Error('publishing-app-v2.js 缺少正式 standalone runtime 識別');
 if(js.includes("state.items.map(card).join('')")&&!js.includes('state.total-state.items.length'))throw new Error('載入更多不得回退為只在本機切片全部貼文');
@@ -18,6 +22,9 @@ if(!js.includes('loadPlatforms(loadId)'))throw new Error('平台授權狀態必�
 if(!js.includes('setButtonBusy'))throw new Error('操作按鈕必須提供處理中狀態');
 for(const token of ['limit=Math.min(60','offset=Math.max(0','LIMIT ? OFFSET ?','COUNT(*) AS count']){
   if(!authority.includes(token)&&!production.includes(token))throw new Error(`後端分頁契約缺失：${token}`)
+}
+for(const token of ["path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/'","redirect('/publishing.html')","canonicalPublishingPath:'/publishing.html'"]){
+  if(!publishingOnly.includes(token))throw new Error(`iPhone正式入口正規化契約缺失：${token}`)
 }
 if(!/FAST_API_VERSION=['"][^'"]*fast-read[^'"]*['"]/.test(production))throw new Error('手機快速讀取契約缺少 fast-read 能力識別');
 for(const token of [
@@ -62,4 +69,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：貼文中心系統 App 以目前能力契約驗收：核心安全診斷、立即發布不受固定時段限制、單一重生成流程、動態目前母庫同步、快速Access驗證、D1安全模式、平台API預檢、server pagination、離線快取、LINE keep-warm與逐平台發布結果均存在。');
+console.log('PASS：貼文中心系統 App 使用輕量正式首屏：只先載核心與16項審核，診斷改為手動，裝置上圖／重生成／人工發布延後載入；保留快速Access、D1安全模式、server pagination、立即發布與逐平台發布結果。');
