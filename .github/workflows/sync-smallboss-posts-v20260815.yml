@@ -78,15 +78,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"
-            SELECT COUNT(*) AS smallboss_count FROM social_posts WHERE status<>'archived' AND image_url LIKE '%/images/posts/smallboss-v20260815/%';
-            SELECT COUNT(*) AS rebuilt_not_pending FROM social_posts WHERE image_url LIKE '%/images/posts/smallboss-v20260815/%' AND status<>'pending_review';
-            SELECT COUNT(*) AS old_visual_live FROM social_posts WHERE status IN ('draft','pending_review') AND (lower(image_url) LIKE '%/images/posts/current-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/publishing/generated-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/customer-display-v20260812/%' OR lower(image_url) LIKE '%post-image-guilu-drink.html%');
-            SELECT COUNT(*) AS blocked_name FROM social_posts WHERE status<>'archived' AND (title LIKE '%台興山產%' OR headline LIKE '%台興山產%' OR copy LIKE '%台興山產%' OR image_alt LIKE '%台興山產%' OR image_source LIKE '%台興山產%');
-          \"")"
-          echo "$result"
-          echo "$result" | grep -Eq 'smallboss_count[^0-9]*59|smallboss_count[[:space:]]+59'
-          echo "$result" | grep -Eq 'rebuilt_not_pending[^0-9]*0|rebuilt_not_pending[[:space:]]+0'
-          echo "$result" | grep -Eq 'old_visual_live[^0-9]*0|old_visual_live[[:space:]]+0'
-          echo "$result" | grep -Eq 'blocked_name[^0-9]*0|blocked_name[[:space:]]+0'
+          query_value(){
+            local sql="$1"
+            npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "$sql" > /tmp/query.json
+            node -e "const x=require('/tmp/query.json'); process.stdout.write(String(x.flatMap(v=>v.results||[])[0].value));"
+          }
+          smallboss_count="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status<>'archived' AND image_url LIKE '%/images/posts/smallboss-v20260815/%';")"
+          rebuilt_not_pending="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE image_url LIKE '%/images/posts/smallboss-v20260815/%' AND status<>'pending_review';")"
+          old_visual_live="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status IN ('draft','pending_review') AND (lower(image_url) LIKE '%/images/posts/current-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/publishing/generated-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/customer-display-v20260812/%' OR lower(image_url) LIKE '%post-image-guilu-drink.html%');")"
+          blocked_name="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status<>'archived' AND (title LIKE '%台興山產%' OR headline LIKE '%台興山產%' OR copy LIKE '%台興山產%' OR image_alt LIKE '%台興山產%' OR image_source LIKE '%台興山產%');")"
+          echo "smallboss_count=$smallboss_count"
+          echo "rebuilt_not_pending=$rebuilt_not_pending"
+          echo "old_visual_live=$old_visual_live"
+          echo "blocked_name=$blocked_name"
+          test "$smallboss_count" -eq 59
+          test "$rebuilt_not_pending" -eq 0
+          test "$old_visual_live" -eq 0
+          test "$blocked_name" -eq 0
           echo 'PASS: 59 張重製小老闆貼文圖已同步待審核；舊問題圖與指定名稱均未出現在現行貼文。'
