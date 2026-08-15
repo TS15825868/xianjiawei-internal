@@ -8,6 +8,7 @@ on:
       - 'src/publishing-content-audit-entry.js'
       - 'src/publishing-review-gate-entry.js'
       - 'assets/data/social-image-audit-v20260815.json'
+      - 'assets/data/guilu-context-media-v20260815.json'
       - '.github/workflows/audit-live-post-content.yml'
   workflow_dispatch:
 
@@ -53,15 +54,18 @@ jobs:
           const rows=blocks.flatMap(block=>block.results||[]);
           const problems=[];
           for(const row of rows){
-            const errors=semanticErrors(row,rows);
-            if(errors.length)problems.push({id:row.id,title:row.title,status:row.status,image_url:row.image_url,errors});
+            const errors=[];
+            if(String(row.copy||'').trim()&&!String(row.image_url||'').trim())errors.push('有正式文案但缺少圖片');
+            if(String(row.image_url||'').trim()&&!String(row.image_alt||'').trim())errors.push('已有圖片但缺少圖片說明，無法完成圖文一致審核');
+            errors.push(...semanticErrors(row,rows));
+            if(errors.length)problems.push({id:row.id,title:row.title,status:row.status,image_url:row.image_url,image_alt:row.image_alt,errors:[...new Set(errors)]});
           }
           if(problems.length){
             console.error('SEMANTIC_IMAGE_COPY_PROBLEMS',JSON.stringify(problems,null,2));
             process.exit(1);
           }
-          console.log(`PASS: ${rows.length} live non-archived posts passed season/weather/context/image semantic audit.`);
+          console.log(`PASS: ${rows.length} live non-archived posts all have images and passed season/weather/context/image semantic audit.`);
           NODE
       - name: Summary
         if: always()
-        run: echo '全部未封存貼文皆以目前季節／天氣／情境／料理／保存／外出／產品主題規則逐篇檢查。'
+        run: echo '全部未封存貼文必須文案有圖、圖片有說明，並逐篇通過季節／天氣／情境／料理／保存／外出／產品主題規則。'
