@@ -1,13 +1,16 @@
 (()=>{
   'use strict';
-  const VERSION='20260815-publishing-resilience-v2-ios-safari';
+  const VERSION='20260815-publishing-resilience-v3-ios-recovery';
   const CACHE_PREFIX='xjw-publishing-cache:';
   const MAX_CACHE_AGE=24*60*60*1000;
   const MOBILE_POST_LIMIT=6;
+  const HARD_RELOAD_COOLDOWN=60000;
+  const HARD_RELOAD_KEY='xjw-publishing-last-hard-reload';
   const originalFetch=window.fetch.bind(window);
   let usingCache=false;
   let hiddenAt=0;
   let resumeTimer=0;
+  let verifyTimer=0;
 
   const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   const isGet=options=>String(options?.method||'GET').toUpperCase()==='GET';
@@ -41,7 +44,7 @@
     return new Response(item.text,{status:200,headers:{'content-type':item.contentType||'application/json','cache-control':'no-store','x-xjw-publishing-cache':'1'}});
   }
   async function attempt(input,options,url,attemptNo){
-    const timeoutMs=Number(options?.xjwTimeout||7000);
+    const timeoutMs=Math.max(3500,Number(options?.xjwTimeout||options?.timeout||7000));
     const controller=new AbortController();
     const timer=setTimeout(()=>controller.abort(),timeoutMs);
     let cleanup=()=>{};
@@ -51,7 +54,7 @@
       cleanup=()=>options.signal.removeEventListener('abort',abort);
     }
     try{
-      const forwarded={...options,signal:controller.signal};delete forwarded.xjwTimeout;
+      const forwarded={...options,signal:controller.signal};delete forwarded.xjwTimeout;delete forwarded.timeout;
       const response=await originalFetch(input,forwarded);
       if(isGet(options)&&isSafeCachePath(url)&&response.ok){
         const clone=response.clone();clone.text().then(text=>writeCache(url,text,response.status,response.headers)).catch(()=>{});
@@ -95,18 +98,37 @@
     if(state&&!readOnly)state.classList.remove('cached');
   }
 
+  function canHardReload(){
+    try{return Date.now()-Number(sessionStorage.getItem(HARD_RELOAD_KEY)||0)>HARD_RELOAD_COOLDOWN}catch{return true}
+  }
+  function markHardReload(){try{sessionStorage.setItem(HARD_RELOAD_KEY,String(Date.now()))}catch{}}
+  function verifyResumeRecovered(wasBlank){
+    clearTimeout(verifyTimer);
+    if(!wasBlank)return;
+    verifyTimer=setTimeout(()=>{
+      if(document.visibilityState==='hidden')return;
+      const root=document.querySelector('#listRoot');
+      const text=String(root?.textContent||'').trim();
+      const stillStuck=!text||/頁面已恢復|正在重新載入|正在載入貼文中心|安全檢查中/.test(text);
+      if(stillStuck&&canHardReload()){
+        markHardReload();
+        location.reload();
+      }
+    },2800);
+  }
+
   function recoverVisiblePage(reason='resume'){
     if(document.visibilityState==='hidden')return;
     clearTimeout(resumeTimer);
     resumeTimer=setTimeout(()=>{
       const root=document.querySelector('#listRoot');
       if(!root)return;
-      if(!root.textContent.trim()){
-        root.innerHTML='<section class="loading-card">頁面已恢復，正在重新載入貼文…</section>';
-      }
+      const wasBlank=!root.textContent.trim();
+      if(wasBlank)root.innerHTML='<section class="loading-card">頁面已恢復，正在重新載入貼文…</section>';
       setReadOnly(false);
       document.documentElement.dataset.iosResumeReason=reason;
       document.querySelector('[data-refresh]')?.click();
+      verifyResumeRecovered(wasBlank);
     },220);
   }
 
@@ -114,7 +136,7 @@
     const time=new Date(event.detail.at).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
     requestAnimationFrame(()=>setReadOnly(true,`暫時離線｜顯示 ${time} 快取，僅供查看`));
   });
-  document.addEventListener('xjw-publishing-list-rendered',()=>{if(usingCache)setReadOnly(true)});
+  document.addEventListener('xjw-publishing-list-rendered',()=>{clearTimeout(verifyTimer);if(usingCache)setReadOnly(true)});
   window.addEventListener('offline',()=>setReadOnly(true,'目前離線｜保留畫面，僅供查看'));
   window.addEventListener('online',()=>recoverVisiblePage('online'));
   document.addEventListener('visibilitychange',()=>{
@@ -124,7 +146,7 @@
   window.addEventListener('pageshow',event=>{
     if(event.persisted||hiddenAt)recoverVisiblePage(event.persisted?'bfcache':'pageshow');
   });
-  window.addEventListener('pagehide',()=>{hiddenAt=Date.now();clearTimeout(resumeTimer)});
+  window.addEventListener('pagehide',()=>{hiddenAt=Date.now();clearTimeout(resumeTimer);clearTimeout(verifyTimer)});
 
   const reconnect=setInterval(()=>{
     if(document.visibilityState==='visible'&&document.documentElement.dataset.publishingOffline==='true'&&navigator.onLine!==false){
