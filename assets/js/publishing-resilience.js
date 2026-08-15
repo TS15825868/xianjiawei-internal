@@ -1,16 +1,28 @@
 (()=>{
   'use strict';
-  const VERSION='20260809-publishing-resilience-v1';
+  const VERSION='20260815-publishing-resilience-v2-ios-safari';
   const CACHE_PREFIX='xjw-publishing-cache:';
   const MAX_CACHE_AGE=24*60*60*1000;
+  const MOBILE_POST_LIMIT=6;
   const originalFetch=window.fetch.bind(window);
   let usingCache=false;
+  let hiddenAt=0;
+  let resumeTimer=0;
 
   const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   const isGet=options=>String(options?.method||'GET').toUpperCase()==='GET';
+  const isMobileReview=()=>matchMedia('(max-width: 760px)').matches||/iPhone|iPod/i.test(navigator.userAgent||'');
   const apiUrl=input=>{try{return new URL(typeof input==='string'?input:input.url,location.href)}catch{return null}};
   const isSafeCachePath=url=>url&&url.origin===location.origin&&(/^\/api\/posts(?:\?|$)/.test(url.pathname+url.search)||url.pathname==='/api/platform-authorization');
   const key=url=>CACHE_PREFIX+btoa(unescape(encodeURIComponent(url.pathname+url.search))).replace(/=+$/,'');
+
+  function mobileSafeInput(input,url){
+    if(!isMobileReview()||!url||url.origin!==location.origin||url.pathname!=='/api/posts')return input;
+    const requested=Number(url.searchParams.get('limit')||0);
+    if(!requested||requested>MOBILE_POST_LIMIT)url.searchParams.set('limit',String(MOBILE_POST_LIMIT));
+    return `${url.pathname}${url.search}`;
+  }
+
   function writeCache(url,text,status,headers){
     if(!url||!text||status<200||status>=300)return;
     try{localStorage.setItem(key(url),JSON.stringify({at:Date.now(),text,status,contentType:headers.get('content-type')||'application/json'}))}catch{}
@@ -49,8 +61,11 @@
     }finally{clearTimeout(timer);cleanup()}
   }
   window.fetch=async function resilientFetch(input,options={}){
-    const url=apiUrl(input),safeGet=isGet(options)&&url&&url.origin===location.origin&&url.pathname.startsWith('/api/');
+    let url=apiUrl(input);
+    const safeGet=isGet(options)&&url&&url.origin===location.origin&&url.pathname.startsWith('/api/');
     if(!safeGet)return originalFetch(input,options);
+    input=mobileSafeInput(input,url);
+    url=apiUrl(input)||url;
     let lastError=null;
     for(let i=0;i<3;i+=1){
       try{
@@ -79,22 +94,43 @@
     if(state&&readOnly){state.textContent=message||'快取模式｜僅供查看';state.classList.add('cached')}
     if(state&&!readOnly)state.classList.remove('cached');
   }
+
+  function recoverVisiblePage(reason='resume'){
+    if(document.visibilityState==='hidden')return;
+    clearTimeout(resumeTimer);
+    resumeTimer=setTimeout(()=>{
+      const root=document.querySelector('#listRoot');
+      if(!root)return;
+      if(!root.textContent.trim()){
+        root.innerHTML='<section class="loading-card">頁面已恢復，正在重新載入貼文…</section>';
+      }
+      setReadOnly(false);
+      document.documentElement.dataset.iosResumeReason=reason;
+      document.querySelector('[data-refresh]')?.click();
+    },220);
+  }
+
   document.addEventListener('xjw-publishing-cache-used',event=>{
     const time=new Date(event.detail.at).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
     requestAnimationFrame(()=>setReadOnly(true,`暫時離線｜顯示 ${time} 快取，僅供查看`));
   });
   document.addEventListener('xjw-publishing-list-rendered',()=>{if(usingCache)setReadOnly(true)});
   window.addEventListener('offline',()=>setReadOnly(true,'目前離線｜保留畫面，僅供查看'));
-  window.addEventListener('online',()=>{
-    setReadOnly(false);
-    const refresh=document.querySelector('[data-refresh]');
-    if(refresh){setTimeout(()=>refresh.click(),250)}
+  window.addEventListener('online',()=>recoverVisiblePage('online'));
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden'){hiddenAt=Date.now();return;}
+    if(hiddenAt&&Date.now()-hiddenAt>1500)recoverVisiblePage('visibility');
   });
+  window.addEventListener('pageshow',event=>{
+    if(event.persisted||hiddenAt)recoverVisiblePage(event.persisted?'bfcache':'pageshow');
+  });
+  window.addEventListener('pagehide',()=>{hiddenAt=Date.now();clearTimeout(resumeTimer)});
+
   const reconnect=setInterval(()=>{
-    if(document.documentElement.dataset.publishingOffline==='true'&&navigator.onLine!==false){
+    if(document.visibilityState==='visible'&&document.documentElement.dataset.publishingOffline==='true'&&navigator.onLine!==false){
       document.querySelector('[data-refresh]')?.click();
     }
   },30000);
   if(typeof reconnect?.unref==='function')reconnect.unref();
-  window.XJWPublishingResilience={version:VERSION,isUsingCache:()=>usingCache,setReadOnly};
+  window.XJWPublishingResilience={version:VERSION,isUsingCache:()=>usingCache,setReadOnly,mobilePostLimit:MOBILE_POST_LIMIT,recoverVisiblePage};
 })();
