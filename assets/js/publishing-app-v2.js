@@ -103,8 +103,10 @@ function audit(post){
     ['龜鹿膠',['龜鹿膠','jiao']]
   ];
   const mentioned=rules.filter(([,keys])=>keys.some(k=>copy.includes(norm(k))));
+  const productMatched=mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))));
+  const multiProductImage=mentioned.length>=2&&['六項','全系列','產品總覽','products-all','all-products','全品項','產品合照','產品情境圖'].some(k=>image.includes(norm(k)));
   if(!post.image_url)return{level:'danger',text:'缺少圖片，不能通過審核。'};
-  if(mentioned.length&&!mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))))){
+  if(mentioned.length&&!productMatched&&!multiProductImage){
     return{level:'danger',text:`文案提到「${mentioned.map(x=>x[0]).join('、')}」，圖片資訊無法確認對應產品，請先修正。`};
   }
   if(!post.image_alt)return{level:'warning',text:'尚未填寫圖片說明，請補齊後再完成審核。'};
@@ -475,7 +477,7 @@ async function init(){
   renderPlatforms();
   if(window.XJWPublishingReadiness?.run)await window.XJWPublishingReadiness.run({full:false});
   await Promise.allSettled([loadMe(),load()]);
-  document.documentElement.dataset.publishingRuntime='20260814-standalone-v17-review-flow';
+  document.documentElement.dataset.publishingRuntime='20260815-standalone-v18-mobile-review-ready';
 }
 
 if(document.readyState==='loading'){

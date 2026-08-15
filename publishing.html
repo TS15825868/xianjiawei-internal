@@ -11,7 +11,7 @@
   <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260815-v3">
   <title>仙加味｜貼文中心系統 App</title>
   <link rel="manifest" href="/manifest.webmanifest?v=20260815-app-v1">
-  <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v1">
+  <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v2-mobile">
   <link rel="stylesheet" href="/assets/css/publishing-app.css?v=20260815-app-v1">
   <link rel="stylesheet" href="/assets/css/publishing-performance.css?v=20260815-app-v1">
   <link rel="stylesheet" href="/assets/css/publishing-readiness.css?v=20260815-app-v1">
@@ -63,7 +63,7 @@
       var loaded={};
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.defer=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
-      function stillLoading(){var root=document.getElementById('listRoot');return !!(root&&/載入|啟動|正在連線|安全檢查/.test(root.textContent||''))}
+      function stillLoading(){var root=document.getElementById('listRoot');if(!root)return true;var loading=root.querySelector('.loading-card');return !!(loading&&/正在載入|正在啟動|啟動中|讀取中/.test(loading.textContent||''))}
       function showHelp(message){var help=document.getElementById('bootHelp'),text=document.getElementById('bootHelpText');if(text&&message)text.textContent=message;if(help)help.classList.add('show')}
       window.XJWShowBootHelp=showHelp;
       document.addEventListener('click',function(event){var diagnose=event.target.closest('[data-diagnose]');if(!diagnose)return;event.preventDefault();var root=document.getElementById('readinessSummary');if(root)root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查中…</small></span>';var ctl=new AbortController(),timer=setTimeout(function(){ctl.abort()},10000);Promise.all([fetch('/healthz/core',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.json()}),fetch('/healthz/readiness',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok,data:d}})})]).then(function(parts){clearTimeout(timer);var core=parts[0]||{},ready=parts[1]||{},ok=!!core.ok&&!!ready.ok;if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／登入</strong><small>'+(ok?'正常':'需檢查')+'</small></span>'}).catch(function(error){clearTimeout(timer);if(root)root.innerHTML='<span class="readiness-chip bad"><strong>系統診斷</strong><small>連線異常</small></span>';showHelp(error&&error.name==='AbortError'?'系統診斷逾時；請先重新連線，若仍異常再重新整理頁面。':'系統診斷失敗；請重新連線後再試。')})},true);
@@ -75,7 +75,7 @@
       window.addEventListener('error',function(){showHelp('頁面程式發生錯誤，請按「重新連線」。')});window.addEventListener('unhandledrejection',function(){showHelp('頁面連線未完成，請按「重新連線」。')});
     })();
   </script>
-  <script defer src="/assets/js/publishing-app-v2.js?v=20260815-lean-core-v1"></script>
+  <script defer src="/assets/js/publishing-app-v2.js?v=20260815-lean-core-v2-audit"></script>
   <script defer src="/assets/js/publishing-review-gate.js?v=20260815-lean-review-v1"></script>
 </body>
 </html>
