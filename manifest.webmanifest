@@ -1,0 +1,11 @@
+{
+  "name": "仙加味貼文中心系統 App",
+  "short_name": "仙加味貼文",
+  "description": "仙加味貼文審核、排程與發布中心",
+  "start_url": "/publishing.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7F4ED",
+  "theme_color": "#0B1F3B",
+  "lang": "zh-Hant-TW"
+}
