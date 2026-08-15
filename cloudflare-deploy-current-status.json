@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "status": "deployed_access_protected",
-  "updated_at_utc": "2026-08-15T03:50:02Z",
+  "updated_at_utc": "2026-08-15T03:54:45Z",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "current_architecture": {
@@ -34,11 +34,15 @@
     "rule": "一般產品主圖、詳細DM、試喝海報與products-v3身份／包裝／比例參考四種角色分離；產品本體不得AI重畫、變形或改包裝。"
   },
   "posting_center_runtime": {
+    "runtime_version": "publishing-center-app-20260815-v2",
+    "resilience_version": "20260815-publishing-resilience-v3-ios-recovery",
     "pwa_manifest": true,
     "ios_safari_resilience": true,
     "mobile_initial_post_limit": 6,
     "offline_read_cache": true,
     "pageshow_resume": true,
+    "resume_hard_reload_fallback": true,
+    "api_timeout_alignment": true,
     "dynamic_post_bank": true,
     "fixed_post_count_limit": false,
     "review_checklist_count": 16,
@@ -53,21 +57,23 @@
   },
   "local_code_validation": {
     "status": "success",
-    "workflow_run_id": 31862801694,
+    "workflow_run_id": 31863010051,
+    "source_commit": "1e1cdb4094297d5be8f54439144bc9458f4eac12",
     "checks": [
       "npm run check",
       "npm run guard:full",
       "standalone publishing center build",
       "retired ERP frontend absent from dist",
-      "safe idempotent review seed"
+      "safe idempotent review seed",
+      "iOS recovery runtime syntax and cache identity"
     ]
   },
   "cloudflare_deployment": {
     "status": "deployed",
-    "workflow_run_id": 31862829371,
-    "source_commit": "49eae2997dfa0828b293b26ac6ea4014e84c9668",
-    "content_commit": "31d59d1432367570912acbc17d7d86dbac6beca7",
-    "cloudflare_version_id": "90dec56e-458e-4f55-947b-3f12018a00ce",
+    "workflow_run_id": 31863037119,
+    "source_commit": "8f0ab3a90d430b9b2b2aea8e4e7e8340c13579e4",
+    "content_commit": "1e1cdb4094297d5be8f54439144bc9458f4eac12",
+    "cloudflare_version_id": "bd1aacb2-6757-4ea3-ba51-871b91d75f15",
     "cloudflare_api_token_present": true,
     "cloudflare_account_id_present": true,
     "remote_d1_verified": true,
@@ -86,14 +92,14 @@
   },
   "post_deploy_verification": {
     "status": "success",
-    "workflow_run_id": 31862829371,
+    "workflow_run_id": 31863037119,
     "remote_d1_verified": true,
     "production_route_reachable": true,
     "root_route_reachable": true,
     "publishing_route_reachable": true,
     "live_verify_mode": "cloudflare_access_boundary_verified",
     "authenticated_runtime_content_verified": false,
-    "reason_authenticated_content_not_directly_verified": "正式貼文中心由 Cloudflare Access 保護；未登入的 GitHub Actions 僅能驗證私人 Access 邊界、Worker、路由與 D1，實際登入後畫面仍需以使用者裝置做最後實機驗收。"
+    "reason_authenticated_content_not_directly_verified": "正式貼文中心由 Cloudflare Access 保護；未登入的 GitHub Actions 可驗證 Worker、D1 與私人 Access 邊界，登入後的實際 iPhone 畫面仍以使用者裝置作最後實機驗收。"
   },
   "cloudflare_deploy_blocker": null,
   "guard_mode": "paused_for_full_system_update",
