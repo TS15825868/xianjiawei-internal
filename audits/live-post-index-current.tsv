@@ -1,0 +1,78 @@
+id	status	category	title	headline	image_url
+XJW-WORK-REST-001	draft	日常節奏	工作再忙，也別忘了休息一下	工作再忙，也別忘了休息一下。	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp
+POST-BRAND-START	published	品牌故事	仙加味，從萬華開始	仙加味，從萬華開始。	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/brand-story.webp
+POST-COMBO	pending_review	系列搭配	日常節奏組｜膏與飲	固定與方便，依生活習慣安排。	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp
+POST-DRINK	draft	產品介紹	龜鹿飲｜方便快速	忙碌日常，也能簡單安排。	
+POST-GAO-100	draft	產品介紹	龜鹿膏 100g｜固定節奏	固定節奏，慢慢養成。	
+POST-INGREDIENT-PRINCIPLE	draft	用料原則	用料看得懂，日常才安心	把原料、規格與使用方式說清楚。	assets/images/posts/generated/post-ingredient-principle.jpg
+POST-LUERONG	pending_review	產品介紹	鹿茸粉75g	簡單加入日常飲品。	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-luerong-fen-75g.webp
+POST-SEASONS-RHYTHM	pending_review	四季節奏	四季日常節奏	季節會變，照顧自己的方式也可以慢慢調整。	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/temperature-coat.webp
+POST-STORE	draft	品牌日常	有空，來萬華走走	來店走走，也認識這個來自萬華的品牌。	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/contact-line.webp
+POST-WEATHER-HOT	pending_review	天氣提醒	天氣悶熱｜外出補水提醒	天氣悶熱，外出記得分次補充水分。	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/hot-weather-hydration-2.webp
+POST-WEATHER-RAIN	pending_review	天氣提醒	下雨天｜留一點慢下來的時間	下雨天在家，也別忘了留一點時間。	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/rainy-home.webp
+POST-WEATHER-TEMP	draft	天氣提醒	早晚溫差｜外出提醒	早晚溫差大，出門多帶一件外套。	
+XJW-GUILU-drink180-home	draft	龜鹿飲180cc	180cc放在居家日常，怎麼理解比較簡單？	份量較完整的即飲型態，從居家安排開始看	
+XJW-GUILU-drink180-made-order	draft	龜鹿飲180cc	180cc也是接單後製作嗎？	龜鹿飲30cc與180cc都適用5～7個工作天製作交期	
+XJW-GUILU-drink180-pouch	draft	龜鹿飲180cc	180cc龜鹿飲，為什麼是狹長鋁袋？	包裝型態不同，使用與攜帶感受也不同	
+XJW-GUILU-drink180-storage	draft	龜鹿飲180cc	180cc鋁袋開封前後，保存怎麼看？	未開封依包裝標示保存，開封後儘速飲用	
+XJW-GUILU-drink180-warm	draft	龜鹿飲180cc	180cc想喝溫熱的，可以怎麼安排？	隔水加熱或溫熱飲用，依自己的日常習慣安排	
+XJW-GUILU-drink30-made-order	draft	龜鹿飲30cc	為什麼龜鹿飲要等5～7個工作天？	接單後安排製作，交期只適用龜鹿飲	
+XJW-GUILU-drink30-small-jar	draft	龜鹿飲30cc	30cc為什麼是小玻璃罐？	先把包裝與份量看清楚，再談使用情境	
+XJW-GUILU-drink30-storage	draft	龜鹿飲30cc	30cc開罐前後，保存要注意什麼？	未開封避免高溫與日光直射，開罐後儘速飲用	
+XJW-GUILU-drink30-warm	draft	龜鹿飲30cc	30cc想溫熱飲用，怎麼安排比較簡單？	即飲之外，也可以依習慣做溫熱安排	
+XJW-GUILU-drink30-work-break	draft	龜鹿飲30cc	工作空檔想簡單安排，可以怎麼看30cc？	小份量、即飲型態，先從生活場景理解	
+XJW-GUILU-gao-100g	draft	龜鹿膏	龜鹿膏100g，先從哪裡開始認識？	罐裝、取用與溫熱水搭配，是最直觀的三件事	
+XJW-GUILU-gao-first-half	draft	龜鹿膏	第一次取用龜鹿膏，份量怎麼看？	初次可先從半匙開始，再依自己的使用習慣安排	
+XJW-GUILU-gao-routine	draft	龜鹿膏	龜鹿膏適合怎麼安排在一天裡？	依自己的使用習慣與作息安排，更容易維持日常節奏	
+XJW-GUILU-gao-storage	draft	龜鹿膏	龜鹿膏開罐後為什麼要注意保存？	罐裝產品取用與保存一起看，資訊會更完整	
+XJW-GUILU-gao-warm-water	draft	龜鹿膏	龜鹿膏直接吃，還是搭配溫熱水？	兩種都是日常使用方式，依自己的習慣安排	
+XJW-GUILU-jiao-600g	draft	龜鹿膠	龜鹿膠600g （1斤）／盒，怎麼看這個規格？	大盒32塊裝，先把盒裝與份量分清楚	
+XJW-GUILU-jiao-detail-weight	draft	產品知識	龜鹿膠每塊約18.75 g，怎麼看這個數字？	600g （1斤）／盒、32塊裝，換算每塊約18.75 g	
+XJW-GUILU-jiao-family	draft	龜鹿膠	龜鹿膠比較適合怎麼從家庭使用理解？	大盒裝、分塊取用，從家庭料理與固定備用看產品型態	
+XJW-GUILU-jiao-hot-water	draft	龜鹿膠	龜鹿膠除了料理，也能怎麼安排？	熱水化開或加入家常湯品，依自己的日常習慣選擇	
+XJW-GUILU-luerong-75g	draft	鹿茸粉	鹿茸粉75g／罐，先從哪裡開始認識？	單一原料、粉狀型態、罐裝保存，資訊簡單清楚	
+XJW-GUILU-luerong-single-material	draft	產品知識	為什麼鹿茸粉的產品資訊可以很簡單？	成分就是鹿茸，規格就是75g／罐	
+XJW-GUILU-luerong-storage	draft	鹿茸粉	鹿茸粉開封後，保存重點是什麼？	密封、避免受潮與高溫，依產品資訊保存	
+XJW-GUILU-tangkuai-75g	draft	龜鹿湯塊	龜鹿湯塊75g／盒，8塊裝代表什麼？	先看盒裝規格，再看每次怎麼取用	
+XJW-GUILU-tangkuai-hot-water	draft	龜鹿湯塊	不煮湯時，龜鹿湯塊也可以怎麼用？	從熱水或保溫壺等簡單方式理解塊狀產品	
+XJW-GUILU-tangkuai-soup	draft	料理搭配	龜鹿湯塊怎麼放進家常湯品？	雞湯、排骨湯等熟悉料理，是最容易理解的使用情境	
+XJW-GUILU-trial-first	pending_review	試喝	想先試喝，再決定？	龜鹿飲30cc試喝組先從3罐開始	https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg?v=20260815-context-media-v3-svg-render-integrity
+XJW-GUILU-trial-shipping	draft	試喝	試喝組的運費與交期怎麼看？	3罐試喝品免費，運費自付，接單後製作	
+XJW-GUILU-choose-by-place	draft	生活情境	在家、外出、工作空檔，龜鹿型態怎麼選？	從生活場景開始，比先背產品名稱更容易	
+XJW-GUILU-guilu-first-three	pending_review	龜鹿入門	第一次認識龜鹿，先看哪三件事？	文化、型態、生活方式，先把三件事看清楚	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/choose-by-routine.webp
+XJW-GUILU-guilu-forms	pending_review	產品比較	龜鹿飲、龜鹿膏、湯塊與龜鹿膠差在哪？	同一套飲食文化，可以有不同的日常形式	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-tangkuai-75g.webp
+XJW-GUILU-modern-tradition	pending_review	品牌故事	傳統龜鹿文化，怎麼變得更方便理解？	保留工序與文化，把說明方式做得更清楚	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/combo.webp
+XJW-GUILU-warm-food-culture	pending_review	飲食文化	龜鹿與溫熱飲食、燉煮文化有什麼關係？	從傳統餐桌看龜鹿文化的延續	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-rhythm.webp
+XJW-GUILU-why-guilu-daily	pending_review	龜鹿入門	為什麼有人把龜鹿放進日常？	從飲食文化、產品型態與生活方式認識龜鹿	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family-2.webp
+XJW-SOCIAL-20260815-01-brand-rhythm	draft	品牌理念	補養，是一種節奏。	不必照著別人的時間，找到適合自己的日常安排	
+XJW-SOCIAL-20260815-01-daily-cooking	pending_review	料理搭配	料理，也是一種日常搭配。	從雞湯、排骨湯等熟悉料理開始，讓傳統飲食文化更貼近日常	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp
+XJW-SOCIAL-20260815-01-product-drink-180	pending_review	產品介紹	龜鹿飲180cc鋁袋｜完整份量即飲	180cc／包（鋁袋），狹長直立包裝，居家或工作空檔都方便	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-180cc.webp
+XJW-SOCIAL-20260815-01-product-drink-30	pending_review	產品介紹	龜鹿飲30cc玻璃罐｜小玻璃裸罐	30cc／罐（小玻璃罐），輕巧即飲，外出也方便	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-drink-30cc.webp
+XJW-SOCIAL-20260815-01-product-guilu-gao	pending_review	產品介紹	龜鹿膏｜100g／罐	小匙取用、溫熱水化開，依自己的日常習慣安排	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-gao-100g.webp
+XJW-SOCIAL-20260815-01-product-guilu-jiao	pending_review	產品介紹	龜鹿膠｜600g （1斤）／盒｜32塊裝	每塊約18.75 g，家庭大規格可依日常習慣安排	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/product-guilu-jiao-600g.webp
+XJW-SOCIAL-20260815-01-six-products-overview	pending_review	產品總覽	六項產品，一次認識。	先看型態、規格與使用方式，再挑適合自己的日常形式	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/products-all.webp
+XJW-SOCIAL-20260815-01-trial-first	draft	試喝	龜鹿飲試喝組｜先試喝，再決定	30cc小玻璃罐3罐試喝品免費，運費自付	
+XJW-SOCIAL-20260815-01-usage-personal-routine	draft	使用方式	想怎麼安排，就怎麼安排。	產品使用時間，可依個人使用習慣與作息安排	
+XJW-SOCIAL-20260815-01-warm-drink-moment	pending_review	日常飲用	把溫熱飲用，留給自己的日常片刻。	從方便即飲到溫熱搭配，都能依自己的生活節奏安排	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp
+XJW-SOCIAL-20260815-02-choose-by-routine-first	pending_review	挑選方式	第一次認識仙加味，先從生活方式開始。	不用先背產品名稱，先想自己平常怎麼使用會更容易	https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/choose.jpg
+XJW-SOCIAL-20260815-02-drink-180-home	draft	生活情境	180cc鋁袋，把完整份量留給居家與工作空檔。	180cc／包（鋁袋），可直接飲用，也可溫熱後飲用	
+XJW-SOCIAL-20260815-02-drink-30-outside	draft	生活情境	30cc小玻璃罐，適合放進外出的日常。	小玻璃裸罐、輕巧即飲，依自己的工作與外出節奏安排	
+XJW-SOCIAL-20260815-02-drink-30-vs-180	draft	產品比較	30cc小玻璃罐與180cc鋁袋，差別先看哪裡？	同樣是龜鹿飲，容量、包裝與使用情境不同	
+XJW-SOCIAL-20260815-02-drink-made-to-order	draft	出貨說明	龜鹿飲為什麼需要5～7個工作天？	接單後安排製作，完成後才安排出貨	
+XJW-SOCIAL-20260815-02-faq-flexible-time	pending_review	常見問題	一定要固定早上、下午或白天使用嗎？	不需要把固定時段當成唯一規則	https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/faq.png
+XJW-SOCIAL-20260815-02-jiao-family-cooking	draft	使用方式	龜鹿膠，一斤大盒怎麼理解？	600g（1斤）／盒｜32塊裝，適合家庭大規格與料理安排	
+XJW-SOCIAL-20260815-02-line-consult-and-trial	draft	諮詢導流	想先了解，再決定怎麼選。	規格、使用方式、龜鹿飲試喝與下單，都可以先從官方LINE詢問	
+XJW-SOCIAL-20260815-02-luerong-daily-drink	draft	產品介紹	鹿茸粉，保留自己調整份量的彈性。	75g／罐，粉狀型態可依日常習慣自行搭配	
+XJW-SOCIAL-20260815-02-tangkuai-thermos-soup	draft	使用方式	龜鹿湯塊，可以怎麼放進日常？	熱水沖泡、保溫壺悶泡，或搭配雞湯與排骨湯	
+XJW-SOCIAL-20260815-02-tangkuai-vs-jiao	draft	產品比較	龜鹿湯塊與龜鹿膠，從規格開始分清楚。	75g8塊裝，與600g（1斤）32塊裝，是兩種不同盒裝	
+XJW-SOCIAL-20260815-03-ask-line-before-order	draft	客服諮詢	下單前，有問題先問就好。	規格、使用方式、試喝、製作交期與下單流程，都可以先從官方LINE確認	
+XJW-SOCIAL-20260815-03-craft-time-and-heat	pending_review	傳統工序	傳統熬製，為什麼總是在談時間與火候？	前處理、時間、火候與濃縮節奏，都是工序的一部分	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/guide-how-to-use.webp
+XJW-SOCIAL-20260815-03-four-generation-work	pending_review	品牌故事	四代做同一門工作，留下的是什麼？	從看料、鹿角與熬製經驗，到今天更清楚的產品資訊	https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/brand-story.png
+XJW-SOCIAL-20260815-03-gao-half-spoon-start	draft	使用方式	龜鹿膏第一次怎麼安排？	先從半匙開始，也可以直接取用或用溫熱水化開	
+XJW-SOCIAL-20260815-03-ingredient-info-clear	pending_review	產品知識	看產品，不只看名稱，也要看成分與型態。	把產品名稱、規格、成分與使用方式分開看，資訊會更清楚	https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/choose.webp
+XJW-SOCIAL-20260815-03-storage-basics	pending_review	保存方式	產品買回家，保存方式先看清楚。	不同產品型態，開封前後的保存方式也不一樣	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp
+XJW-SOCIAL-20260815-03-thirty-cc-package-detail	draft	產品知識	30cc小玻璃罐，輕巧的即飲選擇。	30cc／罐，小玻璃裸罐、無貼紙，外出攜帶也方便	
+XJW-SOCIAL-20260815-03-trial-first-then-decide	draft	試喝	先試喝，再決定。	龜鹿飲30cc試喝組：3罐免費，運費自付	
+XJW-SOCIAL-20260815-03-wanhua-visit-brand	draft	品牌故事	從萬華開始，也歡迎從萬華認識我們。	把四代累積的鹿角與漢方飲食文化，整理成今天的仙加味	
+XJW-SOCIAL-20260815-03-warm-not-iced	draft	日常飲用	想喝溫一點，可以怎麼安排？	龜鹿飲可直接飲用，也可隔水加熱或溫熱後飲用	
+XJW-SOCIAL-20260815-03-why-exact-specs	pending_review	產品知識	為什麼規格要寫得這麼清楚？	容量、重量、包裝與每盒數量分開寫，才不會把不同產品混在一起	https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/daily-hydration.webp
