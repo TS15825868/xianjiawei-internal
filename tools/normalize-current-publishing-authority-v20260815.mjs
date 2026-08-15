@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
+const SELF='tools/normalize-current-publishing-authority-v20260815.mjs';
 const files=execFileSync('git',['ls-files'],{encoding:'utf8'}).split(/\r?\n/).filter(Boolean);
 let changed=0;
 for(const file of files){
-  if(file.startsWith('audits/')||file.startsWith('node_modules/'))continue;
+  if(file===SELF||file.startsWith('.github/workflows/')||file.startsWith('audits/')||file.startsWith('node_modules/'))continue;
   let raw;try{raw=fs.readFileSync(file,'utf8')}catch{continue}
   if(raw.includes('\u0000'))continue;
   let next=raw
