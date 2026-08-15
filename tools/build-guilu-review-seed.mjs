@@ -26,6 +26,11 @@ const ids = new Set();
 const sqlString = value => `'${String(value ?? '').replaceAll("'", "''")}'`;
 const jsonString = value => sqlString(JSON.stringify(value ?? []));
 const safeId = value => String(value || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+const normalizeImage = value => String(value || '').trim().split('#')[0].split('?')[0].toLowerCase();
+const fixedReusable = value => {
+  const url=normalizeImage(value);
+  return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url);
+};
 const resolveMedia = topic => {
   if (topic?.imageMode === 'official_trial') return { url: CURRENT_TRIAL_MEDIA, source: '仙加味8/14目前正式試喝主圖' };
   if (topic?.imageMode === 'official_product') {
@@ -40,6 +45,7 @@ const resolveMedia = topic => {
 };
 
 if (!rows.length) throw new Error('沒有 seedToReview=true 的龜鹿題目');
+const genericImageGroups=new Map();
 for (const topic of rows) {
   const id = safeId(topic.id);
   if (!id) throw new Error(`題目缺少合法 id：${topic.title || 'unknown'}`);
@@ -49,11 +55,20 @@ for (const topic of rows) {
   const lower=text.toLowerCase();
   const hit = [...BLOCKED,...CUSTOMER_INTERNAL].find(term => lower.includes(term.toLowerCase()));
   if (hit) throw new Error(`題目 ${id} 含禁止公開字詞：${hit}`);
+  if(/仙加味\s*仙加味/.test(text))throw new Error(`題目 ${id} 顧客文字含重複品牌字樣「仙加味仙加味」`);
   const media = resolveMedia(topic);
   if (!media?.url.startsWith(REQUIRED_IMAGE_PREFIX)) throw new Error(`題目 ${id} 沒有目前正式網站圖片來源`);
   if (/\/images\/products-v3\//.test(media.url)) throw new Error(`題目 ${id} 不得把 products-v3 身份參考直接當目前一般貼文主圖`);
   if (/trial-small-boss\.webp|\/trial\.webp|trial-clean-v4\.svg/.test(media.url)) throw new Error(`題目 ${id} 使用退役試喝圖`);
   if (!String(topic.copy || '').trim()) throw new Error(`題目 ${id} 缺少文案`);
+  if(!fixedReusable(media.url)){
+    const imageKey=normalizeImage(media.url);
+    if(!genericImageGroups.has(imageKey))genericImageGroups.set(imageKey,[]);
+    genericImageGroups.get(imageKey).push({id,title:topic.title});
+  }
+}
+for(const [image,group] of genericImageGroups){
+  if(group.length>1)throw new Error(`龜鹿母庫有泛用圖片重複配給不同主題：${image} → ${group.map(item=>`${item.id}:${item.title}`).join('｜')}`);
 }
 
 const statements = [];
@@ -98,4 +113,4 @@ for (const topic of rows) {
 
 statements.push(`SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status;`);
 process.stdout.write(statements.join('\n\n') + '\n');
-console.error(`PASS: ${rows.length} 篇龜鹿母庫貼文可使用8/14目前正式媒體安全建立為待審核；不使用products-v3作一般貼文主圖，不自動核准、不排程、不發布。`);
+console.error(`PASS: ${rows.length} 篇龜鹿母庫貼文完成泛用圖重複檢查並可使用8/14目前正式媒體安全建立為待審核；產品／試喝正式權威素材允許同用途重複，泛用情境圖不得跨主題重複；不自動核准、不排程、不發布。`);
