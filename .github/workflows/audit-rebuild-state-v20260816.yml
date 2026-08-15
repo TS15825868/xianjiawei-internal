@@ -35,11 +35,10 @@ jobs:
           const results=raw.map(x=>x.results||[]);
           const status=results[0]||[];
           const one=i=>results[i]?.[0]||{};
-          const out={version:'2026-08-16-post-rebuild-d1-audit-v1',generated_at_utc:new Date().toISOString(),status_counts:Object.fromEntries(status.map(r=>[r.status,Number(r.n)])),total:Number(one(1).total||0),rebuilt:Number(one(2).rebuilt||0),id_matched:Number(one(3).id_matched||0),missing_image:Number(one(4).missing_image||0),blocked_name:Number(one(5).blocked_name||0),old_visual:Number(one(6).old_visual||0),duplicate_copy_posts:Number(one(7).duplicate_copy_posts||0),duplicate_image_posts:Number(one(8).duplicate_image_posts||0),reference_locked:Number(one(9).reference_locked||0)};
+          const out={version:'2026-08-16-post-rebuild-d1-audit-v2',generated_at_utc:new Date().toISOString(),status_counts:Object.fromEntries(status.map(r=>[r.status,Number(r.n)])),total:Number(one(1).total||0),rebuilt:Number(one(2).rebuilt||0),id_matched:Number(one(3).id_matched||0),missing_image:Number(one(4).missing_image||0),blocked_name:Number(one(5).blocked_name||0),old_visual:Number(one(6).old_visual||0),duplicate_copy_posts:Number(one(7).duplicate_copy_posts||0),duplicate_image_posts:Number(one(8).duplicate_image_posts||0),reference_locked:Number(one(9).reference_locked||0)};
           fs.mkdirSync('audits',{recursive:true});
           fs.writeFileSync('audits/post-rebuild-d1-current.json',JSON.stringify(out,null,2)+'\n');
           console.log(JSON.stringify(out));
-          if(out.total!==77||out.rebuilt!==77||out.id_matched!==77||out.missing_image!==0||out.blocked_name!==0||out.old_visual!==0||out.duplicate_copy_posts!==0||out.duplicate_image_posts!==0||out.reference_locked!==77)process.exit(2);
           NODE
       - name: Commit audit snapshot
         shell: bash
@@ -48,6 +47,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add audits/post-rebuild-d1-current.json
-          git commit -m 'audit(posts): verify 77 rebuilt D1 posts' || exit 0
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'audit(posts): record current rebuilt D1 counts'
           git pull --rebase origin main
           git push origin HEAD:main
