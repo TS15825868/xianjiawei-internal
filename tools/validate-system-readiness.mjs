@@ -4,6 +4,7 @@ const must=(ok,message)=>{if(!ok)throw new Error(message)};
 
 const production=read('src/production-entry.js');
 const publishingOnly=read('src/publishing-only-entry.js');
+const contentAudit=read('src/publishing-content-audit-entry.js');
 const readiness=read('src/system-readiness.js');
 const review=read('src/publishing-review-gate-entry.js');
 const flexible=read('src/flexible-publish-entry.js');
@@ -17,7 +18,9 @@ const formalMedia=read('assets/js/formal-media-policy-v20260810.js');
 const pkg=read('package.json');
 const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 
-must(/"main"\s*:\s*"src\/publishing-only-entry\.js"/.test(wrangler),'正式Wrangler入口必須是publishing-only-entry.js');
+must(/"main"\s*:\s*"src\/publishing-content-audit-entry\.js"/.test(wrangler),'正式Wrangler入口必須是目前內容語意守門入口 publishing-content-audit-entry.js');
+must(contentAudit.includes("from './publishing-only-entry.js'"),'內容語意守門必須沿用publishing-only正式安全鏈');
+for(const token of ['duplicateImageHardGate:true','seasonWeatherContextAudit:true','semanticImageMatchHardGate:true','/api/posts/content-audit'])must(contentAudit.includes(token),`內容語意守門缺少：${token}`);
 must(/"html_handling"\s*:\s*"none"/.test(wrangler),'Cloudflare Assets 必須停用自動 HTML 重新導向，避免 Safari 重新導向循環');
 must(/"POLICY_AUD"\s*:\s*"201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f"/.test(wrangler),'Cloudflare Access Application Audience 必須寫入正式 Worker 變數');
 must(/"TEAM_DOMAIN"\s*:\s*"https:\/\/tung314069\.cloudflareaccess\.com"/.test(wrangler),'Cloudflare Access Team Domain 必須寫入正式 Worker 變數');
@@ -54,7 +57,7 @@ must(html.includes('XJWLoadOptionalScript')&&html.includes('device-image-upload.
 for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`備用publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
 must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&resilience.includes('pageshow'),'備用iPhone/Safari恢復模組能力不足');
 
-for(const token of ['src/publishing-only-entry.js','assets/css/publishing-base.css','assets/js/publishing-readiness-ui.js','assets/js/publishing-resilience.js','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少正式貼文App檔：${token}`);
+for(const token of ['src/publishing-content-audit-entry.js','src/publishing-only-entry.js','assets/css/publishing-base.css','assets/js/publishing-readiness-ui.js','assets/js/publishing-resilience.js','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少正式貼文App檔：${token}`);
 for(const retired of ['assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/loading-watchdog-v20260809.js'])must(!pkg.includes(retired),`正式部署仍帶入已停用ERP前端：${retired}`);
 
-console.log(`PASS：正式系統為貼文中心系統App；Cloudflare Access JWT 驗證參數已固定於正式 Worker；/、/publishing、/publishing/、/publishing.html 皆直接回傳同一正式頁，不再產生HTML canonical重新導向；ERP UI/API不對外，保留D1、Access、16項審核、排程／立即發布與延後載入媒體工具。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
+console.log(`PASS：正式系統為貼文中心系統App；目前Wrangler先經內容語意守門，再沿用publishing-only與production安全鏈；Cloudflare Access、D1、16項審核、重複圖片、季節／天氣／情境檢查、排程／立即發布與延後載入媒體工具均保留。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
