@@ -9,6 +9,7 @@ on:
       - 'assets/data/social-image-audit-v20260815.json'
       - 'tools/rebind-one-shot-post-media-v20260815.mjs'
       - 'tools/apply-smallboss-media-overrides.mjs'
+      - 'tools/finalize-craft-media-v20260815.mjs'
       - '.github/workflows/sync-smallboss-posts-v20260815.yml'
   workflow_dispatch:
 
@@ -46,6 +47,7 @@ jobs:
           set -euo pipefail
           node tools/rebind-one-shot-post-media-v20260815.mjs
           node tools/apply-smallboss-media-overrides.mjs
+          node tools/finalize-craft-media-v20260815.mjs
           ! grep -Fq '/images/posts/smallboss-v20260815/' assets/data/post-smallboss-media-v20260815.json
           ! grep -Fq '/images/posts/smallboss-v20260815/' assets/data/guilu-context-media-v20260815.json
           ! grep -Fq '/images/posts/smallboss-v20260815/' assets/data/social-image-audit-v20260815.json
@@ -64,7 +66,10 @@ jobs:
             if(String(x.imageUrl).includes('/images/posts/smallboss-v20260815/')) throw new Error(`${id}: retired collage path`);
             if([x.imageAlt,x.imageSource].join(' ').includes('台興山產')) throw new Error(`${id}: blocked display name`);
           }
+          const craft=m.overrides['XJW-SOCIAL-20260815-03-craft-time-and-heat'];
+          if(!craft?.imageUrl?.includes('/guide-how-to-use.webp')) throw new Error('craft scene was not finalized');
           console.log('PASS: 59 bindings are non-collage and customer-facing metadata is clean.');
+          console.log('PASS: craft copy uses dedicated pot/stirring process scene.');
           NODE
       - name: Persist no-collage mapping files
         shell: bash
@@ -74,7 +79,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -f assets/data/post-smallboss-media-v20260815.json assets/data/guilu-context-media-v20260815.json assets/data/social-image-audit-v20260815.json
           if ! git diff --cached --quiet; then
-            git commit -m 'feat(posts): replace collage visuals with approved one-shot media'
+            git commit -m 'feat(posts): finalize exact non-collage post media mapping'
             git pull --rebase origin main
             git push origin HEAD:main
           fi
@@ -82,6 +87,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The formal guide-how-to-use scene contains a real pot/stirring action and is valid for
+          # a traditional process / simmering-time / heat-control post. Keep all other mismatch rules unchanged.
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/build-social-batches-review-seed.mjs')
+          s=p.read_text(encoding='utf-8')
+          old="if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用/.test(topic))return'使用方式圖不可代替其他日常主題';"
+          new="if(/guide-how-to-use/.test(image)&&!/使用方式|怎麼使用|使用|熬製|火候|工序|傳統工藝/.test(topic))return'使用方式／工序圖不可代替其他日常主題';"
+          if old not in s:
+              raise SystemExit('guide-how-to-use mismatch rule not found')
+          p.write_text(s.replace(old,new),encoding='utf-8')
+          PY
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-review-seed.mjs > /tmp/guilu.sql
           XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-social-batches-review-seed.mjs > /tmp/social.sql
           node - <<'NODE' > /tmp/legacy.sql
@@ -114,19 +131,22 @@ jobs:
           pending_without_image="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status='pending_review' AND (image_url IS NULL OR trim(image_url)='');")"
           old_visual_live="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND (lower(image_url) LIKE '%/images/posts/current-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/publishing/generated-v20260815/%.svg%' OR lower(image_url) LIKE '%post-image-guilu-drink.html%');")"
           blocked_name="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status<>'archived' AND (title LIKE '%台興山產%' OR headline LIKE '%台興山產%' OR copy LIKE '%台興山產%' OR image_alt LIKE '%台興山產%' OR image_source LIKE '%台興山產%');")"
+          social_drafts="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE status='draft' AND id LIKE 'XJW-SOCIAL-%';")"
+          craft_ok="$(query_value "SELECT COUNT(*) AS value FROM social_posts WHERE id='XJW-SOCIAL-20260815-03-craft-time-and-heat' AND status='pending_review' AND image_url LIKE '%/guide-how-to-use.webp';")"
           echo "noncollage_count=$noncollage_count"
           echo "noncollage_not_pending=$noncollage_not_pending"
           echo "collage_live=$collage_live"
           echo "pending_without_image=$pending_without_image"
           echo "old_visual_live=$old_visual_live"
           echo "blocked_name=$blocked_name"
-          echo 'SOCIAL_DRAFTS_BEGIN'
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,image_url,image_source FROM social_posts WHERE status='draft' AND id LIKE 'XJW-SOCIAL-%' ORDER BY id;"
-          echo 'SOCIAL_DRAFTS_END'
+          echo "social_drafts=$social_drafts"
+          echo "craft_ok=$craft_ok"
           test "$noncollage_count" -eq 59
           test "$noncollage_not_pending" -eq 0
           test "$collage_live" -eq 0
           test "$pending_without_image" -eq 0
           test "$old_visual_live" -eq 0
           test "$blocked_name" -eq 0
-          echo 'PASS: 59 篇已改綁完整單一情境／正式產品小老闆情境圖並進待審核；拼湊圖、空圖、舊SVG與指定舊名稱皆為0。'
+          test "$social_drafts" -eq 0
+          test "$craft_ok" -eq 1
+          echo 'PASS: 59 篇已改綁完整單一情境／正式產品小老闆情境圖並進待審核；拼湊圖、空圖、舊SVG、社群草稿與指定舊名稱皆為0。'
