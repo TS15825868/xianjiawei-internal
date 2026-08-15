@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-// 2026-08-15：守門依目前能力驗證，不鎖死舊版號；此檔變更也用來從最新 main 重新跑正式部署。
+// 2026-08-15：守門依目前能力驗證，不鎖死舊版號；全套 validate-only 已通過，從最新 main 觸發正式部署。
 const read=path=>fs.readFileSync(path,'utf8');
 const must=(ok,message)=>{if(!ok)throw new Error(message)};
 
