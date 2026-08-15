@@ -18,6 +18,7 @@ const pkg=read('package.json');
 const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 
 must(/"main"\s*:\s*"src\/publishing-only-entry\.js"/.test(wrangler),'正式Wrangler入口必須是publishing-only-entry.js');
+must(/"html_handling"\s*:\s*"none"/.test(wrangler),'Cloudflare Assets 必須停用自動 HTML 重新導向，避免 Safari 重新導向循環');
 for(const token of ["path==='/healthz/core'","path==='/healthz/readiness'",'runReadiness(request,env,ctx,app','mutationCoreGate(env)','MUTATING_METHODS.has(request.method)','const d1=await checkD1(env)','platformPublishGate(env)','loginCheck:()=>verifyFastAccess(request,env)','readinessUsesSharedFastAccess:true'])must(production.includes(token),`production安全鏈缺少：${token}`);
 must(production.includes('D1未就緒，本輪不發布'),'排程器沒有在D1故障時自動停發');
 must(production.includes('平台安全模式：已設定平台API健康檢查未通過，本輪不發布'),'排程發布前沒有平台API健康守門');
@@ -26,8 +27,9 @@ must(readiness.includes("SELECT 1 AS ok"),'D1 readiness沒有使用非破壞性�
 for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
 for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
-for(const token of ["path==='/'||path==='/index.html'||path==='/publishing'||path==='/publishing/'","redirect('/publishing.html')","blockedApi(path)","path==='/api/me'","path==='/api/platform-authorization'","path==='/api/media-upload'","path==='/api/posts'","path.startsWith('/api/posts/')",'erpUiDisabled:true','erpApisBlocked:true','publishingCenterApp:true','canonicalPublishingPath'])must(publishingOnly.includes(token),`publishing-only隔離層缺少：${token}`);
-must(index.includes("location.replace('/publishing.html')"),'根網址必須直接進入貼文中心');
+for(const token of ['publishingUiAlias(path)','servePublishingAsset(request,env)','blockedApi(path)',"path==='/api/me'","path==='/api/platform-authorization'","path==='/api/media-upload'","path==='/api/posts'","path.startsWith('/api/posts/')",'erpUiDisabled:true','erpApisBlocked:true','publishingCenterApp:true','rootServesPublishingDirectly:true','redirectLoopPrevention:true','canonicalPublishingPath:CANONICAL_PUBLISHING_PATH'])must(publishingOnly.includes(token),`publishing-only隔離層缺少：${token}`);
+must(!publishingOnly.includes("return redirect('/publishing.html')"),'正式入口不得再使用 /publishing.html 302 重新導向');
+must(index.includes("location.replace('/publishing.html')"),'備用index頁必須仍能進入貼文中心');
 must(!index.includes('internal-app.js')&&!index.includes('營運中控'),'根頁不得再載入ERP介面');
 
 for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`前端產品媒體權威缺少：${token}`);
@@ -53,4 +55,4 @@ must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&r
 for(const token of ['src/publishing-only-entry.js','assets/css/publishing-base.css','assets/js/publishing-readiness-ui.js','assets/js/publishing-resilience.js','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少正式貼文App檔：${token}`);
 for(const retired of ['assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/js/loading-watchdog-v20260809.js'])must(!pkg.includes(retired),`正式部署仍帶入已停用ERP前端：${retired}`);
 
-console.log(`PASS：正式系統為貼文中心系統App；根網址與/publishing均正規化到/publishing.html，ERP UI/API不對外；iPhone首屏採輕量核心、診斷手動觸發，保留D1、Access、16項審核、排程／立即發布與延後載入媒體工具。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
+console.log(`PASS：正式系統為貼文中心系統App；/、/publishing、/publishing/、/publishing.html 皆直接回傳同一正式頁，不再產生HTML canonical重新導向；ERP UI/API不對外，保留D1、Access、16項審核、排程／立即發布與延後載入媒體工具。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
