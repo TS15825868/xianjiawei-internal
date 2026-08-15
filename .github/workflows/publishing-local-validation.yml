@@ -90,7 +90,12 @@ jobs:
           expected="$(node - <<'NODE'
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
-          process.stdout.write(String((bank.topics||[]).filter(x=>x&&x.queueEnabled!==false&&x.seedToReview===true).length));
+          const context=fs.existsSync('assets/data/guilu-context-media-v20260815.json')
+            ? JSON.parse(fs.readFileSync('assets/data/guilu-context-media-v20260815.json','utf8'))
+            : {overrides:{}};
+          const overrides=context?.overrides||{};
+          const ready=x=>x.seedToReview===true||overrides?.[String(x?.id||'')]?.action==='replace';
+          process.stdout.write(String((bank.topics||[]).filter(x=>x&&x.queueEnabled!==false&&ready(x)).length));
           NODE
           )"
           test "$expected" -gt 0
@@ -98,7 +103,7 @@ jobs:
           test "$upserts" -eq "$expected"
           grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/guilu-review-seed.sql
           if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql; then exit 1; fi
-          echo "PASS: current ${expected} active image-ready topics produce safe deduplicated idempotent pending-review upserts."
+          echo "PASS: current ${expected} active image-ready topics, including approved context-media overrides, produce safe deduplicated idempotent pending-review upserts."
       - name: Confirm this run did not deploy
         run: |
           {
