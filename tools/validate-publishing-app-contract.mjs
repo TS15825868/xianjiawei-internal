@@ -4,7 +4,7 @@ const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
 const authority=fs.readFileSync('src/authority-entry.js','utf8');
 const production=fs.readFileSync('src/production-entry.js','utf8');
 const publisher=fs.readFileSync('src/social-publisher.js','utf8');
-const requiredHtml=['貼文審核發佈系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-resilience.js','publishing-readiness-ui.js','publishing-app-v2.js','publishing-review-gate.js','post-bank-sync.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js'];
+const requiredHtml=['貼文中心系統 App','唯一正式內容系統','data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','toastRoot','readinessSummary','publishing-performance.css','publishing-resilience.js','publishing-readiness-ui.js','publishing-app-v2.js','publishing-review-gate.js','post-bank-sync.js','post-regenerate-buttons.js','post-regenerate-policy-v1.js','manual-publish-tools.js'];
 for(const token of requiredHtml){if(!html.includes(token))throw new Error(`publishing.html缺少必要功能入口：${token}`)}
 if(!/publishing-app-v2\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的正式主程式缺少快取識別');
 if(!/post-bank-sync\.js\?v=[^"']+/.test(html))throw new Error('publishing.html 的目前母庫同步工具缺少快取識別');
@@ -62,4 +62,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：獨立貼文系統以目前能力契約驗收：核心安全診斷、立即發布不受固定時段限制、單一重生成流程、動態目前母庫同步、快速Access驗證、D1安全模式、平台API預檢、server pagination、離線快取、LINE keep-warm與逐平台發布結果均存在；不以歷史貼文數量或舊版號誤擋新版。');
+console.log('PASS：貼文中心系統 App 以目前能力契約驗收：核心安全診斷、立即發布不受固定時段限制、單一重生成流程、動態目前母庫同步、快速Access驗證、D1安全模式、平台API預檢、server pagination、離線快取、LINE keep-warm與逐平台發布結果均存在。');
