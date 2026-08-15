@@ -1,10 +1,14 @@
 import fs from 'node:fs';
 
 const BANK_PATH = new URL('../assets/data/guilu-content-topic-bank-v20260814.json', import.meta.url);
+const CONTEXT_MEDIA_PATH = new URL('../assets/data/guilu-context-media-v20260815.json', import.meta.url);
 const bank = JSON.parse(fs.readFileSync(BANK_PATH, 'utf8'));
+const contextMedia = fs.existsSync(CONTEXT_MEDIA_PATH) ? JSON.parse(fs.readFileSync(CONTEXT_MEDIA_PATH, 'utf8')) : {overrides:{}};
+const contextOverrides = contextMedia?.overrides && typeof contextMedia.overrides === 'object' ? contextMedia.overrides : {};
 const SEED_CREATED_BY = process.env.XJW_CONTENT_SEED_CREATED_BY || 'tung314069@gmail.com';
+const hasContextOverride = topic => contextOverrides?.[String(topic?.id||'')]?.action === 'replace';
 const rows = Array.isArray(bank?.topics)
-  ? bank.topics.filter(topic => topic?.queueEnabled !== false && topic?.seedToReview !== true && topic?.imageMode === 'context_required')
+  ? bank.topics.filter(topic => topic?.queueEnabled !== false && topic?.seedToReview !== true && topic?.imageMode === 'context_required' && !hasContextOverride(topic))
   : [];
 
 const BLOCKED = [
@@ -17,7 +21,11 @@ const sqlString = value => `'${String(value ?? '').replaceAll("'", "''")}'`;
 const jsonString = value => sqlString(JSON.stringify(value ?? []));
 const safeId = value => String(value || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
 
-if (!rows.length) throw new Error('目前沒有需要配情境圖的龜鹿題目');
+if (!rows.length) {
+  console.error('PASS: 目前沒有仍缺情境圖的啟用中龜鹿題目。');
+  process.stdout.write("SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status;\n");
+  process.exit(0);
+}
 
 for (const topic of rows) {
   const id = safeId(topic.id);
@@ -59,4 +67,4 @@ for (const topic of rows) {
 
 statements.push(`SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status;`);
 process.stdout.write(statements.join('\n\n') + '\n');
-console.error(`PASS: ${rows.length} 篇目前缺情境圖的龜鹿題目可安全建立為草稿；不自動配錯圖、不核准、不排程、不發布。`);
+console.error(`PASS: ${rows.length} 篇目前仍缺情境圖的龜鹿題目保留草稿；不自動配錯圖、不核准、不排程、不發布。`);
