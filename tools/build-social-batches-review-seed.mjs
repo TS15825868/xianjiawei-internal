@@ -10,6 +10,11 @@ const BLOCKED = [
   '不是每個人都一定需要','治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除',
   '關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'
 ];
+const CUSTOMER_INTERNAL=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料'];
+const normPublic=v=>String(v||'').normalize('NFKC').toLowerCase().replace(/仙加味[｜|]?補養，是一種節奏。?/g,'').replace(/[^\p{L}\p{N}]+/gu,'');
+const bigrams=s=>{const out=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);out.set(k,(out.get(k)||0)+1)}return out};
+const dice=(a,b)=>{if(!a||!b)return 0;if(a===b)return 1;const A=bigrams(a),B=bigrams(b);let hit=0,ai=0,bi=0;for(const n of A.values())ai+=n;for(const n of B.values())bi+=n;for(const [k,n] of A)hit+=Math.min(n,B.get(k)||0);return ai+bi?2*hit/(ai+bi):0};
+const qualitySeen=[];
 const ALLOWED_PLATFORMS = new Set(['Facebook','Instagram','LINE OA','LINE OA 廣播','LINE VOOM','Google 商家']);
 
 const files = fs.readdirSync(DATA_DIR)
@@ -37,6 +42,11 @@ for (const file of files) {
     const text = [post.title, post.headline, post.copy, post.category].join(' ');
     const hit = BLOCKED.find(term => text.includes(term));
     if (hit) throw new Error(`${file}/${slug} 含禁止公開字詞：${hit}`);
+    const internalHit=CUSTOMER_INTERNAL.find(term=>text.toLowerCase().includes(term.toLowerCase()));
+    if(internalHit)throw new Error(`${file}/${slug} 含不應公開的內部用語：${internalHit}`);
+    const titleKey=normPublic(post.title),copyKey=normPublic(post.copy);
+    for(const prior of qualitySeen){if(titleKey&&titleKey===prior.titleKey)throw new Error(`${file}/${slug} 標題與既有批次重複：${prior.ref}`);if(copyKey.length>=40&&prior.copyKey.length>=40&&dice(copyKey,prior.copyKey)>=0.90)throw new Error(`${file}/${slug} 文案與既有批次過度相似：${prior.ref}`)}
+    qualitySeen.push({titleKey,copyKey,ref:`${file}/${slug}`});
     const imageUrl = String(post.imageUrl || '').trim();
     if (!imageUrl.startsWith(REQUIRED_IMAGE_PREFIX)) throw new Error(`${file}/${slug} 圖片必須來自仙加味正式官網 images 路徑`);
     if (/\/images\/products-v3\//.test(imageUrl)) throw new Error(`${file}/${slug} 不得直接使用 products-v3 作一般貼文主圖`);

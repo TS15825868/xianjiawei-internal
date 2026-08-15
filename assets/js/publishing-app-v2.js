@@ -1,5 +1,6 @@
 const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,platforms:null,loadId:0};
 const PAGE_SIZE=18;
+const CUSTOMER_INTERNAL_TERMS=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料'];
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -105,6 +106,8 @@ function audit(post){
   const mentioned=rules.filter(([,keys])=>keys.some(k=>copy.includes(norm(k))));
   const productMatched=mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))));
   const multiProductImage=mentioned.length>=2&&['六項','全系列','產品總覽','products-all','all-products','全品項','產品合照','產品情境圖'].some(k=>image.includes(norm(k)));
+  const internalHit=CUSTOMER_INTERNAL_TERMS.find(term=>[post.title,post.headline,post.copy].filter(Boolean).join(' ').toLowerCase().includes(term.toLowerCase()));
+  if(internalHit)return{level:'danger',text:`顧客文案含內部作業用語「${internalHit}」，請先改成客戶可直接閱讀的文字。`};
   if(!post.image_url)return{level:'danger',text:'缺少圖片，不能通過審核。'};
   if(mentioned.length&&!productMatched&&!multiProductImage){
     return{level:'danger',text:`文案提到「${mentioned.map(x=>x[0]).join('、')}」，圖片資訊無法確認對應產品，請先修正。`};
@@ -159,9 +162,9 @@ function card(post){
     </div>
     <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:''}</div>
     ${post.headline?`<h4>${esc(post.headline)}</h4>`:''}
-    <div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
+    <div class="public-copy-label">客戶實際會看到的文案</div><div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
     ${post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:''}
-    <div class="xjw-${a.level}">${esc(a.text)}</div>
+    <div class="xjw-${a.level}"><strong>內部檢查（不會發布）</strong><br>${esc(a.text)}</div>
     <div class="xjw-actions">
       <button class="btn small" data-post-view="${esc(post.id)}">查看／發布結果</button>
       ${!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
@@ -477,7 +480,7 @@ async function init(){
   renderPlatforms();
   if(window.XJWPublishingReadiness?.run)await window.XJWPublishingReadiness.run({full:false});
   await Promise.allSettled([loadMe(),load()]);
-  document.documentElement.dataset.publishingRuntime='20260815-standalone-v18-mobile-review-ready';
+  document.documentElement.dataset.publishingRuntime='20260815-standalone-v19-dedupe-customer-clean';
 }
 
 if(document.readyState==='loading'){

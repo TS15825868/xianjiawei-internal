@@ -21,6 +21,8 @@ if(!/dataset\.publishingRuntime=['"][^'"]*standalone[^'"]*['"]/.test(js))throw n
 if(js.includes("state.items.map(card).join('')")&&!js.includes('state.total-state.items.length'))throw new Error('載入更多不得回退為只在本機切片全部貼文');
 if(!js.includes('loadPlatforms(loadId)'))throw new Error('平台授權狀態必須非阻塞載入');
 if(!js.includes('setButtonBusy'))throw new Error('操作按鈕必須提供處理中狀態');
+if(!js.includes('內部檢查（不會發布）')||!js.includes('客戶實際會看到的文案'))throw new Error('貼文卡片必須清楚區分顧客文案與內部檢查');
+if(!js.includes('CUSTOMER_INTERNAL_TERMS'))throw new Error('貼文前端預檢缺少內部用語守門');
 if(!js.includes('multiProductImage')||!js.includes('products-all'))throw new Error('多產品總覽貼文不得被單一產品預檢規則誤擋');
 if(!html.includes("root.querySelector('.loading-card')"))throw new Error('載入完成判斷必須只依實際 loading-card，不得被「載入下一批」文字誤判');
 if(html.includes('/載入|啟動|正在連線|安全檢查/.test(root.textContent'))throw new Error('不得用整份貼文文字判斷載入中，否則「載入下一批」會觸發假錯誤');

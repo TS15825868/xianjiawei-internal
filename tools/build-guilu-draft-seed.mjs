@@ -4,13 +4,14 @@ const BANK_PATH = new URL('../assets/data/guilu-content-topic-bank-v20260814.jso
 const bank = JSON.parse(fs.readFileSync(BANK_PATH, 'utf8'));
 const SEED_CREATED_BY = process.env.XJW_CONTENT_SEED_CREATED_BY || 'tung314069@gmail.com';
 const rows = Array.isArray(bank?.topics)
-  ? bank.topics.filter(topic => topic?.seedToReview !== true && topic?.imageMode === 'context_required')
+  ? bank.topics.filter(topic => topic?.queueEnabled !== false && topic?.seedToReview !== true && topic?.imageMode === 'context_required')
   : [];
 
 const BLOCKED = [
   '治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除',
   '關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'
 ];
+const CUSTOMER_INTERNAL=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料'];
 const ids = new Set();
 const sqlString = value => `'${String(value ?? '').replaceAll("'", "''")}'`;
 const jsonString = value => sqlString(JSON.stringify(value ?? []));
@@ -24,7 +25,7 @@ for (const topic of rows) {
   if (ids.has(id)) throw new Error(`題目 id 重複：${id}`);
   ids.add(id);
   const text = [topic.title,topic.headline,topic.copy,topic.category].join(' ');
-  const hit = BLOCKED.find(term => text.includes(term));
+  const hit = [...BLOCKED,...CUSTOMER_INTERNAL].find(term => text.includes(term));
   if (hit) throw new Error(`題目 ${id} 含禁止公開字詞：${hit}`);
   if (!String(topic.copy || '').trim()) throw new Error(`題目 ${id} 缺少文案`);
   if (String(topic.imageUrl || '').trim()) throw new Error(`題目 ${id} 標示 context_required 卻已帶 imageUrl，請先釐清媒體角色`);
