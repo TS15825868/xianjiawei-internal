@@ -10,7 +10,7 @@ const BLOCKED = [
   '保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'
 ];
 const SITE = 'https://ts15825868.github.io/xianjiawei';
-const MEDIA_VERSION = '20260815-context-media-v1';
+const MEDIA_VERSION = '20260815-context-media-v2-render-integrity';
 const CURRENT_PRODUCT_MEDIA = Object.freeze({
   'guilu-gao': `${SITE}/images/customer-display-v20260812/guilu-gao.avif?v=${MEDIA_VERSION}`,
   'guilu-drink-30': `${SITE}/images/customer-display-v20260812/guilu-drink-30cc.avif?v=${MEDIA_VERSION}`,
@@ -35,6 +35,8 @@ const fixedReusable = value => {
   const url=normalizeImage(value);
   return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url);
 };
+const visuallyIncompleteSvg = value => /\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(normalizeImage(value));
+const VISUAL_HOLD_REASON='2026-08-15 SVG資訊卡在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新生成完整情境圖或改用正式產品圖';
 const resolveMedia = topic => {
   const override=contextOverrides?.[String(topic?.id||'')];
   if(override?.action==='replace'){
@@ -53,7 +55,7 @@ const resolveMedia = topic => {
   return fallback ? { url: fallback, source: topic?.imageSource || '仙加味正式素材', alt:String(topic?.imageAlt||topic?.title||'') } : null;
 };
 
-if (!rows.length) throw new Error('沒有可進待審核的龜鹿題目');
+if (!rows.length) throw new Error('沒有可處理的龜鹿題目');
 const genericImageGroups=new Map();
 for (const topic of rows) {
   const id = safeId(topic.id);
@@ -70,7 +72,7 @@ for (const topic of rows) {
   if (/\/images\/products-v3\//.test(media.url)) throw new Error(`題目 ${id} 不得把 products-v3 身份參考直接當目前一般貼文主圖`);
   if (/trial-small-boss\.webp|\/trial\.webp|trial-clean-v4\.svg/.test(media.url)) throw new Error(`題目 ${id} 使用退役試喝圖`);
   if (!String(topic.copy || '').trim()) throw new Error(`題目 ${id} 缺少文案`);
-  if(!fixedReusable(media.url)){
+  if(!fixedReusable(media.url)&&!visuallyIncompleteSvg(media.url)){
     const imageKey=normalizeImage(media.url);
     if(!genericImageGroups.has(imageKey))genericImageGroups.set(imageKey,[]);
     genericImageGroups.get(imageKey).push({id,title:topic.title});
@@ -93,33 +95,40 @@ statements.push(`CREATE TABLE IF NOT EXISTS audit_logs(
   before_json TEXT,after_json TEXT,ip TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );`);
 
+let pendingCount=0,draftCount=0;
 for (const topic of rows) {
   const slug = safeId(topic.id);
   const postId = `XJW-GUILU-${slug}`;
   const auditId = `AUD-GUILU-${slug}`;
   const platforms = Array.isArray(topic.platforms) && topic.platforms.length ? topic.platforms : ['Facebook','Instagram'];
   const media = resolveMedia(topic);
-  const imageSource = `${media.source}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`;
+  const held=visuallyIncompleteSvg(media.url);
+  const status=held?'draft':'pending_review';
+  if(held)draftCount++;else pendingCount++;
+  const visibleAlt=held?`${topic.title}｜目前候選圖顯示不完整，需重新生成完整情境圖`:(media.alt || topic.imageAlt || topic.title);
+  const imageSource = held
+    ? `圖文完整檢查：${VISUAL_HOLD_REASON}|原候選:${media.url}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`
+    : `${media.source}|題庫:${slug}|${bank.version || ''}|context-media:${contextMedia.version||'none'}|media:${MEDIA_VERSION}`;
   statements.push(`INSERT INTO social_posts(
     id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,
     image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at
   ) VALUES(
     ${sqlString(postId)},${sqlString(topic.title)},${sqlString(topic.headline)},${sqlString(topic.copy)},${sqlString(topic.category || '龜鹿知識')},
-    ${jsonString(platforms)},'pending_review',NULL,NULL,NULL,NULL,NULL,
-    ${sqlString(media.url)},${sqlString(media.alt || topic.imageAlt || topic.title)},${sqlString(imageSource)},0,0,0,0,'unknown',
+    ${jsonString(platforms)},${sqlString(status)},NULL,NULL,NULL,NULL,NULL,
+    ${sqlString(media.url)},${sqlString(visibleAlt)},${sqlString(imageSource)},0,0,0,0,'unknown',
     ${sqlString(SEED_CREATED_BY)},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
   )
   ON CONFLICT(id) DO UPDATE SET
     title=excluded.title,headline=excluded.headline,copy=excluded.copy,category=excluded.category,platforms_json=excluded.platforms_json,
-    status='pending_review',scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,
+    status=excluded.status,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,
     image_url=excluded.image_url,image_alt=excluded.image_alt,image_source=excluded.image_source,image_approved=0,
     image_width=excluded.image_width,image_height=excluded.image_height,image_bytes=excluded.image_bytes,image_quality_status=excluded.image_quality_status,
     updated_at=CURRENT_TIMESTAMP
   WHERE social_posts.status IN ('draft','pending_review');`);
   statements.push(`INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip)
-    VALUES(${sqlString(auditId)},'github-actions-content-bank','龜鹿母庫建立待審核','貼文',${sqlString(postId)},NULL,${sqlString(JSON.stringify({topic_id: slug, bank_version: bank.version || '', context_media:contextMedia.version||'', media_version: MEDIA_VERSION, status: 'pending_review'}))},'');`);
+    VALUES(${sqlString(auditId)},'github-actions-content-bank','龜鹿母庫圖文完整檢查同步','貼文',${sqlString(postId)},NULL,${sqlString(JSON.stringify({topic_id: slug, bank_version: bank.version || '', context_media:contextMedia.version||'', media_version: MEDIA_VERSION, status, visual_hold:held}))},'');`);
 }
 
 statements.push(`SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-GUILU-%' GROUP BY status ORDER BY status;`);
 process.stdout.write(statements.join('\n\n') + '\n');
-console.error(`PASS: ${rows.length} 篇龜鹿母庫貼文已完成目前正式媒體與專屬情境圖綁定；泛用情境圖不得跨主題重複；不自動核准、不排程、不發布。`);
+console.error(`PASS: ${rows.length} 篇龜鹿母庫完成圖文完整檢查；${pendingCount} 篇可進待審核，${draftCount} 篇因SVG實際顯示不完整保留草稿；不自動核准、不排程、不發布。`);
