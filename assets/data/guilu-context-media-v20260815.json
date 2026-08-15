@@ -1,12 +1,12 @@
 {
-  "version":"2026-08-15-guilu-context-media-v1",
-  "purpose":"補齊目前龜鹿母庫所有啟用中 context_required 題目的專屬配圖；各主題不共用泛用生活圖，正式產品本體不重畫。",
+  "version":"2026-08-15-guilu-context-media-v2-formal-tc",
+  "purpose":"補齊目前龜鹿母庫所有啟用中 context_required 題目的專屬配圖；各主題不共用泛用生活圖，正式產品本體只引用官網目前正式DM／產品素材，不由AI重畫。所有圖面文字固定使用繁體中文與仙加味品牌色。",
   "overrides":{
-    "why-guilu-daily":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/guilu-daily-culture.svg","imageAlt":"從飲食文化、產品型態與生活方式理解龜鹿如何放進日常的資訊情境圖","imageSource":"2026-08-15龜鹿日常文化專屬圖"},
-    "guilu-first-three":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/guilu-first-three.svg","imageAlt":"第一次認識龜鹿先看傳統文化、產品型態與生活方式三件事的資訊圖","imageSource":"2026-08-15第一次認識龜鹿三件事專屬圖"},
-    "guilu-forms":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/guilu-forms.svg","imageAlt":"龜鹿飲、龜鹿膏、龜鹿湯塊與龜鹿膠依使用型態分開比較的資訊圖","imageSource":"2026-08-15龜鹿型態比較專屬圖"},
-    "warm-food-culture":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/warm-food-culture.svg","imageAlt":"溫熱飲食、燉煮文化與家常餐桌的龜鹿飲食文化情境圖","imageSource":"2026-08-15溫熱飲食文化專屬圖"},
-    "choose-by-place":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/choose-by-place.svg","imageAlt":"在家、外出與工作空檔三種生活場景選擇龜鹿型態的情境圖","imageSource":"2026-08-15依生活場景選擇專屬圖"},
-    "modern-tradition":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/modern-tradition.svg","imageAlt":"把傳統龜鹿文化、原料、規格與一般使用資訊整理得更容易理解的資訊圖","imageSource":"2026-08-15傳統現代化理解專屬圖"}
+    "why-guilu-daily":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/why-guilu-daily.svg?v=20260815-formal-tc-v1","imageAlt":"從飲食文化、產品型態與生活方式理解龜鹿如何放進日常的繁體中文資訊情境圖","imageSource":"2026-08-15正式繁體中文專屬圖；產品引用官網正式DM原圖"},
+    "guilu-first-three":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/guilu-first-three.svg?v=20260815-formal-tc-v1","imageAlt":"第一次認識龜鹿先看飲食文化、產品型態與生活方式三件事的繁體中文資訊圖","imageSource":"2026-08-15正式繁體中文三件事專屬圖；產品引用官網正式DM原圖"},
+    "guilu-forms":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/guilu-forms.svg?v=20260815-formal-tc-v1","imageAlt":"龜鹿飲、龜鹿膏、龜鹿湯塊與龜鹿膠依使用型態分開比較的繁體中文資訊圖","imageSource":"2026-08-15正式繁體中文型態比較專屬圖；產品引用官網正式DM原圖"},
+    "warm-food-culture":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/warm-food-culture.svg?v=20260815-formal-tc-v1","imageAlt":"溫熱飲食、燉煮文化與家常餐桌的龜鹿飲食文化繁體中文情境圖","imageSource":"2026-08-15正式繁體中文溫熱飲食文化專屬圖；產品引用官網正式DM原圖"},
+    "choose-by-place":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/choose-by-place.svg?v=20260815-formal-tc-v1","imageAlt":"在家、外出與工作空檔三種生活場景選擇龜鹿型態的繁體中文情境圖","imageSource":"2026-08-15正式繁體中文生活場景選擇專屬圖；產品引用官網正式DM原圖"},
+    "modern-tradition":{"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/publishing/generated-v20260815/modern-tradition.svg?v=20260815-formal-tc-v1","imageAlt":"把傳統龜鹿文化、原料、規格、產品型態、保存與一般使用資訊整理得更容易理解的繁體中文資訊圖","imageSource":"2026-08-15正式繁體中文傳統現代化理解專屬圖；產品引用官網正式DM原圖"}
   }
 }
