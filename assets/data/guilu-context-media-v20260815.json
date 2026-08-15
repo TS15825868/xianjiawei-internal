@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-15-guilu-context-media-v5-one-shot",
+  "version": "2026-08-15-guilu-context-media-v6-one-shot",
   "purpose": "龜鹿母庫改用完整單一情境小老闆圖或正式產品小老闆情境圖；禁止拼湊，產品文章保留正式產品外觀，泛用生活圖不得重複套不同主題。",
   "overrides": {
     "choose-by-place": {
@@ -154,7 +154,7 @@
     },
     "modern-tradition": {
       "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/home-brand.webp",
+      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/combo.webp",
       "imageAlt": "仙加味｜傳統龜鹿文化，怎麼變得更方便理解？｜完整單一小老闆情境",
       "imageSource": "2026-08-15完整單一情境正式圖｜非拼湊｜既有正式核准素材｜人工審核"
     },
