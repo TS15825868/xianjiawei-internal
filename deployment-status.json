@@ -1,14 +1,28 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "20db5dadd0047dcc4f932de2bf7ab88e70453b4c",
-  "runtime": "cloudflare-worker-full-erp",
-  "entry": "src/production-entry.js",
-  "health": "healthz/core + publishing.html + current guilu content bank + ChatGPT regeneration flow",
+  "source_commit": "49eae2997dfa0828b293b26ac6ea4014e84c9668",
+  "content_commit": "31d59d1432367570912acbc17d7d86dbac6beca7",
+  "cloudflare_version_id": "90dec56e-458e-4f55-947b-3f12018a00ce",
+  "runtime": "cloudflare-worker-publishing-center-app",
+  "entry": "src/publishing-only-entry.js",
+  "root_behavior": "redirect_to_/publishing.html",
+  "health": "healthz/core + healthz/readiness + publishing.html + private Access boundary",
   "live_verify_mode": "cloudflare_access_boundary_verified",
-  "remote_d1": "verified_current_bank_40_topics_28_pending_review_12_image_needed_drafts",
-  "regeneration_policy": "2026-08-15-current-authority-generation-policy-v6",
-  "missing_image_action": "缺圖｜ChatGPT生成",
+  "remote_d1": "verified",
+  "remote_d1_post_counts": {
+    "draft": 34,
+    "pending_review": 64,
+    "published": 1,
+    "total": 99
+  },
+  "posting_data_preserved": true,
+  "erp_ui": "disabled",
+  "erp_api": "blocked_except_publishing",
+  "publishing_center_app": true,
+  "ios_safari_resilience": true,
+  "mobile_initial_post_limit": 6,
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-14T19:05:30Z"
+  "minimum_safety_guards": true,
+  "verified_at_utc": "2026-08-15T03:50:02Z"
 }
