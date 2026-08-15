@@ -1,0 +1,22 @@
+{
+  "version": "2026-08-15-live-queue-verified-v1",
+  "source": "Cloudflare D1 read-only verification workflow run 31895952750",
+  "total_posts": 77,
+  "status_counts": {
+    "draft": 51,
+    "pending_review": 25,
+    "published": 1
+  },
+  "duplicate_image_replacement_queue": 48,
+  "active_duplicate_image_groups": 0,
+  "pending_review_without_image": 0,
+  "blocked_old_public_text": {
+    "台興山產_or_2兩": 0
+  },
+  "notes": [
+    "48篇因原主圖與其他貼文重複，已安全退回草稿並清除重複主圖，等待各篇專屬完整單一情境圖。",
+    "待審核、已核准、已排程、已發布範圍目前沒有重複主圖。",
+    "待審核目前沒有空白圖片。",
+    "目前對外現行文字未檢出台興山產或2兩舊規格。"
+  ]
+}
