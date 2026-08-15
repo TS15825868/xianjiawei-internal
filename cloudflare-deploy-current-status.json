@@ -1,36 +1,48 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "status": "deployed_access_protected",
-  "updated_at_utc": "2026-08-14T18:50:21Z",
+  "updated_at_utc": "2026-08-15T03:50:02Z",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "current_architecture": {
-    "root_ui": "full ERP operations console",
+    "product": "仙加味貼文中心系統 App",
+    "root_ui": "redirect to /publishing.html",
     "publishing_ui": "/publishing.html",
-    "worker_entry": "src/production-entry.js",
+    "worker_entry": "src/publishing-only-entry.js",
     "publishing_review_gate": "src/publishing-review-gate-entry.js",
     "immediate_publish_entry": "src/flexible-publish-entry.js",
     "authority_entry": "src/authority-entry.js",
-    "erp_core": "src/worker.js"
+    "erp_ui": "disabled",
+    "erp_api": "blocked_except_publishing"
   },
   "current_product_authority": {
+    "guilu_gao": "100g／罐",
     "guilu_gao_usage": "食用時間可依個人使用習慣與作息時間安排",
-    "drink_30": "30cc／罐（小玻璃罐）",
-    "drink_180": "180cc／包（鋁袋）",
-    "soup_block_main": "75g （2兩）／盒｜8塊裝",
-    "soup_block_detail_only": "每塊約9.375g",
-    "guilu_jiao_main": "600g （1斤）／盒｜32塊裝",
-    "guilu_jiao_detail_only": "每塊約18.75g",
-    "luerong": "75g／罐",
+    "drink_30": "30cc／罐（小玻璃罐、裸罐、無貼紙）",
     "drink_30_usage": "每日 1-2罐｜飲用時間可依個人使用習慣與作息時間安排",
-    "drink_180_usage": "每日一包｜飲用時間可依個人使用習慣與作息時間安排"
+    "drink_180": "180cc／包（鋁袋）",
+    "drink_180_usage": "每日一包｜飲用時間可依個人使用習慣與作息時間安排",
+    "soup_block": "75g （2兩）／盒｜8塊裝，每塊約9.375g",
+    "guilu_jiao": "600g （1斤）／盒｜32塊裝，每塊約18.75 g",
+    "luerong": "75g／罐"
   },
   "current_media_roles": {
     "customer_product_image": "https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/",
     "detailed_dm": "https://ts15825868.github.io/xianjiawei/images/dm-final/",
     "trial": "https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg",
     "product_identity_reference": "https://ts15825868.github.io/xianjiawei/images/products-v3/",
-    "rule": "一般產品主圖、詳細DM、試喝海報與products-v3身份／包裝／比例參考四種角色分離，不得互相取代；產品本體不得AI重畫、變形或改包裝。"
+    "rule": "一般產品主圖、詳細DM、試喝海報與products-v3身份／包裝／比例參考四種角色分離；產品本體不得AI重畫、變形或改包裝。"
+  },
+  "posting_center_runtime": {
+    "pwa_manifest": true,
+    "ios_safari_resilience": true,
+    "mobile_initial_post_limit": 6,
+    "offline_read_cache": true,
+    "pageshow_resume": true,
+    "dynamic_post_bank": true,
+    "fixed_post_count_limit": false,
+    "review_checklist_count": 16,
+    "immediate_publish_independent_of_fixed_schedule": true
   },
   "latest_zip": {
     "source": "新貼文的圖(3).zip",
@@ -41,40 +53,47 @@
   },
   "local_code_validation": {
     "status": "success",
-    "workflow_run_id": 31830489147,
+    "workflow_run_id": 31862801694,
     "checks": [
-      "Cloudflare Secrets present",
       "npm run check",
       "npm run guard:full",
-      "npm run build:static",
-      "required production dist outputs",
-      "Remote D1 SELECT 1"
+      "standalone publishing center build",
+      "retired ERP frontend absent from dist",
+      "safe idempotent review seed"
     ]
   },
   "cloudflare_deployment": {
     "status": "deployed",
-    "workflow_run_id": 31830489147,
-    "source_commit": "8148605b329c6ca579d6d34feec514fc1a038c7d",
-    "cloudflare_version_id": "f23f9a77-f7b2-44d5-be91-cb4302d31f6e",
+    "workflow_run_id": 31862829371,
+    "source_commit": "49eae2997dfa0828b293b26ac6ea4014e84c9668",
+    "content_commit": "31d59d1432367570912acbc17d7d86dbac6beca7",
+    "cloudflare_version_id": "90dec56e-458e-4f55-947b-3f12018a00ce",
     "cloudflare_api_token_present": true,
     "cloudflare_account_id_present": true,
     "remote_d1_verified": true,
     "remote_d1_database": "xianjiawei-internal-db",
     "remote_d1_database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
-    "worker_deploy_started": true,
+    "posting_data_preserved": true,
+    "post_counts": {
+      "draft": 34,
+      "pending_review": 64,
+      "published": 1,
+      "total": 99
+    },
     "worker_deploy_succeeded": true,
     "worker_url": "https://xianjiawei-internal.tung314069.workers.dev",
     "schedule": "*/5 * * * *"
   },
   "post_deploy_verification": {
     "status": "success",
-    "workflow_run_id": 31830489147,
+    "workflow_run_id": 31862829371,
     "remote_d1_verified": true,
     "production_route_reachable": true,
+    "root_route_reachable": true,
+    "publishing_route_reachable": true,
     "live_verify_mode": "cloudflare_access_boundary_verified",
-    "unauthenticated_health_response": "Cloudflare Access protected HTML boundary",
     "authenticated_runtime_content_verified": false,
-    "reason_authenticated_content_not_directly_verified": "正式 ERP 為私人系統，未登入的 GitHub Actions HTTP 探測會先被 Cloudflare Access 擋下，因此無法直接讀取 healthz/core、healthz/readiness、/ 與 publishing.html 的內部內容；這不代表部署失敗。"
+    "reason_authenticated_content_not_directly_verified": "正式貼文中心由 Cloudflare Access 保護；未登入的 GitHub Actions 僅能驗證私人 Access 邊界、Worker、路由與 D1，實際登入後畫面仍需以使用者裝置做最後實機驗收。"
   },
   "cloudflare_deploy_blocker": null,
   "guard_mode": "paused_for_full_system_update",
