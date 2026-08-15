@@ -1,73 +1,52 @@
 {
-  "version": "2026-08-15-social-image-audit-v1",
-  "purpose": "把社群批次中重複泛用圖或明顯圖文情境不符的項目移出待審核；有已核准且真正符合文案的既有情境圖就直接替換，沒有就清除舊圖並回草稿等待專屬圖片。",
+  "version": "2026-08-15-social-image-audit-v2-all-current-media",
+  "purpose": "所有社群批次依目前正式文案逐篇配對圖片；優先使用2026-08-11最新核准生活情境、目前正式顧客產品圖、目前有效試喝圖與2026-08-15專屬資訊／產品情境圖。舊泛用圖、退役產品圖與重複主圖不得再進待審核。",
   "policy": {
     "generic_image_must_be_unique_per_topic": true,
     "fixed_trial_media_may_repeat": true,
     "same_product_authority_media_may_repeat": true,
     "season_weather_scene_temperature_expression_action_must_match_copy": true,
     "product_body_never_ai_redrawn": true,
-    "missing_match_returns_to_draft": true
+    "missing_match_returns_to_draft": true,
+    "current_media_overrides_legacy_batch_binding": true,
+    "owner_review_required_after_rebinding": true
   },
   "overrides": {
-    "warm-not-iced": {
-      "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp",
-      "imageAlt": "仙加味溫熱飲用與熱水日常情境",
-      "imageSource": "2026-08-11使用者核准貼文圖：warm-water.webp",
-      "reason": "原guide-how-to-use與另一篇使用方式貼文重複；改用已同步且語意符合溫熱／熱水的正式情境圖。"
-    },
-    "storage-basics": {
-      "action": "replace",
-      "imageUrl": "https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/storage.webp",
-      "imageAlt": "仙加味產品開封、冷藏、密封與保存提醒情境",
-      "imageSource": "2026-08-11使用者核准貼文圖：storage.webp",
-      "reason": "原FAQ圖片與保存文案不夠直接且與FAQ貼文重複；改用正式保存情境圖。"
-    },
-    "drink-30-vs-180": {
-      "action": "regenerate",
-      "reason": "不能再用六項產品總覽圖代替30cc與180cc比較圖。",
-      "prompt": "製作30cc小玻璃裸罐與180cc狹長鋁袋的清楚比較情境；產品本體只可合成正式原圖，30cc維持小罐比例、裸罐無貼紙，180cc維持狹長鋁袋比例；不得AI重畫產品。"
-    },
-    "tangkuai-vs-jiao": {
-      "action": "regenerate",
-      "reason": "不能再用六項產品總覽圖代替龜鹿湯塊與龜鹿膠比較圖。",
-      "prompt": "製作龜鹿湯塊75g／8塊與龜鹿膠600g／32塊的雙產品比較情境；產品盒裝只可使用正式原圖，不能自行猜測盒體實際毫米尺寸或強制等高。"
-    },
-    "craft-time-and-heat": {
-      "action": "regenerate",
-      "reason": "傳統熬製工序不能沿用品牌故事人物圖。",
-      "prompt": "傳統熬製工作場景，呈現前處理、火候、時間與濃縮節奏；小老闆動作要與查看火候／工序相符，小鹿與小烏龜分開；不放錯誤產品包裝。"
-    },
-    "why-exact-specs": {
-      "action": "regenerate",
-      "reason": "規格教育不能反覆沿用六項產品總覽圖。",
-      "prompt": "小老闆指向乾淨規格看板的教育情境，清楚區分30cc小玻璃罐、180cc鋁袋、75g湯塊與600g龜鹿膠；若出現產品只能合成正式原圖，不重畫、不改比例。"
-    },
-    "ingredient-info-clear": {
-      "action": "regenerate",
-      "reason": "成分與型態資訊主題不能再使用同一張六項產品總覽圖。",
-      "prompt": "乾淨桌面與資訊整理情境，小老闆整理產品名稱、規格、成分、保存與使用方式分類；產品本體不是必要元素，避免使用六項產品總覽舊圖。"
-    },
-    "wanhua-visit-brand": {
-      "action": "regenerate",
-      "reason": "萬華在地品牌主題需有自己的萬華場景，不能與四代品牌故事重複同圖。",
-      "prompt": "萬華在地街區與品牌故事情境，仙加味小老闆、小鹿、小烏龜完整入鏡且彼此分開；風格高級乾淨、現代漢方，不使用醫療場景。"
-    },
-    "ask-line-before-order": {
-      "action": "regenerate",
-      "reason": "客服諮詢圖與龜鹿飲交期貼文重複使用contact-line圖。",
-      "prompt": "小老闆拿手機或指向LINE諮詢看板，表情親切，呈現下單前詢問規格、使用方式、試喝與交期；不需要放產品本體。"
-    },
-    "drink-30-outside": {
-      "action": "regenerate",
-      "reason": "文案強調外出與工作空檔，不能只重複產品介紹主圖。",
-      "prompt": "外出／工作空檔生活情境，30cc小玻璃裸罐以正式原圖等比例合成，小老闆自然攜帶或取用；瓶身不得變大、不得加貼紙、不得改罐型。"
-    },
-    "drink-180-home": {
-      "action": "regenerate",
-      "reason": "文案強調居家與工作空檔，不能只重複180cc產品介紹主圖。",
-      "prompt": "居家或工作空檔日常情境，180cc狹長鋁袋以正式原圖等比例合成；不得拉寬、放大成巨大鋁包或重畫包裝。"
-    }
+    "brand-rhythm": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/self-care-family.webp","imageAlt":"仙加味日常照顧自己與家人的生活節奏情境","imageSource":"2026-08-11最新使用者核准情境圖：self-care-family.webp","reason":"品牌節奏貼文改用日常照顧情境，不再沿用退役home-brand泛用圖。"},
+    "usage-personal-routine": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/choose-by-routine.webp","imageAlt":"依自己的作息與使用習慣選擇日常型態的情境","imageSource":"2026-08-11最新使用者核准情境圖：choose-by-routine.webp","reason":"使用時間依作息安排，與依習慣選擇情境直接吻合。"},
+    "warm-drink-moment": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/post-library/userzip3-v20260811/warm-water.webp","imageAlt":"溫熱水與日常飲用片刻情境","imageSource":"2026-08-11最新使用者核准情境圖：warm-water.webp","reason":"溫熱飲用貼文改用溫熱水情境，不再沿用退役combo。"},
+    "daily-cooking": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/recipe-cooking.svg","imageAlt":"雞湯、排骨湯與家常熱湯的日常料理情境","imageSource":"2026-08-15日常料理專屬圖：recipe-cooking.svg","reason":"料理貼文改用不含AI錯誤產品本體的家常湯鍋情境。"},
+    "six-products-overview": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/product-overview.svg","imageAlt":"仙加味六項正式產品各自獨立卡片呈現的總覽","imageSource":"2026-08-15正式產品原圖獨立卡片：product-overview.svg","reason":"六項產品總覽改用products-v3正式原圖獨立卡片，不沿用退役products-all。"},
+    "product-guilu-gao": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-gao.avif","imageAlt":"仙加味龜鹿膏100g正式產品顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-gao.avif","reason":"舊approved-v405產品候選已退役，改用目前正式顧客產品圖。"},
+    "product-drink-30": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-30cc.avif","imageAlt":"仙加味龜鹿飲30cc小玻璃裸罐正式顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-drink-30cc.avif","reason":"維持30cc小玻璃裸罐、無貼紙正式外觀與比例。"},
+    "product-drink-180": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-180cc-product.jpg","imageAlt":"仙加味龜鹿飲180cc狹長鋁袋正式顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-drink-180cc-product.jpg","reason":"維持180cc狹長直立鋁袋正式外觀與比例。"},
+    "product-guilu-tangkuai": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-tangkuai.avif","imageAlt":"仙加味龜鹿湯塊75g八塊裝正式顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-tangkuai.avif","reason":"改用目前正式顧客產品圖。"},
+    "product-tangkuai": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-tangkuai.avif","imageAlt":"仙加味龜鹿湯塊75g八塊裝正式顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-tangkuai.avif","reason":"改用目前正式顧客產品圖。"},
+    "product-guilu-jiao": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-jiao.avif","imageAlt":"仙加味龜鹿膠600g三十二塊裝正式顧客展示圖","imageSource":"目前正式顧客產品圖：guilu-jiao.avif","reason":"淡紫盒裝維持目前正式顧客產品圖。"},
+    "product-luerong-fen": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/luerong-fen.avif","imageAlt":"仙加味鹿茸粉75g正式顧客展示圖","imageSource":"目前正式顧客產品圖：luerong-fen.avif","reason":"改用目前正式顧客產品圖。"},
+    "product-luerong": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/luerong-fen.avif","imageAlt":"仙加味鹿茸粉75g正式顧客展示圖","imageSource":"目前正式顧客產品圖：luerong-fen.avif","reason":"改用目前正式顧客產品圖。"},
+    "trial-first": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg","imageAlt":"龜鹿飲30cc試喝組先試喝再決定正式海報","imageSource":"2026-08-14目前正式試喝海報","reason":"試喝主題固定使用目前正式試喝海報。"},
+    "choose-by-routine-first": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/choose.jpg","imageAlt":"仙加味小老闆指向怎麼選看板的正式情境圖","imageSource":"2026-08-12官網HD小老闆：choose.jpg","reason":"依生活習慣選擇產品，使用正式怎麼選情境圖。"},
+    "drink-30-vs-180": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/guilu-drink-compare.svg","imageAlt":"30cc小玻璃裸罐與180cc狹長鋁袋分開呈現的比較圖","imageSource":"2026-08-15正式產品原圖比較圖：guilu-drink-compare.svg","reason":"30cc與180cc比較使用正式產品原圖獨立呈現，不再用全系列泛用圖。"},
+    "tangkuai-vs-jiao": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/tangkuai-jiao-compare.svg","imageAlt":"龜鹿湯塊75g八塊裝與龜鹿膠600g三十二塊裝分開比較圖","imageSource":"2026-08-15正式產品原圖比較圖：tangkuai-jiao-compare.svg","reason":"兩項盒裝規格各自呈現，不強制等高、不猜實體毫米尺寸。"},
+    "drink-30-outside": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/drink30-outside.svg","imageAlt":"30cc小玻璃裸罐搭配外出與工作空檔的產品情境圖","imageSource":"2026-08-15正式產品原圖外出情境：drink30-outside.svg","reason":"外出主題使用30cc正式原圖與外出文字情境，罐型不放大、不加貼紙。"},
+    "drink-180-home": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/drink180-home.svg","imageAlt":"180cc狹長鋁袋搭配居家與工作空檔的產品情境圖","imageSource":"2026-08-15正式產品原圖居家情境：drink180-home.svg","reason":"居家主題使用180cc正式原圖並維持狹長鋁袋比例。"},
+    "tangkuai-thermos-soup": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/tangkuai-soup.svg","imageAlt":"龜鹿湯塊75g八塊裝搭配家常熱湯的料理情境圖","imageSource":"2026-08-15正式產品原圖料理情境：tangkuai-soup.svg","reason":"湯塊主題以正式盒裝原圖搭配家常熱湯情境。"},
+    "jiao-family-cooking": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/jiao-cooking.svg","imageAlt":"龜鹿膠600g三十二塊裝搭配家庭料理的情境圖","imageSource":"2026-08-15正式產品原圖料理情境：jiao-cooking.svg","reason":"龜鹿膠家庭料理主題使用正式淡紫盒裝原圖。"},
+    "luerong-daily-drink": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/luerong-warm-drink.svg","imageAlt":"鹿茸粉75g正式罐搭配日常溫飲的情境圖","imageSource":"2026-08-15正式產品原圖溫飲情境：luerong-warm-drink.svg","reason":"鹿茸粉主題以正式產品原圖搭配日常溫飲情境。"},
+    "drink-made-to-order": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/order-production.svg","imageAlt":"龜鹿飲接單後製作約5到7個工作天的流程資訊圖","imageSource":"2026-08-15龜鹿飲接單後製作資訊圖：order-production.svg","reason":"交期貼文使用專屬製作流程資訊圖，不與客服圖混用。"},
+    "faq-flexible-time": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/faq.png","imageAlt":"仙加味小老闆思考常見問題的正式FAQ情境圖","imageSource":"2026-08-12官網HD小老闆：faq.png","reason":"FAQ使用正式FAQ情境圖。"},
+    "line-consult-and-trial": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg","imageAlt":"龜鹿飲30cc試喝與官方LINE諮詢的正式試喝海報","imageSource":"2026-08-14目前正式試喝海報","reason":"試喝諮詢主題沿用目前正式試喝海報；活動固定媒體可重複。"},
+    "four-generation-work": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/brand/hd-v20260812/brand-story.png","imageAlt":"仙加味從萬華四代工作累積到現代品牌的正式品牌故事圖","imageSource":"2026-08-12官網HD品牌故事圖：brand-story.png","reason":"四代品牌故事保留品牌故事主圖；工序與萬華在地主題另用專屬圖片，不再三篇共圖。"},
+    "craft-time-and-heat": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/craft-time-heat.svg","imageAlt":"傳統熬製前處理、時間與火候的工序資訊圖","imageSource":"2026-08-15熬製工序專屬圖：craft-time-heat.svg","reason":"工序主題使用專屬火候與時間圖，不再重複品牌故事圖。"},
+    "why-exact-specs": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/exact-specs.svg","imageAlt":"30cc、180cc、75g與600g等正式產品規格分開整理的資訊圖","imageSource":"2026-08-15規格教育專屬圖：exact-specs.svg","reason":"規格教育使用專屬資訊圖，不再重複六項產品總覽。"},
+    "thirty-cc-package-detail": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-30cc.avif","imageAlt":"龜鹿飲30cc小玻璃裸罐無貼紙的正式顧客產品圖","imageSource":"目前正式顧客產品圖：guilu-drink-30cc.avif","reason":"包裝細節主題直接使用30cc正式裸罐顧客圖。"},
+    "gao-half-spoon-start": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-gao.avif","imageAlt":"仙加味龜鹿膏100g正式顧客產品圖","imageSource":"目前正式顧客產品圖：guilu-gao.avif","reason":"龜鹿膏取用主題使用正式產品圖，不用退役候選。"},
+    "warm-not-iced": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/warm-not-iced.svg","imageAlt":"溫熱飲用、避免冰飲並依日常習慣安排的資訊圖","imageSource":"2026-08-15溫熱飲用專屬圖：warm-not-iced.svg","reason":"改用本篇專屬溫熱飲用圖，避免與其他溫熱水貼文共圖。"},
+    "storage-basics": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/storage-basics.svg","imageAlt":"未開封、開封後與乾淨取用分開整理的保存資訊圖","imageSource":"2026-08-15保存取用專屬圖：storage-basics.svg","reason":"保存貼文改用專屬保存資訊圖，避免與其他保存主題共用同一張情境圖。"},
+    "trial-first-then-decide": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg","imageAlt":"龜鹿飲30cc試喝組先試喝再決定正式海報","imageSource":"2026-08-14目前正式試喝海報","reason":"試喝活動固定使用目前正式試喝海報。"},
+    "ingredient-info-clear": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/ingredient-info.svg","imageAlt":"產品名稱、規格、成分、保存與使用方式分開整理的資訊圖","imageSource":"2026-08-15產品資訊整理專屬圖：ingredient-info.svg","reason":"資訊整理主題使用專屬圖，不再重複六項產品總覽。"},
+    "wanhua-visit-brand": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/wanhua-local.svg","imageAlt":"從萬華開始、四代累積到今天仙加味的在地品牌資訊圖","imageSource":"2026-08-15萬華在地專屬圖：wanhua-local.svg","reason":"萬華在地主題改用專屬萬華圖，不與四代品牌故事共圖。"},
+    "ask-line-before-order": {"action":"replace","imageUrl":"https://ts15825868.github.io/xianjiawei/images/posts/current-v20260815/contact-line-safe.svg","imageAlt":"下單前透過仙加味官方LINE詢問規格、使用、試喝與交期的資訊圖","imageSource":"2026-08-15LINE諮詢專屬圖：contact-line-safe.svg","reason":"客服諮詢主題使用不含錯誤產品包裝的專屬LINE資訊圖。"}
   }
 }
