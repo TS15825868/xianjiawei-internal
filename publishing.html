@@ -71,7 +71,7 @@
           <strong>內容母庫：</strong>母庫可持續增加，不設固定篇數上限；同步只補入目前缺少的內容，不覆蓋已核准、已排程或已發布貼文。<br><br>
           <strong>圖片規則：</strong>一般產品貼文使用正式產品原圖；詳細DM與試喝圖各自使用核准素材。products-v3只作產品身份、包裝與比例校正，AI不得重畫產品。30cc與180cc包裝、比例不可改。小老闆使用網站同款精緻Q版，小鹿與小烏龜分開呈現。<br><br>
           <strong>正式審核流程：</strong>草稿 → 待審核 → 16項人工圖文審核 → 核准 → 排程或立即發布。任何換圖或改文案後，原核准自動失效並重新審核。立即發布不受固定排程時間限制。<br><br>
-          <strong>重新生成：</strong>支援圖不符合、文案不符合、全部重新生成；完成後回待審核，不自動核准、不自動排程、不自動發布。
+          <strong>免費重新生成流程（ChatGPT 回填）：</strong>支援圖不符合、文案不符合、全部重新生成；完成後回到原貼文做「生成後回填／上傳」，並重新進入待審核，不自動核准、不自動排程、不自動發布。
         </div>
       </details>
 
@@ -168,10 +168,11 @@
         if(help)help.classList.remove('show');
         var root=document.getElementById('readinessSummary');
         if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';
-        setTimeout(function(){loadScript('/assets/js/device-image-upload.js?v=20260815-lazy-v1').catch(function(){})},500);
-        setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-lazy-v1').catch(function(){})},900);
-        setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-lazy-v1').catch(function(){})},1300);
-        setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},1800);
+        setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260815-lazy-raster-v1').catch(function(){})},350);
+        setTimeout(function(){loadScript('/assets/js/device-image-upload.js?v=20260815-lazy-v1').catch(function(){})},650);
+        setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},950);
+        setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},1250);
+        setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},1650);
       });
 
       setTimeout(function(){if(stillLoading())showHelp('核心程式正在載入。請按「重新連線」；若仍沒有貼文，請重新整理並確認 Cloudflare Access 登入仍有效。')},7000);
