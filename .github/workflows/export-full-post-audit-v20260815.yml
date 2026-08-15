@@ -1,0 +1,120 @@
+name: 仙加味77篇貼文全庫圖文報告
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/export-full-post-audit-v20260815.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require D1 credentials and install dependencies
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read every non-archived post from D1
+        shell: bash
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_quality_status FROM social_posts WHERE status<>'archived' ORDER BY id;" > /tmp/live-posts.json
+      - name: Build full copy-image audit report
+        shell: bash
+        run: |
+          mkdir -p audits
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          import { semanticErrors } from './src/publishing-content-audit-entry.js';
+
+          const blocks=JSON.parse(fs.readFileSync('/tmp/live-posts.json','utf8'));
+          const rows=blocks.flatMap(block=>block.results||[]);
+          const norm=v=>String(v||'').normalize('NFKC').toLowerCase().replace(/仙加味[｜|]?補養，是一種節奏。?/g,'').replace(/[^\p{L}\p{N}]+/gu,'');
+          const imageNorm=v=>String(v||'').trim().split(/[?#]/)[0].toLowerCase();
+          const grams=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);m.set(k,(m.get(k)||0)+1)}return m};
+          const dice=(a,b)=>{if(!a||!b)return 0;if(a===b)return 1;const A=grams(a),B=grams(b);let ai=0,bi=0,hit=0;for(const n of A.values())ai+=n;for(const n of B.values())bi+=n;for(const [k,n] of A)hit+=Math.min(n,B.get(k)||0);return ai+bi?2*hit/(ai+bi):0};
+          const productRules=[
+            ['龜鹿膏',['龜鹿膏'],['guilu-gao','龜鹿膏']],
+            ['龜鹿飲30cc玻璃罐',['30cc','龜鹿飲30'],['drink-30','30cc','龜鹿飲30']],
+            ['龜鹿飲180cc鋁袋',['180cc','龜鹿飲180'],['drink-180','180cc','龜鹿飲180']],
+            ['龜鹿湯塊',['龜鹿湯塊','湯塊'],['tangkuai','龜鹿湯塊','湯塊']],
+            ['龜鹿膠',['龜鹿膠'],['guilu-jiao','龜鹿膠']],
+            ['鹿茸粉',['鹿茸粉'],['luerong','鹿茸粉']],
+          ];
+          const imageGroups=new Map(),titleGroups=new Map();
+          for(const row of rows){
+            const im=imageNorm(row.image_url);if(im){if(!imageGroups.has(im))imageGroups.set(im,[]);imageGroups.get(im).push(row)}
+            const t=norm(row.title);if(t){if(!titleGroups.has(t))titleGroups.set(t,[]);titleGroups.get(t).push(row)}
+          }
+          const nearCopy=new Map();
+          for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+            const a=norm(rows[i].copy),b=norm(rows[j].copy);if(a.length<40||b.length<40)continue;
+            const score=dice(a,b);if(score<0.90)continue;
+            const key=rows[i].id; if(!nearCopy.has(key))nearCopy.set(key,[]);nearCopy.get(key).push({id:rows[j].id,title:rows[j].title,score:Number(score.toFixed(3))});
+            const key2=rows[j].id; if(!nearCopy.has(key2))nearCopy.set(key2,[]);nearCopy.get(key2).push({id:rows[i].id,title:rows[i].title,score:Number(score.toFixed(3))});
+          }
+          const issues=[];
+          for(const row of rows){
+            const found=[];
+            const publicText=[row.title,row.headline,row.copy,row.category].filter(Boolean).join(' ');
+            const imageText=[row.image_url,row.image_alt,row.image_source].filter(Boolean).join(' ').toLowerCase();
+            const im=imageNorm(row.image_url);
+            if(!String(row.image_url||'').trim())found.push({type:'missing_image',detail:'有文案但沒有主圖'});
+            if(!String(row.copy||'').trim())found.push({type:'missing_copy',detail:'缺少正式文案'});
+            if(publicText.includes('台興山產')||String(row.image_alt||'').includes('台興山產'))found.push({type:'blocked_brand_name',detail:'對外內容仍出現「台興山產」'});
+            const imageDup=imageGroups.get(im)||[];if(im&&imageDup.length>1)found.push({type:'duplicate_image',detail:`與 ${imageDup.filter(x=>x.id!==row.id).map(x=>`「${x.title}」`).slice(0,6).join('、')} 使用相同主圖`,count:imageDup.length});
+            const titleDup=titleGroups.get(norm(row.title))||[];if(titleDup.length>1)found.push({type:'duplicate_title',detail:`標題與 ${titleDup.filter(x=>x.id!==row.id).map(x=>`「${x.title}」`).slice(0,6).join('、')} 重複`});
+            if(nearCopy.has(row.id))found.push({type:'near_duplicate_copy',detail:'文案與其他貼文過度相似',matches:nearCopy.get(row.id)});
+            if(/\/images\/posts\/smallboss-v20260815\//.test(im))found.push({type:'collage_smallboss',detail:'使用已停用的拼湊式小老闆圖'});
+            if(/\/images\/posts\/current-v20260815\/.*\.svg$|\/images\/publishing\/generated-v20260815\/.*\.svg$/.test(im))found.push({type:'incomplete_svg',detail:'使用曾發生空白框／加號／情境不完整的 SVG 合成圖'});
+            if(/\/images\/customer-display-v20260812\//.test(im)&&!/trial/.test(im))found.push({type:'product_only_not_smallboss',detail:'目前主圖偏產品展示，未確認為完整小老闆情境；依目前規則需改成專屬完整情境圖'});
+            const mentioned=productRules.filter(([,copyTerms])=>copyTerms.some(t=>publicText.toLowerCase().includes(t.toLowerCase())));
+            if(mentioned.length===1&&!mentioned[0][2].some(t=>imageText.includes(t.toLowerCase())))found.push({type:'product_image_mismatch',detail:`文案主題是「${mentioned[0][0]}」，圖片資訊沒有明確對應`});
+            try{for(const e of semanticErrors(row,rows))found.push({type:'semantic_mismatch',detail:e})}catch(e){found.push({type:'audit_runtime_error',detail:String(e?.message||e)})}
+            const unique=[];const seen=new Set();for(const item of found){const k=`${item.type}|${item.detail}`;if(seen.has(k))continue;seen.add(k);unique.push(item)}
+            if(unique.length)issues.push({id:row.id,title:row.title,status:row.status,category:row.category,image_url:row.image_url,image_alt:row.image_alt,issue_count:unique.length,issues:unique});
+          }
+          const counts=Object.fromEntries(rows.reduce((m,r)=>m.set(r.status,(m.get(r.status)||0)+1),new Map()));
+          const duplicateImageGroups=[...imageGroups.entries()].filter(([,g])=>g.length>1).map(([image_url,g])=>({image_url,count:g.length,posts:g.map(x=>({id:x.id,title:x.title,status:x.status}))})).sort((a,b)=>b.count-a.count);
+          const report={
+            version:'2026-08-15-full-post-audit-v1',
+            generated_at_utc:new Date().toISOString(),
+            total_posts:rows.length,
+            status_counts:counts,
+            problem_posts:issues.length,
+            clean_posts:rows.length-issues.length,
+            duplicate_image_groups:duplicateImageGroups.length,
+            duplicate_image_post_count:new Set(duplicateImageGroups.flatMap(g=>g.posts.map(p=>p.id))).size,
+            near_duplicate_copy_post_count:nearCopy.size,
+            blocked_brand_name_count:issues.filter(x=>x.issues.some(i=>i.type==='blocked_brand_name')).length,
+            old_collage_count:issues.filter(x=>x.issues.some(i=>i.type==='collage_smallboss')).length,
+            issues
+          };
+          fs.writeFileSync('audits/full-post-audit-current.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify({...report,issues:undefined},null,2));
+          NODE
+      - name: Commit current audit report
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audits/full-post-audit-current.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'audit(posts): refresh full 77-post copy-image report'
+          git pull --rebase origin main
+          git push origin HEAD:main
