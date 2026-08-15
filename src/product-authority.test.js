@@ -25,7 +25,6 @@ for(const stale of [
   {name:'龜鹿飲180cc鋁袋',specification:'180cc／包'},
   {name:'龜鹿湯塊',specification:'75g／盒'},
   {name:'龜鹿膠',specification:'600g／盒｜32塊裝'},
-  {name:'龜鹿湯塊',specification:'75g／盒｜8塊裝'},
   {name:'龜鹿膠',specification:'600g（1斤）／盒｜32塊裝'},
   {name:'龜鹿湯塊',specification:'75g／盒｜8塊裝｜每塊約9.375g'},
   {name:'龜鹿膠',specification:'600g （1斤）／盒｜32塊裝｜每塊約18.75 g'}
