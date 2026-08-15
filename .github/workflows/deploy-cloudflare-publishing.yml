@@ -46,7 +46,7 @@ jobs:
           npm run guard:full
       - name: Build standalone posting center app
         run: npm run build:static
-      - name: Verify posting center production output
+      - name: Verify posting center production output and Access runtime config
         shell: bash
         run: |
           set -euo pipefail
@@ -68,12 +68,32 @@ jobs:
           grep -q '貼文中心系統 App' dist/publishing.html
           grep -q "location.replace('/publishing.html')" dist/index.html
           grep -Eq '"html_handling"[[:space:]]*:[[:space:]]*"none"' wrangler.jsonc
+          grep -q '"POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f"' wrangler.jsonc
+          grep -q '"TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"' wrangler.jsonc
           grep -q 'rootServesPublishingDirectly:true' src/publishing-only-entry.js
           grep -q 'redirectLoopPrevention:true' src/publishing-only-entry.js
           ! grep -q "return redirect('/publishing.html')" src/publishing-only-entry.js
           test ! -e dist/assets/js/internal-app.js
           test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS: production bundle contains only posting-center frontend and no Worker/HTML canonical redirect loop.'
+          echo 'PASS: production bundle contains only posting-center frontend, Access JWT config, and no Worker/HTML canonical redirect loop.'
+      - name: Cross-check current Cloudflare Access application
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='xianjiawei-internal.tung314069.workers.dev'
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps?domain=$domain&exact=true&per_page=50" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H 'Content-Type: application/json' > /tmp/access-apps.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const body=JSON.parse(fs.readFileSync('/tmp/access-apps.json','utf8'));
+          if(body.success!==true) throw new Error('Cloudflare Access API failed: '+JSON.stringify(body.errors||[]));
+          const domain='xianjiawei-internal.tung314069.workers.dev';
+          const apps=(body.result||[]).filter(x=>String(x.domain||'').replace(/^https?:\/\//,'').replace(/\/$/,'')===domain);
+          if(apps.length!==1) throw new Error(`Expected exactly one Access app for ${domain}, got ${apps.length}`);
+          if(apps[0].aud!=='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f') throw new Error('Access AUD does not match wrangler POLICY_AUD');
+          console.log('PASS: Cloudflare Access app domain/AUD match the Worker JWT verification configuration.');
+          NODE
       - name: Verify remote D1 before deploy
         run: |
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
@@ -96,7 +116,7 @@ jobs:
             echo "$path -> $result"
             test "$code" -ge 200 || { echo "$path returned invalid HTTP status $code" >&2; exit 1; }
             test "$code" -lt 500 || { echo "$path returned server error $code" >&2; exit 1; }
-            test "$redirects" -le 2 || { echo "$path has a redirect storm ($redirects redirects)" >&2; exit 1; }
+            test "$redirects" -le 1 || { echo "$path has a redirect storm ($redirects redirects)" >&2; exit 1; }
             if grep -Eq '貼文中心系統 App|唯一正式內容系統' "$body"; then
               direct_content=$((direct_content+1))
             elif grep -Eiq '<html|<!doctype|cloudflare|access|sign in|login' "$body"; then
@@ -127,6 +147,7 @@ jobs:
             "route_mode": "direct_no_redirect",
             "html_handling": "none",
             "redirect_loop_prevention": true,
+            "access_jwt_verification": "configured_and_api_cross_checked",
             "health": "healthz/core + healthz/readiness + direct publishing aliases",
             "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
             "remote_d1": "verified",
