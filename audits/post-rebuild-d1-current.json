@@ -1,0 +1,17 @@
+{
+  "version": "2026-08-16-post-rebuild-d1-audit-v3",
+  "generated_at_utc": "2026-08-15T19:23:06.781Z",
+  "status_counts": {
+    "pending_review": 76,
+    "published": 1
+  },
+  "total": 77,
+  "rebuilt": 77,
+  "id_matched": 77,
+  "missing_image": 0,
+  "blocked_name": 0,
+  "old_visual": 0,
+  "duplicate_copy_posts": 0,
+  "duplicate_image_posts": 0,
+  "reference_locked": 0
+}
