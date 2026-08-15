@@ -1,0 +1,53 @@
+name: 仙加味77篇重製後正式D1稽核
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-rebuild-state-v20260816.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Query production D1
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS n FROM social_posts WHERE status<>'archived' GROUP BY status ORDER BY status; SELECT COUNT(*) AS total FROM social_posts WHERE status<>'archived'; SELECT COUNT(*) AS rebuilt FROM social_posts WHERE status<>'archived' AND image_url LIKE 'https://ts15825868.github.io/xianjiawei/images/posts/rebuild-v20260816/%'; SELECT COUNT(*) AS id_matched FROM social_posts WHERE status<>'archived' AND instr(image_url,id)>0; SELECT COUNT(*) AS missing_image FROM social_posts WHERE status<>'archived' AND trim(COALESCE(image_url,''))=''; SELECT COUNT(*) AS blocked_name FROM social_posts WHERE status<>'archived' AND instr(COALESCE(title,'')||COALESCE(headline,'')||COALESCE(copy,'')||COALESCE(image_alt,''),'台興山產')>0; SELECT COUNT(*) AS old_visual FROM social_posts WHERE status<>'archived' AND (instr(image_url,'smallboss-v20260815')>0 OR instr(image_url,'approved-v405')>0 OR instr(image_url,'generated-v20260815')>0); SELECT COUNT(*) AS duplicate_copy_posts FROM social_posts p WHERE status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(COALESCE(q.copy,''))=trim(COALESCE(p.copy,''))); SELECT COUNT(*) AS duplicate_image_posts FROM social_posts p WHERE status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(COALESCE(q.image_url,''))=trim(COALESCE(p.image_url,''))); SELECT COUNT(*) AS reference_locked FROM social_posts WHERE status<>'archived' AND instr(COALESCE(image_source,''),'使用者核准2D Q版小老闆')>0;" > /tmp/audit.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/audit.json','utf8'));
+          const results=raw.map(x=>x.results||[]);
+          const status=results[0]||[];
+          const one=i=>results[i]?.[0]||{};
+          const out={version:'2026-08-16-post-rebuild-d1-audit-v1',generated_at_utc:new Date().toISOString(),status_counts:Object.fromEntries(status.map(r=>[r.status,Number(r.n)])),total:Number(one(1).total||0),rebuilt:Number(one(2).rebuilt||0),id_matched:Number(one(3).id_matched||0),missing_image:Number(one(4).missing_image||0),blocked_name:Number(one(5).blocked_name||0),old_visual:Number(one(6).old_visual||0),duplicate_copy_posts:Number(one(7).duplicate_copy_posts||0),duplicate_image_posts:Number(one(8).duplicate_image_posts||0),reference_locked:Number(one(9).reference_locked||0)};
+          fs.mkdirSync('audits',{recursive:true});
+          fs.writeFileSync('audits/post-rebuild-d1-current.json',JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify(out));
+          if(out.total!==77||out.rebuilt!==77||out.id_matched!==77||out.missing_image!==0||out.blocked_name!==0||out.old_visual!==0||out.duplicate_copy_posts!==0||out.duplicate_image_posts!==0||out.reference_locked!==77)process.exit(2);
+          NODE
+      - name: Commit audit snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audits/post-rebuild-d1-current.json
+          git commit -m 'audit(posts): verify 77 rebuilt D1 posts' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
