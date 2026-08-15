@@ -1,0 +1,92 @@
+name: 仙加味小老闆貼文圖同步貼文中心
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/post-smallboss-media-v20260815.json'
+      - 'assets/data/guilu-context-media-v20260815.json'
+      - 'tools/apply-smallboss-media-overrides.mjs'
+      - '.github/workflows/sync-smallboss-posts-v20260815.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-smallboss-post-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      XJW_CONTENT_SEED_CREATED_BY: tung314069@gmail.com
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require credentials and install dependencies
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Apply small-boss media overrides
+        run: |
+          node tools/apply-smallboss-media-overrides.mjs
+          grep -q 'smallboss-v20260815' assets/data/social-image-audit-v20260815.json
+          ! grep -Fq '台興山產' assets/data/post-smallboss-media-v20260815.json
+      - name: Persist social image audit overrides
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/data/social-image-audit-v20260815.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'feat(posts): bind social batch to formal small-boss visuals'
+            git push origin HEAD:main
+          fi
+      - name: Build current guilu and social review seeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-guilu-review-seed.mjs > /tmp/guilu.sql
+          XJW_CONTENT_SEED_CREATED_BY="$XJW_CONTENT_SEED_CREATED_BY" node tools/build-social-batches-review-seed.mjs > /tmp/social.sql
+          node - <<'NODE' > /tmp/legacy.sql
+          const fs=require('fs');
+          const data=JSON.parse(fs.readFileSync('assets/data/post-smallboss-media-v20260815.json','utf8'));
+          const q=v=>`'${String(v??'').replaceAll("'","''")}'`;
+          for(const [id,item] of Object.entries(data.overrides||{})){
+            if(id.startsWith('XJW-GUILU-')||id.startsWith('XJW-SOCIAL-')) continue;
+            console.log(`UPDATE social_posts SET image_url=${q(item.imageUrl)},image_alt=${q(item.imageAlt)},image_source=${q(item.imageSource)},image_approved=0,status='pending_review',scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,updated_at=CURRENT_TIMESTAMP WHERE id=${q(id)} AND status IN ('draft','pending_review');`);
+          }
+          NODE
+          test "$(grep -c '^UPDATE social_posts' /tmp/legacy.sql)" -eq 5
+      - name: Sync current images to Cloudflare D1
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/guilu.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/social.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/legacy.sql
+      - name: Verify all rebuilt posts and blocked display name
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$(npx wrangler d1 execute xianjiawei-internal-db --remote --command \"
+            SELECT COUNT(*) AS smallboss_count FROM social_posts WHERE status<>'archived' AND image_url LIKE '%/images/posts/smallboss-v20260815/%';
+            SELECT COUNT(*) AS rebuilt_not_pending FROM social_posts WHERE image_url LIKE '%/images/posts/smallboss-v20260815/%' AND status<>'pending_review';
+            SELECT COUNT(*) AS old_visual_live FROM social_posts WHERE status IN ('draft','pending_review') AND (lower(image_url) LIKE '%/images/posts/current-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/publishing/generated-v20260815/%.svg%' OR lower(image_url) LIKE '%/images/customer-display-v20260812/%' OR lower(image_url) LIKE '%post-image-guilu-drink.html%');
+            SELECT COUNT(*) AS blocked_name FROM social_posts WHERE status<>'archived' AND (title LIKE '%台興山產%' OR headline LIKE '%台興山產%' OR copy LIKE '%台興山產%' OR image_alt LIKE '%台興山產%' OR image_source LIKE '%台興山產%');
+          \"")"
+          echo "$result"
+          echo "$result" | grep -Eq 'smallboss_count[^0-9]*59|smallboss_count[[:space:]]+59'
+          echo "$result" | grep -Eq 'rebuilt_not_pending[^0-9]*0|rebuilt_not_pending[[:space:]]+0'
+          echo "$result" | grep -Eq 'old_visual_live[^0-9]*0|old_visual_live[[:space:]]+0'
+          echo "$result" | grep -Eq 'blocked_name[^0-9]*0|blocked_name[[:space:]]+0'
+          echo 'PASS: 59 張重製小老闆貼文圖已同步待審核；舊問題圖與指定名稱均未出現在現行貼文。'
