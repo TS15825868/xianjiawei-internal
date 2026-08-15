@@ -41,6 +41,7 @@ must(gate.includes("status='draft',scheduled_at=NULL,approved_by=NULL,approved_a
 must(gate.includes('30cc正式名稱必須是小玻璃罐'),'30cc玻璃罐正式名稱守門缺失');
 must(gate.includes('龜鹿湯塊正式規格只有75g'),'龜鹿湯塊75g唯一規格守門缺失');
 must(gate.includes('CUSTOMER_INTERNAL_TERMS'),'正式審核缺少顧客文案內部用語守門');
+must(gate.includes('row?.image_alt'),'正式審核必須把圖片替代文字納入顧客可見文字守門');
 must(gate.includes('duplicatePostErrors'),'正式審核缺少重複貼文守門');
 must(gate.includes('diceSimilarity'),'重複貼文守門缺少近似文案判斷');
 must(gate.includes('顧客文案含內部作業用語'),'正式審核缺少可理解的內部文字錯誤訊息');

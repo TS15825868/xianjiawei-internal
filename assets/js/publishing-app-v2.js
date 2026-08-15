@@ -1,6 +1,6 @@
 const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,platforms:null,loadId:0};
 const PAGE_SIZE=18;
-const CUSTOMER_INTERNAL_TERMS=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料'];
+const CUSTOMER_INTERNAL_TERMS=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料','Cloudflare','API Token','Secret','Repository','Repo','commit','deploy','部署','快取版本','測試資料','內部檢查','客戶實際會看到的文案'];
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -106,7 +106,7 @@ function audit(post){
   const mentioned=rules.filter(([,keys])=>keys.some(k=>copy.includes(norm(k))));
   const productMatched=mentioned.some(([,keys])=>keys.some(k=>image.includes(norm(k))));
   const multiProductImage=mentioned.length>=2&&['六項','全系列','產品總覽','products-all','all-products','全品項','產品合照','產品情境圖'].some(k=>image.includes(norm(k)));
-  const internalHit=CUSTOMER_INTERNAL_TERMS.find(term=>[post.title,post.headline,post.copy].filter(Boolean).join(' ').toLowerCase().includes(term.toLowerCase()));
+  const internalHit=CUSTOMER_INTERNAL_TERMS.find(term=>[post.title,post.headline,post.copy,post.image_alt].filter(Boolean).join(' ').toLowerCase().includes(term.toLowerCase()));
   if(internalHit)return{level:'danger',text:`顧客文案含內部作業用語「${internalHit}」，請先改成客戶可直接閱讀的文字。`};
   if(!post.image_url)return{level:'danger',text:'缺少圖片，不能通過審核。'};
   if(mentioned.length&&!productMatched&&!multiProductImage){
