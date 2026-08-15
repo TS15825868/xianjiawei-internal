@@ -80,7 +80,7 @@ jobs:
           test ! -e dist/assets/js/internal-app.js
           test ! -e dist/assets/js/erp-publishing-separation.js
           echo 'PASS: standalone posting center app outputs exist and retired ERP frontend is absent.'
-      - name: Validate safe idempotent review seed against current bank count
+      - name: Validate safe idempotent review seed against current active bank count
         shell: bash
         run: |
           set -euo pipefail
@@ -90,7 +90,7 @@ jobs:
           expected="$(node - <<'NODE'
           const fs=require('fs');
           const bank=JSON.parse(fs.readFileSync('assets/data/guilu-content-topic-bank-v20260814.json','utf8'));
-          process.stdout.write(String((bank.topics||[]).filter(x=>x&&x.seedToReview===true).length));
+          process.stdout.write(String((bank.topics||[]).filter(x=>x&&x.queueEnabled!==false&&x.seedToReview===true).length));
           NODE
           )"
           test "$expected" -gt 0
@@ -98,7 +98,7 @@ jobs:
           test "$upserts" -eq "$expected"
           grep -Fq "WHERE social_posts.status IN ('draft','pending_review')" /tmp/guilu-review-seed.sql
           if grep -Fq 'INSERT OR IGNORE INTO social_posts' /tmp/guilu-review-seed.sql; then exit 1; fi
-          echo "PASS: current ${expected} image-ready topics produce safe idempotent pending-review upserts."
+          echo "PASS: current ${expected} active image-ready topics produce safe deduplicated idempotent pending-review upserts."
       - name: Confirm this run did not deploy
         run: |
           {
@@ -108,6 +108,7 @@ jobs:
             echo '- ✅ 根網址直接進貼文中心'
             echo '- ✅ draft → pending_review → 16項人工審核 → approved → 排程／立即發布'
             echo '- ✅ iOS Safari 恢復與離線快取能力'
+            echo '- ✅ 重複貼文與顧客文案內部字樣守門'
             echo '- ✅ 其他 ERP UI/API 不進正式 App'
             echo '- ⏸ 本 workflow 不部署 Cloudflare Worker'
           } >> "$GITHUB_STEP_SUMMARY"
