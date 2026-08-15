@@ -4,6 +4,10 @@
   "main": "src/publishing-only-entry.js",
   "compatibility_date": "2026-07-24",
   "keep_vars": true,
+  "vars": {
+    "POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f",
+    "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
