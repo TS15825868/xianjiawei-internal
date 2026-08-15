@@ -1,6 +1,22 @@
 name: 仙加味貼文中心系統 App 正式部署
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/publishing-content-audit-entry.js'
+      - 'src/publishing-only-entry.js'
+      - 'src/production-entry.js'
+      - 'src/publishing-review-gate-entry.js'
+      - 'assets/js/publishing-review-gate.js'
+      - 'assets/js/publishing-app-v2.js'
+      - 'assets/data/social-image-audit-v20260815.json'
+      - 'tools/validate-publishing-review-gate.mjs'
+      - 'tools/validate-system-readiness.mjs'
+      - 'tools/validate-single-publishing-system.mjs'
+      - 'package.json'
+      - 'wrangler.jsonc'
+      - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
 permissions:
@@ -63,19 +79,26 @@ jobs:
           test -f dist/assets/js/post-bank-sync.js
           test -f dist/assets/js/formal-media-policy-v20260810.js
           test -f dist/assets/js/zip-media-assistant.js
+          test -f dist/assets/js/publishing-content-guidance-v20260814.js
           test -f dist/assets/data/guilu-content-topic-bank-v20260814.json
+          test -f dist/assets/data/social-image-audit-v20260815.json
           test -f dist/data/latest-user-post-zip.json
+          test -f src/publishing-content-audit-entry.js
           grep -q '貼文中心系統 App' dist/publishing.html
           grep -q "location.replace('/publishing.html')" dist/index.html
+          grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/publishing-content-audit-entry.js"' wrangler.jsonc
           grep -Eq '"html_handling"[[:space:]]*:[[:space:]]*"none"' wrangler.jsonc
           grep -q '"POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f"' wrangler.jsonc
           grep -q '"TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"' wrangler.jsonc
+          grep -q 'duplicateImageHardGate:true' src/publishing-content-audit-entry.js
+          grep -q 'seasonWeatherContextAudit:true' src/publishing-content-audit-entry.js
+          grep -q 'semanticImageMatchHardGate:true' src/publishing-content-audit-entry.js
           grep -q 'rootServesPublishingDirectly:true' src/publishing-only-entry.js
           grep -q 'redirectLoopPrevention:true' src/publishing-only-entry.js
           ! grep -q "return redirect('/publishing.html')" src/publishing-only-entry.js
           test ! -e dist/assets/js/internal-app.js
           test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS: production bundle contains only posting-center frontend, Access JWT config, and no Worker/HTML canonical redirect loop.'
+          echo 'PASS: production bundle contains posting-center frontend plus duplicate-image/season/weather/context semantic audit, Access JWT config, and no Worker/HTML canonical redirect loop.'
       - name: Cross-check current Cloudflare Access application
         shell: bash
         run: |
@@ -142,13 +165,14 @@ jobs:
             "status": "${XJW_DEPLOY_STATUS}",
             "source_commit": "${GITHUB_SHA}",
             "runtime": "cloudflare-worker-publishing-center-app",
-            "entry": "src/publishing-only-entry.js",
+            "entry": "src/publishing-content-audit-entry.js",
             "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
             "route_mode": "direct_no_redirect",
             "html_handling": "none",
             "redirect_loop_prevention": true,
             "access_jwt_verification": "configured_and_api_cross_checked",
             "health": "healthz/core + healthz/readiness + direct publishing aliases",
+            "content_image_audit": "duplicate image + season + weather + context semantic hard gate",
             "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
             "remote_d1": "verified",
             "erp_ui": "disabled",
