@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "status": "deployed_access_protected",
-  "updated_at_utc": "2026-08-15T03:54:45Z",
+  "updated_at_utc": "2026-08-15T04:07:32Z",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "current_architecture": {
@@ -9,9 +9,6 @@
     "root_ui": "redirect to /publishing.html",
     "publishing_ui": "/publishing.html",
     "worker_entry": "src/publishing-only-entry.js",
-    "publishing_review_gate": "src/publishing-review-gate-entry.js",
-    "immediate_publish_entry": "src/flexible-publish-entry.js",
-    "authority_entry": "src/authority-entry.js",
     "erp_ui": "disabled",
     "erp_api": "blocked_except_publishing"
   },
@@ -26,15 +23,9 @@
     "guilu_jiao": "600g （1斤）／盒｜32塊裝，每塊約18.75 g",
     "luerong": "75g／罐"
   },
-  "current_media_roles": {
-    "customer_product_image": "https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/",
-    "detailed_dm": "https://ts15825868.github.io/xianjiawei/images/dm-final/",
-    "trial": "https://ts15825868.github.io/xianjiawei/images/trial/trial-poster-small-boss-official-v20260814.jpg",
-    "product_identity_reference": "https://ts15825868.github.io/xianjiawei/images/products-v3/",
-    "rule": "一般產品主圖、詳細DM、試喝海報與products-v3身份／包裝／比例參考四種角色分離；產品本體不得AI重畫、變形或改包裝。"
-  },
   "posting_center_runtime": {
-    "runtime_version": "publishing-center-app-20260815-v2",
+    "runtime_version": "publishing-center-app-20260815-v3",
+    "readiness_version": "20260815-publishing-readiness-ui-v7-nonblocking-boot",
     "resilience_version": "20260815-publishing-resilience-v3-ios-recovery",
     "pwa_manifest": true,
     "ios_safari_resilience": true,
@@ -43,39 +34,24 @@
     "pageshow_resume": true,
     "resume_hard_reload_fallback": true,
     "api_timeout_alignment": true,
+    "nonblocking_boot": true,
+    "visible_boot_timeout_recovery": true,
     "dynamic_post_bank": true,
     "fixed_post_count_limit": false,
     "review_checklist_count": 16,
     "immediate_publish_independent_of_fixed_schedule": true
   },
-  "latest_zip": {
-    "source": "新貼文的圖(3).zip",
-    "candidate_count": 20,
-    "binary_sync_status": "synced",
-    "publishable_lifestyle_media_count": 15,
-    "review_rule": "換圖、生成或文案修改後回pending_review並重跑16項；沒有合格來源才重新生成。"
-  },
   "local_code_validation": {
     "status": "success",
-    "workflow_run_id": 31863010051,
-    "source_commit": "1e1cdb4094297d5be8f54439144bc9458f4eac12",
-    "checks": [
-      "npm run check",
-      "npm run guard:full",
-      "standalone publishing center build",
-      "retired ERP frontend absent from dist",
-      "safe idempotent review seed",
-      "iOS recovery runtime syntax and cache identity"
-    ]
+    "workflow_run_id": 31863577819,
+    "source_commit": "495c1a097eef7812e207563cd6c9c0621c45268f"
   },
   "cloudflare_deployment": {
     "status": "deployed",
-    "workflow_run_id": 31863037119,
-    "source_commit": "8f0ab3a90d430b9b2b2aea8e4e7e8340c13579e4",
-    "content_commit": "1e1cdb4094297d5be8f54439144bc9458f4eac12",
-    "cloudflare_version_id": "bd1aacb2-6757-4ea3-ba51-871b91d75f15",
-    "cloudflare_api_token_present": true,
-    "cloudflare_account_id_present": true,
+    "workflow_run_id": 31863598266,
+    "source_commit": "07fa895f2815c665d891c450246046958c5d188c",
+    "content_commit": "495c1a097eef7812e207563cd6c9c0621c45268f",
+    "cloudflare_version_id": "89f316e6-2263-4ab2-86d6-0d55c79acb78",
     "remote_d1_verified": true,
     "remote_d1_database": "xianjiawei-internal-db",
     "remote_d1_database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
@@ -92,14 +68,14 @@
   },
   "post_deploy_verification": {
     "status": "success",
-    "workflow_run_id": 31863037119,
+    "workflow_run_id": 31863598266,
     "remote_d1_verified": true,
     "production_route_reachable": true,
     "root_route_reachable": true,
     "publishing_route_reachable": true,
     "live_verify_mode": "cloudflare_access_boundary_verified",
     "authenticated_runtime_content_verified": false,
-    "reason_authenticated_content_not_directly_verified": "正式貼文中心由 Cloudflare Access 保護；未登入的 GitHub Actions 可驗證 Worker、D1 與私人 Access 邊界，登入後的實際 iPhone 畫面仍以使用者裝置作最後實機驗收。"
+    "reason_authenticated_content_not_directly_verified": "正式貼文中心由 Cloudflare Access 保護；GitHub Actions 已驗證 Worker、D1 與私人 Access 邊界，登入後的實際 iPhone 畫面需由使用者裝置作最後實機驗收。"
   },
   "cloudflare_deploy_blocker": null,
   "guard_mode": "paused_for_full_system_update",
