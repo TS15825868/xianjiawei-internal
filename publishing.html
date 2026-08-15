@@ -8,16 +8,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="仙加味貼文中心">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260815-v3">
+  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260815-v4-full-audit">
   <title>仙加味｜貼文中心系統 App</title>
   <link rel="manifest" href="/manifest.webmanifest?v=20260815-app-v1">
-  <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v3-customer-clean">
-  <link rel="stylesheet" href="/assets/css/publishing-app.css?v=20260815-app-v1">
+  <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v4-full-audit">
+  <link rel="stylesheet" href="/assets/css/publishing-app.css?v=20260815-app-v2-safe-area">
   <link rel="stylesheet" href="/assets/css/publishing-performance.css?v=20260815-app-v1">
   <link rel="stylesheet" href="/assets/css/publishing-readiness.css?v=20260815-app-v1">
   <style>
     html,body{min-height:100%;background:#f7f4ed}
-    body:before{content:"";position:fixed;inset:0 0 auto 0;height:3px;background:#0b1f3b;z-index:9999}
     .app-intro{margin:0 0 16px;padding:14px 16px;border:1px solid #ddd5c7;border-radius:14px;background:#fff}
     .app-intro h1{margin:0 0 5px;font-size:clamp(25px,6vw,36px);color:#0b1f3b}
     .app-intro p{margin:0;color:#596579;line-height:1.65}
@@ -46,7 +45,7 @@
     </div></header>
     <main class="publish-main">
       <section class="app-intro"><p class="eyebrow">CONTENT CENTER</p><h1>貼文中心系統 App</h1><p>文案、圖片、待審核、16項圖文審核、排程與立即發布集中在這裡操作。其他 ERP 功能目前暫停，不再干擾貼文中心。</p><div><strong id="connectionState" class="connection">正在啟動貼文中心…</strong></div></section>
-      <details class="rules-panel"><summary>正式規格與審核規則</summary><div class="rules-panel-content"><strong>正式規格已同步：</strong>龜鹿膏100g／罐；龜鹿飲30cc／罐（小玻璃罐、裸罐、無貼紙）；龜鹿飲180cc／包（鋁袋）；龜鹿湯塊75g （2兩）／盒｜8塊裝，每塊約9.375g；龜鹿膠600g （1斤）／盒｜32塊裝，每塊約18.75 g；鹿茸粉75g／罐。<br><br><strong>內容母庫：</strong>母庫可持續增加，不設固定篇數上限；同步只補入目前缺少的內容，不覆蓋已核准、已排程或已發布貼文。<br><br><strong>圖片規則：</strong>一般產品貼文使用正式產品原圖；詳細DM與試喝圖各自使用核准素材。products-v3只作產品身份、包裝與比例校正，AI不得重畫產品。30cc與180cc包裝、比例不可改。小老闆使用網站同款精緻Q版，小鹿與小烏龜分開呈現。<br><br><strong>正式審核流程：</strong>草稿 → 待審核 → 16項人工圖文審核 → 核准 → 排程或立即發布。任何換圖或改文案後，原核准自動失效並重新審核。立即發布不受固定排程時間限制。<br><br><strong>免費重新生成流程（ChatGPT 回填）：</strong>支援圖不符合、文案不符合、全部重新生成；完成後回到原貼文做「生成後回填／上傳」，並重新進入待審核，不自動核准、不自動排程、不自動發布。</div></details>
+      <details class="rules-panel"><summary>正式規格與審核規則</summary><div class="rules-panel-content"><strong>正式規格已同步：</strong>龜鹿膏100g／罐；龜鹿飲30cc／罐（小玻璃罐、裸罐、無貼紙）；龜鹿飲180cc／包（鋁袋）；龜鹿湯塊75g／盒｜8塊裝，每塊約9.375g；龜鹿膠600g（1斤）／盒｜32塊裝，每塊約18.75g；鹿茸粉75g／罐。<br><br><strong>內容母庫：</strong>母庫可持續增加，不設固定篇數上限；同步只補入目前缺少的內容，不覆蓋已核准、已排程或已發布貼文。<br><br><strong>圖片規則：</strong>每篇貼文都要有符合該篇文案的專屬圖片，不同貼文不重複使用同一張主圖。需要產品時以正式產品外觀為準，不得重畫包裝；30cc與180cc包裝、比例不可改。小老闆使用網站同款精緻Q版，小鹿與小烏龜分開呈現；沒有合適既有圖時，重新生成一張完整單一情境圖，不使用拼湊式版面。<br><br><strong>正式審核流程：</strong>草稿 → 待審核 → 16項人工圖文審核 → 核准 → 排程或立即發布。任何換圖或改文案後，原核准自動失效並重新審核。立即發布不受固定排程時間限制。<br><br><strong>重新生成流程（ChatGPT 回填）：</strong>支援圖不符合、文案不符合、全部重新生成；完成後回到原貼文做「生成後回填／上傳」，並重新進入待審核，不自動核准、不自動排程、不自動發布。</div></details>
       <section id="readinessSummary" class="readiness-summary" aria-label="系統健康狀態"><span class="readiness-chip checking"><strong>系統狀態</strong><small>等待核心載入</small></span></section>
       <section id="metrics" class="publish-metrics" aria-label="貼文狀態統計"></section>
       <section id="platformSummary" class="publish-platforms" aria-label="平台授權狀態"></section>
@@ -59,7 +58,7 @@
   <script>
     (function(){
       'use strict';
-      window.__XJW_BOOT_VERSION__='20260815-lean-boot-v1';
+      window.__XJW_BOOT_VERSION__='20260815-lean-boot-v2-full-audit';
       var loaded={};
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.defer=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
@@ -67,7 +66,7 @@
       function showHelp(message){var help=document.getElementById('bootHelp'),text=document.getElementById('bootHelpText');if(text&&message)text.textContent=message;if(help)help.classList.add('show')}
       window.XJWShowBootHelp=showHelp;
       document.addEventListener('click',function(event){var diagnose=event.target.closest('[data-diagnose]');if(!diagnose)return;event.preventDefault();var root=document.getElementById('readinessSummary');if(root)root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查中…</small></span>';var ctl=new AbortController(),timer=setTimeout(function(){ctl.abort()},10000);Promise.all([fetch('/healthz/core',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.json()}),fetch('/healthz/readiness',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok,data:d}})})]).then(function(parts){clearTimeout(timer);var core=parts[0]||{},ready=parts[1]||{},ok=!!core.ok&&!!ready.ok;if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／登入</strong><small>'+(ok?'正常':'需檢查')+'</small></span>'}).catch(function(error){clearTimeout(timer);if(root)root.innerHTML='<span class="readiness-chip bad"><strong>系統診斷</strong><small>連線異常</small></span>';showHelp(error&&error.name==='AbortError'?'系統診斷逾時；請先重新連線，若仍異常再重新整理頁面。':'系統診斷失敗；請重新連線後再試。')})},true);
-      window.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260815-lazy-raster-v1').catch(function(){})},300);setTimeout(function(){loadScript('/assets/js/device-image-upload.js?v=20260815-lazy-v1').catch(function(){})},600);setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},900);setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},1200);setTimeout(function(){loadScript('/assets/js/formal-media-policy-v20260810.js?v=20260815-lazy-media-v1').catch(function(){})},1500);setTimeout(function(){loadScript('/assets/js/zip-media-assistant.js?v=20260815-lazy-media-v1').catch(function(){})},1800);setTimeout(function(){loadScript('/assets/js/product-authority-guard.js?v=20260815-lazy-authority-v1').catch(function(){})},2100);setTimeout(function(){loadScript('/assets/js/publishing-content-guidance-v20260814.js?v=20260815-lazy-guidance-v1').catch(function(){})},2400);setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},2700)});
+      window.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260815-lazy-raster-v1').catch(function(){})},300);setTimeout(function(){loadScript('/assets/js/device-image-upload.js?v=20260815-lazy-v1').catch(function(){})},600);setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},900);setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},1200);setTimeout(function(){loadScript('/assets/js/formal-media-policy-v20260810.js?v=20260815-lazy-media-v1').catch(function(){})},1500);setTimeout(function(){loadScript('/assets/js/zip-media-assistant.js?v=20260815-lazy-media-v1').catch(function(){})},1800);setTimeout(function(){loadScript('/assets/js/product-authority-guard.js?v=20260815-lazy-authority-v1').catch(function(){})},2100);setTimeout(function(){loadScript('/assets/js/publishing-content-guidance-v20260814.js?v=20260815-lazy-guidance-v2').catch(function(){})},2400);setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},2700)});
       setTimeout(function(){if(stillLoading())showHelp('核心程式正在載入。請按「重新連線」；若仍沒有貼文，請重新整理並確認 Cloudflare Access 登入仍有效。')},7000);
       setTimeout(function(){if(!stillLoading())return;var state=document.getElementById('connectionState');if(state){state.textContent='載入逾時｜可直接重新連線';state.classList.add('error')}showHelp('貼文資料尚未載入成功。請按「重新連線」；重新連線不會刪除任何貼文。')},16000);
       window.addEventListener('pageshow',function(event){if(event.persisted)setTimeout(function(){document.querySelector('[data-refresh]')?.click()},180)});
@@ -75,7 +74,7 @@
       window.addEventListener('error',function(){showHelp('頁面程式發生錯誤，請按「重新連線」。')});window.addEventListener('unhandledrejection',function(){showHelp('頁面連線未完成，請按「重新連線」。')});
     })();
   </script>
-  <script defer src="/assets/js/publishing-app-v2.js?v=20260815-lean-core-v3-dedupe"></script>
-  <script defer src="/assets/js/publishing-review-gate.js?v=20260815-lean-review-v1"></script>
+  <script defer src="/assets/js/publishing-app-v2.js?v=20260815-lean-core-v4-full-audit"></script>
+  <script defer src="/assets/js/publishing-review-gate.js?v=20260815-lean-review-v2-full-audit"></script>
 </body>
 </html>
