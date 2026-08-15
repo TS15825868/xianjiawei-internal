@@ -1,0 +1,36 @@
+name: 仙加味77篇文案與配圖重製清單
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/build-full-rebuild-manifest-v20260816.mjs'
+      - '.github/workflows/build-full-rebuild-manifest-v20260816.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Build 77-post rebuild manifest
+        run: node tools/build-full-rebuild-manifest-v20260816.mjs
+      - name: Commit rebuild manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audits/full-rebuild-manifest-current.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'content(posts): rebuild 77 unique copies and visual targets'
+          git pull --rebase origin main
+          git push origin HEAD:main
