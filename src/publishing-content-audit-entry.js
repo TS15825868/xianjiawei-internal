@@ -1,7 +1,7 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-15-content-image-audit-v2-topic-intent';
+const VERSION='2026-08-15-content-image-audit-v3-render-integrity';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -15,6 +15,10 @@ function hasAny(value,terms){const s=String(value||'').toLowerCase();return term
 function isFixedReusableImage(url=''){
   const value=normalizedImageUrl(url);
   return /\/images\/trial\//.test(value)||/\/images\/customer-display-v20260812\//.test(value)||/\/images\/dm-final\//.test(value)||/\/images\/brand\/approved-v405\/product-/.test(value);
+}
+function isVisuallyIncompleteSvg(url=''){
+  const value=normalizedImageUrl(url);
+  return /\/images\/posts\/current-v20260815\/[^/]+\.svg$/.test(value);
 }
 function isOverviewImage(row){return hasAny(imageText(row),['products-all','all-products','產品總覽','六項正式產品','六產品','全系列比較','全品項'])}
 function isOverviewCopy(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['產品總覽','系列介紹','六項產品','全系列介紹','一次認識'])}
@@ -38,6 +42,10 @@ function semanticErrors(row,liveRows=[]){
   const risky=RISKY.find(term=>text.includes(term));
   if(risky)errors.push(`公開文案含不適合食品廣告的字詞「${risky}」`);
   if(repeatedBrandInsideField(row))errors.push('顧客可見單一欄位出現重複品牌字樣「仙加味仙加味」');
+
+  if(isVisuallyIncompleteSvg(imageUrl)){
+    errors.push('目前圖片是2026-08-15 SVG資訊卡候選；實際貼文中心會出現空白產品框、加號、只有文字或缺少完整情境，不能進待審核／核准／排程／發布，需改用完整情境圖或正式產品圖');
+  }
 
   if(imageUrl&&status!=='published'&&!isFixedReusableImage(imageUrl)){
     const duplicated=liveRows.filter(other=>other.id!==row.id&&clean(other.status)!=='published'&&normalizedImageUrl(other.image_url)===imageUrl);
@@ -111,11 +119,11 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true},response.status)}catch{return response}
+      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafeCurrentSvgBlocked:true},response.status)}catch{return response}
     }
     return response;
   },
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}
 };
 
-export {VERSION,normalizedImageUrl,isFixedReusableImage,semanticErrors,auditOne,isHotWeatherTopic,isRainTopic,isTemperatureTopic,isStorageTopic,isWarmTopic};
+export {VERSION,normalizedImageUrl,isFixedReusableImage,isVisuallyIncompleteSvg,semanticErrors,auditOne,isHotWeatherTopic,isRainTopic,isTemperatureTopic,isStorageTopic,isWarmTopic};
