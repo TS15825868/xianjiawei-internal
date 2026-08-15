@@ -120,6 +120,9 @@ jobs:
           echo "pending_without_image=$pending_without_image"
           echo "old_visual_live=$old_visual_live"
           echo "blocked_name=$blocked_name"
+          echo 'SOCIAL_DRAFTS_BEGIN'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,image_url,image_source FROM social_posts WHERE status='draft' AND id LIKE 'XJW-SOCIAL-%' ORDER BY id;"
+          echo 'SOCIAL_DRAFTS_END'
           test "$noncollage_count" -eq 59
           test "$noncollage_not_pending" -eq 0
           test "$collage_live" -eq 0
