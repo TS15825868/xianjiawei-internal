@@ -49,7 +49,8 @@ must(/pending_review/.test(String(latestZip.review_rule||''))&&/16/.test(String(
 
 must(/<meta name="xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+">/.test(html),'publishing.html缺少貼文中心App runtime識別');
 must(html.includes('唯一正式內容系統'),'publishing.html沒有標示唯一正式內容系統');
-for(const token of ['貼文中心系統 App','其他 ERP 功能目前暫停','readinessSummary','data-diagnose','data-refresh','20260815-lean-boot-v1','/healthz/core','/healthz/readiness','publishing-app-v2.js','publishing-review-gate.js','publishing-base.css'])must(html.includes(token),`publishing.html缺少貼文中心能力：${token}`);
+for(const token of ['貼文中心系統 App','其他 ERP 功能目前暫停','readinessSummary','data-diagnose','data-refresh','/healthz/core','/healthz/readiness','publishing-app-v2.js','publishing-review-gate.js','publishing-base.css'])must(html.includes(token),`publishing.html缺少貼文中心能力：${token}`);
+must(/window\.__XJW_BOOT_VERSION__=['\"][^'\"]+['\"]/.test(html),'publishing.html缺少目前正式 Boot 能力識別');
 must(!html.includes('<script src="/assets/js/publishing-readiness-ui.js'),'iPhone首屏不得啟動週期性readiness檢查');
 must(!html.includes('<script src="/assets/js/publishing-resilience.js'),'iPhone首屏不得啟動全域fetch覆寫／週期性重連');
 must(!html.includes('<script src="/assets/js/post-bank-sync.js'),'iPhone首屏不得啟動母庫同步工具');

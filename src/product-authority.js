@@ -2,7 +2,7 @@ const PRODUCTS=Object.freeze([
   {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'食用時間可依個人使用習慣與作息時間安排'},
   {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
   {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g （2兩）／盒｜8塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約9.375g'},
+  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約9.375g'},
   {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g （1斤）／盒｜32塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約18.75 g'},
   {id:'luerong-fen',name:'鹿茸粉',allowedSpecs:['75g／罐'],ingredients:['鹿茸']}
 ]);
@@ -64,7 +64,7 @@ function publicProductContextErrors(text=''){
     if(/(每日一罐|每日\s*1\s*罐)/.test(segment))errors.push('龜鹿飲30cc目前使用方式為「每日 1-2罐」；飲用時間依個人使用習慣與作息安排。');
   }
   for(const segment of productSegments(source,'龜鹿湯塊')){
-    if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g （2兩）／盒｜8塊裝」。');
+    if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g／盒｜8塊裝」。');
   }
   for(const segment of productSegments(source,'龜鹿膠')){
   }
@@ -121,7 +121,7 @@ export function validatePostPayload(body={}){
 export const PRODUCT_AUTHORITY=Object.freeze({
   version:'current-server-product-authority-v4-20260815-2li-1jin',
   productCount:6,
-  soupBlockMain:'75g （2兩）／盒｜8塊裝',
+  soupBlockMain:'75g／盒｜8塊裝',
   soupBlockDetail:'每塊約9.375g（顧客文字可顯示）',
   guiluJiaoMain:'600g （1斤）／盒｜32塊裝',
   guiluJiaoDetail:'每塊約18.75 g（顧客文字可顯示）',

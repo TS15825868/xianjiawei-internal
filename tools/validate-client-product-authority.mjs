@@ -3,7 +3,7 @@ import fs from 'node:fs';
 const source=fs.readFileSync('assets/js/product-authority-guard.js','utf8');
 const must=(ok,message)=>{if(!ok)throw new Error(message)};
 
-must(/version:['"]current-product-authority-20260815-v3-2li-1jin['"]/.test(source),'前端產品權威必須使用目前能力識別');
+must(/version:['"]current-product-authority-20260815-v4-current-spec['"]/.test(source),'前端產品權威必須使用目前能力識別');
 must(/guardPolicy:['"]current-authority-capability-based-no-historical-version-lock['"]/.test(source),'前端守門必須採目前權威／能力式驗收');
 must(source.includes("customerProductImageAuthority:'customer-display-v20260812-current-approved'"),'一般產品顧客主圖必須使用目前customer-display權威');
 must(source.includes("detailedDmAuthority:'dm-final-current-approved-high-resolution'"),'詳細DM必須維持獨立dm-final權威');
@@ -15,7 +15,7 @@ for(const spec of [
   '100g／罐',
   '30cc／罐（小玻璃罐）',
   '180cc／包（鋁袋）',
-  '75g （2兩）／盒｜8塊裝',
+  '75g／盒｜8塊裝',
   '600g （1斤）／盒｜32塊裝',
   '75g／罐'
 ]) must(source.includes(spec),`前端產品權威缺少目前完整正式主規格：${spec}`);
@@ -29,7 +29,7 @@ for(const retired of [
   "allowedSpecs:['180cc／包']",
   "allowedSpecs:['75g／盒']",
   "allowedSpecs:['600g／盒｜32塊裝']",
-  "allowedSpecs:['75g （2兩）／盒｜8塊裝｜每塊約9.375g']",
+  "allowedSpecs:['75g／盒｜8塊裝｜每塊約9.375g']",
   "allowedSpecs:['600g （1斤）／盒｜32塊裝｜每塊約18.75 g']"
 ]) must(!source.includes(retired),`前端產品權威仍把退役／縮短／detail-only值當主規格：${retired}`);
 
@@ -39,7 +39,7 @@ must(/aspectRatio:\{min:0\.60,target:0\.64,max:0\.68\}/.test(source),'180cc前�
 must(source.includes('未知尺寸不猜、不拉伸')||source.includes('沒有可信尺寸或相對尺度依據時不得自行猜測'),'未知包裝尺寸不得自行猜測');
 
 must(source.includes('不得稱瓶'),'前端必須拒絕30cc瓶型退役稱呼');
-must(source.includes('龜鹿湯塊目前正式主規格只有')&&source.includes('75g （2兩）／盒｜8塊裝'),'前端必須拒絕龜鹿湯塊退役容量');
+must(source.includes('龜鹿湯塊目前正式主規格只有')&&source.includes('75g／盒｜8塊裝'),'前端必須拒絕龜鹿湯塊退役容量');
 must(source.includes('每塊約9.375g（顧客文字可顯示）'),'湯塊每塊約重應允許顧客文字顯示');
 must(source.includes('每塊約18.75 g（顧客文字可顯示）'),'龜鹿膠每塊約重應允許顧客文字顯示');
 must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');

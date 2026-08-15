@@ -7,7 +7,7 @@
     "guilu-gao": {"name":"龜鹿膏","spec":"100g／罐","known_container_dimensions_mm":{"width":51,"height":78}},
     "guilu-drink-30": {"name":"龜鹿飲30cc玻璃罐","spec":"30cc／罐（小玻璃罐）","known_container_dimensions_mm":{"diameter":42,"height":51},"rule":"裸罐、無貼紙、金色蓋；不可做高、做胖、放大成接近100g罐尺寸，更不可改稱瓶。"},
     "guilu-drink-180": {"name":"龜鹿飲180cc鋁袋","spec":"180cc／包（鋁袋）","known_aspect_ratio_width_to_height":{"min":0.60,"target":0.64,"max":0.68},"rule":"不得橫向拉寬、不得誇張放大。"},
-    "guilu-tangkuai": {"name":"龜鹿湯塊","spec":"75g （2兩）／盒｜8塊裝｜每塊約9.375g","scale_source":"user-approved original product photo"},
+    "guilu-tangkuai": {"name":"龜鹿湯塊","spec":"75g／盒｜8塊裝｜每塊約9.375g","scale_source":"user-approved original product photo"},
     "guilu-jiao": {"name":"龜鹿膠","spec":"600g （1斤）／盒｜32塊裝｜每塊約18.75 g","scale_source":"user-approved original product photo"},
     "luerong-fen": {"name":"鹿茸粉","spec":"75g／罐","scale_source":"user-approved original product photo"}
   },
