@@ -1,6 +1,7 @@
 name: 仙加味全部現行貼文圖文語意巡檢
 
 # 每次正式圖文規則或配圖稽核更新後，直接逐篇檢查目前 D1 全部未封存貼文。
+# 草稿可以保留「已知需重做」候選圖，但待審核以上狀態不得帶著視覺問題通過。
 on:
   push:
     branches: [main]
@@ -9,6 +10,8 @@ on:
       - 'src/publishing-review-gate-entry.js'
       - 'assets/data/social-image-audit-v20260815.json'
       - 'assets/data/guilu-context-media-v20260815.json'
+      - 'tools/build-social-batches-review-seed.mjs'
+      - 'tools/build-guilu-review-seed.mjs'
       - '.github/workflows/audit-live-post-content.yml'
   workflow_dispatch:
 
@@ -43,7 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,image_url,image_alt,image_source,status FROM social_posts WHERE status<>'archived' ORDER BY id;" > /tmp/live-posts.json
-      - name: Audit copy-image semantic match for every current post
+      - name: Audit copy-image semantic and rendered-visual readiness
         shell: bash
         run: |
           set -euo pipefail
@@ -52,20 +55,26 @@ jobs:
           import { semanticErrors } from './src/publishing-content-audit-entry.js';
           const blocks=JSON.parse(fs.readFileSync('/tmp/live-posts.json','utf8'));
           const rows=blocks.flatMap(block=>block.results||[]);
-          const problems=[];
+          const blocking=[];
+          const draftHolds=[];
           for(const row of rows){
             const errors=[];
             if(String(row.copy||'').trim()&&!String(row.image_url||'').trim())errors.push('有正式文案但缺少圖片');
             if(String(row.image_url||'').trim()&&!String(row.image_alt||'').trim())errors.push('已有圖片但缺少圖片說明，無法完成圖文一致審核');
             errors.push(...semanticErrors(row,rows));
-            if(errors.length)problems.push({id:row.id,title:row.title,status:row.status,image_url:row.image_url,image_alt:row.image_alt,errors:[...new Set(errors)]});
+            if(!errors.length)continue;
+            const item={id:row.id,title:row.title,status:row.status,image_url:row.image_url,image_alt:row.image_alt,errors:[...new Set(errors)]};
+            if(String(row.status)==='draft')draftHolds.push(item);else blocking.push(item);
           }
-          if(problems.length){
-            console.error('SEMANTIC_IMAGE_COPY_PROBLEMS',JSON.stringify(problems,null,2));
+          if(draftHolds.length)console.log('DRAFT_VISUAL_HOLDS',JSON.stringify(draftHolds,null,2));
+          if(blocking.length){
+            console.error('NON_DRAFT_IMAGE_COPY_PROBLEMS',JSON.stringify(blocking,null,2));
             process.exit(1);
           }
-          console.log(`PASS: ${rows.length} live non-archived posts all have images and passed season/weather/context/image semantic audit.`);
+          console.log(`PASS: ${rows.length} live non-archived posts audited; ${draftHolds.length} known visual problems are safely held in draft, and no pending/approved/scheduled/published post has a blocking image-copy problem.`);
           NODE
       - name: Summary
         if: always()
-        run: echo '全部未封存貼文必須文案有圖、圖片有說明，並逐篇通過季節／天氣／情境／料理／保存／外出／產品主題規則。'
+        run: |
+          echo '待審核以上狀態必須文案有圖、圖片有說明，並逐篇通過產品、季節、天氣、情境、料理、保存、外出與實際視覺完整性檢查。'
+          echo '已知需要重生成的空白SVG、模板卡、錯配圖可以留在草稿，但不能進待審核、核准、排程或發布。'
