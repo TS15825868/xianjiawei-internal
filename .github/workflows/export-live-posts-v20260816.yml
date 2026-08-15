@@ -35,8 +35,9 @@ jobs:
           const fs=require('fs');
           const raw=JSON.parse(fs.readFileSync('/tmp/posts.json','utf8'));
           const rows=(Array.isArray(raw)?raw:[]).flatMap(x=>Array.isArray(x?.results)?x.results:[]);
-          const out={version:'2026-08-16-live-post-library-v1',generated_at_utc:new Date().toISOString(),total:rows.length,posts:rows};
+          const out={version:'2026-08-16-live-post-library-v2',generated_at_utc:new Date().toISOString(),total:rows.length,posts:rows};
           fs.writeFileSync('audits/live-posts-current.json',JSON.stringify(out,null,2)+'\n');
+          fs.writeFileSync('audits/live-post-index-current.tsv', ['id\tstatus\tcategory\ttitle\theadline\timage_url',...rows.map(r=>[r.id,r.status,r.category,r.title,r.headline,r.image_url].map(v=>String(v||'').replace(/[\t\r\n]+/g,' ')).join('\t'))].join('\n')+'\n');
           console.log('exported',rows.length);
           if(rows.length<1)process.exit(2);
           NODE
@@ -46,7 +47,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add audits/live-posts-current.json
+          git add audits/live-posts-current.json audits/live-post-index-current.tsv
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'audit(posts): snapshot current live post library'
           git pull --rebase origin main
