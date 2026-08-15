@@ -1,0 +1,86 @@
+name: One-shot deploy Access runtime fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-shot-deploy-access-runtime-fix-v20260815.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-publishing-access-runtime-fix
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate posting center and Access runtime configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm run check
+          npm run guard:full
+          npm run build:static
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=fs.readFileSync('wrangler.jsonc','utf8');
+          const expectedAud='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f';
+          if(!raw.includes(`"POLICY_AUD": "${expectedAud}"`)) throw new Error('POLICY_AUD not configured');
+          if(!raw.includes('"TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"')) throw new Error('TEAM_DOMAIN not configured');
+          if(!raw.includes('"html_handling": "none"')) throw new Error('html_handling must remain none');
+          NODE
+      - name: Cross-check current Access application from Cloudflare API
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='xianjiawei-internal.tung314069.workers.dev'
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps?domain=$domain&exact=true&per_page=50" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H 'Content-Type: application/json' > /tmp/access-apps.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const body=JSON.parse(fs.readFileSync('/tmp/access-apps.json','utf8'));
+          if(body.success!==true) throw new Error('Access API failed');
+          const domain='xianjiawei-internal.tung314069.workers.dev';
+          const app=(body.result||[]).find(x=>String(x.domain||'').replace(/^https?:\/\//,'').replace(/\/$/,'')===domain);
+          if(!app) throw new Error('Posting center Access app not found');
+          if(app.aud!=='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f') throw new Error('Access AUD mismatch');
+          console.log('PASS: Access app/AUD match current Worker configuration.');
+          NODE
+      - name: Verify Remote D1 data remains healthy
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status, COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status"
+      - name: Deploy posting center with Access verification variables
+        run: npx wrangler deploy --keep-vars
+      - name: Verify production boundary and no redirect storm
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://xianjiawei-internal.tung314069.workers.dev'
+          for path in '/' '/publishing' '/publishing/' '/publishing.html' '/healthz/core'; do
+            body="$(mktemp)"
+            result="$(curl -LsS --max-redirs 6 --max-time 25 -o "$body" -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
+            code="${result%% *}"
+            rest="${result#* }"
+            redirects="${rest%% *}"
+            echo "$path -> $result"
+            test "$code" -ge 200
+            test "$code" -lt 500
+            test "$redirects" -le 1
+            grep -Eiq '貼文中心系統 App|<html|<!doctype|cloudflare|access|sign in|login|publishing' "$body"
+          done
