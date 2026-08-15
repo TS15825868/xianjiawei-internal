@@ -41,7 +41,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/publishing-content-audit-entry.js src/publishing-review-gate-entry.js assets/js/publishing-review-gate.js tools/build-social-batches-review-seed.mjs .github/workflows/deploy-cloudflare-publishing.yml
+          git add src/publishing-content-audit-entry.js src/publishing-review-gate-entry.js assets/js/publishing-review-gate.js tools/build-social-batches-review-seed.mjs
           if git diff --cached --quiet; then
             echo 'No changes required.'
             exit 0
