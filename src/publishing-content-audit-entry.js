@@ -1,7 +1,7 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-08-16-content-image-audit-v6-lifestyle-brand-link';
+const VERSION='2026-08-16-content-image-audit-v7-mascot-identity-style-flex';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -32,16 +32,17 @@ function isVisuallyIncompleteSvg(url=''){
   const value=normalizedImageUrl(url);
   return /(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(value);
 }
-function isLegacyMascotVisual(row){
+function isKnownBadMascotVisual(row){
   const value=imageText(row).toLowerCase();
-  if(/smallboss-v20260815/.test(value))return true;
-  if(/\/images\/brand\/approved-v405\//.test(value)&&!/\/images\/brand\/approved-v405\/product-/.test(value))return true;
-  return false;
+  return /smallboss-v20260815|mascot-collage|wrong-mascot|identity-mismatch|拼湊小老闆|角色錯版/.test(value);
 }
-function hasApproved2DMascotAuthority(row){
+function hasApprovedMascotIdentityAuthority(row){
   const value=imageText(row).toLowerCase();
-  return /rebuild-v20260816|approved[-_ ]?2d|user-approved-20260816|2026-08-16.*2d|2d.*小老闆/.test(value);
+  return /rebuild-v20260816|approved[-_ ]?(?:2d|3d|mascot)|user-approved-20260816|identity-approved|小老闆本人|\/images\/brand\/approved-v405\//.test(value);
 }
+// Backward-compatible aliases for older validators. They now represent identity approval, not a 2D-only rule.
+function isLegacyMascotVisual(row){return isKnownBadMascotVisual(row)}
+function hasApproved2DMascotAuthority(row){return hasApprovedMascotIdentityAuthority(row)}
 function isOverviewImage(row){return hasAny(imageText(row),['products-all','all-products','產品總覽','六項正式產品','六產品','全系列比較','全品項'])}
 function isOverviewCopy(row){return hasAny([row?.title,row?.headline,row?.category].join(' '),['產品總覽','系列介紹','六項產品','全系列介紹','一次認識'])}
 function productErrors(row){
@@ -81,8 +82,7 @@ function semanticErrors(row,liveRows=[]){
   if(isVisuallyIncompleteSvg(imageUrl)){
     errors.push('目前圖片屬於已確認在貼文中心實際顯示不完整的SVG合成圖；可能出現空白產品框、加號、只有文字或情境不足，不能進待審核／核准／排程／發布，需改用完整情境圖或正式產品圖');
   }
-  if(isLegacyMascotVisual(row))errors.push('目前圖片仍引用舊版偏3D／拼湊式小老闆素材；新貼文必須改用2026-08-16使用者確認的2D精緻Q版小老闆');
-  if(isLifestylePost(row)&&!isFixedReusableImage(imageUrl)&&!hasApproved2DMascotAuthority(row))errors.push('生活情境圖未標記為2026-08-16固定2D小老闆角色系統；需使用核准2D角色完整情境圖後再送審');
+  if(isKnownBadMascotVisual(row))errors.push('目前圖片被標記為已知拼湊／錯版小老闆素材；小老闆可使用2D或3D，但必須維持同一位本人辨識，不得變成不同小孩或拼湊角色');
 
   if(imageUrl){
     const duplicated=liveRows.filter(other=>other.id!==row.id&&normalizedImageUrl(other.image_url)===imageUrl);
@@ -157,11 +157,11 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{const body=await response.clone().json();return json({...body,contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:true,approved2DMascotRequired:true,blockedOldPublicName:true},response.status)}catch{return response}
+      try{return json({...await response.clone().json(),contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:true,mascotIdentityConsistencyRequired:true,mascot2DAllowed:true,mascot3DAllowed:true,mascotStyleFlexible:true,realPersonReferencePrivate:true,blockedOldPublicName:true},response.status)}catch{return response}
     }
     return response;
   },
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}
 };
 
-export {VERSION,normalizedImageUrl,isFixedReusableImage,isVisuallyIncompleteSvg,isLegacyMascotVisual,hasApproved2DMascotAuthority,isLifestylePost,lifestyleRuleErrors,semanticErrors,auditOne,isHotWeatherTopic,isRainTopic,isTemperatureTopic,isStorageTopic,isWarmTopic};
+export {VERSION,normalizedImageUrl,isFixedReusableImage,isVisuallyIncompleteSvg,isKnownBadMascotVisual,hasApprovedMascotIdentityAuthority,isLegacyMascotVisual,hasApproved2DMascotAuthority,isLifestylePost,lifestyleRuleErrors,semanticErrors,auditOne,isHotWeatherTopic,isRainTopic,isTemperatureTopic,isStorageTopic,isWarmTopic};
