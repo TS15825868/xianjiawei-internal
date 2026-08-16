@@ -1,3 +1,4 @@
+# 2026-08-17 rerun after priority10 formal release
 name: 仙加味貼文中心目前77篇匯出
 
 on:
@@ -35,7 +36,7 @@ jobs:
           const fs=require('fs');
           const raw=JSON.parse(fs.readFileSync('/tmp/posts.json','utf8'));
           const rows=(Array.isArray(raw)?raw:[]).flatMap(x=>Array.isArray(x?.results)?x.results:[]);
-          const out={version:'2026-08-16-live-post-library-v2',generated_at_utc:new Date().toISOString(),total:rows.length,posts:rows};
+          const out={version:'2026-08-17-live-post-library-v3',generated_at_utc:new Date().toISOString(),total:rows.length,posts:rows};
           fs.writeFileSync('audits/live-posts-current.json',JSON.stringify(out,null,2)+'\n');
           fs.writeFileSync('audits/live-post-index-current.tsv', ['id\tstatus\tcategory\ttitle\theadline\timage_url',...rows.map(r=>[r.id,r.status,r.category,r.title,r.headline,r.image_url].map(v=>String(v||'').replace(/[\t\r\n]+/g,' ')).join('\t'))].join('\n')+'\n');
           console.log('exported',rows.length);
