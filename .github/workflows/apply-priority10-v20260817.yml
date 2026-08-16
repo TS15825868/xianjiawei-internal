@@ -52,7 +52,7 @@ jobs:
           for(const p of m.posts) console.log(p.image_url);
           NODE
           while IFS= read -r u; do curl -fsSL --retry 5 --retry-delay 2 -o /dev/null "$u"; done < /tmp/image-urls.txt
-      - name: Build safe D1 update SQL
+      - name: Build safe D1 update and verification SQL
         shell: bash
         run: |
           set -euo pipefail
@@ -69,9 +69,15 @@ jobs:
           fs.writeFileSync('/tmp/apply-priority10.sql',sql.join('\n')+'\n');
           const ids=m.posts.map(p=>q(p.id)).join(',');
           const prefix=q('https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/%');
-          const verify=`SELECT COUNT(*) AS matched FROM social_posts WHERE id IN (${ids}); SELECT COUNT(*) AS wrong_nonpublished FROM social_posts WHERE id IN (${ids}) AND status<>'published' AND image_url NOT LIKE ${prefix}; SELECT COUNT(*) AS bad_status FROM social_posts WHERE id IN (${ids}) AND status NOT IN ('pending_review','published'); SELECT COUNT(*) AS blocked_name FROM social_posts WHERE id IN (${ids}) AND instr(title||headline||copy||image_alt,'台興山產')>0; SELECT COUNT(*) AS duplicate_image_posts FROM social_posts p WHERE p.id IN (${ids}) AND p.status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(q.image_url)=trim(p.image_url)); SELECT COUNT(*) AS duplicate_copy_posts FROM social_posts p WHERE p.id IN (${ids}) AND p.status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(q.copy)=trim(p.copy));`;
+          const verify=`SELECT
+            (SELECT COUNT(*) FROM social_posts WHERE id IN (${ids})) AS matched,
+            (SELECT COUNT(*) FROM social_posts WHERE id IN (${ids}) AND status<>'published' AND image_url NOT LIKE ${prefix}) AS wrong_nonpublished,
+            (SELECT COUNT(*) FROM social_posts WHERE id IN (${ids}) AND status NOT IN ('pending_review','published')) AS bad_status,
+            (SELECT COUNT(*) FROM social_posts WHERE id IN (${ids}) AND instr(COALESCE(title,'')||COALESCE(headline,'')||COALESCE(copy,'')||COALESCE(image_alt,''),'台興山產')>0) AS blocked_name,
+            (SELECT COUNT(*) FROM social_posts p WHERE p.id IN (${ids}) AND p.status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(COALESCE(q.image_url,''))<>'' AND trim(q.image_url)=trim(p.image_url))) AS duplicate_image_posts,
+            (SELECT COUNT(*) FROM social_posts p WHERE p.id IN (${ids}) AND p.status<>'archived' AND EXISTS (SELECT 1 FROM social_posts q WHERE q.status<>'archived' AND q.id<>p.id AND trim(COALESCE(q.copy,''))<>'' AND trim(q.copy)=trim(p.copy))) AS duplicate_copy_posts;`;
           fs.writeFileSync('/tmp/verify-priority10.sql',verify);
-          console.log('PASS built 10 guarded update statements');
+          console.log('PASS built 10 guarded update statements + single verification SELECT');
           NODE
       - name: Apply to production D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/apply-priority10.sql
@@ -85,7 +91,8 @@ jobs:
           node - <<'NODE'
           const raw=JSON.parse(require('fs').readFileSync('/tmp/verify.json','utf8'));
           const rows=raw.flatMap(x=>Array.isArray(x?.results)?x.results:[]);
-          const get=k=>Number(rows.find(r=>Object.prototype.hasOwnProperty.call(r,k))?.[k]??-1);
+          const row=rows[0]||{};
+          const get=k=>Number(row[k]??-1);
           if(get('matched')!==10) throw new Error(`matched ${get('matched')}`);
           for(const k of ['wrong_nonpublished','bad_status','blocked_name','duplicate_image_posts','duplicate_copy_posts']) if(get(k)!==0) throw new Error(`${k}=${get(k)}`);
           console.log('PASS D1 priority10: matched=10, nonpublished pending_review, duplicate copy/image=0');
