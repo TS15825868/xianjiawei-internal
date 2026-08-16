@@ -1,0 +1,21 @@
+{
+  "version": "2026-08-17-remainder66-v1",
+  "authority_url": "https://ts15825868.github.io/xianjiawei/images/posts/remainder66-v20260817/manifest.json",
+  "priority10_authority_url": "https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/manifest.json",
+  "expected_count": 66,
+  "published_history_id": "POST-BRAND-START",
+  "policy": {
+    "lifestyle_context_required": true,
+    "brand_or_product_link_required": true,
+    "copy_image_match_required": true,
+    "unique_copy_required": true,
+    "unique_image_required": true,
+    "website_q_mascot_required": true,
+    "official_product_art_required": true,
+    "ai_product_redraw_forbidden": true,
+    "blocked_public_name": "台興山產",
+    "status_after_fix": "pending_review",
+    "published_history_preserved": true,
+    "auto_publish": false
+  }
+}
