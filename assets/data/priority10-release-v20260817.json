@@ -1,0 +1,24 @@
+{
+  "version": "2026-08-17-priority10-v3",
+  "authority_url": "https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/manifest.json",
+  "expected_count": 10,
+  "ids": [
+    "XJW-GUILU-choose-by-place",
+    "XJW-GUILU-drink180-home",
+    "XJW-GUILU-drink30-work-break",
+    "XJW-GUILU-gao-storage",
+    "XJW-GUILU-jiao-600g",
+    "XJW-GUILU-luerong-75g",
+    "XJW-GUILU-tangkuai-soup",
+    "XJW-SOCIAL-20260815-01-warm-drink-moment",
+    "XJW-SOCIAL-20260815-02-line-consult-and-trial",
+    "XJW-SOCIAL-20260815-03-storage-basics"
+  ],
+  "policy": {
+    "mascot": "網站原本同款Q版小老闆，角色辨識固定",
+    "product": "正式產品實物，不AI重畫，等比例呈現",
+    "lifestyle": "每篇有明確生活情境與仙加味／產品連結",
+    "review": "修正後回待審核；已發布紀錄保留，不自動發布",
+    "duplicate": "不得重複已發布主題角度；文案與圖片一對一"
+  }
+}
