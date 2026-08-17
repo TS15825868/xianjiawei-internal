@@ -79,7 +79,7 @@ jobs:
           };
           const q=v=>`'${String(v??'').replaceAll("'","''")}'`;
           const ids=m.posts.map(p=>q(p.id)).join(',');
-          const sql=['BEGIN;'];
+          const sql=[];
           sql.push(`UPDATE social_posts SET status='archived', scheduled_at=NULL, image_approved=0, review_note='2026-08-17 使用者要求舊貼文從貼文中心移除；資料保留封存，不影響已發布歷史。', rejection_reason='已由新版10篇圖文取代', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE status<>'published' AND id NOT IN (${ids});`);
           for(const p of m.posts){
             const when=schedule[p.id];
@@ -88,7 +88,6 @@ jobs:
             const category=String(p.kicker||'仙加味｜生活情境').split('｜').pop()||'生活情境';
             sql.push(`UPDATE social_posts SET title=${q(title)}, headline=${q(title)}, copy=${q(p.copy)}, category=${q(category)}, image_url=${q(p.image_url)}, image_alt=${q(p.image_alt)}, image_source=${q(p.image_source)}, status='scheduled', image_approved=1, approved_by=NULL, approved_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'), scheduled_at=${q(when)}, review_note='2026-08-17 使用者確認：這10張圖先以圖生成文案；圖文一對一；龜鹿飲可常溫或依情境溫熱；龜鹿湯塊藍盒、龜鹿膠紫盒。', rejection_reason='', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(p.id)} AND status<>'published';`);
           }
-          sql.push('COMMIT;');
           fs.writeFileSync('/tmp/apply.sql',sql.join('\n')+'\n');
           fs.writeFileSync('/tmp/expected.json',JSON.stringify({schedule,ids:m.posts.map(p=>p.id)}));
           console.log('PASS SQL built: archive old active + schedule exact 10');
