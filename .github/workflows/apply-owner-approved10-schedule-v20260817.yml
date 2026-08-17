@@ -1,0 +1,169 @@
+name: 仙加味老闆確認10篇圖文排程
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/owner-approved10-schedule-v20260817.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install D1 tooling
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Build owner-approved matched image and schedule SQL
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const base='https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/';
+          const posts=[
+            {
+              id:'XJW-GUILU-drink30-work-break',
+              title:'上班帶一罐，30cc不用把行程打亂',
+              category:'日常安排',
+              image:'XJW-GUILU-drink30-work-break.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜上班帶一罐，30cc不用把行程打亂｜30cc小玻璃裸罐｜老闆確認圖',
+              copy:'上班行程已經夠滿，想把仙加味龜鹿飲安排進白天，不一定要多準備一堆東西。\n\n龜鹿飲30cc是小玻璃罐、裸罐無貼紙，體積小，工作告一段落時找個空檔就能依自己的節奏安排。龜鹿飲可以常溫飲用；想喝溫熱的，也可依當下情境再安排。\n\n上班帶一罐，不用把原本的行程打亂。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-08-18T11:30:00.000Z'
+            },
+            {
+              id:'XJW-SOCIAL-20260815-03-storage-basics',
+              title:'星期天整理櫃子，也順便看看龜鹿還剩多少',
+              category:'整理一下',
+              image:'XJW-SOCIAL-20260815-03-storage-basics.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜星期天整理櫃子，也順便看看龜鹿還剩多少｜老闆確認圖',
+              copy:'星期天在家整理櫃子時，也可以順手看看仙加味龜鹿系列還剩多少。\n\n把30cc小玻璃罐、180cc鋁袋、龜鹿膏與其他產品分好固定位置，開封與未開封分開，保存方式也一起確認。龜鹿膏未開封可放常溫陰涼處，開罐後記得冷藏。\n\n整理好，下次要用時也更順手。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-08-22T01:30:00.000Z'
+            },
+            {
+              id:'XJW-SOCIAL-20260815-01-warm-drink-moment',
+              title:'辦公桌上的一杯溫熱飲，也可以有不同選擇',
+              category:'辦公室日常',
+              image:'XJW-SOCIAL-20260815-01-warm-drink-moment.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜辦公桌上的一杯溫熱飲，也可以有不同選擇｜30cc與180cc｜老闆確認圖',
+              copy:'辦公桌旁想簡單安排一杯龜鹿飲，可以依今天的工作節奏選不同型態。\n\n仙加味龜鹿飲30cc是小玻璃裸罐，180cc是鋁袋包裝。龜鹿飲可以直接常溫飲用；如果當下比較喜歡溫熱，也可以依情境再溫熱安排。\n\n產品型態不同，重點是找到自己方便的方式。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-08-25T11:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-tangkuai-soup',
+              title:'今晚燉湯，把龜鹿湯塊安排進家常餐桌',
+              category:'料理搭配',
+              image:'XJW-GUILU-tangkuai-soup.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜今晚燉湯，把龜鹿湯塊安排進家常餐桌｜75g藍色盒8塊裝｜老闆確認圖',
+              copy:'晚上準備家常燉湯時，可以把仙加味龜鹿湯塊一起安排進餐桌。\n\n龜鹿湯塊正式規格為75g／盒、8塊裝，正式產品是藍色盒裝。備料、下鍋、慢慢燉煮，再和家人一起上桌，是很具體的日常料理情境。\n\n產品圖一律照正式藍色盒實物呈現，不改包裝、不改比例。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-08-29T01:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-jiao-600g',
+              title:'週末有時間，再慢慢認識龜鹿膠這種型態',
+              category:'型態認識',
+              image:'XJW-GUILU-jiao-600g.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜週末慢慢認識龜鹿膠｜600g紫色盒32塊裝｜老闆確認圖',
+              copy:'週末時間比較從容，可以慢慢把不同的龜鹿產品型態看清楚。\n\n仙加味龜鹿膠正式規格為600g／盒（1斤）、32塊裝，正式產品是紫色盒裝。它和30cc、180cc即飲型態不同，先認識包裝、規格與自己的生活方式，再決定怎麼安排。\n\n產品圖一律照正式紫色盒實物呈現，不改包裝、不改比例。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-01T11:30:00.000Z'
+            },
+            {
+              id:'XJW-SOCIAL-20260815-02-line-consult-and-trial',
+              title:'不知道怎麼選，先把你的日常告訴我們',
+              category:'LINE 諮詢',
+              image:'XJW-SOCIAL-20260815-02-line-consult-and-trial.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜LINE諮詢｜不知道怎麼選先把日常告訴我們｜老闆確認圖',
+              copy:'不知道先選哪一種仙加味龜鹿產品，不用只看規格表決定。\n\n可以先在LINE告訴我們：平常是在家還是外出、比較方便早上還是下午、想直接常溫飲用、依情境溫熱，還是想用在家常料理。\n\n先把生活說清楚，再慢慢看適合自己的產品型態。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-05T01:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-drink180-home',
+              title:'回到家，把180cc溫熱一下再慢慢喝',
+              category:'居家安排',
+              image:'XJW-GUILU-drink180-home.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜回到家把180cc溫熱一下再慢慢喝｜180cc鋁袋｜老闆確認圖',
+              copy:'一天忙完回到家，想換下外出的節奏，可以依自己的習慣安排仙加味龜鹿飲180cc鋁袋。\n\n龜鹿飲本來就可以常溫飲用；如果回家後比較喜歡溫熱的口感，也可以隔水加熱或依適合的方式溫熱後再慢慢喝。不是一定要加熱，而是照當下生活情境選擇。\n\n在家留一點時間，找到自己方便的節奏。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-08T11:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-luerong-75g',
+              title:'下午想簡單一點，可以先認識鹿茸粉',
+              category:'產品認識',
+              image:'XJW-GUILU-luerong-75g.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜下午想簡單一點可以先認識鹿茸粉｜75g罐｜老闆確認圖',
+              copy:'下午工作告一段落，想先簡單認識不同產品，可以從產品標示開始看。\n\n仙加味鹿茸粉為75g／罐。先看清楚正式產品標示與包裝，再依自己的作息與生活方式安排，不需要一次把所有產品都選齊。\n\n看懂產品，再安排進自己的生活。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-12T01:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-choose-by-place',
+              title:'今天在家，明天外出，產品型態不一定要選同一種',
+              category:'生活節奏',
+              image:'XJW-GUILU-choose-by-place.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜今天在家明天外出產品型態不一定要選同一種｜老闆確認圖',
+              copy:'同一個人的生活，也不會每天都一樣。\n\n今天在家，可以慢慢安排；明天外出，可能更需要方便攜帶。仙加味龜鹿系列有30cc小玻璃罐、180cc鋁袋、龜鹿膏、龜鹿湯塊、龜鹿膠等不同型態。龜鹿飲可以常溫直接飲用，也可依情境溫熱；料理則可以看家常餐桌的安排。\n\n先看今天的行程，再選適合自己的型態。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-15T11:30:00.000Z'
+            },
+            {
+              id:'XJW-GUILU-gao-storage',
+              title:'龜鹿膏開罐後，順手放進冰箱',
+              category:'保存提醒',
+              image:'XJW-GUILU-gao-storage.webp?v=20260817-owner10',
+              alt:'仙加味小老闆｜龜鹿膏開罐後順手放進冰箱｜100g罐｜老闆確認圖',
+              copy:'家裡開了一罐仙加味龜鹿膏，取用完後順手放回固定位置，下一次會更好找。\n\n龜鹿膏正式規格為100g／罐。未開封時放常溫陰涼處；開罐後記得冷藏。每天取用後把蓋子蓋好，再順手放回冰箱。\n\n把保存方式變成生活中的小習慣。\n\n仙加味｜補養，是一種節奏。',
+              at:'2026-09-19T01:30:00.000Z'
+            }
+          ];
+          const q=v=>`'${String(v??'').replaceAll("'","''")}'`;
+          const sql=[];
+          for(const p of posts){
+            const image=base+p.image;
+            const source='老闆2026-08-17上傳確認圖｜小老闆固定同款｜正式產品實物等比例｜包裝不得變更｜龜鹿湯塊藍盒｜龜鹿膠紫盒';
+            sql.push(`UPDATE social_posts SET title=${q(p.title)}, headline=${q(p.title)}, copy=${q(p.copy)}, category=${q(p.category)}, image_url=${q(image)}, image_alt=${q(p.alt)}, image_source=${q(source)}, status='scheduled', image_approved=1, approved_by='owner-approved-20260817', approved_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'), scheduled_at=${q(p.at)}, review_note='老闆確認：圖文一對一符合後排程；龜鹿飲可常溫或依情境溫熱；湯塊藍盒、龜鹿膠紫盒；產品實物等比例且包裝不改。', rejection_reason='', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(p.id)} AND status<>'published';`);
+          }
+          fs.writeFileSync('/tmp/apply-owner10.sql',sql.join('\n')+'\n');
+          fs.writeFileSync('/tmp/expected-owner10.json',JSON.stringify(posts,null,2));
+          console.log('PASS: built 10 owner-approved schedule updates');
+          NODE
+      - name: Check all ten approved image URLs exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE' >/tmp/owner10-urls.txt
+          const p=JSON.parse(require('fs').readFileSync('/tmp/expected-owner10.json','utf8'));
+          const base='https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/';
+          for(const x of p) console.log(base+x.image);
+          NODE
+          while IFS= read -r u; do curl -fsSL --retry 5 --retry-delay 2 -o /dev/null "$u"; done < /tmp/owner10-urls.txt
+      - name: Apply schedule to production D1
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/apply-owner10.sql
+      - name: Verify exact ten scheduled posts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url,image_alt,image_source,image_approved,scheduled_at FROM social_posts WHERE status='scheduled' ORDER BY scheduled_at,id" > /tmp/scheduled.json
+          node - <<'NODE'
+          const raw=JSON.parse(require('fs').readFileSync('/tmp/scheduled.json','utf8'));
+          const rows=raw.flatMap(x=>Array.isArray(x?.results)?x.results:[]);
+          const exp=JSON.parse(require('fs').readFileSync('/tmp/expected-owner10.json','utf8'));
+          const ids=new Set(exp.map(x=>x.id));
+          const target=rows.filter(r=>ids.has(r.id));
+          if(target.length!==10) throw new Error(`scheduled owner10 ${target.length}/10`);
+          for(const r of target){
+            if(Number(r.image_approved)!==1) throw new Error(`${r.id}: image not approved`);
+            if(!String(r.image_source||'').includes('老闆2026-08-17上傳確認圖')) throw new Error(`${r.id}: wrong image source`);
+            if(!String(r.image_url||'').includes('/images/posts/priority10-v20260817/')) throw new Error(`${r.id}: wrong image path`);
+          }
+          const warm=target.filter(r=>['XJW-GUILU-drink180-home','XJW-SOCIAL-20260815-01-warm-drink-moment','XJW-GUILU-choose-by-place'].includes(r.id));
+          for(const r of warm){ if(!r.copy.includes('常溫')) throw new Error(`${r.id}: missing room-temperature rule`); }
+          console.log('PASS: 10/10 owner-approved matched posts scheduled; image_approved=1; room-temp copy verified');
+          for(const r of target) console.log(`${r.scheduled_at} | ${r.id} | ${r.title}`);
+          NODE
