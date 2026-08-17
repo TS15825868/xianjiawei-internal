@@ -1,0 +1,67 @@
+name: 仙加味貼文中心只保留有正常圖貼文
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/archive-no-image-drafts-v20260817.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archive-no-image-drafts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require Cloudflare D1 credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install D1 tooling
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Archive drafts without normal image
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/archive.sql <<'SQL'
+          UPDATE social_posts
+          SET status='archived',
+              image_approved=0,
+              approved_by=NULL,
+              approved_at=NULL,
+              scheduled_at=NULL,
+              review_note='目前沒有老闆確認的正常正式圖片，先從貼文中心移除；待 ChatGPT 完成新文案＋新圖並由老闆確認後再恢復到待審核。',
+              rejection_reason='目前無正常正式圖，依老闆指示先移出貼文中心。',
+              updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
+          WHERE status='draft' AND TRIM(COALESCE(image_url,''))='';
+          SQL
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/archive.sql
+      - name: Verify posting center contains only image-ready active posts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_quality_status FROM social_posts ORDER BY id" > /tmp/all.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/all.json','utf8'));
+          const rows=raw.flatMap(x=>Array.isArray(x?.results)?x.results:[]);
+          const active=rows.filter(x=>String(x.status)!=='archived');
+          const noImage=active.filter(x=>String(x.status)!=='published'&&!String(x.image_url||'').trim());
+          if(noImage.length)throw new Error(`仍有 ${noImage.length} 篇無圖貼文留在貼文中心`);
+          const pending=active.filter(x=>String(x.status)==='pending_review');
+          const approved=active.filter(x=>String(x.status)==='approved');
+          const scheduled=active.filter(x=>String(x.status)==='scheduled');
+          const published=active.filter(x=>String(x.status)==='published');
+          const archived=rows.filter(x=>String(x.status)==='archived');
+          console.log(`PASS: active=${active.length}; pending_review=${pending.length}; approved=${approved.length}; scheduled=${scheduled.length}; published=${published.length}; archived=${archived.length}; active_without_image=${noImage.length}`);
+          NODE
