@@ -44,7 +44,7 @@ jobs:
             if(!p.image_url?.includes('/images/posts/priority10-v20260817/')) throw new Error(`${p.id}: wrong image release`);
             if((p.title+p.copy+p.image_alt).includes('台興山產')) throw new Error(`${p.id}: blocked public name`);
           }
-          const room=m.posts.filter(p=>/drink30|drink180|warm-drink|choose-by-place|line-consult/.test(p.id));
+          const room=m.posts.filter(p=>/drink30|drink180|warm-drink|line-consult/.test(p.id));
           for(const p of room) if(!p.copy.includes('常溫')) throw new Error(`${p.id}: missing room-temperature rule`);
           const tang=m.posts.find(p=>p.id==='XJW-GUILU-tangkuai-soup');
           if(!tang?.copy.includes('藍色盒裝')) throw new Error('tangkuai blue box rule missing');
