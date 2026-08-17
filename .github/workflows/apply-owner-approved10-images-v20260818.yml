@@ -1,0 +1,135 @@
+name: 回填使用者確認第一批10張正式圖
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/apply-owner-approved10-images-v20260818.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install tools
+        run: |
+          npm install --no-save wrangler@latest
+          python3 -m pip install --quiet pillow
+
+      - name: Resolve production D1
+        id: db
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_NAME=$(python3 - <<'PY'
+          import re
+          s=open('wrangler.jsonc',encoding='utf-8').read()
+          m=re.search(r'"database_name"\s*:\s*"([^"]+)"',s)
+          if not m: raise SystemExit('database_name not found')
+          print(m.group(1))
+          PY
+          )
+          echo "name=$DB_NAME" >> "$GITHUB_OUTPUT"
+          echo "D1=$DB_NAME"
+
+      - name: Verify all ten official image URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818'
+          files=(
+            01-work-30cc.png 02-home-180cc.png 03-gao-storage.png 04-tangkuai-soup.png 05-jiao-600g.png
+            06-lurong-75g.png 07-line-consult.png 08-home-out.png 09-organize-cabinet.png 10-office-warm-drink.png
+          )
+          for f in "${files[@]}"; do
+            curl -L --fail --retry 5 --retry-delay 3 -sS "$base/$f?v=20260818-owner-approved" -o "/tmp/$f"
+            python3 - "$f" <<'PY'
+          from PIL import Image
+          import sys
+          p='/tmp/'+sys.argv[1]
+          im=Image.open(p)
+          assert im.format == 'PNG', (p, im.format)
+          assert im.size == (1122,1402), (p, im.size)
+          im.verify()
+          print('PASS', sys.argv[1])
+          PY
+          done
+          test "$(sha256sum /tmp/{01-work-30cc,02-home-180cc,03-gao-storage,04-tangkuai-soup,05-jiao-600g,06-lurong-75g,07-line-consult,08-home-out,09-organize-cabinet,10-office-warm-drink}.png | cut -d' ' -f1 | sort -u | wc -l)" -eq 10
+          echo 'PASS: 10 public images are valid and unique'
+
+      - name: Verify exact ten live post IDs exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB='${{ steps.db.outputs.name }}'
+          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
+          npx wrangler d1 execute "$DB" --remote --command "SELECT id,title,status FROM social_posts WHERE archived_at IS NULL AND id IN ($IDS) ORDER BY id;" | tee /tmp/before.txt
+          COUNT=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND id IN ($IDS);" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[0]['results'][0]['n'])")
+          test "$COUNT" -eq 10
+          echo 'PASS: exact 10 live post IDs exist'
+
+      - name: Apply one-to-one image mapping to production D1
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB='${{ steps.db.outputs.name }}'
+          cat >/tmp/apply.sql <<'SQL'
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/01-work-30cc.png?v=20260818-owner-approved', image_alt='仙加味龜鹿飲30cc上班日常情境｜小玻璃裸罐｜小老闆、小鹿與小烏龜', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-drink30-work-break' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/02-home-180cc.png?v=20260818-owner-approved', image_alt='仙加味龜鹿飲180cc居家安排情境｜鋁袋｜可常溫或依情境溫熱', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-drink180-home' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/03-gao-storage.png?v=20260818-owner-approved', image_alt='仙加味龜鹿膏100g開罐後冷藏保存情境｜正式盒裝與罐型', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-gao-storage' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/04-tangkuai-soup.png?v=20260818-owner-approved', image_alt='仙加味龜鹿湯塊75g八塊裝家常燉湯情境｜正式藍色盒裝', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-tangkuai-soup' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/05-jiao-600g.png?v=20260818-owner-approved', image_alt='仙加味龜鹿膠600g三十二塊裝週末產品認識情境｜正式淺紫色盒裝', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-jiao-600g' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/06-lurong-75g.png?v=20260818-owner-approved', image_alt='仙加味鹿茸粉75g午後產品認識與日常安排情境', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-luerong-75g' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/07-line-consult.png?v=20260818-owner-approved', image_alt='仙加味LINE諮詢生活情境｜先把日常說清楚再選產品', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260815-02-line-consult-and-trial' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/08-home-out.png?v=20260818-owner-approved', image_alt='仙加味在家與外出生活節奏情境｜依行程選不同產品型態', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-GUILU-choose-by-place' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/09-organize-cabinet.png?v=20260818-owner-approved', image_alt='仙加味星期天整理龜鹿產品櫃情境｜固定位置與保存整理', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260815-03-storage-basics' AND archived_at IS NULL;
+          UPDATE social_posts SET status='pending_review', image_url='https://ts15825868.github.io/xianjiawei/images/posts/owner-approved-v20260818/10-office-warm-drink.png?v=20260818-owner-approved', image_alt='仙加味辦公桌龜鹿飲日常安排情境｜30cc與180cc不同選擇', image_source='使用者2026-08-18於ChatGPT確認｜完整單張非拼湊圖｜圖文一對一', image_quality_status='ok', image_approved=0, scheduled_at=NULL, suggested_publish_at=NULL, platforms='[]', regenerated_at=NULL, updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260815-01-warm-drink-moment' AND archived_at IS NULL;
+          SQL
+          npx wrangler d1 execute "$DB" --remote --file=/tmp/apply.sql
+
+      - name: Verify final production state
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB='${{ steps.db.outputs.name }}'
+          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
+          READY=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND id IN ($IDS) AND status='pending_review' AND image_url LIKE '%/owner-approved-v20260818/%' AND image_quality_status='ok' AND image_approved=0 AND scheduled_at IS NULL AND platforms='[]';" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[0]['results'][0]['n'])")
+          ACTIVE_NONPUB=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND status <> 'published';" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[0]['results'][0]['n'])")
+          DISTINCT_IMAGES=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(DISTINCT image_url) AS n FROM social_posts WHERE archived_at IS NULL AND id IN ($IDS);" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[0]['results'][0]['n'])")
+          BAD=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND id IN ($IDS) AND (image_url LIKE '%priority10-v20260817%' OR image_url LIKE '%remainder66-v20260817%' OR image_url LIKE '%current-v20260815%' OR image_url LIKE '%generated-v20260815%');" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[0]['results'][0]['n'])")
+          test "$READY" -eq 10
+          test "$ACTIVE_NONPUB" -eq 10
+          test "$DISTINCT_IMAGES" -eq 10
+          test "$BAD" -eq 0
+          npx wrangler d1 execute "$DB" --remote --command "SELECT id,title,status,image_url,scheduled_at,platforms FROM social_posts WHERE archived_at IS NULL ORDER BY CASE status WHEN 'published' THEN 0 ELSE 1 END, id;"
+          echo "PASS: ready=$READY active_nonpublished=$ACTIVE_NONPUB unique_images=$DISTINCT_IMAGES bad_old_images=$BAD"
+
+      - name: Record successful application
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          cat > assets/data/owner-approved10-applied-v20260818.ok <<'EOF'
+          PASS 2026-08-18
+          10/10 使用者確認完整單張圖已一對一回填正式貼文中心。
+          10/10 pending_review；0 排程；0 自動發布；10 個唯一圖片網址；0 舊錯圖路徑。
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/data/owner-approved10-applied-v20260818.ok
+          git commit -m '驗證第一批10張正式圖已回填貼文中心'
+          git push origin HEAD:main
