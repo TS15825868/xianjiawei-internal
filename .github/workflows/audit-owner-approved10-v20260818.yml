@@ -1,0 +1,126 @@
+name: 稽核使用者確認第一批10張圖文
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/audit-owner-approved10-v20260818.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save wrangler@latest
+
+      - name: Resolve D1 and export exact ten rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB=$(python3 - <<'PY'
+          import re
+          s=open('wrangler.jsonc',encoding='utf-8').read()
+          print(re.search(r'"database_name"\s*:\s*"([^"]+)"',s).group(1))
+          PY
+          )
+          echo "$DB" > /tmp/dbname
+          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
+          npx wrangler d1 execute "$DB" --remote --json --command "SELECT id,title,content,status,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at,suggested_publish_at,platforms,archived_at,published_at FROM social_posts WHERE id IN ($IDS) ORDER BY id;" > /tmp/posts.json
+
+      - name: Semantic image-copy audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, sys
+          raw=json.load(open('/tmp/posts.json',encoding='utf-8'))
+          rows=raw[0]['results']
+          if len(rows)!=10:
+              raise SystemExit(f'FAIL expected 10 rows, got {len(rows)}')
+
+          expected={
+            'XJW-GUILU-drink30-work-break': ('上班帶一罐，30cc 不用把行程打亂','01-work-30cc.png',['30cc','小玻璃']),
+            'XJW-GUILU-drink180-home': ('回到家，把180cc安排成自己的步調','02-home-180cc.png',['180cc','鋁袋','常溫']),
+            'XJW-GUILU-gao-storage': ('龜鹿膏開罐後，順手放進冰箱','03-gao-storage.png',['100g','開罐','冷藏']),
+            'XJW-GUILU-tangkuai-soup': ('今晚燉湯，把龜鹿湯塊安排進家常餐桌','04-tangkuai-soup.png',['75g','8 塊','燉湯']),
+            'XJW-GUILU-jiao-600g': ('週末有時間，再慢慢認識龜鹿膠這種型態','05-jiao-600g.png',['600g','32 塊']),
+            'XJW-GUILU-luerong-75g': ('下午想簡單一點，可以先認識鹿茸粉','06-lurong-75g.png',['75g','鹿茸粉']),
+            'XJW-SOCIAL-20260815-02-line-consult-and-trial': ('不知道怎麼選，先把你的日常告訴我們','07-line-consult.png',['LINE','日常']),
+            'XJW-GUILU-choose-by-place': ('今天在家，明天外出，產品型態不一定要選同一種','08-home-out.png',['在家','外出']),
+            'XJW-SOCIAL-20260815-03-storage-basics': ('星期天整理櫃子，也順便看看龜鹿還剩多少','09-organize-cabinet.png',['整理','保存']),
+            'XJW-SOCIAL-20260815-01-warm-drink-moment': ('辦公桌上的一杯日常安排，也可以有不同選擇','10-office-warm-drink.png',['辦公','30cc','180cc','常溫']),
+          }
+          forbidden=['治療','改善疾病','預防疾病','退化性關節炎','骨質疏鬆','增加骨密度','關節卡卡','消炎止痛','保證功效','台興山產']
+          urls=[]
+          for r in rows:
+              i=r['id']
+              if i not in expected: raise SystemExit(f'FAIL unexpected id {i}')
+              title,fn,terms=expected[i]
+              if r['title']!=title: raise SystemExit(f'FAIL title mismatch {i}: {r["title"]}')
+              text=(r.get('title') or '')+'\n'+(r.get('content') or '')
+              for term in terms:
+                  # tolerate optional spaces in numeric piece counts
+                  patt=re.escape(term).replace(r'\ ',r'\s*')
+                  if not re.search(patt,text,re.I): raise SystemExit(f'FAIL {i} missing required term {term}')
+              for bad in forbidden:
+                  if bad in text: raise SystemExit(f'FAIL {i} forbidden public wording: {bad}')
+              url=r.get('image_url') or ''
+              if '/owner-approved-v20260818/' not in url or fn not in url:
+                  raise SystemExit(f'FAIL image mapping {i}: {url}')
+              if r.get('status')!='pending_review': raise SystemExit(f'FAIL status {i}: {r.get("status")}')
+              if r.get('image_quality_status')!='ok': raise SystemExit(f'FAIL image quality {i}')
+              if int(r.get('image_approved') or 0)!=0: raise SystemExit(f'FAIL image_approved must remain 0 {i}')
+              if r.get('scheduled_at') is not None or r.get('suggested_publish_at') is not None:
+                  raise SystemExit(f'FAIL schedule not cleared {i}')
+              if (r.get('platforms') or '[]')!='[]': raise SystemExit(f'FAIL platforms not empty {i}')
+              if r.get('archived_at') is not None: raise SystemExit(f'FAIL archived {i}')
+              if r.get('published_at') is not None: raise SystemExit(f'FAIL published {i}')
+              if '完整單張非拼湊圖' not in (r.get('image_source') or ''): raise SystemExit(f'FAIL source guard {i}')
+              urls.append(url.split('?')[0])
+          if len(set(urls))!=10: raise SystemExit('FAIL duplicate image URLs in approved ten')
+          print('PASS: 10/10 image-copy mapping, specs, statuses, and uniqueness')
+          PY
+
+      - name: Global live-state guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB=$(cat /tmp/dbname)
+          NONPUB=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND status <> 'published';" | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['results'][0]['n'])")
+          PENDING=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND status='pending_review';" | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['results'][0]['n'])")
+          SCHEDULED=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND status='scheduled';" | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['results'][0]['n'])")
+          BAD=$(npx wrangler d1 execute "$DB" --remote --json --command "SELECT COUNT(*) AS n FROM social_posts WHERE archived_at IS NULL AND status <> 'published' AND (image_url LIKE '%priority10-v20260817%' OR image_url LIKE '%remainder66-v20260817%' OR image_url LIKE '%current-v20260815%' OR image_url LIKE '%generated-v20260815%');" | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['results'][0]['n'])")
+          test "$NONPUB" -eq 10
+          test "$PENDING" -eq 10
+          test "$SCHEDULED" -eq 0
+          test "$BAD" -eq 0
+          echo "PASS global: active_nonpublished=$NONPUB pending=$PENDING scheduled=$SCHEDULED bad_old_images=$BAD"
+
+      - name: Record audit pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          cat > assets/data/owner-approved10-audit-v20260818.ok <<'EOF'
+          PASS 2026-08-18
+          10/10 圖文一對一正確；產品規格關鍵字通過；10 個唯一圖片；全部 pending_review；0 scheduled；0 舊錯圖路徑；0 違規療效關鍵字。
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/data/owner-approved10-audit-v20260818.ok
+          git commit -m '第一批10張正式貼文圖文稽核通過'
+          git push origin HEAD:main
