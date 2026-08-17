@@ -60,12 +60,14 @@ jobs:
             '/images/posts/current-v20260815/',
             '/images/publishing/generated-v20260815/'
           ];
+          const semanticHoldShortIds=new Set(['six-products-overview']);
           const isTrusted=url=>trusted.some(x=>cleanUrl(url).includes(x));
           const isBad=row=>knownBad.some(x=>cleanUrl(row.image_url).includes(x))||/完整生活場景重製v[23]|scene-v[234]|scene[23]/i.test(String(row.image_source||''));
           const used=new Set(rows.filter(x=>String(x.status)==='published'&&x.image_url).map(x=>cleanUrl(x.image_url)));
           const selected=[];
           const skippedDuplicate=[];
           const matchedKeys=[];
+          const semanticHolds=[];
           const findRow=id=>{
             const exact=byId.get(id);
             if(exact)return exact;
@@ -78,6 +80,10 @@ jobs:
             const row=findRow(shortId);
             if(!row||row.status==='published'||item?.action!=='replace'||!isTrusted(item?.imageUrl))continue;
             matchedKeys.push({shortId,id:row.id});
+            if(semanticHoldShortIds.has(shortId)){
+              semanticHolds.push({id:String(row.id),shortId,reason:'目前文案是購物清單／生活選擇主題，不能使用六項產品總覽圖。'});
+              continue;
+            }
             const key=cleanUrl(item.imageUrl);
             if(!key||used.has(key)){
               skippedDuplicate.push({id:row.id,shortId,image:item.imageUrl});
@@ -93,18 +99,22 @@ jobs:
             });
           }
           const selectedIds=new Set(selected.map(x=>x.id));
-          const hold=rows.filter(row=>row.status!=='published'&&!selectedIds.has(String(row.id))&&isBad(row));
+          const semanticHoldIds=new Set(semanticHolds.map(x=>x.id));
+          const badHolds=rows.filter(row=>row.status!=='published'&&!selectedIds.has(String(row.id))&&!semanticHoldIds.has(String(row.id))&&isBad(row));
           const sql=[];
           for(const x of selected){
             sql.push(`UPDATE social_posts SET image_url=${q(x.imageUrl)}, image_alt=${q(x.imageAlt)}, image_source=${q(x.imageSource)}, image_quality_status='ok', status='pending_review', image_approved=0, review_note='已改回使用者先前核准的正常正式圖片；請老闆確認後再做16項審核與發布。', rejection_reason='', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(x.id)} AND status<>'published';`);
           }
-          for(const row of hold){
+          for(const x of semanticHolds){
+            sql.push(`UPDATE social_posts SET status='draft', image_quality_status='ok', image_approved=0, review_note=${q('圖片本身正常，但目前文案主題與圖片用途不一致；需重新配對或製作新圖後由老闆確認。')}, rejection_reason=${q(x.reason)}, approved_by=NULL, approved_at=NULL, scheduled_at=NULL, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(x.id)} AND status<>'published';`);
+          }
+          for(const row of badHolds){
             sql.push(`UPDATE social_posts SET status='draft', image_quality_status='low', image_approved=0, review_note='目前圖片屬2026-08-17已確認亂碼／假字／內部規格板合成圖批次，禁止發布；文案與新圖需先在ChatGPT由老闆確認，再回貼文中心。', rejection_reason='圖片實際呈現含亂碼、假字或內部規格板；等待老闆確認的新正式圖。', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(row.id)} AND status<>'published';`);
           }
           fs.writeFileSync('/tmp/recover-approved-media.sql',sql.join('\n')+'\n');
-          fs.writeFileSync('/tmp/recovery-plan.json',JSON.stringify({live:rows.length,matchedKeys:matchedKeys.length,recovered:selected.length,held:hold.length,skippedDuplicate:skippedDuplicate.length,recoveredIds:selected.map(x=>x.id),heldIds:hold.map(x=>x.id),duplicatesSkipped:skippedDuplicate},null,2));
+          fs.writeFileSync('/tmp/recovery-plan.json',JSON.stringify({live:rows.length,matchedKeys:matchedKeys.length,recovered:selected.length,badHolds:badHolds.length,semanticHolds:semanticHolds.length,skippedDuplicate:skippedDuplicate.length,recoveredIds:selected.map(x=>x.id),semanticHoldIds:semanticHolds.map(x=>x.id),duplicatesSkipped:skippedDuplicate},null,2));
           console.log(fs.readFileSync('/tmp/recovery-plan.json','utf8'));
-          if(!selected.length&&!hold.length)throw new Error('沒有找到需要回補或隔離的貼文，停止避免空操作');
+          if(!selected.length&&!badHolds.length&&!semanticHolds.length)throw new Error('沒有找到需要回補或隔離的貼文，停止避免空操作');
           NODE
       - name: Apply safe recovery to production D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/recover-approved-media.sql
@@ -130,15 +140,17 @@ jobs:
             if(seen.has(key))dups.push([seen.get(key),row.id,key]);else seen.set(key,row.id);
           }
           if(dups.length)throw new Error(`正常待審核圖仍有重複使用：${JSON.stringify(dups.slice(0,5))}`);
+          if(ready.some(x=>x.id==='XJW-SOCIAL-20260815-01-six-products-overview'))throw new Error('六項產品總覽圖與目前購物清單文案錯配，不能留在待審核');
           const published=rows.filter(x=>x.status==='published');
-          const held=rows.filter(x=>x.status==='draft'&&String(x.image_quality_status)==='low');
-          console.log(`PASS: published preserved=${published.length}; normal ready-for-review=${ready.length}; bad generated batch leaked=0; duplicate ready images=0; low-image holds=${held.length}; recovered=${plan.recovered}; duplicate-approved-images-skipped=${plan.skippedDuplicate}`);
+          const heldLow=rows.filter(x=>x.status==='draft'&&String(x.image_quality_status)==='low');
+          console.log(`PASS: published preserved=${published.length}; normal ready-for-review=${ready.length}; bad generated batch leaked=0; duplicate ready images=0; low-image holds=${heldLow.length}; semantic holds=${plan.semanticHolds}; recovered=${plan.recovered}; duplicate-approved-images-skipped=${plan.skippedDuplicate}`);
           NODE
       - name: Summary
         if: always()
         shell: bash
         run: |
-          echo '這次只回補先前已核准且實際正常的正式圖片；同圖不重複。'
+          echo '這次只回補先前已核准且實際正常、且目前主題仍吻合的正式圖片；同圖不重複。'
           echo '2026-08-17 scene2/scene3 合成批次因使用者實機確認出現亂碼、假字、內部規格板，全部不得留在可發布流程，並標記 image_quality_status=low。'
+          echo '圖片正常但文案主題已改變者也留草稿，不硬套舊圖。'
           echo '後續新文案與新圖必須先在 ChatGPT 提供給老闆確認，確認後才可同步至貼文中心。'
           cat /tmp/recovery-plan.json 2>/dev/null || true
