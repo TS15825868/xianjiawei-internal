@@ -1,2 +1,3 @@
 apply 2026-08-17 remaining66 formal shared authority to production D1
-rerun 2026-08-17T12:56:00+08:00 after priority10 review and three-system sync
+requested 2026-08-17T13:27+08:00 after priority10 v4 and LINE 76 resync
+keep published history, all 76 working posts pending_review
