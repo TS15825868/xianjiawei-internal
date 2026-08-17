@@ -1,0 +1,78 @@
+name: 仙加味貼文中心只保留正常圖貼文
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/hide-posts-without-normal-image-v20260817.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hide-no-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require Cloudflare D1 credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install D1 tooling
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Hide drafts that do not have a normal image
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/hide-no-image.sql <<'SQL'
+          UPDATE social_posts
+          SET status='archived',
+              image_approved=0,
+              approved_by=NULL,
+              approved_at=NULL,
+              scheduled_at=NULL,
+              review_note='暫時從貼文中心隱藏：目前沒有已確認正常圖片。文案資料保留；待 ChatGPT 完成新文案＋新圖並由老闆確認後，再恢復到待審核。',
+              rejection_reason=CASE
+                WHEN trim(COALESCE(rejection_reason,''))='' THEN '目前沒有已確認正常圖片，暫不顯示於貼文中心。'
+                ELSE rejection_reason
+              END,
+              updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
+          WHERE status='draft'
+            AND trim(COALESCE(image_url,''))='';
+          SQL
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/hide-no-image.sql
+      - name: Verify posting center only keeps posts with normal images
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_quality_status FROM social_posts ORDER BY id" > /tmp/all.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/all.json','utf8'));
+          const rows=raw.flatMap(x=>Array.isArray(x?.results)?x.results:[]);
+          const visible=rows.filter(x=>String(x.status)!=='archived');
+          const visibleMissing=visible.filter(x=>!String(x.image_url||'').trim());
+          const visibleBad=visible.filter(x=>String(x.image_quality_status)==='low');
+          if(visibleMissing.length) throw new Error(`貼文中心仍有 ${visibleMissing.length} 篇沒有圖片`);
+          if(visibleBad.length) throw new Error(`貼文中心仍有 ${visibleBad.length} 篇低品質圖片`);
+          const pending=visible.filter(x=>x.status==='pending_review');
+          const published=visible.filter(x=>x.status==='published');
+          const approved=visible.filter(x=>x.status==='approved');
+          const scheduled=visible.filter(x=>x.status==='scheduled');
+          const archived=rows.filter(x=>x.status==='archived');
+          console.log(`PASS: visible=${visible.length}; pending_review=${pending.length}; approved=${approved.length}; scheduled=${scheduled.length}; published=${published.length}; archived=${archived.length}; visible-without-image=0; visible-low-quality=0`);
+          NODE
+      - name: Summary
+        if: always()
+        run: |
+          echo '貼文中心只保留已有正常圖片的貼文。'
+          echo '沒有正常圖片的貼文只做 archived 隱藏，文案資料不刪除；之後由 ChatGPT 完成文案＋圖片並經老闆確認後再恢復。'
