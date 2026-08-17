@@ -1,0 +1,45 @@
+name: 仙加味貼文中心目前圖文配對明細
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-current-post-pairing-v20260817.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require Cloudflare D1 credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install D1 tooling
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Print current active post-image pairing details
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_quality_status FROM social_posts WHERE status<>'archived' ORDER BY status,id" > /tmp/current.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/current.json','utf8'));
+          const rows=raw.flatMap(x=>Array.isArray(x?.results)?x.results:[]);
+          console.log('CURRENT_ACTIVE_JSON_BEGIN');
+          console.log(JSON.stringify(rows,null,2));
+          console.log('CURRENT_ACTIVE_JSON_END');
+          const pending=rows.filter(x=>x.status==='pending_review');
+          console.log(`SUMMARY active=${rows.length} pending_review=${pending.length} published=${rows.filter(x=>x.status==='published').length}`);
+          NODE
