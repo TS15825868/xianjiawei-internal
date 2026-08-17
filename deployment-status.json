@@ -1,6 +1,6 @@
 {
   "status": "deployed_access_protected",
-  "source_commit": "a1341d62b3c565b671050c1cf160473e85d7b869",
+  "source_commit": "9618cbc69dd7e0e56c848754acdc7baeef5e18cd",
   "runtime": "cloudflare-worker-publishing-center-app",
   "entry": "src/publishing-content-audit-entry.js",
   "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
@@ -16,5 +16,5 @@
   "erp_api": "blocked_except_publishing",
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-17T03:12:27Z"
+  "verified_at_utc": "2026-08-17T03:13:55Z"
 }
