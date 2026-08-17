@@ -1,12 +1,7 @@
-const PRODUCTS=Object.freeze([
-  {id:'guilu-gao',name:'龜鹿膏',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'食用時間可依個人使用習慣與作息時間安排'},
-  {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆']},
-  {id:'guilu-tangkuai',name:'龜鹿湯塊',allowedSpecs:['75g／盒｜8塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約9.375g'},
-  {id:'guilu-jiao',name:'龜鹿膠',allowedSpecs:['600g （1斤）／盒｜32塊裝'],ingredients:['龜板萃取物','鹿角萃取物'],detailUnitApprox:'每塊約18.75 g'},
-  {id:'luerong-fen',name:'鹿茸粉',allowedSpecs:['75g／罐'],ingredients:['鹿茸']}
-]);
+import { PRODUCTS, PRODUCT_MASTER_META } from './product-master-snapshot.js';
+
 const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
+const BY_ID=new Map(PRODUCTS.map(item=>[item.id,item]));
 const clean=value=>String(value??'').trim();
 const PRODUCT_NAMES=PRODUCTS.map(item=>item.name);
 const POST_IMAGE_RULES=Object.freeze([
@@ -64,9 +59,7 @@ function publicProductContextErrors(text=''){
     if(/(每日一罐|每日\s*1\s*罐)/.test(segment))errors.push('龜鹿飲30cc目前使用方式為「每日 1-2罐」；飲用時間依個人使用習慣與作息安排。');
   }
   for(const segment of productSegments(source,'龜鹿湯塊')){
-    if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g／盒｜8塊裝」。');
-  }
-  for(const segment of productSegments(source,'龜鹿膠')){
+    if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g （2兩）／盒｜8塊裝」。');
   }
   return [...new Set(errors)];
 }
@@ -118,16 +111,24 @@ export function validatePostPayload(body={}){
   return [...new Set([...textErrors,...validatePostImageMatch(body)])];
 }
 
+const soupBlock=BY_ID.get('guilu-tangkuai');
+const guiluJiao=BY_ID.get('guilu-jiao');
+const guiluGao=BY_ID.get('guilu-gao');
+const drink30=BY_ID.get('guilu-drink-30');
+const drink180=BY_ID.get('guilu-drink-180');
+
 export const PRODUCT_AUTHORITY=Object.freeze({
-  version:'current-server-product-authority-v4-20260815-2li-1jin',
-  productCount:6,
-  soupBlockMain:'75g／盒｜8塊裝',
-  soupBlockDetail:'每塊約9.375g（顧客文字可顯示）',
-  guiluJiaoMain:'600g （1斤）／盒｜32塊裝',
-  guiluJiaoDetail:'每塊約18.75 g（顧客文字可顯示）',
-  guiluGaoUsagePrimary:'食用時間可依個人使用習慣與作息時間安排',
-  guiluDrink30UsagePrimary:'每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排',
-  guiluDrink180UsagePrimary:'每日一包；飲用時間可依個人使用習慣與作息時間安排',
+  version:`${PRODUCT_MASTER_META.version}-erp-guard-v1`,
+  sourceAuthority:PRODUCT_MASTER_META.authority,
+  source:PRODUCT_MASTER_META.source,
+  productCount:PRODUCTS.length,
+  soupBlockMain:soupBlock?.allowedSpecs?.[0]||'',
+  soupBlockDetail:`${soupBlock?.detailUnitApprox||''}（顧客文字可顯示）`,
+  guiluJiaoMain:guiluJiao?.allowedSpecs?.[0]||'',
+  guiluJiaoDetail:`${guiluJiao?.detailUnitApprox||''}（顧客文字可顯示）`,
+  guiluGaoUsagePrimary:guiluGao?.usagePrimary||'',
+  guiluDrink30UsagePrimary:[drink30?.usagePrimary,drink30?.usageTiming].filter(Boolean).join('；'),
+  guiluDrink180UsagePrimary:[drink180?.usagePrimary,drink180?.usageTiming].filter(Boolean).join('；'),
   postImageMatchBlocking:true,
   mediaGuardPolicy:'current-media-role-and-product-match; customer-display main / dm-final detailed DM / 8-14 trial / products-v3 identity-reference; no historical-version pin',
   products:PRODUCTS
