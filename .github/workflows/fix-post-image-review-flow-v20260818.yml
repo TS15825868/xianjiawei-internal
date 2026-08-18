@@ -1,0 +1,130 @@
+name: 修正貼文圖片上傳與待審核流程 20260818
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/fix-post-image-review-flow.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Patch posting center review flow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p=Path('src/worker.js')
+          s=p.read_text()
+          s=s.replace("const VERSION='2026-08-07-public-runtime-v1';","const VERSION='2026-08-18-post-image-review-flow-v2';")
+          anchor="""function imageQuality(width,height){
+            if(!width||!height)return{ok:true,status:'unknown'};
+            const longSide=Math.max(width,height),shortSide=Math.min(width,height),squareLike=longSide/Math.max(1,shortSide)<=1.15;
+            const ok=squareLike?shortSide>=1254:shortSide>=1000&&longSide>=1400;
+            return{ok,status:ok?'clear':'low'};
+          }
+          """
+          if 'function readyForReview' not in s:
+            s=s.replace(anchor,anchor+"""function readyForReview({headline='',copy='',platforms=[],image_url=''}){
+            return Boolean(clean(image_url)&&(clean(copy)||clean(headline))&&Array.isArray(platforms)&&platforms.length);
+          }
+          """,1)
+
+          a=s.index('async function createPost(request,env,profile){')
+          b=s.index('async function updatePost(request,env,profile,id){')
+          s=s[:a]+"""async function createPost(request,env,profile){
+            if(!canWrite(profile,'posts'))return json({error:'沒有新增貼文權限'},403);
+            const body=await readJson(request),now=new Date().toISOString(),width=safeInt(body.image_width),height=safeInt(body.image_height),quality=imageQuality(width,height);
+            const post={id:makeId('XJW'),title:clean(body.title),headline:cleanMultiline(body.headline),copy:cleanMultiline(body.copy),category:clean(body.category,'日常節奏'),platforms:safePlatforms(body.platforms),image_url:clean(body.image_url),image_alt:clean(body.image_alt),image_source:clean(body.image_source,'官方素材'),image_width:width,image_height:height,image_bytes:safeInt(body.image_bytes),image_quality_status:clean(body.image_quality_status,body.image_url?quality.status:'needs-generation')};
+            if(!post.title)return json({error:'貼文標題不可空白'},400);if(!post.platforms.length)post.platforms=['Facebook','Instagram'];
+            if(!post.image_url)post.image_quality_status='needs-generation';
+            const status=readyForReview(post)?'pending_review':'draft';
+            await env.DB.prepare(\"INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?,?,NULL,?,?,?,0,?,?,?,?,?,?,?)\").bind(post.id,post.title,post.headline,post.copy,post.category,JSON.stringify(post.platforms),status,post.image_url,post.image_alt,post.image_source,post.image_width,post.image_height,post.image_bytes,post.image_quality_status,profile.email,now,now).run();
+            const saved=await getPost(env,post.id);await audit(env,request,profile,status==='pending_review'?'新增並送待審核':'新增草稿待補圖','貼文',post.id,null,saved);return json(saved,201);
+          }
+          """+s[b:]
+
+          a=s.index('async function updatePost(request,env,profile,id){')
+          b=s.index('async function changePostStatus(request,env,profile,id){')
+          s=s[:a]+"""async function updatePost(request,env,profile,id){
+            if(!canWrite(profile,'posts'))return json({error:'沒有修改貼文權限'},403);
+            const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
+            if(before.status==='published')return json({error:'已發布貼文不直接改寫；請建立新版草稿，避免破壞歷史發布紀錄。'},409);
+            const body=await readJson(request),now=new Date().toISOString();
+            const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=body.platforms===undefined?before.platforms:safePlatforms(body.platforms),imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight);
+            const qualityStatus=imageUrl?clean(body.image_quality_status,quality.status):'needs-generation';
+            if(!title)return json({error:'貼文標題不可空白'},400);if(!platforms.length)return json({error:'請至少選擇一個發布平台'},400);
+            const nextStatus=readyForReview({headline,copy,platforms,image_url:imageUrl})?'pending_review':'draft';
+            await env.DB.prepare(\"UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status=?,scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,updated_at=? WHERE id=?\").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,nextStatus,now,id).run();
+            const after=await getPost(env,id);await audit(env,request,profile,nextStatus==='pending_review'?'修改並回待審核':'修改並保留草稿待補圖','貼文',id,before,after);return json(after);
+          }
+          """+s[b:]
+          p.write_text(s)
+
+          p=Path('assets/js/publishing-app-v2.js')
+          s=p.read_text()
+          s=s.replace('儲存修改後會退回草稿，16項圖文核准會自動失效，必須重新審核。','儲存修改後原核准會失效；圖文完整會自動回「待審核」，缺圖則保留草稿等待補圖。')
+          s=s.replace('<label class=\"field\"><span>圖片網址</span><input name=\"image_url\" type=\"url\" value=\"${esc(post?.image_url||\'\')}\"></label>','<label class=\"field full\"><span>貼文圖片</span><input name=\"image_url\" type=\"url\" placeholder=\"可貼圖片網址，或使用下方裝置上傳\" value=\"${esc(post?.image_url||\'\')}\">${post?.image_url?`<img data-post-image-preview class=\"xjw-image-preview\" src=\"${esc(post.image_url)}\" alt=\"${esc(post.image_alt||post.title||\'目前貼文圖片\')}\" style=\"margin-top:10px;max-height:360px;object-fit:contain\">`:\'\'}</label>')
+          s=s.replace("${edit?'儲存並退回草稿':'儲存草稿'}","${edit?'儲存修改':'儲存貼文'}")
+          old="""      await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
+                method:edit?'PUT':'POST',body:JSON.stringify(body)
+              });
+              closeModal();
+              toast(edit?'貼文已更新並退回草稿':'貼文草稿已新增');
+              await load();"""
+          new="""      const saved=await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
+                method:edit?'PUT':'POST',body:JSON.stringify(body)
+              });
+              closeModal();
+              toast(saved?.status==='pending_review'?'圖文已儲存並自動回到待審核':saved?.image_url?'貼文已儲存':'貼文已儲存為草稿，缺圖需先補圖後再審核');
+              await load();"""
+          if old in s:s=s.replace(old,new,1)
+          marker="  $('#postForm')?.addEventListener('submit',async e=>{\n"
+          if 'data-post-image-preview' in s and 'const imageUrlInput=' not in s:
+            s=s.replace(marker,"""  const imageUrlInput=$('#postForm input[name=\"image_url\"]');
+            imageUrlInput?.addEventListener('input',()=>{
+              let preview=$('#postForm [data-post-image-preview]');
+              const value=imageUrlInput.value.trim();
+              if(!value){if(preview)preview.remove();return;}
+              if(!preview){preview=document.createElement('img');preview.dataset.postImagePreview='1';preview.className='xjw-image-preview';preview.style.cssText='margin-top:10px;max-height:360px;object-fit:contain';imageUrlInput.closest('.field')?.appendChild(preview);}
+              preview.src=value;preview.alt=$('#postForm input[name=\"image_alt\"]')?.value||$('#postForm input[name=\"title\"]')?.value||'貼文圖片';
+            });
+
+          """+marker,1)
+          p.write_text(s)
+
+          p=Path('.github/workflows/deploy-cloudflare-publishing.yml')
+          s=p.read_text()
+          if "      - 'src/worker.js'" not in s:s=s.replace("      - 'src/entry.js'\n","      - 'src/entry.js'\n      - 'src/worker.js'\n",1)
+          p.write_text(s)
+          PY
+          node --check src/worker.js
+          node --check assets/js/publishing-app-v2.js
+          grep -q "post-image-review-flow-v2" src/worker.js
+          grep -q "自動回到待審核" assets/js/publishing-app-v2.js
+          grep -q "src/worker.js" .github/workflows/deploy-cloudflare-publishing.yml
+      - name: Commit repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/worker.js assets/js/publishing-app-v2.js .github/workflows/deploy-cloudflare-publishing.yml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'fix(posts): image upload saves back to pending review'
+          git pull --rebase origin main
+          git push origin HEAD:main
