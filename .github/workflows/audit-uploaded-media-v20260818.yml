@@ -1,0 +1,54 @@
+name: 稽核貼文中心已上傳圖片 20260818
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/audit-uploaded-media-v20260818.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read remote D1 upload and post state
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,mime_type,bytes,width,height,uploaded_by,created_at FROM media_assets ORDER BY created_at DESC LIMIT 100" > /tmp/media.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_source,image_width,image_height,image_bytes,image_quality_status,image_approved,updated_at FROM social_posts WHERE status <> 'archived' ORDER BY updated_at DESC" > /tmp/posts.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const unwrap=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x)};
+          const media=unwrap('/tmp/media.json');
+          const posts=unwrap('/tmp/posts.json');
+          const used=new Set(posts.map(p=>String(p.image_url||'')).filter(x=>x.startsWith('/media/')).map(x=>decodeURIComponent(x.slice(7))));
+          const out={checked_at:new Date().toISOString(),media_count:media.length,post_count:posts.length,media_used_count:media.filter(m=>used.has(m.id)).length,media_orphan_count:media.filter(m=>!used.has(m.id)).length,media:media.map(m=>({...m,used_by_post:used.has(m.id)})),posts};
+          fs.writeFileSync('audits/uploaded-media-v20260818.json',JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify({media_count:out.media_count,post_count:out.post_count,media_used_count:out.media_used_count,media_orphan_count:out.media_orphan_count},null,2));
+          NODE
+      - name: Commit audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audits/uploaded-media-v20260818.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'audit(posts): record uploaded media and post image links'
+          git pull --rebase origin main
+          git push origin HEAD:main
