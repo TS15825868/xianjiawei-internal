@@ -1,0 +1,97 @@
+{
+  "checked_at": "2026-08-18T06:52:24.413Z",
+  "status": "PASS",
+  "count": 10,
+  "posts": [
+    {
+      "id": "XJW-GUILU-choose-by-place",
+      "title": "今天在家，明天外出，產品型態不一定要選同一種",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-drink180-home",
+      "title": "回到家，把180cc安排進自己的節奏",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-drink30-work-break",
+      "title": "上班帶一罐，30cc不用把行程打亂",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-gao-storage",
+      "title": "龜鹿膏開罐後，順手放進冰箱",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-jiao-600g",
+      "title": "週末有時間，再慢慢認識龜鹿膠這種型態",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-luerong-75g",
+      "title": "下午想簡單一點，可以先認識鹿茸粉",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-GUILU-tangkuai-soup",
+      "title": "今晚燉湯，把龜鹿湯塊安排進家常餐桌",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-warm-drink-moment",
+      "title": "辦公桌上的一杯，也可以有不同選擇",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-line-consult-and-trial",
+      "title": "不知道怎麼選，先把你的日常告訴我們",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-storage-basics",
+      "title": "星期天整理櫃子，也順便看看龜鹿還剩多少",
+      "status": "draft",
+      "image_url": "",
+      "image_quality_status": "needs-generation",
+      "image_approved": 0,
+      "scheduled_at": null
+    }
+  ]
+}
