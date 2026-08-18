@@ -1,3 +1,5 @@
+import { ensureMediaSchema } from './media-upload.js';
+
 const OFFICIAL_MEDIA=[
   {id:'XJW-GUILU-drink30-work-break',file:'01-work-30cc.webp',bytes:49620,sha:'2126f7218e28840d691d3e7e9277e2e4b3877d7394d3fa1cc9454fce475fdb4d',alt:'仙加味上班日常；小老闆手持30cc小玻璃罐',status:'pending_review'},
   {id:'XJW-GUILU-drink180-home',file:'02-home-180cc.webp',bytes:53070,sha:'f346affa8e5387ba9323bb1cfaccacab739b06d5f45fdaa0f9c469d966a8b401',alt:'仙加味居家溫飲；180cc鋁袋生活情境',status:'pending_review'},
@@ -52,7 +54,7 @@ export async function reconcileOfficialPostMedia(env){
   if(!db)return{ok:false,reason:'no-db'};
   try{
     if(!(await tableExists(db,'social_posts')))return{ok:false,reason:'no-social-posts'};
-    if(!(await tableExists(db,'media_assets')))return{ok:false,reason:'no-media-assets'};
+    await ensureMediaSchema(env);
     await ensureSpecialPosts(db);
     const sizes=[...new Set(OFFICIAL_MEDIA.map(x=>x.bytes))];
     const placeholders=sizes.map(()=>'?').join(',');
