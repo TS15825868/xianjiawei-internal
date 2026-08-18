@@ -1,0 +1,123 @@
+name: 修正貼文中心第一批10篇缺圖
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/fix-priority10-missing-images-v20260818.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-priority10-missing-images-fix
+  cancel-in-progress: false
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require Cloudflare credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install Wrangler
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund wrangler@latest
+      - name: Fetch authoritative 10-post manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 6 --retry-delay 3 'https://ts15825868.github.io/xianjiawei/images/posts/priority10-v20260817/manifest.json?v=20260818-fix' -o /tmp/priority10.json
+          node - <<'NODE'
+          const m=JSON.parse(require('fs').readFileSync('/tmp/priority10.json','utf8'));
+          if(m.count!==10||m.posts?.length!==10) throw new Error('manifest must contain exactly 10 posts');
+          const urls=new Set();
+          for(const p of m.posts){
+            if(!p.id||!p.image_url) throw new Error('missing id/image_url');
+            if(!p.image_url.includes('/images/posts/priority10-v20260817/')) throw new Error('unexpected image release '+p.id);
+            if(urls.has(p.image_url)) throw new Error('duplicate image '+p.id);
+            urls.add(p.image_url);
+          }
+          console.log('PASS manifest 10/10 unique image URLs');
+          NODE
+      - name: Verify all 10 public images are reachable
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE' >/tmp/urls.txt
+          const m=JSON.parse(require('fs').readFileSync('/tmp/priority10.json','utf8'));
+          for(const p of m.posts) console.log(p.image_url);
+          NODE
+          while IFS= read -r u; do
+            code=$(curl -L -sS --retry 5 --retry-delay 2 -o /tmp/post-image -w '%{http_code}' "$u")
+            test "$code" = 200
+            test -s /tmp/post-image
+          done </tmp/urls.txt
+          echo 'PASS public images 10/10 reachable'
+      - name: Build D1 repair SQL
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const m=JSON.parse(fs.readFileSync('/tmp/priority10.json','utf8'));
+          const q=v=>`'${String(v??'').replaceAll("'","''")}'`;
+          const lines=[];
+          for(const p of m.posts){
+            lines.push(`UPDATE social_posts SET image_url=${q(p.image_url)}, image_alt=${q(p.image_alt||p.title)}, image_source=${q(p.image_source||'使用者確認之正式10圖｜圖文一對一')}, image_quality_status='ok', image_approved=0, status=CASE WHEN status='published' THEN status ELSE 'pending_review' END, scheduled_at=CASE WHEN status='published' THEN scheduled_at ELSE NULL END, approved_by=CASE WHEN status='published' THEN approved_by ELSE NULL END, approved_at=CASE WHEN status='published' THEN approved_at ELSE NULL END, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=${q(p.id)} AND status<>'archived';`);
+          }
+          fs.writeFileSync('/tmp/fix.sql',lines.join('\n')+'\n');
+          NODE
+      - name: Apply repair to production D1
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/fix.sql
+      - name: Verify production D1 final state
+        shell: bash
+        run: |
+          set -euo pipefail
+          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at FROM social_posts WHERE id IN ($IDS) ORDER BY id;" >/tmp/live.json
+          node - <<'NODE'
+          const rows=JSON.parse(require('fs').readFileSync('/tmp/live.json','utf8')).flatMap(x=>x.results||[]);
+          if(rows.length!==10) throw new Error('live rows '+rows.length+'/10');
+          const urls=new Set();
+          for(const r of rows){
+            if(!r.image_url||!r.image_url.includes('/images/posts/priority10-v20260817/')) throw new Error('image missing/wrong '+r.id+': '+r.image_url);
+            if(r.status!=='pending_review'&&r.status!=='published') throw new Error('bad status '+r.id+': '+r.status);
+            if(r.status!=='published'&&r.scheduled_at!==null) throw new Error('schedule not cleared '+r.id);
+            if(r.status!=='published'&&Number(r.image_approved||0)!==0) throw new Error('image approval must reset '+r.id);
+            urls.add(r.image_url.split('?')[0]);
+          }
+          if(urls.size!==10) throw new Error('unique image count '+urls.size+'/10');
+          console.log('PASS D1 10/10 images linked; unique=10; pending review preserved');
+          NODE
+      - name: Record verified repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          cat > assets/data/priority10-images-fixed-v20260818.ok <<'EOF'
+          PASS 2026-08-18
+          貼文中心第一批10篇正式圖已全部回填 production D1。
+          10/10 image_url 非空；10 個唯一圖片網址；未發布項目均為 pending_review；排程已清除；image_approved=0；未自動發布。
+          圖片來源：官網正式素材 images/posts/priority10-v20260817/，對應使用者確認10張圖。
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/data/priority10-images-fixed-v20260818.ok
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'PASS: 貼文中心10篇正式圖已全部到位'
+          git pull --rebase origin main
+          git push origin HEAD:main
