@@ -17,7 +17,7 @@ env:
 jobs:
   repair:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
         with:
@@ -26,24 +26,127 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-save wrangler@latest
-      - name: Audit current production media and post bindings
+
+      - name: Repair legacy media_assets schema safely
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,mime_type,bytes,width,height,created_by,created_at FROM media_assets ORDER BY created_at DESC LIMIT 200" > /tmp/media.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at,published_at,updated_at FROM social_posts WHERE status<>'archived' ORDER BY updated_at DESC" > /tmp/posts.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "CREATE TABLE IF NOT EXISTS media_assets(id TEXT PRIMARY KEY)" >/tmp/media-create.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA table_info(media_assets)" >/tmp/media-schema.json
           node - <<'NODE'
           const fs=require('fs');
-          const unwrap=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x)};
-          const media=unwrap('/tmp/media.json');
-          const posts=unwrap('/tmp/posts.json');
-          const used=new Set(posts.map(p=>String(p.image_url||'')).filter(x=>x.includes('/media/')).map(x=>decodeURIComponent(x.split('/media/')[1].split('?')[0])));
-          const result={checked_at:new Date().toISOString(),media_count:media.length,post_count:posts.length,media_used_count:media.filter(m=>used.has(m.id)).length,media_orphan_count:media.filter(m=>!used.has(m.id)).length,media:media.map(m=>({...m,used_by_post:used.has(m.id)})),posts};
+          const raw=JSON.parse(fs.readFileSync('/tmp/media-schema.json','utf8'));
+          const rows=Array.isArray(raw)&&raw[0]?.results?raw[0].results:(raw?.results||raw||[]);
+          const names=new Set(rows.map(row=>String(row.name||'').toLowerCase()));
+          const defs=[
+            ['file_name',"TEXT NOT NULL DEFAULT ''"],
+            ['mime_type',"TEXT NOT NULL DEFAULT 'image/jpeg'"],
+            ['data_base64',"TEXT NOT NULL DEFAULT ''"],
+            ['bytes','INTEGER NOT NULL DEFAULT 0'],
+            ['width','INTEGER NOT NULL DEFAULT 0'],
+            ['height','INTEGER NOT NULL DEFAULT 0'],
+            ['created_by',"TEXT NOT NULL DEFAULT ''"],
+            ['created_at',"TEXT NOT NULL DEFAULT ''"]
+          ];
+          const sql=defs.filter(([name])=>!names.has(name)).map(([name,def])=>`ALTER TABLE media_assets ADD COLUMN ${name} ${def};`).join('\n');
+          fs.writeFileSync('/tmp/media-migrate.sql',sql+(sql?'\n':''));
+          console.log(JSON.stringify({existing:[...names],adding:defs.filter(([name])=>!names.has(name)).map(([name])=>name)},null,2));
+          NODE
+          if [ -s /tmp/media-migrate.sql ]; then
+            npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/media-migrate.sql
+          fi
+
+      - name: Match uploaded images and build exact D1 bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,mime_type,data_base64,bytes,width,height,created_by,created_at FROM media_assets ORDER BY created_at DESC LIMIT 300" >/tmp/media-full.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,platforms_json,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at,published_at,updated_at FROM social_posts WHERE status<>'archived' ORDER BY updated_at DESC" >/tmp/posts-before.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const crypto=require('crypto');
+          const unwrap=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[])};
+          const media=unwrap('/tmp/media-full.json');
+          const posts=unwrap('/tmp/posts-before.json');
+          const postIds=new Set(posts.map(x=>String(x.id||'')));
+          const expected=[
+            {id:'XJW-GUILU-drink30-work-break',file:'01-work-30cc.webp',bytes:49620,sha:'2126f7218e28840d691d3e7e9277e2e4b3877d7394d3fa1cc9454fce475fdb4d',alt:'仙加味上班日常；小老闆手持30cc小玻璃罐',status:'pending_review'},
+            {id:'XJW-GUILU-drink180-home',file:'02-home-180cc.webp',bytes:53070,sha:'f346affa8e5387ba9323bb1cfaccacab739b06d5f45fdaa0f9c469d966a8b401',alt:'仙加味居家溫飲；180cc鋁袋生活情境',status:'pending_review'},
+            {id:'XJW-GUILU-gao-storage',file:'03-gao-storage.webp',bytes:47502,sha:'d9072baa0d40dce6ab1dac9c750fac0badeee188c7f24558cedd97aff6c6c41f',alt:'仙加味保存提醒；龜鹿膏開罐後冷藏',status:'pending_review'},
+            {id:'XJW-GUILU-tangkuai-soup',file:'04-tangkuai-soup.webp',bytes:50334,sha:'f9ad9d7b153ad8da3761b17e7bbacda268361f67986b88a7ca823224150e99a7',alt:'仙加味料理搭配；龜鹿湯塊家常燉湯',status:'pending_review'},
+            {id:'XJW-GUILU-jiao-600g',file:'05-jiao-600g.webp',bytes:48654,sha:'4c2566ffcbdb0af564ebe8c6182ccc3c7d9e51b09c31f7238591052f5835a0bf',alt:'仙加味型態認識；600g／32塊龜鹿膠',status:'pending_review'},
+            {id:'XJW-GUILU-luerong-75g',file:'06-lurong-75g.webp',bytes:46950,sha:'0d0cbdf260af3f9d067205eba476d833d016ad85b16feb27e2bcf1f8c8c494de',alt:'仙加味粉末安排；75g鹿茸粉',status:'pending_review'},
+            {id:'XJW-SOCIAL-20260815-02-line-consult-and-trial',file:'07-line-consult.webp',bytes:52640,sha:'dc2ab1d8516eb1e133853ad40a8f8128ae6c154c31dba76b7e61d7266ada55e9',alt:'仙加味LINE諮詢；依日常協助挑選產品',status:'pending_review'},
+            {id:'XJW-GUILU-choose-by-place',file:'08-home-out.webp',bytes:50190,sha:'17a75dff9fa92cbe164bb9e729ab6bcf49a8c5011c43b83f9f809d835856d38b',alt:'仙加味生活節奏；在家與外出依情境選擇',status:'pending_review'},
+            {id:'XJW-SOCIAL-20260815-03-storage-basics',file:'09-organize-cabinet.webp',bytes:49092,sha:'4f93a8d1c948184b28dad6115708000e47968442eaf5be6f01b2c6ac23912132',alt:'仙加味整理一下；產品櫃與保存整理',status:'pending_review'},
+            {id:'XJW-SOCIAL-20260815-01-warm-drink-moment',file:'10-office-warm-drink.webp',bytes:49882,sha:'5d35292b7c18c5b1bfae7aebfb2b48b869aea948e4bbde2cba1329fab187ad2f',alt:'仙加味辦公桌安排；30cc與180cc溫熱飲情境',status:'pending_review'},
+            {id:'POST-AUDIENCE-NEEDS',file:'11-audience-needs.webp',bytes:50280,sha:'30719042a9291b34eb34711dbbc022d7e8ea58a940d553aafc7e40896b6da70d',alt:'常見生活情境與需求，協助顧客認識龜鹿系列',status:'pending_review'},
+            {id:'POST-TRIAL-MAIN',file:'12-trial-group-published.webp',bytes:57232,sha:'47793954b2883aab287edefc1b059c033d1bb9be605df114ff16f0d90cbfe40f',alt:'龜鹿飲試喝組正式發布主圖',status:'published'},
+            {id:'POST-BRAND-START',file:'13-brand-story-wanhua-published.webp',bytes:27672,sha:'dad70a2120e5630e733c341993ef477c28bc5e06eef203a5c780bda72780f9cd',alt:'仙加味品牌故事正式發布主圖',status:'published'}
+          ];
+          const sqlQuote=v=>`'${String(v??'').replace(/'/g,"''")}'`;
+          const byMatch=new Map();
+          for(const row of media){
+            const b64=String(row.data_base64||'');
+            if(!b64)continue;
+            let hash='';
+            try{hash=crypto.createHash('sha256').update(Buffer.from(b64,'base64')).digest('hex')}catch{}
+            const item=expected.find(x=>x.sha===hash&&x.bytes===Number(row.bytes||0))||expected.find(x=>x.file===String(row.file_name||'')&&x.bytes===Number(row.bytes||0));
+            if(item&&!byMatch.has(item.id))byMatch.set(item.id,{...row,sha:hash});
+          }
+          const source='使用者2026-08-18確認正式圖｜D1 media_assets SHA256精確綁定｜禁止舊圖fallback';
+          const defaultPlatforms='["Facebook","Instagram","LINE VOOM"]';
+          const now=new Date().toISOString();
+          const sql=[];
+          const bound=[];
+          const missingPosts=[];
+          for(const item of expected){
+            const mediaRow=byMatch.get(item.id);
+            if(!mediaRow)continue;
+            if(!postIds.has(item.id)){missingPosts.push(item.id);continue;}
+            const url=`/media/${encodeURIComponent(mediaRow.id)}`;
+            const shared=`image_url=${sqlQuote(url)},media_id=${sqlQuote(mediaRow.id)},image_alt=${sqlQuote(item.alt)},image_source=${sqlQuote(source)},image_width=${Number(mediaRow.width||0)},image_height=${Number(mediaRow.height||0)},image_bytes=${Number(mediaRow.bytes||0)},image_quality_status='ok',platforms_json=CASE WHEN COALESCE(TRIM(platforms_json),'') IN ('','[]') THEN ${sqlQuote(defaultPlatforms)} ELSE platforms_json END,updated_at=${sqlQuote(now)}`;
+            if(item.status==='published')sql.push(`UPDATE social_posts SET ${shared},image_approved=1,status='published',scheduled_at=NULL,proposed_scheduled_at=NULL WHERE id=${sqlQuote(item.id)};`);
+            else sql.push(`UPDATE social_posts SET ${shared},image_approved=0,status='pending_review',scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL WHERE id=${sqlQuote(item.id)};`);
+            bound.push({post_id:item.id,media_id:mediaRow.id,file:item.file,bytes:Number(mediaRow.bytes||0),sha:mediaRow.sha,status:item.status});
+          }
+          const plan={checked_at:new Date().toISOString(),media_rows:media.length,post_rows:posts.length,expected_count:expected.length,matched_count:byMatch.size,bound_count:bound.length,bound,missing_media:expected.filter(x=>!byMatch.has(x.id)).map(x=>x.file),missing_posts:missingPosts};
+          fs.writeFileSync('/tmp/rebind.sql',sql.join('\n')+(sql.length?'\n':''));
+          fs.writeFileSync('/tmp/rebind-plan.json',JSON.stringify(plan,null,2)+'\n');
+          console.log(JSON.stringify({media_rows:plan.media_rows,post_rows:plan.post_rows,matched_count:plan.matched_count,bound_count:plan.bound_count,missing_media:plan.missing_media,missing_posts:plan.missing_posts},null,2));
+          NODE
+          if [ -s /tmp/rebind.sql ]; then
+            npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/rebind.sql
+          fi
+
+      - name: Verify final post image state
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,mime_type,bytes,width,height,created_by,created_at FROM media_assets ORDER BY created_at DESC LIMIT 300" >/tmp/media-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,platforms_json,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at,published_at,updated_at FROM social_posts WHERE status<>'archived' ORDER BY updated_at DESC" >/tmp/posts-after.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const unwrap=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[])};
+          const plan=JSON.parse(fs.readFileSync('/tmp/rebind-plan.json','utf8'));
+          const media=unwrap('/tmp/media-after.json');
+          const posts=unwrap('/tmp/posts-after.json');
+          const result={
+            ...plan,
+            verified_at:new Date().toISOString(),
+            media_count_after:media.length,
+            post_count_after:posts.length,
+            posts_with_media_url:posts.filter(p=>String(p.image_url||'').startsWith('/media/')).length,
+            posts_missing_image:posts.filter(p=>!String(p.image_url||'').trim()).map(p=>({id:p.id,title:p.title,status:p.status})),
+            posts,
+            media
+          };
           fs.mkdirSync('audits',{recursive:true});
           fs.writeFileSync('audits/current-uploaded-media-v20260818.json',JSON.stringify(result,null,2)+'\n');
-          console.log(JSON.stringify({media_count:result.media_count,post_count:result.post_count,media_used_count:result.media_used_count,media_orphan_count:result.media_orphan_count},null,2));
+          console.log(JSON.stringify({matched_count:result.matched_count,bound_count:result.bound_count,posts_with_media_url:result.posts_with_media_url,posts_missing_image:result.posts_missing_image.length},null,2));
           NODE
-      - name: Commit audit result
+
+      - name: Commit verified repair result
         shell: bash
         run: |
           set -euo pipefail
@@ -51,6 +154,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add audits/current-uploaded-media-v20260818.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'audit(posts): record current uploaded media for final image binding'
+          git commit -m 'audit(posts): verify repaired uploaded media bindings'
           git pull --rebase origin main
           git push origin HEAD:main
