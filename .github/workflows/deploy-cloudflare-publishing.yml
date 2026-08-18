@@ -19,6 +19,9 @@ on:
       - 'tools/sync-product-master.mjs'
       - 'assets/js/publishing-review-gate.js'
       - 'assets/js/publishing-app-v2.js'
+      - 'assets/js/device-image-upload.js'
+      - 'src/entry.js'
+      - 'src/media-upload.js'
       - 'assets/data/social-image-audit-v20260815.json'
       - 'tools/validate-publishing-app-contract.mjs'
       - 'tools/validate-publishing-review-gate.mjs'
@@ -84,6 +87,7 @@ jobs:
           test -f dist/assets/css/publishing-performance.css
           test -f dist/assets/css/publishing-readiness.css
           test -f dist/assets/js/publishing-app-v2.js
+          test -f dist/assets/js/device-image-upload.js
           test -f dist/assets/js/publishing-resilience.js
           test -f dist/assets/js/publishing-review-gate.js
           test -f dist/assets/js/post-bank-sync.js
@@ -94,6 +98,10 @@ jobs:
           test -f dist/assets/data/social-image-audit-v20260815.json
           test -f dist/data/latest-user-post-zip.json
           test -f src/publishing-content-audit-entry.js
+          test -f src/entry.js
+          test -f src/media-upload.js
+          grep -q "path==='/api/media-upload'" src/entry.js
+          grep -q 'media_assets' src/media-upload.js
           grep -q '貼文中心系統 App' dist/publishing.html
           ! grep -q 'body:before' dist/publishing.html
           grep -q "location.replace('/publishing.html')" dist/index.html
