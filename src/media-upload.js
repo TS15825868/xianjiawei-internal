@@ -2,6 +2,18 @@ const MAX_BYTES=700*1024;
 const JSON_HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:JSON_HEADERS});
 const clean=(value,fallback='')=>String(value??fallback).trim();
+let mediaSchemaPromise=null;
+
+const MEDIA_COLUMNS=Object.freeze([
+  ['file_name',"TEXT NOT NULL DEFAULT ''"],
+  ['mime_type',"TEXT NOT NULL DEFAULT 'image/jpeg'"],
+  ['data_base64',"TEXT NOT NULL DEFAULT ''"],
+  ['bytes','INTEGER NOT NULL DEFAULT 0'],
+  ['width','INTEGER NOT NULL DEFAULT 0'],
+  ['height','INTEGER NOT NULL DEFAULT 0'],
+  ['created_by',"TEXT NOT NULL DEFAULT ''"],
+  ['created_at',"TEXT NOT NULL DEFAULT ''"]
+]);
 
 function bytesToBase64(buffer){
   const bytes=new Uint8Array(buffer);
@@ -16,19 +28,41 @@ function base64ToBytes(value){
   for(let index=0;index<binary.length;index+=1) bytes[index]=binary.charCodeAt(index);
   return bytes;
 }
+async function mediaColumns(env){
+  const result=await env.DB.prepare('PRAGMA table_info(media_assets)').all();
+  return new Set((result.results||[]).map(row=>clean(row?.name).toLowerCase()).filter(Boolean));
+}
+async function addMediaColumn(env,columns,name,definition){
+  if(columns.has(name))return;
+  try{
+    await env.DB.exec(`ALTER TABLE media_assets ADD COLUMN ${name} ${definition}`);
+  }catch(error){
+    if(!/duplicate column|already exists/i.test(String(error?.message||error)))throw error;
+  }
+  columns.add(name);
+}
 
 export async function ensureMediaSchema(env){
-  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS media_assets(
-    id TEXT PRIMARY KEY,
-    file_name TEXT NOT NULL DEFAULT '',
-    mime_type TEXT NOT NULL DEFAULT 'image/jpeg',
-    data_base64 TEXT NOT NULL,
-    bytes INTEGER NOT NULL DEFAULT 0,
-    width INTEGER NOT NULL DEFAULT 0,
-    height INTEGER NOT NULL DEFAULT 0,
-    created_by TEXT NOT NULL DEFAULT '',
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )`).run();
+  if(!env?.DB)throw new Error('D1 資料庫尚未綁定');
+  if(mediaSchemaPromise)return mediaSchemaPromise;
+  mediaSchemaPromise=(async()=>{
+    await env.DB.exec(`CREATE TABLE IF NOT EXISTS media_assets(
+      id TEXT PRIMARY KEY,
+      file_name TEXT NOT NULL DEFAULT '',
+      mime_type TEXT NOT NULL DEFAULT 'image/jpeg',
+      data_base64 TEXT NOT NULL DEFAULT '',
+      bytes INTEGER NOT NULL DEFAULT 0,
+      width INTEGER NOT NULL DEFAULT 0,
+      height INTEGER NOT NULL DEFAULT 0,
+      created_by TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT ''
+    )`);
+    const columns=await mediaColumns(env);
+    if(!columns.has('id'))throw new Error('media_assets 資料表缺少 id 欄位，無法安全寫入圖片');
+    for(const [name,definition] of MEDIA_COLUMNS)await addMediaColumn(env,columns,name,definition);
+    return{ok:true,columns:[...columns]};
+  })().catch(error=>{mediaSchemaPromise=null;throw error;});
+  return mediaSchemaPromise;
 }
 
 export async function uploadMedia(request,env,profile){
