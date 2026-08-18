@@ -1,12 +1,13 @@
 import app from './worker.js';
 import { uploadMedia, serveMedia } from './media-upload.js';
+import { reconcileOfficialPostMedia } from './post-image-reconciler.js';
 import { validateProductRecord, validatePostPayload, PRODUCT_AUTHORITY } from './product-authority.js';
 
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store',
   'x-content-type-options':'nosniff',
-  'x-xianjiawei-entry':'2026-08-08-product-authority-v2'
+  'x-xianjiawei-entry':'2026-08-18-post-image-self-heal-v1'
 };
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=(value,fallback='')=>String(value??fallback).trim();
@@ -182,6 +183,11 @@ export default{
       const profile=await authorization.json();
       try{return await uploadMedia(request,compatibleEnv(env),profile);}
       catch(error){return json({error:clean(error?.message||error,'圖片上傳失敗')},500);}
+    }
+    if(request.method==='GET'&&path==='/api/posts'){
+      const authorization=await authorize(request,env,ctx);
+      if(!authorization.ok)return authorization;
+      try{await reconcileOfficialPostMedia(compatibleEnv(env));}catch(error){console.warn('posting image self-heal failed',String(error?.message||error));}
     }
     const authorityError=await validateForwardedWrite(request);
     if(authorityError)return authorityError;
