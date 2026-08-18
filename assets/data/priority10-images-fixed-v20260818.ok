@@ -1,0 +1,7 @@
+PASS 2026-08-18 08:47 Asia/Taipei
+貼文中心第一批10篇正式圖已全部回填 production D1。
+驗證結果：10/10 image_url 非空；10 個唯一圖片網址；10 張公開圖片皆可正常讀取；未發布項目維持 pending_review；排程已清除；image_approved=0；未自動發布。
+圖片來源：TS15825868/xianjiawei main → images/posts/priority10-v20260817/，對應使用者確認的10張正式貼文圖。
+D1：xianjiawei-internal-db
+Workflow run：32085804248
+修復步驟（D1寫入＋正式驗證）均成功；workflow 最後僅因 assets/data 被 .gitignore 忽略而無法寫入結果檔，與 D1 修復無關。本檔由 GitHub API 補記正式驗證結果。
