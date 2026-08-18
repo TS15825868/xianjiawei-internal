@@ -1,0 +1,68 @@
+name: 稽核貼文中心第一批10篇圖片已到位
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/audit-priority10-image-presence-v20260818.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@latest
+      - name: Audit production D1 image presence
+        shell: bash
+        run: |
+          set -euo pipefail
+          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url FROM social_posts WHERE id IN ($IDS) ORDER BY id;" > /tmp/posts.json
+          python3 - <<'PY'
+          import json,sys
+          raw=json.load(open('/tmp/posts.json',encoding='utf-8'))
+          rows=raw[0]['results']
+          if len(rows)!=10: raise SystemExit(f'expected 10 rows, got {len(rows)}')
+          missing=[r['id'] for r in rows if not (r.get('image_url') or '').strip()]
+          badstatus=[(r['id'],r.get('status')) for r in rows if r.get('status') not in ('pending_review','published')]
+          if missing: raise SystemExit('missing image_url: '+','.join(missing))
+          if badstatus: raise SystemExit('bad status: '+repr(badstatus))
+          print('PASS D1: 10/10 have image_url')
+          for r in rows: print(r['id'],r['status'],r['image_url'])
+          PY
+          python3 - <<'PY' > /tmp/urls.txt
+          import json
+          rows=json.load(open('/tmp/posts.json',encoding='utf-8'))[0]['results']
+          for r in rows: print(r['image_url'])
+          PY
+          while IFS= read -r u; do curl -L --fail --retry 4 --retry-delay 2 -sS -o /dev/null "$u"; done < /tmp/urls.txt
+      - name: Record pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          {
+            echo 'PASS 2026-08-18'
+            echo '貼文中心第一批10篇：10/10 image_url 非空、網址可讀、狀態為待審核或已發布。'
+            echo '本稽核不會發布貼文。'
+          } > assets/data/priority10-image-presence-audit-v20260818.ok
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/data/priority10-image-presence-audit-v20260818.ok
+          git commit -m 'PASS: 第一批10篇貼文圖片已到位'
+          git push origin HEAD:main
