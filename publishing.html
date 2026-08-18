@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="仙加味貼文中心">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260818-v7-ios-4g-recovery">
+  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260818-v8-generation-buttons">
   <title>仙加味｜貼文中心系統 App</title>
   <link rel="manifest" href="/manifest.webmanifest?v=20260815-app-v1">
   <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v5-full-library">
@@ -58,7 +58,7 @@
   <script>
     (function(){
       'use strict';
-      window.__XJW_BOOT_VERSION__='20260818-lean-boot-v5-ios-4g-recovery';
+      window.__XJW_BOOT_VERSION__='20260818-lean-boot-v6-generation-buttons';
       var loaded={};
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.defer=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
@@ -85,7 +85,7 @@
           showHelp(error&&error.name==='AbortError'?'貼文資料診斷逾時；系統會自動重試，也可按「重新連線」。':'貼文資料診斷失敗；請按「重新連線」後再試。')
         })
       },true);
-      window.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260815-lazy-raster-v1').catch(function(){})},300);setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},900);setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},1200);setTimeout(function(){loadScript('/assets/js/formal-media-policy-v20260810.js?v=20260815-lazy-media-v1').catch(function(){})},1500);setTimeout(function(){loadScript('/assets/js/zip-media-assistant.js?v=20260815-lazy-media-v1').catch(function(){})},1800);setTimeout(function(){loadScript('/assets/js/product-authority-guard.js?v=20260815-lazy-authority-v1').catch(function(){})},2100);setTimeout(function(){loadScript('/assets/js/publishing-content-guidance-v20260814.js?v=20260815-lazy-guidance-v2').catch(function(){})},2400);setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},2700)});
+      document.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260818-lazy-raster-v2').catch(function(){})},300);setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260818-regeneration-buttons-v3').catch(function(){})},700);setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260818-regeneration-policy-v7').catch(function(){})},950);setTimeout(function(){loadScript('/assets/js/formal-media-policy-v20260810.js?v=20260818-lazy-media-v2').catch(function(){})},1250);setTimeout(function(){loadScript('/assets/js/zip-media-assistant.js?v=20260818-lazy-media-v2').catch(function(){})},1500);setTimeout(function(){loadScript('/assets/js/product-authority-guard.js?v=20260818-lazy-authority-v2').catch(function(){})},1750);setTimeout(function(){loadScript('/assets/js/publishing-content-guidance-v20260814.js?v=20260818-lazy-guidance-v3').catch(function(){})},2000);setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260818-lazy-v2').catch(function(){})},2250)});
       setTimeout(function(){if(!stillLoading())return;var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip checking"><strong>貼文資料</strong><small>行動網路載入中，系統會自動重試…</small></span>'},7000);
       setTimeout(function(){if(!stillLoading())return;var state=document.getElementById('connectionState');if(state){state.textContent='載入時間較長｜正在自動恢復';state.classList.remove('error')}showHelp('貼文資料載入時間較長。系統正在自動重試；若仍沒有貼文，可按「重新連線」，不會刪除任何資料。')},22000);
       window.addEventListener('pageshow',function(event){if(event.persisted)setTimeout(function(){document.querySelector('[data-refresh]')?.click()},180)});
