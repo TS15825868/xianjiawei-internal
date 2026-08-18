@@ -1,4 +1,4 @@
-name: 修正貼文中心錯圖狀態 20260818
+name: 修正貼文中心圖片綁定 20260818
 
 on:
   push:
@@ -26,37 +26,31 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-save wrangler@latest
-      - name: Remove wrong live images from the ten review posts
+      - name: Audit current production media and post bindings
         shell: bash
         run: |
           set -euo pipefail
-          IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment'"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "UPDATE social_posts SET status='draft', image_url='', image_alt='', image_source='2026-08-18 舊錯圖已移除｜等待依文案回填正式圖', image_quality_status='needs-generation', image_approved=0, scheduled_at=NULL, updated_at=datetime('now') WHERE id IN ($IDS) AND status<>'archived';"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_quality_status,image_approved,scheduled_at FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/ten.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,mime_type,bytes,width,height,created_by,created_at FROM media_assets ORDER BY created_at DESC LIMIT 200" > /tmp/media.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_alt,image_source,image_quality_status,image_approved,scheduled_at,published_at,updated_at FROM social_posts WHERE status<>'archived' ORDER BY updated_at DESC" > /tmp/posts.json
           node - <<'NODE'
           const fs=require('fs');
-          const raw=JSON.parse(fs.readFileSync('/tmp/ten.json','utf8'));
-          const rows=raw?.[0]?.results||[];
-          if(rows.length!==10)throw new Error('expected 10 rows, got '+rows.length);
-          for(const r of rows){
-            if(r.status!=='draft')throw new Error(r.id+' status='+r.status);
-            if(String(r.image_url||'')!=='')throw new Error(r.id+' still has image='+r.image_url);
-            if(r.image_quality_status!=='needs-generation')throw new Error(r.id+' quality='+r.image_quality_status);
-            if(Number(r.image_approved||0)!==0)throw new Error(r.id+' image_approved='+r.image_approved);
-            if(r.scheduled_at)throw new Error(r.id+' still scheduled');
-          }
+          const unwrap=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x)};
+          const media=unwrap('/tmp/media.json');
+          const posts=unwrap('/tmp/posts.json');
+          const used=new Set(posts.map(p=>String(p.image_url||'')).filter(x=>x.includes('/media/')).map(x=>decodeURIComponent(x.split('/media/')[1].split('?')[0])));
+          const result={checked_at:new Date().toISOString(),media_count:media.length,post_count:posts.length,media_used_count:media.filter(m=>used.has(m.id)).length,media_orphan_count:media.filter(m=>!used.has(m.id)).length,media:media.map(m=>({...m,used_by_post:used.has(m.id)})),posts};
           fs.mkdirSync('audits',{recursive:true});
-          fs.writeFileSync('audits/repair-posting-center-v20260818.json',JSON.stringify({checked_at:new Date().toISOString(),status:'PASS',count:rows.length,posts:rows},null,2)+'\n');
-          console.log('PASS: 10/10 wrong images removed from production D1');
+          fs.writeFileSync('audits/current-uploaded-media-v20260818.json',JSON.stringify(result,null,2)+'\n');
+          console.log(JSON.stringify({media_count:result.media_count,post_count:result.post_count,media_used_count:result.media_used_count,media_orphan_count:result.media_orphan_count},null,2));
           NODE
-      - name: Record verified repair
+      - name: Commit audit result
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add audits/repair-posting-center-v20260818.json
+          git add audits/current-uploaded-media-v20260818.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'fix(posts): record verified removal of wrong live images'
+          git commit -m 'audit(posts): record current uploaded media for final image binding'
           git pull --rebase origin main
           git push origin HEAD:main
