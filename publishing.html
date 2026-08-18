@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="仙加味貼文中心">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260818-v6-image-upload">
+  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260818-v7-ios-4g-recovery">
   <title>仙加味｜貼文中心系統 App</title>
   <link rel="manifest" href="/manifest.webmanifest?v=20260815-app-v1">
   <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v5-full-library">
@@ -58,24 +58,44 @@
   <script>
     (function(){
       'use strict';
-      window.__XJW_BOOT_VERSION__='20260818-lean-boot-v4-image-upload';
+      window.__XJW_BOOT_VERSION__='20260818-lean-boot-v5-ios-4g-recovery';
       var loaded={};
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.defer=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
       function stillLoading(){var root=document.getElementById('listRoot');if(!root)return true;var loading=root.querySelector('.loading-card');return !!(loading&&/正在載入|正在啟動|啟動中|讀取中/.test(loading.textContent||''))}
       function showHelp(message){var help=document.getElementById('bootHelp'),text=document.getElementById('bootHelpText');if(text&&message)text.textContent=message;if(help)help.classList.add('show')}
       window.XJWShowBootHelp=showHelp;
-      document.addEventListener('click',function(event){var diagnose=event.target.closest('[data-diagnose]');if(!diagnose)return;event.preventDefault();var root=document.getElementById('readinessSummary');if(root)root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查中…</small></span>';var ctl=new AbortController(),timer=setTimeout(function(){ctl.abort()},10000);Promise.all([fetch('/healthz/core',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.json()}),fetch('/healthz/readiness',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok,data:d}})})]).then(function(parts){clearTimeout(timer);var core=parts[0]||{},ready=parts[1]||{},ok=!!core.ok&&!!ready.ok;if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／登入</strong><small>'+(ok?'正常':'需檢查')+'</small></span>'}).catch(function(error){clearTimeout(timer);if(root)root.innerHTML='<span class="readiness-chip bad"><strong>系統診斷</strong><small>連線異常</small></span>';showHelp(error&&error.name==='AbortError'?'系統診斷逾時；請先重新連線，若仍異常再重新整理頁面。':'系統診斷失敗；請重新連線後再試。')})},true);
+      document.addEventListener('click',function(event){
+        var diagnose=event.target.closest('[data-diagnose]');if(!diagnose)return;event.preventDefault();
+        var root=document.getElementById('readinessSummary');
+        if(root)root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>檢查 Worker／D1／登入／貼文資料…</small></span>';
+        var ctl=new AbortController(),timer=setTimeout(function(){ctl.abort()},12000);
+        Promise.all([
+          fetch('/healthz/core',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok&&d.ok!==false,data:d}})}),
+          fetch('/healthz/readiness',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok&&d.ok!==false,data:d}})}),
+          fetch('/api/posts?limit=1&offset=0',{credentials:'same-origin',cache:'no-store',signal:ctl.signal}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}return {ok:r.ok&&Array.isArray(d.items),data:d}})})
+        ]).then(function(parts){
+          clearTimeout(timer);
+          var ok=parts.every(function(part){return !!part.ok});
+          if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／登入／貼文資料</strong><small>'+(ok?'正常':'有一項尚未完成')+'</small></span>';
+          if(ok){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show')}
+        }).catch(function(error){
+          clearTimeout(timer);
+          if(root)root.innerHTML='<span class="readiness-chip bad"><strong>系統診斷</strong><small>貼文資料連線異常</small></span>';
+          showHelp(error&&error.name==='AbortError'?'貼文資料診斷逾時；系統會自動重試，也可按「重新連線」。':'貼文資料診斷失敗；請按「重新連線」後再試。')
+        })
+      },true);
       window.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';setTimeout(function(){loadScript('/assets/js/svg-candidate-rasterizer.js?v=20260815-lazy-raster-v1').catch(function(){})},300);setTimeout(function(){loadScript('/assets/js/post-regenerate-buttons.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},900);setTimeout(function(){loadScript('/assets/js/post-regenerate-policy-v1.js?v=20260815-regeneration-policy-v6-lazy').catch(function(){})},1200);setTimeout(function(){loadScript('/assets/js/formal-media-policy-v20260810.js?v=20260815-lazy-media-v1').catch(function(){})},1500);setTimeout(function(){loadScript('/assets/js/zip-media-assistant.js?v=20260815-lazy-media-v1').catch(function(){})},1800);setTimeout(function(){loadScript('/assets/js/product-authority-guard.js?v=20260815-lazy-authority-v1').catch(function(){})},2100);setTimeout(function(){loadScript('/assets/js/publishing-content-guidance-v20260814.js?v=20260815-lazy-guidance-v2').catch(function(){})},2400);setTimeout(function(){loadScript('/assets/js/manual-publish-tools.js?v=20260815-lazy-v1').catch(function(){})},2700)});
-      setTimeout(function(){if(stillLoading())showHelp('核心程式正在載入。請按「重新連線」；若仍沒有貼文，請重新整理並確認 Cloudflare Access 登入仍有效。')},7000);
-      setTimeout(function(){if(!stillLoading())return;var state=document.getElementById('connectionState');if(state){state.textContent='載入逾時｜可直接重新連線';state.classList.add('error')}showHelp('貼文資料尚未載入成功。請按「重新連線」；重新連線不會刪除任何貼文。')},16000);
+      setTimeout(function(){if(!stillLoading())return;var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip checking"><strong>貼文資料</strong><small>行動網路載入中，系統會自動重試…</small></span>'},7000);
+      setTimeout(function(){if(!stillLoading())return;var state=document.getElementById('connectionState');if(state){state.textContent='載入時間較長｜正在自動恢復';state.classList.remove('error')}showHelp('貼文資料載入時間較長。系統正在自動重試；若仍沒有貼文，可按「重新連線」，不會刪除任何資料。')},22000);
       window.addEventListener('pageshow',function(event){if(event.persisted)setTimeout(function(){document.querySelector('[data-refresh]')?.click()},180)});
       document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&document.getElementById('listRoot')&&!document.getElementById('listRoot').textContent.trim())setTimeout(function(){document.querySelector('[data-refresh]')?.click()},180)});
       window.addEventListener('error',function(){showHelp('頁面程式發生錯誤，請按「重新連線」。')});window.addEventListener('unhandledrejection',function(){showHelp('頁面連線未完成，請按「重新連線」。')});
     })();
   </script>
+  <script defer src="/assets/js/publishing-resilience.js?v=20260818-ios-4g-recovery-v4"></script>
   <script defer src="/assets/js/device-image-upload.js?v=20260818-direct-upload-v2"></script>
-  <script defer src="/assets/js/publishing-app-v2.js?v=20260818-lean-core-v6-image-upload"></script>
+  <script defer src="/assets/js/publishing-app-v2.js?v=20260818-lean-core-v7-ios-4g-recovery"></script>
   <script defer src="/assets/js/publishing-review-gate.js?v=20260815-lean-review-v3-full-library"></script>
 </body>
 </html>
