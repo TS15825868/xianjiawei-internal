@@ -2,6 +2,45 @@
   const MAX_UPLOAD_BYTES=700*1024;
   const MAX_EDGE=1600;
   const $=(selector,root=document)=>root.querySelector(selector);
+  const originalFetch=window.fetch.bind(window);
+
+  function requestPath(input){
+    try{
+      if(typeof input==='string')return new URL(input,location.href).pathname;
+      if(input&&input.url)return new URL(input.url,location.href).pathname;
+    }catch{}
+    return '';
+  }
+
+  function requestMethod(input,init){
+    return String(init?.method||input?.method||'GET').toUpperCase();
+  }
+
+  // 後端既有更新流程會先把修改後貼文退回 draft。
+  // 使用者規則是：圖文完整後必須自動回「待審核」，而不是停在草稿。
+  // 這層只處理貼文儲存成功後的狀態銜接，不會自動核准／排程／發布。
+  window.fetch=async function(input,init={}){
+    const path=requestPath(input),method=requestMethod(input,init);
+    const response=await originalFetch(input,init);
+    const isPostWrite=(method==='POST'&&path==='/api/posts')||(method==='PUT'&&/^\/api\/posts\/[^/]+$/.test(path));
+    if(!isPostWrite||!response.ok)return response;
+    try{
+      const saved=await response.clone().json();
+      if(!saved?.id||saved.status!=='draft'||!String(saved.image_url||'').trim())return response;
+      const hasCopy=Boolean(String(saved.copy||saved.headline||'').trim());
+      const hasPlatforms=Array.isArray(saved.platforms)&&saved.platforms.length>0;
+      if(!hasCopy||!hasPlatforms)return response;
+      const reviewResponse=await originalFetch(`/api/posts/${encodeURIComponent(saved.id)}/status`,{
+        method:'POST',
+        credentials:'same-origin',
+        cache:'no-store',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({status:'pending_review'})
+      });
+      if(reviewResponse.ok)return reviewResponse;
+    }catch{}
+    return response;
+  };
 
   function showStatus(host,message,error=false){
     let node=host.querySelector('[data-device-upload-status]');
@@ -109,9 +148,19 @@
     field.appendChild(wrap);
 
     const preview=document.createElement('img');
-    preview.alt='準備上傳的圖片預覽';
-    preview.style.cssText='display:none;margin-top:10px;max-width:220px;max-height:220px;width:auto;height:auto;object-fit:contain;border-radius:14px;border:1px solid #d8dee8;background:#fff;';
+    preview.alt='貼文圖片預覽';
+    preview.style.cssText='display:none;margin-top:10px;max-width:100%;max-height:360px;width:auto;height:auto;object-fit:contain;border-radius:14px;border:1px solid #d8dee8;background:#fff;';
     field.appendChild(preview);
+    if(String(input.value||'').trim()){
+      preview.src=input.value.trim();
+      preview.style.display='block';
+    }
+    input.addEventListener('input',()=>{
+      const value=String(input.value||'').trim();
+      if(!value){preview.removeAttribute('src');preview.style.display='none';return;}
+      preview.src=value;
+      preview.style.display='block';
+    });
 
     button.addEventListener('click',()=>picker.click());
     picker.addEventListener('change',async()=>{
@@ -121,8 +170,6 @@
       showStatus(field,'正在處理並上傳圖片…');
       try{
         const prepared=await prepareImage(file);
-        preview.src=URL.createObjectURL(prepared.blob);
-        preview.style.display='block';
         const uploaded=await uploadPrepared(prepared);
         input.value=uploaded.url||'';
         input.dispatchEvent(new Event('input',{bubbles:true}));
@@ -130,10 +177,10 @@
         ensureHidden(form,'image_width').value=String(uploaded.width||prepared.width||0);
         ensureHidden(form,'image_height').value=String(uploaded.height||prepared.height||0);
         ensureHidden(form,'image_bytes').value=String(uploaded.bytes||prepared.blob.size||0);
-        ensureHidden(form,'image_source').value='裝置上傳';
+        ensureHidden(form,'image_source').value='裝置上傳｜使用者人工指定';
         const alt=form.querySelector('[name="image_alt"]');
         if(alt&&!alt.value.trim()) alt.value=(file.name||'仙加味貼文圖片').replace(/\.[^.]+$/,'');
-        showStatus(field,'圖片已上傳完成，儲存貼文後會一起保留。');
+        showStatus(field,'圖片已上傳並帶入貼文；儲存後圖文完整會自動回到「待審核」。');
       }catch(error){
         showStatus(field,error.message||String(error),true);
       }finally{
