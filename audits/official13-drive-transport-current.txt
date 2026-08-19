@@ -1,0 +1,21 @@
+tested_at=2026-08-19T02:58:40Z
+gdown_exit=1
+size=0
+sha256=
+file_type=missing
+expected_size=635488
+expected_sha256=d1903805811b476b0ada677727f23b5d68f79ee334c6b6cb93303c285aeb5f3c
+--- stdout ---
+--- stderr ---
+Failed to retrieve file url:
+
+	Cannot retrieve the public link of the file. You may need to change
+	the permission to 'Anyone with the link', or have had many accesses.
+	Check FAQ in https://github.com/wkentaro/gdown?tab=readme-ov-file#faq.
+
+You may still be able to access the file from the browser:
+
+	https://drive.google.com/uc?id=1q1i3kp6UVlOWQRQ2byyqDLpiG6zD_knB
+
+but Gdown can't. Please check connections and permissions.
+result=FAIL
