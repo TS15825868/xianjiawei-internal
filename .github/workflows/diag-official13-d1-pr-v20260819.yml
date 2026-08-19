@@ -28,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment','POST-AUDIENCE-NEEDS','POST-TRIAL-MAIN','POST-BRAND-START'"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT sql FROM sqlite_master WHERE type='table' AND name='media_assets'" > /tmp/media-create.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA table_info(media_assets)" > /tmp/media-schema.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_list(media_assets)" > /tmp/media-fk.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,bytes,width,height FROM media_assets WHERE id LIKE 'IMG-OFFICIAL-%' ORDER BY id" > /tmp/media.json
@@ -35,6 +36,7 @@ jobs:
           node - <<'NODE'
           const fs=require('fs');
           const rows=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[])};
+          const createSql=String(rows('/tmp/media-create.json')[0]?.sql||'');
           const schema=rows('/tmp/media-schema.json');
           const fks=rows('/tmp/media-fk.json');
           const media=rows('/tmp/media.json');
@@ -59,13 +61,13 @@ jobs:
           const problems=[];
           for(const [id,[mediaId,status]] of Object.entries(expected)){
             const p=by[id];
-            if(!p) problems.push(`${id}: missing post`);
-            else {
+            if(!p) problems.push(`${id}: missing post`); else {
               if(p.media_id!==mediaId) problems.push(`${id}: media=${p.media_id||''} expected=${mediaId}`);
               if(p.status!==status) problems.push(`${id}: status=${p.status||''} expected=${status}`);
               if(!String(p.image_url||'').includes(mediaId)) problems.push(`${id}: image_url=${p.image_url||''}`);
             }
           }
+          console.log('XJW_MEDIA_CREATE_SQL='+createSql);
           console.log('XJW_MEDIA_SCHEMA='+JSON.stringify({schema,required_without_default:required,foreign_keys:fks}));
           console.log('XJW_D1_DIAG='+JSON.stringify({media_count:media.length,post_count:posts.length,problems,media,posts}));
           if(media.length!==13||posts.length!==13||problems.length) process.exit(2);
