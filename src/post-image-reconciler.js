@@ -17,7 +17,7 @@ const OFFICIAL_MEDIA=[
 ];
 
 const DEFAULT_PLATFORMS='["Facebook","Instagram","LINE VOOM"]';
-const SOURCE='使用者2026-08-18確認正式圖｜D1 media_assets SHA256精確綁定｜禁止舊圖fallback';
+const SOURCE='使用者2026-08-18確認正式圖｜D1 media_assets 檔名+bytes+SHA256三重精確綁定｜禁止舊圖fallback';
 
 function base64Bytes(value){
   const binary=atob(String(value||''));
@@ -61,13 +61,22 @@ export async function reconcileOfficialPostMedia(env){
     const result=await db.prepare(`SELECT id,file_name,mime_type,data_base64,bytes,width,height,created_at FROM media_assets WHERE bytes IN (${placeholders}) ORDER BY datetime(created_at) DESC`).bind(...sizes).all();
     const candidates=result.results||[];
     const matched=new Map();
+    const rejected=[];
     for(const row of candidates){
       if(!row?.data_base64)continue;
-      const exactByName=OFFICIAL_MEDIA.find(item=>item.file===String(row.file_name||'')&&item.bytes===Number(row.bytes||0));
       let hash='';
-      try{hash=await sha256Hex(row.data_base64);}catch{}
-      const item=OFFICIAL_MEDIA.find(x=>x.bytes===Number(row.bytes||0)&&x.sha===hash)||exactByName;
-      if(item&&!matched.has(item.id))matched.set(item.id,row);
+      try{hash=await sha256Hex(row.data_base64);}catch(error){
+        rejected.push({id:row.id,file_name:String(row.file_name||''),reason:'sha256-failed'});
+        continue;
+      }
+      const fileName=String(row.file_name||'');
+      const byteCount=Number(row.bytes||0);
+      const item=OFFICIAL_MEDIA.find(x=>x.file===fileName&&x.bytes===byteCount&&x.sha===hash);
+      if(!item){
+        rejected.push({id:row.id,file_name:fileName,bytes:byteCount,sha:hash,reason:'not-exact-official-media'});
+        continue;
+      }
+      if(!matched.has(item.id))matched.set(item.id,row);
     }
     const now=new Date().toISOString();
     let updated=0;
@@ -88,7 +97,7 @@ export async function reconcileOfficialPostMedia(env){
       }
       updated+=1;
     }
-    return{ok:true,matched:matched.size,updated,expected:OFFICIAL_MEDIA.length,missing:OFFICIAL_MEDIA.filter(x=>!matched.has(x.id)).map(x=>x.file)};
+    return{ok:true,matched:matched.size,updated,expected:OFFICIAL_MEDIA.length,missing:OFFICIAL_MEDIA.filter(x=>!matched.has(x.id)).map(x=>x.file),rejected};
   }catch(error){
     console.warn('official media reconcile skipped',String(error?.message||error));
     return{ok:false,reason:String(error?.message||error)};
