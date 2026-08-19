@@ -23,18 +23,23 @@ jobs:
           node-version: '22'
       - name: Install Wrangler
         run: npm install --no-save wrangler@latest
-      - name: Query exact production D1 state
+      - name: Query production D1 schema and exact official13 state
         shell: bash
         run: |
           set -euo pipefail
           IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment','POST-AUDIENCE-NEEDS','POST-TRIAL-MAIN','POST-BRAND-START'"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA table_info(media_assets)" > /tmp/media-schema.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_list(media_assets)" > /tmp/media-fk.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,bytes,width,height FROM media_assets WHERE id LIKE 'IMG-OFFICIAL-%' ORDER BY id" > /tmp/media.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_approved,image_quality_status,media_id FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/posts.json
           node - <<'NODE'
           const fs=require('fs');
           const rows=(p)=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[])};
+          const schema=rows('/tmp/media-schema.json');
+          const fks=rows('/tmp/media-fk.json');
           const media=rows('/tmp/media.json');
           const posts=rows('/tmp/posts.json');
+          const required=schema.filter(c=>Number(c.notnull)===1&&c.dflt_value==null&&Number(c.pk)===0).map(c=>c.name);
           const expected={
             'XJW-GUILU-drink30-work-break':['IMG-OFFICIAL-01-WORK-30CC','pending_review'],
             'XJW-GUILU-drink180-home':['IMG-OFFICIAL-02-HOME-180CC','pending_review'],
@@ -61,7 +66,7 @@ jobs:
               if(!String(p.image_url||'').includes(mediaId)) problems.push(`${id}: image_url=${p.image_url||''}`);
             }
           }
-          const summary={media_count:media.length,post_count:posts.length,problems,media,posts};
-          console.log('XJW_D1_DIAG='+JSON.stringify(summary));
+          console.log('XJW_MEDIA_SCHEMA='+JSON.stringify({schema,required_without_default:required,foreign_keys:fks}));
+          console.log('XJW_D1_DIAG='+JSON.stringify({media_count:media.length,post_count:posts.length,problems,media,posts}));
           if(media.length!==13||posts.length!==13||problems.length) process.exit(2);
           NODE
