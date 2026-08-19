@@ -28,7 +28,8 @@ jobs:
         run: |
           python -m pip install --quiet pillow
           npm install --no-save wrangler@latest
-      - name: Download and verify the exact 13 website-main images
+
+      - name: Download and verify exact 13 formal images from website main
         shell: bash
         run: |
           set -euo pipefail
@@ -43,7 +44,23 @@ jobs:
             test "$(stat -c%s "$root/$f")" -eq "${sizes[$i]}"
             echo "${hashes[$i]}  $root/$f" | sha256sum -c -
           done
-      - name: Build small per-image D1 SQL files
+
+      - name: Resolve live owner profile for D1 foreign key
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT email FROM profiles ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1" > /tmp/owner.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/owner.json','utf8'));
+          const rows=Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[]);
+          const email=String(rows[0]?.email||'').trim();
+          if(!email||!email.includes('@')) throw new Error('No valid owner profile email found');
+          fs.writeFileSync('/tmp/owner-email.txt',email);
+          console.log('PASS owner profile resolved');
+          NODE
+
+      - name: Build schema-compatible per-image D1 writes
         shell: bash
         run: |
           set -euo pipefail
@@ -54,6 +71,7 @@ jobs:
 
           root=Path('/tmp/official13')
           out=Path('/tmp/official13-sql'); out.mkdir(exist_ok=True)
+          owner=Path('/tmp/owner-email.txt').read_text().strip()
           items=[
             ('01-work-30cc.webp','IMG-OFFICIAL-01-WORK-30CC','XJW-GUILU-drink30-work-break','上班帶一罐，30cc不用把行程打亂','仙加味小老闆上班工作情境，手持30cc小玻璃裸罐','pending_review'),
             ('02-home-180cc.webp','IMG-OFFICIAL-02-HOME-180CC','XJW-GUILU-drink180-home','回到家，把180cc安排進自己的節奏','仙加味小老闆居家180cc鋁袋飲用情境','pending_review'),
@@ -70,54 +88,71 @@ jobs:
             ('13-brand-story-wanhua-published.webp','IMG-OFFICIAL-13-BRAND-STORY','POST-BRAND-START','仙加味，從萬華開始','仙加味品牌故事正式發布主圖','published')
           ]
           def q(v): return "'"+str(v).replace("'","''")+"'"
-          audience_copy='不只是某一個年齡層，很多人會從自己的生活節奏開始認識龜鹿系列。上班、運動、作息忙碌、日常飲食安排或年節送禮，都可以先從自己的使用情境與方便性來了解不同產品型態。第一次接觸不用急著選，先把平常在家或外出、偏好常溫或溫熱、是否想搭配家常料理等日常告訴仙加味，再慢慢挑適合自己的方式。'
-          trial_copy='龜鹿飲試喝組｜先試喝，再決定。30cc小玻璃罐3罐試喝品免費，運費自付；7-11店到店60元、郵局宅配100元。每位顧客、電話及地址限申請一次。龜鹿飲接單後安排製作，約5～7個工作天出貨。試喝申請與正式下單皆由仙加味LINE OA完成。'
-          owner="(SELECT email FROM profiles ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1)"
-          pre=[
-            f"INSERT OR IGNORE INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,media_id,review_note,brand_check_json,rejection_reason,proposed_scheduled_at) SELECT 'POST-AUDIENCE-NEEDS','哪些人，會開始認識龜鹿系列？','哪些人，會開始認識龜鹿系列？',{q(audience_copy)},'生活節奏','[\"Facebook\",\"Instagram\",\"LINE VOOM\"]','pending_review',NULL,NULL,NULL,NULL,{owner},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'','','2026-08-19正式圖待綁定',0,0,0,0,'candidate',NULL,'','{{}}','',NULL WHERE EXISTS(SELECT 1 FROM profiles LIMIT 1);",
-            f"INSERT OR IGNORE INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,media_id,review_note,brand_check_json,rejection_reason,proposed_scheduled_at) SELECT 'POST-TRIAL-MAIN','龜鹿飲試喝組｜先試喝，再決定','龜鹿飲試喝組｜先試喝，再決定',{q(trial_copy)},'試喝申請','[\"Facebook\",\"Instagram\",\"LINE VOOM\"]','published',NULL,'owner',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,{owner},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'','','2026-08-19正式發布圖待綁定',1,0,0,0,'published_approved',NULL,'','{{}}','',NULL WHERE EXISTS(SELECT 1 FROM profiles LIMIT 1);"
-          ]
-          (out/'00-posts.sql').write_text('\n'.join(pre)+'\n',encoding='utf-8')
           manifest=[]
           for n,(file_name,media_id,post_id,title,alt,status) in enumerate(items,1):
-            raw=(root/file_name).read_bytes()
-            with Image.open(root/file_name) as im: w,h=im.size
+            p=root/file_name; raw=p.read_bytes()
+            with Image.open(p) as im:
+              if im.format!='WEBP': raise SystemExit(f'not WEBP: {file_name}')
+              w,h=im.size
             sha=hashlib.sha256(raw).hexdigest(); data=base64.b64encode(raw).decode('ascii')
-            url=f'/media/{media_id}'
-            sql=[f"DELETE FROM media_assets WHERE id={q(media_id)};",f"INSERT INTO media_assets(id,file_name,mime_type,data_base64,bytes,width,height,created_by,created_at) VALUES({q(media_id)},{q(file_name)},'image/webp',{q(data)},{len(raw)},{w},{h},'system:official13-20260819',CURRENT_TIMESTAMP);"]
+            public_url=f'https://ts15825868.github.io/xianjiawei/images/posts/official-v20260818/{file_name}'
+            media_url=f'/media/{media_id}'
+            sql=[
+              f"DELETE FROM media_assets WHERE id={q(media_id)};",
+              "INSERT INTO media_assets(id,name,category,source_type,file_url,data_base64,mime_type,width,height,file_size,quality_status,approval_status,notes,created_by,created_at,updated_at,file_name,bytes) VALUES("+
+              ",".join([q(media_id),q(file_name),q('貼文主圖'),q('formal-github'),q(public_url),q(data),q('image/webp'),str(w),str(h),str(len(raw)),q('approved'),q('approved'),q('2026-08-19正式13圖｜xianjiawei main SHA256精確綁定'),q(owner),'CURRENT_TIMESTAMP','CURRENT_TIMESTAMP',q(file_name),str(len(raw))])+');'
+            ]
             platforms="platforms_json=CASE WHEN COALESCE(TRIM(platforms_json),'') IN ('','[]') THEN '[\"Facebook\",\"Instagram\",\"LINE VOOM\"]' ELSE platforms_json END"
+            shared=f"image_url={q(media_url)},media_id={q(media_id)},image_alt={q(alt)},image_source={q('2026-08-19正式13圖｜xianjiawei main SHA256精確綁定')},image_width={w},image_height={h},image_bytes={len(raw)},{platforms},rejection_reason='',scheduled_at=NULL,proposed_scheduled_at=NULL,updated_at=CURRENT_TIMESTAMP"
             if status=='published':
-              sql.append(f"UPDATE social_posts SET status='published',image_url={q(url)},media_id={q(media_id)},image_alt={q(alt)},image_source='2026-08-19正式發布圖｜xianjiawei main SHA256精確綁定',image_width={w},image_height={h},image_bytes={len(raw)},image_quality_status='published_approved',image_approved=1,scheduled_at=NULL,proposed_scheduled_at=NULL,rejection_reason='',{platforms},updated_at=CURRENT_TIMESTAMP WHERE id={q(post_id)};")
+              sql.append(f"UPDATE social_posts SET {shared},status='published',image_quality_status='published_approved',image_approved=1 WHERE id={q(post_id)};")
             else:
-              sql.append(f"UPDATE social_posts SET status='pending_review',image_url={q(url)},media_id={q(media_id)},image_alt={q(alt)},image_source='2026-08-19正式圖｜xianjiawei main SHA256精確綁定',image_width={w},image_height={h},image_bytes={len(raw)},image_quality_status='candidate',image_approved=0,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,rejection_reason='',{platforms},updated_at=CURRENT_TIMESTAMP WHERE id={q(post_id)};")
+              sql.append(f"UPDATE social_posts SET {shared},status='pending_review',image_quality_status='candidate',image_approved=0,approved_by=NULL,approved_at=NULL WHERE id={q(post_id)};")
             (out/f'{n:02d}.sql').write_text('\n'.join(sql)+'\n',encoding='utf-8')
-            manifest.append({'post_id':post_id,'media_id':media_id,'status':status,'file':file_name,'bytes':len(raw),'width':w,'height':h,'sha256':sha})
+            manifest.append({'post_id':post_id,'title':title,'status':status,'media_id':media_id,'file':file_name,'bytes':len(raw),'width':w,'height':h,'sha256':sha,'image_url':media_url})
           (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
-      - name: Apply exact 13 to production D1
+
+      - name: Apply exact 13 formal media and post bindings to production D1
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/official13-sql/00-posts.sql
           for f in /tmp/official13-sql/{01..13}.sql; do
             echo "Applying $(basename "$f")"
             npx wrangler d1 execute xianjiawei-internal-db --remote --file="$f"
           done
+
       - name: Verify exact production D1 state
         shell: bash
         run: |
           set -euo pipefail
           IDS="'XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment','POST-AUDIENCE-NEEDS','POST-TRIAL-MAIN','POST-BRAND-START'"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,file_name,bytes,width,height FROM media_assets WHERE id LIKE 'IMG-OFFICIAL-%' ORDER BY id" > /tmp/media.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,name,file_name,bytes,file_size,width,height,created_by,quality_status,approval_status FROM media_assets WHERE id LIKE 'IMG-OFFICIAL-%' ORDER BY id" > /tmp/media.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,platforms_json,image_url,image_approved,image_quality_status,media_id FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/posts.json
           node - <<'NODE'
           const fs=require('fs');
           const rows=p=>{const x=JSON.parse(fs.readFileSync(p,'utf8'));return Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[])};
-          const media=rows('/tmp/media.json'), posts=rows('/tmp/posts.json');
-          const expected=JSON.parse(fs.readFileSync('/tmp/official13-sql/manifest.json','utf8'));
-          const by=Object.fromEntries(posts.map(p=>[p.id,p]));
+          const media=rows('/tmp/media.json'),posts=rows('/tmp/posts.json'),expected=JSON.parse(fs.readFileSync('/tmp/official13-sql/manifest.json','utf8'));
+          const byPost=Object.fromEntries(posts.map(p=>[p.id,p]));
+          const byMedia=Object.fromEntries(media.map(m=>[m.id,m]));
           const problems=[];
-          for(const e of expected){const p=by[e.post_id];if(!p)problems.push(`${e.post_id}:missing`);else{if(p.media_id!==e.media_id)problems.push(`${e.post_id}:wrong-media`);if(p.status!==e.status)problems.push(`${e.post_id}:wrong-status`);if(!String(p.image_url||'').includes(e.media_id))problems.push(`${e.post_id}:wrong-url`);if(e.status==='published'&&Number(p.image_approved)!==1)problems.push(`${e.post_id}:published-not-approved`);if(e.status==='pending_review'&&Number(p.image_approved)!==0)problems.push(`${e.post_id}:pending-approved`);}}
-          console.log('XJW_D1_FIX_VERIFY='+JSON.stringify({media_count:media.length,post_count:posts.length,problems,media,posts,expected}));
-          if(media.length!==13||posts.length!==13||problems.length)process.exit(2);
+          for(const e of expected){
+            const p=byPost[e.post_id],m=byMedia[e.media_id];
+            if(!m) problems.push(`${e.media_id}:missing-media`); else {
+              if(Number(m.bytes)!==e.bytes||Number(m.file_size)!==e.bytes) problems.push(`${e.media_id}:wrong-bytes`);
+              if(m.file_name!==e.file||m.name!==e.file) problems.push(`${e.media_id}:wrong-name`);
+              if(!String(m.created_by||'').includes('@')) problems.push(`${e.media_id}:bad-owner-fk`);
+            }
+            if(!p) problems.push(`${e.post_id}:missing-post`); else {
+              if(p.media_id!==e.media_id) problems.push(`${e.post_id}:wrong-media`);
+              if(p.status!==e.status) problems.push(`${e.post_id}:wrong-status`);
+              if(p.image_url!==e.image_url) problems.push(`${e.post_id}:wrong-url`);
+              if(e.status==='published'&&Number(p.image_approved)!==1) problems.push(`${e.post_id}:published-not-approved`);
+              if(e.status==='pending_review'&&Number(p.image_approved)!==0) problems.push(`${e.post_id}:pending-approved`);
+              if(!Array.isArray(JSON.parse(p.platforms_json||'[]'))||JSON.parse(p.platforms_json||'[]').length===0) problems.push(`${e.post_id}:empty-platforms`);
+            }
+          }
+          const result={ok:media.length===13&&posts.length===13&&problems.length===0,version:'2026-08-19-official13-d1-live',media_count:media.length,post_count:posts.length,problems,posts,media,expected};
+          console.log('XJW_D1_FIX_VERIFY='+JSON.stringify(result));
+          if(!result.ok) process.exit(2);
           NODE
