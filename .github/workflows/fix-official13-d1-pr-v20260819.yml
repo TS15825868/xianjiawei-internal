@@ -100,7 +100,7 @@ jobs:
             sql=[
               f"DELETE FROM media_assets WHERE id={q(media_id)};",
               "INSERT INTO media_assets(id,name,category,source_type,file_url,data_base64,mime_type,width,height,file_size,quality_status,approval_status,notes,created_by,created_at,updated_at,file_name,bytes) VALUES("+
-              ",".join([q(media_id),q(file_name),q('貼文主圖'),q('formal-github'),q(public_url),q(data),q('image/webp'),str(w),str(h),str(len(raw)),q('approved'),q('approved'),q('2026-08-19正式13圖｜xianjiawei main SHA256精確綁定'),q(owner),'CURRENT_TIMESTAMP','CURRENT_TIMESTAMP',q(file_name),str(len(raw))])+');'
+              ",".join([q(media_id),q(file_name),q('貼文主圖'),q('official'),q(public_url),q(data),q('image/webp'),str(w),str(h),str(len(raw)),q('good'),q('approved'),q('2026-08-19正式13圖｜xianjiawei main SHA256精確綁定'),q(owner),'CURRENT_TIMESTAMP','CURRENT_TIMESTAMP',q(file_name),str(len(raw))])+');'
             ]
             platforms="platforms_json=CASE WHEN COALESCE(TRIM(platforms_json),'') IN ('','[]') THEN '[\"Facebook\",\"Instagram\",\"LINE VOOM\"]' ELSE platforms_json END"
             shared=f"image_url={q(media_url)},media_id={q(media_id)},image_alt={q(alt)},image_source={q('2026-08-19正式13圖｜xianjiawei main SHA256精確綁定')},image_width={w},image_height={h},image_bytes={len(raw)},{platforms},rejection_reason='',scheduled_at=NULL,proposed_scheduled_at=NULL,updated_at=CURRENT_TIMESTAMP"
@@ -142,6 +142,7 @@ jobs:
               if(Number(m.bytes)!==e.bytes||Number(m.file_size)!==e.bytes) problems.push(`${e.media_id}:wrong-bytes`);
               if(m.file_name!==e.file||m.name!==e.file) problems.push(`${e.media_id}:wrong-name`);
               if(!String(m.created_by||'').includes('@')) problems.push(`${e.media_id}:bad-owner-fk`);
+              if(m.quality_status!=='good'||m.approval_status!=='approved') problems.push(`${e.media_id}:bad-media-status`);
             }
             if(!p) problems.push(`${e.post_id}:missing-post`); else {
               if(p.media_id!==e.media_id) problems.push(`${e.post_id}:wrong-media`);
@@ -149,7 +150,8 @@ jobs:
               if(p.image_url!==e.image_url) problems.push(`${e.post_id}:wrong-url`);
               if(e.status==='published'&&Number(p.image_approved)!==1) problems.push(`${e.post_id}:published-not-approved`);
               if(e.status==='pending_review'&&Number(p.image_approved)!==0) problems.push(`${e.post_id}:pending-approved`);
-              if(!Array.isArray(JSON.parse(p.platforms_json||'[]'))||JSON.parse(p.platforms_json||'[]').length===0) problems.push(`${e.post_id}:empty-platforms`);
+              const platforms=JSON.parse(p.platforms_json||'[]');
+              if(!Array.isArray(platforms)||platforms.length===0) problems.push(`${e.post_id}:empty-platforms`);
             }
           }
           const result={ok:media.length===13&&posts.length===13&&problems.length===0,version:'2026-08-19-official13-d1-live',media_count:media.length,post_count:posts.length,problems,posts,media,expected};
