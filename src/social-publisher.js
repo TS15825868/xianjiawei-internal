@@ -21,6 +21,12 @@ function parsePlatforms(value){
 function postText(post){
   return [post.headline,post.copy].map(clean).filter((value,index,values)=>value&&values.indexOf(value)===index).join('\n\n');
 }
+function mediaUrl(post){return clean(post.video_url||post.media_url||post.image_url);}
+function isVideoPost(post){
+  const declared=clean(post.media_type).toLowerCase();
+  if(['video','reel','reels','short_video'].includes(declared))return true;
+  return /\.(?:mp4|mov|m4v|webm)(?:$|[?#])/i.test(mediaUrl(post));
+}
 function withTimeout(){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort('timeout'),REQUEST_TIMEOUT_MS);
@@ -33,7 +39,7 @@ async function responseResult(response,platform){
   if(!response.ok){
     return {platform,ok:false,retryable:[408,409,425,429].includes(response.status)||response.status>=500,status:response.status,error:responseData?.error?.message||responseData?.error_description||responseText||response.statusText,response:responseData||responseText};
   }
-  return {platform,ok:true,status:response.status,remote_id:responseData?.id||responseData?.post_id||responseData?.name||response.headers.get('x-remote-post-id')||response.headers.get('x-line-request-id')||'',response:responseData||responseText};
+  return {platform,ok:true,status:response.status,remote_id:responseData?.id||responseData?.post_id||responseData?.video_id||responseData?.name||response.headers.get('x-remote-post-id')||response.headers.get('x-line-request-id')||'',response:responseData||responseText};
 }
 function graphVersion(env){return clean(env.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');}
 function directReadiness(env,direct){
@@ -45,22 +51,46 @@ function directReadiness(env,direct){
 }
 function webhookReady(env,config){return Boolean(clean(env[config.url])&&clean(env[config.token]));}
 function payloadFor(post,platform){
-  return {event:'publish_social_post',idempotency_key:`${post.id}:${platform}`,platform,post:{id:post.id,title:post.title||'',headline:post.headline||'',copy:post.copy||'',category:post.category||'',image_url:post.image_url||'',image_alt:post.image_alt||'',scheduled_at:post.scheduled_at||'',approved_by:post.approved_by||'',approved_at:post.approved_at||''}};
+  const video=isVideoPost(post),url=mediaUrl(post);
+  return {event:'publish_social_post',idempotency_key:`${post.id}:${platform}`,platform,post:{id:post.id,title:post.title||'',headline:post.headline||'',copy:post.copy||'',category:post.category||'',media_type:video?'video':'image',media_url:url,video_url:video?url:'',image_url:video?'':url,image_alt:post.image_alt||'',scheduled_at:post.scheduled_at||'',approved_by:post.approved_by||'',approved_at:post.approved_at||''}};
 }
 
-async function dispatchFacebook(env,post){
+async function dispatchFacebookImage(env,post){
   const platform='Facebook',timeout=withTimeout();
   try{
-    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_PAGE_ID))}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:clean(post.image_url),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
+    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_PAGE_ID))}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
     return responseResult(response,platform);
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
+async function dispatchFacebookReel(env,post){
+  const platform='Facebook',token=clean(env.META_PAGE_ACCESS_TOKEN),version=graphVersion(env),timeout=withTimeout();
+  try{
+    const reelEndpoint=`https://graph.facebook.com/${version}/me/video_reels`;
+    const startResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,upload_phase:'start'})});
+    const started=await responseResult(startResponse,platform);
+    if(!started.ok)return started;
+    const videoId=clean(started.response?.video_id||started.remote_id);
+    const uploadUrl=clean(started.response?.upload_url)||`https://rupload.facebook.com/video-upload/${version}/${encodeURIComponent(videoId)}`;
+    if(!videoId)return{platform,ok:false,retryable:true,error:'Facebook Reel 未回傳 video_id'};
+    const uploadResponse=await fetch(uploadUrl,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`OAuth ${token}`,file_url:mediaUrl(post)}});
+    const uploaded=await responseResult(uploadResponse,platform);
+    if(!uploaded.ok)return uploaded;
+    const finishResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,video_id:videoId,upload_phase:'finish',video_state:'PUBLISHED',description:postText(post),title:clean(post.title)})});
+    const finished=await responseResult(finishResponse,platform);
+    return finished.ok?{...finished,remote_id:finished.remote_id||videoId,media_type:'reel'}:finished;
+  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+}
+async function dispatchFacebook(env,post){return isVideoPost(post)?dispatchFacebookReel(env,post):dispatchFacebookImage(env,post);}
+
 async function dispatchInstagram(env,post){
   const platform='Instagram',timeout=withTimeout();
   try{
     const base=`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_INSTAGRAM_USER_ID))}`;
-    const token=clean(env.META_PAGE_ACCESS_TOKEN);
-    const createResponse=await fetch(`${base}/media`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({image_url:clean(post.image_url),caption:postText(post),access_token:token})});
+    const token=clean(env.META_PAGE_ACCESS_TOKEN),video=isVideoPost(post);
+    const params=video
+      ? {media_type:'REELS',video_url:mediaUrl(post),caption:postText(post),share_to_feed:'true',access_token:token}
+      : {image_url:mediaUrl(post),caption:postText(post),access_token:token};
+    const createResponse=await fetch(`${base}/media`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});
     const created=await responseResult(createResponse,platform);
     if(!created.ok) return created;
     const creationId=clean(created.remote_id);
@@ -69,20 +99,26 @@ async function dispatchInstagram(env,post){
       await sleep(attempt===0?1000:1800);
       const statusResponse=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(creationId)}?fields=status_code,status&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
       const statusData=await statusResponse.json().catch(()=>({}));
-      if(statusData.status_code==='FINISHED') break;
-      if(['ERROR','EXPIRED'].includes(statusData.status_code)) return{platform,ok:false,retryable:false,error:statusData.status||`Instagram 容器狀態：${statusData.status_code}`};
-      if(attempt===7) return{platform,ok:false,retryable:true,error:'Instagram 圖片處理尚未完成，稍後會自動重試'};
+      if(statusData.status_code==='FINISHED')break;
+      if(['ERROR','EXPIRED'].includes(statusData.status_code))return{platform,ok:false,retryable:false,error:statusData.status||`Instagram 容器狀態：${statusData.status_code}`};
+      if(attempt===7)return{platform,ok:false,retryable:true,error:`Instagram ${video?'Reel':'圖片'}處理尚未完成，稍後會自動重試`};
     }
     const publishResponse=await fetch(`${base}/media_publish`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:creationId,access_token:token})});
-    return responseResult(publishResponse,platform);
+    const result=await responseResult(publishResponse,platform);
+    return result.ok?{...result,media_type:video?'reel':'image'}:result;
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function dispatchLineOfficialAccount(env,post,platform){
   const timeout=withTimeout();
   try{
-    const messages=[];
-    const text=postText(post).slice(0,5000); if(text) messages.push({type:'text',text});
-    const image=clean(post.image_url); if(image&&/^https:\/\//i.test(image)) messages.push({type:'image',originalContentUrl:image,previewImageUrl:image});
+    const messages=[],video=isVideoPost(post),media=mediaUrl(post),text=postText(post).slice(0,5000);
+    if(video){
+      const combined=[text,media&&`觀看影片：${media}`].filter(Boolean).join('\n\n').slice(0,5000);
+      if(combined)messages.push({type:'text',text:combined});
+    }else{
+      if(text)messages.push({type:'text',text});
+      if(media&&/^https:\/\//i.test(media))messages.push({type:'image',originalContentUrl:media,previewImageUrl:media});
+    }
     if(!messages.length) return{platform,ok:false,retryable:false,error:'LINE OA 貼文沒有可發布內容'};
     const response=await fetch('https://api.line.me/v2/bot/message/broadcast',{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${clean(env.LINE_CHANNEL_ACCESS_TOKEN)}`,'content-type':'application/json; charset=utf-8','x-line-retry-key':crypto.randomUUID()},body:JSON.stringify({messages:messages.slice(0,5),notificationDisabled:false})});
     return responseResult(response,platform);
@@ -99,12 +135,13 @@ async function googleAccessToken(env){
 }
 async function dispatchGoogleBusiness(env,post){
   const platform='Google 商家';
+  if(isVideoPost(post))return{platform,ok:false,retryable:false,manual_required:true,error:'Google 商家目前這條正式發布流程只處理已核准圖片；短影片不強制套用圖片 API。'};
   const tokenResult=await googleAccessToken(env); if(!tokenResult.ok) return{platform,...tokenResult};
   const timeout=withTimeout();
   try{
     const accountId=encodeURIComponent(clean(env.GOOGLE_BUSINESS_ACCOUNT_ID));
     const locationId=encodeURIComponent(clean(env.GOOGLE_BUSINESS_LOCATION_ID));
-    const body={languageCode:'zh-TW',summary:postText(post).slice(0,1500),topicType:'STANDARD',media:[{mediaFormat:'PHOTO',sourceUrl:clean(post.image_url)}]};
+    const body={languageCode:'zh-TW',summary:postText(post).slice(0,1500),topicType:'STANDARD',media:[{mediaFormat:'PHOTO',sourceUrl:mediaUrl(post)}]};
     const response=await fetch(`https://mybusiness.googleapis.com/v4/accounts/${accountId}/locations/${locationId}/localPosts`,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${tokenResult.token}`,'content-type':'application/json; charset=utf-8'},body:JSON.stringify(body)});
     return responseResult(response,platform);
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
@@ -177,7 +214,7 @@ export function publisherConfiguration(env){
     const ready=Boolean(directConfigured||webhookConfigured);
     platforms[name]={mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured,webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,reason:directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
   }
-  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
+  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
   const post=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status IN ('approved','scheduled') LIMIT 1").bind(postId).first();
