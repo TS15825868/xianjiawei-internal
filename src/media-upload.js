@@ -67,7 +67,7 @@ export async function ensureMediaSchema(env){
 
 export async function uploadMedia(request,env,profile){
   if(!['owner','admin','content'].includes(profile?.role)) return json({error:'沒有上傳圖片的權限'},403);
-  await ensureMediaSchema(env);
+  const schema=await ensureMediaSchema(env);
   let form;
   try{form=await request.formData();}catch{return json({error:'圖片上傳格式錯誤'},400);}
   const file=form.get('file');
@@ -81,8 +81,39 @@ export async function uploadMedia(request,env,profile){
   const width=Math.max(0,Math.round(Number(form.get('width')||0)));
   const height=Math.max(0,Math.round(Number(form.get('height')||0)));
   const now=new Date().toISOString();
-  await env.DB.prepare('INSERT INTO media_assets(id,file_name,mime_type,data_base64,bytes,width,height,created_by,created_at) VALUES(?,?,?,?,?,?,?,?,?)')
-    .bind(id,clean(file.name,'image.jpg').slice(0,180),mime,bytesToBase64(buffer),buffer.byteLength,width,height,clean(profile.email),now).run();
+  const fileName=clean(file.name,'image.jpg').slice(0,180);
+  const ownerEmail=clean(profile.email).toLowerCase();
+  if(!ownerEmail) return json({error:'登入帳號缺少電子郵件，無法安全建立圖片'},400);
+
+  // 正式 D1 曾使用較完整的舊版 media_assets schema；以下以目前實際欄位動態補齊，
+  // 避免新版上傳只寫 file_name 時被舊版 name/created_by/CHECK 約束擋住。
+  const existing=new Set((schema?.columns||[]).map(value=>clean(value).toLowerCase()));
+  const candidates=[
+    ['id',id],
+    ['name',fileName],
+    ['category','貼文主圖'],
+    ['source_type','upload'],
+    ['file_url',''],
+    ['data_base64',bytesToBase64(buffer)],
+    ['mime_type',mime],
+    ['width',width],
+    ['height',height],
+    ['file_size',buffer.byteLength],
+    ['quality_status','pending'],
+    ['approval_status','pending'],
+    ['notes','貼文中心手機／裝置上傳'],
+    ['created_by',ownerEmail],
+    ['created_at',now],
+    ['updated_at',now],
+    ['file_name',fileName],
+    ['bytes',buffer.byteLength]
+  ];
+  const entries=candidates.filter(([name])=>name==='id'||existing.has(name));
+  const columns=entries.map(([name])=>name);
+  const placeholders=entries.map(()=>'?').join(',');
+  await env.DB.prepare(`INSERT INTO media_assets(${columns.join(',')}) VALUES(${placeholders})`)
+    .bind(...entries.map(([,value])=>value)).run();
+
   const origin=new URL(request.url).origin;
   return json({ok:true,id,url:`${origin}/media/${encodeURIComponent(id)}`,mime_type:mime,bytes:buffer.byteLength,width,height,created_at:now},201);
 }
