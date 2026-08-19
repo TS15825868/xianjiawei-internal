@@ -18,6 +18,7 @@ const OFFICIAL_MEDIA=[
 
 const DEFAULT_PLATFORMS='["Facebook","Instagram","LINE VOOM"]';
 const SOURCE='使用者2026-08-18確認正式圖｜D1 media_assets 檔名+bytes+SHA256三重精確綁定｜禁止舊圖fallback';
+const USER_REPLACEMENT_SOURCE=/(裝置上傳|使用者人工指定|人工指定|重新生成|chatgpt|generated|生成圖)/i;
 
 function base64Bytes(value){
   const binary=atob(String(value||''));
@@ -33,20 +34,32 @@ async function tableExists(db,name){
   const row=await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=? LIMIT 1").bind(name).first();
   return Boolean(row?.name);
 }
+async function ownerEmail(db){
+  const row=await db.prepare("SELECT email FROM profiles WHERE active=1 ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1").first();
+  return String(row?.email||'').trim();
+}
 async function ensureSpecialPosts(db){
   const now=new Date().toISOString();
+  const owner=await ownerEmail(db);
+  if(!owner)return;
   const audience=await db.prepare("SELECT id FROM social_posts WHERE id='POST-AUDIENCE-NEEDS' LIMIT 1").first();
   if(!audience){
     const copy='不是只有特定年齡。不同生活節奏的人，可能因為在家、上班、運動、作息忙碌、想安排日常補養或送禮，而開始認識龜鹿系列。\n\n仙加味會先從生活情境、使用方式與產品型態協助了解，不急著一次選完。\n\n仙加味｜補養，是一種節奏。';
-    await db.prepare("INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?, 'pending_review',NULL,NULL,NULL,NULL,'','','待正式圖綁定',0,0,0,0,'missing','system',?,?)")
-      .bind('POST-AUDIENCE-NEEDS','哪些人，會開始認識龜鹿系列？','哪些人，會開始認識龜鹿系列？',copy,'龜鹿入門',DEFAULT_PLATFORMS,now,now).run();
+    await db.prepare("INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?, 'pending_review',NULL,NULL,NULL,NULL,'','','待正式圖綁定',0,0,0,0,'missing',?,?,?)")
+      .bind('POST-AUDIENCE-NEEDS','哪些人，會開始認識龜鹿系列？','哪些人，會開始認識龜鹿系列？',copy,'龜鹿入門',DEFAULT_PLATFORMS,owner,now,now).run();
   }
   const trial=await db.prepare("SELECT id FROM social_posts WHERE id='POST-TRIAL-MAIN' LIMIT 1").first();
   if(!trial){
     const copy='龜鹿飲試喝組｜先試喝，再決定\n\n30cc小玻璃罐3罐試喝品免費，運費自付：7-11店到店60元／郵局宅配100元。每位顧客、電話及地址限申請一次。龜鹿飲接單後安排製作，約5～7個工作天出貨。\n\n所有試喝申請與正式下單皆在LINE OA完成。';
-    await db.prepare("INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?, 'published',NULL,'owner',?,NULL,'','','待正式圖綁定',1,0,0,0,'missing','system',?,?)")
-      .bind('POST-TRIAL-MAIN','龜鹿飲試喝組｜先試喝，再決定','龜鹿飲試喝組｜先試喝，再決定',copy,'試喝申請',DEFAULT_PLATFORMS,now,now,now).run();
+    await db.prepare("INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?, 'published',NULL,?,?,?,'','','待正式圖綁定',1,0,0,0,'missing',?,?,?)")
+      .bind('POST-TRIAL-MAIN','龜鹿飲試喝組｜先試喝，再決定','龜鹿飲試喝組｜先試喝，再決定',copy,'試喝申請',DEFAULT_PLATFORMS,owner,now,now,owner,now,now).run();
   }
+}
+function isExplicitUserReplacement(current,officialMediaId){
+  const imageUrl=String(current?.image_url||'').trim();
+  const source=String(current?.image_source||'').trim();
+  if(!imageUrl||!USER_REPLACEMENT_SOURCE.test(source))return false;
+  return !imageUrl.includes(`/media/${encodeURIComponent(officialMediaId)}`);
 }
 
 export async function reconcileOfficialPostMedia(env){
@@ -80,24 +93,29 @@ export async function reconcileOfficialPostMedia(env){
     }
     const now=new Date().toISOString();
     let updated=0;
+    let userReplacementsPreserved=0;
     for(const item of OFFICIAL_MEDIA){
       const media=matched.get(item.id);
       if(!media)continue;
-      const current=await db.prepare('SELECT id,status,platforms_json FROM social_posts WHERE id=? LIMIT 1').bind(item.id).first();
+      const current=await db.prepare('SELECT id,status,platforms_json,image_url,media_id,image_source FROM social_posts WHERE id=? LIMIT 1').bind(item.id).first();
       if(!current)continue;
+      if(isExplicitUserReplacement(current,media.id)){
+        userReplacementsPreserved+=1;
+        continue;
+      }
       const platforms=String(current.platforms_json||'').trim();
       const nextPlatforms=!platforms||platforms==='[]'?DEFAULT_PLATFORMS:platforms;
       const url=`/media/${encodeURIComponent(media.id)}`;
       if(item.status==='published'){
-        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='ok',image_approved=1,status='published',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,updated_at=? WHERE id=?")
+        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='published_approved',image_approved=1,status='published',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,updated_at=? WHERE id=?")
           .bind(url,media.id,item.alt,SOURCE,Number(media.width||0),Number(media.height||0),Number(media.bytes||0),nextPlatforms,now,item.id).run();
       }else{
-        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='ok',image_approved=0,status='pending_review',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=?")
+        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='candidate',image_approved=0,status='pending_review',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=?")
           .bind(url,media.id,item.alt,SOURCE,Number(media.width||0),Number(media.height||0),Number(media.bytes||0),nextPlatforms,now,item.id).run();
       }
       updated+=1;
     }
-    return{ok:true,matched:matched.size,updated,expected:OFFICIAL_MEDIA.length,missing:OFFICIAL_MEDIA.filter(x=>!matched.has(x.id)).map(x=>x.file),rejected};
+    return{ok:true,matched:matched.size,updated,user_replacements_preserved:userReplacementsPreserved,expected:OFFICIAL_MEDIA.length,missing:OFFICIAL_MEDIA.filter(x=>!matched.has(x.id)).map(x=>x.file),rejected};
   }catch(error){
     console.warn('official media reconcile skipped',String(error?.message||error));
     return{ok:false,reason:String(error?.message||error)};
