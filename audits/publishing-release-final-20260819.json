@@ -1,0 +1,34 @@
+{
+  "version": "2026-08-19-publishing-final-release",
+  "result": "pass",
+  "verified_at_utc": "2026-08-19T13:17:52Z",
+  "release_workflow_run_id": 32257248519,
+  "release_workflow_job_id": 96081716753,
+  "deployed_worker": "xianjiawei-internal",
+  "cloudflare_worker_version_id": "b8c246d8-6792-4ec3-9e63-440fa7f36fdd",
+  "deployed_code_main_commit": "385322571669e6ea97f9b8cb1aec613d62972e97",
+  "release_merge_commit": "c00bf2d9a7dc86f9de5a664adadc879d7068b83d",
+  "checks": {
+    "npm_check": "pass",
+    "full_guard_contract": "pass",
+    "static_build": "pass",
+    "cloudflare_worker_deploy": "pass",
+    "production_d1_media_count": 13,
+    "production_d1_post_count": 13,
+    "production_d1_pairing_problems": [],
+    "mobile_device_image_upload_contract": "pass",
+    "sixteen_item_review_contract": "pass",
+    "schedule_contract": "pass",
+    "immediate_publish_contract": "pass",
+    "user_replaced_image_preservation_contract": "pass"
+  },
+  "status_rule": {
+    "pending_review": 11,
+    "published": 2
+  },
+  "published_preserved": [
+    "POST-TRIAL-MAIN",
+    "POST-BRAND-START"
+  ],
+  "note": "Cloudflare Access protects the posting center. This release verifies production deployment, D1 image bindings and deployed functional contracts; an authenticated physical-iPhone screenshot is a separate visual check."
+}
