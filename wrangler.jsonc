@@ -4,6 +4,7 @@
   "main": "src/publishing-content-audit-entry.js",
   "compatibility_date": "2026-07-24",
   "keep_vars": true,
+  // 2026-08-19：正式13圖 D1 綁定＋手機裝置上傳舊 schema 相容＋人工換圖不回退舊圖。
   "vars": {
     "POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f",
     "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"
