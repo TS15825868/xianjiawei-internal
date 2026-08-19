@@ -1,0 +1,72 @@
+name: fix official13 missing posts PR 20260819
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/data/fix-official13-missing-posts-pr-v20260819.trigger'
+
+permissions:
+  contents: read
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  fix-missing-posts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@latest
+      - name: Insert the two missing formal posts with real owner foreign keys
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/fix-posts.sql <<'SQL'
+          INSERT OR IGNORE INTO social_posts(
+            id,title,headline,copy,category,platforms_json,status,scheduled_at,
+            approved_by,approved_at,published_at,created_by,created_at,updated_at,
+            image_url,image_alt,image_source,image_approved,image_width,image_height,
+            image_bytes,image_quality_status,media_id,review_note,brand_check_json,
+            rejection_reason,proposed_scheduled_at
+          )
+          SELECT
+            'POST-AUDIENCE-NEEDS','哪些人，會開始認識龜鹿系列？','哪些人，會開始認識龜鹿系列？',
+            '不只是某一個年齡層，很多人會從自己的生活節奏開始認識龜鹿系列。上班、運動、作息忙碌、日常飲食安排或年節送禮，都可以先從自己的使用情境與方便性來了解不同產品型態。第一次接觸不用急著選，先把平常在家或外出、偏好常溫或溫熱、是否想搭配家常料理等日常告訴仙加味，再慢慢挑適合自己的方式。',
+            '生活節奏','["Facebook","Instagram","LINE VOOM"]','pending_review',NULL,
+            NULL,NULL,NULL,
+            (SELECT email FROM profiles ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1),
+            CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'','','2026-08-19正式圖待綁定',0,0,0,0,'candidate',NULL,'','{}','',NULL
+          WHERE EXISTS(SELECT 1 FROM profiles LIMIT 1);
+
+          INSERT OR IGNORE INTO social_posts(
+            id,title,headline,copy,category,platforms_json,status,scheduled_at,
+            approved_by,approved_at,published_at,created_by,created_at,updated_at,
+            image_url,image_alt,image_source,image_approved,image_width,image_height,
+            image_bytes,image_quality_status,media_id,review_note,brand_check_json,
+            rejection_reason,proposed_scheduled_at
+          )
+          SELECT
+            'POST-TRIAL-MAIN','龜鹿飲試喝組｜先試喝，再決定','龜鹿飲試喝組｜先試喝，再決定',
+            '龜鹿飲試喝組｜先試喝，再決定。30cc小玻璃罐3罐試喝品免費，運費自付；7-11店到店60元、郵局宅配100元。每位顧客、電話及地址限申請一次。龜鹿飲接單後安排製作，約5～7個工作天出貨。試喝申請與正式下單皆由仙加味LINE OA完成。',
+            '試喝申請','["Facebook","Instagram","LINE VOOM"]','published',NULL,
+            (SELECT email FROM profiles ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1),
+            CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+            (SELECT email FROM profiles ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END,email LIMIT 1),
+            CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'','','2026-08-19正式發布圖待綁定',1,0,0,0,'published_approved',NULL,'','{}','',NULL
+          WHERE EXISTS(SELECT 1 FROM profiles LIMIT 1);
+          SQL
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file=/tmp/fix-posts.sql
+      - name: Verify missing posts now exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,created_by,approved_by,image_url,media_id FROM social_posts WHERE id IN ('POST-AUDIENCE-NEEDS','POST-TRIAL-MAIN') ORDER BY id" > /tmp/rows.json
+          node - <<'NODE'
+          const fs=require('fs');const x=JSON.parse(fs.readFileSync('/tmp/rows.json','utf8'));const rows=Array.isArray(x)&&x[0]?.results?x[0].results:(x?.results||x||[]);console.log('XJW_MISSING_POSTS_FIX='+JSON.stringify(rows));if(rows.length!==2)process.exit(2);if(!rows.every(r=>String(r.created_by||'').includes('@')))process.exit(3);if(!rows.find(r=>r.id==='POST-TRIAL-MAIN'&&String(r.approved_by||'').includes('@')))process.exit(4);
+          NODE
