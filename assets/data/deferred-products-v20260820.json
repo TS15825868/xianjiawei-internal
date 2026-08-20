@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-08-20-deferred-products-v1",
+  "updatedAt": "2026-08-20",
+  "authority": "internal-deferred-user-confirmed",
+  "purpose": "保留使用者目前暫緩對外產品的內部基礎資料，供未來明確重新上架時恢復；不得被任何公開同步器自動加入官網、LINE OA、公開AI/GEO或公開貼文。",
+  "products": [
+    {
+      "id": "qixuan-guilu-drink-powder",
+      "name": "柒玄茶・龜鹿調飲粉",
+      "specification": "2g／小包；20g／包（10小包）",
+      "form": "調飲粉",
+      "status": "deferred-internal-only",
+      "publicWebsite": false,
+      "publicLineOA": false,
+      "publicAiGeo": false,
+      "publicPostGeneration": false,
+      "ingredientsStatus": "目前未確認正式公開成分表，不自行推測或補寫",
+      "mediaStatus": "目前未確認核准正式產品實物原圖，不生成或自創包裝",
+      "reactivationRule": "僅於使用者日後明確要求重新上架時，依當時最新正式資料、成分、產品圖與規格重新加入公開權威。"
+    }
+  ]
+}
