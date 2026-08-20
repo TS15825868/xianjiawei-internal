@@ -1,23 +1,29 @@
 {
   "schemaVersion": 1,
-  "version": "2026-08-20-deferred-products-v1",
+  "version": "2026-08-20-qixuan-website-deferred-v2",
   "updatedAt": "2026-08-20",
   "authority": "internal-deferred-user-confirmed",
-  "purpose": "保留使用者目前暫緩對外產品的內部基礎資料，供未來明確重新上架時恢復；不得被任何公開同步器自動加入官網、LINE OA、公開AI/GEO或公開貼文。",
+  "purpose": "保留柒玄茶・龜鹿調飲粉內部基礎資料；依使用者目前指示暫不放官網。LINE OA可保留文字知識，但不得因官網六項產品同步而刪除；在正式產品實物原圖與正式公開成分表未確認前，不得自創包裝、產品圖或成分。",
   "products": [
     {
       "id": "qixuan-guilu-drink-powder",
       "name": "柒玄茶・龜鹿調飲粉",
       "specification": "2g／小包；20g／包（10小包）",
       "form": "調飲粉",
-      "status": "deferred-internal-only",
+      "status": "website-deferred-line-text-knowledge-retained",
       "publicWebsite": false,
-      "publicLineOA": false,
-      "publicAiGeo": false,
+      "lineOA": {
+        "textKnowledge": true,
+        "productImage": false,
+        "dm": false,
+        "ingredients": false
+      },
+      "publicAiGeoWebsite": false,
       "publicPostGeneration": false,
       "ingredientsStatus": "目前未確認正式公開成分表，不自行推測或補寫",
       "mediaStatus": "目前未確認核准正式產品實物原圖，不生成或自創包裝",
-      "reactivationRule": "僅於使用者日後明確要求重新上架時，依當時最新正式資料、成分、產品圖與規格重新加入公開權威。"
+      "websiteReactivationRule": "僅於使用者日後明確要求重新放上官網時，依當時最新正式資料、成分、產品圖與規格重新加入官網公開權威。",
+      "channelSeparationRule": "官網暫緩不等於LINE OA刪除；各通路依使用者明確指示獨立控制，不再用固定相同產品數互相覆蓋。"
     }
   ]
 }
