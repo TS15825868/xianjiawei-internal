@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "2026-08-20-seven-product-public-master-mirror",
+  "version": "2026-08-20-seven-product-public-master-mirror-v2",
   "updatedAt": "2026-08-20",
   "role": "ERP／貼文中心使用的仙加味公開產品基礎資料鏡像；只同步公開產品事實，不覆蓋內部價格、成本、庫存、客戶、通路或營運資料。",
   "source": {
@@ -19,7 +19,7 @@
   "productCount": 7,
   "products": [
     {"id":"guilu-gao","name":"龜鹿膏","specification":"100g／罐","form":"膏狀"},
-    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","specification":"30cc／罐（小玻璃罐）","form":"液態即飲","package":"小玻璃罐、裸罐、無貼紙","usagePrimary":"每日一罐","fulfillment":"接單後製作，約5～7個工作天出貨"},
+    {"id":"guilu-drink-30","name":"龜鹿飲30cc玻璃罐","specification":"30cc／罐（小玻璃罐）","form":"液態即飲","package":"小玻璃罐、裸罐、無貼紙","usagePrimary":"每日 1–2 罐","fulfillment":"接單後製作，約5～7個工作天出貨"},
     {"id":"guilu-drink-180","name":"龜鹿飲180cc鋁袋","specification":"180cc／包（鋁袋）","form":"液態即飲","package":"狹長直立鋁袋","usagePrimary":"每日一包","fulfillment":"接單後製作，約5～7個工作天出貨"},
     {"id":"guilu-tangkuai","name":"龜鹿湯塊","specification":"75g （2兩）／盒｜8塊裝","detail":"每塊約9.375g","form":"塊狀"},
     {"id":"guilu-jiao","name":"龜鹿膠","specification":"600g （1斤）／盒｜32塊裝","detail":"每塊約18.75g","form":"塊狀"},
@@ -31,6 +31,7 @@
     "language": "繁體中文",
     "medicalClaims": "不得宣稱疾病治療、預防、改善或保證功效",
     "imageRule": "產品本體只使用正式實物外觀；沒有正式原圖不得生成假包裝",
+    "drink30Usage": "龜鹿飲30cc最新正式使用方式為每日 1–2 罐；不得回退成每日一罐",
     "drinkLeadTimeScope": "5～7個工作天只適用龜鹿飲30cc與180cc",
     "reviewFlow": "任何新圖、換圖或文案修改後回待審核；未人工審核不得正式發布"
   },
