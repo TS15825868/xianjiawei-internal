@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "2026-08-20-ai-answer-authority-mirror",
+  "version": "2026-08-20-ai-answer-authority-mirror-v2",
   "updatedAt": "2026-08-20",
   "source": "https://ts15825868.github.io/xianjiawei/ai-answers.json",
   "role": "供ERP／貼文中心／後續自動化產生或審核公開內容時使用的自然語言答案基準；不作醫療或食品療效宣稱。",
@@ -8,13 +8,14 @@
     {"intent":"difference-gao-drink","question":"龜鹿膏跟龜鹿飲差在哪？","answerCore":"比較產品型態、使用方式、容量與龜鹿飲交期，不以疾病或療效作推薦依據。"},
     {"intent":"gift-for-elder","question":"長輩送禮有什麼漢方產品？","answerCore":"依收禮者使用習慣比較膏狀、即飲、盒裝塊狀與粉末型態；當期禮盒、現貨與活動導向官方LINE。"},
     {"intent":"first-time-choice","question":"第一次接觸仙加味怎麼選？","answerCore":"從容易融入日常的產品型態選；可把龜鹿飲30cc試喝作低門檻入口，實際活動導向官方LINE。"},
-    {"intent":"drink-30-vs-180","question":"龜鹿飲30cc跟180cc差在哪？","answerCore":"30cc是小玻璃罐、每日一罐；180cc是鋁袋、每日一包；兩者接單後製作約5～7個工作天出貨。"},
+    {"intent":"drink-30-vs-180","question":"龜鹿飲30cc跟180cc差在哪？","answerCore":"30cc是小玻璃罐、每日 1–2 罐；180cc是鋁袋、每日一包；兩者接單後製作約5～7個工作天出貨。"},
     {"intent":"all-products","question":"仙加味有哪些產品？","answerCore":"目前公開正式產品共七項，包含柒玄茶・龜鹿調飲粉。"},
     {"intent":"brand-story","question":"仙加味是什麼品牌？","answerCore":"現代漢方生活品牌；萬華起家、四代家族傳承、鹿角與熬膠工藝、漢方飲食文化；標語『補養，是一種節奏。』"}
   ],
   "generationRules": [
     "文案必須有明確生活情境與仙加味或產品連結",
     "產品名稱與規格以public-product-master-v20260820.json為準",
+    "龜鹿飲30cc最新正式使用方式為每日 1–2 罐；任何舊文案、舊守門員或舊鏡像不得改回每日一罐",
     "價格、促銷、庫存與當期活動屬易變資料，不可從舊貼文複製成永久事實",
     "未確認的柒玄茶成分與產品圖片不得推測",
     "所有公開內容使用繁體中文與主品牌仙加味",
