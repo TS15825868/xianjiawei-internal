@@ -1,67 +1,45 @@
-name: 仙加味貼文中心平台授權就緒檢查
+name: 仙加味貼文中心平台授權手動就緒檢查
+
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'assets/data/platform-readiness-v20260817.trigger'
-      - '.github/workflows/verify-social-platform-readiness-v20260817.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v5
-      - name: Read Worker binding names without secret values
+      - name: Require Cloudflare audit credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Read Worker binding names without exposing secret values
         shell: bash
         run: |
           set -euo pipefail
           curl -fsS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/xianjiawei-internal/settings" \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" > /tmp/settings.json
           node - <<'NODE'
-          const fs=require('fs'); const x=JSON.parse(fs.readFileSync('/tmp/settings.json','utf8'));
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/settings.json','utf8'));
           if(x.success!==true) throw new Error('Cloudflare Worker settings API failed');
           const bindings=x.result?.bindings||[];
           const names=new Set(bindings.map(b=>b.name));
           const has=n=>names.has(n);
-          const anyPair=(u,t)=>has(u)&&has(t);
-          const fbDirect=has('META_PAGE_ID')&&has('META_PAGE_ACCESS_TOKEN');
-          const igDirect=has('META_INSTAGRAM_USER_ID')&&has('META_PAGE_ACCESS_TOKEN');
-          const lineDirect=has('LINE_CHANNEL_ACCESS_TOKEN');
-          const googleDirect=['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has);
-          const fbWebhook=anyPair('FACEBOOK_PUBLISH_WEBHOOK_URL','FACEBOOK_PUBLISH_WEBHOOK_TOKEN');
-          const igWebhook=anyPair('INSTAGRAM_PUBLISH_WEBHOOK_URL','INSTAGRAM_PUBLISH_WEBHOOK_TOKEN');
-          const lineWebhook=anyPair('LINE_OA_PUBLISH_WEBHOOK_URL','LINE_OA_PUBLISH_WEBHOOK_TOKEN');
-          const googleWebhook=anyPair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN');
+          const pair=(a,b)=>has(a)&&has(b);
           const ready={
-            Facebook:fbDirect||fbWebhook,
-            Instagram:igDirect||igWebhook,
-            'LINE OA':lineDirect||lineWebhook,
+            Facebook:(has('META_PAGE_ID')&&has('META_PAGE_ACCESS_TOKEN'))||pair('FACEBOOK_PUBLISH_WEBHOOK_URL','FACEBOOK_PUBLISH_WEBHOOK_TOKEN'),
+            Instagram:(has('META_INSTAGRAM_USER_ID')&&has('META_PAGE_ACCESS_TOKEN'))||pair('INSTAGRAM_PUBLISH_WEBHOOK_URL','INSTAGRAM_PUBLISH_WEBHOOK_TOKEN'),
+            'LINE OA':has('LINE_CHANNEL_ACCESS_TOKEN')||pair('LINE_OA_PUBLISH_WEBHOOK_URL','LINE_OA_PUBLISH_WEBHOOK_TOKEN'),
             'LINE VOOM':false,
-            'Google 商家':googleDirect||googleWebhook
+            'Google 商家':['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has)||pair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN')
           };
           console.log('PLATFORM_READINESS '+JSON.stringify(ready));
-          console.log('PLATFORM_MODE '+JSON.stringify({
-            Facebook:fbDirect?'official_api':fbWebhook?'webhook':'manual',
-            Instagram:igDirect?'official_api':igWebhook?'webhook':'manual',
-            'LINE OA':lineDirect?'official_api':lineWebhook?'webhook':'manual',
-            'LINE VOOM':'manual_only',
-            'Google 商家':googleDirect?'official_api':googleWebhook?'webhook':'manual'
-          }));
-          // Only names/types, never values.
           console.log('SAFE_BINDING_NAMES '+bindings.filter(b=>/META_|LINE_|GOOGLE_|PUBLISH_WEBHOOK/.test(b.name||'')).map(b=>`${b.name}:${b.type}`).sort().join(','));
-          NODE
-      - name: Show which platforms current 10 scheduled posts target
-        shell: bash
-        run: |
-          npm install --ignore-scripts --no-audit --no-fund --no-package-lock >/dev/null
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,platforms_json FROM social_posts WHERE status='scheduled' ORDER BY scheduled_at,id" >/tmp/posts.json
-          node - <<'NODE'
-          const raw=JSON.parse(require('fs').readFileSync('/tmp/posts.json')); const rows=raw.flatMap(x=>x.results||[]); const s=new Set();
-          for(const r of rows){let p=[];try{p=JSON.parse(r.platforms_json||'[]')}catch{}; for(const x of p)s.add(x); console.log(`${r.id} | ${p.join(' / ')}`)}
-          console.log('CURRENT_TARGET_PLATFORMS '+JSON.stringify([...s]));
           NODE
