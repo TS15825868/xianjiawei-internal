@@ -2,6 +2,13 @@
 
 這個公開倉庫只保存 Cloudflare Worker 與內部系統前端原始碼。正式營運資料存放於 Cloudflare D1；登入由 Cloudflare Access 保護。GitHub 不保存真實客戶、訂單、付款、成本、庫存、拜訪或平台 Token。
 
+## 正式部署權威
+
+- 正式主部署：Cloudflare Workers 直接連接 GitHub `main` 的原生 Git Auto-Deploy。
+- GitHub Actions：只保留手動程式驗收、平台授權檢查，以及必要時的手動備援 Wrangler 部署；不得在每次 push 時再自動執行第二套正式部署。
+- 判定正式上線時，以 Cloudflare Workers 實際版本／部署狀態與 live 路由為準，不以歷史 GitHub Actions 紅叉判定目前服務失敗。
+- GitHub `main` 仍是正式程式來源；Cloudflare 原生 Git Auto-Deploy 應從 `main` 建置並部署。
+
 ## 正式執行架構
 
 - Cloudflare Worker 正式最上層入口：`src/full-system-entry.js`
@@ -68,6 +75,8 @@
 
 ## Cloudflare Build
 
+Cloudflare 原生 Git Auto-Deploy 的正式建置／部署指令維持：
+
 ```bash
 npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 npm run deploy
@@ -83,4 +92,4 @@ npm run build:static
 npm run guard:full
 ```
 
-GitHub Actions 的程式驗收不等於 Cloudflare 已正式部署；只有實際 deploy workflow 成功，而且 `/`、`/erp.html`、`/publishing.html`、D1、Access 與 `deployment-status.json` 都通過正式驗收，才可稱為完整 ERP＋貼文中心已正式上線。
+GitHub Actions 的手動驗收不等於 Cloudflare 已正式部署；正式上線以 Cloudflare 原生 Git Auto-Deploy 的實際成功版本與 `/`、`/erp.html`、`/publishing.html`、D1、Access live 驗收為準。
