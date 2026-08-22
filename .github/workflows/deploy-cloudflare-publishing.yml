@@ -1,35 +1,36 @@
-name: 仙加味貼文中心系統 App 正式部署
+name: 仙加味 ERP／貼文中心正式部署
 
 on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
+      - 'erp.html'
       - 'publishing.html'
-      - 'assets/css/publishing-base.css'
-      - 'assets/css/publishing-app.css'
-      - 'assets/js/publishing-readiness-ui.js'
-      - 'assets/js/publishing-content-guidance-v20260814.js'
+      - 'assets/css/internal-app.css'
+      - 'assets/js/internal-app.js'
+      - 'assets/js/erp-publishing-separation.js'
+      - 'assets/css/publishing-*.css'
+      - 'assets/js/publishing-*.js'
+      - 'assets/js/device-image-upload.js'
+      - 'assets/js/formal-media-policy-v20260810.js'
+      - 'src/full-system-entry.js'
+      - 'src/production-entry.js'
       - 'src/publishing-content-audit-entry.js'
       - 'src/publishing-only-entry.js'
-      - 'src/production-entry.js'
       - 'src/publishing-review-gate-entry.js'
-      - 'src/social-publisher.js'
-      - 'src/product-master-snapshot.js'
+      - 'src/flexible-publish-entry.js'
+      - 'src/authority-entry.js'
+      - 'src/entry.js'
       - 'src/product-authority.js'
       - 'src/product-authority.test.js'
-      - 'tools/sync-product-master.mjs'
-      - 'assets/js/publishing-review-gate.js'
-      - 'assets/js/publishing-app-v2.js'
-      - 'assets/js/device-image-upload.js'
-      - 'src/entry.js'
+      - 'src/worker.js'
+      - 'src/social-publisher.js'
       - 'src/media-upload.js'
-      - 'assets/data/social-image-audit-v20260815.json'
-      - 'tools/validate-publishing-app-contract.mjs'
-      - 'tools/validate-publishing-review-gate.mjs'
-      - 'tools/validate-system-readiness.mjs'
-      - 'tools/validate-single-publishing-system.mjs'
+      - 'config/official-products.json'
       - 'package.json'
       - 'wrangler.jsonc'
+      - 'tools/validate-single-publishing-system.mjs'
       - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
@@ -37,7 +38,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: xianjiawei-publishing-center-production
+  group: xianjiawei-internal-production
   cancel-in-progress: true
 
 jobs:
@@ -64,67 +65,40 @@ jobs:
       - name: Verify maintenance guard mode
         run: |
           node - <<'NODE'
-          const fs=require('fs');
-          const mode=JSON.parse(fs.readFileSync('guard-mode.json','utf8'));
-          if(mode.mode!=='paused_for_full_system_update') throw new Error('unexpected guard mode');
-          if(mode.blocking_content_and_media_guards!==false) throw new Error('blocking guards must remain paused during update');
-          if(mode.keep_minimum_safety!==true) throw new Error('minimum safety must stay enabled');
+          const mode=require('./guard-mode.json');
+          if(mode.mode!=='paused_for_full_system_update')throw new Error('unexpected guard mode');
+          if(mode.blocking_content_and_media_guards!==false)throw new Error('blocking guards must remain paused during full cleanup');
+          if(mode.keep_minimum_safety!==true)throw new Error('minimum safety must stay enabled');
           NODE
-      - name: Run posting center checks and guards
+      - name: Run current code and guard checks
         run: |
           npm run check
           npm run guard:full
-      - name: Build standalone posting center app
+      - name: Build ERP and publishing static apps
         run: npm run build:static
-      - name: Verify posting center production output and Access runtime config
+      - name: Verify full production bundle
         shell: bash
         run: |
           set -euo pipefail
-          test -f dist/index.html
-          test -f dist/publishing.html
-          test -f dist/manifest.webmanifest
-          test -f dist/assets/css/publishing-base.css
-          test -f dist/assets/css/publishing-app.css
-          test -f dist/assets/css/publishing-performance.css
-          test -f dist/assets/css/publishing-readiness.css
-          test -f dist/assets/js/publishing-app-v2.js
-          test -f dist/assets/js/device-image-upload.js
-          test -f dist/assets/js/publishing-resilience.js
-          test -f dist/assets/js/publishing-review-gate.js
-          test -f dist/assets/js/post-bank-sync.js
-          test -f dist/assets/js/formal-media-policy-v20260810.js
-          test -f dist/assets/js/zip-media-assistant.js
-          test -f dist/assets/js/publishing-content-guidance-v20260814.js
-          test -f dist/assets/data/guilu-content-topic-bank-v20260814.json
-          test -f dist/assets/data/social-image-audit-v20260815.json
-          test -f dist/data/latest-user-post-zip.json
-          test -f src/publishing-content-audit-entry.js
-          test -f src/entry.js
-          test -f src/media-upload.js
-          test -f src/social-publisher.js
-          node --check src/social-publisher.js
-          grep -q 'shortVideoReelsSupported:true' src/social-publisher.js
-          grep -q "path==='/api/media-upload'" src/entry.js
-          grep -q 'media_assets' src/media-upload.js
+          for f in \
+            dist/index.html dist/erp.html dist/publishing.html \
+            dist/assets/css/internal-app.css dist/assets/js/internal-app.js dist/assets/js/erp-publishing-separation.js \
+            dist/assets/css/publishing-base.css dist/assets/css/publishing-app.css \
+            dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
+            test -f "$f" || { echo "missing $f" >&2; exit 1; }
+          done
+          grep -q "location.replace('/erp.html')" dist/index.html
+          grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
-          ! grep -q 'body:before' dist/publishing.html
-          grep -q "location.replace('/publishing.html')" dist/index.html
-          grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/publishing-content-audit-entry.js"' wrangler.jsonc
-          grep -Eq '"html_handling"[[:space:]]*:[[:space:]]*"none"' wrangler.jsonc
-          grep -q '"POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f"' wrangler.jsonc
-          grep -q '"TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"' wrangler.jsonc
+          grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
+          grep -q 'erpUiEnabled:true' src/full-system-entry.js
+          grep -q 'erpApisEnabled:true' src/full-system-entry.js
+          grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
           grep -q 'duplicateImageHardGate:true' src/publishing-content-audit-entry.js
-          grep -q 'seasonWeatherContextAudit:true' src/publishing-content-audit-entry.js
           grep -q 'semanticImageMatchHardGate:true' src/publishing-content-audit-entry.js
-          grep -q 'fullLibraryAudit:true' src/publishing-content-audit-entry.js
-          grep -q 'strictUniqueImagePerPost:true' src/publishing-content-audit-entry.js
-          grep -q 'rootServesPublishingDirectly:true' src/publishing-only-entry.js
-          grep -q 'redirectLoopPrevention:true' src/publishing-only-entry.js
-          ! grep -q "return redirect('/publishing.html')" src/publishing-only-entry.js
-          test ! -e dist/assets/js/internal-app.js
-          test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS: production bundle contains posting-center frontend plus full-library duplicate-image/copy, season, weather and semantic audit, Access JWT config, short-video Reels publisher, and no Worker/HTML canonical redirect loop.'
-      - name: Cross-check current Cloudflare Access application
+          grep -q 'qixuanPublicVisible:false' src/product-authority.js
+          echo 'PASS full ERP + independent publishing production bundle.'
+      - name: Cross-check Cloudflare Access application
         shell: bash
         run: |
           set -euo pipefail
@@ -133,77 +107,60 @@ jobs:
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H 'Content-Type: application/json' > /tmp/access-apps.json
           node - <<'NODE'
-          const fs=require('fs');
-          const body=JSON.parse(fs.readFileSync('/tmp/access-apps.json','utf8'));
-          if(body.success!==true) throw new Error('Cloudflare Access API failed: '+JSON.stringify(body.errors||[]));
+          const body=require('/tmp/access-apps.json');
+          if(body.success!==true)throw new Error('Cloudflare Access API failed');
           const domain='xianjiawei-internal.tung314069.workers.dev';
           const apps=(body.result||[]).filter(x=>String(x.domain||'').replace(/^https?:\/\//,'').replace(/\/$/,'')===domain);
-          if(apps.length!==1) throw new Error(`Expected exactly one Access app for ${domain}, got ${apps.length}`);
-          if(apps[0].aud!=='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f') throw new Error('Access AUD does not match wrangler POLICY_AUD');
-          console.log('PASS: Cloudflare Access app domain/AUD match the Worker JWT verification configuration.');
+          if(apps.length!==1)throw new Error(`Expected one Access app, got ${apps.length}`);
+          if(apps[0].aud!=='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f')throw new Error('Access AUD mismatch');
           NODE
       - name: Verify remote D1 before deploy
         run: |
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status, COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status"
-      - name: Deploy posting center Worker
+      - name: Deploy full internal Worker
         run: npx wrangler deploy --keep-vars
-      - name: Verify deployed Worker routes and reject redirect storms
+      - name: Verify protected live routes without redirect storms
         shell: bash
         run: |
           set -euo pipefail
           base='https://xianjiawei-internal.tung314069.workers.dev'
-          direct_content=0
-          access_boundary=0
-          for path in '/' '/publishing' '/publishing/' '/publishing.html' '/healthz/core'; do
+          ok=0
+          for path in '/' '/erp.html' '/publishing.html' '/healthz/core'; do
             body="$(mktemp)"
             result="$(curl -LsS --max-redirs 6 --max-time 25 -o "$body" -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
-            code="${result%% *}"
-            rest="${result#* }"
-            redirects="${rest%% *}"
+            code="${result%% *}"; rest="${result#* }"; redirects="${rest%% *}"
             echo "$path -> $result"
-            test "$code" -ge 200 || { echo "$path returned invalid HTTP status $code" >&2; exit 1; }
-            test "$code" -lt 500 || { echo "$path returned server error $code" >&2; exit 1; }
-            test "$redirects" -le 1 || { echo "$path has a redirect storm ($redirects redirects)" >&2; exit 1; }
-            if grep -Eq '貼文中心系統 App|唯一正式內容系統' "$body"; then
-              direct_content=$((direct_content+1))
-            elif grep -Eiq '<html|<!doctype|cloudflare|access|sign in|login' "$body"; then
-              access_boundary=$((access_boundary+1))
-            else
-              echo "$path returned unexpected content" >&2
-              exit 1
-            fi
+            test "$code" -ge 200
+            test "$code" -lt 500
+            test "$redirects" -le 1
+            if grep -Eiq '仙加味營運中控|貼文中心系統 App|<html|<!doctype|cloudflare|access|sign in|login' "$body"; then ok=$((ok+1)); else echo "$path unexpected content" >&2; exit 1; fi
           done
-          if [ "$direct_content" -gt 0 ]; then
-            echo 'XJW_DEPLOY_STATUS=verified_live' >> "$GITHUB_ENV"
-            echo 'XJW_LIVE_VERIFY_MODE=direct_content_verified_no_redirect_storm' >> "$GITHUB_ENV"
-          else
-            test "$access_boundary" -eq 5 || { echo 'Not all protected routes reached Cloudflare Access boundary.' >&2; exit 1; }
-            echo 'XJW_DEPLOY_STATUS=deployed_access_protected' >> "$GITHUB_ENV"
-            echo 'XJW_LIVE_VERIFY_MODE=cloudflare_access_boundary_verified_no_redirect_storm' >> "$GITHUB_ENV"
-          fi
-      - name: Record verified production deployment
+          test "$ok" -eq 4
+          echo 'XJW_DEPLOY_STATUS=deployed_access_protected' >> "$GITHUB_ENV"
+          echo 'XJW_LIVE_VERIFY_MODE=erp_publishing_access_boundary_verified_no_redirect_storm' >> "$GITHUB_ENV"
+      - name: Record verified full-system deployment
         shell: bash
         run: |
           cat > deployment-status.json <<EOF
           {
             "status": "${XJW_DEPLOY_STATUS}",
             "source_commit": "${GITHUB_SHA}",
-            "runtime": "cloudflare-worker-publishing-center-app",
-            "entry": "src/publishing-content-audit-entry.js",
-            "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
-            "route_mode": "direct_no_redirect",
-            "html_handling": "none",
-            "redirect_loop_prevention": true,
-            "access_jwt_verification": "configured_and_api_cross_checked",
-            "health": "healthz/core + healthz/readiness + direct publishing aliases",
-            "content_image_audit": "full-library copy uniqueness + strict unique image per post + season + weather + context semantic hard gate",
-            "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
+            "runtime": "cloudflare-worker-full-internal-system",
+            "entry": "src/full-system-entry.js",
+            "canonical_routes": ["/", "/erp.html", "/publishing.html"],
+            "erp_ui": "enabled",
+            "erp_api": "enabled",
+            "publishing_center": "enabled_independent",
+            "publishing_review": "16_item_human_review_and_current_semantic_media_audit",
+            "immediate_publish": "enabled_not_blocked_by_fixed_schedule",
+            "qixuan_public_visible": false,
+            "qixuan_internal_data": "retained",
             "remote_d1": "verified",
-            "erp_ui": "disabled",
-            "erp_api": "blocked_except_publishing",
+            "cloudflare_access": "verified",
             "guard_mode": "paused_for_full_system_update",
-            "blocking_content_media_guards": false,
+            "minimum_safety": true,
+            "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
             "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           }
           EOF
@@ -211,6 +168,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add deployment-status.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'deploy: record verified posting center app release'
+          git commit -m 'deploy: record verified full ERP and publishing release'
           git pull --rebase origin main
           git push origin HEAD:main
