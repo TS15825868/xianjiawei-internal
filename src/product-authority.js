@@ -48,6 +48,7 @@ function productSegments(text='',target=''){
 
 function publicProductContextErrors(text=''){
   const source=String(text||''),errors=[];
+  if(/柒玄茶|龜鹿調飲粉/i.test(source))errors.push('柒玄茶目前暫時隱藏，只可保留於ERP內部資料，不得出現在公開貼文、官網或LINE OA公開內容。');
   if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source)){
     errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
   }
@@ -129,6 +130,7 @@ export const PRODUCT_AUTHORITY=Object.freeze({
   guiluGaoUsagePrimary:guiluGao?.usagePrimary||'',
   guiluDrink30UsagePrimary:[drink30?.usagePrimary,drink30?.usageTiming].filter(Boolean).join('；'),
   guiluDrink180UsagePrimary:[drink180?.usagePrimary,drink180?.usageTiming].filter(Boolean).join('；'),
+  qixuanPublicVisible:false,
   postImageMatchBlocking:true,
   mediaGuardPolicy:'current-media-role-and-product-match; customer-display main / dm-final detailed DM / 8-14 trial / products-v3 identity-reference; no historical-version pin',
   products:PRODUCTS
