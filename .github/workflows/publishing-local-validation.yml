@@ -1,4 +1,4 @@
-name: 仙加味貼文中心系統 App 手動驗收
+name: 仙加味 ERP＋貼文中心正式程式手動驗收
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: xianjiawei-publishing-manual-validation
+  group: xianjiawei-internal-manual-validation
   cancel-in-progress: true
 
 jobs:
@@ -31,24 +31,31 @@ jobs:
           if(mode.keep_minimum_safety!==true) throw new Error('minimum safety must stay enabled');
           console.log('PASS maintenance guard mode');
           NODE
-      - name: Run current code and product authority checks
+      - name: Run current code and authority checks
         run: |
           npm run check
           npm run guard:full
           npm run build:static
-      - name: Verify standalone posting center output
+      - name: Verify full ERP plus one publishing center output
         shell: bash
         run: |
           set -euo pipefail
           test -f dist/index.html
+          test -f dist/erp.html
           test -f dist/publishing.html
           test -f dist/manifest.webmanifest
+          test -f dist/assets/css/internal-app.css
+          test -f dist/assets/js/internal-app.js
+          test -f dist/assets/js/erp-publishing-separation.js
           test -f dist/assets/js/publishing-app-v2.js
           test -f dist/assets/js/publishing-review-gate.js
           test -f dist/assets/js/device-image-upload.js
           test -f dist/assets/js/formal-media-policy-v20260810.js
+          grep -q "location.replace('/erp.html')" dist/index.html
+          grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
-          grep -q "location.replace('/publishing.html')" dist/index.html
-          test ! -e dist/assets/js/internal-app.js
-          test ! -e dist/assets/js/erp-publishing-separation.js
-          echo 'PASS standalone publishing center validation; no Cloudflare deploy performed.'
+          grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
+          grep -q 'erpUiEnabled:true' src/full-system-entry.js
+          grep -q 'erpApisEnabled:true' src/full-system-entry.js
+          grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
+          echo 'PASS full ERP is retained and exactly one publishing center remains.'
