@@ -4,35 +4,43 @@
 
 ## 正式執行架構
 
-- Cloudflare Worker 正式入口：`src/production-entry.js`
+- Cloudflare Worker 正式最上層入口：`src/full-system-entry.js`
+- 完整 ERP／D1／Access／產品與通路後端：`src/production-entry.js`
 - 16項貼文審核與重新生成閉環：`src/publishing-review-gate-entry.js`
+- 內容／圖片語意與重複檢查：`src/publishing-content-audit-entry.js`
 - 立即發布／人工平台分流：`src/flexible-publish-entry.js`
 - 產品與貼文寫入權威：`src/authority-entry.js`
-- 既有 ERP API／媒體入口：`src/entry.js`
+- ERP API／媒體入口：`src/entry.js`
 - ERP 核心 API：`src/worker.js`
 - 社群發布：`src/social-publisher.js`
 - 正式產品權威：`src/product-authority.js` + `config/official-products.json`
 
-`production-entry.js` 是完整頂層入口；它保留 ERP 模組、Cloudflare Access、D1、產品權威、16項圖文審核、平台健康檢查、排程與真正立即發布。`src/publishing-only-entry.js` 只保留作相容／歷史程式檢查，不再作正式 Wrangler 入口。
+`full-system-entry.js` 是目前 Wrangler 正式入口：它把完整 ERP 與唯一正式貼文中心整合在同一個 Cloudflare Worker 中，但維持不同介面與責任。`production-entry.js` 保留完整 ERP／D1／Access 與後端能力；貼文操作仍走目前最新審核與內容守門鏈。`src/publishing-only-entry.js` 只作貼文中心相容層，不再負責封鎖 ERP 正常模組。
 
 ## 介面分工
 
-- `/`：完整「仙加味營運中控」，保留產品、庫存、客戶、拜訪、訂單、採購、供應商、財務、任務、範本、文件、素材與設定等內部模組。
+- `/`、`/erp.html`：完整「仙加味營運中控」，保留產品、庫存、客戶、拜訪、訂單、採購、供應商、財務、任務、範本、文件、素材、平台授權與設定等內部模組。
 - `/publishing.html`：唯一正式貼文審核發佈介面。
-- ERP 的貼文／排程快捷入口會導向 `/publishing.html`，避免同時維護兩套貼文操作邏輯。
+- ERP 的貼文／排程快捷入口導向 `/publishing.html`，避免同時維護兩套貼文操作邏輯。
 
-官網不公開的成本、批發、庫存、合作商與歷史營運資料，仍可保留於 ERP／D1；不得因官網不顯示就刪除或限制。
+官網不公開的成本、批發、庫存、合作商、客戶、寄賣、歷史營運資料與內部備註仍可保留於 ERP／D1；不得因官網不顯示就刪除或限制。
 
 ## 正式產品資料原則
 
-- 六個正式產品、六個正式主規格。
-- 龜鹿膏：100g／罐；目前使用方式為「食用時間可依個人使用習慣與作息時間安排」。
-- 龜鹿飲30cc玻璃罐：30cc／罐（小玻璃罐）；小玻璃裸罐、無貼紙，不得稱瓶、不得改罐型或比例。
-- 龜鹿飲180cc鋁袋：180cc／包（鋁袋）；維持狹長鋁袋原比例。
-- 龜鹿湯塊：75g／盒｜8塊裝；每塊約9.375g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
-- 龜鹿膠：600g （1斤）／盒｜32塊裝；每塊約18.75 g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
+目前對外只使用六項正式產品：
+
+- 龜鹿膏：100g／罐；使用時間可依個人使用習慣與作息時間安排。
+- 龜鹿飲30cc玻璃罐：30cc／罐（小玻璃罐）；小玻璃裸罐、無貼紙，不得稱瓶、不得改罐型或比例；每日 1–2 罐。
+- 龜鹿飲180cc鋁袋：180cc／包（鋁袋）；維持狹長鋁袋原比例；每日一包。
+- 龜鹿湯塊：75g （2兩）／盒｜8塊裝；每塊約9.375g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
+- 龜鹿膠：600g （1斤）／盒｜32塊裝；每塊約18.75g只屬產品詳細／內部資料，不放產品圖、DM或貼文主規格。
 - 鹿茸粉：75g／罐。
-- 正式成分順序納入後端驗證。
+
+龜鹿飲30cc與180cc為接單後製作，約5～7個工作天出貨；此交期只適用龜鹿飲。
+
+柒玄茶・龜鹿調飲粉目前只可保留於 ERP 內部／暫緩資料，不得出現在官網、LINE OA 產品卡、推薦、公開 AI 回答、公開貼文或主動回覆；待使用者日後明確重新啟用才恢復公開。
+
+正式成分與順序納入後端驗證，新版正確資料優先於任何舊守門員或舊固定版本。
 
 ## 正式圖片角色
 
@@ -48,7 +56,7 @@
 - 立即發布不受固定排程時段卡住；已核准或已排程貼文都可直接走 `/api/posts/:id/publish-now`。
 - 文案或圖片被修改、重新生成時，舊核准與排程自動失效；完成回填後回待審核。
 - LINE VOOM 與沒有官方 API／Token 的平台保留人工發布／補登流程。
-- 阻擋型內容／圖片守門在整套系統最終驗收前維持暫停，最低程式與資料安全檢查仍保留。
+- 阻擋型內容／圖片守門在整套系統最終驗收前維持暫停，最低程式、權限、產品公開邊界與資料安全檢查仍保留。
 
 ## 不會存放在 GitHub 的內容
 
@@ -75,4 +83,4 @@ npm run build:static
 npm run guard:full
 ```
 
-GitHub Actions 的程式驗收不等於 Cloudflare 已正式部署；只有實際 deploy workflow 成功且 live health／deployment status 驗證通過，才可稱為正式上線。
+GitHub Actions 的程式驗收不等於 Cloudflare 已正式部署；只有實際 deploy workflow 成功，而且 `/`、`/erp.html`、`/publishing.html`、D1、Access 與 `deployment-status.json` 都通過正式驗收，才可稱為完整 ERP＋貼文中心已正式上線。
