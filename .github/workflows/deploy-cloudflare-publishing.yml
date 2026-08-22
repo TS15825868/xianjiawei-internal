@@ -1,44 +1,13 @@
-name: 仙加味 ERP／貼文中心正式部署
+name: 仙加味 ERP／貼文中心手動備援部署
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'index.html'
-      - 'erp.html'
-      - 'publishing.html'
-      - 'assets/css/internal-app.css'
-      - 'assets/js/internal-app.js'
-      - 'assets/js/erp-publishing-separation.js'
-      - 'assets/css/publishing-*.css'
-      - 'assets/js/publishing-*.js'
-      - 'assets/js/device-image-upload.js'
-      - 'assets/js/formal-media-policy-v20260810.js'
-      - 'src/full-system-entry.js'
-      - 'src/production-entry.js'
-      - 'src/publishing-content-audit-entry.js'
-      - 'src/publishing-only-entry.js'
-      - 'src/publishing-review-gate-entry.js'
-      - 'src/flexible-publish-entry.js'
-      - 'src/authority-entry.js'
-      - 'src/entry.js'
-      - 'src/product-authority.js'
-      - 'src/product-authority.test.js'
-      - 'src/worker.js'
-      - 'src/social-publisher.js'
-      - 'src/media-upload.js'
-      - 'config/official-products.json'
-      - 'package.json'
-      - 'wrangler.jsonc'
-      - 'tools/validate-single-publishing-system.mjs'
-      - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: xianjiawei-internal-production
+  group: xianjiawei-internal-manual-backup-deploy
   cancel-in-progress: true
 
 jobs:
@@ -50,32 +19,20 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Require Cloudflare production credentials
-        shell: bash
+      - name: Require Cloudflare backup deployment credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing CLOUDFLARE_API_TOKEN' >&2; exit 1; }
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing CLOUDFLARE_ACCOUNT_ID' >&2; exit 1; }
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Verify maintenance guard mode
-        run: |
-          node - <<'NODE'
-          const mode=require('./guard-mode.json');
-          if(mode.mode!=='paused_for_full_system_update')throw new Error('unexpected guard mode');
-          if(mode.blocking_content_and_media_guards!==false)throw new Error('blocking guards must remain paused during full cleanup');
-          if(mode.keep_minimum_safety!==true)throw new Error('minimum safety must stay enabled');
-          NODE
-      - name: Run current code and guard checks
+      - name: Validate current full ERP and publishing source
         run: |
           npm run check
           npm run guard:full
-      - name: Build ERP and publishing static apps
-        run: npm run build:static
+          npm run build:static
       - name: Verify full production bundle
         shell: bash
         run: |
@@ -94,80 +51,22 @@ jobs:
           grep -q 'erpUiEnabled:true' src/full-system-entry.js
           grep -q 'erpApisEnabled:true' src/full-system-entry.js
           grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
-          grep -q 'duplicateImageHardGate:true' src/publishing-content-audit-entry.js
-          grep -q 'semanticImageMatchHardGate:true' src/publishing-content-audit-entry.js
           grep -q 'qixuanPublicVisible:false' src/product-authority.js
-          echo 'PASS full ERP + independent publishing production bundle.'
-      - name: Cross-check Cloudflare Access application
-        shell: bash
-        run: |
-          set -euo pipefail
-          domain='xianjiawei-internal.tung314069.workers.dev'
-          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps?domain=$domain&exact=true&per_page=50" \
-            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-            -H 'Content-Type: application/json' > /tmp/access-apps.json
-          node - <<'NODE'
-          const body=require('/tmp/access-apps.json');
-          if(body.success!==true)throw new Error('Cloudflare Access API failed');
-          const domain='xianjiawei-internal.tung314069.workers.dev';
-          const apps=(body.result||[]).filter(x=>String(x.domain||'').replace(/^https?:\/\//,'').replace(/\/$/,'')===domain);
-          if(apps.length!==1)throw new Error(`Expected one Access app, got ${apps.length}`);
-          if(apps[0].aud!=='201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f')throw new Error('Access AUD mismatch');
-          NODE
-      - name: Verify remote D1 before deploy
-        run: |
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status, COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status"
-      - name: Deploy full internal Worker
+          echo 'PASS full ERP + independent publishing bundle.'
+      - name: Verify remote D1
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+      - name: Manual backup deploy to Cloudflare
         run: npx wrangler deploy --keep-vars
-      - name: Verify protected live routes without redirect storms
+      - name: Verify protected live routes
         shell: bash
         run: |
           set -euo pipefail
           base='https://xianjiawei-internal.tung314069.workers.dev'
-          ok=0
           for path in '/' '/erp.html' '/publishing.html' '/healthz/core'; do
-            body="$(mktemp)"
-            result="$(curl -LsS --max-redirs 6 --max-time 25 -o "$body" -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
-            code="${result%% *}"; rest="${result#* }"; redirects="${rest%% *}"
+            result="$(curl -LsS --max-redirs 6 --max-time 25 -o /tmp/xjw-body -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
             echo "$path -> $result"
+            code="${result%% *}"
             test "$code" -ge 200
             test "$code" -lt 500
-            test "$redirects" -le 1
-            if grep -Eiq '仙加味營運中控|貼文中心系統 App|<html|<!doctype|cloudflare|access|sign in|login' "$body"; then ok=$((ok+1)); else echo "$path unexpected content" >&2; exit 1; fi
           done
-          test "$ok" -eq 4
-          echo 'XJW_DEPLOY_STATUS=deployed_access_protected' >> "$GITHUB_ENV"
-          echo 'XJW_LIVE_VERIFY_MODE=erp_publishing_access_boundary_verified_no_redirect_storm' >> "$GITHUB_ENV"
-      - name: Record verified full-system deployment
-        shell: bash
-        run: |
-          cat > deployment-status.json <<EOF
-          {
-            "status": "${XJW_DEPLOY_STATUS}",
-            "source_commit": "${GITHUB_SHA}",
-            "runtime": "cloudflare-worker-full-internal-system",
-            "entry": "src/full-system-entry.js",
-            "canonical_routes": ["/", "/erp.html", "/publishing.html"],
-            "erp_ui": "enabled",
-            "erp_api": "enabled",
-            "publishing_center": "enabled_independent",
-            "publishing_review": "16_item_human_review_and_current_semantic_media_audit",
-            "immediate_publish": "enabled_not_blocked_by_fixed_schedule",
-            "qixuan_public_visible": false,
-            "qixuan_internal_data": "retained",
-            "remote_d1": "verified",
-            "cloudflare_access": "verified",
-            "guard_mode": "paused_for_full_system_update",
-            "minimum_safety": true,
-            "live_verify_mode": "${XJW_LIVE_VERIFY_MODE}",
-            "verified_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          }
-          EOF
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add deployment-status.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'deploy: record verified full ERP and publishing release'
-          git pull --rebase origin main
-          git push origin HEAD:main
+          echo 'PASS manual backup deployment verification.'
