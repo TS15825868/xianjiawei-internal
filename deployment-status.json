@@ -1,20 +1,26 @@
 {
-  "status": "deployed_access_protected",
-  "source_commit": "2aeecc3bf960741bcf9f13ddd83b944fb253a172",
-  "runtime": "cloudflare-worker-publishing-center-app",
-  "entry": "src/publishing-content-audit-entry.js",
-  "canonical_routes": ["/", "/publishing", "/publishing/", "/publishing.html"],
-  "route_mode": "direct_no_redirect",
-  "html_handling": "none",
-  "redirect_loop_prevention": true,
-  "access_jwt_verification": "configured_and_api_cross_checked",
-  "health": "healthz/core + healthz/readiness + direct publishing aliases",
-  "content_image_audit": "full-library copy uniqueness + strict unique image per post + season + weather + context semantic hard gate",
-  "live_verify_mode": "cloudflare_access_boundary_verified_no_redirect_storm",
-  "remote_d1": "verified",
-  "erp_ui": "disabled",
-  "erp_api": "blocked_except_publishing",
-  "guard_mode": "paused_for_full_system_update",
-  "blocking_content_media_guards": false,
-  "verified_at_utc": "2026-08-20T17:47:19Z"
+  "status": "pending_cloudflare_live_verification",
+  "deploymentAuthority": "cloudflare-native-git-auto-deploy",
+  "currentMainHead": "f2f560e188e09b9feee08ba2044b3101ccddc4d4",
+  "currentExpectedRuntime": "cloudflare-worker-full-erp-plus-publishing",
+  "currentExpectedEntry": "src/full-system-entry.js",
+  "currentExpectedRoutes": ["/", "/erp.html", "/publishing.html"],
+  "currentExpectedState": {
+    "erp_ui": "enabled_when_latest_main_is_live",
+    "erp_api": "enabled_when_latest_main_is_live",
+    "publishing_center": "enabled_independent",
+    "guard_mode": "paused_for_full_system_update"
+  },
+  "lastVerifiedDeployment": {
+    "status": "deployed_access_protected",
+    "source_commit": "2aeecc3bf960741bcf9f13ddd83b944fb253a172",
+    "runtime": "cloudflare-worker-publishing-center-app",
+    "entry": "src/publishing-content-audit-entry.js",
+    "erp_ui": "disabled",
+    "erp_api": "blocked_except_publishing",
+    "verified_at_utc": "2026-08-20T17:47:19Z"
+  },
+  "verificationRule": "不得把 lastVerifiedDeployment 的舊 publishing-only 狀態當成目前 main 的正式架構；只有 Cloudflare 原生 Git Auto-Deploy 的實際成功版本與 Access 保護下的 /、/erp.html、/publishing.html live 驗收通過後，才改為 deployed_verified。",
+  "remoteD1LastVerified": true,
+  "blockingContentMediaGuards": false
 }
