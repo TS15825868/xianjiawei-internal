@@ -1,0 +1,127 @@
+{
+  "name": "仙加味｜已審核貼文立即發布",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "xianjiawei-approved-post-publish",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "5ab0f472-80db-4a51-a001-webhook",
+      "name": "接收已審核貼文ID",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "5ab0f472-80db-4a51-a001-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input=$input.first().json; const body=input.body ?? input; const postId=String(body.post_id ?? body.id ?? '').trim(); if(!postId) throw new Error('缺少 post_id'); return [{json:{post_id:postId}}];"
+      },
+      "id": "5ab0f472-80db-4a51-a002-validate",
+      "name": "驗證 post_id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.XJW_INTERNAL_BASE_URL + '/api/posts/' + encodeURIComponent($json.post_id) + '/publish-now'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "CF-Access-Client-Id", "value": "={{$env.CF_ACCESS_CLIENT_ID}}"},
+            {"name": "CF-Access-Client-Secret", "value": "={{$env.CF_ACCESS_CLIENT_SECRET}}"},
+            {"name": "Content-Type", "value": "application/json"}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "5ab0f472-80db-4a51-a003-publish",
+      "name": "呼叫正式 publish-now",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first().json; const status=Number(r.statusCode ?? r.status ?? 0); const body=r.body ?? r; const ok=status>=200&&status<300&&body?.ok!==false&&!body?.error; const postId=body?.id ?? $('驗證 post_id').first().json.post_id; return [{json:{ok,status,post_id:postId,publish:body}}];"
+      },
+      "id": "5ab0f472-80db-4a51-a004-evaluate",
+      "name": "整理發布結果",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.XJW_INTERNAL_BASE_URL + '/api/posts/' + encodeURIComponent($json.post_id) + '/deliveries'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "CF-Access-Client-Id", "value": "={{$env.CF_ACCESS_CLIENT_ID}}"},
+            {"name": "CF-Access-Client-Secret", "value": "={{$env.CF_ACCESS_CLIENT_SECRET}}"}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "5ab0f472-80db-4a51-a005-deliveries",
+      "name": "讀各平台 deliveries",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1040, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d=$input.first().json; const publish=$('整理發布結果').first().json; return [{json:{ok:publish.ok,post_id:publish.post_id,publish_status:publish.status,publish:publish.publish,deliveries:d.body ?? d}}];"
+      },
+      "id": "5ab0f472-80db-4a51-a006-result",
+      "name": "合併正式結果",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}",
+        "options": {}
+      },
+      "id": "5ab0f472-80db-4a51-a007-response",
+      "name": "回傳貼文中心",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1560, 0]
+    }
+  ],
+  "connections": {
+    "接收已審核貼文ID": {"main": [[{"node": "驗證 post_id", "type": "main", "index": 0}]]},
+    "驗證 post_id": {"main": [[{"node": "呼叫正式 publish-now", "type": "main", "index": 0}]]},
+    "呼叫正式 publish-now": {"main": [[{"node": "整理發布結果", "type": "main", "index": 0}]]},
+    "整理發布結果": {"main": [[{"node": "讀各平台 deliveries", "type": "main", "index": 0}]]},
+    "讀各平台 deliveries": {"main": [[{"node": "合併正式結果", "type": "main", "index": 0}]]},
+    "合併正式結果": {"main": [[{"node": "回傳貼文中心", "type": "main", "index": 0}]]}
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "5ab0f472-80db-4a51-a001-000000000002",
+  "meta": {"templateCredsSetupCompleted": false},
+  "tags": []
+}
