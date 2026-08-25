@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "仙加味 n8n 第一階段測試執行環境；正式營運資料不存放於此。",
   "scripts": {
-    "start": "n8n start"
+    "start": "n8n export:workflow --all --output=/tmp/xjw-workflows.json && node -e \"const fs=require('fs');const x=JSON.parse(fs.readFileSync('/tmp/xjw-workflows.json','utf8'));for(const w of x) console.log('[workflow-id]',JSON.stringify({id:w.id,name:w.name,active:w.active}));\" && n8n start"
   },
   "dependencies": {
     "n8n": "2.35.7"
