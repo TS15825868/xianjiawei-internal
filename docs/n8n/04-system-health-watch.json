@@ -1,4 +1,5 @@
 {
+  "id": "XthcauaEkTO29XSf",
   "name": "仙加味｜系統健康總監控",
   "nodes": [
     {
@@ -33,10 +34,8 @@
     },
     {
       "parameters": {
-        "url": "https://api.github.com/repos/TS15825868/xianjiawei/actions/runs?per_page=1",
-        "sendHeaders": true,
-        "headerParameters": {"parameters": [{"name": "User-Agent", "value": "xianjiawei-n8n-health/1.0"}, {"name": "Accept", "value": "application/vnd.github+json"}]},
-        "options": {"response": {"response": {"fullResponse": true, "neverError": true}}}
+        "url": "https://ts15825868.github.io/xianjiawei/sitemap.xml",
+        "options": {"response": {"response": {"fullResponse": true, "neverError": true, "responseFormat": "text"}}}
       },
       "id": "xjw-health-004",
       "name": "讀官網 GitHub Pages",
@@ -46,7 +45,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const web=$('讀官網正式母資料').first().json; const line=$('讀 LINE OA healthz').first().json; const gh=$('讀官網 GitHub Pages').first().json; const webBody=web.body??web; const lineBody=line.body??line; const ghBody=gh.body??gh; const latest=Array.isArray(ghBody.workflow_runs)?ghBody.workflow_runs[0]:null; const websiteOk=Number(web.statusCode??200)>=200&&Number(web.statusCode??200)<300&&webBody?.authority==='user-confirmed-current'&&Number(webBody?.productCount)===6; const lineStatus=Number(line.statusCode??line.status??0); const lineOk=lineStatus>=200&&lineStatus<300&&lineBody?.ok!==false; const githubStatus=Number(gh.statusCode??200); const githubOk=githubStatus>=200&&githubStatus<300&&!!latest&&latest.status==='completed'&&latest.conclusion==='success'; const problems=[]; if(!websiteOk) problems.push('官網正式產品母資料異常'); if(!lineOk) problems.push('LINE OA healthz 異常'); if(!githubOk) problems.push('官網 GitHub Pages 最新部署未成功'); return [{json:{ok:problems.length===0,checkedAt:new Date().toISOString(),website:{ok:websiteOk,status:web.statusCode??null,version:webBody?.version,productCount:webBody?.productCount},line:{ok:lineOk,status:lineStatus,bodyOk:lineBody?.ok},githubPages:{ok:githubOk,status:latest?.status,conclusion:latest?.conclusion,headSha:latest?.head_sha,runId:latest?.id},problems}}];"
+        "jsCode": "const web=$('讀官網正式母資料').first().json; const line=$('讀 LINE OA healthz').first().json; const pages=$('讀官網 GitHub Pages').first().json; const webBody=web.body??web; const lineBody=line.body??line; const pagesBody=pages.body??pages; const websiteOk=Number(web.statusCode??200)>=200&&Number(web.statusCode??200)<300&&webBody?.authority==='user-confirmed-current'&&Number(webBody?.productCount)===6; const lineStatus=Number(line.statusCode??line.status??0); const lineOk=lineStatus>=200&&lineStatus<300&&lineBody?.ok!==false; const pagesStatus=Number(pages.statusCode??pages.status??0); const pagesText=typeof pagesBody==='string'?pagesBody:JSON.stringify(pagesBody??''); const pagesOk=pagesStatus>=200&&pagesStatus<300&&pagesText.includes('<urlset'); const problems=[]; if(!websiteOk) problems.push('官網正式產品母資料異常'); if(!lineOk) problems.push('LINE OA healthz 異常'); if(!pagesOk) problems.push('官網 GitHub Pages 公開站異常'); return [{json:{ok:problems.length===0,checkedAt:new Date().toISOString(),website:{ok:websiteOk,status:web.statusCode??null,version:webBody?.version,productCount:webBody?.productCount},line:{ok:lineOk,status:lineStatus,bodyOk:lineBody?.ok},githubPages:{ok:pagesOk,status:pagesStatus,sitemapOk:pagesText.includes('<urlset')},problems}}];"
       },
       "id": "xjw-health-005",
       "name": "總體判斷",
@@ -102,7 +101,7 @@
   "pinData": {},
   "active": false,
   "settings": {"executionOrder": "v1"},
-  "versionId": "xjw-health-watch-20260825-v1",
+  "versionId": "xjw-health-watch-20260825-v2",
   "meta": {"templateCredsSetupCompleted": false},
   "tags": []
 }
