@@ -1,4 +1,5 @@
 {
+  "id": "RQwMvN9bhfBa1LJf",
   "name": "仙加味｜LINE OA 健康監控",
   "nodes": [
     {
@@ -17,7 +18,7 @@
     },
     {
       "parameters": {
-        "url": "={{$env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz'}}",
+        "url": "https://ts-line.onrender.com/healthz",
         "options": {
           "response": {
             "response": {
@@ -102,7 +103,7 @@
   "pinData": {},
   "active": false,
   "settings": {"executionOrder": "v1"},
-  "versionId": "f2f6ad82-624c-4e7d-a1d3-000000000001",
+  "versionId": "f2f6ad82-624c-4e7d-a1d3-000000000002",
   "meta": {"templateCredsSetupCompleted": false},
   "tags": []
 }
