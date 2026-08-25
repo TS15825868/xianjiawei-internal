@@ -1,0 +1,108 @@
+{
+  "name": "仙加味｜LINE OA 健康監控",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {"field": "minutes", "minutesInterval": 15}
+          ]
+        }
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-001-line-schedule",
+      "name": "每15分鐘",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz'}}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-002-line-health",
+      "name": "讀 LINE healthz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $input.first().json; const status = Number(r.statusCode ?? r.status ?? 0); const body = r.body ?? r; const ok = status >= 200 && status < 300 && body?.ok !== false; return [{json:{ok,status,checkedAt:new Date().toISOString(),body}}];"
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-003-evaluate",
+      "name": "判斷健康狀態",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2},
+          "conditions": [
+            {
+              "id": "f2f6ad82-624c-4e7d-a1d3-004-condition",
+              "leftValue": "={{$json.ok}}",
+              "rightValue": true,
+              "operator": {"type": "boolean", "operation": "true", "singleValue": true}
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-004-if",
+      "name": "LINE 正常？",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [780, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json:{ok:true,message:'LINE OA 正常',checkedAt:$json.checkedAt,status:$json.status}}];"
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-005-ok",
+      "name": "正常結束",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1040, -100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.XJW_ALERT_WEBHOOK_URL}}",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({source:'仙加味 LINE OA',severity:'error',message:'LINE OA healthz 異常',status:$json.status,checkedAt:$json.checkedAt,detail:$json.body}) }}",
+        "options": {}
+      },
+      "id": "f2f6ad82-624c-4e7d-a1d3-006-alert",
+      "name": "送出異常通知（可選）",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1040, 100],
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "每15分鐘": {"main": [[{"node": "讀 LINE healthz", "type": "main", "index": 0}]]},
+    "讀 LINE healthz": {"main": [[{"node": "判斷健康狀態", "type": "main", "index": 0}]]},
+    "判斷健康狀態": {"main": [[{"node": "LINE 正常？", "type": "main", "index": 0}]]},
+    "LINE 正常？": {"main": [[{"node": "正常結束", "type": "main", "index": 0}], [{"node": "送出異常通知（可選）", "type": "main", "index": 0}]]}
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "f2f6ad82-624c-4e7d-a1d3-000000000001",
+  "meta": {"templateCredsSetupCompleted": false},
+  "tags": []
+}
