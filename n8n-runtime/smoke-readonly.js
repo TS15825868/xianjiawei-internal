@@ -1,6 +1,6 @@
 const TIMEOUT_MS = 90000;
 
-async function fetchJson(url, headers = {}) {
+async function fetchResource(url, headers = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -18,12 +18,12 @@ async function fetchJson(url, headers = {}) {
   const errors = [];
   const lineUrl = process.env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz';
 
-  const line = await fetchJson(lineUrl);
+  const line = await fetchResource(lineUrl);
   if (!(line.status >= 200 && line.status < 300) || line.body?.ok === false) {
     errors.push(`LINE healthz 異常：HTTP ${line.status}`);
   }
 
-  const master = await fetchJson('https://ts15825868.github.io/xianjiawei/public-product-master.json');
+  const master = await fetchResource('https://ts15825868.github.io/xianjiawei/public-product-master.json');
   const m = master.body || {};
   const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen'];
   const ids = Array.isArray(m.products) ? m.products.map((p) => p.id) : [];
@@ -37,11 +37,11 @@ async function fetchJson(url, headers = {}) {
     errors.push('30cc 使用資料不是每日 1–2 罐');
   }
 
-  const ai = await fetchJson('https://ts15825868.github.io/xianjiawei/ai-answers.json');
+  const ai = await fetchResource('https://ts15825868.github.io/xianjiawei/ai-answers.json');
   if (!ai.ok) errors.push(`AI answers HTTP ${ai.status}`);
   if (ai.body?.sourceOfTruth !== 'public-product-master.json') errors.push('AI answers 未指向產品母資料');
 
-  const geo = await fetchJson('https://ts15825868.github.io/xianjiawei/geo-data.json');
+  const geo = await fetchResource('https://ts15825868.github.io/xianjiawei/geo-data.json');
   if (!geo.ok) errors.push(`GEO data HTTP ${geo.status}`);
   const graph = Array.isArray(geo.body?.['@graph']) ? geo.body['@graph'] : [];
   const org = graph.find((x) => x?.['@type'] === 'Organization');
@@ -49,14 +49,10 @@ async function fetchJson(url, headers = {}) {
   if (org?.name !== '仙加味') errors.push('GEO Organization 品牌錯誤');
   if (Number(list?.numberOfItems) !== 6) errors.push('GEO ItemList 不是 6 項');
 
-  const gh = await fetchJson('https://api.github.com/repos/TS15825868/xianjiawei/actions/runs?per_page=1', {
-    'User-Agent': 'xianjiawei-n8n-smoke/1.0',
-    'Accept': 'application/vnd.github+json'
-  });
-  const latest = Array.isArray(gh.body?.workflow_runs) ? gh.body.workflow_runs[0] : null;
-  if (!gh.ok) errors.push(`GitHub Actions API HTTP ${gh.status}`);
-  if (!latest || latest.status !== 'completed' || latest.conclusion !== 'success') {
-    errors.push('官網 GitHub Pages 最新部署未成功');
+  // 直接驗證 GitHub Pages 正式公開站，不依賴匿名 GitHub Actions API，避免 rate-limit 403。
+  const pages = await fetchResource('https://ts15825868.github.io/xianjiawei/sitemap.xml');
+  if (!pages.ok || typeof pages.body !== 'string' || !pages.body.includes('<urlset')) {
+    errors.push(`官網 GitHub Pages sitemap 異常：HTTP ${pages.status}`);
   }
 
   const result = {
@@ -66,7 +62,7 @@ async function fetchJson(url, headers = {}) {
     master: { status: master.status, version: m.version, productCount: m.productCount },
     ai: { status: ai.status, version: ai.body?.version },
     geo: { status: geo.status, dateModified: graph.find((x) => x?.['@type'] === 'Dataset')?.dateModified || null },
-    githubPages: { status: gh.status, runId: latest?.id, conclusion: latest?.conclusion, headSha: latest?.head_sha },
+    githubPages: { status: pages.status, sitemapOk: pages.ok && typeof pages.body === 'string' && pages.body.includes('<urlset') },
     errors,
   };
 
