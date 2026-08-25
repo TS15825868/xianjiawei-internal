@@ -23,7 +23,7 @@
     },
     {
       "parameters": {
-        "url": "={{$env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz'}}",
+        "url": "https://ts-line.onrender.com/healthz",
         "options": {"response": {"response": {"fullResponse": true, "neverError": true}}}
       },
       "id": "xjw-health-003",
@@ -101,7 +101,7 @@
   "pinData": {},
   "active": false,
   "settings": {"executionOrder": "v1"},
-  "versionId": "xjw-health-watch-20260825-v2",
+  "versionId": "xjw-health-watch-20260826-v3",
   "meta": {"templateCredsSetupCompleted": false},
   "tags": []
 }
