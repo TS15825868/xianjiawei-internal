@@ -1,15 +1,19 @@
 {
+  "id": "mC4ySWDhUzFW4SS6",
   "name": "仙加味｜產品母資料 AI GEO 一致性檢查",
   "nodes": [
     {
       "parameters": {
-        "rule": {"interval": [{"field": "hours", "hoursInterval": 6}]}
+        "httpMethod": "GET",
+        "path": "xjw-ai-geo-9c3f75",
+        "options": {}
       },
-      "id": "0f3c29e0-1d4e-45d3-b001-schedule",
-      "name": "每6小時",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [0, 0]
+      "id": "0f3c29e0-1d4e-45d3-b001-webhook",
+      "name": "外部排程觸發",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "webhookId": "27d620ac-a4fb-45a3-b402-a226e6434df9"
     },
     {
       "parameters": {"url": "https://ts15825868.github.io/xianjiawei/public-product-master.json", "options": {}},
@@ -37,7 +41,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const master=$('讀產品母資料').first().json; const ai=$('讀 AI answers').first().json; const geo=$('讀 GEO data').first().json; const errors=[]; const expected=['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen']; const ids=(master.products||[]).map(p=>p.id); if(master.authority!=='user-confirmed-current') errors.push('產品母資料 authority 錯誤'); if(master.productCount!==6) errors.push('公開產品數不是6'); if(JSON.stringify(ids)!==JSON.stringify(expected)) errors.push('公開產品ID或順序不一致'); if(ids.includes('qixuan-guilu-drink-powder')) errors.push('柒玄茶被錯誤公開'); const p30=(master.products||[]).find(p=>p.id==='guilu-drink-30'); if(!p30?.usage?.includes('每日 1–2 罐')) errors.push('30cc 使用資料不是每日 1–2 罐'); if(ai.sourceOfTruth!=='public-product-master.json') errors.push('AI answers 沒有指向產品母資料'); const graph=geo['@graph']||[]; const org=graph.find(x=>x['@type']==='Organization'); if(org?.name!=='仙加味') errors.push('GEO Organization 品牌錯誤'); const list=graph.find(x=>x['@type']==='ItemList'); if(Number(list?.numberOfItems)!==6) errors.push('GEO ItemList 不是6項'); return [{json:{ok:errors.length===0,checkedAt:new Date().toISOString(),errors,masterVersion:master.version,aiVersion:ai.version,geoDate:graph.find(x=>x['@type']==='Dataset')?.dateModified||null}}];"
+        "jsCode": "const master=$('讀產品母資料').first().json; const ai=$('讀 AI answers').first().json; const geo=$('讀 GEO data').first().json; const errors=[]; const expected=['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen']; const ids=(master.products||[]).map(p=>p.id); if(master.authority!=='user-confirmed-current') errors.push('產品母資料 authority 錯誤'); if(master.productCount!==6) errors.push('公開產品數不是6'); if(JSON.stringify(ids)!==JSON.stringify(expected)) errors.push('公開產品ID或順序不一致'); if(ids.includes('qixuan-guilu-drink-powder')) errors.push('柒玄茶被錯誤公開'); const p30=(master.products||[]).find(p=>p.id==='guilu-drink-30'); if(!p30?.usage?.includes('每日 1–2 罐')) errors.push('30cc 使用資料不是每日 1–2 罐'); if(ai.sourceOfTruth!=='public-product-master.json') errors.push('AI answers 沒有指向產品母資料'); const graph=geo['@graph']||[]; const org=graph.find(x=>x['@type']==='Organization'); if(org?.name!=='仙加味') errors.push('GEO Organization 品牌錯誤'); const list=graph.find(x=>x['@type']==='ItemList'); if(Number(list?.numberOfItems)!==6) errors.push('GEO ItemList 不是6項'); if(errors.length) throw new Error(errors.join('；')); return [{json:{ok:true,checkedAt:new Date().toISOString(),errors,masterVersion:master.version,aiVersion:ai.version,geoDate:graph.find(x=>x['@type']==='Dataset')?.dateModified||null}}];"
       },
       "id": "0f3c29e0-1d4e-45d3-b005-audit",
       "name": "一致性驗收",
@@ -47,7 +51,7 @@
     }
   ],
   "connections": {
-    "每6小時": {"main": [[{"node": "讀產品母資料", "type": "main", "index": 0}]]},
+    "外部排程觸發": {"main": [[{"node": "讀產品母資料", "type": "main", "index": 0}]]},
     "讀產品母資料": {"main": [[{"node": "讀 AI answers", "type": "main", "index": 0}]]},
     "讀 AI answers": {"main": [[{"node": "讀 GEO data", "type": "main", "index": 0}]]},
     "讀 GEO data": {"main": [[{"node": "一致性驗收", "type": "main", "index": 0}]]}
@@ -55,7 +59,7 @@
   "pinData": {},
   "active": false,
   "settings": {"executionOrder": "v1"},
-  "versionId": "0f3c29e0-1d4e-45d3-b001-000000000003",
+  "versionId": "0f3c29e0-1d4e-45d3-b001-000000000004",
   "meta": {"templateCredsSetupCompleted": false},
   "tags": []
 }
