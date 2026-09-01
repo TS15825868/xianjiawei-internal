@@ -6,7 +6,7 @@
 
 n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作的 LINE OA Webhook、Cloudflare Worker、D1、GitHub main 或 Render 既有正式服務。
 
-目前先維持四條工作流：
+目前維持四條工作流：
 
 1. LINE OA 健康監控
 2. 已人工審核貼文的發布串接
@@ -39,7 +39,8 @@ n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作�
 
 ## 已確認正式接口
 
-- n8n readiness：`https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness`
+- n8n liveness / 喚醒：`https://xianjiawei-n8n-longterm.onrender.com/healthz`
+- n8n readiness / DB 診斷：`https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness`
 - LINE OA 健康檢查：`https://ts-line.onrender.com/healthz`
 - 內部系統健康檢查：`${XJW_INTERNAL_BASE_URL}/healthz`
 - 已審核貼文立即發布：`POST ${XJW_INTERNAL_BASE_URL}/api/posts/:id/publish-now`
@@ -47,6 +48,10 @@ n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作�
 - 官網公開產品母資料：`https://ts15825868.github.io/xianjiawei/public-product-master.json`
 - 官網 AI 問答：`https://ts15825868.github.io/xianjiawei/ai-answers.json`
 - 官網 GEO：`https://ts15825868.github.io/xianjiawei/geo-data.json`
+
+`/healthz/readiness` 只作 DB readiness 診斷，不拿來當 Render Free 冷啟動預熱網址。2026-09-02 實測冷啟動時 readiness 曾先回 503，但使用 `/healthz` 喚醒後，三條正式 longterm webhook 均可正常執行。
+
+Supabase PostgreSQL 同時間曾記錄 `webhook_entity` 主鍵重複註冊訊息；該主鍵為 `("webhookPath", method)`。目前三條正式 webhook 路徑各自唯一，功能驗收已通過，因此不直接修改 n8n 內部資料表；後續以功能驗收與 n8n 版本更新持續觀察。
 
 ## n8n 環境變數 / Credentials
 
@@ -70,7 +75,10 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
 3. `03-product-ai-geo-audit.json`｜`仙加味｜產品母資料 AI GEO 一致性檢查`｜Published / Active
 4. `04-system-health-watch.json`｜`仙加味｜系統健康總監控`｜Published / Active
 
-2026-09-01 已完成 longterm 正式只讀驗收；GitHub Actions Run `33512408829` 三條監控全部成功。
+正式驗收：
+
+- GitHub Actions Run `33512408829`：longterm 三條只讀監控全部成功。
+- GitHub Actions Run `33533228168`：`/healthz` 喚醒後，三條 longterm 正式 webhook 全部成功。
 
 ## 正式外部排程
 
@@ -81,9 +89,11 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
   - 系統健康總監控：每 30 分鐘
   - 產品母資料 AI GEO：每 6 小時
   - 正式 Webhook 全部指向 `xianjiawei-n8n-longterm.onrender.com`
+  - 正式版只保留 cron＋`workflow_dispatch`，不保留測試用 push 觸發。
 - `.github/workflows/n8n-evening-warm.yml`
-  - 台灣時間 19:00～00:50 每 10 分鐘呼叫 `/healthz/readiness`
+  - 台灣時間 19:00～00:50 每 10 分鐘呼叫 `/healthz`
   - 用途為 Render Free instance 晚間預熱，降低使用時冷啟動等待
+  - 正式版只保留 cron＋`workflow_dispatch`，不保留測試用 push 觸發。
 
 ## 發布流程安全規則
 
