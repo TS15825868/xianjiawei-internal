@@ -1,5 +1,5 @@
 {
-  "version": "20260814-content-upgrade-v1",
+  "version": "20260903-ai-brand-social-autopublish-v2",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/ai-brand-control-v20260807.json",
   "officialProducts": "https://ts15825868.github.io/xianjiawei/catalog-public.json",
   "formalMediaAuthority": "https://ts15825868.github.io/xianjiawei/data/formal-media-authority-v20260810.json",
@@ -19,26 +19,47 @@
   "blockedPublicCopy": ["不是每個人都一定需要"],
   "contentTarget": null,
   "contentGrowthPolicy": "continuous-no-fixed-cap",
-  "contentGrowthRule": "貼文母庫可持續增加，不以固定500篇或其他固定筆數作為上限；以題材完整、圖文一致、無重複與可正式發布為準",
+  "contentGrowthRule": "貼文母庫可持續增加，不以固定篇數作為上限；正式社群節奏目前以每週約3篇為主，避免過度發文；以題材完整、圖文一致、無重複與可正式發布為準",
+  "socialPublishing": {
+    "mode": "safe_auto_publish",
+    "weeklyTarget": 3,
+    "maximumNormalWeeklyPosts": 3,
+    "days": ["MO", "WE", "FR"],
+    "time": "20:00",
+    "timezone": "Asia/Taipei",
+    "firstRun": "2026-09-04T20:00:00+08:00",
+    "onePostPerRun": true,
+    "topicMode": "free_non_repeating",
+    "videoRule": "有符合正式規格的新短影片時，優先取代本次圖文名額，不另外增加當週貼文數量",
+    "failureRule": "任一品牌、產品、規格、圖文、重複、視覺、拼湊剪貼或法規檢查不合格就不發布，改回待審核"
+  },
   "productCount": 6,
   "sellableSpecificationCount": 6,
   "mainSpecs": {
     "guiluTangkuai": "75g／盒｜8塊裝",
-    "guiluJiao": "600g （1斤）／盒｜32塊裝"
+    "guiluJiao": "600g（1斤）／盒｜32塊裝"
   },
   "detailOnlySpecs": {
     "guiluTangkuai": "每塊約9.375g",
-    "guiluJiao": "每塊約18.75 g"
+    "guiluJiao": "每塊約18.75g"
   },
   "mediaRoles": {
     "product": "六張正式產品圖，只放產品本體，不嵌小老闆",
     "dm": "六張正式詳細DM，只在明確DM／詳細資料情境使用",
     "trial": "目前核准的小老闆正式試喝主圖",
-    "rule": "產品圖、DM圖、試喝圖不可混用"
+    "rule": "產品圖、DM圖、試喝圖不可混用；社群情境圖不得做拼湊、剪貼或浮貼式組合"
   },
   "contentAngles": {
-    "guiluIntroduction": ["飲食文化", "產品型態", "生活情境", "原料與工序", "料理搭配", "一般使用", "規格比較"],
+    "guiluIntroduction": ["飲食文化", "產品型態", "生活情境", "原料與工序", "料理搭配", "一般使用", "規格比較", "品牌故事", "FAQ", "保存", "溫熱飲用", "LINE諮詢"],
     "avoid": ["疾病", "症狀", "治療", "治癒", "療效", "改善疾病", "預防疾病", "保證功效", "關節", "卡卡", "疲勞", "精神不濟", "補氣", "生津", "膠原蛋白", "鈣質"]
+  },
+  "visualGeneration": {
+    "singleSceneRequired": true,
+    "collageForbidden": true,
+    "cutAndPasteForbidden": true,
+    "floatingStickerLookForbidden": true,
+    "sceneIntegrationRule": "角色、夥伴、道具、產品必須像同一個場景自然存在；光線、陰影、透視、尺寸與視線一致",
+    "productRule": "產品本體維持正式實物外觀與比例；不得AI重畫、改標籤、改包裝、變形或巨大化"
   },
   "mascot": {
     "style": "與使用者最新上傳網站專用小老闆素材相同的精緻Q版",
@@ -47,16 +68,16 @@
     "chestMark": "胸前紅色直式「仙加味」印章",
     "companions": ["小鹿", "小烏龜"],
     "companionRule": "夥伴依情境使用；小鹿與小烏龜出現時必須為分開的獨立角色，不可融合",
-    "productImageRule": "不得擅自放入六張正式產品主圖",
+    "productImageRule": "不得擅自放入錯誤產品；如需產品必須使用正式外觀並自然融入情境",
     "websitePlacements": ["首頁CTA", "試喝頁", "FAQ", "依需求挑選", "LINE導流", "聯絡我們"],
     "linePlacements": ["歡迎圖", "試喝圖", "FAQ圖", "怎麼選產品圖", "下單流程圖"],
     "postPlacements": ["試喝貼文", "FAQ貼文", "品牌故事貼文", "季節情境貼文", "LINE導流貼文", "龜鹿入門貼文"],
     "sceneRule": "季節、場景、環境、冷熱、表情、動作與道具必須和文案一致"
   },
   "reviewDimensions": 16,
-  "brandGuardianMode": "advisory-until-system-acceptance",
+  "brandGuardianMode": "blocking-for-auto-publish",
   "formalProductWriteValidation": "blocking-current-six-spec-authority",
-  "generatedStatus": "pending_review",
+  "generatedStatus": "auto_publish_if_all_gates_pass_else_pending_review",
   "regenerationMode": "chatgpt_handoff",
   "paidOpenAIApiEnabled": false,
   "currentTrialAsset": {
