@@ -4,7 +4,7 @@ const ALLOWED_STATUS=new Set(['waiting_chatgpt','pending_review','resolved','can
 const clean=(value,fallback='')=>String(value??fallback).trim();
 const nowIso=()=>new Date().toISOString();
 
-const BRAND_RULES=`品牌只顯示「仙加味」，不可出現公司名稱、統編、公司電話或公司地址。文案只談日常飲食、生活節奏、料理搭配，不談療效、不強迫推銷。產品只使用正式原產品照片等比例合成，AI只生成背景、角色、道具與情境，不得重畫、裁切、改標籤或拉伸比例。龜鹿飲30cc固定為30cc／罐（小玻璃罐），裸罐、無貼紙、無外盒、無外袋、金色蓋；龜鹿飲180cc固定為180cc／包（鋁袋），狹長直立，寬高比約0.64；龜鹿膏100g只用新版米白標籤；龜鹿膠600g淡紫盒依正式原圖比例。小老闆固定官網Q版造型，小老闆出現時小鹿與小烏龜必須一起出現。季節、天氣、場合、地點、情境、環境、冷熱、表情、動作與產品必須一致。所有新結果先回待審核，不直接發布。`;
+const BRAND_RULES=`品牌只顯示「仙加味」，不可出現公司名稱、統編、公司電話或公司地址。文案以日常飲食、生活節奏、料理搭配、品牌故事、產品知識、FAQ、保存、溫熱飲用、試喝或LINE諮詢等安全方向為主，不談療效、不強迫推銷。圖片必須是一體成形、自然完整的單一情境圖，禁止拼湊、剪貼、貼圖、紙偶、分層浮貼、產品像另外貼上去或角色像從別張圖剪下來；背景、角色、夥伴、道具與產品的透視、光線、陰影、視線與比例必須像同一個場景自然存在。提到產品時，產品本體必須維持正式實物外觀與比例，不得重畫、改包裝、改標籤、裁切、拉伸或巨大化；若置入情境，必須自然融入桌面、手持、架上、餐桌或料理場景，不可有浮貼感。龜鹿飲30cc固定為30cc／罐（小玻璃罐），裸罐、無貼紙；龜鹿飲180cc固定為180cc／包（鋁袋），維持正式狹長比例；龜鹿膏100g維持目前正式包裝；龜鹿膠600g維持正式盒型比例。小老闆固定官網Q版造型，小鹿與小烏龜為分開的獨立夥伴，不可融合。季節、天氣、場合、地點、情境、環境、冷熱、表情、動作與產品必須一致。任何拼湊剪貼感、產品錯誤、圖文不符或法規疑慮都不發布，改回待審核。`;
 
 export async function ensureAiSchema(env){
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS ai_handoff_jobs(
@@ -86,14 +86,15 @@ function detectIssues(post){
   if(!clean(post.image_url)) visual.push('缺少貼文圖片');
   if(post.image_quality_status==='low') visual.push('圖片解析度不足');
   if(/approved-v405/i.test(image)&&/(龜鹿膏|30cc|180cc|龜鹿膠|龜鹿系列)/.test(text)) visual.push('仍使用舊產品候選圖，需依最新版包裝與比例重做');
+  if(/拼湊|剪貼|collage|cut.?and.?paste|floating.?sticker|紙偶|浮貼/i.test(image)) visual.push('圖片來源或標記顯示可能有拼湊／剪貼／浮貼感，必須重做為完整單一情境圖');
   return{copy:[...new Set(copy)],visual:[...new Set(visual)]};
 }
 
 function buildPrompt(post,type,reasons){
   const head=`請處理仙加味貼文AI修正任務。\n貼文ID：${post.id}\n原標題：${post.title||''}\n原文案：${post.copy||post.headline||''}\n問題：${reasons.join('；')}\n\n${BRAND_RULES}`;
   if(type==='copy') return `${head}\n\n只重寫文案，不改產品事實。輸出：新標題、新正文、建議分類、圖片情境摘要。繁體中文。`;
-  if(type==='image') return `${head}\n\n只重做圖片。輸出一份完整圖片生成指令：1:1繁體中文社群主圖，產品本體只使用正式原產品圖等比例合成，不重畫產品。並列出16項圖文一致性自檢。`;
-  return `${head}\n\n文案與圖片整套重新建立。輸出：新標題、新正文、建議分類、圖片情境摘要、16項圖文一致性自檢、完整圖片生成指令。`;
+  if(type==='image') return `${head}\n\n只重做圖片。輸出一份完整圖片生成指令：1:1繁體中文社群主圖，必須是一體成形的單一完整情境，禁止拼湊、剪貼、貼圖、紙偶、浮貼；如有產品，維持正式實物外觀與比例並自然融入場景。並列出16項圖文一致性自檢。`;
+  return `${head}\n\n文案與圖片整套重新建立。輸出：新標題、新正文、建議分類、圖片情境摘要、16項圖文一致性自檢、完整圖片生成指令。圖片必須是一體成形的完整單一情境，禁止任何拼湊剪貼感。`;
 }
 
 async function createSystemJob(env,post,type,reasons,source='auto-scan'){
