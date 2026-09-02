@@ -109,9 +109,11 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
 
 n8n 不得自行把 draft / pending_review 變成 approved，也不得繞過既有貼文守門。
 
-## 尚需人工帳號設定
+## Owner 管理員帳號
 
-n8n Owner 管理員帳號涉及登入 Email、姓名與密碼，必須由帳號持有人本人設定；密碼不得提交到 GitHub 或提供給自動化工具。
+- 2026-09-02 已由帳號持有人本人完成 n8n Owner 管理員帳號設定。
+- 登入 Email／姓名／密碼不記錄於 GitHub、README 或自動化環境。
+- AI Assistant Preview 不是仙加味目前四條 Workflow 的必要功能，未要求啟用。
 
 ## 維護原則
 
