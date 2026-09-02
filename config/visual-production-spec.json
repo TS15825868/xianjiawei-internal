@@ -1,24 +1,27 @@
 {
-  "version": "2026-08-07-visual-authority-v8-chatgpt-handoff",
+  "version": "2026-09-03-visual-authority-v9-single-scene-no-collage",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
   "contentAuthority": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
   "generationRouting": {
     "mode": "chatgpt_handoff",
     "paidOpenAIImageApiEnabled": false,
     "paidOpenAITextApiEnabledForRegeneration": false,
-    "workflow": "圖或文案不符合時，ERP整理完整規格與錯誤原因並開啟ChatGPT；ChatGPT處理完成後放回待審核",
+    "workflow": "圖或文案不符合時，依目前仙加味正式規格重做；圖片必須是一體成形的完整單一情境，不使用拼湊、剪貼、浮貼式合成；完成後再進品牌與圖文一致檢查",
     "noBackgroundPaidGeneration": true
   },
   "rules": {
     "brand": "公開只顯示仙加味；不主動顯示公司名稱、統編、公司電話或公司地址",
-    "mascot": "官網版Q版小老闆；米白中式上衣、深綠圍裙、紅色直式仙加味印章；小老闆出現時小鹿與小烏龜必須一起出現",
-    "guiluDrink30": "30cc／罐（小玻璃罐）；只允許裸罐本體，完全無貼紙、無標籤、無紙盒、無外盒、無外袋；金色蓋；同型外觀約42mm直徑×51mm高；不可拉高拉胖",
-    "guiluDrink180": "180cc／包（鋁袋）；狹長直立，寬高比約0.64；不可拉寬或加高放大",
-    "guiluGao": "100g／罐；六角玻璃罐約51×78mm；必須使用2026-08-07實拍確認的新版米白標籤：中央金框龜鹿膏、深紅直式仙加味印章、側面黑色標示；舊紅白直式貼紙禁止；產品標籤不可AI重畫",
-    "guiluJiao": "600g （1斤）／盒｜32塊裝｜每塊約18.75 g；淡紫盒照原圖等比例，不可橫向拉長",
-    "productImage": "產品必須使用正式原圖等比例合成；AI只生成背景、角色、道具與情境，不得重繪產品包裝或標籤",
-    "review": ["品牌","產品","規格","價格／活動","季節","天氣","場合","地點","情境","環境","冷熱","表情","動作","小老闆與夥伴","比例尺寸","重複圖"],
-    "newContentStatus": "pending_review",
+    "mascot": "官網版Q版小老闆；米白中式上衣、深綠圍裙、紅色直式仙加味印章；小鹿與小烏龜為分開的獨立夥伴，不可融合",
+    "singleScene": "所有社群生成圖必須是一體成形、自然完整的單一情境圖；背景、角色、夥伴、道具、產品在透視、光線、陰影、視線與比例上要像同一個場景自然存在",
+    "noCollage": "禁止拼湊、剪貼、貼圖、紙偶、分層浮貼、產品像另外貼上、角色像另外剪下貼入、背景與主體光線不一致等視覺；任一出現直接判不合格並重新生成",
+    "productIntegration": "提到產品時必須維持正式產品實物外觀與比例；產品若置入情境，必須自然融入桌面、手持、架上或料理場景，角度、陰影與光線一致，不可有浮貼感；不得重畫包裝、標籤或產品造型",
+    "guiluDrink30": "30cc／罐（小玻璃罐）；只允許裸罐本體，完全無貼紙、無標籤、無紙盒、無外盒、無外袋；金色蓋；不可拉高拉胖或畫成一般飲料瓶",
+    "guiluDrink180": "180cc／包（鋁袋）；維持正式狹長比例；不可拉寬、巨大化或改袋型",
+    "guiluGao": "100g／罐；必須維持目前正式包裝與標籤；產品標籤不可AI重畫",
+    "guiluJiao": "600g（1斤）／盒｜32塊裝；依正式原圖比例，不可橫向拉長",
+    "review": ["品牌","產品","規格","價格／活動","季節","天氣","場合","地點","情境／環境","冷熱","表情","動作","小老闆與夥伴","比例尺寸","重複","拼湊剪貼／法規與最終一致性"],
+    "newContentStatus": "auto_publish_only_if_all_gates_pass",
+    "failedContentStatus": "pending_review",
     "weatherRequiresLiveCheck": true
   }
 }
