@@ -1,0 +1,61 @@
+{
+  "version": "2026-09-03-social-publishing-v1",
+  "brand": "仙加味",
+  "timezone": "Asia/Taipei",
+  "weeklyTarget": 3,
+  "normalWeeklyMaximum": 3,
+  "schedule": [
+    {"weekday":"MO","time":"20:00"},
+    {"weekday":"WE","time":"20:00"},
+    {"weekday":"FR","time":"20:00"}
+  ],
+  "firstPublishAt": "2026-09-04T20:00:00+08:00",
+  "onePostPerSlot": true,
+  "contentMode": "free-topic-non-repeating",
+  "videoSubstitution": {
+    "enabled": true,
+    "rule": "若本次時段前已有新完成且通過正式規格的短影片，短影片取代該次圖文，不另外增加本週貼文數量"
+  },
+  "imagePolicy": {
+    "singleIntegratedScene": true,
+    "forbidCollage": true,
+    "forbidCutAndPaste": true,
+    "forbidFloatingStickerLook": true,
+    "forbidPaperDollLook": true,
+    "requireConsistentPerspectiveLightingShadow": true,
+    "productMustKeepOfficialAppearanceAndScale": true,
+    "failureAction": "reject_and_regenerate"
+  },
+  "copyPolicy": {
+    "traditionalChinese": true,
+    "topicFree": true,
+    "mustLinkToBrandOrProduct": true,
+    "lifestylePostNeedsConcreteScene": true,
+    "forbidPublishedDuplicate": true,
+    "forbidMedicalClaims": true,
+    "forbidLegacyPublicBrand": true
+  },
+  "autoPublish": {
+    "enabled": true,
+    "publishOnlyIfAllChecksPass": true,
+    "failureAction": "pending_review_no_publish",
+    "requiredChecks": [
+      "brand",
+      "product",
+      "specification",
+      "pricing_activity",
+      "season",
+      "weather",
+      "occasion",
+      "location",
+      "scene_environment",
+      "temperature",
+      "expression",
+      "action",
+      "mascot_companions",
+      "physical_scale",
+      "duplicate",
+      "collage_cutpaste_compliance_final"
+    ]
+  }
+}
