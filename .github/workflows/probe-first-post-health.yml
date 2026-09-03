@@ -1,0 +1,41 @@
+name: Verify 9/4 first social post
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/probe-first-post-health.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe public first-post health endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > response.json
+          for base in \
+            'https://xianjiawei-internal.tung314069.workers.dev' \
+            'https://xianjiawei-internal.taiwan-048.workers.dev'
+          do
+            if curl -fsSL --max-time 25 "$base/healthz/social-first-post" -o response.json; then
+              printf '%s\n' "$base" > endpoint.txt
+              cat response.json
+              exit 0
+            fi
+          done
+          echo 'No public health endpoint responded' >&2
+          exit 1
+      - name: Upload probe evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-post-health
+          path: |
+            endpoint.txt
+            response.json
+          retention-days: 1
