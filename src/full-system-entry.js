@@ -1,9 +1,13 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp from './production-entry.js';
 
-const VERSION='2026-08-22-full-system-entry-v1';
+const VERSION='2026-09-03-full-system-entry-v2-social-morning';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
+const SOCIAL_SCHEDULE_POLICY='週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；短影片若有合格成品只取代當週其中一篇，不另外增加篇數';
+const SOCIAL_FIXED_FREQUENCY='每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）';
+const SOCIAL_FIRST_PUBLISH_AT='2026-09-04T09:00:00+08:00';
+const SOCIAL_POLICY_VERSION='2026-09-03-social-publishing-v2-morning';
 const HEADERS={'cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-full-system':VERSION};
 
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{...HEADERS,'content-type':'application/json; charset=utf-8'}})}
@@ -22,12 +26,29 @@ async function serveAsset(request,env,target){
   headers.set('x-xianjiawei-ui',target===ERP_PATH?'erp':'publishing');
   return new Response(asset.body,{status:200,headers});
 }
+async function currentSettings(request,env,ctx){
+  const response=await productionApp.fetch(request,env,ctx);
+  if(!response.ok)return response;
+  try{
+    const body=await response.clone().json();
+    const settings=body?.settings&&typeof body.settings==='object'?body.settings:{};
+    return json({...body,settings:{...settings,
+      schedule_policy:SOCIAL_SCHEDULE_POLICY,
+      fixed_posting_frequency:SOCIAL_FIXED_FREQUENCY,
+      social_policy_version:SOCIAL_POLICY_VERSION,
+      social_first_publish_at:SOCIAL_FIRST_PUBLISH_AT
+    }},response.status);
+  }catch{return response}
+}
 
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
     if(request.method==='GET'&&isPublishingUi(path))return serveAsset(request,env,PUBLISHING_PATH);
+
+    // The current social schedule shown in ERP must always come from the latest formal policy.
+    if(request.method==='GET'&&path==='/api/settings')return currentSettings(request,env,ctx);
 
     // Full ERP modules must bypass the historical publishing-only blocker.
     if(isFullErpApi(path))return productionApp.fetch(request,env,ctx);
@@ -47,7 +68,11 @@ export default{
           publishingPath:PUBLISHING_PATH,
           publishingCenterIndependent:true,
           qixuanPublicVisible:false,
-          internalDeferredProductDataAllowed:true
+          internalDeferredProductDataAllowed:true,
+          fixedPostingFrequency:SOCIAL_FIXED_FREQUENCY,
+          socialSchedulePolicy:SOCIAL_SCHEDULE_POLICY,
+          socialPolicyVersion:SOCIAL_POLICY_VERSION,
+          socialFirstPublishAt:SOCIAL_FIRST_PUBLISH_AT
         },response.status);
       }catch{return response}
     }
@@ -59,4 +84,4 @@ export default{
   }
 };
 
-export {VERSION};
+export {VERSION,SOCIAL_SCHEDULE_POLICY,SOCIAL_FIXED_FREQUENCY,SOCIAL_FIRST_PUBLISH_AT,SOCIAL_POLICY_VERSION};
