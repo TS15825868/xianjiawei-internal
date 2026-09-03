@@ -71,17 +71,29 @@ jobs:
           grep -q '"invalid_unpublished_left": 0' invalid-count.txt
           curl -fLsS --max-time 30 -o /dev/null 'https://ts15825868.github.io/xianjiawei/images/posts/formal-v20260904/first-post-work-rest-qmascot.webp'
 
-      - name: 驗證 Facebook 與 Instagram 發布憑證名稱
+      - name: 驗證 Facebook 與 Instagram 發布授權
         run: |
           set -e
           npx wrangler secret list > secret-list.txt
           cat secret-list.txt
-          for name in META_PAGE_ID META_INSTAGRAM_USER_ID META_PAGE_ACCESS_TOKEN; do
-            if ! grep -q "$name" secret-list.txt; then
-              echo "缺少 Meta 正式發布憑證：$name" >&2
-              exit 1
-            fi
-          done
+          has(){ grep -q "\"name\": \"$1\"" secret-list.txt; }
+          fb_direct=false
+          ig_direct=false
+          fb_webhook=false
+          ig_webhook=false
+          if has META_PAGE_ID && has META_PAGE_ACCESS_TOKEN; then fb_direct=true; fi
+          if has META_INSTAGRAM_USER_ID && has META_PAGE_ACCESS_TOKEN; then ig_direct=true; fi
+          if has FACEBOOK_PUBLISH_WEBHOOK_URL && has FACEBOOK_PUBLISH_WEBHOOK_TOKEN; then fb_webhook=true; fi
+          if has INSTAGRAM_PUBLISH_WEBHOOK_URL && has INSTAGRAM_PUBLISH_WEBHOOK_TOKEN; then ig_webhook=true; fi
+          echo "facebook_direct=$fb_direct facebook_webhook=$fb_webhook instagram_direct=$ig_direct instagram_webhook=$ig_webhook"
+          if [ "$fb_direct" != true ] && [ "$fb_webhook" != true ]; then
+            echo 'Facebook 尚未具備官方 API 或正式 Webhook 發布授權' >&2
+            exit 1
+          fi
+          if [ "$ig_direct" != true ] && [ "$ig_webhook" != true ]; then
+            echo 'Instagram 尚未具備官方 API 或正式 Webhook 發布授權' >&2
+            exit 1
+          fi
 
       - name: 部署正式 Worker
         run: |
