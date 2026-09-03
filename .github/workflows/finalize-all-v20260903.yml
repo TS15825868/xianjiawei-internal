@@ -1,0 +1,126 @@
+name: 仙加味社群正式全到位驗收
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-all-v20260903.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 統一所有舊排程文字
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          replacements = {
+            'src/entry.js': [
+              ('週二 19:30、週六 09:30（Asia/Taipei）；立即發布不受固定時段限制', '週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；立即發布不受固定時段限制'),
+            ],
+            'src/worker.js': [
+              ('週二 19:30、週六 09:30（Asia/Taipei）；立即發布不受固定時段限制', '週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；立即發布不受固定時段限制'),
+              ('每週兩篇（週二 19:30、週六 09:30，Asia/Taipei）', '每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）'),
+            ],
+            'src/flexible-publish-entry.js': [
+              ('每週兩篇（週二 19:30、週六 09:30，Asia/Taipei）', '每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）'),
+              ('固定每週兩篇（週二 19:30、週六 09:30）', '固定每週 3 篇（週一／週三／週五 09:00）'),
+            ],
+          }
+          for file, pairs in replacements.items():
+            p=Path(file)
+            text=p.read_text(encoding='utf-8')
+            for old,new in pairs:
+              text=text.replace(old,new)
+            p.write_text(text,encoding='utf-8')
+          PY
+          if grep -R -nE '週二 19:30|週六 09:30|每週兩篇|固定每週兩篇' src config; then
+            echo '仍有舊排程文字' >&2
+            exit 1
+          fi
+
+      - name: 程式語法與正式檢查
+        run: |
+          npm ci
+          npm run check
+
+      - name: 驗證正式首篇 D1 排程
+        run: |
+          set -e
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,status,scheduled_at,platforms_json,image_url,image_approved,image_quality_status FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST';" > first-post.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT post_id,copy_image_match,reviewed_at FROM social_post_review_gates WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST';" > first-gate.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS invalid_unpublished_left FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled','failed') AND id<>'XJW-SOCIAL-20260904-0900-FIRST';" > invalid-count.txt
+          grep -q 'scheduled' first-post.txt
+          grep -q '2026-09-04T01:00:00.000Z' first-post.txt
+          grep -q '"image_approved": 1' first-post.txt
+          grep -q '"copy_image_match": 1' first-gate.txt
+          grep -q '"invalid_unpublished_left": 0' invalid-count.txt
+          curl -fLsS --max-time 30 -o /dev/null 'https://ts15825868.github.io/xianjiawei/images/posts/formal-v20260904/first-post-work-rest-qmascot.webp'
+
+      - name: 驗證 Facebook 與 Instagram 發布憑證名稱
+        run: |
+          set -e
+          npx wrangler secret list --json > secret-list.json
+          python - <<'PY'
+          import json
+          data=json.load(open('secret-list.json',encoding='utf-8'))
+          if isinstance(data,dict):
+            items=data.get('secrets') or data.get('result') or []
+          else:
+            items=data
+          names=set()
+          for x in items:
+            if isinstance(x,str): names.add(x)
+            elif isinstance(x,dict) and x.get('name'): names.add(x['name'])
+          required={'META_PAGE_ID','META_INSTAGRAM_USER_ID','META_PAGE_ACCESS_TOKEN'}
+          missing=sorted(required-names)
+          print(json.dumps({'required':sorted(required),'present':sorted(required & names),'missing':missing},ensure_ascii=False))
+          if missing:
+            raise SystemExit('缺少 Meta 正式發布憑證：'+','.join(missing))
+          PY
+
+      - name: 部署正式 Worker
+        run: |
+          npm run build:static
+          npx wrangler deploy --keep-vars > deploy.txt 2>&1
+          cat deploy.txt
+
+      - name: 清除臨時驗收流程並提交正式修正
+        run: |
+          rm -f .github/workflows/finalize-all-v20260903.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add src/entry.js src/worker.js src/flexible-publish-entry.js .github/workflows/finalize-all-v20260903.yml
+          if git diff --cached --quiet; then
+            echo '沒有需要提交的變更'
+          else
+            git commit -m '完成社群排程與正式發布全到位驗收'
+            git push origin HEAD:main
+          fi
+
+      - name: 上傳驗收證據
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-final-readiness-v20260903
+          path: |
+            first-post.txt
+            first-gate.txt
+            invalid-count.txt
+            secret-list.json
+            deploy.txt
+          if-no-files-found: ignore
