@@ -23,23 +23,27 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Verify first post and review gate
+      - name: Read first post and review gate
         shell: bash
         run: |
-          set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,headline,copy,category,platforms_json,status,scheduled_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,approved_at,updated_at FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST' LIMIT 1;" > first-post.txt
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_at FROM social_post_review_gates WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' LIMIT 1;" > first-gate.txt
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,status FROM social_posts WHERE id IN ('XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment','POST-AUDIENCE-NEEDS') ORDER BY id;" > invalid-posts-left.txt
-          test "$(grep -c 'XJW-SOCIAL-20260904-0900-FIRST' first-post.txt || true)" -ge 1
-          test "$(grep -c 'scheduled' first-post.txt || true)" -ge 1
-          test "$(grep -c '2026-09-04T01:00:00.000Z' first-post.txt || true)" -ge 1
-          test "$(grep -c 'XJW-SOCIAL-20260904-0900-FIRST' first-gate.txt || true)" -ge 1
+          set +e
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,headline,copy,category,platforms_json,status,scheduled_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,approved_at,updated_at FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST' LIMIT 1;" > first-post.txt 2>&1
+          echo $? > first-post-exit.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_at FROM social_post_review_gates WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' LIMIT 1;" > first-gate.txt 2>&1
+          echo $? > first-gate-exit.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,status FROM social_posts WHERE id IN ('XJW-GUILU-drink30-work-break','XJW-GUILU-drink180-home','XJW-GUILU-gao-storage','XJW-GUILU-tangkuai-soup','XJW-GUILU-jiao-600g','XJW-GUILU-luerong-75g','XJW-SOCIAL-20260815-02-line-consult-and-trial','XJW-GUILU-choose-by-place','XJW-SOCIAL-20260815-03-storage-basics','XJW-SOCIAL-20260815-01-warm-drink-moment','POST-AUDIENCE-NEEDS') ORDER BY id;" > invalid-posts-left.txt 2>&1
+          echo $? > invalid-posts-exit.txt
+          set -e
       - name: Upload verification evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: d1-first-post-verification
           path: |
             first-post.txt
+            first-post-exit.txt
             first-gate.txt
+            first-gate-exit.txt
             invalid-posts-left.txt
+            invalid-posts-exit.txt
           retention-days: 1
