@@ -85,7 +85,7 @@ async function safeSettings(request,env,ctx){
   const authorization=await authorize(request,env,ctx);
   if(!authorization.ok)return authorization;
   const settings={
-    schedule_policy:'週二 19:30、週六 09:30（Asia/Taipei）；立即發布不受固定時段限制',
+    schedule_policy:'週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；立即發布不受固定時段限制',
     storage:'Cloudflare D1',
     secrets:'Cloudflare Worker Secrets',
     access:'Cloudflare Access',
