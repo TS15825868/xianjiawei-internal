@@ -1,15 +1,15 @@
 {
-  "version": "2026-09-03-social-publishing-v1",
+  "version": "2026-09-03-social-publishing-v2-morning",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "weeklyTarget": 3,
   "normalWeeklyMaximum": 3,
   "schedule": [
-    {"weekday":"MO","time":"20:00"},
-    {"weekday":"WE","time":"20:00"},
-    {"weekday":"FR","time":"20:00"}
+    {"weekday":"MO","time":"09:00"},
+    {"weekday":"WE","time":"09:00"},
+    {"weekday":"FR","time":"09:00"}
   ],
-  "firstPublishAt": "2026-09-04T20:00:00+08:00",
+  "firstPublishAt": "2026-09-04T09:00:00+08:00",
   "onePostPerSlot": true,
   "contentMode": "free-topic-non-repeating",
   "videoSubstitution": {
