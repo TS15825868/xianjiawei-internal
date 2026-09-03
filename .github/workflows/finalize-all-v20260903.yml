@@ -74,24 +74,14 @@ jobs:
       - name: 驗證 Facebook 與 Instagram 發布憑證名稱
         run: |
           set -e
-          npx wrangler secret list --json > secret-list.json
-          python - <<'PY'
-          import json
-          data=json.load(open('secret-list.json',encoding='utf-8'))
-          if isinstance(data,dict):
-            items=data.get('secrets') or data.get('result') or []
-          else:
-            items=data
-          names=set()
-          for x in items:
-            if isinstance(x,str): names.add(x)
-            elif isinstance(x,dict) and x.get('name'): names.add(x['name'])
-          required={'META_PAGE_ID','META_INSTAGRAM_USER_ID','META_PAGE_ACCESS_TOKEN'}
-          missing=sorted(required-names)
-          print(json.dumps({'required':sorted(required),'present':sorted(required & names),'missing':missing},ensure_ascii=False))
-          if missing:
-            raise SystemExit('缺少 Meta 正式發布憑證：'+','.join(missing))
-          PY
+          npx wrangler secret list > secret-list.txt
+          cat secret-list.txt
+          for name in META_PAGE_ID META_INSTAGRAM_USER_ID META_PAGE_ACCESS_TOKEN; do
+            if ! grep -q "$name" secret-list.txt; then
+              echo "缺少 Meta 正式發布憑證：$name" >&2
+              exit 1
+            fi
+          done
 
       - name: 部署正式 Worker
         run: |
@@ -121,6 +111,6 @@ jobs:
             first-post.txt
             first-gate.txt
             invalid-count.txt
-            secret-list.json
+            secret-list.txt
             deploy.txt
           if-no-files-found: ignore
