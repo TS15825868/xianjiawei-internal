@@ -1,0 +1,62 @@
+name: 驗證下次貼文準時發布 v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-next-publish-timing-v2-20260904.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 確認每分鐘排程設定
+        run: |
+          set -euo pipefail
+          grep -F '"crons": ["* * * * *"]' wrangler.jsonc
+
+      - name: 建置正式靜態資源
+        run: |
+          set -euo pipefail
+          npm ci --no-audit --no-fund
+          npm run build:static
+
+      - name: 部署正式 Worker
+        run: |
+          set -euo pipefail
+          npx wrangler deploy --keep-vars
+
+      - name: 驗證首篇已完整發布並檢查未來排程
+        run: |
+          set -euo pipefail
+          echo '=== 首篇實際發布 ==='
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,status,scheduled_at,published_at FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST'; SELECT platform,status,remote_id,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;"
+          echo '=== 未來正式排程 ==='
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,status,scheduled_at,approved_at FROM social_posts WHERE status='scheduled' AND scheduled_at IS NOT NULL AND datetime(scheduled_at)>datetime('now') ORDER BY datetime(scheduled_at) ASC LIMIT 10;"
+
+      - name: 清理一次性驗收流程
+        if: always()
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/verify-next-publish-timing-v2-20260904.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add .github/workflows/verify-next-publish-timing-v2-20260904.yml
+          if ! git diff --cached --quiet; then
+            git commit -m '移除下次貼文準時發布驗收暫存流程 v2'
+            git push origin HEAD:main
+          fi
