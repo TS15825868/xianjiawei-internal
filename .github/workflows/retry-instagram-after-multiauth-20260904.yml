@@ -1,0 +1,77 @@
+name: 重試 Instagram 多授權正式發布
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retry-instagram-after-multiauth-20260904.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 確認 Facebook 已發布且只重置 Instagram
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT platform,status,remote_id FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;" > /tmp/before.txt
+          cat /tmp/before.txt
+          grep -q 'Facebook' /tmp/before.txt
+          grep -q '1471535218330029' /tmp/before.txt
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "DELETE FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' AND platform='Instagram'; UPDATE social_posts SET status='scheduled',published_at=NULL,scheduled_at='2026-09-04T01:00:00.000Z',updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
+
+      - name: 等待 Cron 並驗證 Instagram remote ID
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 50); do
+            npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT platform,status,remote_id,attempt_count,last_attempt_at,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;" > /tmp/current.txt
+            echo "=== $attempt/50 ==="
+            cat /tmp/current.txt
+            if grep -q 'Instagram' /tmp/current.txt && grep -q 'published' /tmp/current.txt; then
+              python - <<'PY'
+          import json,re
+          s=open('/tmp/current.txt',encoding='utf-8').read()
+          m=re.search(r'(\[\s*\{.*)',s,re.S)
+          if not m: raise SystemExit(2)
+          data=json.loads(m.group(1))
+          rows=[]
+          for block in data:
+              rows.extend(block.get('results') or [])
+          ig=next((r for r in rows if r.get('platform')=='Instagram'),None)
+          fb=next((r for r in rows if r.get('platform')=='Facebook'),None)
+          if not ig or ig.get('status')!='published' or not ig.get('remote_id'): raise SystemExit(3)
+          if not fb or fb.get('status')!='published' or fb.get('remote_id')!='1471535218330029': raise SystemExit(4)
+          print('FINAL_FB_REMOTE_ID='+fb['remote_id'])
+          print('FINAL_IG_REMOTE_ID='+ig['remote_id'])
+          PY
+              exit 0
+            fi
+            sleep 15
+          done
+          echo 'Instagram 尚未完成，保留最後狀態如下：'
+          cat /tmp/current.txt
+          exit 1
+
+      - name: 清理一次性流程
+        if: always()
+        run: |
+          rm -f .github/workflows/retry-instagram-after-multiauth-20260904.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add .github/workflows/retry-instagram-after-multiauth-20260904.yml
+          if ! git diff --cached --quiet; then
+            git commit -m '移除 Instagram 多授權重試暫存流程'
+            git push origin HEAD:main
+          fi
