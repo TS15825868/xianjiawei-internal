@@ -50,11 +50,19 @@ async function resolveMetaIdentity(env){
   if(configuredPageId&&configuredInstagramUserId)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId};
   const timeout=withTimeout();
   try{
-    const fields='id,name,instagram_business_account';
+    const fields='id,name,instagram_business_account,connected_instagram_account';
     const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/me?fields=${encodeURIComponent(fields)}&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
     const data=await response.json().catch(()=>({}));
     if(!response.ok)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:data?.error?.message||'Meta 身分解析失敗'};
-    return{pageId:configuredPageId||clean(data.id),instagramUserId:configuredInstagramUserId||clean(data.instagram_business_account?.id),name:clean(data.name)};
+    const pageId=configuredPageId||clean(data.id);
+    let instagramUserId=configuredInstagramUserId||clean(data.instagram_business_account?.id)||clean(data.connected_instagram_account?.id);
+    if(pageId&&!instagramUserId){
+      const pageFields='instagram_business_account,connected_instagram_account';
+      const pageResponse=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}?fields=${encodeURIComponent(pageFields)}&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
+      const pageData=await pageResponse.json().catch(()=>({}));
+      if(pageResponse.ok)instagramUserId=clean(pageData.instagram_business_account?.id)||clean(pageData.connected_instagram_account?.id);
+    }
+    return{pageId,instagramUserId,name:clean(data.name)};
   }catch(error){return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:String(error?.message||error)};}finally{timeout.done();}
 }
 function directReadiness(env,direct){
