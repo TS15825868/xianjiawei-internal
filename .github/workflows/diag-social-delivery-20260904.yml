@@ -15,11 +15,20 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      D1_DATABASE_ID: 5e85d589-9c4f-412e-9ccd-585a5b6ecabe
     steps:
       - name: 查詢 D1 發布狀態
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/d1/database/${D1_DATABASE_ID}/query"
+          query(){
+            curl -fsS "$endpoint" \
+              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              --data "$(jq -cn --arg sql "$1" '{sql:$sql}')" | jq .
+          }
           echo '=== post ==='
-          npx --yes wrangler@4.0.0 d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,status,scheduled_at,published_at,updated_at,platforms_json,image_url FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
+          query "SELECT id,title,status,scheduled_at,published_at,updated_at,platforms_json,image_url FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
           echo '=== deliveries ==='
-          npx --yes wrangler@4.0.0 d1 execute xianjiawei-internal-db --remote --command "SELECT post_id,platform,status,remote_id,attempt_count,last_attempt_at,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;"
+          query "SELECT post_id,platform,status,remote_id,attempt_count,last_attempt_at,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;"
