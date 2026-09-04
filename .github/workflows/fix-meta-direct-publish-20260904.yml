@@ -1,0 +1,64 @@
+name: 修正 Meta 直接發布並重試 9/4 首篇
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-meta-direct-publish-20260904.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 修正 Meta ID 自動解析與直接發布
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('src/social-publisher.js')
+          t=p.read_text(encoding='utf-8')
+          old="""function graphVersion(env){return clean(env.META_GRAPH_VERSION||'v25.0').replace(/^\\/+|\\/+$/g,'');}\nfunction directReadiness(env,direct){\n  if(direct==='facebook') return Boolean(clean(env.META_PAGE_ID)&&clean(env.META_PAGE_ACCESS_TOKEN));\n  if(direct==='instagram') return Boolean(clean(env.META_INSTAGRAM_USER_ID)&&clean(env.META_PAGE_ACCESS_TOKEN));"""
+          new="""function graphVersion(env){return clean(env.META_GRAPH_VERSION||'v25.0').replace(/^\\/+|\\/+$/g,'');}\nasync function resolveMetaIdentity(env){\n  const token=clean(env.META_PAGE_ACCESS_TOKEN);\n  const configuredPageId=clean(env.META_PAGE_ID);\n  const configuredInstagramUserId=clean(env.META_INSTAGRAM_USER_ID);\n  if(!token)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:'缺少 META_PAGE_ACCESS_TOKEN'};\n  if(configuredPageId&&configuredInstagramUserId)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId};\n  const timeout=withTimeout();\n  try{\n    const fields='id,name,instagram_business_account';\n    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/me?fields=${encodeURIComponent(fields)}&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});\n    const data=await response.json().catch(()=>({}));\n    if(!response.ok)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:data?.error?.message||'Meta 身分解析失敗'};\n    return{pageId:configuredPageId||clean(data.id),instagramUserId:configuredInstagramUserId||clean(data.instagram_business_account?.id),name:clean(data.name)};\n  }catch(error){return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:String(error?.message||error)};}finally{timeout.done();}\n}\nfunction directReadiness(env,direct){\n  if(direct==='facebook') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));\n  if(direct==='instagram') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));"""
+          if old not in t:
+            raise SystemExit('directReadiness pattern not found')
+          t=t.replace(old,new,1)
+          old_fb="""async function dispatchFacebookImage(env,post){\n  const platform='Facebook',timeout=withTimeout();\n  try{\n    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_PAGE_ID))}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});"""
+          new_fb="""async function dispatchFacebookImage(env,post){\n  const platform='Facebook',timeout=withTimeout();\n  try{\n    const identity=await resolveMetaIdentity(env);\n    const pageId=clean(identity.pageId);\n    if(!pageId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Meta Page Access Token 解析 Facebook Page ID'};\n    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});"""
+          if old_fb not in t:
+            raise SystemExit('facebook pattern not found')
+          t=t.replace(old_fb,new_fb,1)
+          old_ig="""async function dispatchInstagram(env,post){\n  const platform='Instagram',timeout=withTimeout();\n  try{\n    const base=`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_INSTAGRAM_USER_ID))}`;\n    const token=clean(env.META_PAGE_ACCESS_TOKEN),video=isVideoPost(post);"""
+          new_ig="""async function dispatchInstagram(env,post){\n  const platform='Instagram',timeout=withTimeout();\n  try{\n    const identity=await resolveMetaIdentity(env);\n    const instagramUserId=clean(identity.instagramUserId);\n    if(!instagramUserId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Facebook Page 解析 Instagram Business Account ID'};\n    const base=`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(instagramUserId)}`;\n    const token=clean(env.META_PAGE_ACCESS_TOKEN),video=isVideoPost(post);"""
+          if old_ig not in t:
+            raise SystemExit('instagram pattern not found')
+          t=t.replace(old_ig,new_ig,1)
+          p.write_text(t,encoding='utf-8')
+          PY
+      - name: 檢查與部署
+        run: |
+          npm ci
+          npm run check
+          npm run build:static
+          npx wrangler deploy --keep-vars
+      - name: 清除首篇失敗紀錄讓正式排程重試
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "DELETE FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST'; UPDATE social_posts SET status='scheduled', published_at=NULL, scheduled_at='2026-09-04T01:00:00.000Z', updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
+      - name: 提交正式修正並清理臨時流程
+        run: |
+          rm -f .github/workflows/fix-meta-direct-publish-20260904.yml .github/workflows/verify-0904-publish-status.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add src/social-publisher.js .github/workflows/fix-meta-direct-publish-20260904.yml .github/workflows/verify-0904-publish-status.yml
+          git commit -m '修正 Meta 正式直接發布並重試首篇'
+          git push origin HEAD:main
