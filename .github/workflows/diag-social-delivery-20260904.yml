@@ -1,0 +1,25 @@
+name: 查驗 9/4 社群實際發布
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/diag-social-delivery-20260904.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: 查詢 D1 發布狀態
+        run: |
+          set -e
+          echo '=== post ==='
+          npx --yes wrangler@4.0.0 d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,status,scheduled_at,published_at,updated_at,platforms_json,image_url FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
+          echo '=== deliveries ==='
+          npx --yes wrangler@4.0.0 d1 execute xianjiawei-internal-db --remote --command "SELECT post_id,platform,status,remote_id,attempt_count,last_attempt_at,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;"
