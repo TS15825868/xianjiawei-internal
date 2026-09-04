@@ -42,9 +42,24 @@ async function responseResult(response,platform){
   return {platform,ok:true,status:response.status,remote_id:responseData?.id||responseData?.post_id||responseData?.video_id||responseData?.name||response.headers.get('x-remote-post-id')||response.headers.get('x-line-request-id')||'',response:responseData||responseText};
 }
 function graphVersion(env){return clean(env.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');}
+async function resolveMetaIdentity(env){
+  const token=clean(env.META_PAGE_ACCESS_TOKEN);
+  const configuredPageId=clean(env.META_PAGE_ID);
+  const configuredInstagramUserId=clean(env.META_INSTAGRAM_USER_ID);
+  if(!token)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:'缺少 META_PAGE_ACCESS_TOKEN'};
+  if(configuredPageId&&configuredInstagramUserId)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId};
+  const timeout=withTimeout();
+  try{
+    const fields='id,name,instagram_business_account';
+    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/me?fields=${encodeURIComponent(fields)}&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:data?.error?.message||'Meta 身分解析失敗'};
+    return{pageId:configuredPageId||clean(data.id),instagramUserId:configuredInstagramUserId||clean(data.instagram_business_account?.id),name:clean(data.name)};
+  }catch(error){return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:String(error?.message||error)};}finally{timeout.done();}
+}
 function directReadiness(env,direct){
-  if(direct==='facebook') return Boolean(clean(env.META_PAGE_ID)&&clean(env.META_PAGE_ACCESS_TOKEN));
-  if(direct==='instagram') return Boolean(clean(env.META_INSTAGRAM_USER_ID)&&clean(env.META_PAGE_ACCESS_TOKEN));
+  if(direct==='facebook') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
+  if(direct==='instagram') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
   if(direct==='line_oa') return Boolean(clean(env.LINE_CHANNEL_ACCESS_TOKEN));
   if(direct==='google_business') return ['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every((name)=>Boolean(clean(env[name])));
   return false;
@@ -58,7 +73,10 @@ function payloadFor(post,platform){
 async function dispatchFacebookImage(env,post){
   const platform='Facebook',timeout=withTimeout();
   try{
-    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_PAGE_ID))}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
+    const identity=await resolveMetaIdentity(env);
+    const pageId=clean(identity.pageId);
+    if(!pageId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Meta Page Access Token 解析 Facebook Page ID'};
+    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
     return responseResult(response,platform);
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
@@ -85,7 +103,10 @@ async function dispatchFacebook(env,post){return isVideoPost(post)?dispatchFaceb
 async function dispatchInstagram(env,post){
   const platform='Instagram',timeout=withTimeout();
   try{
-    const base=`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(clean(env.META_INSTAGRAM_USER_ID))}`;
+    const identity=await resolveMetaIdentity(env);
+    const instagramUserId=clean(identity.instagramUserId);
+    if(!instagramUserId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Facebook Page 解析 Instagram Business Account ID'};
+    const base=`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(instagramUserId)}`;
     const token=clean(env.META_PAGE_ACCESS_TOKEN),video=isVideoPost(post);
     const params=video
       ? {media_type:'REELS',video_url:mediaUrl(post),caption:postText(post),share_to_feed:'true',access_token:token}
