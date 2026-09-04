@@ -1,0 +1,87 @@
+name: 修正 Instagram 身分解析並重試首篇
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-instagram-identity-20260904.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      D1_DATABASE_ID: 5e85d589-9c4f-412e-9ccd-585a5b6ecabe
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 擴充 Instagram 專業帳號解析
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('src/social-publisher.js')
+          t=p.read_text(encoding='utf-8')
+          t=t.replace("const fields='id,name,instagram_business_account';","const fields='id,name,instagram_business_account,connected_instagram_account';",1)
+          old="""    if(!response.ok)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:data?.error?.message||'Meta 身分解析失敗'};
+    return{pageId:configuredPageId||clean(data.id),instagramUserId:configuredInstagramUserId||clean(data.instagram_business_account?.id),name:clean(data.name)};"""
+          new="""    if(!response.ok)return{pageId:configuredPageId,instagramUserId:configuredInstagramUserId,error:data?.error?.message||'Meta 身分解析失敗'};
+    const pageId=configuredPageId||clean(data.id);
+    let instagramUserId=configuredInstagramUserId||clean(data.instagram_business_account?.id)||clean(data.connected_instagram_account?.id);
+    if(pageId&&!instagramUserId){
+      const pageFields='instagram_business_account,connected_instagram_account';
+      const pageResponse=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}?fields=${encodeURIComponent(pageFields)}&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
+      const pageData=await pageResponse.json().catch(()=>({}));
+      if(pageResponse.ok)instagramUserId=clean(pageData.instagram_business_account?.id)||clean(pageData.connected_instagram_account?.id);
+    }
+    return{pageId,instagramUserId,name:clean(data.name)};"""
+          if old not in t:
+              raise SystemExit('resolveMetaIdentity target not found')
+          t=t.replace(old,new,1)
+          p.write_text(t,encoding='utf-8')
+          PY
+          node --check src/social-publisher.js
+      - name: 建置並部署 Worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --no-audit --no-fund
+          npm run build:static
+          npx wrangler deploy --keep-vars
+      - name: 只重置 Instagram 發布紀錄
+        shell: bash
+        run: |
+          set -euo pipefail
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/d1/database/${D1_DATABASE_ID}/query"
+          sql="DELETE FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' AND platform='Instagram'; UPDATE social_posts SET status='scheduled',published_at=NULL,scheduled_at='2026-09-04T01:00:00.000Z',updated_at=datetime('now') WHERE id='XJW-SOCIAL-20260904-0900-FIRST';"
+          curl -fsS "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H 'Content-Type: application/json' --data "$(jq -cn --arg sql "$sql" '{sql:$sql}')" | jq .
+      - name: 等待正式 Cron 重試並驗證
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 75
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/d1/database/${D1_DATABASE_ID}/query"
+          sql="SELECT id,status,published_at,updated_at FROM social_posts WHERE id='XJW-SOCIAL-20260904-0900-FIRST'; SELECT post_id,platform,status,remote_id,attempt_count,last_attempt_at,published_at,error_text FROM social_publish_deliveries WHERE post_id='XJW-SOCIAL-20260904-0900-FIRST' ORDER BY platform;"
+          curl -fsS "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H 'Content-Type: application/json' --data "$(jq -cn --arg sql "$sql" '{sql:$sql}')" | jq .
+      - name: 提交正式修正並清理臨時流程
+        if: always()
+        shell: bash
+        run: |
+          set -e
+          rm -f .github/workflows/fix-instagram-identity-20260904.yml .github/workflows/diag-social-delivery-20260904.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add src/social-publisher.js .github/workflows/fix-instagram-identity-20260904.yml .github/workflows/diag-social-delivery-20260904.yml
+          if ! git diff --cached --quiet; then
+            git commit -m '修正 Instagram 專業帳號解析與首篇發布'
+            git push origin HEAD:main
+          fi
