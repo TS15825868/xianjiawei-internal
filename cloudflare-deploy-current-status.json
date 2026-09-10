@@ -1,11 +1,12 @@
 {
-  "schemaVersion": 11,
-  "status": "pending_live_verification_of_current_main",
+  "schemaVersion": 12,
+  "status": "deployed_build_verified_pending_authenticated_live_verification",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "deploymentAuthority": "cloudflare-native-git-auto-deploy",
   "workerUrl": "https://xianjiawei-internal.tung314069.workers.dev",
   "currentMain": {
+    "source_commit": "84518b951b3d3806ebebdae392ed2a30ca0c1125",
     "expected_worker_entry": "src/full-system-entry.js",
     "expected_root_ui": "ERP operations center",
     "expected_erp_ui": "/erp.html",
@@ -18,6 +19,16 @@
     "qixuan_public": false,
     "drink_30_usage": "每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排",
     "drink_180_usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排"
+  },
+  "cloudflareDeploymentEvidence": {
+    "check_name": "Workers Builds: xianjiawei-internal",
+    "check_status": "completed",
+    "check_conclusion": "success",
+    "build_id": "0afd8048-17a3-42d0-9815-e9e21b576395",
+    "version_id": "190bbfd4-50dd-495f-9e06-541b8223fca8",
+    "verified_from_github_check_run": true,
+    "verified_at_utc": "2026-09-10T15:40:51Z",
+    "meaning": "Cloudflare 原生 Git Auto-Deploy 已對此 main commit 完成成功 build/deploy check；仍需在 Access 邊界下驗證實際頁面與 D1 內容後才可標記 authenticated live 完成。"
   },
   "accessRuntimeKnownConfiguration": {
     "team_domain": "https://tung314069.cloudflareaccess.com",
@@ -40,9 +51,12 @@
     "note": "此區只保存最後一次舊 publishing-only 架構的已驗證歷史快照，不得作為目前 main 架構權威。"
   },
   "verificationPolicy": {
-    "live_verified": false,
+    "cloudflare_build_verified": true,
+    "live_routes_verified": false,
     "authenticated_live_content_verified": false,
-    "rule": "只有 Cloudflare 原生 Git Auto-Deploy 的實際成功版本，並完成 Access 邊界下 /、/erp.html、/publishing.html 與 D1 live 驗收後，才可把 status 改為 deployed_verified。",
+    "d1_current_main_live_verified": false,
+    "rule": "Cloudflare build/deploy check成功只能證明目前main已成功交付到Workers版本；仍需完成 Access 邊界下 /、/erp.html、/publishing.html 與目前D1 live驗收，才可把 authenticated live 驗收標記完成。",
+    "do_not_infer_authenticated_content_from_build_only": true,
     "do_not_infer_from_historical_actions": true
   },
   "guard_mode": "paused_for_full_system_update",
