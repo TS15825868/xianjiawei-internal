@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-10-v1",
+  "version": "2026-09-10-v2-n8n-longterm-authority",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -39,15 +39,63 @@
   "metaAutomation": {
     "doNotWasteWorkQuota": true,
     "doNotReconfigureHealthySettings": true,
-    "customerSideValidated": ["IG私訊試喝", "IG私訊怎麼選", "IG私訊價格", "FB Messenger試喝", "LINE OA導流"],
-    "configuredAndEnabledAwaitNaturalObservation": ["FAQ按鈕", "FB／IG留言轉私訊"],
+    "customerSideValidated": [
+      "IG私訊試喝",
+      "IG私訊怎麼選",
+      "IG私訊價格",
+      "FB Messenger試喝",
+      "LINE OA導流"
+    ],
+    "configuredAndEnabledAwaitNaturalObservation": [
+      "FAQ按鈕",
+      "FB／IG留言轉私訊"
+    ],
     "repairRule": "真實使用若出現失敗，只修失敗項目；不新增測試貼文、不重做已正常Meta設定。"
   },
   "socialAutomation": {
-    "primaryProducts": ["龜鹿膏", "龜鹿飲30cc", "龜鹿飲180cc"],
-    "cadence": {"facebook": "約每週2篇", "instagram": "約每週2篇", "threads": "約每週4篇"},
+    "primaryProducts": [
+      "龜鹿膏",
+      "龜鹿飲30cc",
+      "龜鹿飲180cc"
+    ],
+    "cadence": {
+      "facebook": "約每週2篇",
+      "instagram": "約每週2篇",
+      "threads": "約每週4篇"
+    },
     "lineCommunityPromotion": "約每週1次或高度相關內容自然帶入",
     "allCommercialHandoff": "LINE OA"
+  },
+  "n8n": {
+    "role": "旁路自動化與協調層；不取代LINE OA Webhook、Cloudflare Worker、D1、GitHub main或其他正式服務",
+    "formalRenderService": {
+      "name": "xianjiawei-n8n-longterm",
+      "url": "https://xianjiawei-n8n-longterm.onrender.com",
+      "region": "Singapore",
+      "plan": "Free",
+      "runtime": "Node",
+      "source": "TS15825868/xianjiawei-internal@main/n8n-runtime/",
+      "persistentDatabase": "Supabase project xianjiawei PostgreSQL",
+      "autoDeploy": false
+    },
+    "legacyRecoveryService": {
+      "name": "xianjiawei-n8n",
+      "url": "https://xianjiawei-n8n.onrender.com",
+      "purpose": "舊回復點；不是正式排程來源",
+      "doNotPromoteWithoutExplicitCutover": true,
+      "oldRenderPostgresIsNotFormalPersistence": true
+    },
+    "activeFormalWorkflows": [
+      "仙加味｜LINE OA 健康監控",
+      "仙加味｜產品母資料 AI GEO 一致性檢查",
+      "仙加味｜系統健康總監控"
+    ],
+    "disabledUntilPublishValidation": "仙加味｜已審核貼文立即發布",
+    "schedulerAuthority": [
+      "TS15825868/xianjiawei@main/.github/workflows/n8n-monitor-scheduler.yml",
+      "TS15825868/xianjiawei@main/.github/workflows/n8n-evening-warm.yml"
+    ],
+    "maintenanceRule": "正式排程與健康監控一律以longterm為準；不得因舊回復點的Postgres 16、Python runner、WEBHOOK_URL或其他警告去改動正式longterm。"
   },
   "systemRules": {
     "internalDataMayExceedPublicData": true,
