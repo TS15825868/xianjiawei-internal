@@ -1,0 +1,70 @@
+{
+  "version": "2026-09-11T01:05+08:00",
+  "authority": "observed-current-state",
+  "principle": "資料正確｜圖文一致｜品牌一致｜功能正常｜正式可上線",
+  "website": {
+    "repository": "TS15825868/xianjiawei@main",
+    "latestObservedCommit": "b9d3e87401955601ebcb0eb86c6fbe48909a1838",
+    "latestChange": "更新 sitemap 首頁 lastmod，反映 2026-09-10 LINE社群漏斗首頁正式更新",
+    "githubPagesRun": 34505625235,
+    "githubPagesConclusion": "success",
+    "publicProductScope": 6,
+    "qixuanPublic": false,
+    "seoIndexingNote": "目前公開搜尋仍可能看到舊 /TaiShing/ 快照；現行正式網址與權威一律為 /xianjiawei/。下一步需透過Google Search Console做URL Inspection與索引確認。"
+  },
+  "lineOA": {
+    "repository": "TS15825868/TS-LINE@main",
+    "dependencyFixCommit": "f636392b51408e0fef8f108ea3e06521e7a405ce",
+    "dependencyLockCommit": "d6dea0b10fe83dd6e9cf7fc56635629566828ca3",
+    "renderService": "TS-LINE",
+    "renderDeploy": "dep-dahds4dq7rac73dsg44g",
+    "renderStatus": "live",
+    "npmVulnerabilitiesObservedAfterFix": 0,
+    "readiness": "pass",
+    "richMenuAuthority": "oa-manager",
+    "publicProductScope": 6,
+    "qixuanPublic": false,
+    "drink30Usage": "每日 1–2 罐"
+  },
+  "internalErp": {
+    "repository": "TS15825868/xianjiawei-internal@main",
+    "cloudflareLastVerifiedSuccessfulBuildRecordCommit": "60b036ef8a9508b4fbeb22672a7cfc7572ab0858",
+    "fullLoggedInLiveValidation": "pending-tool-access",
+    "blockingContentImageGuard": "paused-until-full-live-validation",
+    "dataRetentionRule": "正常ERP、歷史營運、成本、庫存、客戶、合作商等內部資料不得因公開端不使用而刪除"
+  },
+  "n8n": {
+    "formalRenderService": "xianjiawei-n8n-longterm",
+    "formalDatabase": "Supabase xianjiawei PostgreSQL",
+    "legacyRenderService": "xianjiawei-n8n",
+    "legacyIsFormal": false,
+    "latestKnownLongtermDeployStatus": "live",
+    "schedulerRecheck": "scheduled-one-time-follow-up",
+    "note": "若GitHub schedule短暫延遲，先復驗再修；不得切到legacy。"
+  },
+  "supabase": {
+    "project": "xianjiawei",
+    "projectRef": "iphexhvjhsmelbgwzhhr",
+    "status": "ACTIVE_HEALTHY",
+    "postgres": "17",
+    "publicSchemaTables": 1,
+    "xjwAppStateRls": true,
+    "xjwAppStatePublicClientPrivileges": false,
+    "n8nMutableSearchPathWarning": "deferred-to-n8n-runtime-owner",
+    "performanceAdvisorPolicy": "不因advisor提示任意刪除或重建n8n管理索引"
+  },
+  "social": {
+    "metricoolBrandId": "6889683",
+    "networks": ["facebook", "instagram", "threads"],
+    "futureQueueCheckedThrough": "2026-09-25",
+    "primaryProducts": ["龜鹿膏", "龜鹿飲30cc", "龜鹿飲180cc"],
+    "commercialHandoff": "LINE OA @762jybnm",
+    "lineCommunity": "仙加味・龜鹿｜日常交流",
+    "draftPostsAutoPublish": false
+  },
+  "manualOrExternalFollowUps": [
+    "Google Search Console尚未連接；需連接後才能直接做URL Inspection與舊索引追蹤",
+    "Cloudflare Access登入後的ERP／貼文中心／D1完整live驗收目前缺少Cloudflare管理連接工具",
+    "Supabase n8n.increment_workflow_version search_path 警告需由n8n_runtime owner路徑處理，不強制改owner"
+  ]
+}
