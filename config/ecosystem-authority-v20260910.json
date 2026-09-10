@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-10-v2-n8n-longterm-authority",
+  "version": "2026-09-11-v3-supabase-safety-authority",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -96,6 +96,41 @@
       "TS15825868/xianjiawei@main/.github/workflows/n8n-evening-warm.yml"
     ],
     "maintenanceRule": "正式排程與健康監控一律以longterm為準；不得因舊回復點的Postgres 16、Python runner、WEBHOOK_URL或其他警告去改動正式longterm。"
+  },
+  "supabase": {
+    "formalProject": {
+      "name": "xianjiawei",
+      "projectRef": "iphexhvjhsmelbgwzhhr",
+      "region": "ap-northeast-1",
+      "statusObserved": "ACTIVE_HEALTHY",
+      "postgresMajor": 17,
+      "observedAt": "2026-09-11T00:55:00+08:00"
+    },
+    "securityReview": {
+      "xjwAppState": {
+        "finding": "RLS enabled with no policy",
+        "rowCountObserved": 2,
+        "tablePrivilegesObserved": ["postgres", "service_role"],
+        "publicClientPrivilegesObserved": false,
+        "decision": "目前視為內部服務資料表的合理封閉狀態；不得為消除INFO警告而新增anon/authenticated公開policy。"
+      },
+      "n8nIncrementWorkflowVersion": {
+        "finding": "function search_path mutable",
+        "severity": "WARN",
+        "owner": "n8n_runtime",
+        "securityDefiner": false,
+        "relationReferencesObserved": false,
+        "safeAlterAttempt": "blocked because Supabase management migration connection is not function owner and cannot SET ROLE n8n_runtime",
+        "decision": "保留給n8n_runtime正式owner／n8n遷移路徑處理；不得強制改owner或重建n8n管理函式。"
+      }
+    },
+    "performanceReview": {
+      "unindexedForeignKeys": 55,
+      "unusedIndexes": 102,
+      "duplicateIndexGroups": 5,
+      "scope": "均主要位於n8n管理schema",
+      "decision": "目前不自動刪索引或重構n8n schema，避免破壞n8n升級與正式遷移；只有出現實際性能問題並確認n8n版本／migration相容後才處理。"
+    }
   },
   "systemRules": {
     "internalDataMayExceedPublicData": true,
