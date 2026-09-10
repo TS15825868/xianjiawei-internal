@@ -1,12 +1,12 @@
 {
-  "schemaVersion": 12,
+  "schemaVersion": 13,
   "status": "deployed_build_verified_pending_authenticated_live_verification",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "deploymentAuthority": "cloudflare-native-git-auto-deploy",
   "workerUrl": "https://xianjiawei-internal.tung314069.workers.dev",
   "currentMain": {
-    "source_commit": "84518b951b3d3806ebebdae392ed2a30ca0c1125",
+    "source_commit": "3d8ac8e429f94d2e0e7819f9f13588fd76a59576",
     "expected_worker_entry": "src/full-system-entry.js",
     "expected_root_ui": "ERP operations center",
     "expected_erp_ui": "/erp.html",
@@ -18,17 +18,19 @@
     "public_product_count": 6,
     "qixuan_public": false,
     "drink_30_usage": "每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排",
-    "drink_180_usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排"
+    "drink_180_usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排",
+    "n8n_formal_service": "xianjiawei-n8n-longterm",
+    "n8n_legacy_recovery_service": "xianjiawei-n8n"
   },
   "cloudflareDeploymentEvidence": {
     "check_name": "Workers Builds: xianjiawei-internal",
     "check_status": "completed",
     "check_conclusion": "success",
-    "build_id": "0afd8048-17a3-42d0-9815-e9e21b576395",
-    "version_id": "190bbfd4-50dd-495f-9e06-541b8223fca8",
+    "build_id": "4653716b-1308-4c43-a787-6fcac1eb0848",
+    "version_id": "7fd627ec-9999-41f6-89f9-f66e4bee89cd",
     "verified_from_github_check_run": true,
-    "verified_at_utc": "2026-09-10T15:40:51Z",
-    "meaning": "Cloudflare 原生 Git Auto-Deploy 已對此 main commit 完成成功 build/deploy check；仍需在 Access 邊界下驗證實際頁面與 D1 內容後才可標記 authenticated live 完成。"
+    "verified_at_utc": "2026-09-10T16:00:08Z",
+    "meaning": "Cloudflare 原生 Git Auto-Deploy 已對目前 main commit 3d8ac8e429f94d2e0e7819f9f13588fd76a59576 完成成功 build/deploy check；仍需在 Access 邊界下驗證實際頁面與 D1 內容後才可標記 authenticated live 完成。"
   },
   "accessRuntimeKnownConfiguration": {
     "team_domain": "https://tung314069.cloudflareaccess.com",
