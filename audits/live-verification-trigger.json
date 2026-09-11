@@ -1,16 +1,18 @@
 {
-  "requestedAt": "2026-09-11T23:22:00+08:00",
-  "runNonce": "d1-live-readonly-20260911-01",
-  "purpose": "Verify current full ERP, publishing center, substantive remote D1 live data in read-only mode, Cloudflare Access boundary, and authenticated protected page content when service-token secrets are available.",
+  "requestedAt": "2026-09-11T23:30:00+08:00",
+  "runNonce": "d1-live-readonly-20260911-02",
+  "purpose": "Verify current full ERP, publishing center, substantive remote D1 live data in read-only mode, including pending-review and published rows, Cloudflare Access boundary, and authenticated protected page content when service-token secrets are available.",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "nonDestructive": true,
   "d1ReadOnlyChecks": [
     "table inventory",
     "social_posts status summary",
+    "pending_review row summary",
+    "published row summary",
     "schedule range",
     "ready-state missing image count",
     "foreign key check"
   ],
-  "afterFix": "strengthened one-shot verification beyond SELECT 1 without writing or deleting D1 data"
+  "afterFix": "root authenticated page check and D1 pending/published row inspection added; no D1 writes or deletes"
 }
