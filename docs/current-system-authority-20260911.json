@@ -12,7 +12,8 @@
     "publicPrimaryBrand": "仙加味",
     "publicDeferredProduct": "柒玄茶・龜鹿調飲粉",
     "latestScheduleCommit": "715e31ea52bd8da500981a50b3e1e97b93fcec03",
-    "latestPagesDeploy": "pending-verification-after-latest-schedule-commit"
+    "latestPagesDeploy": "success",
+    "latestPagesRunId": 34589919967
   },
   "searchVisibility": {
     "gscTrackerActive": true,
