@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { PRODUCT_AUTHORITY, validateProductRecord, validatePublicProductText, validatePostPayload, validatePostImageMatch } from './product-authority.js';
 
 assert.equal(PRODUCT_AUTHORITY.sourceAuthority,'user-confirmed-current');
-assert.match(PRODUCT_AUTHORITY.version,/2026-08-20-six-public-product-master-v5/);
+assert.match(PRODUCT_AUTHORITY.version,/2026-08-25-six-public-product-master-v6/);
 assert.match(PRODUCT_AUTHORITY.source,/public-product-master\.json$/);
 assert.equal(PRODUCT_AUTHORITY.productCount,6);
 assert.equal(PRODUCT_AUTHORITY.qixuanPublicVisible,false);
