@@ -1,36 +1,63 @@
 {
-  "schemaVersion": 13,
-  "status": "deployed_build_verified_pending_authenticated_live_verification",
+  "schemaVersion": 14,
+  "status": "build_source_d1_and_access_boundary_verified_pending_authenticated_page_body",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "deploymentAuthority": "cloudflare-native-git-auto-deploy",
   "workerUrl": "https://xianjiawei-internal.tung314069.workers.dev",
-  "currentMain": {
-    "source_commit": "3d8ac8e429f94d2e0e7819f9f13588fd76a59576",
-    "expected_worker_entry": "src/full-system-entry.js",
-    "expected_root_ui": "ERP operations center",
-    "expected_erp_ui": "/erp.html",
-    "expected_publishing_ui": "/publishing.html",
-    "expected_routes": ["/", "/erp.html", "/publishing.html"],
-    "erp_ui": "expected_enabled",
-    "erp_api": "expected_enabled",
-    "publishing_center": "expected_enabled_independent",
+  "verifiedRuntimeCommit": "41d3b2b2695907285b6ea56d6e6181b506cfae98",
+  "currentArchitecture": {
+    "worker_entry": "src/full-system-entry.js",
+    "root_ui": "ERP operations center",
+    "erp_ui": "/erp.html",
+    "publishing_ui": "/publishing.html",
+    "erp_api": "enabled",
+    "publishing_center": "enabled_independent",
+    "publishing_safety_chain": "full-system-entry -> publishing-content-audit-entry -> publishing-only-entry -> production-entry",
     "public_product_count": 6,
     "qixuan_public": false,
     "drink_30_usage": "每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排",
-    "drink_180_usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排",
-    "n8n_formal_service": "xianjiawei-n8n-longterm",
-    "n8n_legacy_recovery_service": "xianjiawei-n8n"
+    "drink_180_usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排"
+  },
+  "sourceAndGuardVerification": {
+    "workflow": "仙加味 ERP／貼文中心一次性正式驗收",
+    "workflow_run_id": 34614479989,
+    "result": "success",
+    "checks": [
+      "npm check",
+      "guard:full",
+      "static build",
+      "current public product master v6",
+      "draft -> pending_review -> 16項人工審核 -> approved",
+      "copy/image match hard gate",
+      "regeneration returns to pending_review",
+      "full ERP + independent publishing architecture",
+      "semantic/duplicate/season/weather/context media guards"
+    ]
   },
   "cloudflareDeploymentEvidence": {
     "check_name": "Workers Builds: xianjiawei-internal",
     "check_status": "completed",
     "check_conclusion": "success",
-    "build_id": "4653716b-1308-4c43-a787-6fcac1eb0848",
-    "version_id": "7fd627ec-9999-41f6-89f9-f66e4bee89cd",
+    "build_id": "53e9a57b-1cd3-4dfd-8822-c42052caa5f1",
+    "version_id": "f61de5ae-d835-4959-9398-823a588a457d",
+    "verified_commit": "41d3b2b2695907285b6ea56d6e6181b506cfae98",
     "verified_from_github_check_run": true,
-    "verified_at_utc": "2026-09-10T16:00:08Z",
-    "meaning": "Cloudflare 原生 Git Auto-Deploy 已對目前 main commit 3d8ac8e429f94d2e0e7819f9f13588fd76a59576 完成成功 build/deploy check；仍需在 Access 邊界下驗證實際頁面與 D1 內容後才可標記 authenticated live 完成。"
+    "verified_at_utc": "2026-09-11T15:11:02Z"
+  },
+  "remoteD1Verification": {
+    "verified": true,
+    "database": "xianjiawei-internal-db",
+    "database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
+    "query": "SELECT 1 AS ok",
+    "result": 1,
+    "success": true,
+    "served_by": "v3-prod",
+    "served_by_region": "APAC",
+    "served_by_colo": "SIN",
+    "changed_db": false,
+    "rows_written": 0,
+    "verified_in_workflow_run": 34614479989
   },
   "accessRuntimeKnownConfiguration": {
     "team_domain": "https://tung314069.cloudflareaccess.com",
@@ -39,27 +66,35 @@
     "application_id": "010ecc73-3f19-49a4-9115-8b0f9c9e405c",
     "access_session_duration": "24h"
   },
-  "lastVerifiedHistoricalSnapshot": {
-    "verified_at_utc": "2026-08-15T07:57:55Z",
-    "worker_entry": "src/publishing-only-entry.js",
-    "erp_ui": "disabled",
-    "erp_api": "blocked_except_publishing",
-    "cloudflare_version_id": "3511b332-ebc8-44b5-9f14-e3b43e5eca0e",
-    "remote_d1_verified": true,
-    "remote_d1_database": "xianjiawei-internal-db",
-    "remote_d1_database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
-    "posting_data_preserved": true,
-    "published_post_count_at_that_time": 1,
-    "note": "此區只保存最後一次舊 publishing-only 架構的已驗證歷史快照，不得作為目前 main 架構權威。"
+  "accessBoundaryVerification": {
+    "verified": true,
+    "expectedProtection": "unauthenticated requests redirect to Cloudflare Access",
+    "results": {
+      "/": 302,
+      "/erp.html": 302,
+      "/publishing.html": 302,
+      "/healthz/core": 302
+    },
+    "serverErrorObserved": false,
+    "verified_in_workflow_run": 34614479989
+  },
+  "authenticatedContentVerification": {
+    "verified": false,
+    "status": "pending_no_service_token_in_github",
+    "githubSecretsDetected": {
+      "CF_ACCESS_CLIENT_ID": false,
+      "CF_ACCESS_CLIENT_SECRET": false
+    },
+    "meaning": "目前已驗證正式原始碼、守門、靜態建置、遠端D1與Cloudflare Access邊界；但GitHub Actions沒有Cloudflare Access service token，因此尚未能由自動驗收直接讀取登入後 /erp.html、/publishing.html 與 /healthz/core 的實際頁面內容。"
   },
   "verificationPolicy": {
     "cloudflare_build_verified": true,
-    "live_routes_verified": false,
+    "source_and_guards_verified": true,
+    "remote_d1_verified": true,
+    "access_boundary_verified": true,
     "authenticated_live_content_verified": false,
-    "d1_current_main_live_verified": false,
-    "rule": "Cloudflare build/deploy check成功只能證明目前main已成功交付到Workers版本；仍需完成 Access 邊界下 /、/erp.html、/publishing.html 與目前D1 live驗收，才可把 authenticated live 驗收標記完成。",
-    "do_not_infer_authenticated_content_from_build_only": true,
-    "do_not_infer_from_historical_actions": true
+    "rule": "只有登入後頁面本文驗證仍待完成；不得把Access 302邊界驗證誤稱為authenticated page-body驗證。",
+    "do_not_infer_authenticated_content_from_build_only": true
   },
   "guard_mode": "paused_for_full_system_update",
   "blocking_content_and_media_guards": false,
