@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 14,
-  "status": "build_source_d1_and_access_boundary_verified_pending_authenticated_page_body",
+  "schemaVersion": 15,
+  "status": "build_source_d1_content_and_access_boundary_verified_pending_authenticated_page_body",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "deploymentAuthority": "cloudflare-native-git-auto-deploy",
@@ -21,7 +21,8 @@
   },
   "sourceAndGuardVerification": {
     "workflow": "仙加味 ERP／貼文中心一次性正式驗收",
-    "workflow_run_id": 34614479989,
+    "workflow_run_id": 34616522586,
+    "verified_commit": "e4ccd5ae196145d28cb55859b2a0d5dfa73f7ae9",
     "result": "success",
     "checks": [
       "npm check",
@@ -47,17 +48,56 @@
   },
   "remoteD1Verification": {
     "verified": true,
+    "verificationLevel": "substantive-read-only-live-content",
     "database": "xianjiawei-internal-db",
     "database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
-    "query": "SELECT 1 AS ok",
-    "result": 1,
-    "success": true,
     "served_by": "v3-prod",
     "served_by_region": "APAC",
     "served_by_colo": "SIN",
     "changed_db": false,
     "rows_written": 0,
-    "verified_in_workflow_run": 34614479989
+    "verified_in_workflow_run": 34616522586,
+    "verified_at_utc": "2026-09-11T15:30:55Z",
+    "social_posts": {
+      "total": 71,
+      "draft": 0,
+      "pending_review": 2,
+      "approved": 0,
+      "scheduled": 0,
+      "published": 3,
+      "manual_required": 0,
+      "failed": 0,
+      "archived": 66,
+      "ready_state_missing_image": 0,
+      "scheduled_at_rows": 0,
+      "scheduleMeaning": "D1 social_posts為ERP／貼文中心內容與審核資料，不是Metricool正式排程總帳；scheduled=0不得解讀為社群沒有排程。"
+    },
+    "pending_review_rows": [
+      {
+        "id": "XJW-SOCIAL-20260909-0900-CHOOSE",
+        "title": "週三早上，先看今天的生活動線再決定怎麼安排",
+        "category": "生活情境",
+        "image_url": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/choose.webp",
+        "image_approved": 0,
+        "image_quality_status": "clear",
+        "policy": "維持待審核，不自動核准或發布"
+      },
+      {
+        "id": "XJW-SOCIAL-20260911-0900-RECIPE",
+        "title": "週五回家想煮一鍋熱湯，先把晚餐的節奏留出來",
+        "category": "生活情境",
+        "image_url": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
+        "image_approved": 0,
+        "image_quality_status": "clear",
+        "policy": "維持待審核，不自動核准或發布"
+      }
+    ],
+    "published_rows": [
+      "XJW-SOCIAL-20260904-0900-FIRST",
+      "POST-TRIAL-MAIN",
+      "POST-BRAND-START"
+    ],
+    "foreign_key_check": "pass-no-violations"
   },
   "accessRuntimeKnownConfiguration": {
     "team_domain": "https://tung314069.cloudflareaccess.com",
@@ -76,7 +116,7 @@
       "/healthz/core": 302
     },
     "serverErrorObserved": false,
-    "verified_in_workflow_run": 34614479989
+    "verified_in_workflow_run": 34616522586
   },
   "authenticatedContentVerification": {
     "verified": false,
@@ -85,12 +125,14 @@
       "CF_ACCESS_CLIENT_ID": false,
       "CF_ACCESS_CLIENT_SECRET": false
     },
-    "meaning": "目前已驗證正式原始碼、守門、靜態建置、遠端D1與Cloudflare Access邊界；但GitHub Actions沒有Cloudflare Access service token，因此尚未能由自動驗收直接讀取登入後 /erp.html、/publishing.html 與 /healthz/core 的實際頁面內容。"
+    "routesPreparedForVerification": ["/", "/erp.html", "/publishing.html", "/healthz/core"],
+    "meaning": "目前已驗證正式原始碼、守門、靜態建置、遠端D1實際內容與Cloudflare Access邊界；GitHub Actions沒有Cloudflare Access service token，因此尚未能由自動驗收直接讀取登入後四個路徑的實際頁面內容。"
   },
   "verificationPolicy": {
     "cloudflare_build_verified": true,
     "source_and_guards_verified": true,
     "remote_d1_verified": true,
+    "remote_d1_content_verified": true,
     "access_boundary_verified": true,
     "authenticated_live_content_verified": false,
     "rule": "只有登入後頁面本文驗證仍待完成；不得把Access 302邊界驗證誤稱為authenticated page-body驗證。",
