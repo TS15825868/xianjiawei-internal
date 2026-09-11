@@ -1,0 +1,7 @@
+{
+  "requestedAt": "2026-09-11T22:58:00+08:00",
+  "purpose": "Verify current full ERP, publishing center, remote D1 connectivity, Cloudflare Access boundary, and authenticated protected page content when service-token secrets are available.",
+  "repository": "TS15825868/xianjiawei-internal",
+  "branch": "main",
+  "nonDestructive": true
+}
