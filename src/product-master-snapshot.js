@@ -3,7 +3,7 @@
 // Website public authority is six products; ERP may retain additional internal/deferred records elsewhere.
 export const PRODUCT_MASTER_META=Object.freeze({
   authority:'user-confirmed-current',
-  version:'2026-08-20-six-public-product-master-v5',
+  version:'2026-08-25-six-public-product-master-v6',
   source:'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json',
   productCount:6
 });
