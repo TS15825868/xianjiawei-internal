@@ -41,7 +41,12 @@
     "githubCi": "success",
     "githubPagesWorkflowRunId": 34620359758,
     "githubPagesDeploy": "success",
-    "renderLiveVerification": "not-rechecked-this-round-workspace-selection-required",
+    "renderServiceId": "srv-d4rddeidbo4c73cabnug",
+    "renderDeployId": "dep-dai2ff8mrftc73db9ngg",
+    "renderLiveVerification": "verified-live-same-commit",
+    "renderLiveCommit": "f1fb5bec1de52b3119af6f2ecf353941e7a3d9cc",
+    "renderLiveDeployStatus": "live",
+    "renderHighSeverityLogsAfterLive": 0,
     "publicCopyGuard": "active-and-passing",
     "prestartGuard": true,
     "testsVerified": [
@@ -118,7 +123,6 @@
     "Cloudflare Access登入後ERP／貼文中心／healthz本文自動驗收：GitHub尚無CF Access service token。",
     "Google其餘11個核心網址持續等待Google發現／索引。",
     "10/15–10/31候選中的3張新正式圖尚未完成，因此對應貼文維持blocked且不排程。",
-    "正式非拼貼、角色真正連續動作的動畫來源尚未取得。",
-    "LINE Render live服務本輪未重新驗證；Render工具要求先選workspace，不得用GitHub Pages/CI成功替代宣稱Render已部署。"
+    "正式非拼貼、角色真正連續動作的動畫來源尚未取得。"
   ]
 }
