@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11",
+  "updatedAt": "2026-09-11T23:28:00+08:00",
   "status": "active",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -7,7 +7,16 @@
   "timezone": "Asia/Taipei",
   "principle": "少而精、不洗版、不讓人覺得煩；龜鹿膏與龜鹿飲主打；柒玄茶暫不對外；一般生活內容不硬塞LINE，明確試喝／怎麼選／價格／下單／配送／售後需求才導LINE OA。",
   "visualGate": "正式男生小老闆；小鹿與小烏龜分開；所有紅色印章使用正式仙加味Logo；產品只用正式實物圖；錯圖、亂碼、療效宣稱、AI亂包裝不得發布。",
-  "videoGate": "只接受真正連續角色動畫；拼貼、紙偶、圖片平移縮放不得發布。",
-  "scheduleWindow": "2026-09-11/2026-09-24",
-  "note": "正式排程明細與IG精簡文案、7組圖上文字均以authorityPath為準；Metricool draft=true／autoPublish=false只作草稿庫，不視為正式待發。"
+  "videoGate": "只接受真正連續角色動畫；拼貼、紙偶、關節剪貼、整圖平移縮放不得發布。",
+  "usageTimingGate": "龜鹿膏與龜鹿飲不得鎖成固定早上、下午或白天時段；依個人使用習慣與作息安排。",
+  "scheduleWindow": "2026-09-12/2026-10-14",
+  "formalUpcomingCount": 30,
+  "scheduleSource": "Metricool live planner",
+  "sourceRule": "draft=false and autoPublish=true only",
+  "d1Role": "Cloudflare D1 social_posts is ERP/publishing-center content and review data, not the Metricool schedule ledger. D1 scheduled=0 is therefore not evidence that Metricool has no upcoming posts.",
+  "correctionsApplied": [
+    "2026-09-13 Threads：移除固定白天語意，改為飲用時間依個人使用習慣與作息安排",
+    "2026-10-05 Facebook：移除固定白天語意，改為食用時間依個人使用習慣與作息安排"
+  ],
+  "note": "正式排程明細以 authorityPath 與 Metricool live planner 為準；Metricool draft=true／autoPublish=false只作草稿庫，不視為正式待發。"
 }
