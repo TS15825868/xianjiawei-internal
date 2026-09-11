@@ -1,0 +1,29 @@
+{
+  "version": "2026-09-11-static-first-v1",
+  "status": "formal-current",
+  "scope": "仙加味跨系統內容與發布權威",
+  "sourceAuthority": "TS15825868/xianjiawei content/formal-content-authority-v20260911-static-first.json",
+  "publishing": {
+    "primaryFormat": "文案＋對應正式貼文圖",
+    "animation": "正式品質未通過前暫緩排程",
+    "heroProducts": ["龜鹿膏", "龜鹿飲30cc玻璃罐", "龜鹿飲180cc鋁袋"],
+    "deferredPublicProducts": ["柒玄茶・龜鹿調飲粉"],
+    "funnel": "一般內容先自然交流；試喝、怎麼選、價格、下單、配送、售後與個別問題最後導LINE OA @762jybnm"
+  },
+  "visual": {
+    "mascot": "正式Q版男生小老闆",
+    "partners": "小鹿與小烏龜必須分開",
+    "logo": "紅色印章只用正式仙加味Logo",
+    "products": "只用正式產品原圖或不變形合成"
+  },
+  "animationQuarantine": {
+    "rejected": ["圖片剪貼", "紙偶", "關節式拼貼預覽", "圖片平移縮放", "非正式角色替代"],
+    "mustNotPublish": true,
+    "mustNotReenterFormalQueue": true,
+    "releaseGate": "角色、夥伴、場景、情境、聲音、產品、動作全部正式且自然後才可重新進正式候選"
+  },
+  "lineOA": {
+    "businessProfileCover": "使用者已於2026-09-11手動換成新版封面",
+    "doNotOverwrite": true
+  }
+}
