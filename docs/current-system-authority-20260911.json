@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-11-v5",
+  "version": "2026-09-11-v6",
   "brand": "仙加味",
   "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材或舊動畫回流。",
   "website": {
@@ -118,12 +118,18 @@
     "legacyZipRule": "ZIP、歷史DM、生成候選圖的存在不等於正式可上線；需逐張通過最新規格與圖文法規檢查。"
   },
   "animation": {
-    "currentStatus": "not-formal-not-required-for-schedule",
+    "currentStatus": "formal-generation-not-available / postproduction-ready",
     "rejectedTypes": ["拼貼", "紙偶", "關節式剪貼", "整圖平移縮放", "不像正式小老闆／夥伴的版本"],
-    "websitePolicyFile": "content/video-short2-free-pipeline-v20260911.json",
-    "workflow": ".github/workflows/render-free-short2.yml",
-    "workflowMode": "manual-archive-only",
-    "publicationRule": "真正角色、夥伴、場景、情境、聲音、產品與動作全部正式自然後，才可取代一個圖文名額。"
+    "rejectedExperimentPolicy": "content/video-short2-free-pipeline-v20260911.json",
+    "rejectedWorkflow": ".github/workflows/render-free-short2.yml",
+    "rejectedWorkflowMode": "manual-archive-only",
+    "postproductionPolicy": "content/video-postproduction-pipeline-v20260911.json",
+    "postproductionScript": "tools/video_postprocess/prepare_candidate.sh",
+    "postproductionWorkflow": ".github/workflows/video-postproduction-manual.yml",
+    "postproductionMode": "manual / candidate-review-required / never auto-publish",
+    "postproductionStack": ["FFmpeg", "Noto CJK", "Whisper optional", "Auto-Editor optional", "licensed music optional"],
+    "runwayState20260911": "authenticated but no available video models; credits total 0",
+    "publicationRule": "真正角色、夥伴、場景、情境、聲音、產品與動作全部正式自然後，才可進後製；後製技術PASS仍需品牌驗收，驗收通過後才可取代一個圖文名額。"
   },
   "automations": {
     "socialOps": "6a985c83e83481919e96c310d54d1bed",
