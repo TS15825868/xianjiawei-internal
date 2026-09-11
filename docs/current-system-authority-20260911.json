@@ -1,7 +1,7 @@
 {
-  "version": "2026-09-11-v7",
+  "version": "2026-09-11-v8",
   "brand": "仙加味",
-  "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材或舊動畫回流。",
+  "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材、舊守門或舊動畫回流。",
   "latestRuntimeAudit": "audits/full-system-audit-20260911-2250.json",
   "website": {
     "repo": "TS15825868/xianjiawei",
@@ -57,14 +57,24 @@
     "repo": "TS15825868/xianjiawei-internal",
     "branch": "main",
     "dataPolicy": "ERP可保留比官網更多的正常內部資料，不因對外隱藏而刪除。",
+    "currentArchitecture": "完整ERP營運中控＋獨立貼文中心；貼文流程仍沿用內容語意守門與production安全鏈。",
+    "publicProductMaster": "2026-08-25-six-public-product-master-v6",
+    "sourceAndGuardVerification": "success",
+    "sourceAndGuardWorkflowRunId": 34614479989,
     "cloudflareBuildDeploy": "verified-success",
-    "latestVerifiedBuildCommit": "4349bd27f2494ff33da7280407f3eb2d929c9816",
-    "latestVerifiedBuildId": "af9bb43b-46ee-48df-9247-c80b0477fbd3",
-    "latestVerifiedVersionId": "6b95de25-328c-4c23-a342-a79efc591fb9",
-    "authenticatedLiveVerification": "pending",
+    "latestVerifiedRuntimeCommit": "41d3b2b2695907285b6ea56d6e6181b506cfae98",
+    "latestVerifiedBuildId": "53e9a57b-1cd3-4dfd-8822-c42052caa5f1",
+    "latestVerifiedVersionId": "f61de5ae-d835-4959-9398-823a588a457d",
+    "remoteD1Verification": "verified-success",
+    "remoteD1Database": "xianjiawei-internal-db",
+    "remoteD1DatabaseId": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe",
+    "accessBoundaryVerification": "verified-302-protected-no-5xx",
+    "accessBoundaryRoutes": ["/", "/erp.html", "/publishing.html", "/healthz/core"],
+    "authenticatedLiveVerification": "pending-page-body-only-no-service-token",
+    "cloudflareAccessServiceTokenInGitHub": false,
     "assetAuditAuthority": "docs/asset-source-audit-20260911.json",
-    "runtimeAudit": "audits/full-system-audit-20260911-2250.json",
-    "rule": "Cloudflare build成功不等於已完成Access登入後頁面與D1 live驗收；未驗收前不得宣稱authenticated live完成。"
+    "cloudflareStatusAuthority": "cloudflare-deploy-current-status.json",
+    "rule": "正式原始碼、全部主要守門、靜態建置、Cloudflare部署、遠端D1與Access保護邊界已驗證；只剩登入後頁面本文驗證尚未自動完成，原因是GitHub目前沒有Cloudflare Access service token。"
   },
   "n8n": {
     "formalRenderService": "xianjiawei-n8n-longterm",
@@ -151,9 +161,18 @@
     "coreOperational": true,
     "fullyClosed": false,
     "remainingHardGaps": [
-      "Cloudflare Access authenticated ERP／publishing／D1 live verification",
+      "Cloudflare Access登入後ERP／貼文中心頁面本文驗證（目前GitHub無service token）",
       "Google核心頁面持續索引",
       "正式非拼貼動畫來源"
+    ],
+    "resolvedThisRound": [
+      "ERP公開產品快照從v5同步到v6",
+      "產品守門測試同步v6",
+      "review-gate validator不再誤鎖舊入口",
+      "system-readiness validator對齊完整ERP架構",
+      "single-system validator同步龜鹿湯塊目前完整正式規格",
+      "遠端D1連線正式驗證成功",
+      "Cloudflare Access四個保護路徑未登入均正確302且無5xx"
     ]
   }
 }
