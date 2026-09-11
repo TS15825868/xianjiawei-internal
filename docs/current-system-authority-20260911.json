@@ -1,16 +1,18 @@
 {
-  "version": "2026-09-11-v3",
+  "version": "2026-09-11-v4",
   "brand": "仙加味",
   "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材或舊動畫回流。",
   "website": {
     "repo": "TS15825868/xianjiawei",
     "branch": "main",
-    "formalScheduleAuthority": "content/social-schedule-20260911-0924.json",
+    "formalScheduleAuthority": "content/social-schedule-20261001-1014.json",
+    "metricoolVerificationAuthority": "content/social-schedule-20261001-1014-metricool.json",
+    "previousScheduleAuthority": "content/social-schedule-20260911-0924.json",
     "socialTopicBank": "content/social-content-bank-v20260911.json",
     "publicPrimaryBrand": "仙加味",
     "publicDeferredProduct": "柒玄茶・龜鹿調飲粉",
-    "latestPagesCommit": "22d7dfca1cf8bfb4b78d8b093cbbf38387d5da16",
-    "latestPagesDeploy": "success"
+    "latestScheduleCommit": "715e31ea52bd8da500981a50b3e1e97b93fcec03",
+    "latestPagesDeploy": "pending-verification-after-latest-schedule-commit"
   },
   "searchVisibility": {
     "gscTrackerActive": true,
@@ -40,7 +42,8 @@
     "name": "仙加味・龜鹿｜日常交流",
     "role": "生活交流／料理／品牌／聊天",
     "commercialQuestions": "試喝、怎麼選、價格、下單、配送、售後與個別問題最後導LINE OA",
-    "antiSpam": "不洗版、不每篇硬導LINE；主動邀請約每週最多1次。"
+    "antiSpam": "不洗版、不每篇硬導LINE；主動邀請約每週最多1次。",
+    "nextContentPlan": "TS15825868/xianjiawei:content/social-schedule-20261001-1014.json#lineOpenChatPlan"
   },
   "erpInternal": {
     "repo": "TS15825868/xianjiawei-internal",
@@ -84,9 +87,12 @@
     "instagramCadence": "約每週2篇",
     "threadsCadence": "約每週3至4篇",
     "heroProducts": ["龜鹿膏", "龜鹿飲30cc玻璃罐", "龜鹿飲180cc鋁袋"],
-    "latestScheduledThrough": "2026-09-30",
+    "latestScheduledThrough": "2026-10-14",
     "topicBank": "TS15825868/xianjiawei:content/social-content-bank-v20260911.json",
-    "newMetricoolIds": [374349553, 374349652, 374349760],
+    "scheduleAuthority": "TS15825868/xianjiawei:content/social-schedule-20261001-1014.json",
+    "metricoolVerification": "TS15825868/xianjiawei:content/social-schedule-20261001-1014-metricool.json",
+    "octoberMetricoolIds": [374366711,374366814,374366888,374366992,374367098,374367159,374367248,374367374,374367515,374367603,374367681,374367795,374367910,374368016],
+    "octoberCounts": {"facebook":4,"instagram":4,"threads":6,"total":14},
     "rule": "少而精、不洗版、不讓人覺得煩；沒有合格新圖就不硬排FB／IG。"
   },
   "visualAuthority": {
@@ -96,6 +102,7 @@
     "logoRule": "所有紅色印章位置只使用正式仙加味Logo",
     "productRule": "產品只使用正式原圖或不變形合成；30cc為小玻璃裸罐，180cc為正式比例鋁袋。",
     "assetAudit": "docs/asset-source-audit-20260911.json",
+    "approvedSocialMediaSet": "TS15825868/xianjiawei:images/brand/line-oa/*.jpg derived from approved-v405 complete scenes",
     "legacyZipRule": "ZIP、歷史DM、生成候選圖的存在不等於正式可上線；需逐張通過最新規格與圖文法規檢查。"
   },
   "animation": {
