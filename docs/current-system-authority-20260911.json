@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-11-v4",
+  "version": "2026-09-11-v5",
   "brand": "仙加味",
   "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材或舊動畫回流。",
   "website": {
@@ -9,11 +9,14 @@
     "metricoolVerificationAuthority": "content/social-schedule-20261001-1014-metricool.json",
     "previousScheduleAuthority": "content/social-schedule-20260911-0924.json",
     "socialTopicBank": "content/social-content-bank-v20260911.json",
+    "approvedSocialMediaAuthority": "content/social-approved-media-v20260911.json",
+    "nextCycleMediaAuthority": "content/social-next-cycle-media-v20260911.json",
+    "nextCycleCandidatePlan": "content/social-plan-20261015-1031-candidates.json",
     "publicPrimaryBrand": "仙加味",
     "publicDeferredProduct": "柒玄茶・龜鹿調飲粉",
-    "latestScheduleCommit": "715e31ea52bd8da500981a50b3e1e97b93fcec03",
+    "latestCandidateCommit": "5053ac74243391be040eac110cf21c9ade1668e7",
     "latestPagesDeploy": "success",
-    "latestPagesRunId": 34589919967
+    "latestPagesRunId": 34593434664
   },
   "searchVisibility": {
     "gscTrackerActive": true,
@@ -44,7 +47,8 @@
     "role": "生活交流／料理／品牌／聊天",
     "commercialQuestions": "試喝、怎麼選、價格、下單、配送、售後與個別問題最後導LINE OA",
     "antiSpam": "不洗版、不每篇硬導LINE；主動邀請約每週最多1次。",
-    "nextContentPlan": "TS15825868/xianjiawei:content/social-schedule-20261001-1014.json#lineOpenChatPlan"
+    "currentPlan": "TS15825868/xianjiawei:content/social-schedule-20261001-1014.json#lineOpenChatPlan",
+    "weeklyAutomation": "每週社群週報同時產出2則生活／料理／品牌／聊天型LINE社群建議貼文；商業需求再導LINE OA。"
   },
   "erpInternal": {
     "repo": "TS15825868/xianjiawei-internal",
@@ -89,9 +93,14 @@
     "threadsCadence": "約每週3至4篇",
     "heroProducts": ["龜鹿膏", "龜鹿飲30cc玻璃罐", "龜鹿飲180cc鋁袋"],
     "latestScheduledThrough": "2026-10-14",
+    "preparedCandidatesThrough": "2026-10-31",
+    "nextCycleStatus": "prepared-not-scheduled",
+    "nextCycleActivationGate": "10/15後先比較10/1至10/14實際互動、退追、導流與內容疲勞，再決定是否依候選時段正式排程。",
     "topicBank": "TS15825868/xianjiawei:content/social-content-bank-v20260911.json",
     "scheduleAuthority": "TS15825868/xianjiawei:content/social-schedule-20261001-1014.json",
     "metricoolVerification": "TS15825868/xianjiawei:content/social-schedule-20261001-1014-metricool.json",
+    "nextCycleMediaPool": "TS15825868/xianjiawei:content/social-next-cycle-media-v20260911.json",
+    "nextCycleCandidatePlan": "TS15825868/xianjiawei:content/social-plan-20261015-1031-candidates.json",
     "octoberMetricoolIds": [374366711,374366814,374366888,374366992,374367098,374367159,374367248,374367374,374367515,374367603,374367681,374367795,374367910,374368016],
     "octoberCounts": {"facebook":4,"instagram":4,"threads":6,"total":14},
     "rule": "少而精、不洗版、不讓人覺得煩；沒有合格新圖就不硬排FB／IG。"
@@ -104,6 +113,8 @@
     "productRule": "產品只使用正式原圖或不變形合成；30cc為小玻璃裸罐，180cc為正式比例鋁袋。",
     "assetAudit": "docs/asset-source-audit-20260911.json",
     "approvedSocialMediaSet": "TS15825868/xianjiawei:images/brand/line-oa/*.jpg derived from approved-v405 complete scenes",
+    "nextCycleApprovedSources": ["recipes.webp","product-guilu-gao-100g.webp","product-guilu-drink-30cc.webp","product-guilu-drink-180cc.webp","product-guilu-tangkuai-75g.webp","product-guilu-jiao-600g.webp","product-luerong-fen-75g.webp"],
+    "nextCycleRule": "上述素材僅在文案主題完全一致時使用；不裁切、不拉伸、不重畫產品；同一週期同一圖不重複搭不同文案。",
     "legacyZipRule": "ZIP、歷史DM、生成候選圖的存在不等於正式可上線；需逐張通過最新規格與圖文法規檢查。"
   },
   "animation": {
