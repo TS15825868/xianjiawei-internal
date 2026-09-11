@@ -47,12 +47,23 @@ jobs:
           grep -q 'qixuanPublicVisible:false' src/product-authority.js
           echo 'PASS source/build contract'
 
-      - name: Verify current remote D1 connectivity
+      - name: Verify current remote D1 live data (read-only)
         run: |
           set -euo pipefail
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
+          echo '--- D1 tables ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+          echo '--- social_posts status summary ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS total, SUM(CASE WHEN status='draft' THEN 1 ELSE 0 END) AS draft, SUM(CASE WHEN status='pending_review' THEN 1 ELSE 0 END) AS pending_review, SUM(CASE WHEN status='approved' THEN 1 ELSE 0 END) AS approved, SUM(CASE WHEN status='scheduled' THEN 1 ELSE 0 END) AS scheduled, SUM(CASE WHEN status='published' THEN 1 ELSE 0 END) AS published, SUM(CASE WHEN status='manual_required' THEN 1 ELSE 0 END) AS manual_required, SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) AS failed, SUM(CASE WHEN status='archived' THEN 1 ELSE 0 END) AS archived FROM social_posts"
+          echo '--- schedule range ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT MIN(scheduled_at) AS first_scheduled_at, MAX(scheduled_at) AS last_scheduled_at, COUNT(*) AS rows_with_schedule FROM social_posts WHERE scheduled_at IS NOT NULL AND TRIM(scheduled_at)<>''"
+          echo '--- ready-state missing image check ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS ready_state_missing_image FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') AND TRIM(COALESCE(image_url,''))=''"
+          echo '--- foreign key check ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "PRAGMA foreign_key_check"
+          echo 'D1_LIVE_READONLY=PASS' | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '已讀取正式 D1 的 social_posts 狀態分布、排程範圍、正式狀態缺圖與 foreign key；此步驟不寫入資料。' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify Cloudflare Access boundary does not expose server errors
         run: |
