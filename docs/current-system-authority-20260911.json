@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-11-v1",
+  "version": "2026-09-11-v2",
   "brand": "仙加味",
   "purpose": "記錄目前正式可上線系統權威，避免舊流程、舊素材或舊動畫回流。",
   "website": {
@@ -7,7 +7,19 @@
     "branch": "main",
     "formalScheduleAuthority": "content/social-schedule-20260911-0924.json",
     "publicPrimaryBrand": "仙加味",
-    "publicDeferredProduct": "柒玄茶・龜鹿調飲粉"
+    "publicDeferredProduct": "柒玄茶・龜鹿調飲粉",
+    "latestPagesCommit": "22d7dfca1cf8bfb4b78d8b093cbbf38387d5da16",
+    "latestPagesDeploy": "success"
+  },
+  "searchVisibility": {
+    "gscTrackerActive": true,
+    "trackedUrlCount": 12,
+    "indexedCount": 1,
+    "notIndexedCount": 11,
+    "trackerErrors": 0,
+    "trackerWarnings": 0,
+    "currentNotIndexedReason": "URL is unknown to Google",
+    "policy": "目前屬發現／索引進度問題，不是技術錯誤；持續由追蹤器觀察，不以大量重複頁、關鍵字堆砌或FAQ rich result投機方式處理。"
   },
   "lineOA": {
     "repo": "TS15825868/TS-LINE",
@@ -32,7 +44,10 @@
   "erpInternal": {
     "repo": "TS15825868/xianjiawei-internal",
     "branch": "main",
-    "dataPolicy": "ERP可保留比官網更多的正常內部資料，不因對外隱藏而刪除。"
+    "dataPolicy": "ERP可保留比官網更多的正常內部資料，不因對外隱藏而刪除。",
+    "cloudflareBuildDeploy": "verified-success",
+    "authenticatedLiveVerification": "pending",
+    "rule": "Cloudflare build成功不等於已完成Access登入後頁面與D1 live驗收；未驗收前不得宣稱authenticated live完成。"
   },
   "n8n": {
     "formalRenderService": "xianjiawei-n8n-longterm",
@@ -44,6 +59,22 @@
       ".github/workflows/n8n-monitor-scheduler.yml",
       ".github/workflows/n8n-evening-warm.yml"
     ]
+  },
+  "supabase": {
+    "project": "xianjiawei",
+    "projectRef": "iphexhvjhsmelbgwzhhr",
+    "status": "ACTIVE_HEALTHY",
+    "postgres": "17.6.1.141",
+    "securityAdvisors": {
+      "xjw_app_state_rls_no_policy": "INFO / expected private-service-role design; do not create open anon policy merely to clear INFO",
+      "n8n_increment_workflow_version_search_path": "WARN / known owner-sensitive n8n function; do not force unsafe owner change"
+    },
+    "performanceAdvisors": {
+      "unindexedForeignKeys": 55,
+      "unusedIndexes": 102,
+      "duplicateIndexGroups": 5,
+      "policy": "監控即可；未有真實效能證據與migration-safe方案前不盲刪索引或改n8n schema。"
+    }
   },
   "socialPublishing": {
     "primaryMode": "文案＋對應正式貼文圖",
