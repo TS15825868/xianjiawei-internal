@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-11-v11",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260911.json#2026-09-11-v10",
+  "rule": "本檔只覆蓋v10之後已實際驗證變更；未覆蓋欄位繼承v10。新版正確資料優先，歷史與正常ERP資料不因公開邊界調整而刪除。",
+  "website": {
+    "repo": "TS15825868/xianjiawei",
+    "branch": "main",
+    "verifiedMainCommit": "ec57accf807d12acf333693404d545353f5be2f5",
+    "latestPagesWorkflowRunId": 34620603555,
+    "latestPagesBuild": "success",
+    "latestPagesDeploy": "success",
+    "staleDataAuditWorkflowRunId": 34620604940,
+    "staleDataAudit": "success",
+    "staleDataAuditReadOnly": true,
+    "guardPolicy": {
+      "publicBrand": "仙加味",
+      "publicProductCount": 6,
+      "deferredProduct": "柒玄茶・龜鹿調飲粉",
+      "deferredPolicy": "顧客頁、公開產品payload、AI answers[]、GEO與正式社群payload不得重新公開；llms與治理metadata可以且應保留暫緩／不得公開的負面政策說明。",
+      "drink30Package": ["小玻璃罐", "裸罐", "無貼紙"],
+      "drink30Usage": "每日 1–2 罐",
+      "timingPolicy": "龜鹿膏與龜鹿飲不得被舊守門回退成固定白天／早上＋下午；依目前正式母資料驗收。",
+      "claimsPolicy": "真正顧客／產品／AI回答／社群payload不得使用高風險療效宣稱；法規或安全政策中的『不得宣稱』文字不可誤判為違規。"
+    },
+    "validators": {
+      "validate-current-authority-no-stale-blockers.py": "success-policy-aware",
+      "validate-site-production-release-v20260809.py": "success-updated-current-policy",
+      "validate-ai-geo-current-v20260820.py": "success-updated-current-policy",
+      "validate-public-boundary-v20260808.py": "success"
+    },
+    "workflowTriggerPolicy": "正式authority、顧客頁、AI/GEO、社群正式payload或上述validator本身變更時，自動執行完整舊資料回流守門。"
+  },
+  "lineOA": {
+    "repo": "TS15825868/TS-LINE",
+    "branch": "main",
+    "verifiedMainCommit": "f1fb5bec1de52b3119af6f2ecf353941e7a3d9cc",
+    "githubCiWorkflowRunId": 34620361213,
+    "githubCi": "success",
+    "githubPagesWorkflowRunId": 34620359758,
+    "githubPagesDeploy": "success",
+    "renderLiveVerification": "not-rechecked-this-round-workspace-selection-required",
+    "publicCopyGuard": "active-and-passing",
+    "prestartGuard": true,
+    "testsVerified": [
+      "npm test",
+      "npm run check:catalog",
+      "npm run guard:full",
+      "npm run security:audit",
+      "six visible products",
+      "Qixuan retained internally but hidden from public LINE knowledge",
+      "30cc small glass jar + bare jar + no sticker",
+      "30cc daily 1–2 cans",
+      "flexible timing",
+      "welcome hero",
+      "product/trial separation",
+      "Rich Menu Manager authority",
+      "formal media routes",
+      "production readiness",
+      "mascot/recording UI guards"
+    ],
+    "syncFix": {
+      "file": "tools/sync_sales_master_current.js",
+      "status": "fixed-idempotent",
+      "problem": "舊同步器每次執行都重複prepend guardRules，造成check:catalog永遠判定仍需同步。",
+      "fix": "guardRules去重；重複執行後結果一致。"
+    },
+    "profileCover": {
+      "status": "manually-updated-by-user",
+      "rule": "不得由自動化覆蓋或改回舊封面。"
+    }
+  },
+  "erpInternal": {
+    "remoteD1Verification": "verified-success-substantive-read-only",
+    "socialPosts": {
+      "total": 71,
+      "pending_review": 2,
+      "published": 3,
+      "archived": 66,
+      "ready_state_missing_image": 0,
+      "foreign_key_check": "pass-no-violations",
+      "rows_written_during_verification": 0
+    },
+    "pendingReviewRule": "2筆圖片存在且clear但image_approved=0，維持待審核，不自動核准、排程或發布。",
+    "cloudflareAccessBoundary": "verified-302-protected-no-5xx",
+    "authenticatedPageBody": "pending-no-github-access-service-token"
+  },
+  "socialPublishing": {
+    "metricoolBrandId": "6889683",
+    "latestScheduledThrough": "2026-10-14",
+    "formalUpcomingCountFrom20260912": 30,
+    "nextCycleThrough": "2026-10-31",
+    "nextCycleStatus": "prepared-not-scheduled",
+    "blockedForMedia": [
+      "2026-10-18 Instagram料理：recipes.webp已被D1待審核稿占用；需新料理情境圖或釋放原圖。",
+      "2026-10-24 Instagram龜鹿湯塊料理：需新的生活料理情境圖，不可用產品頁圖硬配。",
+      "2026-10-31 Instagram 30cc／180cc比較：需正式產品原圖等比例合成的新比較圖。"
+    ]
+  },
+  "searchVisibility": {
+    "trackedUrlCount": 12,
+    "indexedCount": 1,
+    "notIndexedCount": 11,
+    "indexedUrl": "https://ts15825868.github.io/xianjiawei/index.html",
+    "indexedState": "Submitted and indexed",
+    "notIndexedReason": "URL is unknown to Google",
+    "latestImmediateInspectionAt": "2026-09-11T23:39:25+08:00"
+  },
+  "animation": {
+    "postproductionWorkflow": ".github/workflows/video-postproduction-manual.yml",
+    "mode": "workflow_dispatch-only",
+    "ordinaryPushNoLongerTriggers": true,
+    "publicationRule": "拼貼、紙偶、整圖平移縮放不得發布；只有正式自然動畫來源通過品牌驗收後才可進正式後製與發布。"
+  },
+  "remainingHardGaps": [
+    "Cloudflare Access登入後ERP／貼文中心／healthz本文自動驗收：GitHub尚無CF Access service token。",
+    "Google其餘11個核心網址持續等待Google發現／索引。",
+    "10/15–10/31候選中的3張新正式圖尚未完成，因此對應貼文維持blocked且不排程。",
+    "正式非拼貼、角色真正連續動作的動畫來源尚未取得。",
+    "LINE Render live服務本輪未重新驗證；Render工具要求先選workspace，不得用GitHub Pages/CI成功替代宣稱Render已部署。"
+  ]
+}
