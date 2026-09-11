@@ -56,6 +56,10 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
           echo '--- social_posts status summary ---'
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS total, SUM(CASE WHEN status='draft' THEN 1 ELSE 0 END) AS draft, SUM(CASE WHEN status='pending_review' THEN 1 ELSE 0 END) AS pending_review, SUM(CASE WHEN status='approved' THEN 1 ELSE 0 END) AS approved, SUM(CASE WHEN status='scheduled' THEN 1 ELSE 0 END) AS scheduled, SUM(CASE WHEN status='published' THEN 1 ELSE 0 END) AS published, SUM(CASE WHEN status='manual_required' THEN 1 ELSE 0 END) AS manual_required, SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) AS failed, SUM(CASE WHEN status='archived' THEN 1 ELSE 0 END) AS archived FROM social_posts"
+          echo '--- pending review rows ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,category,status,image_url,image_approved,image_quality_status,review_note,updated_at FROM social_posts WHERE status='pending_review' ORDER BY updated_at DESC LIMIT 20"
+          echo '--- published rows ---'
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id,title,status,image_url,published_at,updated_at FROM social_posts WHERE status='published' ORDER BY COALESCE(published_at,updated_at) DESC LIMIT 20"
           echo '--- schedule range ---'
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT MIN(scheduled_at) AS first_scheduled_at, MAX(scheduled_at) AS last_scheduled_at, COUNT(*) AS rows_with_schedule FROM social_posts WHERE scheduled_at IS NOT NULL AND TRIM(scheduled_at)<>''"
           echo '--- ready-state missing image check ---'
@@ -63,7 +67,7 @@ jobs:
           echo '--- foreign key check ---'
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "PRAGMA foreign_key_check"
           echo 'D1_LIVE_READONLY=PASS' | tee -a "$GITHUB_STEP_SUMMARY"
-          echo '已讀取正式 D1 的 social_posts 狀態分布、排程範圍、正式狀態缺圖與 foreign key；此步驟不寫入資料。' >> "$GITHUB_STEP_SUMMARY"
+          echo '已讀取正式 D1 的 social_posts 狀態分布、待審核／已發布摘要、排程範圍、正式狀態缺圖與 foreign key；此步驟不寫入資料。' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify Cloudflare Access boundary does not expose server errors
         run: |
