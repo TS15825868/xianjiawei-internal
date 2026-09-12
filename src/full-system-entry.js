@@ -2,7 +2,8 @@ import publishingApp from './publishing-content-audit-entry.js';
 import productionApp from './production-entry.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
 
-const VERSION='2026-09-03-full-system-entry-v3-first-post-ready';
+const VERSION='2026-09-13-full-system-entry-v4-unified-home';
+const HOME_PATH='/index.html';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
 const SOCIAL_SCHEDULE_POLICY='週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；短影片若有合格成品只取代當週其中一篇，不另外增加篇數';
@@ -12,7 +13,8 @@ const SOCIAL_POLICY_VERSION='2026-09-03-social-publishing-v2-morning';
 const HEADERS={'cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-full-system':VERSION};
 
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{...HEADERS,'content-type':'application/json; charset=utf-8'}})}
-function isErpUi(path){return path==='/'||path==='/index.html'||path==='/erp'||path==='/erp/'||path===ERP_PATH}
+function isHomeUi(path){return path==='/'||path===HOME_PATH}
+function isErpUi(path){return path==='/erp'||path==='/erp/'||path===ERP_PATH}
 function isPublishingUi(path){return path==='/publishing'||path==='/publishing/'||path===PUBLISHING_PATH}
 function isFullErpApi(path){
   return path==='/api/overview'||path==='/api/settings'||path==='/api/brand-content'||
@@ -49,7 +51,7 @@ async function serveAsset(request,env,target){
   const asset=await env.ASSETS.fetch(new Request(url.toString(),{method:'GET',headers:request.headers}));
   if(!asset.ok)return json({error:`${target} 載入失敗`,code:'XJW_ASSET_LOAD_FAILED',status:asset.status},503);
   const headers=new Headers(asset.headers);for(const [k,v] of Object.entries(HEADERS))headers.set(k,v);
-  headers.set('x-xianjiawei-ui',target===ERP_PATH?'erp':'publishing');
+  headers.set('x-xianjiawei-ui',target===HOME_PATH?'home':target===ERP_PATH?'erp':'publishing');
   return new Response(asset.body,{status:200,headers});
 }
 async function currentSettings(request,env,ctx){
@@ -88,6 +90,7 @@ export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
     if(request.method==='GET'&&path==='/healthz/social-first-post')return firstPostHealth(request,env,ctx);
+    if(request.method==='GET'&&isHomeUi(path))return serveAsset(request,env,HOME_PATH);
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
     if(request.method==='GET'&&isPublishingUi(path))return serveAsset(request,env,PUBLISHING_PATH);
 
@@ -106,6 +109,8 @@ export default{
         return json({...body,
           fullSystem:true,
           fullSystemVersion:VERSION,
+          internalHomeEnabled:true,
+          internalHomePath:'/',
           erpUiEnabled:true,
           erpPath:ERP_PATH,
           erpApisEnabled:true,
@@ -132,4 +137,4 @@ export default{
   }
 };
 
-export {VERSION,SOCIAL_SCHEDULE_POLICY,SOCIAL_FIXED_FREQUENCY,SOCIAL_FIRST_PUBLISH_AT,SOCIAL_POLICY_VERSION};
+export {VERSION,HOME_PATH,SOCIAL_SCHEDULE_POLICY,SOCIAL_FIXED_FREQUENCY,SOCIAL_FIRST_PUBLISH_AT,SOCIAL_POLICY_VERSION};
