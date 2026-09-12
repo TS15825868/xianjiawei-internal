@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-13-v15",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260912-v14.json#2026-09-12-v14",
+  "updatedAt": "2026-09-13T02:42:24+08:00",
+  "rule": "本檔只覆蓋v14之後已實際驗證變更；未覆蓋欄位依序繼承v14、v13、v12、v11與v10。新版正確資料優先。",
+  "internalSystem": {
+    "repo": "TS15825868/xianjiawei-internal",
+    "branch": "main",
+    "verifiedMainCommit": "b18a748271c799a38345ce4685832c03f4011a31",
+    "workerUrl": "https://xianjiawei-internal.tung314069.workers.dev",
+    "entryArchitecture": {
+      "root": "/",
+      "rootRole": "仙加味內部系統統一入口",
+      "erp": "/erp.html",
+      "publishing": "/publishing.html",
+      "rule": "日常只需收藏root；ERP與貼文中心保留直達網址，不移除既有路徑。"
+    },
+    "cloudflareWorkersBuild": {
+      "status": "completed",
+      "conclusion": "success",
+      "checkRunId": 103602343902,
+      "buildId": "43ed4cb9-8f5b-4057-bb79-a75be12a7975",
+      "versionId": "e4f9c4f7-b9b7-400f-8d24-b3b2b4765b30"
+    }
+  },
+  "remainingHardGaps": [
+    "Cloudflare Access登入後頁面本文驗收仍未完成；目前Access邊界與Workers部署正常，但尚未完成登入後 /、/erp.html、/publishing.html、/healthz/core 內容驗收。",
+    "Google其餘11個核心網址仍等待Google發現／索引。",
+    "正式非拼貼、角色真正連續動作的動畫來源尚未取得。"
+  ]
+}
