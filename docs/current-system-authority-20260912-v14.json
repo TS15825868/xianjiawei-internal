@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-12-v14",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260912-v13.json#2026-09-12-v13",
+  "updatedAt": "2026-09-12T19:34:00+08:00",
+  "rule": "本檔只覆蓋v13之後已實際驗證變更；未覆蓋欄位依序繼承v13、v12、v11與v10。新版正確資料優先。新週期社群媒體已人工核准並正式落GitHub，但排程仍受10/15 activation gate約束。",
+  "website": {
+    "repo": "TS15825868/xianjiawei",
+    "branch": "main",
+    "verifiedMainCommit": "043d3bdf45f40d7ce58fe39aeb450379776c2006",
+    "pagesWorkflowRunId": 34691339308,
+    "pagesBuild": "success",
+    "pagesDeploy": "success",
+    "approvedSocialMediaDirectory": "images/social/approved-202610",
+    "legacyWebpDuplicatesRemoved": true,
+    "assetImportStagingRemoved": true,
+    "oneTimeFinalizerRemoved": true
+  },
+  "socialNextCycleReview": {
+    "period": "2026-10-15/2026-10-31",
+    "status": "approved-not-scheduled",
+    "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否依候選時段排程；不得為填滿日曆硬發。",
+    "candidatePlan": "TS15825868/xianjiawei:content/social-plan-20261015-1031-candidates.json#2026-09-12-v6-avif-finalized-not-scheduled",
+    "mediaPool": "TS15825868/xianjiawei:content/social-next-cycle-media-v20260911.json#2026-09-12-v7-avif-finalized-github-assets",
+    "formalManifest": "TS15825868/xianjiawei:images/social/approved-202610/manifest.json",
+    "approvedMedia": [
+      {
+        "date": "2026-10-18",
+        "topic": "料理前先把材料準備好",
+        "path": "images/social/approved-202610/2026-10-18-cooking-prep.avif",
+        "sha256": "af8b052f12f5a31b76c1d77cc0c425400616de07f4745a0dd1ac04c7d22acd73",
+        "dimensions": "1080x1080",
+        "canvaAssetId": "MAHU6pn5Tns",
+        "isAiGenerated": true,
+        "status": "approved-not-scheduled"
+      },
+      {
+        "date": "2026-10-24",
+        "topic": "龜鹿湯塊75g與家常料理",
+        "path": "images/social/approved-202610/2026-10-24-tangkuai-cooking.avif",
+        "sha256": "c8fc2dfb72a6e32050667d352c09aae2c9a3ce3e759cca144b3f1ace4d97e5b0",
+        "dimensions": "1080x1080",
+        "canvaAssetId": "MAHU6kflnDg",
+        "isAiGenerated": true,
+        "productRule": "龜鹿湯塊產品本體使用正式實物原圖等比例合成，不AI重畫、不改包裝。",
+        "status": "approved-not-scheduled"
+      },
+      {
+        "date": "2026-10-31",
+        "topic": "龜鹿飲30cc與180cc先看使用情境",
+        "path": "images/social/approved-202610/2026-10-31-drink-comparison.avif",
+        "sha256": "33a1126852606688bed1207b2fbb5d56b08f189acd583e1e842993555cd878c5",
+        "dimensions": "1080x1350",
+        "canvaAssetId": "MAHU6jYKL74",
+        "isAiGenerated": false,
+        "productRule": "30cc維持小玻璃裸罐、無貼紙與小尺寸；180cc維持正式鋁袋比例；產品本體不AI重畫。",
+        "status": "approved-not-scheduled"
+      }
+    ]
+  },
+  "internalLiveVerification": {
+    "verifiedCommit": "efc947b16c626bfbe1b837027a09421fb163bf7f",
+    "workflowRunId": 34691363606,
+    "jobId": 103547077593,
+    "sourceBuild": "pass",
+    "d1ReadOnly": "pass",
+    "d1SocialPosts": {
+      "total": 71,
+      "draft": 0,
+      "pending_review": 2,
+      "approved": 0,
+      "scheduled": 0,
+      "published": 3,
+      "manual_required": 0,
+      "failed": 0,
+      "archived": 66,
+      "readyStateMissingImage": 0,
+      "foreignKeyCheck": "clean"
+    },
+    "pendingReviewIds": [
+      "XJW-SOCIAL-20260909-0900-CHOOSE",
+      "XJW-SOCIAL-20260911-0900-RECIPE"
+    ],
+    "cloudflareAccessBoundary": {
+      "root": 302,
+      "erpHtml": 302,
+      "publishingHtml": 302,
+      "healthzCore": 302,
+      "result": "pass-no-5xx"
+    },
+    "authenticatedBodyVerification": "SKIPPED_NO_SERVICE_TOKEN",
+    "cfAccessServiceTokenConfiguredInGithub": false
+  },
+  "remainingHardGaps": [
+    "Cloudflare Access登入後ERP／貼文中心／healthz本文驗收仍未完成：GitHub Secrets未配置CF_ACCESS_CLIENT_ID/CF_ACCESS_CLIENT_SECRET，Opera Connector目前亦回Browser not connected。這是工具／憑證缺口，不是使用者未授權。",
+    "Google其餘11個核心網址仍等待Google發現／索引。",
+    "正式非拼貼、角色真正連續動作的動畫來源尚未取得。"
+  ],
+  "notHardGaps": [
+    "10/18、10/24、10/31三張新社群圖已人工通過、整檔SHA256驗證、正式落GitHub main並通過Pages；不再列缺圖。",
+    "下一週期未排程是activation gate的正常設計，不是排程故障。",
+    "D1目前2筆pending_review為既有choose.webp與recipes.webp人工審核流程，與10/18、10/24、10/31新週期核准媒體無衝突。"
+  ]
+}
