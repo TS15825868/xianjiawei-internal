@@ -1,1 +1,33 @@
-<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1f3b"><meta name="robots" content="noindex,nofollow,noarchive"><title>仙加味營運中控｜內部系統</title><meta http-equiv="refresh" content="0;url=/erp.html"><style>html,body{min-height:100%;margin:0;background:#f7f4ed;color:#0b1f3b;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}main{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}a{display:inline-block;margin:12px 6px 0;padding:11px 16px;border-radius:12px;background:#0b1f3b;color:#fff;text-decoration:none;font-weight:800}.secondary{background:#fff;color:#0b1f3b;border:1px solid #b9c6d8}</style><script>location.replace('/erp.html')</script></head><body><main><div><strong>正在開啟仙加味營運中控…</strong><br><a href="/erp.html">進入 ERP／內部系統</a><a class="secondary" href="/publishing.html">貼文中心</a></div></main></body></html>
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1f3b">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>仙加味｜內部系統</title>
+<style>
+:root{color-scheme:light;--navy:#0b1f3b;--paper:#f7f4ed;--red:#8f2f2f;--green:#344d3d;--gold:#a88645;--line:#ddd5c7;--muted:#667085}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--navy);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}body{min-height:100vh}.shell{width:min(980px,100%);margin:auto;padding:max(32px,env(safe-area-inset-top)) 20px max(32px,env(safe-area-inset-bottom))}.brand{display:flex;align-items:center;gap:14px;margin-bottom:28px}.mark{width:52px;height:52px;border-radius:16px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:27px;font-weight:900;box-shadow:0 8px 24px #0b1f3b1c}.brand strong{display:block;font-size:22px}.brand small{display:block;margin-top:3px;color:var(--muted)}.hero{padding:28px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 10px 32px #0b1f3b0d}.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--red);font-weight:900}.hero h1{margin:8px 0 8px;font-size:clamp(30px,6vw,46px);line-height:1.15}.hero p{margin:0;color:var(--muted);line-height:1.75}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.card{display:block;padding:22px;border:1px solid var(--line);border-radius:20px;background:#fff;color:inherit;text-decoration:none;transition:.18s ease;min-height:190px}.card:hover,.card:focus-visible{transform:translateY(-2px);box-shadow:0 12px 28px #0b1f3b14;outline:none}.icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:900;margin-bottom:18px}.erp .icon{background:var(--navy)}.publish .icon{background:var(--green)}.card h2{margin:0 0 8px;font-size:22px}.card p{margin:0;color:var(--muted);line-height:1.65}.go{display:inline-block;margin-top:18px;font-weight:900;color:var(--red)}.status{margin-top:18px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);display:flex;gap:10px;align-items:center;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:0 0 auto}.status.ok .dot{background:#2f7d4a}.status.bad .dot{background:#b42318}.status strong{color:var(--navy)}.foot{margin-top:18px;font-size:13px;color:var(--muted);text-align:center}@media(max-width:680px){.shell{padding-left:14px;padding-right:14px}.hero{padding:20px}.grid{grid-template-columns:1fr}.card{min-height:0}.brand{margin-bottom:18px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="brand"><div class="mark">仙</div><div><strong>仙加味</strong><small>內部系統</small></div></div>
+  <section class="hero">
+    <div class="eyebrow">INTERNAL OPERATIONS</div>
+    <h1>一個入口，管理日常營運</h1>
+    <p>ERP 與貼文中心整合在同一個內部入口。Cloudflare Access 登入一次後，在有效工作階段內可直接切換兩個模組。</p>
+    <div class="grid">
+      <a class="card erp" href="/erp.html"><div class="icon">ERP</div><h2>ERP／營運中控</h2><p>產品、庫存、客戶、訂單、採購、財務、素材與其他內部營運資料。</p><span class="go">進入 ERP →</span></a>
+      <a class="card publish" href="/publishing.html"><div class="icon">文</div><h2>貼文中心</h2><p>文案、圖片、待審核、圖文檢查、排程與立即發布等內容作業。</p><span class="go">進入貼文中心 →</span></a>
+    </div>
+    <div class="status" id="systemStatus"><span class="dot"></span><span><strong>系統狀態：</strong><span id="statusText">正在檢查…</span></span></div>
+  </section>
+  <div class="foot">仙加味內部使用｜不對外公開</div>
+</main>
+<script>
+(async()=>{const box=document.getElementById('systemStatus'),text=document.getElementById('statusText');try{const r=await fetch('/healthz/core',{credentials:'same-origin',cache:'no-store'});const t=await r.text();let d={};try{d=JSON.parse(t)}catch{}if(r.ok&&d.ok!==false){box.classList.add('ok');text.textContent='連線正常';}else{box.classList.add('bad');text.textContent='需要檢查';}}catch{box.classList.add('bad');text.textContent='暫時無法讀取';}})();
+</script>
+</body>
+</html>
