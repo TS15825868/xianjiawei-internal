@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11T23:28:00+08:00",
+  "updatedAt": "2026-09-12T19:34:00+08:00",
   "status": "active",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -18,5 +18,20 @@
     "2026-09-13 Threads：移除固定白天語意，改為飲用時間依個人使用習慣與作息安排",
     "2026-10-05 Facebook：移除固定白天語意，改為食用時間依個人使用習慣與作息安排"
   ],
-  "note": "正式排程明細以 authorityPath 與 Metricool live planner 為準；Metricool draft=true／autoPublish=false只作草稿庫，不視為正式待發。"
+  "nextCycleMediaApproval": {
+    "period": "2026-10-15/2026-10-31",
+    "status": "approved-not-scheduled",
+    "approvedMediaCount": 3,
+    "candidatePlan": "TS15825868/xianjiawei:content/social-plan-20261015-1031-candidates.json#2026-09-12-v6-avif-finalized-not-scheduled",
+    "mediaPool": "TS15825868/xianjiawei:content/social-next-cycle-media-v20260911.json#2026-09-12-v7-avif-finalized-github-assets",
+    "manifest": "TS15825868/xianjiawei:images/social/approved-202610/manifest.json",
+    "approvedMedia": [
+      "images/social/approved-202610/2026-10-18-cooking-prep.avif",
+      "images/social/approved-202610/2026-10-24-tangkuai-cooking.avif",
+      "images/social/approved-202610/2026-10-31-drink-comparison.avif"
+    ],
+    "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否排程；人工通過媒體不等於自動排程。",
+    "metricoolScheduleCreated": false
+  },
+  "note": "正式排程明細以 authorityPath 與 Metricool live planner 為準；Metricool draft=true／autoPublish=false只作草稿庫，不視為正式待發。10/15後新週期仍須先通過activationGate。"
 }
