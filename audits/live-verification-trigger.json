@@ -1,7 +1,7 @@
 {
-  "requestedAt": "2026-09-11T23:30:00+08:00",
-  "runNonce": "d1-live-readonly-20260911-02",
-  "purpose": "Verify current full ERP, publishing center, substantive remote D1 live data in read-only mode, including pending-review and published rows, Cloudflare Access boundary, and authenticated protected page content when service-token secrets are available.",
+  "requestedAt": "2026-09-12T19:18:00+08:00",
+  "runNonce": "d1-live-readonly-20260912-03",
+  "purpose": "Re-verify current full ERP, publishing center, substantive remote D1 live data in read-only mode, Cloudflare Access boundary, and authenticated protected page content when service-token secrets are available, before promoting current authority to v14.",
   "repository": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "nonDestructive": true,
@@ -14,5 +14,5 @@
     "ready-state missing image count",
     "foreign key check"
   ],
-  "afterFix": "root authenticated page check and D1 pending/published row inspection added; no D1 writes or deletes"
+  "afterFix": "re-run before v14 promotion; no D1 writes or deletes"
 }
