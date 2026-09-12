@@ -44,15 +44,18 @@ jobs:
             dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
             test -f "$f" || { echo "missing $f" >&2; exit 1; }
           done
-          grep -q "location.replace('/erp.html')" dist/index.html
+          grep -q '仙加味內部系統' dist/index.html
+          grep -q 'ERP／營運中控' dist/index.html
+          grep -q '貼文中心' dist/index.html
           grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
           grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
+          grep -q "HOME_PATH='/index.html'" src/full-system-entry.js
           grep -q 'erpUiEnabled:true' src/full-system-entry.js
           grep -q 'erpApisEnabled:true' src/full-system-entry.js
           grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
           grep -q 'qixuanPublicVisible:false' src/product-authority.js
-          echo 'PASS full ERP + independent publishing bundle.'
+          echo 'PASS unified internal portal + ERP + independent publishing bundle.'
       - name: Verify remote D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
       - name: Manual backup deploy to Cloudflare
