@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-13-v19",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260913-v18.json#2026-09-13-v18",
+  "updatedAt": "2026-09-13T18:25:00+08:00",
+  "rule": "本檔只覆蓋v18之後已實際驗證的Metricool排程修復；其他狀態繼承v18。新版正確資料優先。",
+  "socialPublishing": {
+    "metricoolBrandId": "6889683",
+    "timezone": "Asia/Taipei",
+    "formalScheduleAuthority": "TS15825868/xianjiawei:content/social-schedule-20260911-0924.json#2026-09-11-v3-through-1014",
+    "formalRule": "只有draft=false且autoPublish=true才是正式排程；不在正式scheduled-auto清單的草稿不得因整理而自動發布。",
+    "repairedAt": "2026-09-13T18:23:00+08:00",
+    "repairs": [
+      {
+        "network": "facebook",
+        "topic": "30cc與180cc怎麼選",
+        "problem": "原2026-09-13 10:30正式自動貼文Metricool回報Code 500且無publicUrl",
+        "action": "保留同一UUID與原正式圖文，重新排至2026-09-13 19:30 Asia/Taipei",
+        "uuid": "4383144546704508889",
+        "metricoolId": "375143112",
+        "verifiedStatus": "PENDING",
+        "draft": false,
+        "autoPublish": true
+      },
+      {
+        "network": "threads",
+        "topic": "先從使用習慣理解龜鹿系列",
+        "publicationDate": "2026-09-18T11:00:00+08:00",
+        "problem": "正式權威為scheduled-auto，但Metricool實際誤留draft=true／autoPublish=false",
+        "uuid": "-5276545568587758621",
+        "metricoolId": "375143154",
+        "verifiedStatus": "PENDING",
+        "draft": false,
+        "autoPublish": true
+      },
+      {
+        "network": "threads",
+        "topic": "工作空檔與生活節奏",
+        "publicationDate": "2026-09-20T21:00:00+08:00",
+        "problem": "正式權威為scheduled-auto，但Metricool實際誤留draft=true／autoPublish=false",
+        "uuid": "-8283886396944593212",
+        "metricoolId": "375143221",
+        "verifiedStatus": "PENDING",
+        "draft": false,
+        "autoPublish": true
+      }
+    ],
+    "scheduleLedger": "ops/social-schedule-current.json",
+    "scheduleLedgerCommit": "e98731458e2c9500c7e04f2428af9bc337efc6cc",
+    "nextCycleRule": "2026-10-15後仍須先讀取2026-10-01至2026-10-14實際表現再決定10/15至10/31排程；目前不得提前建立。"
+  },
+  "remainingHardGaps": [
+    "Cloudflare Access登入後實際按鈕與本文驗收仍待Opera Browser Connector開啟Allow AI connection；目前實測Browser not connected。",
+    "66篇封存貼文母庫仍需逐篇唯一合格情境圖與人工審核後才能發布。",
+    "Google其餘核心網址的發現／索引仍屬外部等待項。",
+    "正式連續動畫來源尚未完成，且只允許免費方案。"
+  ]
+}
