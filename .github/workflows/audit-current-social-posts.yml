@@ -1,14 +1,21 @@
-name: 仙加味目前貼文唯讀快照
+name: 仙加味貼文中心／D1 唯讀健康巡檢
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/audit-current-social-posts.yml'
+  schedule:
+    # 每6小時一次；GitHub Actions 使用 UTC。
+    - cron: '31 */6 * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: xianjiawei-social-d1-readonly-health
+  cancel-in-progress: true
 
 jobs:
   snapshot:
@@ -28,18 +35,49 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Export current social posts from D1 (read only)
+      - name: Export current social posts and structural health from D1 (read only)
         shell: bash
         run: |
           set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,rejection_reason,review_note,created_at,updated_at FROM social_posts ORDER BY CASE status WHEN 'pending_review' THEN 0 WHEN 'approved' THEN 1 WHEN 'scheduled' THEN 2 WHEN 'draft' THEN 3 WHEN 'published' THEN 4 ELSE 5 END, updated_at DESC, id ASC" > current-social-posts.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > current-social-post-counts.json
-      - name: Upload read-only snapshot
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > foreign-key-check.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')" > invalid-status.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE TRIM(id)='' OR TRIM(title)=''" > required-text.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status='pending_review' AND (approved_by IS NOT NULL OR approved_at IS NOT NULL OR published_at IS NOT NULL OR scheduled_at IS NOT NULL)" > pending-state.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status='scheduled' AND scheduled_at IS NULL" > scheduled-state.json
+      - name: Verify D1 invariants without changing content
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const rows=(file)=>{
+            const d=JSON.parse(fs.readFileSync(file,'utf8'));
+            return (Array.isArray(d)?d[0]?.results:d?.results)||[];
+          };
+          const counts=rows('current-social-post-counts.json');
+          const total=counts.reduce((n,r)=>n+Number(r.count||0),0);
+          if(total<3) throw new Error(`貼文資料異常，總數只有 ${total}`);
+          const fk=rows('foreign-key-check.json');
+          if(fk.length) throw new Error(`D1 foreign_key_check 異常：${JSON.stringify(fk)}`);
+          for(const file of ['invalid-status.json','required-text.json','pending-state.json','scheduled-state.json']){
+            const value=Number(rows(file)[0]?.count||0);
+            if(value!==0) throw new Error(`${file} 異常筆數 ${value}`);
+          }
+          console.log('PASS D1 readonly health',Object.fromEntries(counts.map(r=>[r.status,Number(r.count||0)])));
+          NODE
+      - name: Upload read-only evidence
         uses: actions/upload-artifact@v4
         with:
           name: current-social-posts-${{ github.run_id }}
           path: |
             current-social-posts.json
             current-social-post-counts.json
+            foreign-key-check.json
+            invalid-status.json
+            required-text.json
+            pending-state.json
+            scheduled-state.json
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 2
