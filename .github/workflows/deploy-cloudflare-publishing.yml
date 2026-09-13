@@ -1,13 +1,26 @@
-name: 仙加味 ERP／貼文中心手動備援部署
+name: 仙加味 ERP／貼文中心正式部署
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'assets/**'
+      - 'index.html'
+      - 'erp.html'
+      - 'publishing.html'
+      - 'manifest.webmanifest'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'wrangler.jsonc'
+      - '.github/workflows/deploy-cloudflare-publishing.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: xianjiawei-internal-manual-backup-deploy
+  group: xianjiawei-internal-production-deploy
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +35,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Require Cloudflare backup deployment credentials
+      - name: Require Cloudflare deployment credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing CLOUDFLARE_API_TOKEN' >&2; exit 1; }
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing CLOUDFLARE_ACCOUNT_ID' >&2; exit 1; }
@@ -41,7 +54,7 @@ jobs:
             dist/index.html dist/erp.html dist/publishing.html \
             dist/assets/css/internal-app.css dist/assets/js/internal-app.js dist/assets/js/erp-publishing-separation.js \
             dist/assets/css/publishing-base.css dist/assets/css/publishing-app.css \
-            dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
+            dist/assets/js/publishing-resilience.js dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
             test -f "$f" || { echo "missing $f" >&2; exit 1; }
           done
           grep -q '仙加味內部系統' dist/index.html
@@ -49,16 +62,19 @@ jobs:
           grep -q '貼文中心' dist/index.html
           grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
+          grep -q '20260913-ios-action-recovery-v4' dist/publishing.html
+          grep -q 'xjwOfflineWasDisabled' dist/assets/js/publishing-resilience.js
+          grep -Eq '"start_url"[[:space:]]*:[[:space:]]*"/"' dist/manifest.webmanifest
           grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
           grep -q "HOME_PATH='/index.html'" src/full-system-entry.js
           grep -q 'erpUiEnabled:true' src/full-system-entry.js
           grep -q 'erpApisEnabled:true' src/full-system-entry.js
           grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
           grep -q 'qixuanPublicVisible:false' src/product-authority.js
-          echo 'PASS unified internal portal + ERP + independent publishing bundle.'
+          echo 'PASS unified internal portal + ERP + independent publishing + iPhone recovery bundle.'
       - name: Verify remote D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
-      - name: Manual backup deploy to Cloudflare
+      - name: Deploy to Cloudflare
         run: npx wrangler deploy --keep-vars
       - name: Verify protected live routes
         shell: bash
@@ -72,4 +88,4 @@ jobs:
             test "$code" -ge 200
             test "$code" -lt 500
           done
-          echo 'PASS manual backup deployment verification.'
+          echo 'PASS production deployment verification.'
