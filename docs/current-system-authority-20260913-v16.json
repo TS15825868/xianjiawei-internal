@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-13-v16",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260913-v15.json#2026-09-13-v15",
+  "updatedAt": "2026-09-13T13:47:05+08:00",
+  "rule": "本檔只覆蓋v15之後已實際驗證變更；未覆蓋欄位依序繼承v15、v14、v13、v12、v11與v10。新版正確資料優先。",
+  "internalSystem": {
+    "repo": "TS15825868/xianjiawei-internal",
+    "branch": "main",
+    "verifiedMainCommitBeforeV16": "46d4eccb000ed08e32e8b75f07b25582c91e1e1d"
+  },
+  "socialPublishing": {
+    "sourceOfTruth": "Cloudflare D1 xianjiawei-internal-db.social_posts",
+    "auditFile": "audits/live-posts-current.json",
+    "auditVersion": "2026-09-13-social-library-v5-cleaned",
+    "total": 71,
+    "statusCounts": {
+      "published": 3,
+      "pending_review": 2,
+      "archived": 66,
+      "draft": 0,
+      "approved": 0,
+      "scheduled": 0
+    },
+    "publishedProtection": {
+      "preserved": true,
+      "ids": [
+        "POST-BRAND-START",
+        "POST-TRIAL-MAIN",
+        "XJW-SOCIAL-20260904-0900-FIRST"
+      ],
+      "rule": "既有已發布內容不得因母庫整理而修改或換句話重發。"
+    },
+    "pendingReview": [
+      {
+        "id": "XJW-SOCIAL-20260909-0900-CHOOSE",
+        "title": "週三早上，先看今天的生活動線再決定怎麼安排",
+        "category": "生活情境",
+        "image": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/choose.webp",
+        "proposedScheduledAt": null,
+        "imageApproved": false,
+        "status": "pending_review"
+      },
+      {
+        "id": "XJW-SOCIAL-20260911-0900-RECIPE",
+        "title": "週五回家想煮一鍋熱湯，先把晚餐時間留出來",
+        "category": "料理搭配",
+        "image": "https://ts15825868.github.io/xianjiawei/images/brand/approved-v405/recipes.webp",
+        "proposedScheduledAt": null,
+        "imageApproved": false,
+        "status": "pending_review"
+      }
+    ],
+    "archivedCopyLibrary": {
+      "count": 66,
+      "status": "copy-cleaned-awaiting-unique-media",
+      "publishReady": false,
+      "oldImagesCleared": true,
+      "oldMediaResidualCount": 0,
+      "staleScheduleResidualCount": 0,
+      "imageApprovedResidualCount": 0,
+      "categoryCounts": {
+        "生活情境": 15,
+        "產品知識": 10,
+        "使用方式": 9,
+        "怎麼選": 6,
+        "料理搭配": 6,
+        "保存整理": 5,
+        "LINE諮詢": 4,
+        "品牌故事": 4,
+        "試喝": 4,
+        "交期說明": 3
+      },
+      "mediaRule": "每篇需依該篇文案製作唯一新情境圖；固定Q版小老闆，小鹿與小烏龜分開；若出現產品，只能使用正式產品原圖等比例合成，不得AI重畫或改包裝。新圖完成後一律回待審核並通過16項人工審核，才能核准、排程或發布。"
+    },
+    "verification": {
+      "contentCleanupRunId": 34740926767,
+      "contentCleanupConclusion": "success",
+      "categoryNormalizationRunId": 34741041209,
+      "categoryNormalizationConclusion": "success",
+      "literalBackslashNResidualCount": 0,
+      "autoApproved": false,
+      "autoScheduled": false,
+      "autoPublished": false
+    },
+    "maintenance": {
+      "oneShotWriteWorkflowsRemoved": true,
+      "oneShotSqlRemoved": true,
+      "readOnlySnapshotWorkflow": ".github/workflows/audit-current-social-posts.yml",
+      "rule": "後續巡檢先重新抓D1唯讀快照，不再依賴舊77篇稽核檔。"
+    }
+  },
+  "remainingSocialWork": [
+    "66篇封存母庫仍需逐篇製作唯一且圖文一致的新情境圖，完成前不得視為可發布。",
+    "目前2篇pending_review仍需使用者人工完成16項圖文審核；未通過前不得核准、排程或發布。"
+  ]
+}
