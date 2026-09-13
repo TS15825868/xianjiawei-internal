@@ -47,15 +47,23 @@ jobs:
           test -f dist/assets/css/internal-app.css
           test -f dist/assets/js/internal-app.js
           test -f dist/assets/js/erp-publishing-separation.js
+          test -f dist/assets/js/publishing-resilience.js
           test -f dist/assets/js/publishing-app-v2.js
           test -f dist/assets/js/publishing-review-gate.js
           test -f dist/assets/js/device-image-upload.js
           test -f dist/assets/js/formal-media-policy-v20260810.js
-          grep -q "location.replace('/erp.html')" dist/index.html
+          grep -q '仙加味內部系統' dist/index.html
+          grep -q 'ERP／營運中控' dist/index.html
+          grep -q '貼文中心' dist/index.html
           grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
+          grep -q '20260913-ios-action-recovery-v4' dist/publishing.html
+          grep -q 'xjwOfflineWasDisabled' dist/assets/js/publishing-resilience.js
+          grep -q 'else setReadOnly(false)' dist/assets/js/publishing-resilience.js
+          grep -Eq '"start_url"[[:space:]]*:[[:space:]]*"/"' dist/manifest.webmanifest
           grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
+          grep -q "HOME_PATH='/index.html'" src/full-system-entry.js
           grep -q 'erpUiEnabled:true' src/full-system-entry.js
           grep -q 'erpApisEnabled:true' src/full-system-entry.js
           grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
-          echo 'PASS full ERP is retained and exactly one publishing center remains.'
+          echo 'PASS unified internal portal + ERP + publishing + iPhone action recovery.'
