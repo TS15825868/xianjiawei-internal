@@ -1,8 +1,8 @@
 {
-  "name": "仙加味貼文中心系統 App",
-  "short_name": "仙加味貼文",
-  "description": "仙加味貼文審核、排程與發布中心",
-  "start_url": "/publishing.html",
+  "name": "仙加味內部系統",
+  "short_name": "仙加味內部",
+  "description": "仙加味 ERP、營運中控與貼文審核發布系統",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#F7F4ED",
