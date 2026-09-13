@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T19:34:00+08:00",
+  "updatedAt": "2026-09-13T18:24:00+08:00",
   "status": "active",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -10,14 +10,45 @@
   "videoGate": "只接受真正連續角色動畫；拼貼、紙偶、關節剪貼、整圖平移縮放不得發布。",
   "usageTimingGate": "龜鹿膏與龜鹿飲不得鎖成固定早上、下午或白天時段；依個人使用習慣與作息安排。",
   "scheduleWindow": "2026-09-12/2026-10-14",
-  "formalUpcomingCount": 30,
+  "authorityFormalScheduleCount": 30,
   "scheduleSource": "Metricool live planner",
   "sourceRule": "draft=false and autoPublish=true only",
   "d1Role": "Cloudflare D1 social_posts is ERP/publishing-center content and review data, not the Metricool schedule ledger. D1 scheduled=0 is therefore not evidence that Metricool has no upcoming posts.",
   "correctionsApplied": [
     "2026-09-13 Threads：移除固定白天語意，改為飲用時間依個人使用習慣與作息安排",
-    "2026-10-05 Facebook：移除固定白天語意，改為食用時間依個人使用習慣與作息安排"
+    "2026-10-05 Facebook：移除固定白天語意，改為食用時間依個人使用習慣與作息安排",
+    "2026-09-13 Facebook 30cc與180cc怎麼選：原10:30 Metricool回報Code 500且無publicUrl；使用同一UUID與原正式圖文重新排至2026-09-13 19:30 Asia/Taipei，讀回狀態PENDING、draft=false、autoPublish=true",
+    "2026-09-18 11:00 Threads：正式權威為scheduled-auto，但Metricool曾誤留draft=true／autoPublish=false；已恢復PENDING、draft=false、autoPublish=true",
+    "2026-09-20 21:00 Threads：正式權威為scheduled-auto，但Metricool曾誤留draft=true／autoPublish=false；已恢復PENDING、draft=false、autoPublish=true"
   ],
+  "liveRepairVerification": {
+    "verifiedAt": "2026-09-13T18:23:00+08:00",
+    "facebookRetry": {
+      "uuid": "4383144546704508889",
+      "metricoolId": "375143112",
+      "publicationDate": "2026-09-13T19:30:00+08:00",
+      "status": "PENDING",
+      "draft": false,
+      "autoPublish": true
+    },
+    "threads20260918": {
+      "uuid": "-5276545568587758621",
+      "metricoolId": "375143154",
+      "publicationDate": "2026-09-18T11:00:00+08:00",
+      "status": "PENDING",
+      "draft": false,
+      "autoPublish": true
+    },
+    "threads20260920": {
+      "uuid": "-8283886396944593212",
+      "metricoolId": "375143221",
+      "publicationDate": "2026-09-20T21:00:00+08:00",
+      "status": "PENDING",
+      "draft": false,
+      "autoPublish": true
+    },
+    "draftLibraryRule": "不在authorityPath正式scheduled-auto清單內的draft=true／autoPublish=false項目維持草稿，不因系統整理而自動發布。"
+  },
   "nextCycleMediaApproval": {
     "period": "2026-10-15/2026-10-31",
     "status": "approved-not-scheduled",
