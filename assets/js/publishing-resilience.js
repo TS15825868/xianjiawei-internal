@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20260815-publishing-resilience-v3-ios-recovery';
+  const VERSION='20260913-publishing-resilience-v4-ios-action-recovery';
   const CACHE_PREFIX='xjw-publishing-cache:';
   const MAX_CACHE_AGE=24*60*60*1000;
   const MOBILE_POST_LIMIT=6;
@@ -11,6 +11,7 @@
   let hiddenAt=0;
   let resumeTimer=0;
   let verifyTimer=0;
+  let reconnectFeedback=false;
 
   const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   const isGet=options=>String(options?.method||'GET').toUpperCase()==='GET';
@@ -19,13 +20,21 @@
   const isSafeCachePath=url=>url&&url.origin===location.origin&&(/^\/api\/posts(?:\?|$)/.test(url.pathname+url.search)||url.pathname==='/api/platform-authorization');
   const key=url=>CACHE_PREFIX+btoa(unescape(encodeURIComponent(url.pathname+url.search))).replace(/=+$/,'');
 
+  function notify(message,error=false){
+    const root=document.getElementById('toastRoot');
+    if(!root)return;
+    const node=document.createElement('div');
+    node.className=`toast ${error?'error':''}`;
+    node.textContent=message;
+    root.appendChild(node);
+    setTimeout(()=>node.remove(),3600);
+  }
   function mobileSafeInput(input,url){
     if(!isMobileReview()||!url||url.origin!==location.origin||url.pathname!=='/api/posts')return input;
     const requested=Number(url.searchParams.get('limit')||0);
     if(!requested||requested>MOBILE_POST_LIMIT)url.searchParams.set('limit',String(MOBILE_POST_LIMIT));
     return `${url.pathname}${url.search}`;
   }
-
   function writeCache(url,text,status,headers){
     if(!url||!text||status<200||status>=300)return;
     try{localStorage.setItem(key(url),JSON.stringify({at:Date.now(),text,status,contentType:headers.get('content-type')||'application/json'}))}catch{}
@@ -63,6 +72,30 @@
       return response;
     }finally{clearTimeout(timer);cleanup()}
   }
+
+  function setReadOnly(readOnly,message=''){
+    document.documentElement.dataset.publishingOffline=readOnly?'true':'false';
+    document.querySelectorAll('[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]').forEach(button=>{
+      if(readOnly){
+        if(button.dataset.xjwOfflineDisabled!=='1'){
+          button.dataset.xjwOfflineDisabled='1';
+          button.dataset.xjwOfflineWasDisabled=button.disabled?'1':'0';
+        }
+        button.disabled=true;
+        button.title='目前使用快取資料，重新連線後才能修改或發布。';
+      }else if(button.dataset.xjwOfflineDisabled==='1'){
+        const wasDisabled=button.dataset.xjwOfflineWasDisabled==='1';
+        delete button.dataset.xjwOfflineDisabled;
+        delete button.dataset.xjwOfflineWasDisabled;
+        if(!wasDisabled)button.disabled=false;
+        if(button.title==='目前使用快取資料，重新連線後才能修改或發布。')button.removeAttribute('title');
+      }
+    });
+    const state=document.querySelector('#connectionState');
+    if(state&&readOnly){state.textContent=message||'快取模式｜僅供查看';state.classList.add('cached')}
+    if(state&&!readOnly)state.classList.remove('cached');
+  }
+
   window.fetch=async function resilientFetch(input,options={}){
     let url=apiUrl(input);
     const safeGet=isGet(options)&&url&&url.origin===location.origin&&url.pathname.startsWith('/api/');
@@ -73,7 +106,12 @@
     for(let i=0;i<3;i+=1){
       try{
         const response=await attempt(input,options,url,i);
-        if(response.ok){usingCache=false;window.__XJW_PUBLISHING_CACHE_USED__=false;}
+        if(response.ok){
+          const recovered=usingCache||document.documentElement.dataset.publishingOffline==='true';
+          usingCache=false;
+          window.__XJW_PUBLISHING_CACHE_USED__=false;
+          if(recovered)requestAnimationFrame(()=>setReadOnly(false));
+        }
         return response;
       }catch(error){
         lastError=error;
@@ -86,17 +124,6 @@
     }
     throw lastError||new Error('系統暫時無法連線');
   };
-
-  function setReadOnly(readOnly,message=''){
-    document.documentElement.dataset.publishingOffline=readOnly?'true':'false';
-    document.querySelectorAll('[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]').forEach(button=>{
-      if(readOnly){button.dataset.xjwOfflineDisabled='1';button.disabled=true;button.title='目前使用快取資料，重新連線後才能修改或發布。'}
-      else if(button.dataset.xjwOfflineDisabled==='1'){delete button.dataset.xjwOfflineDisabled;button.disabled=false;button.removeAttribute('title')}
-    });
-    const state=document.querySelector('#connectionState');
-    if(state&&readOnly){state.textContent=message||'快取模式｜僅供查看';state.classList.add('cached')}
-    if(state&&!readOnly)state.classList.remove('cached');
-  }
 
   function canHardReload(){
     try{return Date.now()-Number(sessionStorage.getItem(HARD_RELOAD_KEY)||0)>HARD_RELOAD_COOLDOWN}catch{return true}
@@ -116,7 +143,6 @@
       }
     },2800);
   }
-
   function recoverVisiblePage(reason='resume'){
     if(document.visibilityState==='hidden')return;
     clearTimeout(resumeTimer);
@@ -125,7 +151,6 @@
       if(!root)return;
       const wasBlank=!root.textContent.trim();
       if(wasBlank)root.innerHTML='<section class="loading-card">頁面已恢復，正在重新載入貼文…</section>';
-      setReadOnly(false);
       document.documentElement.dataset.iosResumeReason=reason;
       document.querySelector('[data-refresh]')?.click();
       verifyResumeRecovered(wasBlank);
@@ -136,7 +161,33 @@
     const time=new Date(event.detail.at).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
     requestAnimationFrame(()=>setReadOnly(true,`暫時離線｜顯示 ${time} 快取，僅供查看`));
   });
-  document.addEventListener('xjw-publishing-list-rendered',()=>{clearTimeout(verifyTimer);if(usingCache)setReadOnly(true)});
+  document.addEventListener('xjw-publishing-list-rendered',()=>{
+    clearTimeout(verifyTimer);
+    if(usingCache)setReadOnly(true);
+    else setReadOnly(false);
+    if(reconnectFeedback){reconnectFeedback=false;notify('重新連線完成，操作功能已恢復。')}
+  });
+  document.addEventListener('click',event=>{
+    const refresh=event.target.closest('[data-refresh]');
+    if(refresh&&!refresh.disabled){
+      reconnectFeedback=true;
+      const state=document.getElementById('connectionState');
+      if(state){state.textContent='重新連線中…';state.classList.remove('cached','error')}
+      setTimeout(()=>{
+        if(!reconnectFeedback)return;
+        reconnectFeedback=false;
+        notify('重新連線時間較長，正在重新整理頁面。',true);
+        if(canHardReload()){markHardReload();location.reload()}
+      },9000);
+    }
+    const add=event.target.closest('[data-add-post]');
+    if(add&&!add.disabled){
+      setTimeout(()=>{
+        if(document.querySelector('#modalRoot .xjw-modal'))return;
+        notify('新增貼文視窗沒有開啟，請再按一次；若仍無反應請按重新連線。',true);
+      },500);
+    }
+  },true);
   window.addEventListener('offline',()=>setReadOnly(true,'目前離線｜保留畫面，僅供查看'));
   window.addEventListener('online',()=>recoverVisiblePage('online'));
   document.addEventListener('visibilitychange',()=>{
