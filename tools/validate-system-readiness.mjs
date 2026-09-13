@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
-// Current authority: full ERP operations center + independent publishing center.
-// Guards validate the current safety chain and must not force the retired publishing-only root architecture.
+// Current authority: unified internal home + full ERP operations center + independent publishing center.
+// Guards validate the current safety chain and must not force a retired root redirect architecture.
 const read=path=>fs.readFileSync(path,'utf8');
 const must=(ok,message)=>{if(!ok)throw new Error(message)};
 
@@ -53,9 +53,9 @@ must(readiness.includes('SELECT 1 AS ok'),'D1 readiness沒有使用非破壞性�
 for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
 for(const token of ['immediatePublishingBypassesFixedSchedule:true','publish-now','manual_platforms','automatic_platforms'])must(flexible.includes(token),`立即發布入口缺少能力：${token}`);
 
-// Full ERP is enabled again; publishing remains a separate page and must not load ERP frontend code.
-must(index.includes("location.replace('/erp.html')"),'根頁必須進入完整ERP營運中控');
-must(index.includes('href="/publishing.html"'),'根頁必須保留貼文中心入口');
+// Unified root is the formal entry. ERP and publishing stay independent pages.
+must(index.includes('仙加味內部系統')&&index.includes('href="/erp.html"')&&index.includes('href="/publishing.html"'),'根頁必須是統一內部入口並保留ERP與貼文中心');
+must(!index.includes("location.replace('/erp.html')"),'新版統一入口不得再強制跳轉ERP');
 must(erpHtml.includes('仙加味營運中控'),'ERP頁缺少正式營運中控標示');
 must(erpHtml.includes('internal-app.js')&&erpHtml.includes('erp-publishing-separation.js'),'ERP頁缺少完整內部系統前端');
 must(publishingHtml.includes('唯一正式內容系統')&&publishingHtml.includes('貼文中心系統 App'),'貼文中心缺少正式獨立內容系統標示');
@@ -83,9 +83,10 @@ must(!publishingHtml.includes('<script src="/assets/js/post-bank-sync.js'),'iPho
 must(publishingHtml.includes('XJWLoadOptionalScript')&&publishingHtml.includes('device-image-upload.js')&&publishingHtml.includes('post-regenerate-policy-v1.js'),'非核心操作工具必須延後載入');
 for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`備用publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
 must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&resilience.includes('pageshow'),'iPhone/Safari恢復模組能力不足');
+must(resilience.includes('xjwOfflineWasDisabled')&&resilience.includes('else setReadOnly(false)'),'iPhone重新連線後必須解除快取模式造成的操作鎖，且不可誤開原本就應停用的按鈕');
 
 // Build package must contain both ERP and publishing assets under the current architecture.
 for(const token of ['src/full-system-entry.js','src/publishing-content-audit-entry.js','src/publishing-only-entry.js','erp.html','assets/css/internal-app.css','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/css/publishing-base.css','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少目前正式檔：${token}`);
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得帶出已退役v6第二套重生成邏輯');
 
-console.log(`PASS：完整ERP營運中控＋獨立貼文中心架構已對齊目前main；內容語意守門、Cloudflare Access、D1、16項審核、重複圖片、季節／天氣／情境檢查、排程／立即發布與媒體工具均保留。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
+console.log(`PASS：統一內部入口＋完整ERP營運中控＋獨立貼文中心架構已對齊目前main；iPhone重新連線可恢復操作，內容語意守門、Cloudflare Access、D1、16項審核、重複圖片、季節／天氣／情境檢查、排程／立即發布與媒體工具均保留。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
