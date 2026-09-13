@@ -1,0 +1,132 @@
+name: 仙加味貼文中心正式品質守門
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'publishing.html'
+      - 'assets/js/**'
+      - 'src/**'
+      - '.github/workflows/formal-publishing-quality-gate.yml'
+  schedule:
+    - cron: '47 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-formal-publishing-quality
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify every publishing control has a real handler
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('publishing.html','utf8');
+          const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
+          const requiredHtml=['data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot'];
+          const requiredJs=[
+            "e.target.closest('[data-refresh]')","if(refresh){load();return;}",
+            "e.target.closest('[data-load-more]')","load({append:true})",
+            "e.target.closest('[data-add-post]')","openPostForm()",
+            "e.target.closest('[data-filter-status]')","metric.dataset.filterStatus",
+            "e.target.closest('[data-post-view],[data-post-deliveries]')","openPostView(post,view)",
+            "e.target.closest('[data-post-edit]')","openPostForm(post)",
+            "e.target.closest('[data-post-status]')","changeStatus(status.dataset.id,status.dataset.postStatus,status)",
+            "e.target.closest('[data-post-schedule]')","openSchedule(post)",
+            "e.target.closest('[data-post-publish-now]')","publishNow(publish.dataset.postPublishNow,publish)",
+            "[data-publish-now-from-modal]","publishNow(post.id)",
+            "[data-schedule-preset]","nextSlot(b.dataset.schedulePreset)",
+            "$('#postForm')?.addEventListener('submit'","method:edit?'PUT':'POST'",
+            "$('#scheduleForm')?.addEventListener('submit'","status:'scheduled'",
+            "$('#clearFilters')?.addEventListener('click'","state.status='all'",
+            "$('#searchInput')?.addEventListener('input'","$('#statusFilter')?.addEventListener('change'",
+            "/publish-now","/deliveries","/platform-authorization","/status"
+          ];
+          const errors=[];
+          for(const t of requiredHtml)if(!html.includes(t))errors.push(`HTML缺少控制項 ${t}`);
+          for(const t of requiredJs)if(!js.includes(t))errors.push(`主程式缺少按鈕/事件契約 ${t}`);
+          if(!html.includes("fetch('/healthz/core'")||!html.includes("fetch('/healthz/readiness'"))errors.push('系統診斷按鈕缺少core/readiness實際檢查');
+          if(errors.length)throw new Error(errors.join('\n'));
+          console.log('PASS 每個貼文中心正式控制項都有對應事件/API契約');
+          NODE
+      - name: Require Cloudflare read credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Export formal post quality snapshot from D1
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,published_at FROM social_posts ORDER BY id" > formal-post-quality.json
+      - name: Verify every public copy and every assigned image
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('formal-post-quality.json','utf8'));
+          const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
+          if(!posts.length)throw new Error('D1沒有貼文資料');
+          const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
+          const activeStatuses=new Set(['pending_review','approved','scheduled']);
+          const imageOwners=new Map();
+          const copyOwners=new Map();
+          const errors=[];
+          const norm=s=>String(s||'').replace(/\s+/g,'');
+          for(const p of posts){
+            const text=[p.title,p.headline,p.copy,p.category].filter(Boolean).join('\n');
+            if(p.status!=='published'){
+              const hit=banned.find(x=>text.includes(x));
+              if(hit)errors.push(`${p.id}: 公開文案含不合格詞「${hit}」`);
+              if(/LINE(?! OA)/.test(text))errors.push(`${p.id}: LINE導流未統一為LINE OA`);
+              if(String(p.copy||'').includes('\\n'))errors.push(`${p.id}: 文案仍含字面\\n`);
+            }
+            const ck=norm(p.copy);
+            if(ck){
+              if(copyOwners.has(ck))errors.push(`${p.id}: 文案與 ${copyOwners.get(ck)} 完全重複`);
+              else copyOwners.set(ck,p.id);
+            }
+            if(text.includes('5～7個工作天')&&!/(龜鹿飲|30cc|180cc)/.test(text))errors.push(`${p.id}: 5～7工作天被套用到非龜鹿飲內容`);
+            if(/龜鹿湯塊/.test(text)&&/(600g|32塊)/.test(text))errors.push(`${p.id}: 龜鹿湯塊混入龜鹿膠規格`);
+            if(/龜鹿膠/.test(text)&&/(75g|8塊)/.test(text))errors.push(`${p.id}: 龜鹿膠混入龜鹿湯塊規格`);
+            const image=String(p.image_url||'').trim();
+            if(image){
+              if(image.includes('/images/brand/approved-v405/'))errors.push(`${p.id}: 使用已退役approved-v405舊圖`);
+              if(imageOwners.has(image)&&p.status!=='published')errors.push(`${p.id}: 圖片與 ${imageOwners.get(image)} 重複使用`);
+              else imageOwners.set(image,p.id);
+              if(!String(p.image_alt||'').trim())errors.push(`${p.id}: 有圖片但缺圖片說明`);
+              if(p.image_quality_status==='low')errors.push(`${p.id}: 圖片品質標記為low`);
+            }
+            if(activeStatuses.has(p.status)){
+              if(!image)errors.push(`${p.id}: ${p.status}缺圖片，不得進入待發布流程`);
+              if(Number(p.image_approved)!==1)errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
+              if(Number(p.image_width||0)<=0||Number(p.image_height||0)<=0)errors.push(`${p.id}: ${p.status}缺圖片尺寸資料`);
+              if(!String(p.image_alt||'').trim())errors.push(`${p.id}: ${p.status}缺圖片說明`);
+            }
+          }
+          if(errors.length){console.error(errors.join('\n'));process.exit(1)}
+          console.log(`PASS ${posts.length}篇貼文：文案、狀態、已配置圖片與待發布流程品質守門通過`);
+          NODE
+      - name: Upload read-only quality evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-publishing-quality-${{ github.run_id }}
+          path: formal-post-quality.json
+          if-no-files-found: error
+          retention-days: 3
