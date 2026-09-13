@@ -1,0 +1,109 @@
+name: 仙加味內部系統與貼文中心完整驗收 20260913
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/full-internal-verification-20260913.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-full-internal-verification-20260913
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Static syntax and formal guards
+        run: |
+          npm run check
+          npm run guard:full
+          npm run build:static
+
+      - name: Verify production bundle functions exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in dist/index.html dist/erp.html dist/publishing.html \
+            dist/assets/js/internal-app.js dist/assets/js/publishing-app-v2.js \
+            dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js \
+            dist/assets/js/manual-publish-tools.js dist/assets/js/post-regenerate-buttons.js \
+            dist/assets/css/internal-app.css dist/assets/css/publishing-app.css; do
+            test -s "$f" || { echo "missing/empty $f" >&2; exit 1; }
+          done
+          grep -q 'ERP／營運中控' dist/index.html
+          grep -q '貼文中心' dist/index.html
+          grep -q '貼文中心系統 App' dist/publishing.html
+          grep -q '立即發布' dist/publishing.html
+          grep -q '排程' dist/publishing.html
+          grep -q '待審核' dist/publishing.html
+          grep -q '重新生成' dist/publishing.html
+          echo 'PASS static functional controls present'
+
+      - name: Verify live D1 state and integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > d1-status.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS total FROM social_posts" > d1-total.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status='archived' AND (image_url<>'' OR image_alt<>'' OR image_approved<>0 OR image_width<>0 OR image_height<>0 OR image_bytes<>0 OR proposed_scheduled_at IS NOT NULL)" > d1-archived-bad.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status='pending_review' AND (image_url='' OR proposed_scheduled_at IS NOT NULL OR image_approved<>0)" > d1-pending-bad.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > d1-fk.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const rows=f=>{const d=JSON.parse(fs.readFileSync(f,'utf8')); return (Array.isArray(d)?d[0]?.results:d?.results)||[]};
+          const st=Object.fromEntries(rows('d1-status.json').map(r=>[r.status,Number(r.count)]));
+          const total=Number(rows('d1-total.json')[0]?.total||0);
+          if(total!==71) throw new Error('貼文總數不是71: '+total);
+          if(st.archived!==66||st.pending_review!==2||st.published!==3) throw new Error('貼文狀態異常 '+JSON.stringify(st));
+          if(Number(rows('d1-archived-bad.json')[0]?.bad||0)!==0) throw new Error('封存貼文仍有舊圖/舊排程');
+          if(Number(rows('d1-pending-bad.json')[0]?.bad||0)!==0) throw new Error('待審核貼文狀態不符合規則');
+          if(rows('d1-fk.json').length!==0) throw new Error('D1 foreign_key_check 失敗');
+          console.log('PASS D1',total,st);
+          NODE
+
+      - name: Verify Cloudflare protected live boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://xianjiawei-internal.tung314069.workers.dev'
+          : > live-boundary.txt
+          for path in '/' '/erp.html' '/publishing.html' '/healthz/core'; do
+            result="$(curl -sS --connect-timeout 15 --max-time 45 -o /tmp/body -w '%{http_code} %{url_effective}' "$base$path" || true)"
+            echo "$path -> $result" | tee -a live-boundary.txt
+            code="${result%% *}"
+            test "$code" -ge 200
+            test "$code" -lt 500
+          done
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: xianjiawei-full-internal-verification-${{ github.run_id }}
+          path: |
+            d1-status.json
+            d1-total.json
+            d1-archived-bad.json
+            d1-pending-bad.json
+            d1-fk.json
+            live-boundary.txt
+          if-no-files-found: error
+          retention-days: 7
