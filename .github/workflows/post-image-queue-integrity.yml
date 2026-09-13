@@ -1,0 +1,65 @@
+name: 仙加味封存貼文圖片製作清單守門
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/post-image-production-queue-current.json'
+      - '.github/workflows/post-image-queue-integrity.yml'
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Export archived posts
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url FROM social_posts WHERE status='archived' ORDER BY id" > archived-posts.json
+      - name: Verify one-to-one image production queue
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const q=JSON.parse(fs.readFileSync('ops/post-image-production-queue-current.json','utf8'));
+          const d=JSON.parse(fs.readFileSync('archived-posts.json','utf8'));
+          const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
+          const items=Array.isArray(q.items)?q.items:[];
+          const errors=[];
+          if(Number(q.total)!==items.length)errors.push(`queue total ${q.total} != items ${items.length}`);
+          if(items.length!==posts.length)errors.push(`圖片清單 ${items.length} != 封存稿 ${posts.length}`);
+          const byPost=new Map(), imageIds=new Set();
+          for(const x of items){
+            if(!x.postId||!x.imageId||!x.title||!x.copyHash)errors.push('圖片清單存在缺欄位項目');
+            if(byPost.has(x.postId))errors.push(`postId重複 ${x.postId}`); else byPost.set(x.postId,x);
+            if(imageIds.has(x.imageId))errors.push(`imageId重複 ${x.imageId}`); else imageIds.add(x.imageId);
+          }
+          for(const p of posts){
+            const x=byPost.get(p.id);
+            if(!x){errors.push(`${p.id}: 沒有唯一圖片製作項目`);continue}
+            if(x.title!==p.title)errors.push(`${p.id}: 圖片清單標題與D1不一致`);
+            const hash=crypto.createHash('sha256').update(String(p.copy||'')).digest('hex').slice(0,16);
+            if(x.copyHash!==hash)errors.push(`${p.id}: 文案已變更，圖片規劃尚未同步`);
+            if(String(p.image_url||'').trim())errors.push(`${p.id}: 尚未完成正式圖卻在archived掛了圖片`);
+          }
+          for(const x of items)if(!posts.some(p=>p.id===x.postId))errors.push(`${x.postId}: 清單項目已不在封存稿，需完成後移出queue`);
+          if(errors.length){console.error(errors.join('\n'));process.exit(1)}
+          console.log(`PASS ${posts.length}篇封存稿均有唯一imageId、情境標題與文案雜湊綁定`);
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: post-image-queue-integrity-${{ github.run_id }}
+          path: archived-posts.json
+          retention-days: 3
