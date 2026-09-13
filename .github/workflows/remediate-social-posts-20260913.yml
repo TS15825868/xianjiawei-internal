@@ -1,0 +1,96 @@
+name: 仙加味貼文母庫一次性正式整理 20260913
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remediate-social-posts-20260913.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-social-remediation-20260913
+  cancel-in-progress: false
+
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      REMEDIATION_SQL_GZ_B64: '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'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require Cloudflare credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Build one-time remediation SQL
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os,base64,gzip
+          raw=base64.b64decode(os.environ['REMEDIATION_SQL_GZ_B64'])
+          open('remediation.sql','wb').write(gzip.decompress(raw))
+          PY
+      - name: Apply targeted post remediation
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file remediation.sql
+      - name: Verify exact post state
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,rejection_reason FROM social_posts ORDER BY id" > posts-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > counts-after.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const unwrap=f=>{const d=JSON.parse(fs.readFileSync(f,'utf8'));return (Array.isArray(d)?d[0]?.results:d?.results)||[]};
+          const posts=unwrap('posts-after.json');
+          const counts=Object.fromEntries(unwrap('counts-after.json').map(x=>[x.status,Number(x.count||0)]));
+          if(posts.length!==71) throw new Error(`貼文總數異常：${posts.length}`);
+          if(Number(counts.published||0)!==3) throw new Error(`已發布篇數被改動：${counts.published||0}`);
+          if(Number(counts.pending_review||0)!==0) throw new Error(`仍有未完成圖片卻停在待審核：${counts.pending_review||0}`);
+          if(Number(counts.archived||0)!==68) throw new Error(`封存篇數不是68：${counts.archived||0}`);
+          const retired=posts.filter(p=>['pending_review','approved','scheduled'].includes(p.status)&&String(p.image_url||'').includes('/images/brand/approved-v405/'));
+          if(retired.length) throw new Error(`待發布流程仍使用退役舊圖：${retired.map(x=>x.id).join(',')}`);
+          const active=posts.filter(p=>['pending_review','approved','scheduled'].includes(p.status));
+          for(const p of active){
+            if(!p.image_url||!p.image_alt||Number(p.image_approved)!==1||p.image_quality_status==='low') throw new Error(`待發布流程圖片未達正式標準：${p.id}`);
+          }
+          const publicText=posts.filter(p=>p.status!=='published').map(p=>`${p.id}\n${p.title||''}\n${p.headline||''}\n${p.copy||''}`);
+          const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','這篇','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語'];
+          for(const block of publicText){
+            const hit=banned.find(x=>block.includes(x));
+            if(hit) throw new Error(`公開文案仍有不合格語句「${hit}」：${block.split('\n')[0]}`);
+          }
+          const nonPublished=posts.filter(p=>p.status!=='published');
+          for(const p of nonPublished){
+            const t=`${p.title||''}\n${p.headline||''}\n${p.copy||''}`;
+            if(/LINE(?! OA)/.test(t)) throw new Error(`仍有未統一的LINE導流文字：${p.id}`);
+          }
+          const norm=s=>String(s||'').replace(/\s+/g,'');
+          const seen=new Map();
+          for(const p of posts){
+            const k=norm(p.copy);
+            if(k&&seen.has(k)) throw new Error(`文案完全重複：${seen.get(k)} / ${p.id}`);
+            if(k)seen.set(k,p.id);
+          }
+          console.log('PASS targeted remediation',counts);
+          NODE
+      - name: Upload verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: post-remediation-20260913-${{ github.run_id }}
+          path: |
+            remediation.sql
+            posts-after.json
+            counts-after.json
+          if-no-files-found: error
+          retention-days: 2
