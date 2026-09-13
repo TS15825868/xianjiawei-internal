@@ -20,7 +20,8 @@ const latestZip=JSON.parse(read('data/latest-user-post-zip.json'));
 const pkg=read('package.json');
 const wrangler=read('wrangler.jsonc');
 
-must(index.includes("location.replace('/erp.html')"),'根頁必須開啟完整ERP營運中控');
+must(index.includes('仙加味內部系統')&&index.includes('href="/erp.html"')&&index.includes('href="/publishing.html"'),'根頁必須保留統一內部入口、ERP與貼文中心');
+must(!index.includes("location.replace('/erp.html')"),'新版統一入口不得再強制跳轉ERP');
 must(erp.includes('仙加味營運中控')&&erp.includes('internal-app.js')&&erp.includes('erp-publishing-separation.js'),'ERP頁缺少完整內部系統前端');
 must(publishing.includes('唯一正式內容系統'),'貼文中心缺少唯一正式內容系統標示');
 must(publishing.includes('貼文中心系統 App'),'貼文中心沒有App定位');
@@ -51,4 +52,4 @@ must(latestZip.priority==='user_zip_approved','最新ZIP必須維持使用者素
 for(const file of ['index.html','erp.html','publishing.html','internal-app.css','internal-app.js','erp-publishing-separation.js','publishing-app-v2.js','post-regenerate-policy-v1.js','formal-media-policy-v20260810.js','latest-user-post-zip.json','full-system-entry.js'])must(pkg.includes(file),`正式build/check缺少必要檔：${file}`);
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得帶出舊v6第二套重生成邏輯');
 
-console.log(`PASS：完整ERP營運中控已恢復，貼文中心仍維持唯一正式內容系統；ERP其他模組與D1資料正常保留，貼文審核、配圖、重生成、排程與立即發布沿用目前安全鏈。最新 ${latestZip.source}/${latestZip.candidate_count} 張候選採能力式驗收。`);
+console.log(`PASS：統一內部入口保留完整ERP營運中控，貼文中心仍維持唯一正式內容系統；ERP其他模組與D1資料正常保留，貼文審核、配圖、重生成、排程與立即發布沿用目前安全鏈。最新 ${latestZip.source}/${latestZip.candidate_count} 張候選採能力式驗收。`);
