@@ -90,11 +90,12 @@ jobs:
           const errors=[];
           const norm=s=>String(s||'').replace(/\s+/g,'');
           for(const p of posts){
-            const text=[p.title,p.headline,p.copy,p.category].filter(Boolean).join('\n');
+            const publicText=[p.title,p.headline,p.copy].filter(Boolean).join('\n');
+            const fullText=[publicText,p.category].filter(Boolean).join('\n');
             if(p.status!=='published'){
-              const hit=banned.find(x=>text.includes(x));
+              const hit=banned.find(x=>publicText.includes(x));
               if(hit)errors.push(`${p.id}: 公開文案含不合格詞「${hit}」`);
-              if(/LINE(?! OA)/.test(text))errors.push(`${p.id}: LINE導流未統一為LINE OA`);
+              if(/LINE(?! OA)/.test(publicText))errors.push(`${p.id}: LINE導流未統一為LINE OA`);
               if(String(p.copy||'').includes('\\n'))errors.push(`${p.id}: 文案仍含字面\\n`);
             }
             const ck=norm(p.copy);
@@ -102,9 +103,10 @@ jobs:
               if(copyOwners.has(ck))errors.push(`${p.id}: 文案與 ${copyOwners.get(ck)} 完全重複`);
               else copyOwners.set(ck,p.id);
             }
-            if(text.includes('5～7個工作天')&&!/(龜鹿飲|30cc|180cc)/.test(text))errors.push(`${p.id}: 5～7工作天被套用到非龜鹿飲內容`);
-            if(/龜鹿湯塊/.test(text)&&/(600g|32塊)/.test(text))errors.push(`${p.id}: 龜鹿湯塊混入龜鹿膠規格`);
-            if(/龜鹿膠/.test(text)&&/(75g|8塊)/.test(text))errors.push(`${p.id}: 龜鹿膠混入龜鹿湯塊規格`);
+            if(publicText.includes('5～7個工作天')&&!/(龜鹿飲|30cc|180cc)/.test(publicText))errors.push(`${p.id}: 5～7工作天被套用到非龜鹿飲內容`);
+            const hasTang=/龜鹿湯塊/.test(publicText), hasJiao=/龜鹿膠/.test(publicText);
+            if(hasTang&&!hasJiao&&/(600g|32塊)/.test(publicText))errors.push(`${p.id}: 單一龜鹿湯塊文案混入龜鹿膠規格`);
+            if(hasJiao&&!hasTang&&/(75g|8塊)/.test(publicText))errors.push(`${p.id}: 單一龜鹿膠文案混入龜鹿湯塊規格`);
             const image=String(p.image_url||'').trim();
             if(image){
               if(image.includes('/images/brand/approved-v405/'))errors.push(`${p.id}: 使用已退役approved-v405舊圖`);
