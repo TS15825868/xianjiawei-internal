@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-13-v17",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260913-v16.json#2026-09-13-v16",
+  "updatedAt": "2026-09-13T14:38:00+08:00",
+  "rule": "本檔只覆蓋v16之後已實際驗證變更；未覆蓋欄位依序繼承v16至v10。新版正確資料優先；不得把舊失敗run或舊webhook狀態當成目前正式狀態。",
+  "crossSystemVerification": {
+    "website": {
+      "repo": "TS15825868/xianjiawei",
+      "branch": "main",
+      "verifiedMainCommit": "7f51404aac01391f41232cf8158df31354084ccb",
+      "fullSmokeRunId": 34742874926,
+      "fullSmokeConclusion": "success",
+      "sitemapUrlCount": 31,
+      "sitemapAllHttp200": true,
+      "siteLinkMediaAuditRunId": 34743121880,
+      "siteLinkMediaAuditConclusion": "success",
+      "htmlPagesAudited": 33,
+      "linkAnchorAssetChecks": 445,
+      "linkAnchorAssetErrors": 0,
+      "linkAnchorAssetWarnings": 0,
+      "pagesRunId": 34743121336,
+      "pagesConclusion": "success",
+      "publicProductAuthorityPass": true
+    },
+    "lineOA": {
+      "repo": "TS15825868/TS-LINE",
+      "branch": "main",
+      "verifiedMainCommit": "c051d43369df0adc5efb1a9ceec2de470d7ecac7",
+      "fullVerificationRunId": 34742922066,
+      "fullVerificationConclusion": "success",
+      "testsPass": true,
+      "fullGuardPass": true,
+      "securityAuditPass": true,
+      "liveRootOk": true,
+      "liveHealthOk": true,
+      "credentialsConfigured": true,
+      "orderOpen": true,
+      "publicProductCount": 6,
+      "mascotAssetsReady": true,
+      "pagesRunId": 34742921316,
+      "pagesConclusion": "success",
+      "profileCoverRule": "使用者2026-09-11手動更換之LINE OA商業簡介封面不得覆蓋回舊圖。"
+    },
+    "internalAndPublishing": {
+      "repo": "TS15825868/xianjiawei-internal",
+      "branch": "main",
+      "verifiedMainCommitBeforeV17": "b46c41cc2de407380e780ea1f8af1d34d43757cf",
+      "fullVerificationRunId": 34742909979,
+      "fullVerificationConclusion": "success",
+      "syntaxAndFormalGuardsPass": true,
+      "staticBuildPass": true,
+      "functionalControlsPresent": ["ERP／營運中控", "貼文中心", "立即發布", "排程", "待審核", "重新生成", "圖片上傳相關程式"],
+      "d1": {
+        "total": 71,
+        "archived": 66,
+        "pendingReview": 2,
+        "published": 3,
+        "foreignKeyCheckPass": true,
+        "archivedOldMediaResidualCount": 0,
+        "pendingReviewStateRulePass": true
+      },
+      "cloudflareProtectedBoundary": {
+        "paths": ["/", "/erp.html", "/publishing.html", "/healthz/core"],
+        "no5xx": true,
+        "authenticatedBodyVerification": "PENDING_BROWSER_CONNECTOR",
+        "reason": "Opera Browser Connector目前回報Browser not connected；需在Opera登入並開啟Allow AI connection後才能做Cloudflare Access登入後實際點擊／本文驗收。"
+      }
+    },
+    "n8n": {
+      "formalUrl": "https://xianjiawei-n8n-longterm.onrender.com",
+      "healthzHttp200": true,
+      "obsoleteWebhookMonitorIssue": "resolved",
+      "oldFailureCause": "舊監控呼叫已不存在webhook而回404，不代表n8n本體故障。",
+      "monitorWorkflow": ".github/workflows/n8n-monitor-scheduler.yml",
+      "monitorFixCommit": "f6e2c261b34cda3ded18c75347c6a12c52c99f6b",
+      "monitorVerificationRunId": 34743096436,
+      "monitorVerificationConclusion": "success",
+      "monitorNowChecks": ["官網首頁", "公開產品母資料", "LINE OA healthz", "Cloudflare Access邊界", "n8n healthz", "每6小時AI/GEO/llms資料"]
+    },
+    "supabase": {
+      "project": "xianjiawei",
+      "projectId": "iphexhvjhsmelbgwzhhr",
+      "status": "ACTIVE_HEALTHY",
+      "region": "ap-northeast-1",
+      "securityAdvisors": {
+        "rlsEnabledNoPolicy": "INFO: public.xjw_app_state",
+        "functionSearchPathMutable": "WARN: n8n.increment_workflow_version"
+      },
+      "performanceAdvisors": "主要為n8n schema的未索引外鍵、未使用索引與重複索引提示；本次未為清警告而修改n8n管理之資料庫結構。",
+      "rule": "除非有實際功能或效能證據，不得為清除INFO/WARN任意改寫n8n管理schema。"
+    }
+  },
+  "remainingHardGaps": [
+    "Cloudflare Access登入後的 /、/erp.html、/publishing.html、/healthz/core 本文與實際按鈕點擊驗收仍需Opera Browser Connector啟用 Allow AI connection；目前只能確認程式守門、D1、build與Access邊界正常。",
+    "66篇封存貼文母庫仍缺逐篇唯一且圖文一致的新情境圖；在新圖完成並人工審核前不得標為可發布。",
+    "Google先前其餘核心網址的發現／索引狀態屬外部等待項，不因本次功能驗收宣稱已完成。",
+    "正式非拼貼、角色真正連續動作的動畫來源仍未完成，且只允許免費方案。"
+  ]
+}
