@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'assets/**'
+      - 'tools/**'
       - 'index.html'
       - 'erp.html'
       - 'publishing.html'
