@@ -1,6 +1,6 @@
 import app from './flexible-publish-entry.js';
 
-const VERSION='2026-08-15-publishing-review-gate-v7-full-library-strict-unique';
+const VERSION='2026-09-13-publishing-review-gate-v8-contextual-scene-intent';
 const REQUIRED_CHECKS=Object.freeze([
   'brand','product','specification','pricing_activity','season','weather','occasion','location',
   'scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'
@@ -21,12 +21,12 @@ const SCENE_GROUPS=Object.freeze([
   {id:'rain',copy:['下雨','雨天','雨勢','雨具'],image:['下雨','雨天','雨','雨傘','窗外','rain']},
   {id:'hot',copy:['悶熱','炎熱','夏天','補水','防曬'],image:['悶熱','炎熱','夏天','補水','水壺','陽光','防曬','hot','summer']},
   {id:'temperature',copy:['溫差','換季','薄外套','變冷','轉涼'],image:['溫差','換季','外套','轉涼','temperature','coat']},
-  {id:'work',copy:['工作','上班','忙碌','工作空檔'],image:['工作','上班','桌面','電腦','休息','work','office']},
+  {id:'work',copy:['上班','工作空檔','工作中','工作桌','通勤'],image:['工作','上班','桌面','電腦','休息','work','office']},
   {id:'cook',copy:['料理','燉煮','雞湯','排骨湯','湯品','餐桌'],image:['料理','燉煮','湯','鍋','廚房','餐桌','cook','soup','recipe']},
   {id:'storage',copy:['保存','冷藏','陰涼','開封'],image:['保存','冷藏','冰箱','陰涼','收納','storage','fridge']},
   {id:'family',copy:['家人','關心家人','照顧自己'],image:['家人','關心','照顧','family','care']},
   {id:'choose',copy:['怎麼選','選擇','依習慣','依作息','在家、外出','外出、工作'],image:['怎麼選','選擇','作息','習慣','分類','看板','choose','routine']},
-  {id:'use',copy:['使用方式','怎麼使用','直接飲用','溫熱','沖泡'],image:['使用','飲用','溫熱','熱水','沖泡','use','warm']}
+  {id:'use',copy:['怎麼使用','直接飲用','溫熱飲用','溫熱後','沖泡'],image:['使用','飲用','溫熱','熱水','沖泡','use','warm']}
 ]);
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-publishing-review-gate':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
