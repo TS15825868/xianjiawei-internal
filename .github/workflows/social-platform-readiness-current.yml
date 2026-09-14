@@ -1,0 +1,78 @@
+name: 仙加味貼文中心平台授權現行就緒檢查
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/social-platform-readiness-current.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BASE_URL: https://xianjiawei-internal.tung314069.workers.dev
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify publisher capability contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Facebook:{direct:'facebook'" src/social-publisher.js
+          grep -q "Instagram:{direct:'instagram'" src/social-publisher.js
+          grep -q "'LINE OA':{direct:'line_oa'" src/social-publisher.js
+          grep -q "'LINE VOOM':{manual:true" src/social-publisher.js
+          grep -q "'Google 商家':{direct:'google_business'" src/social-publisher.js
+          grep -q 'META_PAGE_ACCESS_TOKEN' src/social-publisher.js
+          grep -q 'LINE_CHANNEL_ACCESS_TOKEN' src/social-publisher.js
+          grep -q 'GOOGLE_OAUTH_REFRESH_TOKEN' src/social-publisher.js
+          echo 'PASS current social publisher capabilities present.'
+      - name: Require Cloudflare audit credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Read Worker binding names without exposing secret values
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/xianjiawei-internal/settings" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" > /tmp/settings.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/settings.json','utf8'));
+          if(x.success!==true) throw new Error('Cloudflare Worker settings API failed');
+          const bindings=x.result?.bindings||[];
+          const names=new Set(bindings.map(b=>b.name));
+          const has=n=>names.has(n);
+          const pair=(a,b)=>has(a)&&has(b);
+          const readiness={
+            Facebook:has('META_PAGE_ACCESS_TOKEN')||pair('FACEBOOK_PUBLISH_WEBHOOK_URL','FACEBOOK_PUBLISH_WEBHOOK_TOKEN'),
+            Instagram:has('META_PAGE_ACCESS_TOKEN')||pair('INSTAGRAM_PUBLISH_WEBHOOK_URL','INSTAGRAM_PUBLISH_WEBHOOK_TOKEN'),
+            'LINE OA':has('LINE_CHANNEL_ACCESS_TOKEN')||pair('LINE_OA_PUBLISH_WEBHOOK_URL','LINE_OA_PUBLISH_WEBHOOK_TOKEN'),
+            'LINE VOOM':'manual_required',
+            'Google 商家':['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has)||pair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN')
+          };
+          console.log('PLATFORM_READINESS '+JSON.stringify(readiness));
+          console.log('SAFE_BINDING_NAMES '+bindings.filter(b=>/META_|LINE_|GOOGLE_|PUBLISH_WEBHOOK/.test(b.name||'')).map(b=>`${b.name}:${b.type}`).sort().join(','));
+          NODE
+      - name: Verify live read-only authorization metadata during maintenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
+          if [ "$maintenance" != 'true' ]; then
+            echo 'Access已恢復，略過免登入平台metadata驗收。'
+            exit 0
+          fi
+          curl -fsS --max-time 25 "$BASE_URL/api/platform-authorization" -o /tmp/live-platform.json
+          node - <<'NODE'
+          const x=require('/tmp/live-platform.json');
+          if(!x.maintenance_readonly) throw new Error('整理模式平台metadata未標示唯讀');
+          console.log('PASS live platform authorization metadata is read-only.');
+          NODE
