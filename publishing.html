@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="仙加味內部系統">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260913-v10-smooth-mobile">
+  <meta name="xianjiawei-publishing-runtime" content="publishing-center-app-20260914-v11-maintenance-smooth">
   <title>仙加味｜貼文中心系統 App</title>
   <link rel="manifest" href="/manifest.webmanifest?v=20260913-unified-v2">
   <link rel="stylesheet" href="/assets/css/publishing-base.css?v=20260815-app-v5-full-library">
@@ -53,14 +53,14 @@
       <section id="platformSummary" class="publish-platforms" aria-label="平台授權狀態"></section>
       <section class="publish-toolbar" aria-label="貼文篩選"><input id="searchInput" type="search" inputmode="search" placeholder="搜尋標題、文案、產品或平台"><select id="statusFilter"><option value="all">全部狀態</option><option value="draft">草稿</option><option value="pending_review">待審核</option><option value="approved">已核准</option><option value="scheduled">已排程</option><option value="published">已發布</option><option value="manual_required">需人工發布</option><option value="failed">失敗</option></select><button id="clearFilters" class="btn" type="button">清除篩選</button></section>
       <div id="app"><div id="listRoot"><section class="loading-card">正在載入貼文中心…</section></div></div>
-      <section id="bootHelp" class="boot-help"><strong>貼文中心尚未完成載入。</strong><div id="bootHelpText">請按「重新連線」。若登入已過期，Safari 會重新要求 Cloudflare Access 登入；重新連線只更新資料，不會重新整理整個頁面，也不會刪除貼文資料。</div><button class="btn primary" type="button" data-refresh>重新連線</button></section>
+      <section id="bootHelp" class="boot-help"><strong>貼文中心尚未完成載入。</strong><div id="bootHelpText">請按「重新連線」。目前整理期間為免登入唯讀模式；重新連線只更新資料，不會重新整理整個頁面，也不會刪除貼文資料。</div><button class="btn primary" type="button" data-refresh>重新連線</button></section>
     </main>
   </div>
   <div id="modalRoot"></div><div id="toastRoot" class="toast-root" aria-live="polite"></div><noscript><p class="noscript">此系統需要啟用 JavaScript 才能操作。</p></noscript>
   <script>
     (function(){
       'use strict';
-      window.__XJW_BOOT_VERSION__='20260913-lean-boot-v8-smooth-mobile';
+      window.__XJW_BOOT_VERSION__='20260914-lean-boot-v9-maintenance-smooth';
       var loaded={},optionalScheduled=false;
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.async=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
@@ -79,7 +79,7 @@
       if(diagnoseButton)diagnoseButton.addEventListener('click',function(event){
         event.preventDefault();
         if(diagnoseButton.disabled)return;
-        var old=diagnoseButton.textContent;diagnoseButton.disabled=true;diagnoseButton.textContent='診斷中…';action('正在檢查 Worker、D1、登入與貼文資料…');
+        var old=diagnoseButton.textContent;diagnoseButton.disabled=true;diagnoseButton.textContent='診斷中…';action('正在檢查 Worker、D1、存取狀態與貼文資料…');
         var root=document.getElementById('readinessSummary');
         if(root)root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>背景檢查中，不重載頁面…</small></span>';
         var ctl=new AbortController(),timer=setTimeout(function(){ctl.abort()},8000);
@@ -89,7 +89,7 @@
         ]).then(function(parts){
           clearTimeout(timer);
           var ok=parts.every(function(part){return !!part.ok});
-          if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／登入／貼文資料</strong><small>'+(ok?'正常':'有一項尚未完成')+'</small></span>';
+          if(root)root.innerHTML='<span class="readiness-chip '+(ok?'ok':'manual')+'"><strong>Worker／D1／存取／貼文資料</strong><small>'+(ok?'正常':'有一項尚未完成')+'</small></span>';
           if(ok){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');action('系統診斷完成：核心功能正常。');toast('系統診斷完成：核心功能正常。')}else{action('系統診斷完成：有一項需要處理。',true);toast('系統診斷有一項需要處理。',true)}
         }).catch(function(error){
           clearTimeout(timer);
@@ -99,7 +99,7 @@
         }).finally(function(){diagnoseButton.disabled=false;diagnoseButton.textContent=old})
       });
       document.addEventListener('click',function(event){var refresh=event.target.closest('[data-refresh]');if(refresh&&!refresh.disabled)action('重新連線中，保留目前畫面…');var add=event.target.closest('[data-add-post]');if(add&&!add.disabled){action('正在開啟新增貼文…');setTimeout(function(){if(document.querySelector('#modalRoot .xjw-modal'))action('新增貼文視窗已開啟。')},250)}},true);
-      document.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';action('貼文資料已連線，操作功能可使用。');scheduleOptionalTools()});
+      document.addEventListener('xjw-publishing-list-rendered',function(){var help=document.getElementById('bootHelp');if(help)help.classList.remove('show');var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip ok"><strong>貼文資料</strong><small>已連線</small></span>';action(document.documentElement.dataset.maintenanceReadonly==='true'?'貼文資料已連線；整理期間可檢視與篩選，寫入功能暫停。':'貼文資料已連線，操作功能可使用。');scheduleOptionalTools()});
       setTimeout(function(){if(!stillLoading())return;var root=document.getElementById('readinessSummary');if(root&&!root.querySelector('.ok'))root.innerHTML='<span class="readiness-chip checking"><strong>貼文資料</strong><small>行動網路載入中，保留目前畫面…</small></span>'},7000);
       setTimeout(function(){if(!stillLoading())return;var state=document.getElementById('connectionState');if(state){state.textContent='載入時間較長｜可按重新連線';state.classList.remove('error')}showHelp('貼文資料載入時間較長。可按「重新連線」局部更新資料；系統不會自動重載整個頁面。')},14000);
       window.addEventListener('pageshow',function(event){if(event.persisted&&stillLoading())setTimeout(function(){document.querySelector('[data-refresh]')?.click()},180)});
@@ -108,7 +108,7 @@
     })();
   </script>
   <script defer src="/assets/js/device-image-upload.js?v=20260818-direct-upload-v2"></script>
-  <script defer src="/assets/js/publishing-app-v2.js?v=20260913-smooth-mobile-v8"></script>
-  <script defer src="/assets/js/publishing-review-gate.js?v=20260815-lean-review-v3-full-library"></script>
+  <script defer src="/assets/js/publishing-app-v2.js?v=20260914-maintenance-smooth-v9"></script>
+  <script defer src="/assets/js/publishing-review-gate.js?v=20260914-audit-debounce-v4"></script>
 </body>
 </html>
