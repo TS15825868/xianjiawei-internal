@@ -1,0 +1,82 @@
+name: 仙加味 ERP＋貼文中心現行手動驗收
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-internal-manual-validation-current
+  cancel-in-progress: true
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies without deployment
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Verify current guard principle
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const mode=JSON.parse(fs.readFileSync('guard-mode.json','utf8'));
+          if(mode.keep_minimum_safety!==true) throw new Error('minimum safety must stay enabled');
+          if(!String(mode.future_guard_principle||'').includes('Do not block valid updates')) throw new Error('current-authority guard principle missing');
+          console.log('PASS current-authority guard principle');
+          NODE
+
+      - name: Run current code and authority checks
+        run: |
+          npm run check
+          npm run guard:full
+          npm run build:static
+
+      - name: Verify ERP and publishing capabilities without version lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in \
+            dist/index.html dist/erp.html dist/publishing.html dist/manifest.webmanifest \
+            dist/assets/css/internal-app.css dist/assets/css/publishing-app.css dist/assets/css/publishing-performance.css \
+            dist/assets/js/internal-app.js dist/assets/js/erp-publishing-separation.js \
+            dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
+            test -s "$f" || { echo "missing/empty $f" >&2; exit 1; }
+          done
+          grep -q '仙加味內部系統' dist/index.html
+          grep -q 'ERP／營運中控' dist/index.html
+          grep -q '貼文中心' dist/index.html
+          grep -q '仙加味營運中控' dist/erp.html
+          grep -q '貼文中心系統 App' dist/publishing.html
+          grep -q 'xianjiawei-publishing-runtime' dist/publishing.html
+          grep -q '系統診斷' dist/publishing.html
+          grep -q '重新連線' dist/publishing.html
+          grep -q '新增貼文' dist/publishing.html
+          grep -q '週一／週三／週五 09:00' dist/assets/js/publishing-app-v2.js
+          grep -q '\[1,3,5\]' dist/assets/js/publishing-app-v2.js
+          grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
+          grep -q 'XJW_MAINTENANCE_PRIVATE_READ_LOCKED' src/full-system-entry.js
+          grep -Eq '"start_url"[[:space:]]*:[[:space:]]*"/"' dist/manifest.webmanifest
+          grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
+          grep -q "HOME_PATH='/index.html'" src/full-system-entry.js
+          grep -q 'erpUiEnabled:true' src/full-system-entry.js
+          grep -q 'erpApisEnabled:true' src/full-system-entry.js
+          grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
+          if grep -q 'content-visibility:auto\|contain:layout paint style\|contain-intrinsic-size:620px\|contain-intrinsic-size:560px' dist/assets/css/publishing-app.css; then
+            echo '發現已退役 Safari 卡片虛擬化規則' >&2
+            exit 1
+          fi
+          if grep -R -n -E '週二19:30|週六09:30|\[2,6\]' dist/assets/js src; then
+            echo '發現已退役排程規則' >&2
+            exit 1
+          fi
+          echo 'PASS current ERP + publishing capability validation.'
