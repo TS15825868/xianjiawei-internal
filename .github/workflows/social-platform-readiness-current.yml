@@ -1,10 +1,6 @@
 name: 仙加味貼文中心平台授權現行就緒檢查
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/social-platform-readiness-current.yml'
   workflow_dispatch:
 
 permissions:
