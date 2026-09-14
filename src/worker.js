@@ -81,12 +81,6 @@ async function ensureSchema(env){
   return schemaPromise;
 }
 async function verifyAccess(request,env){
-  if(String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true'){
-    if(!env?.DB)throw new Error('D1 資料庫尚未綁定');
-    const profile=await env.DB.prepare("SELECT email,display_name,role,active FROM profiles WHERE active=1 ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END, email LIMIT 1").first();
-    if(!profile)throw new Error('維護模式找不到可用內部帳號');
-    return profile;
-  }
   if(!env.POLICY_AUD||!env.TEAM_DOMAIN)throw new Error('Cloudflare Access 驗證尚未設定完成');
   const token=request.headers.get('cf-access-jwt-assertion');
   if(!token)throw new Error('找不到 Cloudflare Access 登入憑證');
