@@ -41,6 +41,7 @@ jobs:
           grep -q "platformConnectionProbePath:'/healthz/platform-connections'" src/full-system-entry.js
           test -f src/platform-connection-probe.js
           grep -q 'publishes_content:false' src/platform-connection-probe.js
+          grep -q 'blocking_platforms' src/platform-connection-probe.js
           echo 'PASS current social publisher capabilities and safe connection probe present.'
       - name: Require Cloudflare audit credentials
         run: |
@@ -85,13 +86,37 @@ jobs:
           if(!x.maintenance_readonly) throw new Error('整理模式平台metadata未標示唯讀');
           console.log('PASS live platform authorization metadata is read-only.');
           NODE
-      - name: Probe live provider credentials without publishing content
+      - name: Wait for current connection probe deployment
         shell: bash
         run: |
           set -euo pipefail
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           if [ "$maintenance" != 'true' ]; then
             echo 'Access已恢復；沒有設定自動化 Service Token 前，不繞過 Access 執行公開探測。'
+            exit 0
+          fi
+          expected="$(node -e "const fs=require('fs');const s=fs.readFileSync('src/full-system-entry.js','utf8');console.log((s.match(/const VERSION='([^']+)'/)||[])[1]||'')")"
+          test -n "$expected"
+          for attempt in $(seq 1 18); do
+            if curl -fsS --max-time 20 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json; then
+              live="$(node -e "const x=require('/tmp/platform-connections.json');console.log(x.fullSystemVersion||'')")"
+              if [ "$live" = "$expected" ]; then
+                echo "PASS live platform probe version=$live"
+                exit 0
+              fi
+              echo "等待正式部署：live=$live expected=$expected attempt=$attempt/18"
+            fi
+            sleep 5
+          done
+          echo "正式平台探測端點未在時限內更新到 $expected" >&2
+          exit 1
+      - name: Probe live provider credentials without publishing content
+        shell: bash
+        run: |
+          set -euo pipefail
+          maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
+          if [ "$maintenance" != 'true' ]; then
+            echo 'Access已恢復；略過無 Service Token 的公開探測。'
             exit 0
           fi
           curl -fsS --max-time 35 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json
@@ -103,9 +128,18 @@ jobs:
           const names=['Facebook','Instagram','LINE OA','Google 商家'];
           for(const name of names){
             const item=p[name]||{};
-            console.log(`${name}: mode=${item.mode||'unknown'} direct=${Boolean(item.directConfigured)} webhook=${Boolean(item.webhookConfigured)} connected=${String(item.connected)} status=${item.status||'unknown'}`);
-            if(item.directConfigured&&item.connected!==true)throw new Error(`${name} 官方 API 已設定但唯讀連線驗證失敗：${item.status||'unknown'}`);
+            console.log(`${name}: mode=${item.mode||'unknown'} direct=${Boolean(item.directConfigured)} webhook=${Boolean(item.webhookConfigured)} connected=${String(item.connected)} operational=${Boolean(item.operational)} degraded=${Boolean(item.degraded)} status=${item.status||'unknown'}`);
           }
+          for(const name of ['Facebook','Instagram','LINE OA']){
+            const item=p[name]||{};
+            if(item.operational!==true)throw new Error(`${name} 沒有可用官方 API 或既有 Webhook 備援：${item.status||'unknown'}`);
+          }
+          const blocking=Array.isArray(x.blocking_platforms)?x.blocking_platforms:[];
+          if(blocking.length)throw new Error(`已設定平台沒有可用發布路徑：${blocking.join(', ')}`);
+          const degraded=Array.isArray(x.degraded_platforms)?x.degraded_platforms:[];
+          const unconfigured=Array.isArray(x.unconfigured_platforms)?x.unconfigured_platforms:[];
+          if(degraded.length)console.log(`DEGRADED_WITH_FALLBACK ${degraded.join(', ')}`);
+          if(unconfigured.length)console.log(`UNCONFIGURED ${unconfigured.join(', ')}`);
           if(p['LINE VOOM']?.manualRequired!==true)throw new Error('LINE VOOM 必須維持人工發布');
           console.log('PASS live provider credential probe completed without publishing content.');
           NODE
