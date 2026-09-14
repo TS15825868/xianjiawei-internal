@@ -1,3 +1,4 @@
+// Temporary no-login maintenance read-only mode. Remove together with TEMP_DISABLE_ACCESS when restoring Cloudflare Access.
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "xianjiawei-internal",
