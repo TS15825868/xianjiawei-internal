@@ -1,0 +1,60 @@
+name: 仙加味免登入整理模式正式線上驗收
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-maintenance-live-once-20260914.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify maintenance read-only live behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://xianjiawei-internal.tung314069.workers.dev'
+
+          html="$(curl -fsS --max-time 25 "$base/publishing.html")"
+          grep -q '20260914-lean-boot-v9-maintenance-smooth' <<<"$html"
+          grep -q 'publishing-app-v2.js?v=20260914-maintenance-smooth-v9' <<<"$html"
+          grep -q 'publishing-review-gate.js?v=20260914-audit-debounce-v4' <<<"$html"
+          echo 'PASS publishing.html current maintenance bundle.'
+
+          me_file=/tmp/me.json
+          me_code="$(curl -sS --max-time 25 -o "$me_file" -w '%{http_code}' "$base/api/me")"
+          test "$me_code" = '200'
+          node -e "const x=require('/tmp/me.json'); if(!x.maintenance_readonly||x.role!=='viewer') process.exit(1); console.log('PASS /api/me synthetic viewer maintenance profile.')"
+
+          posts_file=/tmp/posts.json
+          posts_code="$(curl -sS --max-time 25 -o "$posts_file" -w '%{http_code}' "$base/api/posts?limit=18&offset=0")"
+          test "$posts_code" = '200'
+          node -e "const x=require('/tmp/posts.json'); if(!x.maintenance_readonly||!Array.isArray(x.items)) process.exit(1); console.log('PASS /api/posts read-only list, items='+x.items.length+', total='+x.total)"
+
+          platform_file=/tmp/platform.json
+          platform_code="$(curl -sS --max-time 25 -o "$platform_file" -w '%{http_code}' "$base/api/platform-authorization")"
+          test "$platform_code" = '200'
+          node -e "const x=require('/tmp/platform.json'); if(!x.maintenance_readonly) process.exit(1); console.log('PASS /api/platform-authorization read-only metadata.')"
+
+          private_file=/tmp/private.json
+          private_code="$(curl -sS --max-time 25 -o "$private_file" -w '%{http_code}' "$base/api/modules/customers")"
+          test "$private_code" = '423'
+          node -e "const x=require('/tmp/private.json'); if(x.code!=='XJW_MAINTENANCE_PRIVATE_READ_LOCKED') process.exit(1); console.log('PASS sensitive ERP read is locked.')"
+
+          write_file=/tmp/write.json
+          write_code="$(curl -sS --max-time 25 -o "$write_file" -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "$base/api/posts")"
+          test "$write_code" = '423'
+          node -e "const x=require('/tmp/write.json'); if(x.code!=='XJW_MAINTENANCE_READ_ONLY') process.exit(1); console.log('PASS mutation surface is locked before any write.')"
+
+          core_file=/tmp/core.json
+          core_code="$(curl -sS --max-time 25 -o "$core_file" -w '%{http_code}' "$base/healthz/core")"
+          test "$core_code" -ge 200
+          test "$core_code" -lt 500
+          echo 'PASS core health route responds.'
+
+          echo 'PASS all live maintenance-mode safety checks.'
