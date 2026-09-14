@@ -1,10 +1,16 @@
-name: 仙加味暫時關閉 Cloudflare Access 驗證
+name: 仙加味 Cloudflare Access 暫停／恢復控制
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/temporary-cloudflare-access-bypass.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '選擇 BYPASS 暫停驗證，或 RESTORE 恢復驗證'
+        required: true
+        default: 'RESTORE'
+        type: choice
+        options:
+          - RESTORE
+          - BYPASS
 
 permissions:
   contents: read
@@ -12,7 +18,7 @@ permissions:
 env:
   TARGET_DOMAIN: xianjiawei-internal.tung314069.workers.dev
   TEMP_POLICY_NAME: TEMPORARY XJW BYPASS DURING SYSTEM COMPLETION
-  MODE: BYPASS
+  MODE: ${{ inputs.mode }}
 
 jobs:
   access-mode:
@@ -28,6 +34,7 @@ jobs:
           set -euo pipefail
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
+          case "$MODE" in BYPASS|RESTORE) ;; *) echo "Invalid mode: $MODE" >&2; exit 1;; esac
 
       - name: Find Access application
         id: app
@@ -38,12 +45,10 @@ jobs:
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H 'Content-Type: application/json' \
             "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps")"
-          ok="$(jq -r '.success' <<<"$resp")"
-          test "$ok" = "true" || { jq . <<<"$resp"; exit 1; }
+          test "$(jq -r '.success' <<<"$resp")" = "true" || { jq . <<<"$resp"; exit 1; }
           app_id="$(jq -r --arg d "$TARGET_DOMAIN" '.result[] | select(.domain == $d) | .id' <<<"$resp" | head -n1)"
-          test -n "$app_id" || { echo "Access app not found for $TARGET_DOMAIN" >&2; jq -r '.result[] | [.name,.domain,.id] | @tsv' <<<"$resp"; exit 1; }
+          test -n "$app_id" || { echo "Access app not found for $TARGET_DOMAIN" >&2; exit 1; }
           echo "app_id=$app_id" >> "$GITHUB_OUTPUT"
-          echo "Found Access app for $TARGET_DOMAIN"
 
       - name: Enable temporary bypass
         if: env.MODE == 'BYPASS'
@@ -51,29 +56,20 @@ jobs:
         run: |
           set -euo pipefail
           app_id='${{ steps.app.outputs.app_id }}'
-          policies="$(curl -fsS \
-            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-            -H 'Content-Type: application/json' \
-            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
+          policies="$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
           existing="$(jq -r --arg n "$TEMP_POLICY_NAME" '.result[] | select(.name == $n) | .id' <<<"$policies" | head -n1)"
           if [ -n "$existing" ]; then
-            echo "Temporary bypass policy already exists: $existing"
+            echo "Temporary bypass already active: $existing"
           else
             max_precedence="$(jq -r '[.result[].precedence // 0] | max // 0' <<<"$policies")"
             next_precedence="$((max_precedence + 1))"
             body="$(jq -nc --arg n "$TEMP_POLICY_NAME" --argjson p "$next_precedence" '{name:$n,decision:"bypass",precedence:$p,include:[{everyone:{}}]}')"
-            resp="$(curl -sS \
-              -X POST \
-              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-              -H 'Content-Type: application/json' \
-              --data "$body" \
-              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
-            ok="$(jq -r '.success' <<<"$resp")"
-            test "$ok" = "true" || { jq . <<<"$resp"; exit 1; }
-            echo "Created temporary bypass policy: $(jq -r '.result.id' <<<"$resp") at precedence $next_precedence"
+            resp="$(curl -sS -X POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' --data "$body" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
+            test "$(jq -r '.success' <<<"$resp")" = "true" || { jq . <<<"$resp"; exit 1; }
+            echo "Created temporary bypass policy: $(jq -r '.result.id' <<<"$resp")"
           fi
 
-      - name: Verify Access no longer redirects to login
+      - name: Verify bypass
         if: env.MODE == 'BYPASS'
         shell: bash
         run: |
@@ -83,11 +79,10 @@ jobs:
           curl -sS -D /tmp/headers -o /tmp/body --max-time 25 "$url"
           if grep -qi '^location: .*cloudflareaccess\.com' /tmp/headers; then
             echo 'Still redirected to Cloudflare Access login' >&2
-            cat /tmp/headers >&2
             exit 1
           fi
-          grep -q '貼文中心' /tmp/body || { echo 'Publishing page did not load expected content' >&2; head -c 1200 /tmp/body >&2; exit 1; }
-          echo 'PASS temporary Cloudflare Access bypass is active.'
+          grep -q '貼文中心' /tmp/body
+          echo 'PASS Cloudflare Access bypass is active.'
 
       - name: Restore Access protection
         if: env.MODE == 'RESTORE'
@@ -95,18 +90,11 @@ jobs:
         run: |
           set -euo pipefail
           app_id='${{ steps.app.outputs.app_id }}'
-          policies="$(curl -fsS \
-            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-            -H 'Content-Type: application/json' \
-            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
+          policies="$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
           mapfile -t ids < <(jq -r --arg n "$TEMP_POLICY_NAME" '.result[] | select(.name == $n) | .id' <<<"$policies")
           for id in "${ids[@]}"; do
-            resp="$(curl -sS -X DELETE \
-              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-              -H 'Content-Type: application/json' \
-              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies/$id")"
-            ok="$(jq -r '.success' <<<"$resp")"
-            test "$ok" = "true" || { jq . <<<"$resp"; exit 1; }
+            resp="$(curl -sS -X DELETE -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies/$id")"
+            test "$(jq -r '.success' <<<"$resp")" = "true" || { jq . <<<"$resp"; exit 1; }
             echo "Removed temporary bypass policy: $id"
           done
-          echo 'Restore request completed.'
+          echo 'Cloudflare Access outer protection restore request completed.'
