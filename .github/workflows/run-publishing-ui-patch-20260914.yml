@@ -21,21 +21,17 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          block = """  if(String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true'){
-            if(!env?.DB)throw new Error('D1 資料庫尚未綁定');
-            const profile=await env.DB.prepare(\"SELECT email,display_name,role,active FROM profiles WHERE active=1 ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END, email LIMIT 1\").first();
-            if(!profile)throw new Error('維護模式找不到可用內部帳號');
-            return profile;
-          }
-          """
-          block = ''.join(line[10:] if line.startswith('          ') else line for line in block.splitlines(True))
+          import re
+          pattern = re.compile(r"  if\(String\(env\.TEMP_DISABLE_ACCESS\|\|''\)\.toLowerCase\(\)==='true'\)\{\n.*?    return profile;\n  \}\n", re.S)
           for filename in ('src/publishing-only-entry.js','src/production-entry.js','src/worker.js'):
               path=Path(filename)
               text=path.read_text()
-              count=text.count(block)
+              updated,count=pattern.subn('',text,count=1)
               if count != 1:
                   raise SystemExit(f'{filename}: expected one broad maintenance bypass block, found {count}')
-              path.write_text(text.replace(block,'',1))
+              if '維護模式找不到可用內部帳號' in updated:
+                  raise SystemExit(f'{filename}: broad maintenance marker still exists')
+              path.write_text(updated)
           print('Removed broad child bypass from 3 auth layers.')
       - name: Validate source
         run: |
