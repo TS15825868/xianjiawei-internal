@@ -1,8 +1,9 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp from './production-entry.js';
+import {publisherConfiguration} from './social-publisher.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
 
-const VERSION='2026-09-13-full-system-entry-v4-unified-home';
+const VERSION='2026-09-14-full-system-entry-v5-maintenance-readonly';
 const HOME_PATH='/index.html';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
@@ -11,14 +12,117 @@ const SOCIAL_FIXED_FREQUENCY='每週 3 篇（週一／週三／週五 09:00，As
 const SOCIAL_FIRST_PUBLISH_AT='2026-09-04T09:00:00+08:00';
 const SOCIAL_POLICY_VERSION='2026-09-03-social-publishing-v2-morning';
 const HEADERS={'cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-full-system':VERSION};
+const POST_STATUSES=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed']);
 
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{...HEADERS,'content-type':'application/json; charset=utf-8'}})}
+function clean(value=''){return String(value??'').trim()}
+function int(value,fallback=0){const n=Number(value);return Number.isFinite(n)?Math.trunc(n):fallback}
 function isHomeUi(path){return path==='/'||path===HOME_PATH}
 function isErpUi(path){return path==='/erp'||path==='/erp/'||path===ERP_PATH}
 function isPublishingUi(path){return path==='/publishing'||path==='/publishing/'||path===PUBLISHING_PATH}
 function isFullErpApi(path){
   return path==='/api/overview'||path==='/api/settings'||path==='/api/brand-content'||
     path==='/api/assets'||path.startsWith('/api/modules/')||path.startsWith('/media/');
+}
+function maintenanceNoLogin(env){return String(env?.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true'}
+function maintenanceProfile(){
+  return{
+    email:'maintenance-readonly@xianjiawei.local',
+    display_name:'系統整理模式（唯讀）',
+    role:'viewer',
+    role_label:'僅檢視',
+    active:1,
+    maintenance_readonly:true,
+    maintenance_no_login:true,
+    version:VERSION
+  };
+}
+function mapMaintenancePost(row){
+  let platforms=[];try{platforms=JSON.parse(row.platforms_json||'[]')}catch{}
+  return{
+    id:row.id,
+    title:row.title||'',
+    headline:row.headline||'',
+    copy:row.copy||'',
+    category:row.category||'日常節奏',
+    platforms,
+    status:row.status||'draft',
+    scheduled_at:row.scheduled_at||'',
+    proposed_scheduled_at:row.proposed_scheduled_at||'',
+    approved_by:row.approved_by||'',
+    approved_at:row.approved_at||'',
+    published_at:row.published_at||'',
+    image_url:row.image_url||'',
+    image_alt:row.image_alt||'',
+    image_source:row.image_source||'官方素材',
+    image_approved:Number(row.image_approved||0)===1,
+    image_width:int(row.image_width),
+    image_height:int(row.image_height),
+    image_bytes:int(row.image_bytes),
+    image_quality_status:row.image_quality_status||'unknown',
+    created_by:row.created_by||'',
+    created_at:row.created_at||'',
+    updated_at:row.updated_at||'',
+    owner_review_required:!['published','archived'].includes(row.status),
+    auto_approve:false,
+    auto_schedule:false,
+    auto_publish:false,
+    line_voom_manual_only:true,
+    maintenance_readonly:true
+  };
+}
+async function maintenancePosts(request,env){
+  if(!env?.DB)return json({error:'D1 資料庫尚未綁定',maintenance_readonly:true},503);
+  const url=new URL(request.url);
+  const limit=Math.min(60,Math.max(1,int(url.searchParams.get('limit'),18)));
+  const offset=Math.max(0,int(url.searchParams.get('offset'),0));
+  const status=clean(url.searchParams.get('status'));
+  const q=clean(url.searchParams.get('q')).slice(0,100);
+  const where=["status<>'archived'"];
+  const binds=[];
+  if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status)}
+  if(q){
+    where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');
+    const like=`%${q}%`;binds.push(like,like,like,like,like);
+  }
+  const clause=where.join(' AND ');
+  const fields='id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status';
+  const [rows,totalRow,grouped]=await Promise.all([
+    env.DB.prepare(`SELECT ${fields} FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC,id DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all(),
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds).first(),
+    env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status").all()
+  ]);
+  const counts={draft:0,pending_review:0,approved:0,scheduled:0,published:0,manual_required:0,failed:0};
+  for(const row of grouped.results||[])counts[row.status]=Number(row.count||0);
+  return json({
+    items:(rows.results||[]).map(mapMaintenancePost),
+    total:Number(totalRow?.count||0),limit,offset,counts,query:q,
+    status:POST_STATUSES.has(status)?status:'all',
+    maintenance_readonly:true,
+    maintenance_no_login:true,
+    version:VERSION
+  });
+}
+async function maintenancePostById(env,id){
+  if(!env?.DB)return json({error:'D1 資料庫尚未綁定',maintenance_readonly:true},503);
+  const row=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status<>'archived' LIMIT 1").bind(id).first();
+  return row?json(mapMaintenancePost(row)):json({error:'找不到可檢視的貼文',maintenance_readonly:true},404);
+}
+async function maintenanceDeliveries(env,id){
+  if(!env?.DB)return json({error:'D1 資料庫尚未綁定',maintenance_readonly:true},503);
+  const post=await env.DB.prepare("SELECT id FROM social_posts WHERE id=? AND status<>'archived' LIMIT 1").bind(id).first();
+  if(!post)return json({error:'找不到可檢視的貼文',maintenance_readonly:true},404);
+  const rows=await env.DB.prepare('SELECT platform,status,attempt_count,last_attempt_at,published_at,remote_id,error_text,updated_at FROM social_publish_deliveries WHERE post_id=? ORDER BY platform').bind(id).all();
+  return json({post_id:id,platforms:(rows.results||[]),maintenance_readonly:true,maintenance_no_login:true});
+}
+function maintenanceLocked(path,{privateRead=false}={}){
+  return json({
+    error:privateRead?'系統整理期間已暫時關閉登入；ERP／客戶／財務等內部資料不對外開放。':'系統整理期間目前為免登入唯讀模式；新增、修改、審核、排程與發布暫時鎖定。',
+    code:privateRead?'XJW_MAINTENANCE_PRIVATE_READ_LOCKED':'XJW_MAINTENANCE_READ_ONLY',
+    path,
+    maintenance_readonly:true,
+    maintenance_no_login:true
+  },423);
 }
 function publicFirstPost(result){
   const post=result?.post||{};
@@ -89,14 +193,26 @@ async function firstPostHealth(request,env,ctx){
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
-    const maintenanceNoLogin=String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true';
-    if(maintenanceNoLogin&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/')){
-      return json({error:'系統整理期間目前為免登入唯讀模式；新增、修改、審核、排程與發布暫時鎖定。',code:'XJW_MAINTENANCE_READ_ONLY',maintenanceNoLogin:true},423);
-    }
+    const maintenance=maintenanceNoLogin(env);
+
+    if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+
     if(request.method==='GET'&&path==='/healthz/social-first-post')return firstPostHealth(request,env,ctx);
     if(request.method==='GET'&&isHomeUi(path))return serveAsset(request,env,HOME_PATH);
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
     if(request.method==='GET'&&isPublishingUi(path))return serveAsset(request,env,PUBLISHING_PATH);
+
+    if(maintenance&&request.method==='GET'){
+      if(path==='/api/me')return json(maintenanceProfile());
+      if(path==='/api/posts')return maintenancePosts(request,env);
+      if(path==='/api/platform-authorization')return json({...publisherConfiguration(env),maintenance_readonly:true,maintenance_no_login:true,version:VERSION});
+      const deliveryMatch=path.match(/^\/api\/posts\/([^/]+)\/deliveries$/);
+      if(deliveryMatch)return maintenanceDeliveries(env,decodeURIComponent(deliveryMatch[1]));
+      const postMatch=path.match(/^\/api\/posts\/([^/]+)$/);
+      if(postMatch)return maintenancePostById(env,decodeURIComponent(postMatch[1]));
+      if(path==='/api/settings'||path==='/api/overview'||path==='/api/brand-content'||path==='/api/assets'||path.startsWith('/api/modules/'))return maintenanceLocked(path,{privateRead:true});
+      if(path.startsWith('/api/'))return maintenanceLocked(path,{privateRead:true});
+    }
 
     // The current social schedule shown in ERP must always come from the latest formal policy.
     if(request.method==='GET'&&path==='/api/settings')return currentSettings(request,env,ctx);
@@ -127,7 +243,9 @@ export default{
           socialSchedulePolicy:SOCIAL_SCHEDULE_POLICY,
           socialPolicyVersion:SOCIAL_POLICY_VERSION,
           socialFirstPublishAt:SOCIAL_FIRST_PUBLISH_AT,
-          firstPost:publicFirstPost(firstPost)
+          firstPost:publicFirstPost(firstPost),
+          maintenanceNoLogin:maintenance,
+          maintenanceReadOnly:maintenance
         },response.status);
       }catch{return response}
     }
