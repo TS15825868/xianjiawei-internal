@@ -40,10 +40,18 @@ jobs:
           npm run check
           npm run guard:full
           npm run build:static
-          grep -q 'publishing-center-app-20260914-v12-no-containment' dist/publishing.html
+          grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' dist/publishing.html
+          grep -Eq "window\.__XJW_BOOT_VERSION__='[^']+'" dist/publishing.html
           grep -q 'publishing-app.css?v=20260914-no-containment-v4' dist/publishing.html
-          grep -q '20260914-maintenance-smooth-v9' dist/publishing.html
-          grep -q '20260914-audit-debounce-v4' dist/publishing.html
+          grep -Eq 'publishing-app-v2\.js\?v=[^"[:space:]]+' dist/publishing.html
+          grep -Eq 'publishing-review-gate\.js\?v=[^"[:space:]]+' dist/publishing.html
+          grep -q "'/assets/js/publishing-readiness-ui.js?v=" dist/publishing.html
+          grep -q 'scheduleOptionalTools' dist/publishing.html
+          ! grep -q '<script src="/assets/js/publishing-readiness-ui.js' dist/publishing.html
+          test -s dist/assets/js/publishing-readiness-ui.js
+          grep -q 'livePlatformSummary' dist/assets/js/publishing-readiness-ui.js
+          grep -q 'platformSummaryObserver' dist/assets/js/publishing-readiness-ui.js
+          grep -q 'platformProbeError' dist/assets/js/publishing-readiness-ui.js
           grep -q '週一／週三／週五 09:00' dist/assets/js/publishing-app-v2.js
           grep -q '\[1,3,5\]' dist/assets/js/publishing-app-v2.js
           if grep -R -n -E '週二19:30|週六09:30|\[2,6\]' assets/js src publishing.html; then
@@ -54,9 +62,10 @@ jobs:
             echo '發現已退役 Safari 卡片虛擬化規則' >&2
             exit 1
           fi
+          grep -q 'content-visibility:visible!important' dist/assets/css/publishing-performance.css
           grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
           grep -q 'XJW_MAINTENANCE_PRIVATE_READ_LOCKED' src/full-system-entry.js
-          echo 'PASS static current-authority verification.'
+          echo 'PASS static current-authority verification without stale version locks.'
 
       - name: Verify remote D1 integrity without fixed record counts
         shell: bash
@@ -92,11 +101,20 @@ jobs:
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           echo "maintenance=$maintenance"
           html="$(curl -fsS --max-time 25 "$BASE_URL/publishing.html")"
-          grep -q 'publishing-center-app-20260914-v12-no-containment' <<<"$html"
+          grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' <<<"$html"
+          grep -q "'/assets/js/publishing-readiness-ui.js?v=" <<<"$html"
           if [ "$maintenance" = 'true' ]; then
             curl -fsS --max-time 25 "$BASE_URL/api/me" > live-me.json
             curl -fsS --max-time 25 "$BASE_URL/api/posts?limit=18&offset=0" > live-posts.json
-            node -e "const me=require('./live-me.json'),posts=require('./live-posts.json');if(!me.maintenance_readonly||me.role!=='viewer')throw new Error('維護模式 /api/me 不是唯讀viewer');if(!posts.maintenance_readonly||!Array.isArray(posts.items))throw new Error('維護模式 /api/posts 未提供安全唯讀清單');console.log('PASS maintenance public read surface',posts.items.length,posts.total)"
+            curl -fsS --max-time 25 "$BASE_URL/healthz/platform-connections" > live-platform-connections.json
+            node - <<'NODE'
+            const me=require('./live-me.json'),posts=require('./live-posts.json'),platform=require('./live-platform-connections.json');
+            if(!me.maintenance_readonly||me.role!=='viewer')throw new Error('維護模式 /api/me 不是唯讀viewer');
+            if(!posts.maintenance_readonly||!Array.isArray(posts.items))throw new Error('維護模式 /api/posts 未提供安全唯讀清單');
+            if(platform.safe_read_only!==true||platform.publishes_content!==false)throw new Error('平台連線健康端點不是安全唯讀');
+            if((platform.blocking_platforms||[]).length)throw new Error(`平台存在阻斷性故障：${platform.blocking_platforms.join(',')}`);
+            console.log('PASS maintenance public read surface',posts.items.length,posts.total,platform.degraded_platforms||[],platform.unconfigured_platforms||[]);
+            NODE
             private_code="$(curl -sS --max-time 25 -o live-private.json -w '%{http_code}' "$BASE_URL/api/modules/customers")"
             test "$private_code" = '423'
             node -e "const x=require('./live-private.json');if(x.code!=='XJW_MAINTENANCE_PRIVATE_READ_LOCKED')process.exit(1)"
