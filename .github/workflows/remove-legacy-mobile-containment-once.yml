@@ -1,0 +1,67 @@
+name: 仙加味貼文中心移除舊Safari虛擬化
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-legacy-mobile-containment-once.yml'
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Remove legacy mobile containment and bust cache
+        shell: python
+        run: |
+          from pathlib import Path
+          css=Path('assets/css/publishing-app.css')
+          s=css.read_text()
+          old='.publish-card{content-visibility:auto;contain:layout paint style;contain-intrinsic-size:620px}'
+          if s.count(old)!=1:
+              raise SystemExit('legacy 620px containment marker mismatch')
+          s=s.replace(old,'',1)
+          old2='.publish-card{contain-intrinsic-size:560px}'
+          if s.count(old2)!=1:
+              raise SystemExit('legacy 560px containment marker mismatch')
+          s=s.replace(old2,'',1)
+          css.write_text(s)
+
+          html=Path('publishing.html')
+          h=html.read_text()
+          h=h.replace('publishing-center-app-20260914-v11-maintenance-smooth','publishing-center-app-20260914-v12-no-containment',1)
+          oldq='/assets/css/publishing-app.css?v=20260815-app-v3-safe-area'
+          newq='/assets/css/publishing-app.css?v=20260914-no-containment-v4'
+          if h.count(oldq)!=1:
+              raise SystemExit('publishing-app css query marker mismatch')
+          h=h.replace(oldq,newq,1)
+          html.write_text(h)
+      - name: Validate source
+        run: |
+          node --check assets/js/publishing-app-v2.js
+          grep -q 'publishing-app.css?v=20260914-no-containment-v4' publishing.html
+          grep -q 'publishing-center-app-20260914-v12-no-containment' publishing.html
+          if grep -q 'content-visibility:auto\|contain:layout paint style\|contain-intrinsic-size:620px\|contain-intrinsic-size:560px' assets/css/publishing-app.css; then
+            echo 'Legacy mobile containment still exists' >&2
+            exit 1
+          fi
+          if grep -R -n -E '週二19:30|週六09:30|\[2,6\]' assets/js src publishing.html; then
+            echo 'Outdated formal schedule reference still exists in deployable publishing code' >&2
+            exit 1
+          fi
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm run check
+          npm run guard:full
+      - name: Commit repair
+        run: |
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add assets/css/publishing-app.css publishing.html
+          git commit -m 'perf: remove legacy Safari card containment at source'
+          git push origin HEAD:main
