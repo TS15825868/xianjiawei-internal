@@ -12,6 +12,7 @@ req(Array.isArray(bank.topics) && bank.topics.length >= 50, '正式題庫不足5
 req(bank.rules?.publishingSequencePolicy?.mode === 'mixed_dynamic_pool', '未啟用混合動態發布池');
 req(bank.rules?.publishingSequencePolicy?.avoidBackToBackSameCategory === true, '未禁止同類內容連續發布');
 req(bank.rules?.publishingSequencePolicy?.avoidBackToBackSameProduct === true, '未禁止同產品連續發布');
+req(bank.rules?.publishingSequencePolicy?.reorderBeforeScheduling === true, '正式排程前必須重新穿插題材');
 req(Number(bank.rules?.publishingSequencePolicy?.minimumGapForSimilarAngle || 0) >= 6, '相似角度間隔不足');
 req(bank.rules?.weatherPolicy?.mode === 'dynamic_override', '未啟用突發天氣覆寫規則');
 req(text(bank.rules?.weatherPolicy?.area).includes('萬華'), '天氣規則未對應萬華');
@@ -58,10 +59,14 @@ const mixedOrder = bank.defaultMixedOrder || [];
 req(Array.isArray(mixedOrder) && mixedOrder.length >= 35, '預設混合母序不足35題');
 req(new Set(mixedOrder).size === mixedOrder.length, '預設混合母序有重複ID');
 for (const id of mixedOrder) req(ids.has(id), `預設混合母序引用不存在題目 ${id}`);
-for (let i = 1; i < mixedOrder.length; i += 1) {
-  const a = bank.topics.find(t => t.id === mixedOrder[i - 1]);
-  const b = bank.topics.find(t => t.id === mixedOrder[i]);
-  if (a && b && a.category === b.category) errors.push(`混合母序仍有同類連發：${a.id} → ${b.id} (${a.category})`);
+// 這是內容母池，不是硬排程。正式排程前仍依 policy 再打散；守門只禁止三篇以上形成系列區塊。
+for (let i = 2; i < mixedOrder.length; i += 1) {
+  const a = bank.topics.find(t => t.id === mixedOrder[i - 2]);
+  const b = bank.topics.find(t => t.id === mixedOrder[i - 1]);
+  const c = bank.topics.find(t => t.id === mixedOrder[i]);
+  if (a && b && c && a.category === b.category && b.category === c.category) {
+    errors.push(`混合母池形成三篇同類系列區塊：${a.id} → ${b.id} → ${c.id} (${a.category})`);
+  }
 }
 
 for (const [windowName, list] of Object.entries(bank.seasonalInsertions || {})) {
