@@ -2,6 +2,8 @@ name: 仙加味貼文中心平台授權現行就緒檢查
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: read
@@ -28,7 +30,10 @@ jobs:
           grep -q 'META_PAGE_ACCESS_TOKEN' src/social-publisher.js
           grep -q 'LINE_CHANNEL_ACCESS_TOKEN' src/social-publisher.js
           grep -q 'GOOGLE_OAUTH_REFRESH_TOKEN' src/social-publisher.js
-          echo 'PASS current social publisher capabilities present.'
+          grep -q "platformConnectionProbePath:'/healthz/platform-connections'" src/full-system-entry.js
+          test -f src/platform-connection-probe.js
+          grep -q 'publishes_content:false' src/platform-connection-probe.js
+          echo 'PASS current social publisher capabilities and safe connection probe present.'
       - name: Require Cloudflare audit credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
@@ -71,4 +76,28 @@ jobs:
           const x=require('/tmp/live-platform.json');
           if(!x.maintenance_readonly) throw new Error('整理模式平台metadata未標示唯讀');
           console.log('PASS live platform authorization metadata is read-only.');
+          NODE
+      - name: Probe live provider credentials without publishing content
+        shell: bash
+        run: |
+          set -euo pipefail
+          maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
+          if [ "$maintenance" != 'true' ]; then
+            echo 'Access已恢復；沒有設定自動化 Service Token 前，不繞過 Access 執行公開探測。'
+            exit 0
+          fi
+          curl -fsS --max-time 35 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json
+          node - <<'NODE'
+          const x=require('/tmp/platform-connections.json');
+          if(x.safe_read_only!==true) throw new Error('平台連線探測不是唯讀模式');
+          if(x.publishes_content!==false) throw new Error('平台連線探測不得發布內容');
+          const p=x.platforms||{};
+          const names=['Facebook','Instagram','LINE OA','Google 商家'];
+          for(const name of names){
+            const item=p[name]||{};
+            console.log(`${name}: mode=${item.mode||'unknown'} direct=${Boolean(item.directConfigured)} webhook=${Boolean(item.webhookConfigured)} connected=${String(item.connected)} status=${item.status||'unknown'}`);
+            if(item.directConfigured&&item.connected!==true)throw new Error(`${name} 官方 API 已設定但唯讀連線驗證失敗：${item.status||'unknown'}`);
+          }
+          if(p['LINE VOOM']?.manualRequired!==true)throw new Error('LINE VOOM 必須維持人工發布');
+          console.log('PASS live provider credential probe completed without publishing content.');
           NODE
