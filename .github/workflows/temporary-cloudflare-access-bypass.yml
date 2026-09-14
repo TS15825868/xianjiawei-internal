@@ -59,7 +59,9 @@ jobs:
           if [ -n "$existing" ]; then
             echo "Temporary bypass policy already exists: $existing"
           else
-            body="$(jq -nc --arg n "$TEMP_POLICY_NAME" '{name:$n,decision:"bypass",precedence:1,include:[{everyone:{}}]}')"
+            max_precedence="$(jq -r '[.result[].precedence // 0] | max // 0' <<<"$policies")"
+            next_precedence="$((max_precedence + 1))"
+            body="$(jq -nc --arg n "$TEMP_POLICY_NAME" --argjson p "$next_precedence" '{name:$n,decision:"bypass",precedence:$p,include:[{everyone:{}}]}')"
             resp="$(curl -sS \
               -X POST \
               -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -68,7 +70,7 @@ jobs:
               "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/access/apps/$app_id/policies")"
             ok="$(jq -r '.success' <<<"$resp")"
             test "$ok" = "true" || { jq . <<<"$resp"; exit 1; }
-            echo "Created temporary bypass policy: $(jq -r '.result.id' <<<"$resp")"
+            echo "Created temporary bypass policy: $(jq -r '.result.id' <<<"$resp") at precedence $next_precedence"
           fi
 
       - name: Verify Access no longer redirects to login
