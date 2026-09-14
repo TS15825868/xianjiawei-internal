@@ -1,8 +1,9 @@
 import { publisherConfiguration } from './social-publisher.js';
+import { probePublisherConnections } from './platform-connection-probe.js';
 
-const VERSION='2026-08-09-system-readiness-v3-shared-fast-login';
+const VERSION='2026-09-14-system-readiness-v4-unified-platform-probe';
 const CORE_TIMEOUT_MS=3500;
-const PLATFORM_TIMEOUT_MS=5500;
+const PLATFORM_TIMEOUT_MS=12000;
 const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
 
@@ -56,69 +57,71 @@ async function sharedLogin(loginCheck){
   },5000);
 }
 
-async function fetchProbe(url,options={},timeoutMs=PLATFORM_TIMEOUT_MS){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),timeoutMs);
-  try{
-    const response=await fetch(url,{...options,signal:controller.signal});
-    const text=await response.text();
-    let data={};try{data=text?JSON.parse(text):{}}catch{}
-    if(!response.ok)throw new Error(data?.error?.message||data?.message||data?.error_description||`HTTP ${response.status}`);
-    return{status:response.status,data};
-  }finally{clearTimeout(timer)}
-}
-
-async function configuredProbe(name,work){
-  const result=await timed(name,work,PLATFORM_TIMEOUT_MS);
-  return{...result,configured:true,mode:'official_api'};
-}
-async function probeLine(env){
-  const token=clean(env?.LINE_CHANNEL_ACCESS_TOKEN);
-  if(!token)return{ok:false,mode:'manual',configured:false,reason:'LINE_CHANNEL_ACCESS_TOKEN 未設定'};
-  return configuredProbe('LINE OA API',async()=>{await fetchProbe('https://api.line.me/v2/bot/info',{headers:{authorization:`Bearer ${token}`}});return{reachable:true}});
-}
-async function probeFacebook(env){
-  const page=clean(env?.META_PAGE_ID),token=clean(env?.META_PAGE_ACCESS_TOKEN),version=clean(env?.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');
-  if(!page||!token)return{ok:false,mode:'manual',configured:false,reason:'Facebook Page ID／Access Token 未設定完整'};
-  return configuredProbe('Facebook API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(page)}?fields=id,name&access_token=${encodeURIComponent(token)}`);return{reachable:true}});
-}
-async function probeInstagram(env){
-  const user=clean(env?.META_INSTAGRAM_USER_ID),token=clean(env?.META_PAGE_ACCESS_TOKEN),version=clean(env?.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');
-  if(!user||!token)return{ok:false,mode:'manual',configured:false,reason:'Instagram User ID／Access Token 未設定完整'};
-  return configuredProbe('Instagram API',async()=>{await fetchProbe(`https://graph.facebook.com/${version}/${encodeURIComponent(user)}?fields=id,username&access_token=${encodeURIComponent(token)}`);return{reachable:true}});
-}
-async function probeGoogle(env){
-  const names=['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'];
-  const missing=names.filter(name=>!clean(env?.[name]));
-  if(missing.length)return{ok:false,mode:'manual',configured:false,reason:`Google 商家設定未完成：${missing.join('、')}`};
-  return configuredProbe('Google 商家 API',async()=>{
-    const response=await fetchProbe('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:clean(env.GOOGLE_OAUTH_CLIENT_ID),client_secret:clean(env.GOOGLE_OAUTH_CLIENT_SECRET),refresh_token:clean(env.GOOGLE_OAUTH_REFRESH_TOKEN),grant_type:'refresh_token'})});
-    if(!clean(response?.data?.access_token))throw new Error('Google OAuth 未回傳 access token');
-    return{reachable:true};
-  });
+function readinessPlatformItem(name,item={}){
+  const manual=name==='LINE VOOM'||item.manualRequired===true||item.mode==='manual';
+  const configured=manual||item.directConfigured===true||item.webhookConfigured===true;
+  let reason='';
+  if(manual)reason='依正式規則採人工發布';
+  else if(item.degraded)reason='官方 API 目前未通過唯讀連線驗證，既有 Webhook 備援可用';
+  else if(item.unconfigured)reason='尚未設定正式發布連線';
+  else if(item.blockingFailure)reason='已設定的正式發布連線目前不可用，且沒有可用備援';
+  return{
+    ...item,
+    ok:manual?true:item.operational===true,
+    name,
+    configured,
+    mode:manual?'manual':item.mode||'unconfigured',
+    reason:reason||item.status||'',
+  };
 }
 
 export async function probePlatforms(env){
   const declared=publisherConfiguration(env);
-  const [facebook,instagram,line,google]=await Promise.all([probeFacebook(env),probeInstagram(env),probeLine(env),probeGoogle(env)]);
+  const probe=await timed('社群平台連線',()=>probePublisherConnections(env),PLATFORM_TIMEOUT_MS);
+  if(!probe.ok){
+    return{
+      checkedAt:now(),
+      declared,
+      safe_read_only:true,
+      publishes_content:false,
+      platforms:{},
+      probeError:probe.error||'社群平台連線檢查失敗',
+      blockingPlatformFailures:[]
+    };
+  }
+  const source=probe.platforms||{};
+  const platforms={};
+  for(const name of ['Facebook','Instagram','LINE OA','LINE VOOM','Google 商家']){
+    platforms[name]=readinessPlatformItem(name,source[name]||{});
+  }
   return{
-    checkedAt:now(),
+    checkedAt:probe.checked_at||now(),
     declared,
-    platforms:{
-      Facebook:facebook,
-      Instagram:instagram,
-      'LINE OA':line,
-      'LINE VOOM':{ok:true,mode:'manual',configured:true,reason:'LINE VOOM 依正式規則採人工發布'},
-      'Google 商家':google,
-    }
+    safe_read_only:probe.safe_read_only===true,
+    publishes_content:probe.publishes_content===false?false:null,
+    directCredentialsValid:probe.direct_credentials_valid===true,
+    allAutomaticChannelsConfigured:probe.all_automatic_channels_configured===true,
+    allConfiguredChannelsOperational:probe.all_configured_channels_operational===true,
+    operationalPlatforms:probe.operational_platforms||[],
+    degradedPlatforms:probe.degraded_platforms||[],
+    unconfiguredPlatforms:probe.unconfigured_platforms||[],
+    blockingPlatforms:probe.blocking_platforms||[],
+    platforms
   };
 }
 
 export function blockingPlatformFailures(probe){
+  const explicit=Array.isArray(probe?.blockingPlatforms)?probe.blockingPlatforms:[];
+  if(explicit.length){
+    return explicit.map(name=>({
+      platform:name,
+      error:probe?.platforms?.[name]?.reason||probe?.platforms?.[name]?.status||'已設定平台目前沒有可用正式發布路徑'
+    }));
+  }
   const out=[];
   for(const [name,item] of Object.entries(probe?.platforms||{})){
     if(item?.mode==='manual'||item?.configured===false)continue;
-    if(item?.configured===true&&item?.ok!==true)out.push({platform:name,error:item.error||item.reason||'API健康檢查未通過'});
+    if(item?.blockingFailure===true)out.push({platform:name,error:item.reason||item.status||'已設定平台目前沒有可用正式發布路徑'});
   }
   return out;
 }
