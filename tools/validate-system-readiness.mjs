@@ -10,6 +10,7 @@ const production=read('src/production-entry.js');
 const publishingOnly=read('src/publishing-only-entry.js');
 const contentAudit=read('src/publishing-content-audit-entry.js');
 const readiness=read('src/system-readiness.js');
+const platformProbe=read('src/platform-connection-probe.js');
 const review=read('src/publishing-review-gate-entry.js');
 const flexible=read('src/flexible-publish-entry.js');
 const wrangler=read('wrangler.jsonc');
@@ -30,6 +31,7 @@ for(const token of ["from './publishing-content-audit-entry.js'","from './produc
 }
 must(fullSystem.includes("if(isFullErpApi(path))return productionApp.fetch(request,env,ctx)"),'完整ERP API必須直接沿用production安全鏈');
 must(fullSystem.includes('const response=await publishingApp.fetch(request,env,ctx)'),'貼文／審核／重生成流程必須沿用內容語意守門鏈');
+must(fullSystem.includes("from './platform-connection-probe.js'")&&fullSystem.includes("path==='/healthz/platform-connections'"),'完整系統入口必須保留唯讀社群平台連線健康端點');
 
 // Publishing content audit still wraps the historical publishing-only boundary, which itself wraps production.
 must(contentAudit.includes("from './publishing-only-entry.js'"),'內容語意守門必須沿用publishing-only正式安全鏈');
@@ -46,8 +48,10 @@ must(wrangler.includes('xianjiawei-internal-db'),'Wrangler 必須保留正式 D1
 for(const token of ["path==='/healthz/core'","path==='/healthz/readiness'",'runReadiness(request,env,ctx,app','mutationCoreGate(env)','MUTATING_METHODS.has(request.method)','const d1=await checkD1(env)','platformPublishGate(env)','loginCheck:()=>verifyFastAccess(request,env)','readinessUsesSharedFastAccess:true'])must(production.includes(token),`production安全鏈缺少：${token}`);
 must(production.includes('D1未就緒，本輪不發布'),'排程器沒有在D1故障時自動停發');
 must(production.includes('平台安全模式：已設定平台API健康檢查未通過，本輪不發布'),'排程發布前沒有平台API健康守門');
-for(const token of ['checkD1','checkAccessConfig','checkCurrentLogin','sharedLogin','probeFacebook','probeInstagram','probeLine','probeGoogle','publisherConfiguration','blockingPlatformFailures'])must(readiness.includes(token),`system-readiness缺少診斷：${token}`);
+for(const token of ['checkD1','checkAccessConfig','checkCurrentLogin','sharedLogin','probePublisherConnections','publisherConfiguration','blockingPlatformFailures','degradedPlatforms','unconfiguredPlatforms'])must(readiness.includes(token),`system-readiness缺少統一診斷：${token}`);
 must(readiness.includes('SELECT 1 AS ok'),'D1 readiness沒有使用非破壞性查詢');
+for(const token of ['safe_read_only:true','publishes_content:false','Facebook','Instagram','LINE OA','LINE VOOM','Google 商家','operational','degraded','blockingFailure'])must(platformProbe.includes(token),`平台唯讀連線探測缺少：${token}`);
+must(!/message\/broadcast|\/photos|media_publish|localPosts/.test(platformProbe),'平台健康探測不得包含任何正式發布端點');
 
 // Review, regeneration and flexible publishing guards.
 for(const token of ['copyImageMatchHardGate','draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationStartEndpoint','regenerationReadyEndpoint','regenerationReturnsToPendingReview'])must(review.includes(token),`審核入口缺少正式能力：${token}`);
@@ -81,12 +85,12 @@ must(/window\.__XJW_BOOT_VERSION__=['\"][^'\"]+['\"]/.test(publishingHtml),'publ
 must(!publishingHtml.includes('<script src="/assets/js/publishing-readiness-ui.js'),'iPhone首屏不得啟動週期性readiness檢查');
 must(!publishingHtml.includes('<script src="/assets/js/post-bank-sync.js'),'iPhone首屏不得啟動母庫同步工具');
 must(publishingHtml.includes('XJWLoadOptionalScript')&&publishingHtml.includes('device-image-upload.js')&&publishingHtml.includes('post-regenerate-policy-v1.js'),'非核心操作工具必須延後載入');
-for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness'])must(ui.includes(token),`備用publishing-readiness-ui缺少安全模式／平台發布鎖契約：${token}`);
+for(const token of ['publishingSafeMode','publishingPublishReady','MUTATION_SELECTOR','PUBLISH_SELECTOR','publishReady','platformChecked','/healthz/core','/healthz/readiness','xjw-publishing-readiness','degraded','unconfigured','Webhook 備援'])must(ui.includes(token),`備用publishing-readiness-ui缺少安全模式／平台發布鎖／備援狀態契約：${token}`);
 must(resilience.includes('localStorage')&&resilience.includes('快取模式')&&resilience.includes('pageshow'),'iPhone/Safari恢復模組能力不足');
 must(resilience.includes('xjwOfflineWasDisabled')&&resilience.includes('else setReadOnly(false)'),'iPhone重新連線後必須解除快取模式造成的操作鎖，且不可誤開原本就應停用的按鈕');
 
 // Build package must contain both ERP and publishing assets under the current architecture.
-for(const token of ['src/full-system-entry.js','src/publishing-content-audit-entry.js','src/publishing-only-entry.js','erp.html','assets/css/internal-app.css','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/css/publishing-base.css','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少目前正式檔：${token}`);
+for(const token of ['src/full-system-entry.js','src/platform-connection-probe.js','src/publishing-content-audit-entry.js','src/publishing-only-entry.js','erp.html','assets/css/internal-app.css','assets/js/internal-app.js','assets/js/erp-publishing-separation.js','assets/css/publishing-base.css','assets/js/publishing-app-v2.js','latest-user-post-zip.json','manifest.webmanifest'])must(pkg.includes(token),`package check/build缺少目前正式檔：${token}`);
 must(!pkg.includes('cp assets/js/post-regenerate-v6.js'),'正式部署不得帶出已退役v6第二套重生成邏輯');
 
-console.log(`PASS：統一內部入口＋完整ERP營運中控＋獨立貼文中心架構已對齊目前main；iPhone重新連線可恢復操作，內容語意守門、Cloudflare Access、D1、16項審核、重複圖片、季節／天氣／情境檢查、排程／立即發布與媒體工具均保留。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
+console.log(`PASS：統一內部入口＋完整ERP營運中控＋獨立貼文中心架構已對齊目前main；iPhone重新連線可恢復操作，統一唯讀平台連線探測、內容語意守門、Cloudflare Access、D1、16項審核、重複圖片、季節／天氣／情境檢查、排程／立即發布與媒體工具均保留。最新ZIP：${latestZip.source}/${latestZip.candidate_count}張候選。`);
