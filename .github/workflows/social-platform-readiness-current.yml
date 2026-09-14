@@ -4,6 +4,14 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'src/social-publisher.js'
+      - 'src/platform-connection-probe.js'
+      - 'src/full-system-entry.js'
+      - 'wrangler.jsonc'
+      - '.github/workflows/social-platform-readiness-current.yml'
 
 permissions:
   contents: read
