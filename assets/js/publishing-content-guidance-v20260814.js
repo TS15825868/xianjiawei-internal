@@ -1,6 +1,9 @@
 (()=>{
-  const VERSION='20260814-content-guidance-v3-current-media';
-  const TOPIC_URL='/assets/data/guilu-content-topic-bank-v20260814.json?v='+VERSION;
+  const VERSION='20260914-content-guidance-v4-conversation';
+  const TOPIC_SOURCES=[
+    {url:'/assets/data/social-conversation-topic-bank-current.json?v='+VERSION,label:'輕鬆互動'},
+    {url:'/assets/data/guilu-content-topic-bank-v20260814.json?v='+VERSION,label:'龜鹿長青'}
+  ];
   const LEGACY_BRAND=['台興山產・仙加味','台興山產有限公司','台興山產'];
   const REJECTED=['不是每個人都一定需要'];
   const RISKY=['治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'];
@@ -33,7 +36,10 @@
     const box=guidanceBox(form),errors=scan(formText(form));
     if(!box)return errors;
     if(errors.length){box.textContent='文案檢查：'+errors.join('；');box.dataset.level='warning';}
-    else{box.textContent='文案方向正常：對外只使用仙加味；龜鹿主題以飲食文化、產品型態、生活情境、工序、料理與一般使用為主。';box.dataset.level='ok';}
+    else{
+      box.textContent='文案方向正常：可以用聊天、問答、生活觀察或知識分享；不必每篇硬塞產品或LINE OA，但整體要維持仙加味的現代漢方生活、飲食文化、料理、工藝與品牌世界。';
+      box.dataset.level='ok';
+    }
     return errors;
   }
   function bindForm(form){
@@ -68,20 +74,29 @@
       if(form.elements.title)form.elements.title.value=topic.title||'';
       if(form.elements.headline)form.elements.headline.value=topic.headline||'';
       if(form.elements.copy)form.elements.copy.value=topic.copy||'';
-      if(form.elements.category)form.elements.category.value=topic.category||'龜鹿入門';
+      if(form.elements.category)form.elements.category.value=topic.category||'生活聊天';
       if(media?.public_url&&form.elements.image_url)form.elements.image_url.value=media.public_url;
       if(form.elements.image_alt)form.elements.image_alt.value=media?.alt||topic.imageAlt||'';
       if(form.elements.image_source&&media?.source)form.elements.image_source.value=`${media.source}|題庫:${topic.id||''}`;
       updateGuidance(form);
       form.elements.title?.focus();
-      toast(media?.public_url?'已帶入龜鹿題目與目前正式圖片；儲存後先送待審核，再完成16項圖文審核。':'已帶入龜鹿題目；此題需依文案配對既有情境圖或重新生成後再送審。');
+      const videoFirst=Array.isArray(topic.formatPreference)&&topic.formatPreference.includes('short_video_if_formal');
+      if(media?.public_url){
+        toast('已帶入題目與目前正式圖片；儲存後先送待審核，再完成16項圖文審核。');
+      }else if(videoFirst){
+        toast('已帶入輕鬆互動題目；短影片只有正式正常才採用，否則直接製作完整正式情境圖，完成前不送審。');
+      }else{
+        toast('已帶入題目；此題需依文案配對既有情境圖或重新生成後再送審。');
+      }
     });
   }
+  function sourceLabel(topic){return topic.__sourceLabel||'內容題庫'}
   function openTopics(){
     document.querySelector('[data-topic-modal]')?.remove();
     const root=document.createElement('div');root.className='xjw-modal';root.dataset.topicModal='1';
     const ready=topics.filter(topic=>topic.seedToReview===true).length;
-    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>龜鹿長青主題</h2><p class="muted">共 ${topics.length} 題；其中 ${ready} 題已有可安全沿用的目前正式圖片。其餘題目不硬湊產品圖，需配對既有情境圖或重新生成。</p><div style="display:grid;gap:10px;max-height:60vh;overflow:auto">${topics.map((topic,index)=>`<button type="button" class="btn" data-topic-index="${index}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${topic.seedToReview===true?'✓ 已有目前正式圖，可送審':'○ 需配對情境圖'}</small></button>`).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
+    const interactive=topics.filter(topic=>topic.__sourceLabel==='輕鬆互動').length;
+    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>聊天、知識與龜鹿長青主題</h2><p class="muted">共 ${topics.length} 題，其中 ${interactive} 題為輕鬆互動題庫；${ready} 題已有可安全沿用的正式圖片。沒有合格短影片時直接改做完整正式情境圖，不拿測試感影片湊數。</p><div style="display:grid;gap:10px;max-height:60vh;overflow:auto">${topics.map((topic,index)=>`<button type="button" class="btn" data-topic-index="${index}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${esc(sourceLabel(topic))}｜${topic.seedToReview===true?'✓ 已有正式圖，可送審':'○ 需完成專屬情境圖／正式影片'}</small></button>`).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
     document.body.appendChild(root);
     root.querySelectorAll('[data-topic-close]').forEach(n=>n.addEventListener('click',()=>root.remove()));
     root.querySelectorAll('[data-topic-index]').forEach(n=>n.addEventListener('click',()=>applyTopic(topics[Number(n.dataset.topicIndex)])));
@@ -95,14 +110,17 @@
       const add=actions.querySelector('[data-add-post]');if(add)actions.insertBefore(button,add);else actions.appendChild(button);
       button.addEventListener('click',openTopics);
     }
-    button.textContent=topics.length?`龜鹿題庫（${topics.length}）`:'龜鹿題庫';
+    button.textContent=topics.length?`內容題庫（${topics.length}）`:'內容題庫';
   }
   async function loadTopics(){
-    try{
-      const response=await fetch(TOPIC_URL,{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      const data=await response.json();topics=Array.isArray(data?.topics)?data.topics:[];
-      installButton();
-    }catch(error){console.warn('龜鹿題庫載入失敗',error);}
+    const settled=await Promise.allSettled(TOPIC_SOURCES.map(async source=>{
+      const response=await fetch(source.url,{cache:'no-store'});if(!response.ok)throw new Error(`${source.label} HTTP ${response.status}`);
+      const data=await response.json();
+      return (Array.isArray(data?.topics)?data.topics:[]).map(topic=>({...topic,__sourceLabel:source.label}));
+    }));
+    topics=settled.flatMap(result=>result.status==='fulfilled'?result.value:[]);
+    settled.filter(result=>result.status==='rejected').forEach(result=>console.warn('內容題庫載入失敗',result.reason));
+    installButton();
   }
   function enhance(){installButton();waitForForm();}
   document.addEventListener('click',event=>{if(event.target.closest('[data-add-post],[data-post-edit]'))setTimeout(()=>waitForForm(),80)},true);
