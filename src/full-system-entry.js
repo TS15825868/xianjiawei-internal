@@ -1,9 +1,10 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp from './production-entry.js';
 import {publisherConfiguration} from './social-publisher.js';
+import {probePublisherConnections} from './platform-connection-probe.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
 
-const VERSION='2026-09-14-full-system-entry-v5-maintenance-readonly';
+const VERSION='2026-09-14-full-system-entry-v6-platform-connection-health';
 const HOME_PATH='/index.html';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
@@ -189,6 +190,15 @@ async function firstPostHealth(request,env,ctx){
     socialPublisher:upstream?.socialPublisher||upstream?.publisher||null
   },result?.ok?200:503);
 }
+async function platformConnectionHealth(env){
+  const probe=await probePublisherConnections(env);
+  return json({
+    ...probe,
+    fullSystemVersion:VERSION,
+    maintenance_readonly:maintenanceNoLogin(env),
+    configuration:publisherConfiguration(env)
+  });
+}
 
 export default{
   async fetch(request,env,ctx){
@@ -198,6 +208,7 @@ export default{
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
 
     if(request.method==='GET'&&path==='/healthz/social-first-post')return firstPostHealth(request,env,ctx);
+    if(request.method==='GET'&&path==='/healthz/platform-connections')return platformConnectionHealth(env);
     if(request.method==='GET'&&isHomeUi(path))return serveAsset(request,env,HOME_PATH);
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
     if(request.method==='GET'&&isPublishingUi(path))return serveAsset(request,env,PUBLISHING_PATH);
@@ -243,6 +254,7 @@ export default{
           socialSchedulePolicy:SOCIAL_SCHEDULE_POLICY,
           socialPolicyVersion:SOCIAL_POLICY_VERSION,
           socialFirstPublishAt:SOCIAL_FIRST_PUBLISH_AT,
+          platformConnectionProbePath:'/healthz/platform-connections',
           firstPost:publicFirstPost(firstPost),
           maintenanceNoLogin:maintenance,
           maintenanceReadOnly:maintenance
