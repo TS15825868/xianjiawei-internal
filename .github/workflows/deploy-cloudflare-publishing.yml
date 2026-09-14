@@ -54,8 +54,8 @@ jobs:
           for f in \
             dist/index.html dist/erp.html dist/publishing.html \
             dist/assets/css/internal-app.css dist/assets/js/internal-app.js dist/assets/js/erp-publishing-separation.js \
-            dist/assets/css/publishing-base.css dist/assets/css/publishing-app.css \
-            dist/assets/js/publishing-resilience.js dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
+            dist/assets/css/publishing-base.css dist/assets/css/publishing-app.css dist/assets/css/publishing-performance.css dist/assets/css/publishing-readiness.css \
+            dist/assets/js/publishing-resilience.js dist/assets/js/publishing-readiness-ui.js dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
             test -f "$f" || { echo "missing $f" >&2; exit 1; }
           done
           grep -q '仙加味內部系統' dist/index.html
@@ -63,12 +63,19 @@ jobs:
           grep -q '貼文中心' dist/index.html
           grep -q '仙加味營運中控' dist/erp.html
           grep -q '貼文中心系統 App' dist/publishing.html
-          grep -q 'publishing-center-app-20260914-v12-no-containment' dist/publishing.html
-          grep -q '20260914-lean-boot-v9-maintenance-smooth' dist/publishing.html
+          grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' dist/publishing.html
+          grep -Eq "window\.__XJW_BOOT_VERSION__='[^']+'" dist/publishing.html
           grep -q 'publishing-app.css?v=20260914-no-containment-v4' dist/publishing.html
-          grep -q '20260914-maintenance-smooth-v9' dist/publishing.html
-          grep -q '20260914-audit-debounce-v4' dist/publishing.html
+          grep -Eq 'publishing-app-v2\.js\?v=[^"[:space:]]+' dist/publishing.html
+          grep -Eq 'publishing-review-gate\.js\?v=[^"[:space:]]+' dist/publishing.html
+          grep -q "'/assets/js/publishing-readiness-ui.js?v=" dist/publishing.html
+          grep -q 'scheduleOptionalTools' dist/publishing.html
+          ! grep -q '<script src="/assets/js/publishing-readiness-ui.js' dist/publishing.html
           ! grep -q 'content-visibility:auto\|contain:layout paint style\|contain-intrinsic-size:620px\|contain-intrinsic-size:560px' dist/assets/css/publishing-app.css
+          grep -q 'content-visibility:visible!important' dist/assets/css/publishing-performance.css
+          grep -q 'livePlatformSummary' dist/assets/js/publishing-readiness-ui.js
+          grep -q 'platformSummaryObserver' dist/assets/js/publishing-readiness-ui.js
+          grep -q 'platformProbeError' dist/assets/js/publishing-readiness-ui.js
           grep -q 'xjwOfflineWasDisabled' dist/assets/js/publishing-resilience.js
           grep -Eq '"start_url"[[:space:]]*:[[:space:]]*"/"' dist/manifest.webmanifest
           grep -Eq '"main"[[:space:]]*:[[:space:]]*"src/full-system-entry.js"' wrangler.jsonc
@@ -77,7 +84,7 @@ jobs:
           grep -q 'erpApisEnabled:true' src/full-system-entry.js
           grep -q 'publishingCenterIndependent:true' src/full-system-entry.js
           grep -q 'qixuanPublicVisible:false' src/product-authority.js
-          echo 'PASS unified internal portal + ERP + maintenance-safe no-containment iPhone bundle.'
+          echo 'PASS unified internal portal + ERP + deferred live platform readiness + iPhone no-containment bundle.'
       - name: Verify remote D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT 1 AS ok"
       - name: Deploy to Cloudflare
