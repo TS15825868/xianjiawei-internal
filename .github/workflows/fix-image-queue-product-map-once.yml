@@ -1,0 +1,83 @@
+name: 仙加味68篇圖片清單產品對應修正
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-image-queue-product-map-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Fix confirmed title-scene product mappings
+        shell: node {0}
+        run: |
+          const fs=require('fs');
+          const path='ops/post-image-production-queue-current.json';
+          const q=JSON.parse(fs.readFileSync(path,'utf8'));
+          const fixes={
+            'XJW-GUILU-drink180-pouch':['180cc'],
+            'XJW-GUILU-jiao-detail-weight':['龜鹿膠'],
+            'XJW-GUILU-jiao-hot-water':['龜鹿膠'],
+            'XJW-GUILU-trial-shipping':['30cc'],
+            'XJW-SOCIAL-20260815-01-product-drink-180':['180cc'],
+            'XJW-SOCIAL-20260815-01-product-guilu-jiao':['龜鹿膠'],
+            'XJW-SOCIAL-20260815-02-drink-made-to-order':['30cc','180cc'],
+            'XJW-SOCIAL-20260815-03-trial-first-then-decide':['30cc']
+          };
+          let changed=0;
+          for(const item of q.items){
+            if(!Object.prototype.hasOwnProperty.call(fixes,item.postId))continue;
+            const next=fixes[item.postId];
+            const before=JSON.stringify(item.products||[]);
+            const after=JSON.stringify(next);
+            if(before!==after){
+              console.log(`${item.postId}: ${before} -> ${after}`);
+              item.products=next;
+              changed++;
+            }
+            delete fixes[item.postId];
+          }
+          const missing=Object.keys(fixes);
+          if(missing.length)throw new Error('找不到待修postId: '+missing.join(','));
+          if(changed!==8)throw new Error(`預期修正8項，實際${changed}`);
+          q.version='2026-09-14-v2-product-map';
+          q.productMappingRule='products只列該張圖片實際需要呈現的正式產品；比較文可列多產品，單一產品情境不得因內文提及其他規格而混入。試喝固定使用30cc正式小玻璃裸罐。';
+          fs.writeFileSync(path,JSON.stringify(q));
+          console.log('FIXED='+changed);
+      - name: Validate queue JSON
+        shell: node {0}
+        run: |
+          const fs=require('fs');
+          const q=JSON.parse(fs.readFileSync('ops/post-image-production-queue-current.json','utf8'));
+          if(q.items.length!==68||q.total!==68)throw new Error('queue total變動');
+          const check=Object.fromEntries(q.items.map(x=>[x.postId,x.products]));
+          const expected={
+            'XJW-GUILU-drink180-pouch':['180cc'],
+            'XJW-GUILU-jiao-detail-weight':['龜鹿膠'],
+            'XJW-GUILU-jiao-hot-water':['龜鹿膠'],
+            'XJW-GUILU-trial-shipping':['30cc'],
+            'XJW-SOCIAL-20260815-01-product-drink-180':['180cc'],
+            'XJW-SOCIAL-20260815-01-product-guilu-jiao':['龜鹿膠'],
+            'XJW-SOCIAL-20260815-02-drink-made-to-order':['30cc','180cc'],
+            'XJW-SOCIAL-20260815-03-trial-first-then-decide':['30cc']
+          };
+          for(const [id,p] of Object.entries(expected))if(JSON.stringify(check[id])!==JSON.stringify(p))throw new Error(id+'修正未生效');
+          console.log('PASS 8項產品對應修正且68筆清單完整');
+      - name: Commit queue correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add ops/post-image-production-queue-current.json
+          git commit -m 'fix: align archived post image product mappings'
+          git push origin HEAD:main
