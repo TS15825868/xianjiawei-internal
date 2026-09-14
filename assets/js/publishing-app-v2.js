@@ -1,4 +1,4 @@
-const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,platforms:null,loadId:0};
+const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,platforms:null,loadId:0,maintenanceReadonly:false};
 const PAGE_SIZE=18;
 const CUSTOMER_INTERNAL_TERMS=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料','Cloudflare','API Token','Secret','Repository','Repo','commit','deploy','部署','快取版本','測試資料','內部檢查','客戶實際會看到的文案','產品原圖','正式資訊','正式說明'];
 const $=(s,r=document)=>r.querySelector(s);
@@ -27,8 +27,8 @@ function nextSlot(which='next'){
   for(let add=0;add<15;add++){
     const local=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Taipei'}));
     local.setDate(local.getDate()+add);
-    if(![2,6].includes(local.getDay()))continue;
-    local.setHours(local.getDay()===2?19:9,30,0,0);
+    if(![1,3,5].includes(local.getDay()))continue;
+    local.setHours(9,0,0,0);
     const iso=taipeiLocalToIso(`${local.getFullYear()}-${String(local.getMonth()+1).padStart(2,'0')}-${String(local.getDate()).padStart(2,'0')}T${String(local.getHours()).padStart(2,'0')}:${String(local.getMinutes()).padStart(2,'0')}`);
     if(new Date(iso)>now)out.push(iso);
   }
@@ -90,6 +90,21 @@ function setButtonBusy(button,text='處理中…'){
     button.disabled=false;
     button.textContent=old;
   };
+}
+
+function applyMaintenanceMode(){
+  const readonly=Boolean(state.maintenanceReadonly);
+  document.documentElement.dataset.maintenanceReadonly=readonly?'true':'false';
+  const add=$('[data-add-post]');
+  if(add){
+    add.disabled=readonly;
+    add.setAttribute('aria-disabled',readonly?'true':'false');
+    add.title=readonly?'系統整理期間暫停新增；驗證恢復後會重新開放。':'';
+  }
+  if(readonly){
+    const user=$('#userState');
+    if(user)user.textContent='系統整理模式（唯讀）';
+  }
 }
 
 function audit(post){
@@ -155,6 +170,7 @@ function renderPlatforms(){
 function card(post){
   const a=audit(post);
   const locked=post.status==='published';
+  const readOnly=state.maintenanceReadonly;
   return`<article class="card xjw-row publish-card" data-status="${esc(post.status)}" data-locked="${locked?'true':'false'}">
     <div class="xjw-row-head">
       <div><p class="eyebrow">${esc(post.category||'貼文')}</p><h3>${esc(post.title||'未命名貼文')}</h3></div>
@@ -167,11 +183,11 @@ function card(post){
     <div class="xjw-${a.level}"><strong>內部檢查（不會發布）</strong><br>${esc(a.text)}</div>
     <div class="xjw-actions">
       <button class="btn small" data-post-view="${esc(post.id)}">查看／發布結果</button>
-      ${!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
-      ${post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}
-      ${post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
-      ${post.status==='approved'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
-      ${post.status==='scheduled'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">修改時間</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">取消排程</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
+      ${!readOnly&&!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
+      ${!readOnly&&post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}
+      ${!readOnly&&post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
+      ${!readOnly&&post.status==='approved'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
+      ${!readOnly&&post.status==='scheduled'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">修改時間</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">取消排程</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${post.status==='manual_required'?`<button class="btn small" data-post-deliveries="${esc(post.id)}">查看各平台狀態</button>`:''}
     </div>
   </article>`;
@@ -180,6 +196,9 @@ function card(post){
 function renderList(){
   const root=$('#listRoot');
   if(!root)return;
+  const signature=JSON.stringify([state.status,state.filter,state.total,state.items.map(p=>[p.id,p.updated_at,p.status,p.image_url])]);
+  if(root.dataset.renderSignature===signature){renderMetrics();return;}
+  root.dataset.renderSignature=signature;
   const remaining=Math.max(0,state.total-state.items.length);
   root.innerHTML=state.items.length
     ?`<div class="xjw-list">${state.items.map(card).join('')}</div>${remaining>0?`<div class="publish-load-more"><button class="btn primary" data-load-more>載入下一批 ${Math.min(PAGE_SIZE,remaining)} 篇 <small>（尚有 ${remaining} 篇）</small></button></div>`:''}`
@@ -220,8 +239,9 @@ async function load({append=false}={}){
   const loadMore=$('[data-load-more]');
   const doneMore=setButtonBusy(loadMore,'載入中…');
   try{
-    const data=await api(queryPath(offset),{timeout:18000});
+    const data=await api(queryPath(offset),{timeout:10000});
     if(loadId!==state.loadId)return;
+    if(data?.maintenance_readonly||data?.maintenance_no_login){state.maintenanceReadonly=true;applyMaintenanceMode();}
     const batch=Array.isArray(data)?data:(data?.items||[]);
     state.items=append?[...state.items,...batch.filter(n=>!state.items.some(o=>o.id===n.id))]:batch;
     state.total=Number(data?.total??state.items.length);
@@ -257,6 +277,7 @@ function selectedPlatforms(form){
 }
 
 function openPostForm(post=null){
+  if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；新增與修改暫時鎖定。',true);return;}
   const edit=!!post;
   const root=$('#modalRoot');
   if(!root)return;
@@ -322,7 +343,7 @@ async function openPostView(post,button){
       <h3>文案</h3><div class="xjw-copy">${esc(p.copy||'')}</div>
       <h3>各平台發布結果</h3>
       ${rows.length?`<div class="delivery-list">${rows.map(r=>`<div class="delivery-row"><strong>${esc(r.platform)}</strong><span>${esc(statusLabel(r.status))}</span><small>${esc(r.remote_id||r.error_text||'')}</small></div>`).join('')}</div>`:'<p class="muted">尚無發布紀錄。</p>'}
-      ${p.status==='manual_required'?`<div class="xjw-warning">有平台需要人工發布。請使用卡片上的「手動發布包」，完成後再補登已發布。</div><div class="xjw-modal-footer"><button class="btn green" data-post-status="published" data-id="${esc(p.id)}">手動補登已發布</button></div>`:''}
+      ${!state.maintenanceReadonly&&p.status==='manual_required'?`<div class="xjw-warning">有平台需要人工發布。請使用卡片上的「手動發布包」，完成後再補登已發布。</div><div class="xjw-modal-footer"><button class="btn green" data-post-status="published" data-id="${esc(p.id)}">手動補登已發布</button></div>`:''}
       <div class="xjw-modal-footer"><button class="btn" data-close-modal>關閉</button></div>
     </div></div>`;
   }catch(error){
@@ -333,6 +354,7 @@ async function openPostView(post,button){
 }
 
 function openSchedule(post){
+  if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；排程暫時鎖定。',true);return;}
   const suggested=post.scheduled_at||post.proposed_scheduled_at||nextSlot();
   const root=$('#modalRoot');
   if(!root)return;
@@ -341,7 +363,7 @@ function openSchedule(post){
     <p>${esc(post.title)}</p>
     <div class="xjw-schedule-presets"><button type="button" class="btn" data-schedule-preset="next">下一個固定時段</button><button type="button" class="btn" data-schedule-preset="following">再下一個固定時段</button><button type="button" class="btn green" data-publish-now-from-modal>立即發布</button></div>
     <label class="field full"><span>日期與時間（台灣時間）</span><input id="scheduleAt" type="datetime-local" required value="${esc(localInput(suggested))}"></label>
-    <div class="xjw-warning">固定時段為週二19:30、週六09:30；也可自行修改。立即發布不受固定時段限制，但仍必須維持目前16項圖文核准有效。</div>
+    <div class="xjw-warning">固定時段為週一／週三／週五 09:00（台灣時間）；也可自行修改。立即發布不受固定時段限制，但仍必須維持目前16項圖文核准有效。</div>
     <div class="xjw-modal-footer"><button type="button" class="btn" data-close-modal>取消</button><button class="btn primary" data-save-schedule>儲存排程</button></div>
   </form></div>`;
 
@@ -373,6 +395,7 @@ function openSchedule(post){
 }
 
 async function changeStatus(id,status,button){
+  if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；狀態變更暫時鎖定。',true);return;}
   const done=setButtonBusy(button,'更新中…');
   try{
     await api(`/posts/${encodeURIComponent(id)}/status`,{method:'POST',body:JSON.stringify({status})});
@@ -385,6 +408,7 @@ async function changeStatus(id,status,button){
 }
 
 async function publishNow(id,button){
+  if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；立即發布暫時鎖定。',true);return;}
   if(!confirm('確認要立即發布這篇貼文？系統只會發布到已完成授權的平台，其他平台會轉為人工發布。'))return;
   const done=setButtonBusy(button,'發布中…');
   try{
@@ -407,8 +431,10 @@ function debounce(fn,ms=320){
 
 async function loadMe(){
   try{
-    state.me=await api('/me',{timeout:12000});
-    $('#userState').textContent=state.me?.display_name||state.me?.email||'已登入';
+    state.me=await api('/me',{timeout:8000});
+    state.maintenanceReadonly=Boolean(state.me?.maintenance_readonly||state.me?.maintenance_no_login);
+    applyMaintenanceMode();
+    $('#userState').textContent=state.maintenanceReadonly?'系統整理模式（唯讀）':(state.me?.display_name||state.me?.email||'已登入');
   }catch(error){
     $('#userState').textContent='登入驗證失敗';
     toast(error.message||String(error),true);

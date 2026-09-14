@@ -50,12 +50,29 @@
     return api(`/posts/content-audit?ids=${encodeURIComponent(unique.join(','))}`,{timeout:15000});
   }
   let auditRun=0;
+  let auditTimer=null;
+  let lastAuditSignature='';
+  let lastAuditAt=0;
+  let fullAuditCache={at:0,result:null};
+  const maintenanceReadonly=()=>document.documentElement.dataset.maintenanceReadonly==='true';
+  async function fullAudit(){
+    if(fullAuditCache.result&&Date.now()-fullAuditCache.at<60000)return fullAuditCache.result;
+    const result=await api('/posts/content-audit?all=1',{timeout:12000});
+    fullAuditCache={at:Date.now(),result};
+    return result;
+  }
+  function scheduleAudit(delay=160){clearTimeout(auditTimer);auditTimer=setTimeout(auditVisible,delay)}
   async function auditVisible(){
+    if(maintenanceReadonly())return;
     const run=++auditRun;
-    const ids=[...document.querySelectorAll('.publish-card [data-post-view],.xjw-row [data-post-view]')].map(node=>node.dataset.postView).filter(Boolean);
+    const cards=[...document.querySelectorAll('.publish-card,.xjw-row')];
+    const ids=cards.map(card=>card.querySelector('[data-post-view]')?.dataset?.postView||'').filter(Boolean);
     if(!ids.length)return;
+    const signature=cards.map(card=>[card.querySelector('[data-post-view]')?.dataset?.postView||'',card.dataset.status||'',card.querySelector('.xjw-copy')?.textContent||'',card.querySelector('img')?.getAttribute('src')||''].join('|')).join('||');
+    if(signature===lastAuditSignature&&Date.now()-lastAuditAt<60000)return;
     try{
-      const [visibleResult,allResult]=await Promise.all([auditIds(ids),api('/posts/content-audit?all=1',{timeout:20000})]);
+      const [visibleResult,allResult]=await Promise.all([auditIds(ids),fullAudit()]);
+      lastAuditSignature=signature;lastAuditAt=Date.now();
       if(run!==auditRun)return;
       (visibleResult.items||[]).forEach(applyAudit);
       auditSummary(Number(allResult.problem_count||0),Number(allResult.total||0));
@@ -103,8 +120,8 @@
       if(button.dataset.reviewGateReady)return;button.dataset.reviewGateReady='1';button.textContent='16項審核通過';button.title='必須完成品牌、產品、規格、情境、季節、天氣、冷熱、表情、動作、產品比例、重複圖片、完整非拼湊視覺與圖文一致等檢查後才能核准。';
     });
   }
-  window.addEventListener('xjw-publishing-list-rendered',()=>setTimeout(auditVisible,40));
+  window.addEventListener('xjw-publishing-list-rendered',()=>scheduleAudit(160));
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhance();setTimeout(auditVisible,250)},{once:true});else{enhance();setTimeout(auditVisible,250)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhance();scheduleAudit(300)},{once:true});else{enhance();scheduleAudit(300)}
   window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0]),draftToPendingReview:true,directDraftApproval:false,semanticAudit:true,duplicateImageAudit:true,fullLibraryAudit:true,strictUniqueImagePerPost:true});
 })();
