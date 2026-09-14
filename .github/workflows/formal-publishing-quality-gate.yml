@@ -6,7 +6,10 @@ on:
     paths:
       - 'publishing.html'
       - 'assets/js/**'
+      - 'assets/css/**'
       - 'src/**'
+      - 'wrangler.jsonc'
+      - 'ops/post-image-production-queue-current.json'
       - '.github/workflows/formal-publishing-quality-gate.yml'
   schedule:
     - cron: '47 */6 * * *'
@@ -22,23 +25,27 @@ concurrency:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BASE_URL: https://xianjiawei-internal.tung314069.workers.dev
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Verify every publishing control has a real handler
+
+      - name: Verify current publishing UI, mobile safety and controls
         shell: bash
         run: |
+          set -euo pipefail
           node - <<'NODE'
           const fs=require('fs');
           const html=fs.readFileSync('publishing.html','utf8');
           const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
-          const requiredHtml=['data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot'];
+          const css=fs.readFileSync('assets/css/publishing-app.css','utf8');
+          const requiredHtml=['data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','xianjiawei-publishing-runtime'];
           const requiredJs=[
             "e.target.closest('[data-refresh]')","if(refresh){load();return;}",
             "e.target.closest('[data-load-more]')","load({append:true})",
@@ -55,27 +62,48 @@ jobs:
             "$('#scheduleForm')?.addEventListener('submit'","status:'scheduled'",
             "$('#clearFilters')?.addEventListener('click'","state.status='all'",
             "$('#searchInput')?.addEventListener('input'","$('#statusFilter')?.addEventListener('change'",
-            "/publish-now","/deliveries","/platform-authorization","/status"
+            "/publish-now","/deliveries","/platform-authorization","/status",
+            "週一／週三／週五 09:00","[1,3,5]"
           ];
           const errors=[];
-          for(const t of requiredHtml)if(!html.includes(t))errors.push(`HTML缺少控制項 ${t}`);
-          for(const t of requiredJs)if(!js.includes(t))errors.push(`主程式缺少按鈕/事件契約 ${t}`);
+          for(const t of requiredHtml)if(!html.includes(t))errors.push(`HTML缺少控制項/標記 ${t}`);
+          for(const t of requiredJs)if(!js.includes(t))errors.push(`主程式缺少按鈕/事件/排程契約 ${t}`);
           if(!html.includes("fetch('/healthz/core'")||!html.includes("fetch('/healthz/readiness'"))errors.push('系統診斷按鈕缺少core/readiness實際檢查');
+          if(/週二19:30|週六09:30|\[2,6\]/.test(js))errors.push('主程式仍含已退役排程規則');
+          if(/content-visibility\s*:\s*auto|contain\s*:\s*layout paint style|contain-intrinsic-size\s*:\s*(620|560)px/.test(css))errors.push('主CSS仍含已退役Safari卡片虛擬化');
+          if(/publishing-resilience\.js/.test(html))errors.push('重型resilience腳本不得回到首屏同步載入');
           if(errors.length)throw new Error(errors.join('\n'));
-          console.log('PASS 每個貼文中心正式控制項都有對應事件/API契約');
+          console.log('PASS 正式控制項、週一三五排程、iPhone無containment與輕量首屏契約');
           NODE
+
+      - name: Verify maintenance security source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
+          grep -q 'XJW_MAINTENANCE_PRIVATE_READ_LOCKED' src/full-system-entry.js
+          grep -q 'TEMP_DISABLE_ACCESS' src/full-system-entry.js
+          if grep -R -n "維護模式找不到可用內部帳號" src/publishing-only-entry.js src/production-entry.js src/worker.js; then
+            echo '子層仍有廣泛維護偽登入旁路' >&2
+            exit 1
+          fi
+          echo 'PASS 維護模式僅保留頂層白名單唯讀安全鎖。'
+
       - name: Require Cloudflare read credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
+
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
       - name: Export formal post quality snapshot from D1
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,published_at FROM social_posts ORDER BY id" > formal-post-quality.json
-      - name: Verify every public copy and every assigned image
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,scheduled_at,published_at FROM social_posts ORDER BY id" > formal-post-quality.json
+
+      - name: Verify every public copy, assigned image and status dynamically
         shell: bash
         run: |
           node - <<'NODE'
@@ -83,15 +111,16 @@ jobs:
           const d=JSON.parse(fs.readFileSync('formal-post-quality.json','utf8'));
           const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
           if(!posts.length)throw new Error('D1沒有貼文資料');
+          const allowedStatuses=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
           const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
-          const activeStatuses=new Set(['pending_review','approved','scheduled']);
+          const imageRequiredStatuses=new Set(['pending_review','approved','scheduled','published']);
           const imageOwners=new Map();
           const copyOwners=new Map();
           const errors=[];
           const norm=s=>String(s||'').replace(/\s+/g,'');
           for(const p of posts){
+            if(!allowedStatuses.has(p.status))errors.push(`${p.id}: 不允許的狀態 ${p.status}`);
             const publicText=[p.title,p.headline,p.copy].filter(Boolean).join('\n');
-            const fullText=[publicText,p.category].filter(Boolean).join('\n');
             if(p.status!=='published'){
               const hit=banned.find(x=>publicText.includes(x));
               if(hit)errors.push(`${p.id}: 公開文案含不合格詞「${hit}」`);
@@ -115,20 +144,49 @@ jobs:
               if(!String(p.image_alt||'').trim())errors.push(`${p.id}: 有圖片但缺圖片說明`);
               if(p.image_quality_status==='low')errors.push(`${p.id}: 圖片品質標記為low`);
             }
-            if(activeStatuses.has(p.status)){
-              if(!image)errors.push(`${p.id}: ${p.status}缺圖片，不得進入待發布流程`);
+            if(imageRequiredStatuses.has(p.status)){
+              if(!image)errors.push(`${p.id}: ${p.status}缺圖片，不得進入正式流程`);
               if(Number(p.image_approved)!==1)errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
               if(Number(p.image_width||0)<=0||Number(p.image_height||0)<=0)errors.push(`${p.id}: ${p.status}缺圖片尺寸資料`);
               if(!String(p.image_alt||'').trim())errors.push(`${p.id}: ${p.status}缺圖片說明`);
             }
+            if(p.status==='scheduled'&&!String(p.scheduled_at||'').trim())errors.push(`${p.id}: scheduled缺排程時間`);
           }
           if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-          console.log(`PASS ${posts.length}篇貼文：文案、狀態、已配置圖片與待發布流程品質守門通過`);
+          const counts=posts.reduce((m,p)=>(m[p.status]=(m[p.status]||0)+1,m),{});
+          console.log(`PASS ${posts.length}篇貼文動態品質守門`,counts);
           NODE
+
+      - name: Verify live maintenance boundary when enabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
+          echo "maintenance=$maintenance"
+          code="$(curl -sS --max-time 25 -o /tmp/publishing.html -w '%{http_code}' "$BASE_URL/publishing.html" || true)"
+          test "$code" -ge 200
+          test "$code" -lt 500
+          if [ "$maintenance" = 'true' ]; then
+            curl -fsS --max-time 25 "$BASE_URL/api/me" > live-me.json
+            curl -fsS --max-time 25 "$BASE_URL/api/posts?limit=18&offset=0" > live-posts.json
+            node -e "const me=require('./live-me.json'),p=require('./live-posts.json');if(!me.maintenance_readonly||me.role!=='viewer'||!p.maintenance_readonly||!Array.isArray(p.items))process.exit(1)"
+            private_code="$(curl -sS --max-time 25 -o live-private.json -w '%{http_code}' "$BASE_URL/api/modules/customers")"
+            test "$private_code" = '423'
+            node -e "const x=require('./live-private.json');if(x.code!=='XJW_MAINTENANCE_PRIVATE_READ_LOCKED')process.exit(1)"
+            write_code="$(curl -sS --max-time 25 -o live-write.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "$BASE_URL/api/posts")"
+            test "$write_code" = '423'
+            node -e "const x=require('./live-write.json');if(x.code!=='XJW_MAINTENANCE_READ_ONLY')process.exit(1)"
+            echo 'PASS 線上整理模式：貼文唯讀、敏感ERP鎖定、所有寫入鎖定。'
+          else
+            echo 'Access已恢復；本守門僅確認公開邊界無5xx，登入後功能由現行完整驗收負責。'
+          fi
+
       - name: Upload read-only quality evidence
         uses: actions/upload-artifact@v4
         with:
           name: formal-publishing-quality-${{ github.run_id }}
-          path: formal-post-quality.json
-          if-no-files-found: error
+          path: |
+            formal-post-quality.json
+            live-*.json
+          if-no-files-found: warn
           retention-days: 3
