@@ -1,0 +1,39 @@
+name: 仙加味社群內容母庫守門
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/social-conversation-topic-bank-current.json'
+      - 'tools/validate-social-conversation-topic-bank.mjs'
+      - 'package.json'
+      - '.github/workflows/social-topic-bank-integrity.yml'
+  schedule:
+    - cron: '17 20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-social-topic-bank-integrity
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate current mixed topic bank
+        run: node tools/validate-social-conversation-topic-bank.mjs
+      - name: Confirm production build includes current topic bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'social-conversation-topic-bank-current.json' package.json
+          grep -q 'cp assets/data/social-conversation-topic-bank-current.json dist/assets/data/social-conversation-topic-bank-current.json' package.json
+          echo 'PASS current conversational topic bank is production-bundled.'
