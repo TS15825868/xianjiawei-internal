@@ -1,0 +1,110 @@
+name: 仙加味整理期間免登入唯讀模式
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/temporary-maintenance-readonly-mode.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  enable-maintenance-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Enable temporary no-login read-only mode
+        shell: python
+        run: |
+          from pathlib import Path
+
+          profile_query = "SELECT email,display_name,role,active FROM profiles WHERE active=1 ORDER BY CASE WHEN role='owner' THEN 0 WHEN role='admin' THEN 1 ELSE 2 END, email LIMIT 1"
+          maintenance = """  if(String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true'){\n    if(!env?.DB)throw new Error('D1 資料庫尚未綁定');\n    const profile=await env.DB.prepare(\"%s\").first();\n    if(!profile)throw new Error('維護模式找不到可用內部帳號');\n    return profile;\n  }\n""" % profile_query
+
+          # 1) Wrangler flag.
+          p = Path('wrangler.jsonc')
+          s = p.read_text()
+          old = '    "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com"\n'
+          new = '    "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com",\n    "TEMP_DISABLE_ACCESS": "true"\n'
+          if '"TEMP_DISABLE_ACCESS"' not in s:
+            if old not in s:
+              raise SystemExit('wrangler TEAM_DOMAIN anchor not found')
+            s = s.replace(old, new, 1)
+            p.write_text(s)
+
+          # 2) Fast publishing read auth bypass.
+          p = Path('src/publishing-only-entry.js')
+          s = p.read_text()
+          anchor = "async function verifyResilientAccess(request,env){\n  if(!env?.DB)throw new Error('D1 資料庫尚未綁定');\n"
+          if '維護模式找不到可用內部帳號' not in s:
+            if anchor not in s:
+              raise SystemExit('publishing-only access anchor not found')
+            replacement = "async function verifyResilientAccess(request,env){\n  if(!env?.DB)throw new Error('D1 資料庫尚未綁定');\n" + maintenance
+            s = s.replace(anchor, replacement, 1)
+            p.write_text(s)
+
+          # 3) Production fast auth bypass.
+          p = Path('src/production-entry.js')
+          s = p.read_text()
+          anchor = "async function verifyFastAccess(request,env){\n"
+          if '維護模式找不到可用內部帳號' not in s:
+            if anchor not in s:
+              raise SystemExit('production access anchor not found')
+            s = s.replace(anchor, anchor + maintenance, 1)
+            p.write_text(s)
+
+          # 4) Base worker auth bypass for ERP and write-chain auth checks.
+          p = Path('src/worker.js')
+          s = p.read_text()
+          anchor = "async function verifyAccess(request,env){\n"
+          if '維護模式找不到可用內部帳號' not in s:
+            if anchor not in s:
+              raise SystemExit('worker access anchor not found')
+            s = s.replace(anchor, anchor + maintenance, 1)
+            p.write_text(s)
+
+          # 5) Block all mutating API operations while login protection is disabled.
+          p = Path('src/full-system-entry.js')
+          s = p.read_text()
+          anchor = "    const path=new URL(request.url).pathname;\n"
+          guard = "    const path=new URL(request.url).pathname;\n    const maintenanceNoLogin=String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true';\n    if(maintenanceNoLogin&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/')){\n      return json({error:'系統整理期間目前為免登入唯讀模式；新增、修改、審核、排程與發布暫時鎖定。',code:'XJW_MAINTENANCE_READ_ONLY',maintenanceNoLogin:true},423);\n    }\n"
+          if 'XJW_MAINTENANCE_READ_ONLY' not in s:
+            if anchor not in s:
+              raise SystemExit('full-system fetch anchor not found')
+            s = s.replace(anchor, guard, 1)
+            p.write_text(s)
+
+          print('Temporary maintenance read-only mode patched.')
+
+      - name: Validate patched source
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '"TEMP_DISABLE_ACCESS": "true"' wrangler.jsonc
+          grep -q '維護模式找不到可用內部帳號' src/publishing-only-entry.js
+          grep -q '維護模式找不到可用內部帳號' src/production-entry.js
+          grep -q '維護模式找不到可用內部帳號' src/worker.js
+          grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm run check
+          npm run guard:full
+          npm run build:static
+
+      - name: Commit temporary maintenance mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add wrangler.jsonc src/publishing-only-entry.js src/production-entry.js src/worker.js src/full-system-entry.js
+          if git diff --cached --quiet; then
+            echo 'No maintenance-mode changes needed.'
+            exit 0
+          fi
+          git commit -m 'ops: temporarily disable login with read-only safety lock'
+          git push origin HEAD:main
