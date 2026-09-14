@@ -107,14 +107,7 @@ jobs:
             curl -fsS --max-time 25 "$BASE_URL/api/me" > live-me.json
             curl -fsS --max-time 25 "$BASE_URL/api/posts?limit=18&offset=0" > live-posts.json
             curl -fsS --max-time 25 "$BASE_URL/healthz/platform-connections" > live-platform-connections.json
-            node - <<'NODE'
-            const me=require('./live-me.json'),posts=require('./live-posts.json'),platform=require('./live-platform-connections.json');
-            if(!me.maintenance_readonly||me.role!=='viewer')throw new Error('維護模式 /api/me 不是唯讀viewer');
-            if(!posts.maintenance_readonly||!Array.isArray(posts.items))throw new Error('維護模式 /api/posts 未提供安全唯讀清單');
-            if(platform.safe_read_only!==true||platform.publishes_content!==false)throw new Error('平台連線健康端點不是安全唯讀');
-            if((platform.blocking_platforms||[]).length)throw new Error(`平台存在阻斷性故障：${platform.blocking_platforms.join(',')}`);
-            console.log('PASS maintenance public read surface',posts.items.length,posts.total,platform.degraded_platforms||[],platform.unconfigured_platforms||[]);
-            NODE
+            node -e "const me=require('./live-me.json'),posts=require('./live-posts.json'),platform=require('./live-platform-connections.json');if(!me.maintenance_readonly||me.role!=='viewer')throw new Error('維護模式 /api/me 不是唯讀viewer');if(!posts.maintenance_readonly||!Array.isArray(posts.items))throw new Error('維護模式 /api/posts 未提供安全唯讀清單');if(platform.safe_read_only!==true||platform.publishes_content!==false)throw new Error('平台連線健康端點不是安全唯讀');if((platform.blocking_platforms||[]).length)throw new Error('平台存在阻斷性故障：'+platform.blocking_platforms.join(','));console.log('PASS maintenance public read surface',posts.items.length,posts.total,platform.degraded_platforms||[],platform.unconfigured_platforms||[])"
             private_code="$(curl -sS --max-time 25 -o live-private.json -w '%{http_code}' "$BASE_URL/api/modules/customers")"
             test "$private_code" = '423'
             node -e "const x=require('./live-private.json');if(x.code!=='XJW_MAINTENANCE_PRIVATE_READ_LOCKED')process.exit(1)"
