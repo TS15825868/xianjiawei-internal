@@ -1,0 +1,51 @@
+name: 仙加味68篇圖片清單產品對應稽核
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-image-queue-product-map-once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Audit title-to-product mappings
+        shell: node {0}
+        run: |
+          const fs=require('fs');
+          const q=JSON.parse(fs.readFileSync('ops/post-image-production-queue-current.json','utf8'));
+          const allowed=new Set(['30cc','180cc','龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉']);
+          const explicit=t=>{
+            const out=[];
+            if(/30cc/i.test(t))out.push('30cc');
+            if(/180cc/i.test(t))out.push('180cc');
+            if(/龜鹿膏/.test(t))out.push('龜鹿膏');
+            if(/龜鹿湯塊|湯塊/.test(t))out.push('龜鹿湯塊');
+            if(/龜鹿膠/.test(t))out.push('龜鹿膠');
+            if(/鹿茸粉/.test(t))out.push('鹿茸粉');
+            if(/試喝/.test(t)&&!out.includes('30cc'))out.push('30cc');
+            return [...new Set(out)];
+          };
+          let flagged=0;
+          for(const item of q.items){
+            const title=String(item.title||'');
+            const products=Array.isArray(item.products)?item.products:[];
+            const invalid=products.filter(p=>!allowed.has(p));
+            const detected=explicit(title);
+            const extras=detected.length?products.filter(p=>!detected.includes(p)):[];
+            const missing=detected.filter(p=>!products.includes(p));
+            const genericDrink=/龜鹿飲/.test(title)&&!/(30cc|180cc)/i.test(title);
+            const nonDrink=genericDrink?products.filter(p=>!['30cc','180cc'].includes(p)):[];
+            const emptyDrink=genericDrink&&products.length===0;
+            if(invalid.length||extras.length||missing.length||nonDrink.length||emptyDrink){
+              flagged++;
+              console.log(JSON.stringify({postId:item.postId,imageId:item.imageId,title,products,detected,invalid,extras,missing,nonDrink,emptyDrink}));
+            }
+          }
+          console.log(`AUDIT_TOTAL=${q.items.length} FLAGGED=${flagged}`);
