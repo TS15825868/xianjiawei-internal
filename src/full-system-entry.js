@@ -89,6 +89,10 @@ async function firstPostHealth(request,env,ctx){
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname;
+    const maintenanceNoLogin=String(env.TEMP_DISABLE_ACCESS||'').toLowerCase()==='true';
+    if(maintenanceNoLogin&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/')){
+      return json({error:'系統整理期間目前為免登入唯讀模式；新增、修改、審核、排程與發布暫時鎖定。',code:'XJW_MAINTENANCE_READ_ONLY',maintenanceNoLogin:true},423);
+    }
     if(request.method==='GET'&&path==='/healthz/social-first-post')return firstPostHealth(request,env,ctx);
     if(request.method==='GET'&&isHomeUi(path))return serveAsset(request,env,HOME_PATH);
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
