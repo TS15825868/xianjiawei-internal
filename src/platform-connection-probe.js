@@ -7,7 +7,6 @@ function timeout(){
   return {controller,done:()=>clearTimeout(timer)};
 }
 function pair(env,urlName,tokenName){return Boolean(clean(env?.[urlName])&&clean(env?.[tokenName]));}
-function mode(directConfigured,webhookConfigured){return directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured';}
 function unconfigured(name,webhookConfigured=false){
   return {
     platform:name,
@@ -142,12 +141,22 @@ async function probeGoogle(env){
   }catch{return failed('Google 商家',{webhookConfigured,reason:'google_probe_timeout_or_network_error'});}finally{t.done();}
 }
 
+function operationalState(item){
+  const directConnected=item?.directConfigured===true&&item?.connected===true;
+  const fallbackReady=item?.webhookConfigured===true;
+  const operational=directConnected||fallbackReady;
+  const degraded=item?.directConfigured===true&&item?.connected!==true&&fallbackReady;
+  const unconfigured=item?.directConfigured!==true&&!fallbackReady;
+  const blockingFailure=item?.directConfigured===true&&item?.connected!==true&&!fallbackReady;
+  return {...item,operational,degraded,unconfigured,blockingFailure};
+}
+
 export async function probePublisherConnections(env){
   const [meta,line,google]=await Promise.all([probeMeta(env),probeLine(env),probeGoogle(env)]);
   const platforms={
-    Facebook:meta.Facebook,
-    Instagram:meta.Instagram,
-    'LINE OA':line,
+    Facebook:operationalState(meta.Facebook),
+    Instagram:operationalState(meta.Instagram),
+    'LINE OA':operationalState(line),
     'LINE VOOM':{
       platform:'LINE VOOM',
       mode:'manual',
@@ -156,23 +165,38 @@ export async function probePublisherConnections(env){
       webhookConfigured:false,
       connected:null,
       verified:false,
+      operational:true,
+      degraded:false,
+      unconfigured:false,
+      blockingFailure:false,
       manualRequired:true,
       status:'manual_required'
     },
-    'Google 商家':google
+    'Google 商家':operationalState(google)
   };
-  const automatic=Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').map(([,item])=>item);
+  const automaticEntries=Object.entries(platforms).filter(([name])=>name!=='LINE VOOM');
+  const automatic=automaticEntries.map(([,item])=>item);
   const configuredDirect=automatic.filter((item)=>item.directConfigured);
-  const configuredOrFallback=automatic.every((item)=>item.directConfigured||item.webhookConfigured);
+  const degradedPlatforms=automaticEntries.filter(([,item])=>item.degraded).map(([name])=>name);
+  const unconfiguredPlatforms=automaticEntries.filter(([,item])=>item.unconfigured).map(([name])=>name);
+  const blockingPlatforms=automaticEntries.filter(([,item])=>item.blockingFailure).map(([name])=>name);
+  const operationalPlatforms=automaticEntries.filter(([,item])=>item.operational).map(([name])=>name);
   const directCredentialsValid=configuredDirect.every((item)=>item.connected===true);
+  const allAutomaticChannelsConfigured=automatic.every((item)=>item.directConfigured||item.webhookConfigured);
+  const allConfiguredChannelsOperational=automatic.filter((item)=>item.directConfigured||item.webhookConfigured).every((item)=>item.operational);
   return {
-    ok:directCredentialsValid,
+    ok:blockingPlatforms.length===0&&allConfiguredChannelsOperational,
     checked_at:new Date().toISOString(),
     safe_read_only:true,
     publishes_content:false,
     probe_timeout_seconds:PROBE_TIMEOUT_MS/1000,
     direct_credentials_valid:directCredentialsValid,
-    all_automatic_channels_configured:configuredOrFallback,
+    all_automatic_channels_configured:allAutomaticChannelsConfigured,
+    all_configured_channels_operational:allConfiguredChannelsOperational,
+    operational_platforms:operationalPlatforms,
+    degraded_platforms:degradedPlatforms,
+    unconfigured_platforms:unconfiguredPlatforms,
+    blocking_platforms:blockingPlatforms,
     platforms
   };
 }
