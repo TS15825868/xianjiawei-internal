@@ -132,6 +132,8 @@
     const field=input.closest('.field')||input.parentElement;
     const form=input.closest('form');
     if(!field||!form) return;
+    // 新版主編輯器已內建選圖／壓縮／上傳；此舊相容層只保留儲存後回待審核的 fetch 銜接，避免重複產生第二組上傳按鈕。
+    if(form.querySelector('[data-upload-image],input[name="image_file"]')) return;
 
     const wrap=document.createElement('div');
     wrap.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;';

@@ -348,6 +348,9 @@ async function uploadImageFile(form,file){
     const urlInput=form.querySelector('[name="image_url"]');
     if(urlInput)urlInput.value=result.url||'';
     form.dataset.uploadedFileKey=fileKey(file);
+    form.dataset.uploadedImageWidth=String(result.width||prepared.width||0);
+    form.dataset.uploadedImageHeight=String(result.height||prepared.height||0);
+    form.dataset.uploadedImageBytes=String(result.bytes||prepared.file.size||0);
     setUploadPreview(form,result.url||'');
     if(stateNode)stateNode.textContent=`已上傳 ${prepared.width||0}×${prepared.height||0}｜${Math.round((result.bytes||0)/1024)}KB`;
     toast('圖片已上傳並套用到貼文');
@@ -412,6 +415,10 @@ uploadButton?.addEventListener('click',async()=>{
       if(selectedFile&&form.dataset.uploadedFileKey!==fileKey(selectedFile))await uploadImageFile(form,selectedFile);
       const body=Object.fromEntries(new FormData(form).entries());
       delete body.image_file;
+      if(form.dataset.uploadedImageWidth)body.image_width=Number(form.dataset.uploadedImageWidth||0);
+      if(form.dataset.uploadedImageHeight)body.image_height=Number(form.dataset.uploadedImageHeight||0);
+      if(form.dataset.uploadedImageBytes)body.image_bytes=Number(form.dataset.uploadedImageBytes||0);
+      if(selectedFile&&String(body.image_url||'').trim())body.image_source='貼文中心直接上傳｜使用者人工指定';
       body.platforms=selectedPlatforms(form);
       await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
         method:edit?'PUT':'POST',body:JSON.stringify(body)
