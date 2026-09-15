@@ -1,0 +1,21 @@
+{
+  "version": "2026-09-16-v20-direct-image-upload",
+  "brand": "仙加味",
+  "status": "formal",
+  "publishingCenter": "/publishing.html",
+  "access": "Cloudflare Access authenticated",
+  "maintenanceReadonly": false,
+  "activeDraftImageQueue": "ops/post-image-production-queue-current.json",
+  "activeDraftCountAtRelease": 55,
+  "threadsQueue": "ops/metricool-threads-media-queue-current.json",
+  "threadsFormalRoute": "Metricool xianjiawei.tw",
+  "features": [
+    "手機貼文編輯視窗可直接選擇 JPG、PNG、WebP、HEIC、HEIF 圖片",
+    "前端自動縮圖與壓縮至貼文中心700KB限制內",
+    "上傳成功後自動回填 image_url 並顯示預覽",
+    "若選圖後直接儲存，尚未上傳的圖片會先自動處理再儲存",
+    "修改貼文後回草稿並重新進入人工審核流程",
+    "每篇公開貼文仍必須有圖片且通過16項人工審核",
+    "Threads 固定走 Metricool xianjiawei.tw"
+  ]
+}
