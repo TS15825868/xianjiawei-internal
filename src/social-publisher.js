@@ -1,6 +1,7 @@
 const PLATFORM_CONFIG = Object.freeze({
   Facebook:{direct:'facebook',url:'FACEBOOK_PUBLISH_WEBHOOK_URL',token:'FACEBOOK_PUBLISH_WEBHOOK_TOKEN'},
   Instagram:{direct:'instagram',url:'INSTAGRAM_PUBLISH_WEBHOOK_URL',token:'INSTAGRAM_PUBLISH_WEBHOOK_TOKEN'},
+  Threads:{direct:'threads',url:'THREADS_PUBLISH_WEBHOOK_URL',token:'THREADS_PUBLISH_WEBHOOK_TOKEN'},
   'LINE OA':{direct:'line_oa',url:'LINE_OA_PUBLISH_WEBHOOK_URL',token:'LINE_OA_PUBLISH_WEBHOOK_TOKEN'},
   'LINE OA 廣播':{direct:'line_oa',url:'LINE_OA_PUBLISH_WEBHOOK_URL',token:'LINE_OA_PUBLISH_WEBHOOK_TOKEN'},
   'LINE VOOM':{manual:true,manualReason:'LINE VOOM 目前沒有提供官方帳號建立貼文的公開 API，需在 LINE Official Account Manager 人工發布。'},
@@ -69,6 +70,7 @@ async function resolveMetaIdentity(env){
 function directReadiness(env,direct){
   if(direct==='facebook') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
   if(direct==='instagram') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
+  if(direct==='threads') return Boolean(clean(env.THREADS_ACCESS_TOKEN));
   if(direct==='line_oa') return Boolean(clean(env.LINE_CHANNEL_ACCESS_TOKEN));
   if(direct==='google_business') return ['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every((name)=>Boolean(clean(env[name])));
   return false;
@@ -138,6 +140,36 @@ async function dispatchInstagram(env,post){
     return result.ok?{...result,media_type:video?'reel':'image'}:result;
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
+
+async function dispatchThreads(env,post){
+  const platform='Threads',token=clean(env.THREADS_ACCESS_TOKEN),timeout=withTimeout();
+  try{
+    if(!token)return{platform,ok:false,retryable:false,error:'缺少 THREADS_ACCESS_TOKEN'};
+    const text=postText(post).slice(0,500),media=mediaUrl(post),video=isVideoPost(post);
+    const params={access_token:token,media_type:video?'VIDEO':media?'IMAGE':'TEXT',text};
+    if(video&&media)params.video_url=media;
+    else if(media)params.image_url=media;
+    const createResponse=await fetch('https://graph.threads.net/v1.0/me/threads',{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});
+    const created=await responseResult(createResponse,platform);
+    if(!created.ok)return created;
+    const creationId=clean(created.remote_id);
+    if(!creationId)return{platform,ok:false,retryable:true,error:'Threads 未回傳建立容器 ID'};
+    if(video){
+      for(let attempt=0;attempt<8;attempt+=1){
+        await sleep(attempt===0?1000:1800);
+        const statusResponse=await fetch(`https://graph.threads.net/v1.0/${encodeURIComponent(creationId)}?fields=status,error_message&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
+        const statusData=await statusResponse.json().catch(()=>({}));
+        if(['FINISHED','PUBLISHED'].includes(clean(statusData.status).toUpperCase()))break;
+        if(['ERROR','EXPIRED'].includes(clean(statusData.status).toUpperCase()))return{platform,ok:false,retryable:false,error:statusData.error_message||`Threads 容器狀態：${statusData.status}`};
+        if(attempt===7)return{platform,ok:false,retryable:true,error:'Threads 影片處理尚未完成，稍後會自動重試'};
+      }
+    }
+    const publishResponse=await fetch('https://graph.threads.net/v1.0/me/threads_publish',{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:creationId,access_token:token})});
+    const result=await responseResult(publishResponse,platform);
+    return result.ok?{...result,media_type:video?'video':media?'image':'text'}:result;
+  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+}
+
 async function dispatchLineOfficialAccount(env,post,platform){
   const timeout=withTimeout();
   try{
@@ -191,11 +223,12 @@ async function dispatchPlatform(env,post,platform){
     let directResult=null;
     if(config.direct==='facebook') directResult=await dispatchFacebook(env,post);
     else if(config.direct==='instagram') directResult=await dispatchInstagram(env,post);
+    else if(config.direct==='threads') directResult=await dispatchThreads(env,post);
     else if(config.direct==='line_oa') directResult=await dispatchLineOfficialAccount(env,post,platform);
     else if(config.direct==='google_business') directResult=await dispatchGoogleBusiness(env,post);
     if(directResult?.ok) return directResult;
-    const identityFallbackAllowed=platform==='Instagram'&&/解析 Instagram|Instagram (?:Business Account|專業帳號).*ID|缺少 META_INSTAGRAM_USER_ID/i.test(clean(directResult?.error));
-    if(identityFallbackAllowed&&webhookReady(env,config)){
+    const fallbackAllowed=(platform==='Instagram'&&/解析 Instagram|Instagram (?:Business Account|專業帳號).*ID|缺少 META_INSTAGRAM_USER_ID/i.test(clean(directResult?.error)))||(platform==='Threads'&&/THREADS_ACCESS_TOKEN|Threads/i.test(clean(directResult?.error)));
+    if(fallbackAllowed&&webhookReady(env,config)){
       const webhookResult=await dispatchWebhook(env,post,platform,config);
       return webhookResult.ok
         ? {...webhookResult,fallback_from:'official_api_identity',direct_error:clean(directResult?.error)}
@@ -240,7 +273,7 @@ async function expireLateScheduledPost(env,post,now){
     for(const platform of unresolvedPlatforms){
       await env.DB.prepare(`INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,'manual_required',0,NULL,NULL,'','',?,?,?) ON CONFLICT(post_id,platform) DO UPDATE SET status='manual_required',response_json='',error_text=excluded.error_text,updated_at=excluded.updated_at`).bind(post.id,platform,reason,nowIso,nowIso).run();
     }
-    await env.DB.prepare("UPDATE social_posts SET status='manual_required',scheduled_at=NULL,published_at=NULL,updated_at=? WHERE id=?").bind(nowIso,post.id).run();
+    await env.DB.prepare("UPDATE social_posts SET status='manual_required',published_at=NULL,scheduled_at=NULL,updated_at=? WHERE id=?").bind(nowIso,post.id).run();
     return{id:post.id,ok:false,manual_required:true,expired:true,reason:'schedule_late_cutoff',lateness_minutes:lateness,published_platforms:publishedPlatforms,manual_required_platforms:unresolvedPlatforms};
   }
   await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(nowIso,post.id).run();
@@ -279,7 +312,7 @@ export function publisherConfiguration(env){
     const ready=Boolean(directConfigured||webhookConfigured);
     platforms[name]={mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured,webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,reason:directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
   }
-  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
+  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
   const post=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status IN ('approved','scheduled') LIMIT 1").bind(postId).first();
