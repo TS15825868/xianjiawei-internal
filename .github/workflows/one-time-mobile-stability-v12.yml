@@ -1,0 +1,44 @@
+name: 一次性修正貼文中心手機穩定度
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/one-time-mobile-stability-v12.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Patch mobile lightweight mode
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('publishing.html')
+          s=p.read_text()
+          s=s.replace("window.__XJW_BOOT_VERSION__='20260915-lean-boot-v11-mobile-fast';","window.__XJW_BOOT_VERSION__='20260915-lean-boot-v12-mobile-stable';")
+          s=s.replace("if(optionalScheduled)return;optionalScheduled=true;\n        var essential=", "if(optionalScheduled)return;optionalScheduled=true;\n        var mobile=!!(window.matchMedia&&window.matchMedia('(max-width:720px)').matches);\n        if(mobile)return;\n        var essential=")
+          s=s.replace('/assets/js/publishing-app-v2.js?v=20260914-maintenance-smooth-v9','/assets/js/publishing-app-v2.js?v=20260915-mobile-stable-v12')
+          p.write_text(s)
+
+          css=Path('assets/css/publishing-performance.css')
+          c=css.read_text()
+          marker='/* mobile-stable-v12 */'
+          if marker not in c:
+              c += "\n"+marker+"\n@media(max-width:560px){.publish-card{padding:13px!important}.publish-card .xjw-copy{-webkit-line-clamp:5;max-height:none;overflow:hidden}.publish-card .xjw-danger,.publish-card .xjw-warning,.publish-card .xjw-ok{font-size:12px;line-height:1.45;padding:8px 10px;margin:8px 0}.publish-card h4{font-size:15px;margin:8px 0 3px}.public-copy-label{margin-top:8px}.xjw-actions{gap:6px}.xjw-actions .btn{min-height:40px}.publish-load-more{padding:10px 0 20px}}\n"
+          css.write_text(c)
+          PY
+          git diff --check
+      - name: Commit patch and remove one-time workflow
+        run: |
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git rm .github/workflows/one-time-mobile-stability-v12.yml
+          git add publishing.html assets/css/publishing-performance.css
+          git commit -m 'perf: keep mobile publishing in lightweight stable mode'
+          git push origin HEAD:main
