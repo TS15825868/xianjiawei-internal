@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='2026-09-16-growth-intelligence-v1';
+  const VERSION='2026-09-16-growth-intelligence-v2-tasks';
   const STAGES=[
     ['new','新名單'],['researching','了解中'],['contacted','已聯絡'],['follow_up','持續跟進'],['trial','試喝／樣品'],['customer','已成交'],['repeat','回購客戶'],['dormant','暫緩／沉睡']
   ];
@@ -13,6 +13,10 @@
   const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const stageLabel=(value='')=>Object.fromEntries(STAGES)[value]||value||'未分類';
 
+  function notify(message,error=false){
+    if(typeof window.toast==='function')window.toast(message,error);
+    else console[error?'error':'log'](message);
+  }
   function injectStyle(){
     if(document.getElementById('xjwGrowthStyle'))return;
     const style=document.createElement('style');
@@ -26,6 +30,7 @@
       .xjw-growth-metric small{display:block;color:#667085;margin-bottom:5px}.xjw-growth-metric strong{font-size:24px;color:#0b1f3b}
       .xjw-growth-list{display:grid;gap:8px}.xjw-growth-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #eef0f2}
       .xjw-growth-row:first-child{border-top:0}.xjw-growth-row p{margin:3px 0 0;color:#667085;font-size:13px}
+      .xjw-growth-actions{display:flex;gap:6px;flex-wrap:wrap}
       .xjw-growth-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}.xjw-growth-badge{font-size:12px;padding:3px 8px;border-radius:999px;background:#f2f4f7;color:#344054}
       .xjw-growth-note{font-size:12px;color:#667085;margin-top:10px}
       .xjw-growth-section{grid-column:1/-1;border-top:1px solid #e5e7eb;margin-top:4px;padding-top:12px}.xjw-growth-section strong{color:#0b1f3b}.xjw-growth-section small{display:block;color:#667085;margin-top:3px}
@@ -90,7 +95,27 @@
 
   function leadRows(items){
     if(!items.length)return '<p class="xjw-growth-note">目前沒有到期跟進名單。</p>';
-    return `<div class="xjw-growth-list">${items.slice(0,8).map((item)=>`<div class="xjw-growth-row"><div><strong>${esc(item.name||item.id)}</strong><div class="xjw-growth-badges"><span class="xjw-growth-badge">${esc(stageLabel(item.lifecycle_stage))}</span>${item.intent_level?`<span class="xjw-growth-badge">意向：${esc(item.intent_level==='high'?'高':item.intent_level==='medium'?'中':'低')}</span>`:''}${item.source?`<span class="xjw-growth-badge">${esc(item.source)}</span>`:''}</div><p>${esc(item.next_follow_up_date||'')} ${item.next_action?`｜${esc(item.next_action)}`:''}</p></div><button class="btn small orange" type="button" data-growth-edit="${esc(item.id)}">開啟客戶</button></div>`).join('')}</div>`;
+    return `<div class="xjw-growth-list">${items.slice(0,8).map((item)=>`<div class="xjw-growth-row"><div><strong>${esc(item.name||item.id)}</strong><div class="xjw-growth-badges"><span class="xjw-growth-badge">${esc(stageLabel(item.lifecycle_stage))}</span>${item.intent_level?`<span class="xjw-growth-badge">意向：${esc(item.intent_level==='high'?'高':item.intent_level==='medium'?'中':'低')}</span>`:''}${item.source?`<span class="xjw-growth-badge">${esc(item.source)}</span>`:''}</div><p>${esc(item.next_follow_up_date||'')} ${item.next_action?`｜${esc(item.next_action)}`:''}</p></div><div class="xjw-growth-actions"><button class="btn small" type="button" data-growth-task="${esc(item.id)}">建立任務</button><button class="btn small orange" type="button" data-growth-edit="${esc(item.id)}">開啟客戶</button></div></div>`).join('')}</div>`;
+  }
+
+  async function ensureFollowupTask(customerId){
+    const customer=await xjwApi(`/modules/customers/${encodeURIComponent(customerId)}`);
+    if(!customer?.next_follow_up_date)throw new Error('這位客戶尚未設定下次跟進日期');
+    const marker=`[growth:${customer.id}:${customer.next_follow_up_date}]`;
+    const tasks=await xjwApi('/modules/tasks');
+    const existing=(Array.isArray(tasks)?tasks:[]).find((task)=>task.status!=='completed'&&String(task.notes||'').includes(marker));
+    if(existing){notify('這個跟進提醒已經存在，不重複建立');return existing;}
+    const dueAt=new Date(`${customer.next_follow_up_date}T09:00:00+08:00`).toISOString();
+    const body={
+      title:`跟進｜${customer.name||customer.id}`,
+      status:'todo',
+      due_at:dueAt,
+      assignee:customer.owner||'',
+      notes:[`客戶：${customer.name||customer.id}`,customer.next_action?`下一步：${customer.next_action}`:'',customer.source?`來源：${customer.source}${customer.source_detail?`／${customer.source_detail}`:''}`:'',marker].filter(Boolean).join('\n')
+    };
+    const saved=await xjwApi('/modules/tasks',{method:'POST',body:JSON.stringify(body)});
+    notify('已建立 ERP 跟進任務');
+    return saved;
   }
 
   async function renderDashboardGrowth(){
@@ -135,7 +160,8 @@
   document.addEventListener('click',(event)=>{
     const edit=event.target.closest('[data-record-edit][data-module="customers"]');if(edit)pendingCustomerId=edit.dataset.recordEdit||'';
     const fab=event.target.closest('[data-fab="customers"]');if(fab)pendingCustomerId='';
-    const growth=event.target.closest('[data-growth-edit]');if(growth){event.preventDefault();openGrowthCustomer(growth.dataset.growthEdit);}
+    const growth=event.target.closest('[data-growth-edit]');if(growth){event.preventDefault();openGrowthCustomer(growth.dataset.growthEdit);return;}
+    const task=event.target.closest('[data-growth-task]');if(task){event.preventDefault();task.disabled=true;ensureFollowupTask(task.dataset.growthTask).catch((error)=>notify(error.message||String(error),true)).finally(()=>{task.disabled=false;});}
   },true);
 
   const observer=new MutationObserver(()=>{
@@ -146,5 +172,5 @@
   observer.observe(document.documentElement,{childList:true,subtree:true});
   window.addEventListener('hashchange',()=>setTimeout(()=>{renderDashboardGrowth();renderCustomerGrowth();},100));
   setTimeout(()=>{renderDashboardGrowth();renderCustomerGrowth();},250);
-  window.XJWGrowthIntelligence={version:VERSION};
+  window.XJWGrowthIntelligence={version:VERSION,ensureFollowupTask};
 })();
