@@ -1,0 +1,102 @@
+{
+  "version": "2026-09-16-batch-01-v1",
+  "status": "production_in_progress",
+  "authority": {
+    "visual": "docs/social-visual-authority-20260915-v2.md",
+    "queue": "ops/post-image-production-queue-current.json",
+    "manualReviewRequired": true,
+    "publishBeforeApproval": false
+  },
+  "sourceOrder": ["01", "11", "19", "27", "33"],
+  "globalRules": {
+    "brand": "仙加味",
+    "publicCompanyNameBlocked": "台興山產",
+    "mascot": "正式Q版小朋友小男孩；短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不可換臉、年齡、髮型、服裝、圍裙、角色比例或整體角色設計",
+    "companions": "固定小鹿＋小烏龜，必須為兩個分開角色並維持正式定稿外觀",
+    "product": "產品本體禁止AI重畫／模仿／重新設計；只允許正式產品實物原圖／正式核准素材自然合成；若無正式原圖寧可不放產品",
+    "style": ["專業", "高級", "乾淨", "溫暖", "現代", "Q版", "有生活感"],
+    "blockedStyle": ["觀光老街式中藥舖", "過度3D", "寫實人物", "拼貼", "草稿", "模板感"],
+    "compositionRule": "每篇為獨立新情境與構圖；禁止只換小動作、重複煮湯、重複桌前喝茶、重複拿手機、重複走街"
+  },
+  "items": [
+    {
+      "order": "01",
+      "queueId": "IMG-001",
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "kind": "產品認識",
+      "title": "今天只看一個小細節：裸罐",
+      "headline": "30cc正式外觀就是小玻璃裸罐、沒有貼紙",
+      "scene": "乾淨現代的仙加味品牌桌面情境；小老闆站在桌側，以自然手勢指向桌面上的30cc正式小玻璃裸罐；畫面重點是『小、裸罐、無貼紙』，不做一般飲料瓶大小。小鹿與小烏龜若入鏡必須分開且不搶產品焦點。",
+      "time": "白天",
+      "season": "常態 evergreen",
+      "temperature": "中性／不強調冷熱",
+      "productRequired": true,
+      "productId": "30cc",
+      "formalProductAsset": "https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/guilu-drink-30cc.avif",
+      "productHardRules": ["小玻璃裸罐", "無貼紙", "無標籤", "不可放大成飲料瓶", "不得AI重畫"],
+      "avoid": ["舊龜鹿飲紙袋包裝", "有貼紙玻璃罐", "巨大瓶身", "產品浮貼感"],
+      "imageStatus": "pending_generation",
+      "postStatusAfterImage": "pending_review"
+    },
+    {
+      "order": "11",
+      "queueId": "IMG-011",
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "kind": "飲食文化",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "scene": "溫暖明亮的家常廚房備料區；小老闆站在料理台旁翻看一本舊食譜／家人手寫料理筆記，桌面只有日常食材與乾淨餐具。小鹿在左側靠近低凳，小烏龜在右側靠近收納籃，兩者分開。重點是『家裡留下來的廚房習慣』而不是煮一鍋湯。",
+      "time": "白天／備料時段",
+      "season": "常態 evergreen",
+      "temperature": "室內溫暖",
+      "productRequired": false,
+      "avoid": ["正在煮湯", "桌前喝茶", "拿手機", "老街中藥舖", "畫面出現產品假包裝"],
+      "imageStatus": "pending_generation",
+      "postStatusAfterImage": "pending_review"
+    },
+    {
+      "order": "19",
+      "queueId": "IMG-019",
+      "postId": "XJW-CONV-chat-last-bowl",
+      "kind": "輕鬆生活",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "scene": "家常晚餐已接近尾聲的餐桌；桌面有吃完後的乾淨碗盤與湯匙，小老闆雙手捧著最後一小碗湯、帶一點得意又可愛的表情。小鹿在桌腳左側抬頭看，小烏龜在右側矮凳旁看著他，兩者分開。重點是『最後一碗／誰喝掉』的互動畫面，不呈現正在煮湯。",
+      "time": "晚餐後",
+      "season": "常態 evergreen",
+      "temperature": "溫熱家常湯",
+      "productRequired": false,
+      "avoid": ["爐前煮湯", "產品置入", "拿手機", "街景", "與料理製作圖重複"],
+      "imageStatus": "pending_generation",
+      "postStatusAfterImage": "pending_review"
+    },
+    {
+      "order": "27",
+      "queueId": "IMG-027",
+      "postId": "XJW-CONV-chat-quiet-work",
+      "kind": "小老闆日常",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "scene": "乾淨現代的仙加味品牌工作空間，午後自然光；小老闆坐在木質工作桌前寫東西／整理紙張，停筆抬頭看向小鹿與小烏龜。小鹿在左側地墊，小烏龜在右側低架旁，兩者分開。畫面有安靜工作感，不做真實店面宣稱。",
+      "time": "午後",
+      "season": "常態 evergreen",
+      "temperature": "舒適室內",
+      "productRequired": false,
+      "avoid": ["喝茶", "拿手機", "街上行走", "產品陳列牆", "觀光中藥舖"],
+      "imageStatus": "pending_generation",
+      "postStatusAfterImage": "pending_review"
+    },
+    {
+      "order": "33",
+      "queueId": "IMG-033",
+      "postId": "XJW-CONV-chat-soup-day",
+      "kind": "料理互動",
+      "title": "你家有固定的煮湯日嗎？",
+      "scene": "料理前的家庭規劃情境，不正在煮湯；小老闆站在廚房邊的小規劃桌前，看著簡潔無亂碼的週曆／圖示卡，手指在其中一天做記號，旁邊放空湯鍋與待整理的日常食材作提示。小鹿在左側看日曆，小烏龜在右側靠近購物籃，兩者分開。重點是『固定煮湯日／事前安排』。",
+      "time": "白天／料理前",
+      "season": "常態 evergreen",
+      "temperature": "尚未烹煮",
+      "productRequired": false,
+      "avoid": ["正在煮湯", "端著湯喝", "拿手機", "街景", "畫面生成錯誤中文文字"],
+      "imageStatus": "pending_generation",
+      "postStatusAfterImage": "pending_review"
+    }
+  ]
+}
