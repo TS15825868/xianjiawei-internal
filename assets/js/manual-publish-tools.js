@@ -9,10 +9,10 @@
     'Google 商家':'https://business.google.com/'
   };
   const PUBLISHING_URL='/publishing.html';
+  const THREADS_ROUTE='Metricool（仙加味／xianjiawei.tw）';
   const jsonHeaders={'content-type':'application/json'};
   const esc=(value='')=>String(value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const sleep=(ms)=>new Promise((resolve)=>setTimeout(resolve,ms));
-  let dashboardMetricLoading=false;
   function toast(message,error=false){
     const root=document.getElementById('toastRoot');
     if(!root){if(error)alert(message);return;}
@@ -36,12 +36,14 @@
     const platforms=manualPlatformsFor(post,delivery);
     const published=Array.isArray(delivery?.published_platforms)?delivery.published_platforms:[];
     const links=platforms.map((name)=>`${name}：${PLATFORM_URLS[name]||'請開啟該平台官方後台'}`).join('\n');
+    const hasThreads=platforms.includes('Threads');
     return [
       '仙加味｜手動發布包',
       `貼文ID：${post.id||''}`,
       `狀態：${post.status||''}`,
       published.length?`已由系統完成：${published.join('、')}`:'',
       `這次只需人工處理：${platforms.join('、')||'未指定'}`,
+      hasThreads?`Threads 正式主路徑：${THREADS_ROUTE}；只有 Metricool 無法發布時才改用 Threads 後台人工發布。`:'',
       '',
       `標題：${post.title||''}`,
       post.headline?`主標：${post.headline}`:'',
@@ -57,7 +59,7 @@
       '',
       published.length?'注意：上方「已由系統完成」的平台不要再次人工發布。':'',
       '人工平台發布完成後，回獨立貼文發佈系統按「手動補登已發布」。',
-      'LINE VOOM 維持人工發布；Threads 若尚未完成官方 API 授權也會自動轉到這個人工流程，不阻擋其他平台。'
+      'LINE VOOM 維持人工發布；Threads 優先使用已連線的 Metricool，不強迫改走尚未穩定的 Worker 直連。'
     ].filter(Boolean).join('\n');
   }
   async function copy(text){
@@ -72,7 +74,8 @@
     if(!root){copy(text);toast('手動發布包已複製');return;}
     const manual=manualPlatformsFor(post,delivery);
     const done=Array.isArray(delivery?.published_platforms)?delivery.published_platforms:[];
-    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-manual-close></div><div class="xjw-modal-card"><h2>手動發布包</h2><div class="xjw-ok">${done.length?`已自動完成：${esc(done.join('、'))}。<br>`:''}這次只需人工處理：${esc(manual.join('、')||'未指定平台')}。完成後再按「手動補登已發布」。</div><pre class="xjw-copy" style="white-space:pre-wrap;max-height:52vh;overflow:auto">${esc(text)}</pre><div class="xjw-modal-footer"><button type="button" class="btn" data-manual-copy>複製全部</button><button type="button" class="btn orange" data-manual-download>下載文字檔</button><button type="button" class="btn" data-manual-close>關閉</button></div></div></div>`;
+    const threadsNote=manual.includes('Threads')?`<div class="xjw-ok">Threads 優先走 ${esc(THREADS_ROUTE)}；只有外部排程失敗時才改成人工發布。</div>`:'';
+    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-manual-close></div><div class="xjw-modal-card"><h2>手動發布包</h2><div class="xjw-ok">${done.length?`已自動完成：${esc(done.join('、'))}。<br>`:''}這次只需人工處理：${esc(manual.join('、')||'未指定平台')}。完成後再按「手動補登已發布」。</div>${threadsNote}<pre class="xjw-copy" style="white-space:pre-wrap;max-height:52vh;overflow:auto">${esc(text)}</pre><div class="xjw-modal-footer"><button type="button" class="btn" data-manual-copy>複製全部</button><button type="button" class="btn orange" data-manual-download>下載文字檔</button><button type="button" class="btn" data-manual-close>關閉</button></div></div></div>`;
     root.querySelector('[data-manual-copy]')?.addEventListener('click',async()=>{await copy(text);toast('手動發布包已複製');});
     root.querySelector('[data-manual-download]')?.addEventListener('click',()=>download(post,text));
     root.querySelectorAll('[data-manual-close]').forEach((button)=>button.addEventListener('click',()=>{root.innerHTML='';}));
@@ -103,32 +106,40 @@
     if(!fieldset)return;
     const label=document.createElement('label');label.className='check-label';
     const input=document.createElement('input');input.type='checkbox';input.name='platforms';input.value='Threads';input.checked=true;
-    label.append(input,document.createTextNode(' Threads'));
+    label.append(input,document.createTextNode(' Threads（Metricool）'));
     const lineLabel=[...fieldset.querySelectorAll('label')].find((node)=>/LINE OA/.test(node.textContent||''));
     if(lineLabel)fieldset.insertBefore(label,lineLabel);else fieldset.appendChild(label);
   }
-  async function enhanceDashboard(){
-    const grid=document.querySelector('.metric-grid');
-    if(!grid||grid.querySelector('[data-manual-required-metric]')||dashboardMetricLoading)return;
-    dashboardMetricLoading=true;
-    try{const data=await api('/overview'),count=Number(data?.posts?.manual_required||0),article=document.createElement('article');article.className='card metric';article.dataset.manualRequiredMetric='1';article.innerHTML=`<small>需人工發布</small><strong>${count}</strong><a href="${PUBLISHING_URL}">開啟獨立貼文系統 →</a>`;grid.appendChild(article);}catch{}finally{dashboardMetricLoading=false;}
+  function ensureThreadsStatus(){
+    const root=document.getElementById('platformSummary');
+    if(!root)return;
+    const chips=[...root.querySelectorAll('.platform-chip')];
+    let chip=chips.find((node)=>/^Threads：/.test((node.textContent||'').trim()));
+    if(!chip){chip=document.createElement('span');chip.className='platform-chip';root.appendChild(chip);}
+    chip.classList.add('ready');
+    chip.classList.remove('manual');
+    chip.dataset.threadsRoute='metricool';
+    chip.textContent='Threads：Metricool 發布';
+    chip.title='仙加味 Threads xianjiawei.tw 已連接 Metricool；正式優先使用 Metricool 排程／發布。';
   }
-  function enhance(){
-    ensureThreadsCheckbox();
-    const select=document.getElementById('listStatus');
-    if(select&&!select.querySelector('option[value="manual_required"]')){const option=document.createElement('option');option.value='manual_required';option.textContent='需人工發布';select.appendChild(option);}
+  function enhanceCards(){
     document.querySelectorAll('.xjw-row').forEach((card)=>{
       const actions=card.querySelector('.xjw-actions');if(!actions||!postId(card)||!eligible(card))return;
       if(!actions.querySelector('[data-manual-package]')){const pack=document.createElement('button');pack.type='button';pack.className='btn small';pack.textContent=statusText(card)==='需人工發布'?'只看待人工平台':'手動發布包';pack.dataset.manualPackage='1';actions.appendChild(pack);}
       if(statusText(card)!=='已發布'&&!actions.querySelector('[data-manual-published]')){const mark=document.createElement('button');mark.type='button';mark.className='btn small green';mark.textContent='手動補登已發布';mark.dataset.manualPublished='1';actions.appendChild(mark);}
     });
-    enhanceDashboard();
+  }
+  function enhanceLight(){
+    ensureThreadsCheckbox();
+    ensureThreadsStatus();
+    enhanceCards();
   }
   document.addEventListener('click',(event)=>{
     const pack=event.target.closest('[data-manual-package]');if(pack){event.preventDefault();event.stopPropagation();handlePackage(pack);return;}
-    const mark=event.target.closest('[data-manual-published]');if(mark){event.preventDefault();event.stopPropagation();handleMark(mark);}
+    const mark=event.target.closest('[data-manual-published]');if(mark){event.preventDefault();event.stopPropagation();handleMark(mark);return;}
+    if(event.target.closest('[data-add-post],[data-post-edit]'))setTimeout(enhanceLight,0);
   },true);
-  const observer=new MutationObserver(enhance);observer.observe(document.documentElement,{childList:true,subtree:true});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
-  window.XJWManualPublishTools=Object.freeze({version:'2026-09-15-v3-threads',publishingUrl:PUBLISHING_URL,packageText,ensureThreadsCheckbox});
+  document.addEventListener('xjw-publishing-list-rendered',()=>{enhanceLight();setTimeout(ensureThreadsStatus,600);});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhanceLight();setTimeout(ensureThreadsStatus,900);},{once:true});else{enhanceLight();setTimeout(ensureThreadsStatus,900);}
+  window.XJWManualPublishTools=Object.freeze({version:'2026-09-15-v4-metricool-threads-light',publishingUrl:PUBLISHING_URL,threadsRoute:THREADS_ROUTE,packageText,ensureThreadsCheckbox,ensureThreadsStatus});
 })();
