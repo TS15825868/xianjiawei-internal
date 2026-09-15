@@ -1,8 +1,8 @@
 {
-  "current": "docs/current-system-authority-20260913-v19.json",
+  "current": "docs/current-system-authority-20260915-v20.json",
   "base": "docs/current-system-authority-20260911.json",
   "baseVersion": "2026-09-11-v10",
-  "currentVersion": "2026-09-13-v19",
-  "updatedAt": "2026-09-13T18:26:00+08:00",
-  "rule": "讀取目前正式狀態時先讀current；v19未覆蓋欄位依序回讀v18、v17、v16、v15、v14、v13、v12、v11、v10。新版正確資料優先。"
+  "currentVersion": "2026-09-15-v20",
+  "updatedAt": "2026-09-15T22:46:00+08:00",
+  "rule": "讀取目前正式狀態時先讀current；v20未覆蓋欄位依序回讀v19、v18、v17、v16、v15、v14、v13、v12、v11、v10。新版正確資料優先。"
 }
