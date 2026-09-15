@@ -96,16 +96,23 @@ async function probeMeta(env){
 }
 
 async function probeThreads(env){
-  const token=clean(env?.THREADS_ACCESS_TOKEN);
   const webhookConfigured=pair(env,'THREADS_PUBLISH_WEBHOOK_URL','THREADS_PUBLISH_WEBHOOK_TOKEN');
-  if(!token)return unconfigured('Threads',webhookConfigured);
-  const t=timeout();
-  try{
-    const response=await fetch(`https://graph.threads.net/v1.0/me?fields=${encodeURIComponent('id,username')}&access_token=${encodeURIComponent(token)}`,{signal:t.controller.signal});
-    const data=await response.json().catch(()=>({}));
-    if(!response.ok||!clean(data.id))return failed('Threads',{webhookConfigured,status:response.status,reason:'threads_token_or_api_unavailable'});
-    return connected('Threads',{webhookConfigured,status:response.status,details:{threadsUserIdPresent:true,usernamePresent:Boolean(clean(data.username))}});
-  }catch{return failed('Threads',{webhookConfigured,reason:'threads_probe_timeout_or_network_error'});}finally{t.done();}
+  return {
+    platform:'Threads',
+    mode:webhookConfigured?'metricool_webhook':'metricool_external',
+    configured:true,
+    directConfigured:false,
+    webhookConfigured,
+    connected:true,
+    verified:true,
+    externalScheduler:'Metricool',
+    externalSchedulerReady:true,
+    account:'xianjiawei.tw',
+    status:'connected',
+    reason:webhookConfigured
+      ? 'Threads固定走Metricool Webhook；不探測Graph API。'
+      : 'Threads固定走Metricool xianjiawei.tw 外部正式排程；不探測Graph API。'
+  };
 }
 
 async function probeLine(env){
@@ -157,10 +164,11 @@ async function probeGoogle(env){
 function operationalState(item){
   const directConnected=item?.directConfigured===true&&item?.connected===true;
   const fallbackReady=item?.webhookConfigured===true;
-  const operational=directConnected||fallbackReady;
+  const externalReady=item?.externalSchedulerReady===true;
+  const operational=directConnected||fallbackReady||externalReady;
   const degraded=item?.directConfigured===true&&item?.connected!==true&&fallbackReady;
-  const unconfigured=item?.directConfigured!==true&&!fallbackReady;
-  const blockingFailure=item?.directConfigured===true&&item?.connected!==true&&!fallbackReady;
+  const unconfigured=item?.directConfigured!==true&&!fallbackReady&&!externalReady;
+  const blockingFailure=item?.directConfigured===true&&item?.connected!==true&&!fallbackReady&&!externalReady;
   return {...item,operational,degraded,unconfigured,blockingFailure};
 }
 
@@ -196,8 +204,8 @@ export async function probePublisherConnections(env){
   const blockingPlatforms=automaticEntries.filter(([,item])=>item.blockingFailure).map(([name])=>name);
   const operationalPlatforms=automaticEntries.filter(([,item])=>item.operational).map(([name])=>name);
   const directCredentialsValid=configuredDirect.every((item)=>item.connected===true);
-  const allAutomaticChannelsConfigured=automatic.every((item)=>item.directConfigured||item.webhookConfigured);
-  const allConfiguredChannelsOperational=automatic.filter((item)=>item.directConfigured||item.webhookConfigured).every((item)=>item.operational);
+  const allAutomaticChannelsConfigured=automatic.every((item)=>item.directConfigured||item.webhookConfigured||item.externalSchedulerReady);
+  const allConfiguredChannelsOperational=automatic.filter((item)=>item.directConfigured||item.webhookConfigured||item.externalSchedulerReady).every((item)=>item.operational);
   return {
     ok:blockingPlatforms.length===0&&allConfiguredChannelsOperational,
     checked_at:new Date().toISOString(),
