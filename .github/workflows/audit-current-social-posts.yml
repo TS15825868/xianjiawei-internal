@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/audit-current-social-posts.yml'
   schedule:
-    # 每6小時一次；GitHub Actions 使用 UTC。
+    # 每6小時一次；GitHub Actions 使用 UTC；亦可手動執行最新唯讀快照。
     - cron: '31 */6 * * *'
   workflow_dispatch:
 
