@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-16-v23",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260916-v22.json#2026-09-16-v22",
+  "updatedAt": "2026-09-16T03:35:00+08:00",
+  "rule": "本檔覆蓋v22之後的官網→LINE OA→CRM來源歸因與守門員更新；新版正確資料優先。",
+  "websiteLineAttribution": {
+    "status": "implemented-tested-and-production-live",
+    "purpose": "保留非敏感來源metadata，讓仙加味知道詢問／試喝／訂單原本從官網哪一頁進入LINE OA；不是建立第二套CRM，也不是大量陌生開發系統。",
+    "websiteSignals": {
+      "home": "我從仙加味官網首頁來，想先了解龜鹿系列產品，請協助我從適合自己的方案開始。",
+      "products": "我正在看仙加味龜鹿產品，想了解各產品差異、目前價格與適合的下單方式。",
+      "choose": "我看過仙加味「怎麼選」頁面，想請你依我的使用情境，推薦比較適合的產品。",
+      "brand": "我看過仙加味品牌故事，想更了解龜鹿產品與日常使用方式。",
+      "trial": "我想申請試喝，請協助我從試喝方案開始。"
+    },
+    "lineRepo": "TS15825868/TS-LINE",
+    "module": "line-source-attribution.js",
+    "tests": "line-source-attribution.test.js",
+    "runtime": "package.json start preload",
+    "behavior": [
+      "只辨識仙加味官網目前正式固定預填句，不推測一般使用者聊天來源",
+      "來源記憶為24小時記憶體metadata；程序重啟時最多退回一般LINE OA來源，不影響下單資料本身",
+      "只攔截既有CRM_URL的POST payload，不攔截LINE Messaging API請求",
+      "既有非預設source優先，不被官網來源強制覆寫",
+      "CRM payload可附帶sourceDetail、leadOrigin、campaignTag、lineOaStatus",
+      "不將LINE UserID或客戶個資寫入GitHub"
+    ],
+    "sourceExamples": [
+      "官網→LINE OA｜首頁",
+      "官網→LINE OA｜產品頁",
+      "官網→LINE OA｜怎麼選",
+      "官網→LINE OA｜品牌故事",
+      "官網→LINE OA｜試喝頁"
+    ],
+    "crmCompatibility": {
+      "existingGoogleAppsScript": "TS-LINE/Code.gs",
+      "rule": "Code.gs既有邏輯會優先讀data.source或data.orderSource，再回退LINE OA，因此新版來源可直接進訂單與客戶來源欄，不需要破壞現有CRM表結構。"
+    },
+    "verification": {
+      "githubActions": {
+        "workflow": "仙加味 LINE OA 目前正式版完整驗收",
+        "runId": 35012005402,
+        "headSha": "90ff0bc52be06bf6c2d69bfd019f06a5d33bc9b9",
+        "conclusion": "success"
+      },
+      "render": {
+        "service": "TS-LINE",
+        "serviceId": "srv-d4rddeidbo4c73cabnug",
+        "deployId": "dep-dakpg6egekts73a6je20",
+        "commit": "90ff0bc52be06bf6c2d69bfd019f06a5d33bc9b9",
+        "status": "live"
+      },
+      "security": "正式CI security audit 0 vulnerabilities。"
+    }
+  },
+  "guardEvolution": {
+    "rule": "守門員改用必要能力／元件存在與順序驗證，不再鎖死歷史完整start字串。",
+    "reason": "舊exact-string守門曾誤擋新增正確line-source-attribution preload；已修正line-production-readiness.test.js與.github/workflows/ci.yml。"
+  },
+  "nextPriority": {
+    "goal": "盤點既有LINE／CRM→ERP D1安全同步路徑，把sourceDetail、leadOrigin、campaignTag、lineOaStatus與既有客戶生命週期資料銜接；不得新增不安全公開寫入端點。"
+  }
+}
