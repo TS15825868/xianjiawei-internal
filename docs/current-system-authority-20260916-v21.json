@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-16-v21",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260915-v20.json#2026-09-15-v20",
+  "updatedAt": "2026-09-16T03:00:00+08:00",
+  "rule": "本檔覆蓋v20之後的外部benchmark學習、獲客／跟進智慧層與來源歸因規則；新版正確資料優先。",
+  "externalBenchmarkLearning": {
+    "authority": "docs/external-growth-benchmark-20260916.md",
+    "purpose": "學習公開外部資料中的機制、資料結構與流程，用來進化仙加味自己的系統；不是開課、不是對外AI教學、不是複製第三方品牌內容。",
+    "verifiedBenchmarkCore": [
+      "精準找客／先找符合目標輪廓的對象",
+      "AI協助整理開發訊息",
+      "持續跟進",
+      "建立可重複流程並推進到成交"
+    ],
+    "unverifiedRule": "第三方未公開的AI工具名稱、演算法、名單來源、完整技術流程不得自行推測成已知規格。",
+    "marketingClaimRule": "第三方的名單數量或成交宣稱不得作為仙加味保證成果或主要KPI。"
+  },
+  "growthIntelligence": {
+    "architecture": "沿用既有ERP customers／visits／tasks，不建立第二套CRM。",
+    "existingLayer": "assets/js/growth-intelligence.js",
+    "attributionLayer": "assets/js/growth-attribution.js",
+    "preservationLayer": "assets/js/growth-attribution-preserve.js",
+    "loader": "assets/js/erp-publishing-separation.js",
+    "fields": [
+      "customer_type",
+      "lifecycle_stage",
+      "intent_level",
+      "preferred_channel",
+      "source_detail",
+      "interest_products",
+      "last_contact_date",
+      "next_follow_up_date",
+      "next_action",
+      "contact_permission",
+      "campaign_tag",
+      "lead_origin",
+      "line_oa_status"
+    ],
+    "workflow": "來源／客戶分類→人工聯繫→記錄結果與下一步→設定下次跟進→ERP到期提醒／任務→成交／回購／暫緩",
+    "safety": [
+      "不購買或匯入來源不明個資名單",
+      "不做無差別大量群發",
+      "停止主動聯絡與只回覆狀態必須尊重",
+      "可能重複資料只提醒，不自動刪除或合併",
+      "GitHub不得保存真實客戶個資；正式資料留在Cloudflare D1"
+    ],
+    "successMetrics": [
+      "有效回覆",
+      "後續聯繫或拜訪",
+      "LINE OA接點",
+      "試喝／樣品",
+      "成交",
+      "回購"
+    ]
+  },
+  "publishingSafety": {
+    "manualApprovalRequired": true,
+    "rule": "任何貼文圖片或文案完成後仍回待審核；使用者人工通過後才可排程或立即發布。"
+  }
+}
