@@ -275,6 +275,89 @@ function closeModal(){
   if(root)root.innerHTML='';
 }
 
+const IMAGE_UPLOAD_SOFT_LIMIT=680*1024;
+const IMAGE_MAX_EDGE=1600;
+function fileKey(file){return file?`${file.name}:${file.size}:${file.lastModified}`:'';}
+async function decodeImageFile(file){
+  if(typeof createImageBitmap==='function'){
+    try{
+      const bitmap=await createImageBitmap(file);
+      return{source:bitmap,width:bitmap.width,height:bitmap.height,close:()=>bitmap.close?.()};
+    }catch{}
+  }
+  return await new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>resolve({source:img,width:img.naturalWidth,height:img.naturalHeight,close:()=>URL.revokeObjectURL(url)});
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('無法讀取這張圖片；請改用 JPG、PNG 或 WebP。'));};
+    img.src=url;
+  });
+}
+async function canvasBlob(canvas,type='image/jpeg',quality=.88){
+  return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('圖片壓縮失敗')),type,quality));
+}
+async function prepareUploadImage(file){
+  const mime=String(file?.type||'').toLowerCase();
+  if(!file)throw new Error('請先選擇圖片');
+  if(!mime.startsWith('image/'))throw new Error('只能上傳圖片檔');
+  const decoded=await decodeImageFile(file);
+  try{
+    const original={width:decoded.width||0,height:decoded.height||0};
+    const directlySupported=/^image\/(jpeg|jpg|png|webp)$/.test(mime);
+    if(directlySupported&&file.size<=IMAGE_UPLOAD_SOFT_LIMIT)return{file,width:original.width,height:original.height};
+    let scale=Math.min(1,IMAGE_MAX_EDGE/Math.max(original.width||1,original.height||1));
+    let width=Math.max(1,Math.round(original.width*scale));
+    let height=Math.max(1,Math.round(original.height*scale));
+    let blob=null;
+    for(let pass=0;pass<5;pass++){
+      const canvas=document.createElement('canvas');
+      canvas.width=width;canvas.height=height;
+      const ctx=canvas.getContext('2d',{alpha:false});
+      ctx.fillStyle='#F7F4ED';ctx.fillRect(0,0,width,height);
+      ctx.drawImage(decoded.source,0,0,width,height);
+      for(const quality of [.9,.84,.78,.72,.66,.6]){
+        blob=await canvasBlob(canvas,'image/jpeg',quality);
+        if(blob.size<=IMAGE_UPLOAD_SOFT_LIMIT)break;
+      }
+      if(blob&&blob.size<=IMAGE_UPLOAD_SOFT_LIMIT)break;
+      width=Math.max(720,Math.round(width*.86));
+      height=Math.max(720,Math.round(height*.86));
+    }
+    if(!blob||blob.size>IMAGE_UPLOAD_SOFT_LIMIT)throw new Error('圖片仍超過700KB，請換較小圖片');
+    const name=(file.name||'post-image').replace(/\.[^.]+$/,'')+'.jpg';
+    return{file:new File([blob],name,{type:'image/jpeg',lastModified:Date.now()}),width,height};
+  }finally{decoded.close?.();}
+}
+function setUploadPreview(form,url){
+  const img=form.querySelector('[data-image-upload-preview]');
+  if(!img)return;
+  if(url){img.src=url;img.hidden=false;}else{img.removeAttribute('src');img.hidden=true;}
+}
+async function uploadImageFile(form,file){
+  const stateNode=form.querySelector('[data-image-upload-state]');
+  const button=form.querySelector('[data-upload-image]');
+  const done=setButtonBusy(button,'處理圖片中…');
+  if(stateNode)stateNode.textContent='正在壓縮並上傳…';
+  try{
+    const prepared=await prepareUploadImage(file);
+    const payload=new FormData();
+    payload.append('file',prepared.file,prepared.file.name);
+    payload.append('width',String(prepared.width||0));
+    payload.append('height',String(prepared.height||0));
+    const result=await api('/media-upload',{method:'POST',body:payload,timeout:30000});
+    const urlInput=form.querySelector('[name="image_url"]');
+    if(urlInput)urlInput.value=result.url||'';
+    form.dataset.uploadedFileKey=fileKey(file);
+    setUploadPreview(form,result.url||'');
+    if(stateNode)stateNode.textContent=`已上傳 ${prepared.width||0}×${prepared.height||0}｜${Math.round((result.bytes||0)/1024)}KB`;
+    toast('圖片已上傳並套用到貼文');
+    return result;
+  }catch(error){
+    if(stateNode)stateNode.textContent=error.message||String(error);
+    throw error;
+  }finally{done();}
+}
+
 function selectedPlatforms(form){
   return $$('[name="platforms"]:checked',form).map(i=>i.value);
 }
@@ -293,20 +376,43 @@ function openPostForm(post=null){
       <label class="field full"><span>文案</span><textarea name="copy" required>${esc(post?.copy||'')}</textarea></label>
       <label class="field"><span>分類</span><input name="category" value="${esc(post?.category||'日常節奏')}"></label>
       <label class="field"><span>圖片網址</span><input name="image_url" type="url" value="${esc(post?.image_url||'')}"></label>
+    <div class="field full xjw-direct-image-upload"><span>直接上傳圖片</span><input name="image_file" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif"><div class="xjw-actions"><button type="button" class="btn small" data-upload-image>上傳並套用</button><small data-image-upload-state>手機可直接從照片選擇；系統會自動壓縮到700KB以下。</small></div><img class="xjw-image-preview" data-image-upload-preview ${post?.image_url?`src="${esc(post.image_url)}"`:'hidden'} alt="圖片上傳預覽"></div>
       <label class="field full"><span>圖片說明</span><input name="image_alt" value="${esc(post?.image_alt||'')}"></label>
       <fieldset class="field full"><legend>發布平台</legend>${['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家'].map(name=>`<label class="check-label"><input type="checkbox" name="platforms" value="${name}" ${(post?.platforms||['Facebook','Instagram','Threads']).includes(name)?'checked':''}> ${name}</label>`).join('')}</fieldset>
     </div>
     <div class="xjw-modal-footer"><button type="button" class="btn" data-close-modal>取消</button><button class="btn primary" data-submit-post>${edit?'儲存並退回草稿':'儲存草稿'}</button></div>
   </form></div>`;
 
+  const form=$('#postForm');
+const fileInput=form?.querySelector('[name="image_file"]');
+const uploadButton=form?.querySelector('[data-upload-image]');
+fileInput?.addEventListener('change',()=>{
+  const file=fileInput.files?.[0];
+  const status=form.querySelector('[data-image-upload-state]');
+  if(status)status.textContent=file?`已選擇：${file.name}（儲存時若尚未上傳會自動處理）`:'手機可直接從照片選擇；系統會自動壓縮到700KB以下。';
+  if(file){
+    const local=URL.createObjectURL(file);
+    setUploadPreview(form,local);
+    setTimeout(()=>URL.revokeObjectURL(local),120000);
+  }
+});
+uploadButton?.addEventListener('click',async()=>{
+  const file=fileInput?.files?.[0];
+  if(!file){toast('請先選擇圖片',true);return;}
+  try{await uploadImageFile(form,file);}catch(error){toast(error.message||String(error),true);}
+});
+
   $('#postForm')?.addEventListener('submit',async e=>{
     e.preventDefault();
     const form=e.currentTarget;
     const button=form.querySelector('[data-submit-post]');
     const done=setButtonBusy(button,'儲存中…');
-    const body=Object.fromEntries(new FormData(form).entries());
-    body.platforms=selectedPlatforms(form);
     try{
+      const selectedFile=form.querySelector('[name="image_file"]')?.files?.[0];
+      if(selectedFile&&form.dataset.uploadedFileKey!==fileKey(selectedFile))await uploadImageFile(form,selectedFile);
+      const body=Object.fromEntries(new FormData(form).entries());
+      delete body.image_file;
+      body.platforms=selectedPlatforms(form);
       await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
         method:edit?'PUT':'POST',body:JSON.stringify(body)
       });
@@ -509,7 +615,7 @@ async function init(){
   renderPlatforms();
   if(window.XJWPublishingReadiness?.run)await window.XJWPublishingReadiness.run({full:false});
   await Promise.allSettled([loadMe(),load()]);
-  document.documentElement.dataset.publishingRuntime='20260815-standalone-v19-dedupe-customer-clean';
+  document.documentElement.dataset.publishingRuntime='20260916-v20-direct-image-upload';
 }
 
 if(document.readyState==='loading'){
