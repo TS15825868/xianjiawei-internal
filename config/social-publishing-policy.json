@@ -1,22 +1,28 @@
 {
-  "version": "2026-09-03-social-publishing-v2-morning",
+  "version": "2026-09-15-social-publishing-v3",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
-  "weeklyTarget": 3,
-  "normalWeeklyMaximum": 3,
-  "schedule": [
-    {"weekday":"MO","time":"09:00"},
-    {"weekday":"WE","time":"09:00"},
-    {"weekday":"FR","time":"09:00"}
-  ],
-  "firstPublishAt": "2026-09-04T09:00:00+08:00",
-  "onePostPerSlot": true,
-  "contentMode": "free-topic-non-repeating",
-  "videoSubstitution": {
+  "contentMode": "mixed-topic-non-repeating",
+  "contentMix": ["生活","料理","品牌","產品","萬華","互動","季節天氣"],
+  "weatherInsert": {
     "enabled": true,
-    "rule": "若本次時段前已有新完成且通過正式規格的短影片，短影片取代該次圖文，不另外增加本週貼文數量"
+    "rule": "天氣突然變化時可插入即時天氣貼文；先查最新天氣、完成對應圖片與人工審核，再將原排程順延。"
+  },
+  "platformRouting": {
+    "facebook": {"enabled": true},
+    "instagram": {"enabled": true},
+    "threads": {
+      "enabled": true,
+      "authority": "Metricool",
+      "metricoolBrandId": "6889683",
+      "account": "xianjiawei.tw",
+      "directGraphApiFormalRoute": false,
+      "draftUntilImageAndApproval": true
+    }
   },
   "imagePolicy": {
+    "imageRequiredForEveryPublicPost": true,
+    "blankImageUrlAllowed": false,
     "singleIntegratedScene": true,
     "forbidCollage": true,
     "forbidCutAndPaste": true,
@@ -24,7 +30,17 @@
     "forbidPaperDollLook": true,
     "requireConsistentPerspectiveLightingShadow": true,
     "productMustKeepOfficialAppearanceAndScale": true,
+    "aiProductRedrawForbidden": true,
     "failureAction": "reject_and_regenerate"
+  },
+  "productImagePolicy": {
+    "formalAssetsOnly": true,
+    "missingFormalProductAssetAction": "omit_product_from_scene",
+    "guiluDrink30cc": "小玻璃裸罐、無貼紙，不得放大成一般飲料瓶",
+    "guiluDrink180cc": "正式比例鋁袋，不得生成巨大包裝",
+    "guiluJiao600g": "600g／盒、32塊裝、每塊約18.75g；先前AI生成紫盒全部作廢，只能合成正式原產品圖",
+    "guiluTangkuai75g": "75g／盒、8塊裝、每塊約9.375g",
+    "qixuanTea": "暫停所有公開內容與圖片"
   },
   "copyPolicy": {
     "traditionalChinese": true,
@@ -33,7 +49,15 @@
     "lifestylePostNeedsConcreteScene": true,
     "forbidPublishedDuplicate": true,
     "forbidMedicalClaims": true,
-    "forbidLegacyPublicBrand": true
+    "forbidLegacyPublicBrand": true,
+    "publicBrandOnly": "仙加味"
+  },
+  "reviewFlow": {
+    "manualApprovalRequired": true,
+    "regeneratedImageReturnsTo": "pending_review",
+    "unapprovedContentMayPublish": false,
+    "immediatePublishRequiresApproval": true,
+    "scheduledPublishRequiresApproval": true
   },
   "autoPublish": {
     "enabled": true,
@@ -55,7 +79,7 @@
       "mascot_companions",
       "physical_scale",
       "duplicate",
-      "collage_cutpaste_compliance_final"
+      "compliance_final"
     ]
   }
 }
