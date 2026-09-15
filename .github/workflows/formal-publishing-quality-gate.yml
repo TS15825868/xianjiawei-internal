@@ -44,6 +44,7 @@ jobs:
           const fs=require('fs');
           const html=fs.readFileSync('publishing.html','utf8');
           const js=fs.readFileSync('assets/js/publishing-app-v2.js','utf8');
+          const manual=fs.readFileSync('assets/js/manual-publish-tools.js','utf8');
           const css=fs.readFileSync('assets/css/publishing-app.css','utf8');
           const requiredHtml=['data-refresh','data-diagnose','data-add-post','searchInput','statusFilter','clearFilters','listRoot','modalRoot','xianjiawei-publishing-runtime'];
           const requiredJs=[
@@ -68,12 +69,14 @@ jobs:
           const errors=[];
           for(const t of requiredHtml)if(!html.includes(t))errors.push(`HTML缺少控制項/標記 ${t}`);
           for(const t of requiredJs)if(!js.includes(t))errors.push(`主程式缺少按鈕/事件/排程契約 ${t}`);
+          if(!manual.includes("value='Threads'")&&!manual.includes('value="Threads"')&&!manual.includes("input.value='Threads'"))errors.push('Threads 尚未加入貼文表單平台選項');
+          if(!manual.includes("'Threads':'https://www.threads.com/'"))errors.push('Threads 人工發布入口缺失');
           if(!html.includes("fetch('/healthz/core'")||!html.includes("fetch('/healthz/readiness'"))errors.push('系統診斷按鈕缺少core/readiness實際檢查');
           if(/週二19:30|週六09:30|\[2,6\]/.test(js))errors.push('主程式仍含已退役排程規則');
           if(/content-visibility\s*:\s*auto|contain\s*:\s*layout paint style|contain-intrinsic-size\s*:\s*(620|560)px/.test(css))errors.push('主CSS仍含已退役Safari卡片虛擬化');
           if(/publishing-resilience\.js/.test(html))errors.push('重型resilience腳本不得回到首屏同步載入');
           if(errors.length)throw new Error(errors.join('\n'));
-          console.log('PASS 正式控制項、週一三五排程、iPhone無containment與輕量首屏契約');
+          console.log('PASS 正式控制項、Threads平台選項、週一三五排程、iPhone無containment與輕量首屏契約');
           NODE
 
       - name: Verify maintenance security source contract
@@ -133,9 +136,11 @@ jobs:
               else copyOwners.set(ck,p.id);
             }
             if(publicText.includes('5～7個工作天')&&!/(龜鹿飲|30cc|180cc)/.test(publicText))errors.push(`${p.id}: 5～7工作天被套用到非龜鹿飲內容`);
-            const hasTang=/龜鹿湯塊/.test(publicText), hasJiao=/龜鹿膠/.test(publicText);
-            if(hasTang&&!hasJiao&&/(600g|32塊)/.test(publicText))errors.push(`${p.id}: 單一龜鹿湯塊文案混入龜鹿膠規格`);
-            if(hasJiao&&!hasTang&&/(75g|8塊)/.test(publicText))errors.push(`${p.id}: 單一龜鹿膠文案混入龜鹿湯塊規格`);
+            const hasTang=/龜鹿湯塊/.test(publicText),hasJiao=/龜鹿膠/.test(publicText);
+            const has600=/(^|[^0-9.])600\s*g\b/i.test(publicText),has32=/(^|[^0-9])32\s*塊/.test(publicText);
+            const has75=/(^|[^0-9.])75\s*g\b/i.test(publicText),has8=/(^|[^0-9])8\s*塊/.test(publicText);
+            if(hasTang&&!hasJiao&&(has600||has32))errors.push(`${p.id}: 單一龜鹿湯塊文案混入龜鹿膠規格`);
+            if(hasJiao&&!hasTang&&(has75||has8))errors.push(`${p.id}: 單一龜鹿膠文案混入龜鹿湯塊規格`);
             const image=String(p.image_url||'').trim();
             if(image){
               if(image.includes('/images/brand/approved-v405/'))errors.push(`${p.id}: 使用已退役approved-v405舊圖`);
