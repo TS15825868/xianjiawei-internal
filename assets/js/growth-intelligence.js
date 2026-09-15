@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='2026-09-16-growth-intelligence-v2-tasks';
+  const VERSION='2026-09-16-growth-intelligence-v3-priority';
   const STAGES=[
     ['new','新名單'],['researching','了解中'],['contacted','已聯絡'],['follow_up','持續跟進'],['trial','試喝／樣品'],['customer','已成交'],['repeat','回購客戶'],['dormant','暫緩／沉睡']
   ];
@@ -9,7 +9,8 @@
   let pendingCustomerId='';
   let dashboardBusy=false;
   let customerPageBusy=false;
-  const esc=(value='')=>String(value??'').replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const esc=(value='')=>String(value??'').replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+  const clean=(value='')=>String(value??'').trim();
   const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const stageLabel=(value='')=>Object.fromEntries(STAGES)[value]||value||'未分類';
 
@@ -32,6 +33,7 @@
       .xjw-growth-row:first-child{border-top:0}.xjw-growth-row p{margin:3px 0 0;color:#667085;font-size:13px}
       .xjw-growth-actions{display:flex;gap:6px;flex-wrap:wrap}
       .xjw-growth-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}.xjw-growth-badge{font-size:12px;padding:3px 8px;border-radius:999px;background:#f2f4f7;color:#344054}
+      .xjw-growth-score{background:#fff3dc;color:#7a4d00;font-weight:700}
       .xjw-growth-note{font-size:12px;color:#667085;margin-top:10px}
       .xjw-growth-section{grid-column:1/-1;border-top:1px solid #e5e7eb;margin-top:4px;padding-top:12px}.xjw-growth-section strong{color:#0b1f3b}.xjw-growth-section small{display:block;color:#667085;margin-top:3px}
       @media(max-width:720px){.xjw-growth-metrics{grid-template-columns:1fr}.xjw-growth-row{align-items:flex-start;flex-direction:column}}
@@ -84,22 +86,58 @@
     ].join(''));
   }
 
+  function priorityScore(item){
+    if(item.contact_permission==='do_not_contact'||item.contact_permission==='reply_only')return-1;
+    let score=0;
+    if(item.customer_type==='B2B')score+=25;
+    if(item.intent_level==='high')score+=25;else if(item.intent_level==='medium')score+=12;
+    if(clean(item.interest_products))score+=15;
+    if(clean(item.source_detail))score+=5;
+    if(clean(item.preferred_channel))score+=5;
+    if(clean(item.phone)||clean(item.email))score+=5;
+    if(item.lifecycle_stage==='trial')score+=15;else if(item.lifecycle_stage==='follow_up')score+=10;else if(item.lifecycle_stage==='contacted')score+=6;else if(item.lifecycle_stage==='researching')score+=4;
+    if(clean(item.next_follow_up_date)){score+=5;if(item.next_follow_up_date<=today())score+=5;}
+    return Math.min(100,score);
+  }
+
   function pipeline(customers){
     const date=today();
     const active=customers.filter((item)=>item.contact_permission!=='do_not_contact');
-    const due=active.filter((item)=>item.next_follow_up_date&&item.next_follow_up_date<=date&&!['customer','repeat','dormant'].includes(item.lifecycle_stage));
-    const high=active.filter((item)=>item.intent_level==='high'&&!['customer','repeat','dormant'].includes(item.lifecycle_stage));
-    const b2b=active.filter((item)=>item.customer_type==='B2B'&&!['customer','repeat','dormant'].includes(item.lifecycle_stage));
-    return{due,high,b2b,active};
+    const proactive=active.filter((item)=>item.contact_permission!=='reply_only');
+    const open=(item)=>!['customer','repeat','dormant'].includes(item.lifecycle_stage);
+    const due=proactive.filter((item)=>item.next_follow_up_date&&item.next_follow_up_date<=date&&open(item)).sort((a,b)=>priorityScore(b)-priorityScore(a));
+    const high=proactive.filter((item)=>item.intent_level==='high'&&open(item)).sort((a,b)=>priorityScore(b)-priorityScore(a));
+    const b2b=proactive.filter((item)=>item.customer_type==='B2B'&&open(item)).sort((a,b)=>priorityScore(b)-priorityScore(a));
+    return{due,high,b2b,active,proactive};
   }
 
-  function leadRows(items){
-    if(!items.length)return '<p class="xjw-growth-note">目前沒有到期跟進名單。</p>';
-    return `<div class="xjw-growth-list">${items.slice(0,8).map((item)=>`<div class="xjw-growth-row"><div><strong>${esc(item.name||item.id)}</strong><div class="xjw-growth-badges"><span class="xjw-growth-badge">${esc(stageLabel(item.lifecycle_stage))}</span>${item.intent_level?`<span class="xjw-growth-badge">意向：${esc(item.intent_level==='high'?'高':item.intent_level==='medium'?'中':'低')}</span>`:''}${item.source?`<span class="xjw-growth-badge">${esc(item.source)}</span>`:''}</div><p>${esc(item.next_follow_up_date||'')} ${item.next_action?`｜${esc(item.next_action)}`:''}</p></div><div class="xjw-growth-actions"><button class="btn small" type="button" data-growth-task="${esc(item.id)}">建立任務</button><button class="btn small orange" type="button" data-growth-edit="${esc(item.id)}">開啟客戶</button></div></div>`).join('')}</div>`;
+  function outreachSuggestion(item){
+    if(item.contact_permission==='do_not_contact')throw new Error('此客戶已設定停止主動聯絡');
+    if(item.contact_permission==='reply_only')throw new Error('此客戶只允許回覆主動詢問，不建立主動開發文字');
+    const name=clean(item.name);const product=clean(item.interest_products);const next=clean(item.next_action);
+    if(item.customer_type==='B2B'){
+      return `您好${name?`，${name}`:''}，我是仙加味。我們是以龜鹿系列為主的現代漢方生活品牌，目前有龜鹿膏、龜鹿飲、龜鹿湯塊、龜鹿膠與鹿茸粉。${product?`您這邊先前關注的是${product}，`:''}${next?`這次想接著跟您確認${next}。`:''}如果方便，我可以先把產品規格與合作方式整理給您參考；若目前沒有需求也沒關係，謝謝。`;
+    }
+    return `您好${name?`，${name}`:''}，這裡是仙加味。${product?`您之前有詢問${product}，`:''}${next?`關於${next}，`:''}如果還想了解產品規格、使用方式、試喝或下單，我可以再幫您整理；如果目前不需要，也不用特別回覆。`;
+  }
+
+  async function copySuggestion(customerId){
+    const customer=await xjwApi(`/modules/customers/${encodeURIComponent(customerId)}`);
+    const text=outreachSuggestion(customer);
+    if(!navigator.clipboard?.writeText)throw new Error('目前瀏覽器無法直接複製，請開啟客戶資料手動整理');
+    await navigator.clipboard.writeText(text);
+    notify('建議聯絡文字已複製；請人工確認後再發送');
+    return text;
+  }
+
+  function leadRows(items,{showSuggestion=true}={}){
+    if(!items.length)return '<p class="xjw-growth-note">目前沒有符合條件的名單。</p>';
+    return `<div class="xjw-growth-list">${items.slice(0,8).map((item)=>{const score=priorityScore(item);return`<div class="xjw-growth-row"><div><strong>${esc(item.name||item.id)}</strong><div class="xjw-growth-badges"><span class="xjw-growth-badge">${esc(stageLabel(item.lifecycle_stage))}</span>${score>=0?`<span class="xjw-growth-badge xjw-growth-score">優先 ${score}</span>`:''}${item.intent_level?`<span class="xjw-growth-badge">意向：${esc(item.intent_level==='high'?'高':item.intent_level==='medium'?'中':'低')}</span>`:''}${item.source?`<span class="xjw-growth-badge">${esc(item.source)}</span>`:''}</div><p>${esc(item.next_follow_up_date||'')} ${item.next_action?`｜${esc(item.next_action)}`:''}</p></div><div class="xjw-growth-actions">${showSuggestion&&item.contact_permission!=='reply_only'?`<button class="btn small" type="button" data-growth-suggest="${esc(item.id)}">建議文字</button>`:''}<button class="btn small" type="button" data-growth-task="${esc(item.id)}">建立任務</button><button class="btn small orange" type="button" data-growth-edit="${esc(item.id)}">開啟客戶</button></div></div>`}).join('')}</div>`;
   }
 
   async function ensureFollowupTask(customerId){
     const customer=await xjwApi(`/modules/customers/${encodeURIComponent(customerId)}`);
+    if(customer.contact_permission==='do_not_contact'||customer.contact_permission==='reply_only')throw new Error('此客戶目前不列入主動跟進');
     if(!customer?.next_follow_up_date)throw new Error('這位客戶尚未設定下次跟進日期');
     const marker=`[growth:${customer.id}:${customer.next_follow_up_date}]`;
     const tasks=await xjwApi('/modules/tasks');
@@ -127,7 +165,7 @@
       const customers=await xjwApi('/modules/customers');
       const p=pipeline(Array.isArray(customers)?customers:[]);
       const section=document.createElement('section');section.className='card xjw-growth-panel';section.dataset.growthDashboard=VERSION;
-      section.innerHTML=`<div class="xjw-growth-head"><div><h2>客戶獲客／跟進</h2><p>把名單來源、意向與下一步集中到現有 ERP，不另開一套 CRM。</p></div><a class="btn" href="#customers">客戶管理</a></div><div class="xjw-growth-metrics"><div class="xjw-growth-metric"><small>今天以前待跟進</small><strong>${p.due.length}</strong></div><div class="xjw-growth-metric"><small>高意向未成交</small><strong>${p.high.length}</strong></div><div class="xjw-growth-metric"><small>B2B 開發中</small><strong>${p.b2b.length}</strong></div></div><h3>優先跟進</h3>${leadRows(p.due)}<div class="xjw-growth-note">原則：AI 協助整理、分級與提醒；未經你確認不自動大量發陌生訊息。</div>`;
+      section.innerHTML=`<div class="xjw-growth-head"><div><h2>客戶獲客／跟進</h2><p>把名單來源、意向與下一步集中到現有 ERP，不另開一套 CRM。</p></div><a class="btn" href="#customers">客戶管理</a></div><div class="xjw-growth-metrics"><div class="xjw-growth-metric"><small>今天以前待跟進</small><strong>${p.due.length}</strong></div><div class="xjw-growth-metric"><small>高意向未成交</small><strong>${p.high.length}</strong></div><div class="xjw-growth-metric"><small>B2B 開發中</small><strong>${p.b2b.length}</strong></div></div><h3>優先跟進</h3>${leadRows(p.due)}<div class="xjw-growth-note">「優先分數」只用來排工作順序，不代表成交機率。AI／智慧層只協助整理與建議；未經人工確認不會自動發陌生訊息。</div>`;
       app.appendChild(section);
     }catch(error){console.warn('growth dashboard',error)}finally{dashboardBusy=false;}
   }
@@ -139,10 +177,10 @@
     customerPageBusy=true;
     try{
       const customers=await xjwApi('/modules/customers');
-      const p=pipeline(Array.isArray(customers)?customers:[]);
-      const counts=STAGES.map(([value,label])=>[label,customers.filter((item)=>item.lifecycle_stage===value).length]).filter(([,count])=>count>0);
+      const list=Array.isArray(customers)?customers:[];const p=pipeline(list);
+      const counts=STAGES.map(([value,label])=>[label,list.filter((item)=>item.lifecycle_stage===value).length]).filter(([,count])=>count>0);
       const section=document.createElement('section');section.className='card xjw-growth-panel';section.dataset.growthCustomers=VERSION;
-      section.innerHTML=`<div class="xjw-growth-head"><div><h2>客戶階段總覽</h2><p>來源 → 聯絡 → 跟進 → 試喝／樣品 → 成交／回購。</p></div></div><div class="xjw-growth-badges">${counts.length?counts.map(([label,count])=>`<span class="xjw-growth-badge">${esc(label)} ${count}</span>`).join(''):'<span class="xjw-growth-badge">現有舊客戶可逐步補上階段，不強制一次重填</span>'}</div>${p.due.length?`<h3 style="margin-top:14px">到期跟進</h3>${leadRows(p.due)}`:''}`;
+      section.innerHTML=`<div class="xjw-growth-head"><div><h2>客戶階段總覽</h2><p>來源 → 聯絡 → 跟進 → 試喝／樣品 → 成交／回購。</p></div></div><div class="xjw-growth-badges">${counts.length?counts.map(([label,count])=>`<span class="xjw-growth-badge">${esc(label)} ${count}</span>`).join(''):'<span class="xjw-growth-badge">現有舊客戶可逐步補上階段，不強制一次重填</span>'}</div>${p.b2b.length?`<h3 style="margin-top:14px">B2B 精準開發優先順序</h3>${leadRows(p.b2b)}`:''}${p.due.length?`<h3 style="margin-top:14px">到期跟進</h3>${leadRows(p.due)}`:''}`;
       const toolbar=app.querySelector('.xjw-toolbar');
       if(toolbar)toolbar.insertAdjacentElement('afterend',section);else app.prepend(section);
     }catch(error){console.warn('growth customers',error)}finally{customerPageBusy=false;}
@@ -161,7 +199,8 @@
     const edit=event.target.closest('[data-record-edit][data-module="customers"]');if(edit)pendingCustomerId=edit.dataset.recordEdit||'';
     const fab=event.target.closest('[data-fab="customers"]');if(fab)pendingCustomerId='';
     const growth=event.target.closest('[data-growth-edit]');if(growth){event.preventDefault();openGrowthCustomer(growth.dataset.growthEdit);return;}
-    const task=event.target.closest('[data-growth-task]');if(task){event.preventDefault();task.disabled=true;ensureFollowupTask(task.dataset.growthTask).catch((error)=>notify(error.message||String(error),true)).finally(()=>{task.disabled=false;});}
+    const task=event.target.closest('[data-growth-task]');if(task){event.preventDefault();task.disabled=true;ensureFollowupTask(task.dataset.growthTask).catch((error)=>notify(error.message||String(error),true)).finally(()=>{task.disabled=false;});return;}
+    const suggest=event.target.closest('[data-growth-suggest]');if(suggest){event.preventDefault();suggest.disabled=true;copySuggestion(suggest.dataset.growthSuggest).catch((error)=>notify(error.message||String(error),true)).finally(()=>{suggest.disabled=false;});}
   },true);
 
   const observer=new MutationObserver(()=>{
@@ -172,5 +211,5 @@
   observer.observe(document.documentElement,{childList:true,subtree:true});
   window.addEventListener('hashchange',()=>setTimeout(()=>{renderDashboardGrowth();renderCustomerGrowth();},100));
   setTimeout(()=>{renderDashboardGrowth();renderCustomerGrowth();},250);
-  window.XJWGrowthIntelligence={version:VERSION,ensureFollowupTask};
+  window.XJWGrowthIntelligence={version:VERSION,ensureFollowupTask,priorityScore,outreachSuggestion};
 })();
