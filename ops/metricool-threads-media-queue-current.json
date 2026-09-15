@@ -1,0 +1,33 @@
+{
+  "version": "2026-09-15-v1",
+  "brand": "仙加味",
+  "metricoolBrandId": "6889683",
+  "threadsAccount": "xianjiawei.tw",
+  "canonicalTimezone": "Asia/Taipei",
+  "verifiedAt": "2026-09-15T22:46:00+08:00",
+  "status": "media-production-required-before-review",
+  "total": 18,
+  "rule": "每篇Threads草稿都要有一張唯一、圖文一致的正式圖片。完成正式圖片並回填貼文中心後回待審核；未經使用者人工審核不得轉draft=false或autoPublish=true。已過原時段的草稿不得補發，通過審核後另排未來新時段。",
+  "visualRule": "只使用正式Q版小朋友小老闆；小鹿與小烏龜分開；公開只顯示仙加味；產品入鏡只合成正式產品原圖，AI不得重畫產品；找不到正式產品原圖時寧可不放產品。",
+  "items": [
+    {"metricoolId":"373122270","uuid":"804515910179504915","originalAt":"2026-09-18T20:30:00+08:00","topic":"30cc試喝流程與5～7個工作天交期","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"30cc","scene":"收到試喝資訊／查看收件與交期的生活情境；30cc若入鏡只用小玻璃裸罐正式原圖"},
+    {"metricoolId":"373648910","uuid":"-1271256096491877092","originalAt":"2026-09-14T20:00:00+08:00","topic":"龜鹿膏100g日常用法","status":"past_due_reschedule_after_approval","draft":true,"autoPublish":false,"product":"龜鹿膏","scene":"居家晚間／溫熱水化開的實際情境；產品只用正式龜鹿膏原圖"},
+    {"metricoolId":"373648947","uuid":"-4934215071559105303","originalAt":"2026-09-15T12:30:00+08:00","topic":"30cc與180cc怎麼選","status":"past_due_reschedule_after_approval","draft":true,"autoPublish":false,"product":"30cc,180cc","scene":"外出小罐與在家完整份量的選擇情境；兩款只用正式原圖且比例正確"},
+    {"metricoolId":"373648975","uuid":"-8577071652233461148","originalAt":"2026-09-17T12:30:00+08:00","topic":"第一次接觸龜鹿系列先看生活方式","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"optional","scene":"小老闆指向生活方式分類看板；若多產品無法完整正確呈現就不放產品"},
+    {"metricoolId":"375521815","uuid":"-2453100492361874425","originalAt":"2026-09-16T12:30:00+08:00","topic":"萬華與仙加味品牌故事","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"現代、乾淨的萬華生活／品牌脈絡場景，不做觀光老街中藥舖"},
+    {"metricoolId":"375521940","uuid":"-5276545568587758621","originalAt":"2026-09-18T11:00:00+08:00","topic":"先從使用習慣理解龜鹿系列","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"optional","scene":"小老闆以小匙取用／直接飲用兩種生活方式做選擇；無法完整呈現正式產品時不放產品"},
+    {"metricoolId":"375522068","uuid":"-8283886396944593212","originalAt":"2026-09-20T21:00:00+08:00","topic":"工作空檔與生活節奏","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"工作告一段落、整理桌面、喝溫水的具體生活情境"},
+    {"metricoolId":"375522169","uuid":"1818574442166960365","originalAt":"2026-09-22T21:00:00+08:00","topic":"怎麼選／試喝／價格／下單導向LINE OA","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"小老闆拿手機進行LINE諮詢的生活情境；不塞大量文字"},
+    {"metricoolId":"375522291","uuid":"-3216406065397937447","originalAt":"2026-09-24T12:30:00+08:00","topic":"仙加味內容不只賣產品","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"小老闆整理品牌內容、生活／規格／萬華主題卡片的溫暖工作情境"},
+    {"metricoolId":"375522397","uuid":"717523799758554451","originalAt":"2026-09-26T11:00:00+08:00","topic":"週末整理生活小事","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"週末居家整理冰箱、杯子與下週物品的明確情境"},
+    {"metricoolId":"375522485","uuid":"-5879842043902014261","originalAt":"2026-09-28T12:30:00+08:00","topic":"中午一杯溫熱的生活節奏","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"中午自然光、小老闆端一杯溫熱飲的日常場景"},
+    {"metricoolId":"375522587","uuid":"6609465417507097414","originalAt":"2026-09-30T20:30:00+08:00","topic":"第一次接觸龜鹿系列先問取用方式","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"optional","scene":"小老闆以小匙／飲用兩種方式做簡單選擇；產品若入鏡必須是正式原圖"},
+    {"metricoolId":"375522676","uuid":"4329837969942398654","originalAt":"2026-10-02T20:30:00+08:00","topic":"偏熱／溫／常溫的互動提問","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"不同溫度飲品的生活互動場景，以溫熱為仙加味主視覺，不放錯誤產品"},
+    {"metricoolId":"375522774","uuid":"2443915431236944055","originalAt":"2026-10-04T11:00:00+08:00","topic":"下午溫熱飲與幾分鐘空檔","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"下午窗邊／桌邊短暫休息，小老闆端溫熱飲"},
+    {"metricoolId":"375522834","uuid":"4058297471817699092","originalAt":"2026-10-06T21:00:00+08:00","topic":"開店前整理桌面與今日工作","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"乾淨現代的仙加味虛擬工作空間，小老闆整理桌面，不模仿觀光老街中藥舖"},
+    {"metricoolId":"375522943","uuid":"4714723117383569142","originalAt":"2026-10-09T20:30:00+08:00","topic":"龜鹿膏開罐後冷藏與週末整理","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"龜鹿膏","scene":"週末整理冰箱，龜鹿膏只以正式原圖等比例合成，呈現開罐後冷藏情境"},
+    {"metricoolId":"375523030","uuid":"-8941937064773136394","originalAt":"2026-10-11T11:00:00+08:00","topic":"把規格使用保存交期整理清楚","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"小老闆整理清楚資訊卡／筆記的品牌知識情境；避免AI亂碼文字"},
+    {"metricoolId":"375523138","uuid":"4946143609391040391","originalAt":"2026-10-13T21:00:00+08:00","topic":"早上或下午哪個空檔比較適合自己","status":"needs_unique_image","draft":true,"autoPublish":false,"product":"none","scene":"同一生活空間用晨間／午後光線概念呈現互動選擇，不做拼貼分割感"
+    }
+  ]
+}
