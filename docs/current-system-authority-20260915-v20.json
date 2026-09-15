@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-15-v20",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260913-v19.json#2026-09-13-v19",
+  "updatedAt": "2026-09-15T22:46:00+08:00",
+  "rule": "本檔覆蓋v19之後使用者最新確認的貼文圖片、產品視覺與Threads正式發布路徑。新版正確資料優先；與v19衝突時以本檔為準。",
+  "socialPublishing": {
+    "metricoolBrandId": "6889683",
+    "metricoolBrandLabel": "仙加味",
+    "instagramAccount": "xianjiawei.tw",
+    "threadsAccount": "xianjiawei.tw",
+    "timezone": "Asia/Taipei",
+    "threadsFormalRoute": "Metricool",
+    "threadsDirectGraphRoute": "not-authoritative",
+    "manualApprovalRequired": true,
+    "imageRequiredForEveryPublicPost": true,
+    "blankImageUrlAllowedForPublicPost": false,
+    "threadsDraftRule": "Metricool中尚未完成正式圖片或尚未經使用者人工審核的Threads項目維持draft=true、autoPublish=false；不得因舊v19排程權威而恢復自動發布。",
+    "latestMetricoolVerification": {
+      "verifiedAt": "2026-09-15T22:46:00+08:00",
+      "brandId": "6889683",
+      "brandLabel": "仙加味",
+      "networks": {
+        "facebook": "411869648852531",
+        "instagram": "xianjiawei.tw",
+        "threads": "xianjiawei.tw"
+      },
+      "finding": "目前可見Threads候選多為draft=true且autoPublish=false，且多數尚未附媒體；依最新規則保持草稿，完成唯一正式圖片與人工審核後才可轉正式排程。"
+    },
+    "supersedesV19Repairs": [
+      {
+        "uuid": "-5276545568587758621",
+        "topic": "先從使用習慣理解龜鹿系列",
+        "oldRule": "v19要求scheduled-auto",
+        "currentRule": "沒有正式圖與最新人工審核前維持Metricool草稿，不自動發布"
+      },
+      {
+        "uuid": "-8283886396944593212",
+        "topic": "工作空檔與生活節奏",
+        "oldRule": "v19要求scheduled-auto",
+        "currentRule": "沒有正式圖與最新人工審核前維持Metricool草稿，不自動發布"
+      }
+    ]
+  },
+  "visualAuthority": {
+    "source": "docs/social-visual-authority-20260915-v2.md",
+    "mascot": "只使用已確認的仙加味小老闆角色定稿圖；Q版小朋友小男孩；小鹿與小烏龜分開。",
+    "publicBrand": "仙加味",
+    "legacyPublicBrandForbidden": "台興山產",
+    "productRule": "AI不得重畫產品本體；產品入鏡只使用正式產品原圖等比例合成。",
+    "formalProductAssets": {
+      "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
+      "180cc": "images/customer-display-v20260812/guilu-drink-180cc-product.jpg",
+      "龜鹿膏": "images/customer-display-v20260812/guilu-gao.avif",
+      "龜鹿湯塊": "images/customer-display-v20260812/guilu-tangkuai.avif",
+      "龜鹿膠": "images/customer-display-v20260812/guilu-jiao.avif",
+      "鹿茸粉": "images/customer-display-v20260812/luerong-fen.avif"
+    },
+    "guiluJiaoPurpleBox": "所有先前AI生成或重畫紫色龜鹿膠盒一律作廢；600g／盒、32塊裝、每塊約18.75g，只能使用正式原產品圖。",
+    "guiluTangkuai": "75g／盒、8塊裝、每塊約9.375g。",
+    "qixuanTea": "尚未完成；暫停所有公開內容與圖片。"
+  },
+  "publishingFlow": "文案→確認情境→生成背景／小老闆／夥伴→產品需要入鏡時合成正式產品原圖→圖文一致檢查→上傳貼文中心→待審核→使用者人工通過→才可排程或立即發布",
+  "remainingHardGaps": [
+    "已建立的Threads草稿仍需逐篇完成唯一合格正式圖片、回填貼文中心並人工審核。",
+    "Cloudflare Access／手機實際按鈕與本文互動驗收需以可連線瀏覽器實測；GitHub靜態守門已確認缺圖會阻擋審核。",
+    "正式連續動畫來源尚未完成，且只允許免費方案。"
+  ]
+}
