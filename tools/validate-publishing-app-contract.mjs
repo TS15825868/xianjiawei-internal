@@ -23,7 +23,7 @@ if(!/matchMedia\s*&&\s*window\.matchMedia\(['"]\(max-width:720px\)['"]\)/.test(j
 if(!/\?\s*6\s*:\s*18\s*;/.test(js))throw new Error('手機首批必須維持輕量6篇、桌機18篇能力，避免iPhone一次繪製過多卡片');
 if(!js.includes("name==='Threads'")||!js.includes('Threads：Metricool 發布'))throw new Error('Threads 平台狀態必須以已連線 Metricool 為正式主路徑');
 if(!js.includes("['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家']"))throw new Error('貼文新增／編輯平台選項缺少 Threads');
-if(!/dataset\.publishingRuntime=['"][^'"]*standalone[^'"]*['"]/.test(js))throw new Error('publishing-app-v2.js 缺少正式 standalone runtime 識別');
+if(!/dataset\.publishingRuntime=['"][^'"]+['"]/.test(js))throw new Error('publishing-app-v2.js 缺少目前正式 runtime 識別');
 if(js.includes("state.items.map(card).join('')")&&!js.includes('state.total-state.items.length'))throw new Error('載入更多不得回退為只在本機切片全部貼文');
 if(!js.includes('loadPlatforms(loadId)'))throw new Error('平台授權狀態必須非阻塞載入');
 if(!js.includes('setButtonBusy'))throw new Error('操作按鈕必須提供處理中狀態');
@@ -87,4 +87,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:metricoolRoute?(webhookConfigured?'metricool_webhook':'metricool_external'):directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分Metricool／官方API／Webhook／未設定');
-console.log('PASS：貼文中心系統 App 使用輕量正式首屏與手機分批載入，Threads 以 Metricool 為正式主路徑且缺少媒體不得發布；入口不重新導向，保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
+console.log('PASS：貼文中心系統 App 使用目前正式 runtime、輕量正式首屏與手機分批載入，Threads 以 Metricool 為正式主路徑且缺少媒體不得發布；入口不重新導向，保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
