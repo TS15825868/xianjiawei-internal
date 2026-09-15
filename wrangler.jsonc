@@ -1,4 +1,4 @@
-// Temporary no-login maintenance read-only mode. Remove together with TEMP_DISABLE_ACCESS when restoring Cloudflare Access.
+// 正式模式：Cloudflare Access 保護內部系統；登入後可依角色執行貼文中心操作。
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "xianjiawei-internal",
@@ -8,7 +8,7 @@
   "vars": {
     "POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f",
     "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com",
-    "TEMP_DISABLE_ACCESS": "true"
+    "TEMP_DISABLE_ACCESS": "false"
   },
   "assets": {
     "directory": "./dist",
