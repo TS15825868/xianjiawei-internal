@@ -33,20 +33,26 @@ jobs:
           set -euo pipefail
           grep -q "Facebook:{direct:'facebook'" src/social-publisher.js
           grep -q "Instagram:{direct:'instagram'" src/social-publisher.js
-          grep -q "Threads:{direct:'threads'" src/social-publisher.js
+          grep -q "Threads:{url:'THREADS_PUBLISH_WEBHOOK_URL',token:'THREADS_PUBLISH_WEBHOOK_TOKEN',route:'metricool'}" src/social-publisher.js
+          grep -q "threadsFormalRoute:'Metricool xianjiawei.tw'" src/social-publisher.js
           grep -q "'LINE OA':{direct:'line_oa'" src/social-publisher.js
           grep -q "'LINE VOOM':{manual:true" src/social-publisher.js
           grep -q "'Google 商家':{direct:'google_business'" src/social-publisher.js
           grep -q 'META_PAGE_ACCESS_TOKEN' src/social-publisher.js
-          grep -q 'THREADS_ACCESS_TOKEN' src/social-publisher.js
           grep -q 'LINE_CHANNEL_ACCESS_TOKEN' src/social-publisher.js
           grep -q 'GOOGLE_OAUTH_REFRESH_TOKEN' src/social-publisher.js
           grep -q "platformConnectionProbePath:'/healthz/platform-connections'" src/full-system-entry.js
           test -f src/platform-connection-probe.js
-          grep -q 'graph.threads.net' src/platform-connection-probe.js
+          grep -q "externalScheduler:'Metricool'" src/platform-connection-probe.js
+          grep -q "account:'xianjiawei.tw'" src/platform-connection-probe.js
+          grep -q 'externalSchedulerReady:true' src/platform-connection-probe.js
+          if grep -q 'graph.threads.net' src/platform-connection-probe.js; then
+            echo 'Threads連線探測不得再依賴Graph API' >&2
+            exit 1
+          fi
           grep -q 'publishes_content:false' src/platform-connection-probe.js
           grep -q 'blocking_platforms' src/platform-connection-probe.js
-          echo 'PASS current social publisher capabilities and safe connection probe present, including Threads.'
+          echo 'PASS current social publisher capabilities and safe connection probe present; Threads authority is Metricool xianjiawei.tw.'
       - name: Require Cloudflare audit credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
@@ -68,7 +74,7 @@ jobs:
           const readiness={
             Facebook:has('META_PAGE_ACCESS_TOKEN')||pair('FACEBOOK_PUBLISH_WEBHOOK_URL','FACEBOOK_PUBLISH_WEBHOOK_TOKEN'),
             Instagram:has('META_PAGE_ACCESS_TOKEN')||pair('INSTAGRAM_PUBLISH_WEBHOOK_URL','INSTAGRAM_PUBLISH_WEBHOOK_TOKEN'),
-            Threads:has('THREADS_ACCESS_TOKEN')||pair('THREADS_PUBLISH_WEBHOOK_URL','THREADS_PUBLISH_WEBHOOK_TOKEN'),
+            Threads:'metricool_external:xianjiawei.tw',
             'LINE OA':has('LINE_CHANNEL_ACCESS_TOKEN')||pair('LINE_OA_PUBLISH_WEBHOOK_URL','LINE_OA_PUBLISH_WEBHOOK_TOKEN'),
             'LINE VOOM':'manual_required',
             'Google 商家':['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has)||pair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN')
@@ -105,15 +111,20 @@ jobs:
           for attempt in $(seq 1 24); do
             if curl -fsS --max-time 20 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json; then
               live="$(node -e "const x=require('/tmp/platform-connections.json');console.log(x.fullSystemVersion||'')")"
-              if [ "$live" = "$expected" ] && node -e "const x=require('/tmp/platform-connections.json');process.exit(x.platforms?.Threads?0:1)"; then
-                echo "PASS live platform probe version=$live with Threads"
+              if [ "$live" = "$expected" ] && node - <<'NODE'
+              const x=require('/tmp/platform-connections.json');
+              const t=x.platforms?.Threads||{};
+              process.exit(t.externalScheduler==='Metricool'&&t.account==='xianjiawei.tw'&&t.operational===true?0:1);
+              NODE
+              then
+                echo "PASS live platform probe version=$live with Metricool Threads"
                 exit 0
               fi
-              echo "等待正式部署含Threads：live=$live expected=$expected attempt=$attempt/24"
+              echo "等待正式部署含Metricool Threads：live=$live expected=$expected attempt=$attempt/24"
             fi
             sleep 5
           done
-          echo "正式平台探測端點未在時限內更新到含Threads版本" >&2
+          echo "正式平台探測端點未在時限內更新到Metricool Threads版本" >&2
           exit 1
       - name: Probe live provider credentials without publishing content
         shell: bash
@@ -133,13 +144,16 @@ jobs:
           const names=['Facebook','Instagram','Threads','LINE OA','Google 商家'];
           for(const name of names){
             const item=p[name]||{};
-            console.log(`${name}: mode=${item.mode||'unknown'} direct=${Boolean(item.directConfigured)} webhook=${Boolean(item.webhookConfigured)} connected=${String(item.connected)} operational=${Boolean(item.operational)} degraded=${Boolean(item.degraded)} status=${item.status||'unknown'}`);
+            console.log(`${name}: mode=${item.mode||'unknown'} direct=${Boolean(item.directConfigured)} webhook=${Boolean(item.webhookConfigured)} external=${item.externalScheduler||''} account=${item.account||''} connected=${String(item.connected)} operational=${Boolean(item.operational)} degraded=${Boolean(item.degraded)} status=${item.status||'unknown'}`);
           }
           for(const name of ['Facebook','Instagram','LINE OA']){
             const item=p[name]||{};
             if(item.operational!==true)throw new Error(`${name} 沒有可用官方 API 或既有 Webhook 備援：${item.status||'unknown'}`);
           }
-          if(!p.Threads)throw new Error('Threads 未出現在正式平台探測');
+          const threads=p.Threads||{};
+          if(threads.operational!==true||threads.externalScheduler!=='Metricool'||threads.account!=='xianjiawei.tw'||threads.directConfigured===true){
+            throw new Error('Threads正式路徑不是Metricool xianjiawei.tw');
+          }
           const blocking=Array.isArray(x.blocking_platforms)?x.blocking_platforms:[];
           if(blocking.length)throw new Error(`已設定平台沒有可用發布路徑：${blocking.join(', ')}`);
           const degraded=Array.isArray(x.degraded_platforms)?x.degraded_platforms:[];
@@ -147,5 +161,5 @@ jobs:
           if(degraded.length)console.log(`DEGRADED_WITH_FALLBACK ${degraded.join(', ')}`);
           if(unconfigured.length)console.log(`UNCONFIGURED ${unconfigured.join(', ')}`);
           if(p['LINE VOOM']?.manualRequired!==true)throw new Error('LINE VOOM 必須維持人工發布');
-          console.log('PASS live provider credential probe completed without publishing content; Threads is visible even when authorization is not yet configured.');
+          console.log('PASS live provider credential probe completed without publishing content; Threads is Metricool xianjiawei.tw.');
           NODE
