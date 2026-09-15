@@ -11,6 +11,11 @@ on:
         options:
           - RESTORE
           - BYPASS
+  push:
+    branches: [main]
+    paths:
+      - 'wrangler.jsonc'
+      - '.github/workflows/temporary-cloudflare-access-bypass.yml'
 
 permissions:
   contents: read
@@ -18,7 +23,7 @@ permissions:
 env:
   TARGET_DOMAIN: xianjiawei-internal.tung314069.workers.dev
   TEMP_POLICY_NAME: TEMPORARY XJW BYPASS DURING SYSTEM COMPLETION
-  MODE: ${{ inputs.mode }}
+  MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'RESTORE' }}
 
 jobs:
   access-mode:
