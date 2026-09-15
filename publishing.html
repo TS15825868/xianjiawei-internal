@@ -60,7 +60,7 @@
   <script>
     (function(){
       'use strict';
-      window.__XJW_BOOT_VERSION__='20260915-lean-boot-v11-mobile-fast';
+      window.__XJW_BOOT_VERSION__='20260915-lean-boot-v12-mobile-stable';
       var loaded={},optionalScheduled=false;
       function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.async=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
@@ -70,6 +70,8 @@
       function toast(message,error){var root=document.getElementById('toastRoot');if(!root)return;var node=document.createElement('div');node.className='toast'+(error?' error':'');node.textContent=message;root.appendChild(node);setTimeout(function(){node.remove()},3200)}
       function scheduleOptionalTools(){
         if(optionalScheduled)return;optionalScheduled=true;
+        var mobile=!!(window.matchMedia&&window.matchMedia('(max-width:720px)').matches);
+        if(mobile)return;
         var essential=['/assets/js/publishing-readiness-ui.js?v=20260914-live-summary-v9','/assets/js/manual-publish-tools.js?v=20260818-lazy-v2'];
         var deferred=['/assets/js/svg-candidate-rasterizer.js?v=20260818-lazy-raster-v2','/assets/js/post-regenerate-buttons.js?v=20260818-regeneration-buttons-v3','/assets/js/post-regenerate-policy-v1.js?v=20260818-regeneration-policy-v7','/assets/js/formal-media-policy-v20260810.js?v=20260818-lazy-media-v2','/assets/js/zip-media-assistant.js?v=20260818-lazy-media-v2','/assets/js/product-authority-guard.js?v=20260818-lazy-authority-v2','/assets/js/publishing-content-guidance-v20260814.js?v=20260818-lazy-guidance-v3'];
         var run=function(){essential.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*100)});setTimeout(function(){deferred.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*260)})},4200)};
@@ -110,7 +112,7 @@
     })();
   </script>
   <script defer src="/assets/js/device-image-upload.js?v=20260818-direct-upload-v2"></script>
-  <script defer src="/assets/js/publishing-app-v2.js?v=20260914-maintenance-smooth-v9"></script>
+  <script defer src="/assets/js/publishing-app-v2.js?v=20260915-mobile-stable-v12"></script>
   <script defer src="/assets/js/publishing-review-gate.js?v=20260914-audit-debounce-v4"></script>
 </body>
 </html>
