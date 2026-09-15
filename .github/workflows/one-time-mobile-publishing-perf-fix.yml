@@ -1,0 +1,107 @@
+name: 一次性修正貼文中心手機效能與Threads
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-mobile-publishing-perf-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch mobile first paint and Threads route
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import ast,re
+
+          js_path=Path('assets/js/publishing-app-v2.js')
+          js=js_path.read_text()
+          old="const PAGE_SIZE=18;"
+          new="const PAGE_SIZE=(window.matchMedia&&window.matchMedia('(max-width:720px)').matches)?6:18;"
+          if old not in js: raise SystemExit('PAGE_SIZE anchor missing')
+          js=js.replace(old,new,1)
+
+          old_block="""function renderPlatforms(){
+            const root=$('#platformSummary');
+            if(!root)return;
+            const entries=Object.entries(state.platforms?.platforms||{});
+            root.innerHTML=entries.length
+              ?entries.map(([name,p])=>`<span class=\"platform-chip ${p.ready?'ready':'manual'}\">${esc(name)}：${p.ready?'可自動發布':'人工／未授權'}</span>`).join('')
+              :'<span class=\"platform-chip\">平台狀態稍後載入</span>';
+          }
+          """
+          new_block="""function renderPlatforms(){
+            const root=$('#platformSummary');
+            if(!root)return;
+            const entries=Object.entries(state.platforms?.platforms||{});
+            root.innerHTML=entries.length
+              ?entries.map(([name,p])=>{
+                if(name==='Threads')return '<span class=\"platform-chip ready\" data-threads-route=\"metricool\">Threads：Metricool 發布</span>';
+                return `<span class=\"platform-chip ${p.ready?'ready':'manual'}\">${esc(name)}：${p.ready?'可自動發布':'人工／未授權'}</span>`;
+              }).join('')
+              :'<span class=\"platform-chip\">平台狀態稍後載入</span>';
+          }
+          """
+          if old_block not in js: raise SystemExit('renderPlatforms anchor missing')
+          js=js.replace(old_block,new_block,1)
+
+          old_list="['Facebook','Instagram','LINE OA','LINE VOOM','Google 商家']"
+          new_list="['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家']"
+          if old_list not in js: raise SystemExit('platform list anchor missing')
+          js=js.replace(old_list,new_list,1)
+          old_default="(post?.platforms||['Facebook','Instagram']).includes(name)"
+          new_default="(post?.platforms||['Facebook','Instagram','Threads']).includes(name)"
+          if old_default not in js: raise SystemExit('default platform anchor missing')
+          js=js.replace(old_default,new_default,1)
+          js_path.write_text(js)
+
+          html_path=Path('publishing.html')
+          html=html_path.read_text()
+          html=html.replace('publishing-center-app-20260914-v13-live-platform-status','publishing-center-app-20260915-v14-mobile-fast-metricool-threads',1)
+          html=html.replace("window.__XJW_BOOT_VERSION__='20260914-lean-boot-v10-live-platform-status'","window.__XJW_BOOT_VERSION__='20260915-lean-boot-v11-mobile-fast'",1)
+
+          pat=re.compile(r"var scripts=\[(.*?)\];\n        var run=function\(\)\{scripts\.forEach\(function\(src,index\)\{setTimeout\(function\(\)\{loadScript\(src\)\.catch\(function\(\)\{\}\)\},index\*120\)\}\)\};",re.S)
+          m=pat.search(html)
+          if not m: raise SystemExit('optional scripts block missing')
+          scripts=ast.literal_eval('['+m.group(1)+']')
+          essential=[s for s in scripts if 'publishing-readiness-ui.js' in s or 'manual-publish-tools.js' in s]
+          deferred=[s for s in scripts if s not in essential]
+          def jsarr(items): return '['+','.join(repr(x) for x in items)+']'
+          replacement=(
+            'var essential='+jsarr(essential)+';\n'
+            '        var deferred='+jsarr(deferred)+';\n'
+            "        var run=function(){essential.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*100)});setTimeout(function(){deferred.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*260)})},4200)};"
+          )
+          html=html[:m.start()]+replacement+html[m.end():]
+          html_path.write_text(html)
+
+          assert 'max-width:720px' in js
+          assert "Threads：Metricool 發布" in js
+          assert "'Threads','LINE OA'" in js
+          assert 'var essential=' in html and 'var deferred=' in html
+          assert '4200' in html
+          print('PASS mobile batch=6, core Metricool Threads, heavy optional tools deferred')
+          PY
+      - name: Remove one-time workflow and commit patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/one-time-mobile-publishing-perf-fix.yml
+          git config user.name 'TS15825868'
+          git config user.email 'tung314069@gmail.com'
+          git add assets/js/publishing-app-v2.js publishing.html .github/workflows/one-time-mobile-publishing-perf-fix.yml
+          git diff --cached --check
+          git commit -m 'perf: speed mobile publishing and keep Threads on Metricool'
+          git push origin HEAD:main
