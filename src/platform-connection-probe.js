@@ -95,6 +95,19 @@ async function probeMeta(env){
   }finally{t.done();}
 }
 
+async function probeThreads(env){
+  const token=clean(env?.THREADS_ACCESS_TOKEN);
+  const webhookConfigured=pair(env,'THREADS_PUBLISH_WEBHOOK_URL','THREADS_PUBLISH_WEBHOOK_TOKEN');
+  if(!token)return unconfigured('Threads',webhookConfigured);
+  const t=timeout();
+  try{
+    const response=await fetch(`https://graph.threads.net/v1.0/me?fields=${encodeURIComponent('id,username')}&access_token=${encodeURIComponent(token)}`,{signal:t.controller.signal});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!clean(data.id))return failed('Threads',{webhookConfigured,status:response.status,reason:'threads_token_or_api_unavailable'});
+    return connected('Threads',{webhookConfigured,status:response.status,details:{threadsUserIdPresent:true,usernamePresent:Boolean(clean(data.username))}});
+  }catch{return failed('Threads',{webhookConfigured,reason:'threads_probe_timeout_or_network_error'});}finally{t.done();}
+}
+
 async function probeLine(env){
   const token=clean(env?.LINE_CHANNEL_ACCESS_TOKEN);
   const webhookConfigured=pair(env,'LINE_OA_PUBLISH_WEBHOOK_URL','LINE_OA_PUBLISH_WEBHOOK_TOKEN');
@@ -152,10 +165,11 @@ function operationalState(item){
 }
 
 export async function probePublisherConnections(env){
-  const [meta,line,google]=await Promise.all([probeMeta(env),probeLine(env),probeGoogle(env)]);
+  const [meta,threads,line,google]=await Promise.all([probeMeta(env),probeThreads(env),probeLine(env),probeGoogle(env)]);
   const platforms={
     Facebook:operationalState(meta.Facebook),
     Instagram:operationalState(meta.Instagram),
+    Threads:operationalState(threads),
     'LINE OA':operationalState(line),
     'LINE VOOM':{
       platform:'LINE VOOM',
