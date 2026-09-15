@@ -2,6 +2,7 @@
   const PLATFORM_URLS={
     'Facebook':'https://www.facebook.com/',
     'Instagram':'https://www.instagram.com/',
+    'Threads':'https://www.threads.com/',
     'LINE OA':'https://manager.line.biz/',
     'LINE OA 廣播':'https://manager.line.biz/',
     'LINE VOOM':'https://manager.line.biz/',
@@ -56,7 +57,7 @@
       '',
       published.length?'注意：上方「已由系統完成」的平台不要再次人工發布。':'',
       '人工平台發布完成後，回獨立貼文發佈系統按「手動補登已發布」。',
-      'LINE VOOM 維持人工發布；其他沒有官方 API／Token 的平台也會自動轉到這個人工流程。'
+      'LINE VOOM 維持人工發布；Threads 若尚未完成官方 API 授權也會自動轉到這個人工流程，不阻擋其他平台。'
     ].filter(Boolean).join('\n');
   }
   async function copy(text){
@@ -95,6 +96,17 @@
   }
   async function handlePackage(button){const card=button.closest('.xjw-row'),id=postId(card);if(!id)return;try{const [post,delivery]=await Promise.all([getPost(id),getDeliveries(id)]);openPackage(post,delivery);}catch(error){toast(error.message||String(error),true);}}
   async function handleMark(button){const card=button.closest('.xjw-row'),id=postId(card);if(!id)return;button.disabled=true;try{await manualMarkPublished(id);}catch(error){toast(error.message||String(error),true);}finally{button.disabled=false;}}
+  function ensureThreadsCheckbox(){
+    const form=document.getElementById('postForm');
+    if(!form||form.querySelector('input[name="platforms"][value="Threads"]'))return;
+    const fieldset=[...form.querySelectorAll('fieldset')].find((node)=>/發布平台/.test(node.querySelector('legend')?.textContent||''));
+    if(!fieldset)return;
+    const label=document.createElement('label');label.className='check-label';
+    const input=document.createElement('input');input.type='checkbox';input.name='platforms';input.value='Threads';input.checked=true;
+    label.append(input,document.createTextNode(' Threads'));
+    const lineLabel=[...fieldset.querySelectorAll('label')].find((node)=>/LINE OA/.test(node.textContent||''));
+    if(lineLabel)fieldset.insertBefore(label,lineLabel);else fieldset.appendChild(label);
+  }
   async function enhanceDashboard(){
     const grid=document.querySelector('.metric-grid');
     if(!grid||grid.querySelector('[data-manual-required-metric]')||dashboardMetricLoading)return;
@@ -102,6 +114,7 @@
     try{const data=await api('/overview'),count=Number(data?.posts?.manual_required||0),article=document.createElement('article');article.className='card metric';article.dataset.manualRequiredMetric='1';article.innerHTML=`<small>需人工發布</small><strong>${count}</strong><a href="${PUBLISHING_URL}">開啟獨立貼文系統 →</a>`;grid.appendChild(article);}catch{}finally{dashboardMetricLoading=false;}
   }
   function enhance(){
+    ensureThreadsCheckbox();
     const select=document.getElementById('listStatus');
     if(select&&!select.querySelector('option[value="manual_required"]')){const option=document.createElement('option');option.value='manual_required';option.textContent='需人工發布';select.appendChild(option);}
     document.querySelectorAll('.xjw-row').forEach((card)=>{
@@ -117,5 +130,5 @@
   },true);
   const observer=new MutationObserver(enhance);observer.observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
-  window.XJWManualPublishTools=Object.freeze({version:'2026-08-09-v2-standalone-publishing',publishingUrl:PUBLISHING_URL,packageText});
+  window.XJWManualPublishTools=Object.freeze({version:'2026-09-15-v3-threads',publishingUrl:PUBLISHING_URL,packageText,ensureThreadsCheckbox});
 })();
