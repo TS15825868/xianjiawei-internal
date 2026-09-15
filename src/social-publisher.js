@@ -1,7 +1,7 @@
 const PLATFORM_CONFIG = Object.freeze({
   Facebook:{direct:'facebook',url:'FACEBOOK_PUBLISH_WEBHOOK_URL',token:'FACEBOOK_PUBLISH_WEBHOOK_TOKEN'},
   Instagram:{direct:'instagram',url:'INSTAGRAM_PUBLISH_WEBHOOK_URL',token:'INSTAGRAM_PUBLISH_WEBHOOK_TOKEN'},
-  Threads:{direct:'threads',url:'THREADS_PUBLISH_WEBHOOK_URL',token:'THREADS_PUBLISH_WEBHOOK_TOKEN'},
+  Threads:{url:'THREADS_PUBLISH_WEBHOOK_URL',token:'THREADS_PUBLISH_WEBHOOK_TOKEN',route:'metricool'},
   'LINE OA':{direct:'line_oa',url:'LINE_OA_PUBLISH_WEBHOOK_URL',token:'LINE_OA_PUBLISH_WEBHOOK_TOKEN'},
   'LINE OA 廣播':{direct:'line_oa',url:'LINE_OA_PUBLISH_WEBHOOK_URL',token:'LINE_OA_PUBLISH_WEBHOOK_TOKEN'},
   'LINE VOOM':{manual:true,manualReason:'LINE VOOM 目前沒有提供官方帳號建立貼文的公開 API，需在 LINE Official Account Manager 人工發布。'},
@@ -70,7 +70,7 @@ async function resolveMetaIdentity(env){
 function directReadiness(env,direct){
   if(direct==='facebook') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
   if(direct==='instagram') return Boolean(clean(env.META_PAGE_ACCESS_TOKEN));
-  if(direct==='threads') return Boolean(clean(env.THREADS_ACCESS_TOKEN));
+  if(direct==='threads') return false;
   if(direct==='line_oa') return Boolean(clean(env.LINE_CHANNEL_ACCESS_TOKEN));
   if(direct==='google_business') return ['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every((name)=>Boolean(clean(env[name])));
   return false;
@@ -78,7 +78,7 @@ function directReadiness(env,direct){
 function webhookReady(env,config){return Boolean(clean(env[config.url])&&clean(env[config.token]));}
 function payloadFor(post,platform){
   const video=isVideoPost(post),url=mediaUrl(post);
-  return {event:'publish_social_post',idempotency_key:`${post.id}:${platform}`,platform,post:{id:post.id,title:post.title||'',headline:post.headline||'',copy:post.copy||'',category:post.category||'',media_type:video?'video':'image',media_url:url,video_url:video?url:'',image_url:video?'':url,image_alt:post.image_alt||'',scheduled_at:post.scheduled_at||'',approved_by:post.approved_by||'',approved_at:post.approved_at||''}};
+  return {event:'publish_social_post',idempotency_key:`${post.id}:${platform}`,platform,route:platform==='Threads'?'metricool':'default',post:{id:post.id,title:post.title||'',headline:post.headline||'',copy:post.copy||'',category:post.category||'',media_type:video?'video':'image',media_url:url,video_url:video?url:'',image_url:video?'':url,image_alt:post.image_alt||'',scheduled_at:post.scheduled_at||'',approved_by:post.approved_by||'',approved_at:post.approved_at||''}};
 }
 
 async function dispatchFacebookImage(env,post){
@@ -141,35 +141,6 @@ async function dispatchInstagram(env,post){
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
 
-async function dispatchThreads(env,post){
-  const platform='Threads',token=clean(env.THREADS_ACCESS_TOKEN),timeout=withTimeout();
-  try{
-    if(!token)return{platform,ok:false,retryable:false,error:'缺少 THREADS_ACCESS_TOKEN'};
-    const text=postText(post).slice(0,500),media=mediaUrl(post),video=isVideoPost(post);
-    const params={access_token:token,media_type:video?'VIDEO':media?'IMAGE':'TEXT',text};
-    if(video&&media)params.video_url=media;
-    else if(media)params.image_url=media;
-    const createResponse=await fetch('https://graph.threads.net/v1.0/me/threads',{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});
-    const created=await responseResult(createResponse,platform);
-    if(!created.ok)return created;
-    const creationId=clean(created.remote_id);
-    if(!creationId)return{platform,ok:false,retryable:true,error:'Threads 未回傳建立容器 ID'};
-    if(video){
-      for(let attempt=0;attempt<8;attempt+=1){
-        await sleep(attempt===0?1000:1800);
-        const statusResponse=await fetch(`https://graph.threads.net/v1.0/${encodeURIComponent(creationId)}?fields=status,error_message&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
-        const statusData=await statusResponse.json().catch(()=>({}));
-        if(['FINISHED','PUBLISHED'].includes(clean(statusData.status).toUpperCase()))break;
-        if(['ERROR','EXPIRED'].includes(clean(statusData.status).toUpperCase()))return{platform,ok:false,retryable:false,error:statusData.error_message||`Threads 容器狀態：${statusData.status}`};
-        if(attempt===7)return{platform,ok:false,retryable:true,error:'Threads 影片處理尚未完成，稍後會自動重試'};
-      }
-    }
-    const publishResponse=await fetch('https://graph.threads.net/v1.0/me/threads_publish',{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:creationId,access_token:token})});
-    const result=await responseResult(publishResponse,platform);
-    return result.ok?{...result,media_type:video?'video':media?'image':'text'}:result;
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
-}
-
 async function dispatchLineOfficialAccount(env,post,platform){
   const timeout=withTimeout();
   try{
@@ -223,11 +194,10 @@ async function dispatchPlatform(env,post,platform){
     let directResult=null;
     if(config.direct==='facebook') directResult=await dispatchFacebook(env,post);
     else if(config.direct==='instagram') directResult=await dispatchInstagram(env,post);
-    else if(config.direct==='threads') directResult=await dispatchThreads(env,post);
     else if(config.direct==='line_oa') directResult=await dispatchLineOfficialAccount(env,post,platform);
     else if(config.direct==='google_business') directResult=await dispatchGoogleBusiness(env,post);
     if(directResult?.ok) return directResult;
-    const fallbackAllowed=(platform==='Instagram'&&/解析 Instagram|Instagram (?:Business Account|專業帳號).*ID|缺少 META_INSTAGRAM_USER_ID/i.test(clean(directResult?.error)))||(platform==='Threads'&&/THREADS_ACCESS_TOKEN|Threads/i.test(clean(directResult?.error)));
+    const fallbackAllowed=(platform==='Instagram'&&/解析 Instagram|Instagram (?:Business Account|專業帳號).*ID|缺少 META_INSTAGRAM_USER_ID/i.test(clean(directResult?.error)));
     if(fallbackAllowed&&webhookReady(env,config)){
       const webhookResult=await dispatchWebhook(env,post,platform,config);
       return webhookResult.ok
@@ -237,6 +207,7 @@ async function dispatchPlatform(env,post,platform){
     if(directResult) return directResult;
   }
   if(webhookReady(env,config)) return dispatchWebhook(env,post,platform,config);
+  if(config.route==='metricool')return{platform,ok:false,retryable:false,manual_required:true,external_scheduler:'Metricool',account:'xianjiawei.tw',error:'Threads 正式發布固定走 Metricool xianjiawei.tw；尚未設定伺服器端 Metricool Webhook 時不得改走 Threads Graph API。'};
   return{platform,ok:false,retryable:false,manual_required:true,error:`尚未設定 ${platform} 官方 API 或 Webhook；已改走人工發布包，不阻擋其他已授權平台。`};
 }
 
@@ -268,7 +239,7 @@ async function expireLateScheduledPost(env,post,now){
   const unresolvedPlatforms=platforms.filter((platform)=>!publishedPlatforms.includes(platform));
   const nowIso=now.toISOString();
   const lateness=Math.round(scheduleLatenessMinutes(post,now)*10)/10;
-  const reason=`\u5df2\u8d85\u904e\u6b63\u5f0f\u6392\u7a0b ${MAX_SCHEDULE_LATENESS_MINUTES} \u5206\u9418\u81ea\u52d5\u767c\u5e03\u7a97\u53e3\uff08\u76ee\u524d\u5ef6\u9072\u7d04 ${lateness} \u5206\u9418\uff09\uff1b\u70ba\u907f\u514d\u975e\u9810\u671f\u665a\u767c\uff0c\u7cfb\u7d71\u5df2\u505c\u6b62\u81ea\u52d5\u88dc\u767c\u3002`;
+  const reason=`已超過正式排程 ${MAX_SCHEDULE_LATENESS_MINUTES} 分鐘自動發布窗口（目前延遲約 ${lateness} 分鐘）；為避免非預期晚發，系統已停止自動補發。`;
   if(publishedPlatforms.length){
     for(const platform of unresolvedPlatforms){
       await env.DB.prepare(`INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,'manual_required',0,NULL,NULL,'','',?,?,?) ON CONFLICT(post_id,platform) DO UPDATE SET status='manual_required',response_json='',error_text=excluded.error_text,updated_at=excluded.updated_at`).bind(post.id,platform,reason,nowIso,nowIso).run();
@@ -281,6 +252,8 @@ async function expireLateScheduledPost(env,post,now){
   return{id:post.id,ok:false,expired:true,reason:'schedule_late_cutoff',lateness_minutes:lateness,returned_to:'pending_review',message:reason};
 }
 async function publishOne(env,post,now){
+  const media=mediaUrl(post);
+  if(!media)return{id:post.id,ok:false,blocked:true,reason:'missing_media',error:'缺少正式圖片或影片，依仙加味最新規則禁止發布。',results:[]};
   const platforms=parsePlatforms(post.platforms_json);
   const results=[];
   for(const platform of platforms){
@@ -310,9 +283,10 @@ export function publisherConfiguration(env){
     const directConfigured=config.direct&&directReadiness(env,config.direct);
     const webhookConfigured=webhookReady(env,config);
     const ready=Boolean(directConfigured||webhookConfigured);
-    platforms[name]={mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured,webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,reason:directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
+    const metricoolRoute=config.route==='metricool';
+    platforms[name]={mode:metricoolRoute?(webhookConfigured?'metricool_webhook':'metricool_external'):directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured:Boolean(directConfigured),webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,externalScheduler:metricoolRoute?'Metricool':'',account:metricoolRoute?'xianjiawei.tw':'',reason:metricoolRoute?(webhookConfigured?'Threads 固定走 Metricool Webhook。':'Threads 固定走 Metricool xianjiawei.tw；伺服器端未設定Webhook時由外部正式排程處理，禁止改走Graph API。'):directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
   }
-  return{cronEnabled:true,approvalGate:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>name!=='LINE VOOM').every(([,item])=>item.ready)};
+  return{cronEnabled:true,approvalGate:true,mediaRequired:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,threadsFormalRoute:'Metricool xianjiawei.tw',lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>!['LINE VOOM','Threads'].includes(name)).every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
   const post=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status IN ('approved','scheduled') LIMIT 1").bind(postId).first();
