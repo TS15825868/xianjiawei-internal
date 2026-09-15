@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-09-16-v22",
+  "brand": "仙加味",
+  "status": "current-formal-authority-delta",
+  "inherits": "docs/current-system-authority-20260916-v21.json#2026-09-16-v21",
+  "updatedAt": "2026-09-16T03:20:00+08:00",
+  "rule": "本檔覆蓋v21之後的來源轉換分析與正式部署狀態；新版正確資料優先。",
+  "growthConversion": {
+    "status": "implemented-and-production-deployed",
+    "module": "assets/js/growth-conversion.js",
+    "loader": "assets/js/erp-publishing-separation.js",
+    "purpose": "把外部benchmark的獲客概念轉成仙加味自己的可衡量營運漏斗，不把陌生名單數量當成功指標。",
+    "stages": ["new", "researching", "contacted", "follow_up", "trial", "customer", "repeat"],
+    "metrics": [
+      "有lifecycle_stage資料的客戶數",
+      "到試喝／樣品階段",
+      "到成交階段",
+      "回購階段",
+      "各來源的試喝／樣品、成交與回購數"
+    ],
+    "denominatorRule": "舊資料若沒有lifecycle_stage，不硬算入轉換率分母；統計只作營運追蹤，不作保證成交率。",
+    "productionVerification": {
+      "workflow": "仙加味 ERP／貼文中心正式部署",
+      "runId": 35011004490,
+      "conclusion": "success",
+      "headSha": "2e9a0273690691913ca005c536e30881b748fa3b",
+      "verifiedSteps": [
+        "Validate current full ERP and publishing source",
+        "Verify full production bundle",
+        "Verify remote D1",
+        "Deploy to Cloudflare",
+        "Verify live routes"
+      ]
+    }
+  },
+  "nextIntegrationPriority": {
+    "goal": "讓官網／社群／LINE OA 的非敏感來源標記能在實際建立或更新客戶資料時回到 ERP D1，形成來源→詢問→試喝／樣品→成交→回購閉環。",
+    "constraints": [
+      "GitHub不得保存真實客戶個資",
+      "不建立第二套CRM",
+      "不做陌生大量群發",
+      "來源標記必須是非敏感營運metadata",
+      "對外介面不得破壞現有LINE導流與手機體驗"
+    ]
+  }
+}
