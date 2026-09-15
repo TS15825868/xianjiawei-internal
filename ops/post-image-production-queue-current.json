@@ -1,1 +1,724 @@
-{"version":"2026-09-14-v2-product-map","brand":"仙加味","total":68,"status":"production-queue","rule":"68篇封存稿逐篇一張唯一正式圖；圖片未完成時不得送審或發布；完成後逐篇圖文檢查並回pending_review。","formalAssets":{"30cc":"images/customer-display-v20260812/guilu-drink-30cc.avif","180cc":"images/customer-display-v20260812/guilu-drink-180cc-product.jpg","龜鹿膏":"images/customer-display-v20260812/guilu-gao.avif","龜鹿湯塊":"images/customer-display-v20260812/guilu-tangkuai.avif","龜鹿膠":"images/customer-display-v20260812/guilu-jiao.avif","鹿茸粉":"images/customer-display-v20260812/luerong-fen.avif"},"visualRules":["固定Q版小老闆：短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、紅色直式仙加味印章；小鹿與小烏龜分開","每張圖直接呈現該篇title的時間、地點、動作與生活情境，不用泛用白底圖","產品只用formalAssets正式實物圖等比例合成，不AI重畫；30cc小玻璃裸罐無貼紙；180cc狹長直立鋁袋","同一張圖不得重複；少字且只用可辨識繁體中文；無療效暗示、亂碼、怪字","完成後人工審核圖文一致、季節、冷熱、動作、產品比例；未通過不得發布"],"items":[{"postId":"POST-COMBO","imageId":"XJW-POST-IMG-001","kind":"產品知識","title":"平日在外、週末在家：龜鹿膏與30cc可以分開安排","products":["30cc","龜鹿膏"],"copyHash":"2f8cfaa97e8c21a9"},{"postId":"POST-DRINK","imageId":"XJW-POST-IMG-002","kind":"生活情境","title":"趕著出門還是在家吃早餐？龜鹿飲先看今天的動線","products":["30cc","180cc"],"copyHash":"5e2c1670edb636e0"},{"postId":"POST-GAO-100","imageId":"XJW-POST-IMG-003","kind":"保存整理","title":"早上取用完就放回原位：龜鹿膏100g的居家小習慣","products":["龜鹿膏"],"copyHash":"8ea36b81d8118630"},{"postId":"POST-INGREDIENT-PRINCIPLE","imageId":"XJW-POST-IMG-004","kind":"產品知識","title":"晚上看標示，比只看包裝更重要：先把龜鹿飲成分讀清楚","products":["180cc"],"copyHash":"528591b0079d9a19"},{"postId":"POST-LUERONG","imageId":"XJW-POST-IMG-005","kind":"保存整理","title":"下午整理飲品區時，把鹿茸粉75g放回固定乾燥處","products":["鹿茸粉"],"copyHash":"fa206f71866eaf65"},{"postId":"POST-SEASONS-RHYTHM","imageId":"XJW-POST-IMG-006","kind":"生活情境","title":"換季整理衣櫃時，也順便整理家裡的仙加味產品","products":["龜鹿膏"],"copyHash":"08078e852d98a3f3"},{"postId":"POST-STORE","imageId":"XJW-POST-IMG-007","kind":"LINE諮詢","title":"到萬華附近辦事，想了解產品可以先到官方 LINE OA 問今天是否方便","products":["30cc","龜鹿膏"],"copyHash":"2d4e682010e9e2e3"},{"postId":"POST-WEATHER-HOT","imageId":"XJW-POST-IMG-008","kind":"產品知識","title":"悶熱午後外出：水瓶放前面，30cc放包內固定小袋","products":["30cc"],"copyHash":"87ec7ced9fc4b1ae"},{"postId":"POST-WEATHER-RAIN","imageId":"XJW-POST-IMG-009","kind":"使用方式","title":"雨天回家先擦乾，再把180cc溫熱成一杯晚間飲品","products":["180cc"],"copyHash":"43e28fb93810f5c3"},{"postId":"POST-WEATHER-TEMP","imageId":"XJW-POST-IMG-010","kind":"產品知識","title":"早晚溫差大的日子：早上30cc，晚上不必照抄同一套","products":["30cc"],"copyHash":"bea4b1c424a6e248"},{"postId":"XJW-GUILU-drink180-made-order","imageId":"XJW-POST-IMG-011","kind":"交期說明","title":"準備下週在家喝180cc？記得把5～7個工作天算進去","products":["180cc"],"copyHash":"fb7cb240813ed003"},{"postId":"XJW-GUILU-drink180-pouch","imageId":"XJW-POST-IMG-012","kind":"產品知識","title":"把180cc放進家中飲品區：先認清它是鋁袋，不是大瓶裝","products":["180cc"],"copyHash":"a3456ae22d78ad4b"},{"postId":"XJW-GUILU-drink180-storage","imageId":"XJW-POST-IMG-013","kind":"保存整理","title":"180cc收到後先做一件事：看包裝上的保存標示再收進固定位置","products":["180cc"],"copyHash":"8eb9d6f4d2f5f88b"},{"postId":"XJW-GUILU-drink180-warm","imageId":"XJW-POST-IMG-014","kind":"使用方式","title":"晚餐後想喝溫一點：180cc用隔水方式溫熱","products":["180cc"],"copyHash":"26d92d3bb863836a"},{"postId":"XJW-GUILU-drink30-made-order","imageId":"XJW-POST-IMG-015","kind":"交期說明","title":"通勤族補貨別等最後一罐：30cc也要預留5～7個工作天","products":["30cc"],"copyHash":"143c0efcba737af9"},{"postId":"XJW-GUILU-drink30-small-jar","imageId":"XJW-POST-IMG-016","kind":"產品知識","title":"先看實際比例：30cc就是小玻璃裸罐","products":["30cc"],"copyHash":"9de0086e15f22896"},{"postId":"XJW-GUILU-drink30-storage","imageId":"XJW-POST-IMG-017","kind":"保存整理","title":"週五下班前整理抽屜：把沒喝的30cc帶回家妥善收好","products":["30cc"],"copyHash":"f21cd4a42b2d0802"},{"postId":"XJW-GUILU-drink30-warm","imageId":"XJW-POST-IMG-018","kind":"使用方式","title":"早上不想喝冰的：30cc先放到合適溫度再飲用","products":["30cc"],"copyHash":"fbccc495864b91e9"},{"postId":"XJW-GUILU-gao-100g","imageId":"XJW-POST-IMG-019","kind":"保存整理","title":"家裡只留一個固定位置：龜鹿膏100g不必跟所有食品混放","products":["龜鹿膏"],"copyHash":"d299e8ed8c4fdce6"},{"postId":"XJW-GUILU-gao-first-half","imageId":"XJW-POST-IMG-020","kind":"使用方式","title":"第一次接觸龜鹿膏，可以先從半匙認識自己的日常節奏","products":["龜鹿膏"],"copyHash":"0180bd5b1c0676da"},{"postId":"XJW-GUILU-gao-routine","imageId":"XJW-POST-IMG-021","kind":"生活情境","title":"下午回家先洗手再取一匙：把龜鹿膏變成固定的小流程","products":["龜鹿膏"],"copyHash":"5dd2ff7e1f4313d9"},{"postId":"XJW-GUILU-gao-warm-water","imageId":"XJW-POST-IMG-022","kind":"生活情境","title":"不想直接吃龜鹿膏？在家用100～300ml熱水化開也可以","products":["龜鹿膏"],"copyHash":"f69bbdb8eb65a321"},{"postId":"XJW-GUILU-guilu-first-three","imageId":"XJW-POST-IMG-023","kind":"LINE諮詢","title":"第一次到 LINE OA 問龜鹿，不用背產品名：先說你的生活方式","products":["30cc","180cc","龜鹿膏","龜鹿湯塊","龜鹿膠"],"copyHash":"fea314e4b4c9e6d0"},{"postId":"XJW-GUILU-guilu-forms","imageId":"XJW-POST-IMG-024","kind":"料理搭配","title":"同一天也能換型態：白天30cc，晚餐料理則看湯塊","products":["30cc","龜鹿湯塊"],"copyHash":"8ab81b87ac573a3e"},{"postId":"XJW-GUILU-jiao-detail-weight","imageId":"XJW-POST-IMG-025","kind":"產品知識","title":"週末分裝前先看清楚：龜鹿膠600g／32塊，每塊約18.75g","products":["龜鹿膠"],"copyHash":"3482ed7028a143e0"},{"postId":"XJW-GUILU-jiao-family","imageId":"XJW-POST-IMG-026","kind":"料理搭配","title":"家裡多人一起吃飯，龜鹿膠先從一鍋湯的料理情境認識","products":["龜鹿膠"],"copyHash":"632887239b941d5c"},{"postId":"XJW-GUILU-jiao-hot-water","imageId":"XJW-POST-IMG-027","kind":"料理搭配","title":"第一次看龜鹿膠，先從600g／32塊與料理情境認識","products":["龜鹿膠"],"copyHash":"f54dc951cc58b99d"},{"postId":"XJW-GUILU-luerong-single-material","imageId":"XJW-POST-IMG-028","kind":"保存整理","title":"晚上整理產品標示：鹿茸粉75g先從規格與保存看起","products":["鹿茸粉"],"copyHash":"12d87c3d80728835"},{"postId":"XJW-GUILU-luerong-storage","imageId":"XJW-POST-IMG-029","kind":"保存整理","title":"梅雨季收納鹿茸粉：用完蓋緊，別把罐子留在潮濕流理台","products":["鹿茸粉"],"copyHash":"43060ef86620f9bf"},{"postId":"XJW-GUILU-modern-tradition","imageId":"XJW-POST-IMG-030","kind":"保存整理","title":"老方法不必只放在老故事裡：今天先從保存與規格做清楚","products":["龜鹿膏"],"copyHash":"c66d6a95fb977ab7"},{"postId":"XJW-GUILU-tangkuai-75g","imageId":"XJW-POST-IMG-031","kind":"料理搭配","title":"冰箱還有排骨？晚餐前先認識龜鹿湯塊75g／8塊裝","products":["龜鹿湯塊"],"copyHash":"02654c539dfe0840"},{"postId":"XJW-GUILU-tangkuai-hot-water","imageId":"XJW-POST-IMG-032","kind":"料理搭配","title":"臨時不煮大鍋湯？先把龜鹿湯塊的規格與料理方式看懂","products":["龜鹿湯塊"],"copyHash":"0a2d74e05a7f7a68"},{"postId":"XJW-GUILU-trial-first","imageId":"XJW-POST-IMG-033","kind":"LINE諮詢","title":"申請試喝前，先把收件方式與最新說明確認好","products":["30cc"],"copyHash":"030710c80f62fc6b"},{"postId":"XJW-GUILU-trial-shipping","imageId":"XJW-POST-IMG-034","kind":"交期說明","title":"試喝申請完成後別急著等物流：龜鹿飲要先製作5～7個工作天","products":["30cc"],"copyHash":"f7752d0aa23fef36"},{"postId":"XJW-GUILU-warm-food-culture","imageId":"XJW-POST-IMG-035","kind":"料理搭配","title":"週末煮雞湯時，再談龜鹿的溫熱飲食文化會比較有畫面","products":["龜鹿湯塊"],"copyHash":"c3c8ba29a9267212"},{"postId":"XJW-GUILU-why-guilu-daily","imageId":"XJW-POST-IMG-036","kind":"生活情境","title":"不是每天都要同一種：仙加味龜鹿先跟著你的行程走","products":["30cc","龜鹿膏","龜鹿湯塊"],"copyHash":"eeebbb678e05a1ef"},{"postId":"XJW-SOCIAL-20260815-01-brand-rhythm","imageId":"XJW-POST-IMG-037","kind":"生活情境","title":"每天開店前的第一件事：先把仙加味產品與桌面整理好","products":["30cc","龜鹿膏"],"copyHash":"033ba085344383f3"},{"postId":"XJW-SOCIAL-20260815-01-daily-cooking","imageId":"XJW-POST-IMG-038","kind":"料理搭配","title":"冰箱有雞腿就不必想太複雜：今晚用龜鹿湯塊煮家常湯","products":["龜鹿湯塊"],"copyHash":"8f9cbd311ca4efda"},{"postId":"XJW-SOCIAL-20260815-01-product-drink-180","imageId":"XJW-POST-IMG-039","kind":"產品知識","title":"週六下午在家整理家務，180cc放在餐桌比帶出門更順手","products":["180cc"],"copyHash":"00b631d1c065d196"},{"postId":"XJW-SOCIAL-20260815-01-product-drink-30","imageId":"XJW-POST-IMG-040","kind":"產品知識","title":"早上八點出門前，把30cc放進側袋就好","products":["30cc"],"copyHash":"5a08c0beb7520c69"},{"postId":"XJW-SOCIAL-20260815-01-product-guilu-gao","imageId":"XJW-POST-IMG-041","kind":"保存整理","title":"早餐後整理廚房時，順手把龜鹿膏放回冰箱","products":["龜鹿膏"],"copyHash":"b5ae8eab4377f271"},{"postId":"XJW-SOCIAL-20260815-01-product-guilu-jiao","imageId":"XJW-POST-IMG-042","kind":"生活情境","title":"星期日下午有時間，先把龜鹿膠32塊的盒裝看清楚","products":["龜鹿膠"],"copyHash":"7bdd0a72d0fc07a2"},{"postId":"XJW-SOCIAL-20260815-01-six-products-overview","imageId":"XJW-POST-IMG-043","kind":"怎麼選","title":"整理購物清單時，不用一次買齊：先圈出這週真正會用的仙加味型態","products":["30cc","180cc","龜鹿膏","龜鹿湯塊","龜鹿膠"],"copyHash":"b75ffd4738934575"},{"postId":"XJW-SOCIAL-20260815-01-trial-first","imageId":"XJW-POST-IMG-044","kind":"使用方式","title":"試喝寄到超商後，先確認3罐外觀再帶回家","products":["30cc"],"copyHash":"70359420eba85aac"},{"postId":"XJW-SOCIAL-20260815-01-usage-personal-routine","imageId":"XJW-POST-IMG-045","kind":"使用方式","title":"你習慣早出晚歸？先把仙加味放進「真的有空」的時段","products":["30cc","龜鹿膏"],"copyHash":"5629325984062780"},{"postId":"XJW-SOCIAL-20260815-02-choose-by-routine-first","imageId":"XJW-POST-IMG-046","kind":"怎麼選","title":"先看一週行程表，再決定仙加味要放家裡還是包包裡","products":["30cc","龜鹿膏"],"copyHash":"80daf05481d84103"},{"postId":"XJW-SOCIAL-20260815-02-drink-180-home","imageId":"XJW-POST-IMG-047","kind":"料理搭配","title":"晚餐備料開始前，把180cc先放到今天要用的餐桌區","products":["180cc"],"copyHash":"cc000f6cfbcd8875"},{"postId":"XJW-SOCIAL-20260815-02-drink-30-outside","imageId":"XJW-POST-IMG-048","kind":"產品知識","title":"外出跑行程時，30cc放進有緩衝的小袋更安心","products":["30cc"],"copyHash":"a02bb17206a9272a"},{"postId":"XJW-SOCIAL-20260815-02-drink-30-vs-180","imageId":"XJW-POST-IMG-049","kind":"怎麼選","title":"一個放包包、一個放家裡：用位置記住30cc與180cc差別","products":["30cc","180cc"],"copyHash":"00894379e41c2f79"},{"postId":"XJW-SOCIAL-20260815-02-drink-made-to-order","imageId":"XJW-POST-IMG-050","kind":"交期說明","title":"週末要送人龜鹿飲？星期一就先問交期，不要到週五才急","products":["30cc","180cc"],"copyHash":"688a1e2ba50c802f"},{"postId":"XJW-SOCIAL-20260815-02-faq-flexible-time","imageId":"XJW-POST-IMG-051","kind":"生活情境","title":"今天會議排滿？龜鹿飲不必固定在某個分鐘","products":["30cc"],"copyHash":"61f4baebe55017ae"},{"postId":"XJW-SOCIAL-20260815-02-jiao-family-cooking","imageId":"XJW-POST-IMG-052","kind":"料理搭配","title":"週日一家人煮湯：先決定鍋子與人數，再拿龜鹿膠","products":["龜鹿膠"],"copyHash":"3f5009da187350c2"},{"postId":"XJW-SOCIAL-20260815-02-luerong-daily-drink","imageId":"XJW-POST-IMG-053","kind":"保存整理","title":"下午整理桌面時，先從鹿茸粉75g的標示與保存開始","products":["鹿茸粉"],"copyHash":"0f8615660e80f7a3"},{"postId":"XJW-SOCIAL-20260815-02-tangkuai-thermos-soup","imageId":"XJW-POST-IMG-054","kind":"料理搭配","title":"早上燉好湯帶午餐？龜鹿湯塊先在家完成料理再裝保溫罐","products":["龜鹿湯塊"],"copyHash":"f804ca5656a50b46"},{"postId":"XJW-SOCIAL-20260815-02-tangkuai-vs-jiao","imageId":"XJW-POST-IMG-055","kind":"料理搭配","title":"同樣是塊狀，放桌上一比就懂：75g湯塊和600g龜鹿膠不是同一盒","products":["龜鹿湯塊","龜鹿膠"],"copyHash":"2a7ba5c10d1338bd"},{"postId":"XJW-SOCIAL-20260815-03-ask-line-before-order","imageId":"XJW-POST-IMG-056","kind":"LINE諮詢","title":"下單前先想想生活動線：到 LINE OA 告訴我們在家多還是外出多","products":["30cc","180cc","龜鹿膏"],"copyHash":"50251b5a7e4df289"},{"postId":"XJW-SOCIAL-20260815-03-craft-time-and-heat","imageId":"XJW-POST-IMG-057","kind":"品牌故事","title":"從實際工序看時間與火候：每一步都需要現場確認","products":[],"copyHash":"681c138f03b9475d"},{"postId":"XJW-SOCIAL-20260815-03-four-generation-work","imageId":"XJW-POST-IMG-058","kind":"品牌故事","title":"整理老工具時，才看得見四代之間真正留下來的工作習慣","products":[],"copyHash":"c5532a2c1a77506e"},{"postId":"XJW-SOCIAL-20260815-03-gao-half-spoon-start","imageId":"XJW-POST-IMG-059","kind":"使用方式","title":"週末第一次開龜鹿膏，先用乾淨小匙從半匙開始","products":["龜鹿膏"],"copyHash":"aec338f80f16eb24"},{"postId":"XJW-SOCIAL-20260815-03-ingredient-info-clear","imageId":"XJW-POST-IMG-060","kind":"產品知識","title":"買回家先把成分拍下來：仙加味希望你真的看得懂產品標示","products":["龜鹿膏"],"copyHash":"d221070bca20b49e"},{"postId":"XJW-SOCIAL-20260815-03-thirty-cc-package-detail","imageId":"XJW-POST-IMG-061","kind":"產品知識","title":"30cc真正的大小，用手掌旁邊看最清楚","products":["30cc"],"copyHash":"2e04926fee6d7adb"},{"postId":"XJW-SOCIAL-20260815-03-trial-first-then-decide","imageId":"XJW-POST-IMG-062","kind":"使用方式","title":"試喝收到後，先記下你在哪個時段喝最順手","products":["30cc"],"copyHash":"789e6c3b3f285544"},{"postId":"XJW-SOCIAL-20260815-03-wanhua-visit-brand","imageId":"XJW-POST-IMG-063","kind":"LINE諮詢","title":"到萬華散步想順路了解仙加味？先到 LINE OA 確認再出發","products":["30cc","龜鹿膏"],"copyHash":"d6f8a743fb97751b"},{"postId":"XJW-SOCIAL-20260815-03-warm-not-iced","imageId":"XJW-POST-IMG-064","kind":"保存整理","title":"從冰箱拿出來不想直接喝冰的？先讓龜鹿飲回到你舒服的溫度","products":["30cc","180cc"],"copyHash":"b4486f7e3dea1940"},{"postId":"XJW-SOCIAL-20260815-03-why-exact-specs","imageId":"XJW-POST-IMG-065","kind":"產品知識","title":"整理訂單時最怕寫錯：30cc、180cc、75g、600g一定分開","products":["30cc","180cc","龜鹿湯塊","龜鹿膠"],"copyHash":"4a73bbaf3a1800d3"},{"postId":"XJW-SOCIAL-20260909-0900-CHOOSE","imageId":"XJW-POST-IMG-066","kind":"怎麼選","title":"週三早上，先看今天的生活動線再決定怎麼安排","products":["30cc","180cc","龜鹿膏"],"copyHash":"20075f8b2b9e8c36"},{"postId":"XJW-SOCIAL-20260911-0900-RECIPE","imageId":"XJW-POST-IMG-067","kind":"料理搭配","title":"週五回家想煮一鍋熱湯，先把晚餐時間留出來","products":["龜鹿湯塊"],"copyHash":"1388ad5fb5ca4661"},{"postId":"XJW-WORK-REST-001","imageId":"XJW-POST-IMG-068","kind":"產品知識","title":"下午工作告一段落，30cc小玻璃罐也能配合休息空檔","products":["30cc"],"copyHash":"4da9d81d993f0345"}],"productMappingRule":"products只列該張圖片實際需要呈現的正式產品；比較文可列多產品，單一產品情境不得因內文提及其他規格而混入。試喝固定使用30cc正式小玻璃裸罐。"}
+{
+  "version": "2026-09-16-v3-live-active-drafts",
+  "brand": "仙加味",
+  "source": "Cloudflare D1 live social_posts WHERE status=draft",
+  "total": 55,
+  "status": "production-queue",
+  "supersedes": "2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流",
+  "rule": "只為live D1目前status=draft的有效貼文製作唯一正式圖片；圖片完成後才回填image_url並改pending_review；人工審核前不得approved/scheduled/published。",
+  "threadsQueue": "ops/metricool-threads-media-queue-current.json",
+  "formalAssets": {
+    "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
+    "180cc": "images/customer-display-v20260812/guilu-drink-180cc-product.jpg",
+    "龜鹿膏": "images/customer-display-v20260812/guilu-gao.avif",
+    "龜鹿湯塊": "images/customer-display-v20260812/guilu-tangkuai.avif",
+    "龜鹿膠": "images/customer-display-v20260812/guilu-jiao.avif",
+    "鹿茸粉": "images/customer-display-v20260812/luerong-fen.avif"
+  },
+  "visualRules": [
+    "固定已確認Q版小老闆角色，不自由重畫角色；小鹿與小烏龜分開",
+    "生活、料理、品牌、產品、萬華、互動、季節自然穿插，不連發同系列",
+    "產品只用formalAssets正式實物圖等比例合成，AI不得重畫；30cc小玻璃裸罐無貼紙；180cc正式鋁袋比例；龜鹿膠舊AI紫盒全部禁用",
+    "找不到正式產品原圖時寧可不放產品；公開只顯示仙加味",
+    "圖文、季節、天氣、冷熱、動作一致；無亂碼、怪字、療效宣稱",
+    "完成後回pending_review，未經使用者人工審核不得發布"
+  ],
+  "windowPolicy": {
+    "evergreen": "優先依混合題材製作",
+    "weather_dynamic": "只在實際天氣符合時插播",
+    "cool_season_dynamic": "進入適合溫度窗口再啟用",
+    "year_end_window": "年底窗口再啟用",
+    "new_year_window": "新年窗口再啟用",
+    "lunar_new_year_window": "農曆年前後適合窗口再啟用"
+  },
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "imageId": "XJW-ACTIVE-IMG-001",
+      "kind": "產品認識",
+      "title": "今天只看一個小細節：裸罐",
+      "products": [
+        "30cc"
+      ],
+      "scene": "小老闆指著正式30cc小玻璃裸罐，罐身沒有貼紙",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-bare-jar|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "229f99812f75db51"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "imageId": "XJW-ACTIVE-IMG-002",
+      "kind": "輕鬆問答",
+      "title": "30cc跟180cc，怎麼選？",
+      "products": [
+        "30cc",
+        "180cc"
+      ],
+      "scene": "小老闆在生活情境中比較正式30cc小玻璃裸罐與180cc鋁袋",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-vs-180|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "2a496e49e85666bb"
+    },
+    {
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "imageId": "XJW-ACTIVE-IMG-003",
+      "kind": "自由聊天",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "products": [],
+      "scene": "小老闆坐在桌前等大家出題，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-ask-boss-topic|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "1d35cfb13185197b"
+    },
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "imageId": "XJW-ACTIVE-IMG-004",
+      "kind": "品牌聊天",
+      "title": "為什麼有些貼文不放產品？",
+      "products": [],
+      "scene": "小老闆坐在桌前輕鬆聊天，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-brand-not-only-product|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "5a3eb12c8d0ae260"
+    },
+    {
+      "postId": "XJW-CONV-chat-buy-first-look",
+      "imageId": "XJW-ACTIVE-IMG-005",
+      "kind": "客人互動",
+      "title": "買東西時，你第一個看什麼？",
+      "products": [],
+      "scene": "小老闆拿放大鏡閱讀簡潔產品說明卡",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-buy-first-look|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "27563fd236fb10e7"
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "imageId": "XJW-ACTIVE-IMG-006",
+      "kind": "工藝故事",
+      "title": "一件事情做久了，還會覺得新鮮嗎？",
+      "products": [],
+      "scene": "小老闆在傳統工藝工作桌旁觀察原料與工具",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-craft-years|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "b772a79fba80b17f"
+    },
+    {
+      "postId": "XJW-CONV-chat-customer-first-question",
+      "imageId": "XJW-ACTIVE-IMG-007",
+      "kind": "開放互動",
+      "title": "如果小老闆真的跟你聊天，你第一句會問什麼？",
+      "products": [],
+      "scene": "小老闆坐在桌後等大家提問，小鹿探頭、小烏龜慢慢靠近",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-customer-first-question|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "43963b9716790190"
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "imageId": "XJW-ACTIVE-IMG-008",
+      "kind": "生活料理",
+      "title": "放假在家，你會想慢慢準備一餐嗎？",
+      "products": [],
+      "scene": "放假居家情境，小老闆在料理台慢慢準備一餐",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-dayoff-cook|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "f67c8d2e9de1d425"
+    },
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "imageId": "XJW-ACTIVE-IMG-009",
+      "kind": "輕鬆互動",
+      "title": "今天讓小鹿跟小烏龜來選",
+      "products": [],
+      "scene": "小老闆蹲在雞腿與排骨食材籃中間，小鹿與小烏龜分開做選擇",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-deer-turtle-soup-choice|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "f47a7b5d066b6261"
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "imageId": "XJW-ACTIVE-IMG-010",
+      "kind": "常見問題",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "products": [
+        "30cc",
+        "180cc"
+      ],
+      "scene": "小老闆拿行事曆說明龜鹿飲接單後製作，旁邊是正式30cc與180cc產品",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-drink-made-to-order|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "ae97be57918b5a6e"
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "imageId": "XJW-ACTIVE-IMG-011",
+      "kind": "飲食文化",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "products": [],
+      "scene": "小老闆在料理台查看老食譜與家族手寫筆記",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-elder-kitchen-habit|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "60f3c36bcb878fdb"
+    },
+    {
+      "postId": "XJW-CONV-chat-family-old-object",
+      "imageId": "XJW-ACTIVE-IMG-012",
+      "kind": "生活故事",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "products": [],
+      "scene": "小老闆在老木櫃旁查看家族舊物件",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-family-old-object|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "5223015dc252da21"
+    },
+    {
+      "postId": "XJW-CONV-chat-fixed-storage",
+      "imageId": "XJW-ACTIVE-IMG-013",
+      "kind": "生活聊天",
+      "title": "家裡有沒有一個固定放東西的位置？",
+      "products": [],
+      "scene": "小老闆把日常用品放回固定櫃位，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-fixed-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "41d75ae2246d78be"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-storage",
+      "imageId": "XJW-ACTIVE-IMG-014",
+      "kind": "保存使用",
+      "title": "龜鹿膏放在哪裡比較不容易忘記？",
+      "products": [
+        "龜鹿膏"
+      ],
+      "scene": "小老闆把開罐後的正式龜鹿膏放進冰箱固定位置",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "6b51ff1e51335804"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "imageId": "XJW-ACTIVE-IMG-015",
+      "kind": "輕鬆問答",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "products": [
+        "龜鹿膏"
+      ],
+      "scene": "小老闆用聊天方式比較龜鹿膏與龜鹿飲的生活使用情境",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-vs-drink|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "31d2b7d646bb73d9"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "imageId": "XJW-ACTIVE-IMG-016",
+      "kind": "生活產品",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "products": [
+        "30cc",
+        "180cc"
+      ],
+      "scene": "小老闆整理正式30cc小玻璃裸罐與180cc鋁袋，兩者比例真實",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-glass-vs-pouch-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "e58c17856e5eb03b"
+    },
+    {
+      "postId": "XJW-CONV-chat-home-soup",
+      "imageId": "XJW-ACTIVE-IMG-017",
+      "kind": "料理聊天",
+      "title": "你家煮湯，最常放什麼？",
+      "products": [],
+      "scene": "小老闆在家常廚房顧湯鍋，桌上有家常食材",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-home-soup|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "1c2237409d1a77b8"
+    },
+    {
+      "postId": "XJW-CONV-chat-jiao-spec",
+      "imageId": "XJW-ACTIVE-IMG-018",
+      "kind": "產品規格",
+      "title": "龜鹿膠600g，到底是一盒什麼份量？",
+      "products": [
+        "龜鹿膠"
+      ],
+      "scene": "小老闆介紹正式龜鹿膠600g一斤32塊裝",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-jiao-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "f1ee3e0bea5de67b"
+    },
+    {
+      "postId": "XJW-CONV-chat-last-bowl",
+      "imageId": "XJW-ACTIVE-IMG-019",
+      "kind": "輕鬆生活",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "products": [],
+      "scene": "小老闆端著最後一小碗湯，小鹿與小烏龜分開看著他",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-last-bowl|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "c9006509723cbc40"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "imageId": "XJW-ACTIVE-IMG-020",
+      "kind": "產品認識",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "products": [
+        "鹿茸粉"
+      ],
+      "scene": "小老闆自然介紹正式鹿茸粉75g產品",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-luerong-intro|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "ae8ccb4156ac260a"
+    },
+    {
+      "postId": "XJW-CONV-chat-no-standard-answer",
+      "imageId": "XJW-ACTIVE-IMG-021",
+      "kind": "客人聊天",
+      "title": "有些問題，其實沒有標準答案",
+      "products": [],
+      "scene": "小老闆坐著傾聽客人生活習慣並做筆記",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-no-standard-answer|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "5fbde8f25a8fdfc3"
+    },
+    {
+      "postId": "XJW-CONV-chat-old-methods",
+      "imageId": "XJW-ACTIVE-IMG-022",
+      "kind": "工藝故事",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "products": [],
+      "scene": "小老闆在傳統工作桌旁查看工具與手寫紀錄",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-old-methods|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "c561311039aa774d"
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "imageId": "XJW-ACTIVE-IMG-023",
+      "kind": "小老闆日常",
+      "title": "開店前，小老闆先做哪一件事？",
+      "products": [],
+      "scene": "早晨店內，小老闆擦桌準備開店，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-opening-prep|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "b6a8bf6aa986306e"
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "imageId": "XJW-ACTIVE-IMG-024",
+      "kind": "飲食文化",
+      "title": "你家以前最常看到哪一種食材？",
+      "products": [],
+      "scene": "小老闆整理家常乾貨食材，小鹿與小烏龜在不同位置陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-pantry-memory|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "f4c6af77286bccd1"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "imageId": "XJW-ACTIVE-IMG-025",
+      "kind": "產品知識",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "products": [
+        "30cc"
+      ],
+      "scene": "小老闆用小尺示意正式30cc玻璃裸罐的實際小尺寸",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-photo-size|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "6e1c193912920c67"
+    },
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "imageId": "XJW-ACTIVE-IMG-026",
+      "kind": "社群互動",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "products": [],
+      "scene": "小老闆一手拿簡潔圖卡、一手拿小冊子詢問大家偏好",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-picture-or-text|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "c277d427e5f93c81"
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "imageId": "XJW-ACTIVE-IMG-027",
+      "kind": "小老闆日常",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "products": [],
+      "scene": "安靜店內，小老闆坐著工作，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-quiet-work|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "a19512bdd2add4f5"
+    },
+    {
+      "postId": "XJW-CONV-chat-receive-package",
+      "imageId": "XJW-ACTIVE-IMG-028",
+      "kind": "客人互動",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "products": [],
+      "scene": "小老闆拆開包裹後先查看簡潔說明卡",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-receive-package|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "4d88fd665d487316"
+    },
+    {
+      "postId": "XJW-CONV-chat-recipe-or-feel",
+      "imageId": "XJW-ACTIVE-IMG-029",
+      "kind": "料理聊天",
+      "title": "你煮東西是照食譜，還是憑感覺？",
+      "products": [],
+      "scene": "小老闆在廚房一手拿食譜一手拿湯匙，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-recipe-or-feel|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "e145ae45db6a5d4e"
+    },
+    {
+      "postId": "XJW-CONV-chat-shop-organizing",
+      "imageId": "XJW-ACTIVE-IMG-030",
+      "kind": "小老闆日常",
+      "title": "小老闆今天在整理什麼？",
+      "products": [],
+      "scene": "小老闆在仙加味店內整理桌面，小鹿與小烏龜分開互動",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-shop-organizing|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "11c4b23974ff0396"
+    },
+    {
+      "postId": "XJW-CONV-chat-simple-soup",
+      "imageId": "XJW-ACTIVE-IMG-031",
+      "kind": "料理聊天",
+      "title": "一鍋湯，其實不用放得很複雜",
+      "products": [],
+      "scene": "小老闆在家常廚房準備簡單湯品食材",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-simple-soup|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "3eac049a0e72524f"
+    },
+    {
+      "postId": "XJW-CONV-chat-small-things-work",
+      "imageId": "XJW-ACTIVE-IMG-032",
+      "kind": "小老闆日常",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "products": [],
+      "scene": "小老闆拿著小筆記整理店內桌面，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-small-things-work|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "fad5b8c4a0dbaad2"
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "imageId": "XJW-ACTIVE-IMG-033",
+      "kind": "料理互動",
+      "title": "你家有固定的煮湯日嗎？",
+      "products": [],
+      "scene": "小老闆翻月曆規劃家常煮湯日，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-soup-day|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "7524982aa81ff3f4"
+    },
+    {
+      "postId": "XJW-CONV-chat-tang-vs-jiao",
+      "imageId": "XJW-ACTIVE-IMG-034",
+      "kind": "產品認識",
+      "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
+      "products": [
+        "龜鹿湯塊",
+        "龜鹿膠"
+      ],
+      "scene": "小老闆比較正式龜鹿湯塊與龜鹿膠產品外觀",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tang-vs-jiao|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "17484aa73f941e38"
+    },
+    {
+      "postId": "XJW-CONV-chat-tangkuai-spec",
+      "imageId": "XJW-ACTIVE-IMG-035",
+      "kind": "產品規格",
+      "title": "龜鹿湯塊75g，一盒是幾塊？",
+      "products": [
+        "龜鹿湯塊"
+      ],
+      "scene": "小老闆介紹正式龜鹿湯塊75g八塊裝",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tangkuai-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "2e26c2d2fe907068"
+    },
+    {
+      "postId": "XJW-CONV-chat-tradition-today",
+      "imageId": "XJW-ACTIVE-IMG-036",
+      "kind": "品牌文化",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "products": [],
+      "scene": "小老闆站在傳統木櫃與現代乾淨空間交界",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tradition-today|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "282889af93f09900"
+    },
+    {
+      "postId": "XJW-CONV-chat-traditional-image",
+      "imageId": "XJW-ACTIVE-IMG-037",
+      "kind": "文化互動",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "products": [],
+      "scene": "小老闆在傳統木櫃旁看老物件，場景自然銜接現代品牌空間",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-traditional-image|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "87a3d4fd8792d934"
+    },
+    {
+      "postId": "XJW-CONV-chat-trial-first",
+      "imageId": "XJW-ACTIVE-IMG-038",
+      "kind": "客人聊天",
+      "title": "想先了解，再決定也可以",
+      "products": [
+        "30cc"
+      ],
+      "scene": "仙加味店內接待情境，小老闆自然聊天，桌上少量正式30cc玻璃裸罐",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-trial-first|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "fdf45d7dc56c9019"
+    },
+    {
+      "postId": "XJW-CONV-chat-wanhua-morning",
+      "imageId": "XJW-ACTIVE-IMG-039",
+      "kind": "萬華生活",
+      "title": "萬華的早上，你第一個想到什麼聲音？",
+      "products": [],
+      "scene": "萬華早晨，小老闆開店門看向街道，小鹿與小烏龜分開同行",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-wanhua-morning|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "copyHash": "002956c14dd70637"
+    },
+    {
+      "postId": "XJW-CONV-weather-cool-drink",
+      "imageId": "XJW-ACTIVE-IMG-040",
+      "kind": "即時天氣",
+      "title": "突然變涼了，你也開始想喝溫熱的嗎？",
+      "products": [],
+      "scene": "實際降溫情境，小老闆穿薄外套捧溫熱杯，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:weather-cool-drink|季節:weather_trigger|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "weather_dynamic",
+      "status": "needs_unique_image",
+      "copyHash": "d48b242c44764c84"
+    },
+    {
+      "postId": "XJW-CONV-weather-rain-chat",
+      "imageId": "XJW-ACTIVE-IMG-041",
+      "kind": "即時天氣",
+      "title": "下雨天，你會想喝什麼？",
+      "products": [],
+      "scene": "下雨窗景，小老闆坐在窗邊捧杯，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:weather-rain-chat|季節:weather_trigger|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "weather_dynamic",
+      "status": "needs_unique_image",
+      "copyHash": "6b4de8ec5101faf1"
+    },
+    {
+      "postId": "XJW-CONV-season-more-soup",
+      "imageId": "XJW-ACTIVE-IMG-042",
+      "kind": "季節料理",
+      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
+      "products": [],
+      "scene": "涼爽季節的家常廚房，小老闆掀開熱湯鍋",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:season-more-soup|季節:cool_season|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "cool_season_dynamic",
+      "status": "needs_unique_image",
+      "copyHash": "c84d338a0f627301"
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "imageId": "XJW-ACTIVE-IMG-043",
+      "kind": "年末生活",
+      "title": "年底整理時，最常翻出什麼忘記的東西？",
+      "products": [],
+      "scene": "年底店內整理情境，小老闆蹲在櫃前收納，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-clean|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "year_end_window",
+      "status": "needs_unique_image",
+      "copyHash": "bc2723f27307b69e"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "imageId": "XJW-ACTIVE-IMG-044",
+      "kind": "年末互動",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "products": [],
+      "scene": "跨年前小老闆挑選想延續的生活習慣卡",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-keep-habit|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "year_end_window",
+      "status": "needs_unique_image",
+      "copyHash": "75438bedf2dfec52"
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "imageId": "XJW-ACTIVE-IMG-045",
+      "kind": "年末互動",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "products": [],
+      "scene": "年底回顧情境，小老闆翻日曆勾選完成的小事",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-small-win|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "year_end_window",
+      "status": "needs_unique_image",
+      "copyHash": "59b2a388b8457b54"
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "imageId": "XJW-ACTIVE-IMG-046",
+      "kind": "新年日常",
+      "title": "新年第一個開店日，小老闆先做什麼？",
+      "products": [],
+      "scene": "新年開店日，小老闆開門後整理桌面，小鹿與小烏龜分開同行",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:new-year-open-door|季節:new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "bebcd82e870234d1"
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "imageId": "XJW-ACTIVE-IMG-047",
+      "kind": "新年聊天",
+      "title": "新的一年，不一定要突然變得很厲害",
+      "products": [],
+      "scene": "新年清爽情境，小老闆跨過年份小牌回頭招手",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:new-year-slow-start|季節:new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "f19008329f49d2ec"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "imageId": "XJW-ACTIVE-IMG-048",
+      "kind": "年節文化",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "products": [],
+      "scene": "小老闆比較老照片與現在年節生活的溫暖情境",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-childhood-now|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "885ff48f46a655e5"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "imageId": "XJW-ACTIVE-IMG-049",
+      "kind": "年節互動",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "products": [],
+      "scene": "農曆年互動情境，小老闆舉三張選項牌，小鹿與小烏龜分開陪伴",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-family-choice|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "e6548f2102cfc266"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "imageId": "XJW-ACTIVE-IMG-050",
+      "kind": "年後料理",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "products": [],
+      "scene": "年假後家常料理情境，小老闆在雞腿與排骨之間選擇",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-first-soup|季節:post_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "9ac4c8a2e1925175"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "imageId": "XJW-ACTIVE-IMG-051",
+      "kind": "年前生活",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "products": [],
+      "scene": "過年前小老闆整理冰箱，表情自然有趣",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-fridge-clean|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "cc93296508fe7c18"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "imageId": "XJW-ACTIVE-IMG-052",
+      "kind": "年節互動",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "products": [],
+      "scene": "年前小老闆拿著兩個禮物盒思考送禮選擇",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-gift-choice|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "0564c7d33ca0f300"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "imageId": "XJW-ACTIVE-IMG-053",
+      "kind": "年節料理",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "products": [],
+      "scene": "農曆年餐桌情境，小老闆拿年菜菜單，小鹿與小烏龜分開互動",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-must-have-dish|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "f1bd95a693b6f56a"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "imageId": "XJW-ACTIVE-IMG-054",
+      "kind": "年前生活",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "products": [],
+      "scene": "農曆年前整理情境，小老闆擦桌，小鹿與小烏龜分開幫忙",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-pre-clean|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "6f9c584a0f017a97"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "imageId": "XJW-ACTIVE-IMG-055",
+      "kind": "年後日常",
+      "title": "開工第一天，小老闆先做一件小事",
+      "products": [],
+      "scene": "農曆年後開工，小老闆開門整理桌面，小鹿與小烏龜分開同行",
+      "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-reopen|季節:post_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "window": "lunar_new_year_window",
+      "status": "needs_unique_image",
+      "copyHash": "b6ba0afda6690118"
+    }
+  ]
+}
