@@ -1,7 +1,7 @@
 import { publisherConfiguration } from './social-publisher.js';
 import { probePublisherConnections } from './platform-connection-probe.js';
 
-const VERSION='2026-09-14-system-readiness-v4-unified-platform-probe';
+const VERSION='2026-09-15-system-readiness-v5-threads';
 const CORE_TIMEOUT_MS=3500;
 const PLATFORM_TIMEOUT_MS=12000;
 const clean=value=>String(value??'').trim();
@@ -91,7 +91,7 @@ export async function probePlatforms(env){
   }
   const source=probe.platforms||{};
   const platforms={};
-  for(const name of ['Facebook','Instagram','LINE OA','LINE VOOM','Google 商家']){
+  for(const name of ['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家']){
     platforms[name]=readinessPlatformItem(name,source[name]||{});
   }
   return{
