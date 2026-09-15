@@ -79,9 +79,12 @@ for(const token of [
   'dispatchInstagram',
   'dispatchLineOfficialAccount',
   'dispatchGoogleBusiness',
+  "Threads:{url:'THREADS_PUBLISH_WEBHOOK_URL',token:'THREADS_PUBLISH_WEBHOOK_TOKEN',route:'metricool'}",
+  "threadsFormalRoute:'Metricool xianjiawei.tw'",
+  "reason:'missing_media'",
 ]){
   if(!publisher.includes(token))throw new Error(`平台發布安全契約缺失：${token}`)
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
-if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：貼文中心系統 App 使用輕量正式首屏與手機分批載入，Threads 以 Metricool 為主路徑；入口不重新導向，保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
+if(!publisher.includes("mode:metricoolRoute?(webhookConfigured?'metricool_webhook':'metricool_external'):directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分Metricool／官方API／Webhook／未設定');
+console.log('PASS：貼文中心系統 App 使用輕量正式首屏與手機分批載入，Threads 以 Metricool 為正式主路徑且缺少媒體不得發布；入口不重新導向，保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
