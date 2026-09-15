@@ -16,8 +16,13 @@ if(html.includes('<script src="/assets/js/publishing-resilience.js'))throw new E
 if(html.includes('<script src="/assets/js/publishing-readiness-ui.js'))throw new Error('手機正式首屏不得再同步載入週期性 readiness；診斷改為使用者觸發');
 if(html.includes('<script src="/assets/js/post-bank-sync.js'))throw new Error('手機正式首屏不得載入母庫同步工具；母庫同步應由後端/Workflow處理');
 if(!html.includes("fetch('/healthz/core'")||!html.includes("fetch('/healthz/readiness'"))throw new Error('系統診斷按鈕必須保留核心與readiness檢查');
-const requiredJs=['PAGE_SIZE=18','data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','data-publish-now-from-modal','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts','document.documentElement.dataset.publishingRuntime=','立即發布不受固定時段限制'];
+const requiredJs=['data-load-more','data-post-view','data-post-edit','data-post-status','data-post-schedule','data-post-publish-now','data-publish-now-from-modal','/posts','/status','/publish-now','/deliveries','/platform-authorization','/me','loading="lazy"','decoding="async"','function debounce','queryPath(offset','offset:String(offset)','state.total','state.counts','document.documentElement.dataset.publishingRuntime=','立即發布不受固定時段限制'];
 for(const token of requiredJs){if(!js.includes(token))throw new Error(`publishing-app-v2.js缺少必要功能契約：${token}`)}
+if(!/const\s+PAGE_SIZE\s*=/.test(js))throw new Error('publishing-app-v2.js缺少分批載入大小設定');
+if(!/matchMedia\s*&&\s*window\.matchMedia\(['"]\(max-width:720px\)['"]\)/.test(js))throw new Error('手機分批載入缺少720px裝置判斷');
+if(!/\?\s*6\s*:\s*18\s*;/.test(js))throw new Error('手機首批必須維持輕量6篇、桌機18篇能力，避免iPhone一次繪製過多卡片');
+if(!js.includes("name==='Threads'")||!js.includes('Threads：Metricool 發布'))throw new Error('Threads 平台狀態必須以已連線 Metricool 為正式主路徑');
+if(!js.includes("['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家']"))throw new Error('貼文新增／編輯平台選項缺少 Threads');
 if(!/dataset\.publishingRuntime=['"][^'"]*standalone[^'"]*['"]/.test(js))throw new Error('publishing-app-v2.js 缺少正式 standalone runtime 識別');
 if(js.includes("state.items.map(card).join('')")&&!js.includes('state.total-state.items.length'))throw new Error('載入更多不得回退為只在本機切片全部貼文');
 if(!js.includes('loadPlatforms(loadId)'))throw new Error('平台授權狀態必須非阻塞載入');
@@ -27,6 +32,7 @@ if(!js.includes('CUSTOMER_INTERNAL_TERMS'))throw new Error('貼文前端預檢�
 if(!js.includes('multiProductImage')||!js.includes('products-all'))throw new Error('多產品總覽貼文不得被單一產品預檢規則誤擋');
 if(!html.includes("root.querySelector('.loading-card')"))throw new Error('載入完成判斷必須只依實際 loading-card，不得被「載入下一批」文字誤判');
 if(html.includes('/載入|啟動|正在連線|安全檢查/.test(root.textContent'))throw new Error('不得用整份貼文文字判斷載入中，否則「載入下一批」會觸發假錯誤');
+if(!html.includes('var essential=')||!html.includes('var deferred=')||!html.includes('4200'))throw new Error('手機首屏重型選配工具必須延後載入，避免第一段捲動卡頓');
 for(const token of ['limit=Math.min(60','offset=Math.max(0','LIMIT ? OFFSET ?','COUNT(*) AS count']){
   if(!authority.includes(token)&&!production.includes(token))throw new Error(`後端分頁契約缺失：${token}`)
 }
@@ -78,4 +84,4 @@ for(const token of [
 }
 if(!publisher.includes("status=result.manual_required?'manual_required':result.ok?'published'"))throw new Error('平台發布結果沒有以實際回應決定published/manual_required');
 if(!publisher.includes("mode:directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured'"))throw new Error('平台授權狀態沒有區分官方API/Webhook/未設定');
-console.log('PASS：貼文中心系統 App 使用輕量正式首屏且入口不再重新導向：Cloudflare HTML handling=none，/、/publishing、/publishing/、/publishing.html 皆由 Worker 直接回傳同一正式 App；保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
+console.log('PASS：貼文中心系統 App 使用輕量正式首屏與手機分批載入，Threads 以 Metricool 為主路徑；入口不重新導向，保留快速Access、D1安全模式、16項審核、立即發布與逐平台發布結果。');
