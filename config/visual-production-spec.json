@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-19-visual-authority-v13-zero-ai-product-zero-extra-text",
+  "version": "2026-09-19-visual-authority-v14-scene-only-generation-hard-stop",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/visual-production-spec-v20260807.json",
   "contentAuthority": "https://ts15825868.github.io/xianjiawei/publishing-center.html",
   "latestVisualAuthority": "docs/social-visual-authority-20260915-v2.md",
@@ -56,6 +56,8 @@
     "noPublicOldBrand": "任何公開圖片、貼文、背景招牌、紙張、看板、包裝、牆面、門面與裝飾文字，一律不得出現「台興山產」。AI若自行生成該字樣，整張直接判定不合格，不得修修補補後送審。",
     "generatedTextPolicy": "生成式情境圖預設不生成任何額外文字。除小老闆胸前正式紅色直式「仙加味」印章外，不得由AI自行生成標題、海報字、店招、牆面字、門牌、品牌副名、產品標籤、說明文字、黑板字、書本可辨識文字或其他公開字樣。若貼文確實需要文字，應在生成完成後以正式字型與人工可控排版另行後製，且內容需經審核。",
     "zeroAIProduct": "任何生成式圖片階段一律不得要求AI畫出產品本體。產品貼文的生成階段只產生場景、角色、夥伴與不涉及產品識別的道具；產品本體最後只能以正式實物原圖／正式核准素材等比例置入。若AI意外生成類產品物件、瓶罐、鋁袋、盒裝、貼紙或任何可能被誤認為仙加味產品的物件，該圖直接判定不合格。",
-    "sceneOnlyForProductPosts": "產品型貼文採兩段式：第一段生成『無產品』場景與角色；第二段以正式產品原圖後製置入。AI不得參與產品外觀生成、重繪、補畫、改色、風格化或透視猜測。"
+    "sceneOnlyForProductPosts": "產品型貼文採兩段式：第一段生成『無產品』場景與角色；第二段以正式產品原圖後製置入。AI不得參與產品外觀生成、重繪、補畫、改色、風格化或透視猜測。",
+    "sceneOnlyGenerationHardStop": "無產品貼文：生成階段不得出現任何產品、瓶、罐、袋、盒、包裝、標籤、展示牌、招牌、品牌字樣或可辨識文字；畫面只允許角色、夥伴、一般生活場景與非產品道具。若AI自行生成任何類產品或額外文字，整張直接作廢。產品貼文：生成階段同樣只產生無產品背景與角色，產品本體最後才以正式原圖等比例合成。",
+    "generatedImageAcceptance": "只有同時符合以下條件才算合格：零台興山產、零AI產品、零假包裝、零額外AI文字、角色與夥伴固定、單一情境、單篇單張高清、圖文一致。任一不符即作廢，不得送審、不得上傳貼文中心、不得拿去裁切或二次使用。"
   }
 }
