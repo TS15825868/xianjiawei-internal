@@ -1,12 +1,11 @@
 {
-  "version": "2026-09-16-v3-live-active-drafts",
+  "version": "2026-09-21-v4-live-after-image-batch",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft",
-  "total": 55,
+  "total": 50,
   "status": "production-queue",
-  "supersedes": "2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流",
+  "supersedes": "2026-09-16-v3-live-active-drafts",
   "rule": "只為live D1目前status=draft的有效貼文製作唯一正式圖片；圖片完成後才回填image_url並改pending_review；人工審核前不得approved/scheduled/published。",
-  "threadsQueue": "ops/metricool-threads-media-queue-current.json",
   "formalAssets": {
     "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
     "180cc": "images/customer-display-v20260812/guilu-drink-180cc-product.jpg",
@@ -14,22 +13,6 @@
     "龜鹿湯塊": "images/customer-display-v20260812/guilu-tangkuai.avif",
     "龜鹿膠": "images/customer-display-v20260812/guilu-jiao.avif",
     "鹿茸粉": "images/customer-display-v20260812/luerong-fen.avif"
-  },
-  "visualRules": [
-    "固定已確認Q版小老闆角色，不自由重畫角色；小鹿與小烏龜分開",
-    "生活、料理、品牌、產品、萬華、互動、季節自然穿插，不連發同系列",
-    "產品只用formalAssets正式實物圖等比例合成，AI不得重畫；30cc小玻璃裸罐無貼紙；180cc正式鋁袋比例；龜鹿膠舊AI紫盒全部禁用",
-    "找不到正式產品原圖時寧可不放產品；公開只顯示仙加味",
-    "圖文、季節、天氣、冷熱、動作一致；無亂碼、怪字、療效宣稱",
-    "完成後回pending_review，未經使用者人工審核不得發布"
-  ],
-  "windowPolicy": {
-    "evergreen": "優先依混合題材製作",
-    "weather_dynamic": "只在實際天氣符合時插播",
-    "cool_season_dynamic": "進入適合溫度窗口再啟用",
-    "year_end_window": "年底窗口再啟用",
-    "new_year_window": "新年窗口再啟用",
-    "lunar_new_year_window": "農曆年前後適合窗口再啟用"
   },
   "items": [
     {
@@ -517,68 +500,8 @@
       "copyHash": "fdf45d7dc56c9019"
     },
     {
-      "postId": "XJW-CONV-chat-wanhua-morning",
-      "imageId": "XJW-ACTIVE-IMG-039",
-      "kind": "萬華生活",
-      "title": "萬華的早上，你第一個想到什麼聲音？",
-      "products": [],
-      "scene": "萬華早晨，小老闆開店門看向街道，小鹿與小烏龜分開同行",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-wanhua-morning|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "evergreen",
-      "status": "needs_unique_image",
-      "copyHash": "002956c14dd70637"
-    },
-    {
-      "postId": "XJW-CONV-weather-cool-drink",
-      "imageId": "XJW-ACTIVE-IMG-040",
-      "kind": "即時天氣",
-      "title": "突然變涼了，你也開始想喝溫熱的嗎？",
-      "products": [],
-      "scene": "實際降溫情境，小老闆穿薄外套捧溫熱杯，小鹿與小烏龜分開陪伴",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:weather-cool-drink|季節:weather_trigger|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "weather_dynamic",
-      "status": "needs_unique_image",
-      "copyHash": "d48b242c44764c84"
-    },
-    {
-      "postId": "XJW-CONV-weather-rain-chat",
-      "imageId": "XJW-ACTIVE-IMG-041",
-      "kind": "即時天氣",
-      "title": "下雨天，你會想喝什麼？",
-      "products": [],
-      "scene": "下雨窗景，小老闆坐在窗邊捧杯，小鹿與小烏龜分開陪伴",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:weather-rain-chat|季節:weather_trigger|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "weather_dynamic",
-      "status": "needs_unique_image",
-      "copyHash": "6b4de8ec5101faf1"
-    },
-    {
-      "postId": "XJW-CONV-season-more-soup",
-      "imageId": "XJW-ACTIVE-IMG-042",
-      "kind": "季節料理",
-      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
-      "products": [],
-      "scene": "涼爽季節的家常廚房，小老闆掀開熱湯鍋",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:season-more-soup|季節:cool_season|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "cool_season_dynamic",
-      "status": "needs_unique_image",
-      "copyHash": "c84d338a0f627301"
-    },
-    {
-      "postId": "XJW-CONV-year-end-clean",
-      "imageId": "XJW-ACTIVE-IMG-043",
-      "kind": "年末生活",
-      "title": "年底整理時，最常翻出什麼忘記的東西？",
-      "products": [],
-      "scene": "年底店內整理情境，小老闆蹲在櫃前收納，小鹿與小烏龜分開陪伴",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-clean|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "year_end_window",
-      "status": "needs_unique_image",
-      "copyHash": "bc2723f27307b69e"
-    },
-    {
       "postId": "XJW-CONV-year-end-keep-habit",
-      "imageId": "XJW-ACTIVE-IMG-044",
+      "imageId": "XJW-ACTIVE-IMG-039",
       "kind": "年末互動",
       "title": "如果今年只能留下一個習慣，你會留哪個？",
       "products": [],
@@ -590,7 +513,7 @@
     },
     {
       "postId": "XJW-CONV-year-end-small-win",
-      "imageId": "XJW-ACTIVE-IMG-045",
+      "imageId": "XJW-ACTIVE-IMG-040",
       "kind": "年末互動",
       "title": "今年有沒有一件小事，你很慶幸自己做了？",
       "products": [],
@@ -602,7 +525,7 @@
     },
     {
       "postId": "XJW-CONV-new-year-open-door",
-      "imageId": "XJW-ACTIVE-IMG-046",
+      "imageId": "XJW-ACTIVE-IMG-041",
       "kind": "新年日常",
       "title": "新年第一個開店日，小老闆先做什麼？",
       "products": [],
@@ -614,7 +537,7 @@
     },
     {
       "postId": "XJW-CONV-new-year-slow-start",
-      "imageId": "XJW-ACTIVE-IMG-047",
+      "imageId": "XJW-ACTIVE-IMG-042",
       "kind": "新年聊天",
       "title": "新的一年，不一定要突然變得很厲害",
       "products": [],
@@ -626,7 +549,7 @@
     },
     {
       "postId": "XJW-CONV-cny-childhood-now",
-      "imageId": "XJW-ACTIVE-IMG-048",
+      "imageId": "XJW-ACTIVE-IMG-043",
       "kind": "年節文化",
       "title": "小時候過年跟現在，哪裡最不一樣？",
       "products": [],
@@ -638,7 +561,7 @@
     },
     {
       "postId": "XJW-CONV-cny-family-choice",
-      "imageId": "XJW-ACTIVE-IMG-049",
+      "imageId": "XJW-ACTIVE-IMG-044",
       "kind": "年節互動",
       "title": "過年最期待的是吃飯、見家人，還是放假？",
       "products": [],
@@ -650,7 +573,7 @@
     },
     {
       "postId": "XJW-CONV-cny-first-soup",
-      "imageId": "XJW-ACTIVE-IMG-050",
+      "imageId": "XJW-ACTIVE-IMG-045",
       "kind": "年後料理",
       "title": "年假後第一鍋湯，你會選雞還是排骨？",
       "products": [],
@@ -662,7 +585,7 @@
     },
     {
       "postId": "XJW-CONV-cny-fridge-clean",
-      "imageId": "XJW-ACTIVE-IMG-051",
+      "imageId": "XJW-ACTIVE-IMG-046",
       "kind": "年前生活",
       "title": "過年前整理冰箱，最常找到什麼？",
       "products": [],
@@ -674,7 +597,7 @@
     },
     {
       "postId": "XJW-CONV-cny-gift-choice",
-      "imageId": "XJW-ACTIVE-IMG-052",
+      "imageId": "XJW-ACTIVE-IMG-047",
       "kind": "年節互動",
       "title": "送禮時，你比較在意包裝還是對方用不用得到？",
       "products": [],
@@ -686,7 +609,7 @@
     },
     {
       "postId": "XJW-CONV-cny-must-have-dish",
-      "imageId": "XJW-ACTIVE-IMG-053",
+      "imageId": "XJW-ACTIVE-IMG-048",
       "kind": "年節料理",
       "title": "過年煮一桌菜，你家一定不能少哪一道？",
       "products": [],
@@ -698,7 +621,7 @@
     },
     {
       "postId": "XJW-CONV-cny-pre-clean",
-      "imageId": "XJW-ACTIVE-IMG-054",
+      "imageId": "XJW-ACTIVE-IMG-049",
       "kind": "年前生活",
       "title": "過年前，你家會先大掃除還是先買東西？",
       "products": [],
@@ -710,7 +633,7 @@
     },
     {
       "postId": "XJW-CONV-cny-reopen",
-      "imageId": "XJW-ACTIVE-IMG-055",
+      "imageId": "XJW-ACTIVE-IMG-050",
       "kind": "年後日常",
       "title": "開工第一天，小老闆先做一件小事",
       "products": [],
