@@ -1,59 +1,58 @@
 {
-  "version": "2026-09-21-batch-039-043",
+  "version": "2026-09-21-batch-2",
   "repo": "TS15825868/xianjiawei-internal",
   "branch": "main",
-  "rule": "完成圖正式落 main 後，D1 只回填至 pending_review；不得自動核准、排程或發布。",
+  "rule": "正式圖落 main 後，D1 僅回填 pending_review；不得自動核准、排程或發布。",
   "items": [
     {
-      "postId": "XJW-CONV-chat-wanhua-morning",
-      "imageId": "XJW-ACTIVE-IMG-039",
-      "title": "萬華的早上，你第一個想到什麼聲音？",
-      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg",
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "imageId": "XJW-ACTIVE-IMG-003",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-003.png",
       "width": 1254,
       "height": 1254,
-      "bytes": 411342,
-      "alt": "萬華早晨街道情境，小老闆在門口聽街上的聲音，小鹿與小烏龜分開陪伴"
+      "bytes": 2309374,
+      "alt": "溫暖室內聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起等大家出題，桌面為一般生活與書寫小物，無產品"
     },
     {
-      "postId": "XJW-CONV-weather-cool-drink",
-      "imageId": "XJW-ACTIVE-IMG-040",
-      "title": "突然變涼了，你也開始想喝溫熱的嗎？",
-      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-040.jpg",
+      "postId": "XJW-CONV-chat-home-soup",
+      "imageId": "XJW-ACTIVE-IMG-017",
+      "title": "你家煮湯，最常放什麼？",
+      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-017.png",
       "width": 1254,
       "height": 1254,
-      "bytes": 363617,
-      "alt": "天氣轉涼的居家情境，小老闆捧著溫熱杯，小鹿與小烏龜分開陪伴"
+      "bytes": 2371895,
+      "alt": "家常廚房料理情境，小老闆照看熱湯鍋，周圍是一般家常食材，小鹿與小烏龜分開陪伴，無產品"
     },
     {
-      "postId": "XJW-CONV-weather-rain-chat",
-      "imageId": "XJW-ACTIVE-IMG-041",
-      "title": "下雨天，你會想喝什麼？",
-      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-041.jpg",
+      "postId": "XJW-CONV-chat-no-standard-answer",
+      "imageId": "XJW-ACTIVE-IMG-021",
+      "title": "有些問題，其實沒有標準答案",
+      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-021.png",
       "width": 1254,
       "height": 1254,
-      "bytes": 354836,
-      "alt": "窗外下雨的室內情境，小老闆坐在窗邊捧著溫熱杯，小鹿與小烏龜分開陪伴"
+      "bytes": 2473137,
+      "alt": "雨天室內安靜聊天與思考情境，小老闆捧著溫熱杯與小鹿、小烏龜一起放慢節奏，無產品"
     },
     {
-      "postId": "XJW-CONV-season-more-soup",
-      "imageId": "XJW-ACTIVE-IMG-042",
-      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
-      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-042.jpg",
+      "postId": "XJW-CONV-chat-small-things-work",
+      "imageId": "XJW-ACTIVE-IMG-032",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-032.png",
       "width": 1254,
       "height": 1254,
-      "bytes": 380126,
-      "alt": "涼爽季節的家常廚房，小老闆掀開熱湯鍋，小鹿與小烏龜分開在旁陪伴"
+      "bytes": 2318358,
+      "alt": "明亮工作桌日常，小老闆在筆電與筆記本旁完成小事後伸展，小鹿與小烏龜分開陪伴，無產品"
     },
     {
-      "postId": "XJW-CONV-year-end-clean",
-      "imageId": "XJW-ACTIVE-IMG-043",
-      "title": "年底整理時，最常翻出什麼忘記的東西？",
-      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-043.jpg",
+      "postId": "XJW-CONV-chat-tradition-today",
+      "imageId": "XJW-ACTIVE-IMG-036",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
       "width": 1254,
       "height": 1254,
-      "bytes": 390217,
-      "alt": "年底整理居家收納情境，小老闆翻看收納箱裡的舊照片與物件，小鹿與小烏龜分開陪伴"
+      "bytes": 2483147,
+      "alt": "萬華傳統街區晨光情境，現代仙加味小老闆與小鹿、小烏龜同行，呈現傳統生活文化延續到今日，無產品"
     }
-  ],
-  "retry": "2026-09-21-d1-no-transaction-v2"
+  ]
 }
