@@ -38,12 +38,11 @@ jobs:
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('ops/post-image-bindings-20260921.json','utf8'));
           const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
-          const lines=['BEGIN TRANSACTION;'];
+          const lines=[];
           for(const x of data.items){
             const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+x.path;
             lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q('ChatGPT正式生成｜2026-09-21｜GitHub main｜人工待審核')}, image_width=${Number(x.width)}, image_height=${Number(x.height)}, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft';`);
           }
-          lines.push('COMMIT;');
           fs.writeFileSync('/tmp/apply-post-images.sql',lines.join('\n')+'\n');
           NODE
       - name: Apply image bindings to formal D1
