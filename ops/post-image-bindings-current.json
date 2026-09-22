@@ -1,56 +1,53 @@
 {
-  "version": "2026-09-22-batch-003-007",
-  "rule": "正式圖片已存在 main；僅回填 D1 至 pending_review，不自動核准、排程或發布。",
+  "version": "2026-09-23-batch-3",
+  "sourceZip": "ops/incoming/xjw_batch_20260923_3.zip",
+  "targetDir": "assets/post-images/2026-09-23/batch3",
+  "statusAfterBind": "pending_review",
   "items": [
     {
-      "postId": "XJW-CONV-chat-brand-not-only-product",
-      "imageId": "XJW-ACTIVE-IMG-003",
-      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-003.png",
+      "postId": "XJW-CONV-chat-old-methods",
+      "filename": "XJW-CONV-chat-old-methods.jpg",
+      "title": "有些老方法，為什麼到現在還有人在做？",
       "width": 1254,
       "height": 1254,
-      "bytes": 2309374,
-      "alt": "溫暖工作空間中，小老闆與小鹿、小烏龜一起整理日常靈感與空白筆記，呈現品牌生活感而不放產品",
-      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+      "bytes": 504961,
+      "alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴"
     },
     {
-      "postId": "XJW-CONV-chat-buy-first-look",
-      "imageId": "XJW-ACTIVE-IMG-004",
-      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "postId": "XJW-CONV-chat-opening-prep",
+      "filename": "XJW-CONV-chat-opening-prep.jpg",
+      "title": "開店前，小老闆先做哪一件事？",
       "width": 1254,
       "height": 1254,
-      "bytes": 2116210,
-      "alt": "小老闆在乾淨工作桌前用放大鏡查看空白說明卡，小鹿與小烏龜分開陪伴",
-      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+      "bytes": 568858,
+      "alt": "清晨街屋門口情境，小老闆準備開始一天，小鹿與小烏龜分開同行"
     },
     {
-      "postId": "XJW-CONV-chat-craft-years",
-      "imageId": "XJW-ACTIVE-IMG-005",
-      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-005.png",
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "filename": "XJW-CONV-chat-pantry-memory.jpg",
+      "title": "你家以前最常看到哪一種食材？",
       "width": 1254,
       "height": 1254,
-      "bytes": 2103278,
-      "alt": "小老闆在陽光工作桌前持續整理植物與材料，小鹿與小烏龜分開陪伴，呈現長時間投入一件事的日常",
-      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+      "bytes": 551467,
+      "alt": "日常工作桌情境，小老闆整理乾貨與食材，小鹿與小烏龜分開陪伴"
     },
     {
-      "postId": "XJW-CONV-chat-customer-first-question",
-      "imageId": "XJW-ACTIVE-IMG-006",
-      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-006.png",
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "filename": "XJW-CONV-chat-picture-or-text.jpg",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
       "width": 1254,
       "height": 1254,
-      "bytes": 2089450,
-      "alt": "小老闆坐在木桌後拿著鉛筆面對空白紙張等大家提問，小鹿在左、小烏龜在右",
-      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+      "bytes": 427696,
+      "alt": "小老闆一手拿圖卡一手拿小冊子，小鹿與小烏龜分開在旁看著"
     },
     {
-      "postId": "XJW-CONV-chat-dayoff-cook",
-      "imageId": "XJW-ACTIVE-IMG-007",
-      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-007.png",
+      "postId": "XJW-CONV-chat-quiet-work",
+      "filename": "XJW-CONV-chat-quiet-work.jpg",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
       "width": 1254,
       "height": 1254,
-      "bytes": 2371895,
-      "alt": "放假居家料理情境，小老闆在溫暖廚房慢慢準備家常料理，小鹿與小烏龜分開陪伴",
-      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+      "bytes": 510121,
+      "alt": "安靜工作空間，小老闆在桌前整理紙張與日常物件，小鹿與小烏龜分開陪伴"
     }
   ]
 }
