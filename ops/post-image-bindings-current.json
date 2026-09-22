@@ -1,54 +1,53 @@
 {
-  "version": "2026-09-23-batch-3",
-  "sourceZip": "ops/incoming/xjw_batch_20260923_3.zip",
-  "targetDir": "assets/post-images/2026-09-23/batch3",
+  "version": "2026-09-23-batch-4",
+  "sourceZip": "ops/incoming/xjw_batch_20260923_4.zip",
+  "targetDir": "assets/post-images/2026-09-23/batch4",
   "statusAfterBind": "pending_review",
   "items": [
     {
-      "postId": "XJW-CONV-chat-old-methods",
-      "filename": "XJW-CONV-chat-old-methods.jpg",
-      "title": "有些老方法，為什麼到現在還有人在做？",
+      "postId": "XJW-CONV-chat-receive-package",
+      "filename": "XJW-CONV-chat-receive-package.jpg",
+      "title": "收到產品後，你第一件事會先看哪裡？",
       "width": 1254,
       "height": 1254,
-      "bytes": 504961,
-      "alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴"
+      "bytes": 408363,
+      "alt": "收到包裹的居家情境，小老闆打開紙箱先查看隨附說明卡，小鹿與小烏龜分開陪伴"
     },
     {
-      "postId": "XJW-CONV-chat-opening-prep",
-      "filename": "XJW-CONV-chat-opening-prep.jpg",
-      "title": "開店前，小老闆先做哪一件事？",
+      "postId": "XJW-CONV-chat-recipe-or-feel",
+      "filename": "XJW-CONV-chat-recipe-or-feel.jpg",
+      "title": "你煮東西是照食譜，還是憑感覺？",
       "width": 1254,
       "height": 1254,
-      "bytes": 568858,
-      "alt": "清晨街屋門口情境，小老闆準備開始一天，小鹿與小烏龜分開同行"
+      "bytes": 483430,
+      "alt": "家常廚房情境，小老闆一邊看料理筆記一邊準備食材，小鹿與小烏龜分開陪伴"
     },
     {
-      "postId": "XJW-CONV-chat-pantry-memory",
-      "filename": "XJW-CONV-chat-pantry-memory.jpg",
-      "title": "你家以前最常看到哪一種食材？",
+      "postId": "XJW-CONV-chat-shop-organizing",
+      "filename": "XJW-CONV-chat-shop-organizing.jpg",
+      "title": "小老闆今天在整理什麼？",
       "width": 1254,
       "height": 1254,
-      "bytes": 551467,
-      "alt": "日常工作桌情境，小老闆整理乾貨與食材，小鹿與小烏龜分開陪伴"
+      "bytes": 506611,
+      "alt": "整潔工作桌情境，小老闆分類整理紙張與日常物件，小鹿與小烏龜分開互動"
     },
     {
-      "postId": "XJW-CONV-chat-picture-or-text",
-      "filename": "XJW-CONV-chat-picture-or-text.jpg",
-      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "postId": "XJW-CONV-chat-simple-soup",
+      "filename": "XJW-CONV-chat-simple-soup.jpg",
+      "title": "一鍋湯，其實不用放得很複雜",
       "width": 1254,
       "height": 1254,
-      "bytes": 427696,
-      "alt": "小老闆一手拿圖卡一手拿小冊子，小鹿與小烏龜分開在旁看著"
+      "bytes": 516613,
+      "alt": "家常廚房情境，小老闆守著一鍋熱湯與一般食材，小鹿與小烏龜分開陪伴"
     },
     {
-      "postId": "XJW-CONV-chat-quiet-work",
-      "filename": "XJW-CONV-chat-quiet-work.jpg",
-      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "postId": "XJW-CONV-chat-traditional-image",
+      "filename": "XJW-CONV-chat-traditional-image.jpg",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
       "width": 1254,
       "height": 1254,
-      "bytes": 510121,
-      "alt": "安靜工作空間，小老闆在桌前整理紙張與日常物件，小鹿與小烏龜分開陪伴"
+      "bytes": 468939,
+      "alt": "溫暖居家工作桌，小老闆翻看舊照片與老物件，小鹿與小烏龜分開陪伴"
     }
-  ],
-  "retry": "accept-valid-existing-pending-review-v2"
+  ]
 }
