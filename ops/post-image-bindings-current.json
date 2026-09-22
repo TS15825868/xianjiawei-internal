@@ -1,0 +1,56 @@
+{
+  "version": "2026-09-22-batch-003-007",
+  "rule": "正式圖片已存在 main；僅回填 D1 至 pending_review，不自動核准、排程或發布。",
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "imageId": "XJW-ACTIVE-IMG-003",
+      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-003.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2309374,
+      "alt": "溫暖工作空間中，小老闆與小鹿、小烏龜一起整理日常靈感與空白筆記，呈現品牌生活感而不放產品",
+      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+    },
+    {
+      "postId": "XJW-CONV-chat-buy-first-look",
+      "imageId": "XJW-ACTIVE-IMG-004",
+      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2116210,
+      "alt": "小老闆在乾淨工作桌前用放大鏡查看空白說明卡，小鹿與小烏龜分開陪伴",
+      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "imageId": "XJW-ACTIVE-IMG-005",
+      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-005.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2103278,
+      "alt": "小老闆在陽光工作桌前持續整理植物與材料，小鹿與小烏龜分開陪伴，呈現長時間投入一件事的日常",
+      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+    },
+    {
+      "postId": "XJW-CONV-chat-customer-first-question",
+      "imageId": "XJW-ACTIVE-IMG-006",
+      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-006.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2089450,
+      "alt": "小老闆坐在木桌後拿著鉛筆面對空白紙張等大家提問，小鹿在左、小烏龜在右",
+      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "imageId": "XJW-ACTIVE-IMG-007",
+      "path": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-007.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2371895,
+      "alt": "放假居家料理情境，小老闆在溫暖廚房慢慢準備家常料理，小鹿與小烏龜分開陪伴",
+      "source": "ChatGPT正式生成｜2026-09-22｜GitHub main｜人工待審核"
+    }
+  ]
+}
