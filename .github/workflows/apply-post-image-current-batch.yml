@@ -1,0 +1,162 @@
+name: 仙加味貼文圖通用批次回填
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/post-image-bindings-current.json'
+      - '.github/workflows/apply-post-image-current-batch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-post-image-current-batch
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Require Cloudflare credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+
+      - name: Extract and validate current batch
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
+          if(!m.sourceZip || !m.targetDir) throw new Error('manifest 缺少 sourceZip 或 targetDir');
+          if(!Array.isArray(m.items) || m.items.length<1 || m.items.length>5) throw new Error('每批必須1到5篇');
+          if(!fs.existsSync(m.sourceZip)) throw new Error('找不到 '+m.sourceZip);
+          fs.writeFileSync('/tmp/source-zip.txt',m.sourceZip);
+          fs.writeFileSync('/tmp/target-dir.txt',m.targetDir);
+          NODE
+          rm -rf /tmp/xjw-current-batch
+          mkdir -p /tmp/xjw-current-batch
+          unzip -q "$(cat /tmp/source-zip.txt)" -d /tmp/xjw-current-batch
+          mkdir -p "$(cat /tmp/target-dir.txt)"
+          node - <<'NODE'
+          const fs=require('fs'),path=require('path');
+          const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
+          for(const x of m.items){
+            if(Number(x.width)!==1254 || Number(x.height)!==1254) throw new Error(x.postId+' manifest尺寸非1254x1254');
+            const src=path.join('/tmp/xjw-current-batch',x.filename);
+            if(!fs.existsSync(src)) throw new Error('缺少 '+x.filename);
+            const stat=fs.statSync(src);
+            if(stat.size<250000) throw new Error(x.filename+' 檔案過小，可能畫質不足');
+            if(Number(x.bytes)!==stat.size) throw new Error(x.filename+' bytes與manifest不一致');
+            const dst=path.join(m.targetDir,x.filename);
+            fs.copyFileSync(src,dst);
+          }
+          console.log('PASS batch files',m.items.length);
+          NODE
+          while IFS= read -r f; do
+            file "$f" | grep -Eq 'JPEG image data.*1254x1254|JPEG image data.*1254 x 1254' || {
+              echo "Invalid dimensions: $f"
+              file "$f"
+              exit 1
+            }
+          done < <(node - <<'NODE'
+          const fs=require('fs'),path=require('path');
+          const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
+          for(const x of m.items) console.log(path.join(m.targetDir,x.filename));
+          NODE
+          )
+
+      - name: Commit formal image files
+        run: |
+          TARGET_DIR="$(cat /tmp/target-dir.txt)"
+          if git diff --quiet -- "$TARGET_DIR"; then
+            echo "No image file changes"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add "$TARGET_DIR"
+            git commit -m "content: publish current formal post image batch"
+            git push
+          fi
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Build safe D1 update SQL
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
+          const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
+          const lines=[];
+          for(const x of m.items){
+            const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+m.targetDir+'/'+x.filename;
+            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q('ChatGPT正式單張圖｜GitHub main｜人工待審核')}, image_width=${Number(x.width)}, image_height=${Number(x.height)}, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft';`);
+          }
+          fs.writeFileSync('/tmp/apply-post-images.sql',lines.join('\n')+'\n');
+          const ids=m.items.map(x=>q(x.postId)).join(',');
+          fs.writeFileSync('/tmp/verify-ids.txt',ids);
+          NODE
+
+      - name: Apply bindings to formal D1
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/apply-post-images.sql
+
+      - name: Verify current batch pending review
+        run: |
+          IDS="$(cat /tmp/verify-ids.txt)"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_width,image_height,image_bytes,image_quality_status,image_approved FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
+          const raw=JSON.parse(fs.readFileSync('/tmp/verify.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          if(rows.length!==m.items.length) throw new Error('D1回傳篇數不完整');
+          for(const x of m.items){
+            const r=rows.find(v=>v.id===x.postId);
+            if(!r) throw new Error('找不到 '+x.postId);
+            if(r.status!=='pending_review') throw new Error(r.id+' 未進入 pending_review');
+            if(!String(r.image_url||'').includes('/'+m.targetDir+'/')) throw new Error(r.id+' 圖片路徑錯誤');
+            if(Number(r.image_width)!==1254 || Number(r.image_height)!==1254) throw new Error(r.id+' 尺寸錯誤');
+            if(Number(r.image_bytes)!==Number(x.bytes)) throw new Error(r.id+' bytes錯誤');
+            if(r.image_quality_status!=='ok') throw new Error(r.id+' 品質狀態錯誤');
+            if(Number(r.image_approved)!==0) throw new Error(r.id+' 不可自動核准');
+          }
+          console.log('PASS pending_review',rows.length);
+          NODE
+
+      - name: Rebuild production queue from remaining drafts
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,image_alt,image_source FROM social_posts WHERE status='draft' ORDER BY id" > /tmp/active-drafts.json
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const raw=JSON.parse(fs.readFileSync('/tmp/active-drafts.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          const windowFor=(id='')=>{const s=String(id).toLowerCase();if(s.includes('cny-'))return'lunar_new_year_window';if(s.includes('year-end-'))return'year_end_window';if(s.includes('new-year-'))return'new_year_window';if(s.includes('weather-'))return'weather_dynamic';if(s.includes('season-'))return'cool_season_dynamic';return'evergreen'};
+          const order={evergreen:0,weather_dynamic:1,cool_season_dynamic:2,year_end_window:3,new_year_window:4,lunar_new_year_window:5};
+          const productKeys=['30cc','180cc','龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+          rows.sort((a,b)=>(order[windowFor(a.id)]-order[windowFor(b.id)])||String(a.id).localeCompare(String(b.id)));
+          const items=rows.map((r,index)=>{const txt=[r.title,r.copy,r.image_alt].filter(Boolean).join(' ');return{postId:r.id,imageId:`XJW-ACTIVE-IMG-${String(index+1).padStart(3,'0')}`,kind:r.category||'生活內容',title:r.title||'',products:productKeys.filter(x=>txt.includes(x)),scene:r.image_alt||'',imageSource:r.image_source||'',window:windowFor(r.id),status:'needs_unique_image',copyHash:crypto.createHash('sha256').update(r.copy||'').digest('hex').slice(0,16)}});
+          const out={version:'2026-09-23-v7-live-current-batch',brand:'仙加味',source:'Cloudflare D1 live social_posts WHERE status=draft',total:items.length,status:'production-queue',rule:'只處理live D1 status=draft；柒玄茶暫停；產品只用正式實物原圖；完成後只回pending_review。',items};
+          fs.writeFileSync('ops/post-image-production-queue-current.json',JSON.stringify(out,null,2)+'\n');
+          console.log('remaining drafts',items.length);
+          NODE
+
+      - name: Commit rebuilt queue
+        run: |
+          if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/post-image-production-queue-current.json
+          git commit -m 'sync: rebuild remaining post image queue'
+          git pull --rebase
+          git push
