@@ -1,0 +1,53 @@
+{
+  "version": "2026-09-23-batch-next-5-jpg",
+  "sourceZip": "ops/incoming/xjw_batch_next_5_20260923_jpg.zip",
+  "targetDir": "assets/post-images/2026-09-23",
+  "statusAfterBind": "pending_review",
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "filename": "XJW-CONV-chat-deer-turtle-soup-choice.jpg",
+      "title": "今天讓小鹿跟小烏龜來選",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 518427,
+      "alt": "居家廚房情境，小老闆在湯鍋旁準備料理，小鹿與小烏龜分開在旁看著食材"
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "filename": "XJW-CONV-chat-elder-kitchen-habit.jpg",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 472269,
+      "alt": "居家廚房情境，小老闆翻看料理筆記並整理日常食材，小鹿與小烏龜分開陪伴"
+    },
+    {
+      "postId": "XJW-CONV-chat-family-old-object",
+      "filename": "XJW-CONV-chat-family-old-object.jpg",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 532889,
+      "alt": "溫暖居家情境，小老闆在老木櫃旁查看舊照片與家中老物件，小鹿與小烏龜分開陪伴"
+    },
+    {
+      "postId": "XJW-CONV-chat-fixed-storage",
+      "filename": "XJW-CONV-chat-fixed-storage.jpg",
+      "title": "家裡有沒有一個固定放東西的位置？",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 524338,
+      "alt": "整理收納情境，小老闆把日常用品分類放回固定位置，小鹿與小烏龜分開陪伴"
+    },
+    {
+      "postId": "XJW-CONV-chat-last-bowl",
+      "filename": "XJW-CONV-chat-last-bowl.jpg",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 414773,
+      "alt": "家常晚餐接近尾聲，小老闆拿著最後一小碗熱湯，小鹿與小烏龜分開陪伴"
+    }
+  ]
+}
