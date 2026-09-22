@@ -2,7 +2,7 @@
   "version": "2026-09-21-v4-live-after-image-batch",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft",
-  "total": 45,
+  "total": 44,
   "status": "production-queue",
   "supersedes": "2026-09-16-v3-live-active-drafts",
   "rule": "只為live D1目前status=draft的有效貼文製作唯一正式圖片；圖片完成後才回填image_url並改pending_review；人工審核前不得approved/scheduled/published。",
@@ -45,20 +45,8 @@
       "copyHash": "2a496e49e85666bb"
     },
     {
-      "postId": "XJW-CONV-chat-brand-not-only-product",
-      "imageId": "XJW-ACTIVE-IMG-003",
-      "kind": "品牌聊天",
-      "title": "為什麼有些貼文不放產品？",
-      "products": [],
-      "scene": "小老闆坐在桌前輕鬆聊天，小鹿與小烏龜分開陪伴",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-brand-not-only-product|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
-      "window": "evergreen",
-      "status": "needs_unique_image",
-      "copyHash": "5a3eb12c8d0ae260"
-    },
-    {
       "postId": "XJW-CONV-chat-buy-first-look",
-      "imageId": "XJW-ACTIVE-IMG-004",
+      "imageId": "XJW-ACTIVE-IMG-003",
       "kind": "客人互動",
       "title": "買東西時，你第一個看什麼？",
       "products": [],
@@ -70,7 +58,7 @@
     },
     {
       "postId": "XJW-CONV-chat-craft-years",
-      "imageId": "XJW-ACTIVE-IMG-005",
+      "imageId": "XJW-ACTIVE-IMG-004",
       "kind": "工藝故事",
       "title": "一件事情做久了，還會覺得新鮮嗎？",
       "products": [],
@@ -82,7 +70,7 @@
     },
     {
       "postId": "XJW-CONV-chat-customer-first-question",
-      "imageId": "XJW-ACTIVE-IMG-006",
+      "imageId": "XJW-ACTIVE-IMG-005",
       "kind": "開放互動",
       "title": "如果小老闆真的跟你聊天，你第一句會問什麼？",
       "products": [],
@@ -94,7 +82,7 @@
     },
     {
       "postId": "XJW-CONV-chat-dayoff-cook",
-      "imageId": "XJW-ACTIVE-IMG-007",
+      "imageId": "XJW-ACTIVE-IMG-006",
       "kind": "生活料理",
       "title": "放假在家，你會想慢慢準備一餐嗎？",
       "products": [],
@@ -106,7 +94,7 @@
     },
     {
       "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
-      "imageId": "XJW-ACTIVE-IMG-008",
+      "imageId": "XJW-ACTIVE-IMG-007",
       "kind": "輕鬆互動",
       "title": "今天讓小鹿跟小烏龜來選",
       "products": [],
@@ -118,7 +106,7 @@
     },
     {
       "postId": "XJW-CONV-chat-drink-made-to-order",
-      "imageId": "XJW-ACTIVE-IMG-009",
+      "imageId": "XJW-ACTIVE-IMG-008",
       "kind": "常見問題",
       "title": "龜鹿飲是先做好放著嗎？",
       "products": [
@@ -133,7 +121,7 @@
     },
     {
       "postId": "XJW-CONV-chat-elder-kitchen-habit",
-      "imageId": "XJW-ACTIVE-IMG-010",
+      "imageId": "XJW-ACTIVE-IMG-009",
       "kind": "飲食文化",
       "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
       "products": [],
@@ -145,7 +133,7 @@
     },
     {
       "postId": "XJW-CONV-chat-family-old-object",
-      "imageId": "XJW-ACTIVE-IMG-011",
+      "imageId": "XJW-ACTIVE-IMG-010",
       "kind": "生活故事",
       "title": "你會保留家裡長輩以前的東西嗎？",
       "products": [],
@@ -157,7 +145,7 @@
     },
     {
       "postId": "XJW-CONV-chat-fixed-storage",
-      "imageId": "XJW-ACTIVE-IMG-012",
+      "imageId": "XJW-ACTIVE-IMG-011",
       "kind": "生活聊天",
       "title": "家裡有沒有一個固定放東西的位置？",
       "products": [],
@@ -169,7 +157,7 @@
     },
     {
       "postId": "XJW-CONV-chat-gao-storage",
-      "imageId": "XJW-ACTIVE-IMG-013",
+      "imageId": "XJW-ACTIVE-IMG-012",
       "kind": "保存使用",
       "title": "龜鹿膏放在哪裡比較不容易忘記？",
       "products": [
@@ -183,7 +171,7 @@
     },
     {
       "postId": "XJW-CONV-chat-gao-vs-drink",
-      "imageId": "XJW-ACTIVE-IMG-014",
+      "imageId": "XJW-ACTIVE-IMG-013",
       "kind": "輕鬆問答",
       "title": "龜鹿膏跟龜鹿飲，差在哪？",
       "products": [
@@ -197,7 +185,7 @@
     },
     {
       "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
-      "imageId": "XJW-ACTIVE-IMG-015",
+      "imageId": "XJW-ACTIVE-IMG-014",
       "kind": "生活產品",
       "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
       "products": [
@@ -212,7 +200,7 @@
     },
     {
       "postId": "XJW-CONV-chat-jiao-spec",
-      "imageId": "XJW-ACTIVE-IMG-016",
+      "imageId": "XJW-ACTIVE-IMG-015",
       "kind": "產品規格",
       "title": "龜鹿膠600g，到底是一盒什麼份量？",
       "products": [
@@ -226,7 +214,7 @@
     },
     {
       "postId": "XJW-CONV-chat-last-bowl",
-      "imageId": "XJW-ACTIVE-IMG-017",
+      "imageId": "XJW-ACTIVE-IMG-016",
       "kind": "輕鬆生活",
       "title": "家裡煮湯，最後一口是誰喝掉的？",
       "products": [],
@@ -238,7 +226,7 @@
     },
     {
       "postId": "XJW-CONV-chat-luerong-intro",
-      "imageId": "XJW-ACTIVE-IMG-018",
+      "imageId": "XJW-ACTIVE-IMG-017",
       "kind": "產品認識",
       "title": "今天認識一個比較少聊到的：鹿茸粉",
       "products": [
@@ -252,7 +240,7 @@
     },
     {
       "postId": "XJW-CONV-chat-old-methods",
-      "imageId": "XJW-ACTIVE-IMG-019",
+      "imageId": "XJW-ACTIVE-IMG-018",
       "kind": "工藝故事",
       "title": "有些老方法，為什麼到現在還有人在做？",
       "products": [],
@@ -264,7 +252,7 @@
     },
     {
       "postId": "XJW-CONV-chat-opening-prep",
-      "imageId": "XJW-ACTIVE-IMG-020",
+      "imageId": "XJW-ACTIVE-IMG-019",
       "kind": "小老闆日常",
       "title": "開店前，小老闆先做哪一件事？",
       "products": [],
@@ -276,7 +264,7 @@
     },
     {
       "postId": "XJW-CONV-chat-pantry-memory",
-      "imageId": "XJW-ACTIVE-IMG-021",
+      "imageId": "XJW-ACTIVE-IMG-020",
       "kind": "飲食文化",
       "title": "你家以前最常看到哪一種食材？",
       "products": [],
@@ -288,7 +276,7 @@
     },
     {
       "postId": "XJW-CONV-chat-photo-size",
-      "imageId": "XJW-ACTIVE-IMG-022",
+      "imageId": "XJW-ACTIVE-IMG-021",
       "kind": "產品知識",
       "title": "一張產品照，為什麼尺寸看起來會差很多？",
       "products": [
@@ -302,7 +290,7 @@
     },
     {
       "postId": "XJW-CONV-chat-picture-or-text",
-      "imageId": "XJW-ACTIVE-IMG-023",
+      "imageId": "XJW-ACTIVE-IMG-022",
       "kind": "社群互動",
       "title": "你比較喜歡看圖，還是慢慢看文字？",
       "products": [],
@@ -314,7 +302,7 @@
     },
     {
       "postId": "XJW-CONV-chat-quiet-work",
-      "imageId": "XJW-ACTIVE-IMG-024",
+      "imageId": "XJW-ACTIVE-IMG-023",
       "kind": "小老闆日常",
       "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
       "products": [],
@@ -326,7 +314,7 @@
     },
     {
       "postId": "XJW-CONV-chat-receive-package",
-      "imageId": "XJW-ACTIVE-IMG-025",
+      "imageId": "XJW-ACTIVE-IMG-024",
       "kind": "客人互動",
       "title": "收到產品後，你第一件事會先看哪裡？",
       "products": [],
@@ -338,7 +326,7 @@
     },
     {
       "postId": "XJW-CONV-chat-recipe-or-feel",
-      "imageId": "XJW-ACTIVE-IMG-026",
+      "imageId": "XJW-ACTIVE-IMG-025",
       "kind": "料理聊天",
       "title": "你煮東西是照食譜，還是憑感覺？",
       "products": [],
@@ -350,7 +338,7 @@
     },
     {
       "postId": "XJW-CONV-chat-shop-organizing",
-      "imageId": "XJW-ACTIVE-IMG-027",
+      "imageId": "XJW-ACTIVE-IMG-026",
       "kind": "小老闆日常",
       "title": "小老闆今天在整理什麼？",
       "products": [],
@@ -362,7 +350,7 @@
     },
     {
       "postId": "XJW-CONV-chat-simple-soup",
-      "imageId": "XJW-ACTIVE-IMG-028",
+      "imageId": "XJW-ACTIVE-IMG-027",
       "kind": "料理聊天",
       "title": "一鍋湯，其實不用放得很複雜",
       "products": [],
@@ -374,7 +362,7 @@
     },
     {
       "postId": "XJW-CONV-chat-soup-day",
-      "imageId": "XJW-ACTIVE-IMG-029",
+      "imageId": "XJW-ACTIVE-IMG-028",
       "kind": "料理互動",
       "title": "你家有固定的煮湯日嗎？",
       "products": [],
@@ -386,7 +374,7 @@
     },
     {
       "postId": "XJW-CONV-chat-tang-vs-jiao",
-      "imageId": "XJW-ACTIVE-IMG-030",
+      "imageId": "XJW-ACTIVE-IMG-029",
       "kind": "產品認識",
       "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
       "products": [
@@ -401,7 +389,7 @@
     },
     {
       "postId": "XJW-CONV-chat-tangkuai-spec",
-      "imageId": "XJW-ACTIVE-IMG-031",
+      "imageId": "XJW-ACTIVE-IMG-030",
       "kind": "產品規格",
       "title": "龜鹿湯塊75g，一盒是幾塊？",
       "products": [
@@ -415,7 +403,7 @@
     },
     {
       "postId": "XJW-CONV-chat-traditional-image",
-      "imageId": "XJW-ACTIVE-IMG-032",
+      "imageId": "XJW-ACTIVE-IMG-031",
       "kind": "文化互動",
       "title": "看到「傳統」兩個字，你第一個想到什麼？",
       "products": [],
@@ -427,7 +415,7 @@
     },
     {
       "postId": "XJW-CONV-chat-trial-first",
-      "imageId": "XJW-ACTIVE-IMG-033",
+      "imageId": "XJW-ACTIVE-IMG-032",
       "kind": "客人聊天",
       "title": "想先了解，再決定也可以",
       "products": [
@@ -441,7 +429,7 @@
     },
     {
       "postId": "XJW-CONV-year-end-keep-habit",
-      "imageId": "XJW-ACTIVE-IMG-034",
+      "imageId": "XJW-ACTIVE-IMG-033",
       "kind": "年末互動",
       "title": "如果今年只能留下一個習慣，你會留哪個？",
       "products": [],
@@ -453,7 +441,7 @@
     },
     {
       "postId": "XJW-CONV-year-end-small-win",
-      "imageId": "XJW-ACTIVE-IMG-035",
+      "imageId": "XJW-ACTIVE-IMG-034",
       "kind": "年末互動",
       "title": "今年有沒有一件小事，你很慶幸自己做了？",
       "products": [],
@@ -465,7 +453,7 @@
     },
     {
       "postId": "XJW-CONV-new-year-open-door",
-      "imageId": "XJW-ACTIVE-IMG-036",
+      "imageId": "XJW-ACTIVE-IMG-035",
       "kind": "新年日常",
       "title": "新年第一個開店日，小老闆先做什麼？",
       "products": [],
@@ -477,7 +465,7 @@
     },
     {
       "postId": "XJW-CONV-new-year-slow-start",
-      "imageId": "XJW-ACTIVE-IMG-037",
+      "imageId": "XJW-ACTIVE-IMG-036",
       "kind": "新年聊天",
       "title": "新的一年，不一定要突然變得很厲害",
       "products": [],
@@ -489,7 +477,7 @@
     },
     {
       "postId": "XJW-CONV-cny-childhood-now",
-      "imageId": "XJW-ACTIVE-IMG-038",
+      "imageId": "XJW-ACTIVE-IMG-037",
       "kind": "年節文化",
       "title": "小時候過年跟現在，哪裡最不一樣？",
       "products": [],
@@ -501,7 +489,7 @@
     },
     {
       "postId": "XJW-CONV-cny-family-choice",
-      "imageId": "XJW-ACTIVE-IMG-039",
+      "imageId": "XJW-ACTIVE-IMG-038",
       "kind": "年節互動",
       "title": "過年最期待的是吃飯、見家人，還是放假？",
       "products": [],
@@ -513,7 +501,7 @@
     },
     {
       "postId": "XJW-CONV-cny-first-soup",
-      "imageId": "XJW-ACTIVE-IMG-040",
+      "imageId": "XJW-ACTIVE-IMG-039",
       "kind": "年後料理",
       "title": "年假後第一鍋湯，你會選雞還是排骨？",
       "products": [],
@@ -525,7 +513,7 @@
     },
     {
       "postId": "XJW-CONV-cny-fridge-clean",
-      "imageId": "XJW-ACTIVE-IMG-041",
+      "imageId": "XJW-ACTIVE-IMG-040",
       "kind": "年前生活",
       "title": "過年前整理冰箱，最常找到什麼？",
       "products": [],
@@ -537,7 +525,7 @@
     },
     {
       "postId": "XJW-CONV-cny-gift-choice",
-      "imageId": "XJW-ACTIVE-IMG-042",
+      "imageId": "XJW-ACTIVE-IMG-041",
       "kind": "年節互動",
       "title": "送禮時，你比較在意包裝還是對方用不用得到？",
       "products": [],
@@ -549,7 +537,7 @@
     },
     {
       "postId": "XJW-CONV-cny-must-have-dish",
-      "imageId": "XJW-ACTIVE-IMG-043",
+      "imageId": "XJW-ACTIVE-IMG-042",
       "kind": "年節料理",
       "title": "過年煮一桌菜，你家一定不能少哪一道？",
       "products": [],
@@ -561,7 +549,7 @@
     },
     {
       "postId": "XJW-CONV-cny-pre-clean",
-      "imageId": "XJW-ACTIVE-IMG-044",
+      "imageId": "XJW-ACTIVE-IMG-043",
       "kind": "年前生活",
       "title": "過年前，你家會先大掃除還是先買東西？",
       "products": [],
@@ -573,7 +561,7 @@
     },
     {
       "postId": "XJW-CONV-cny-reopen",
-      "imageId": "XJW-ACTIVE-IMG-045",
+      "imageId": "XJW-ACTIVE-IMG-044",
       "kind": "年後日常",
       "title": "開工第一天，小老闆先做一件小事",
       "products": [],
