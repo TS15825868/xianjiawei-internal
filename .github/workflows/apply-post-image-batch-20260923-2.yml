@@ -126,9 +126,9 @@ jobs:
       - name: Commit rebuilt queue
         run: |
           if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
-          git pull --rebase
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add ops/post-image-production-queue-current.json
           git commit -m 'sync: remove completed batch 20260923-2 from image queue'
+          git pull --rebase
           git push
