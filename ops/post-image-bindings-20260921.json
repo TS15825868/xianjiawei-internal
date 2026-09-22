@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-22-batch-3",
+  "version": "2026-09-22-repair-duplicate",
   "repo": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "rule": "正式圖落 main 後，D1 僅回填 pending_review；不得自動核准、排程或發布。",
@@ -53,16 +53,6 @@
       "height": 1254,
       "bytes": 2483147,
       "alt": "萬華傳統街區晨光情境，現代仙加味小老闆與小鹿、小烏龜同行，呈現傳統生活文化延續到今日，無產品"
-    },
-    {
-      "postId": "XJW-CONV-chat-brand-not-only-product",
-      "imageId": "XJW-ACTIVE-IMG-20260922-001",
-      "title": "為什麼有些貼文不放產品？",
-      "path": "assets/post-images/2026-09-22/XJW-CONV-chat-brand-not-only-product.png",
-      "width": 1254,
-      "height": 1254,
-      "bytes": 2309374,
-      "alt": "溫暖室內品牌聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起分享日常，桌面是一般生活與書寫小物，無產品"
     }
   ]
 }
