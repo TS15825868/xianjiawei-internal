@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-22-repair-duplicate",
+  "version": "2026-09-22-repair-duplicate-v2",
   "repo": "TS15825868/xianjiawei-internal",
   "branch": "main",
   "rule": "正式圖落 main 後，D1 僅回填 pending_review；不得自動核准、排程或發布。",
