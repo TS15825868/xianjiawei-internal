@@ -32,9 +32,6 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Repair accidental duplicate binding
-        run: |
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "UPDATE social_posts SET image_url='', image_alt='', image_source='官方素材', image_width=0, image_height=0, image_bytes=0, image_quality_status='unknown', image_approved=0, status='draft', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id='XJW-CONV-chat-brand-not-only-product' AND image_url LIKE '%/assets/post-images/2026-09-22/%';"
       - name: Build safe D1 update SQL
         run: |
           node - <<'NODE'
