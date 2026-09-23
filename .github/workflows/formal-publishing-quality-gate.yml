@@ -117,6 +117,7 @@ jobs:
           const allowedStatuses=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
           const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
           const imageRequiredStatuses=new Set(['pending_review','approved','scheduled','published']);
+          const imageApprovedStatuses=new Set(['approved','scheduled','published']);
           const imageOwners=new Map();
           const copyOwners=new Map();
           const errors=[];
@@ -151,7 +152,7 @@ jobs:
             }
             if(imageRequiredStatuses.has(p.status)){
               if(!image)errors.push(`${p.id}: ${p.status}缺圖片，不得進入正式流程`);
-              if(Number(p.image_approved)!==1)errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
+              if(imageApprovedStatuses.has(p.status)&&Number(p.image_approved)!==1)errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
               if(Number(p.image_width||0)<=0||Number(p.image_height||0)<=0)errors.push(`${p.id}: ${p.status}缺圖片尺寸資料`);
               if(!String(p.image_alt||'').trim())errors.push(`${p.id}: ${p.status}缺圖片說明`);
             }
