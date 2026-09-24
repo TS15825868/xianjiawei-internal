@@ -70,6 +70,7 @@ jobs:
               imageSource:r.image_source||'',
               window:windowFor(r.id),
               status:'needs_unique_image',
+              characterLock:'正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。',
               copyHash:crypto.createHash('sha256').update(r.copy||'').digest('hex').slice(0,16)
             };
           });
@@ -91,7 +92,7 @@ jobs:
               '鹿茸粉':'images/customer-display-v20260812/luerong-fen.avif'
             },
             visualRules:[
-              '固定已確認Q版小老闆角色，不自由重畫角色；小鹿與小烏龜分開',
+              '固定已確認Q版小朋友小男孩角色，不自由重畫角色；年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例須與定稿同一人；不得成熟化、少年化、成人化；小鹿與小烏龜分開且相對尺寸固定',
               '生活、料理、品牌、產品、萬華、互動、季節自然穿插，不連發同系列',
               '產品只用formalAssets正式實物圖等比例合成，AI不得重畫；30cc小玻璃裸罐無貼紙；180cc正式鋁袋比例；龜鹿膠舊AI紫盒全部禁用',
               '找不到正式產品原圖時寧可不放產品；公開只顯示仙加味',
