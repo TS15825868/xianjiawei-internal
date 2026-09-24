@@ -1,11 +1,36 @@
 {
-  "version": "2026-09-24-v9-live-after-duplicate-cleanup",
+  "version": "2026-09-24-v10-live-active-drafts",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft",
   "total": 29,
   "status": "production-queue",
-  "rule": "只處理live D1 status=draft；每篇唯一正式圖片；產品只用正式實物原圖；小老闆必須通過年齡／同一人鎖定；完成後回pending_review，人工視覺審核前不得發布。",
-  "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+  "supersedes": "2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流",
+  "rule": "只為live D1目前status=draft的有效貼文製作唯一正式圖片；小老闆必須通過2026-09-24年齡／同一人鎖定；圖片完成後才回填image_url並改pending_review；人工視覺審核前不得approved/scheduled/published。",
+  "threadsQueue": "ops/metricool-threads-media-queue-current.json",
+  "formalAssets": {
+    "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
+    "180cc": "images/customer-display-v20260812/guilu-drink-180cc-product.jpg",
+    "龜鹿膏": "images/customer-display-v20260812/guilu-gao.avif",
+    "龜鹿湯塊": "images/customer-display-v20260812/guilu-tangkuai.avif",
+    "龜鹿膠": "images/customer-display-v20260812/guilu-jiao.avif",
+    "鹿茸粉": "images/customer-display-v20260812/luerong-fen.avif"
+  },
+  "visualRules": [
+    "固定已確認Q版小朋友小男孩角色，不自由重畫角色；年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例須與定稿同一人；不得成熟化、少年化、成人化；小鹿與小烏龜分開且相對尺寸固定",
+    "生活、料理、品牌、產品、萬華、互動、季節自然穿插，不連發同系列",
+    "產品只用formalAssets正式實物圖等比例合成，AI不得重畫；30cc小玻璃裸罐無貼紙；180cc正式鋁袋比例；龜鹿膠舊AI紫盒全部禁用",
+    "找不到正式產品原圖時寧可不放產品；公開只顯示仙加味",
+    "圖文、季節、天氣、冷熱、動作一致；無亂碼、怪字、療效宣稱",
+    "完成後回pending_review，未經使用者人工審核不得發布"
+  ],
+  "windowPolicy": {
+    "evergreen": "優先依混合題材製作",
+    "weather_dynamic": "只在實際天氣符合時插播",
+    "cool_season_dynamic": "進入適合溫度窗口再啟用",
+    "year_end_window": "年底窗口再啟用",
+    "new_year_window": "新年窗口再啟用",
+    "lunar_new_year_window": "農曆年前後適合窗口再啟用"
+  },
   "items": [
     {
       "postId": "XJW-CONV-chat-30-bare-jar",
@@ -19,7 +44,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-bare-jar|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "229f99812f75db51"
     },
     {
@@ -35,7 +60,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-vs-180|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "2a496e49e85666bb"
     },
     {
@@ -51,7 +76,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-drink-made-to-order|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "ae97be57918b5a6e"
     },
     {
@@ -66,7 +91,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "6b51ff1e51335804"
     },
     {
@@ -75,13 +100,15 @@
       "kind": "輕鬆問答",
       "title": "龜鹿膏跟龜鹿飲，差在哪？",
       "products": [
+        "30cc",
+        "180cc",
         "龜鹿膏"
       ],
       "scene": "小老闆用聊天方式比較龜鹿膏與龜鹿飲的生活使用情境",
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-vs-drink|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "31d2b7d646bb73d9"
     },
     {
@@ -97,7 +124,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-glass-vs-pouch-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "e58c17856e5eb03b"
     },
     {
@@ -112,7 +139,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-jiao-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "f1ee3e0bea5de67b"
     },
     {
@@ -127,7 +154,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-luerong-intro|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "ae8ccb4156ac260a"
     },
     {
@@ -140,7 +167,7 @@
       "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "b6a8bf6aa986306e"
     },
     {
@@ -153,7 +180,7 @@
       "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "f4c6af77286bccd1"
     },
     {
@@ -168,7 +195,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-photo-size|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "6e1c193912920c67"
     },
     {
@@ -181,7 +208,7 @@
       "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "c277d427e5f93c81"
     },
     {
@@ -194,7 +221,7 @@
       "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "a19512bdd2add4f5"
     },
     {
@@ -207,7 +234,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-soup-day|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "7524982aa81ff3f4"
     },
     {
@@ -223,7 +250,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tang-vs-jiao|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "17484aa73f941e38"
     },
     {
@@ -238,7 +265,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tangkuai-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "2e26c2d2fe907068"
     },
     {
@@ -253,7 +280,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-trial-first|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "evergreen",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "fdf45d7dc56c9019"
     },
     {
@@ -266,7 +293,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-keep-habit|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "year_end_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "75438bedf2dfec52"
     },
     {
@@ -279,7 +306,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-small-win|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "year_end_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "59b2a388b8457b54"
     },
     {
@@ -292,7 +319,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:new-year-open-door|季節:new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "bebcd82e870234d1"
     },
     {
@@ -305,7 +332,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:new-year-slow-start|季節:new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "f19008329f49d2ec"
     },
     {
@@ -318,7 +345,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-childhood-now|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "885ff48f46a655e5"
     },
     {
@@ -331,7 +358,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-family-choice|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "e6548f2102cfc266"
     },
     {
@@ -344,7 +371,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-first-soup|季節:post_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "9ac4c8a2e1925175"
     },
     {
@@ -357,7 +384,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-fridge-clean|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "cc93296508fe7c18"
     },
     {
@@ -370,7 +397,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-gift-choice|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "0564c7d33ca0f300"
     },
     {
@@ -383,7 +410,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-must-have-dish|季節:lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "f1bd95a693b6f56a"
     },
     {
@@ -396,7 +423,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-pre-clean|季節:pre_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "6f9c584a0f017a97"
     },
     {
@@ -409,7 +436,7 @@
       "imageSource": "待依文案製作專屬正式情境圖|題庫:cny-reopen|季節:post_lunar_new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
       "window": "lunar_new_year_window",
       "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "b6ba0afda6690118"
     }
   ]
