@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: xianjiawei-active-image-queue-sync
-  cancel-in-progress: true
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -133,6 +133,14 @@ jobs:
           set -euo pipefail
           if git diff --quiet -- ops/post-image-production-queue-current.json; then
             echo 'Queue already matches live D1.'
+            exit 0
+          fi
+          cp ops/post-image-production-queue-current.json /tmp/rebuilt-post-image-production-queue.json
+          git checkout -- ops/post-image-production-queue-current.json
+          git pull --rebase
+          cp /tmp/rebuilt-post-image-production-queue.json ops/post-image-production-queue-current.json
+          if git diff --quiet -- ops/post-image-production-queue-current.json; then
+            echo 'Queue already matches latest main.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
