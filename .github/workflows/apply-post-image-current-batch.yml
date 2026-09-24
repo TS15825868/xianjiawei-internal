@@ -143,9 +143,17 @@ jobs:
           const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
           const windowFor=(id='')=>{const s=String(id).toLowerCase();if(s.includes('cny-'))return'lunar_new_year_window';if(s.includes('year-end-'))return'year_end_window';if(s.includes('new-year-'))return'new_year_window';if(s.includes('weather-'))return'weather_dynamic';if(s.includes('season-'))return'cool_season_dynamic';return'evergreen'};
           const order={evergreen:0,weather_dynamic:1,cool_season_dynamic:2,year_end_window:3,new_year_window:4,lunar_new_year_window:5};
-          const productKeys=['30cc','180cc','龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+          const productKeys=['龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+          const productListFor=text=>{
+            const out=[];
+            if(text.includes('30cc')) out.push('30cc');
+            if(text.includes('180cc')) out.push('180cc');
+            if(text.includes('龜鹿飲')&&!text.includes('30cc')&&!text.includes('180cc')) out.push('30cc','180cc');
+            for(const x of productKeys) if(text.includes(x)) out.push(x);
+            return [...new Set(out)];
+          };
           rows.sort((a,b)=>(order[windowFor(a.id)]-order[windowFor(b.id)])||String(a.id).localeCompare(String(b.id)));
-          const items=rows.map((r,index)=>{const txt=[r.title,r.copy,r.image_alt].filter(Boolean).join(' ');return{postId:r.id,imageId:`XJW-ACTIVE-IMG-${String(index+1).padStart(3,'0')}`,kind:r.category||'生活內容',title:r.title||'',products:productKeys.filter(x=>txt.includes(x)),scene:r.image_alt||'',imageSource:r.image_source||'',window:windowFor(r.id),status:'needs_unique_image',characterLock:'正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。',copyHash:crypto.createHash('sha256').update(r.copy||'').digest('hex').slice(0,16)}});
+          const items=rows.map((r,index)=>{const txt=[r.title,r.copy,r.image_alt].filter(Boolean).join(' ');return{postId:r.id,imageId:`XJW-ACTIVE-IMG-${String(index+1).padStart(3,'0')}`,kind:r.category||'生活內容',title:r.title||'',products:productListFor(txt),scene:r.image_alt||'',imageSource:r.image_source||'',window:windowFor(r.id),status:'needs_unique_image',characterLock:'正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。',copyHash:crypto.createHash('sha256').update(r.copy||'').digest('hex').slice(0,16)}});
           const out={version:'2026-09-23-v7-live-current-batch',brand:'仙加味',source:'Cloudflare D1 live social_posts WHERE status=draft',total:items.length,status:'production-queue',rule:'只處理live D1 status=draft；柒玄茶暫停；產品只用正式實物原圖；小老闆必須通過2026-09-24年齡／同一人鎖定；完成後只回pending_review，未經人工視覺確認不得發布。',characterLock:'正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。',items};
           fs.writeFileSync('ops/post-image-production-queue-current.json',JSON.stringify(out,null,2)+'\n');
           console.log('remaining drafts',items.length);
