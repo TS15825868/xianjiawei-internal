@@ -1,4 +1,5 @@
 name: 仙加味有效貼文圖片製作清單守門
+# validation-trigger-20260924-v2
 
 on:
   push:
