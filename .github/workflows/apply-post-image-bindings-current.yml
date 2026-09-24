@@ -1,17 +1,15 @@
 name: 仙加味貼文圖片批次回填
 
+# Legacy/manual fallback only.
+# The formal automatic path is apply-post-image-current-batch.yml.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'ops/post-image-bindings-current.json'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: xianjiawei-post-image-binding-current
+  group: xianjiawei-post-image-queue-write
   cancel-in-progress: false
 
 jobs:
@@ -89,6 +87,11 @@ jobs:
           NODE
       - name: Commit rebuilt queue if changed
         run: |
+          if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
+          cp ops/post-image-production-queue-current.json /tmp/rebuilt-post-image-production-queue.json
+          git checkout -- ops/post-image-production-queue-current.json
+          git pull --rebase
+          cp /tmp/rebuilt-post-image-production-queue.json ops/post-image-production-queue-current.json
           if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
