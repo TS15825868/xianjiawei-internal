@@ -163,12 +163,18 @@ jobs:
         run: |
           if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
           cp ops/post-image-production-queue-current.json /tmp/rebuilt-post-image-production-queue.json
-          git checkout -- ops/post-image-production-queue-current.json
-          git pull --rebase
-          cp /tmp/rebuilt-post-image-production-queue.json ops/post-image-production-queue-current.json
-          if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ops/post-image-production-queue-current.json
-          git commit -m 'sync: rebuild remaining post image queue'
-          git push
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/rebuilt-post-image-production-queue.json ops/post-image-production-queue-current.json
+            if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
+            git add ops/post-image-production-queue-current.json
+            git commit -m 'sync: rebuild remaining post image queue'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push raced with another main update; retry $attempt/4"
+            sleep 2
+          done
+          echo 'Unable to update queue after retries' >&2
+          exit 1
