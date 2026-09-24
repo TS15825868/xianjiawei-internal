@@ -56,7 +56,15 @@ jobs:
             return 'evergreen';
           };
           const order={evergreen:0,weather_dynamic:1,cool_season_dynamic:2,year_end_window:3,new_year_window:4,lunar_new_year_window:5};
-          const productKeys=['30cc','180cc','龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+          const productKeys=['龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+          const productListFor=text=>{
+            const out=[];
+            if(text.includes('30cc')) out.push('30cc');
+            if(text.includes('180cc')) out.push('180cc');
+            if(text.includes('龜鹿飲')&&!text.includes('30cc')&&!text.includes('180cc')) out.push('30cc','180cc');
+            for(const x of productKeys) if(text.includes(x)) out.push(x);
+            return [...new Set(out)];
+          };
           rows.sort((a,b)=>(order[windowFor(a.id)]-order[windowFor(b.id)])||String(a.id).localeCompare(String(b.id)));
           const items=rows.map((r,index)=>{
             const text=[r.title,r.copy,r.image_alt].filter(Boolean).join(' ');
@@ -65,7 +73,7 @@ jobs:
               imageId:`XJW-ACTIVE-IMG-${String(index+1).padStart(3,'0')}`,
               kind:r.category||'生活內容',
               title:r.title||'',
-              products:productKeys.filter(x=>text.includes(x)),
+              products:productListFor(text),
               scene:r.image_alt||'',
               imageSource:r.image_source||'',
               window:windowFor(r.id),
@@ -75,13 +83,13 @@ jobs:
             };
           });
           const out={
-            version:'2026-09-16-v3-live-active-drafts',
+            version:'2026-09-24-v10-live-active-drafts',
             brand:'仙加味',
             source:'Cloudflare D1 live social_posts WHERE status=draft',
             total:items.length,
             status:'production-queue',
             supersedes:'2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流',
-            rule:'只為live D1目前status=draft的有效貼文製作唯一正式圖片；圖片完成後才回填image_url並改pending_review；人工審核前不得approved/scheduled/published。',
+            rule:'只為live D1目前status=draft的有效貼文製作唯一正式圖片；小老闆必須通過2026-09-24年齡／同一人鎖定；圖片完成後才回填image_url並改pending_review；人工視覺審核前不得approved/scheduled/published。',
             threadsQueue:'ops/metricool-threads-media-queue-current.json',
             formalAssets:{
               '30cc':'images/customer-display-v20260812/guilu-drink-30cc.avif',
