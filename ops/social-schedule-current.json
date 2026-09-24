@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-24T20:16:00+08:00",
+  "updatedAt": "2026-09-24T20:22:00+08:00",
   "status": "active-with-media-and-review-gate",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -37,14 +37,28 @@
     "draftRule": "尚未完成唯一正式圖片或尚未經使用者人工審核的Threads項目保持draft=true、autoPublish=false，不得因舊排程資料自動恢復發布。"
   },
   "latestMetricoolVerification": {
-    "verifiedAt": "2026-09-24T20:16:00+08:00",
+    "verifiedAt": "2026-09-24T20:22:00+08:00",
     "brandConnected": true,
     "threadsConnectedAs": "xianjiawei.tw",
-    "observedState": "已檢查目前Metricool排程：9/26至10/13既有Threads候選均draft=true、autoPublish=false且多數無media；10/1至10/14既有FB/IG圖片排程均autoPublish=false。未重新確認角色一致性的既有內容不會自動發布。",
-    "replacementPost": "2026-09-24小老闆角色修正版已建立FB／IG／Threads同篇排程，使用者已明確核准該新圖，autoPublish=true。",
-    "v19ConflictResolution": "舊規則不得恢復未經最新角色一致性檢查的自動發布資格。"
+    "replacementPost": {
+      "publicationDate": "2026-09-24T20:20:00+08:00",
+      "facebook": "PUBLISHED",
+      "instagram": "PUBLISHED",
+      "threads": "PUBLISHED",
+      "image": "1254x1254 PNG",
+      "autoPublish": true,
+      "userApprovedImage": true
+    },
+    "futureMediaSafety": {
+      "heldForVisualReviewCount": 8,
+      "period": "2026-10-01/2026-10-14",
+      "state": "draft=true, autoPublish=false",
+      "reason": "既有媒體為1024x768，且尚未完成2026-09-24新增的小老闆年齡／同一人視覺確認；先停止任何自動發布。"
+    },
+    "threadsDrafts": "9/26至10/13原Threads候選仍維持draft=true、autoPublish=false且多數無media，不會自動發布。",
+    "v19ConflictResolution": "任何舊排程、舊核准或舊守門紀錄均不得繞過2026-09-24角色一致性硬性守門。"
   },
-  "sourceRule": "Metricool live planner仍為Threads實際發布路徑，但只有同時具備正式圖片、人工審核通過、draft=false且autoPublish=true的項目才算正式待發。",
+  "sourceRule": "Metricool為實際發布路徑；只有正式圖片已完成最新角色／產品／圖文一致性檢查，且使用者核准後，才可draft=false且autoPublish=true。未完成最新視覺確認者必須維持draft=true或autoPublish=false。",
   "d1Role": "Cloudflare D1 social_posts為ERP／貼文中心內容與審核資料；Metricool為Threads正式發布路徑。兩邊需以貼文ID／內容／媒體核對，不得把純文字草稿誤判成可發布內容。",
   "weatherInsertRule": "天氣突然變化時可插入即時天氣貼文；必須先取得當下最新天氣、完成對應圖片與人工審核，原排程再順延。",
   "nextCycleMediaApproval": {
@@ -62,7 +76,7 @@
     "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否排程；人工通過媒體不等於自動排程。",
     "metricoolScheduleCreated": false
   },
-  "note": "2026-09-24起新增小老闆年齡／同一人硬性守門。任何看起來長大、少年化、成人化或像不同人的圖一律不得發布；換圖後舊核准失效。未完成最新視覺確認的既有排程維持draft或autoPublish=false。",
+  "note": "2026-09-24角色異常事件已修正：新版小老闆圖於20:20成功發布FB／IG／Threads。另將10/01至10/14共8筆既有媒體排程暫轉草稿，避免未重新確認角色一致性的圖片誤發。",
   "mascotReleaseGate": {
     "effectiveAt": "2026-09-24T20:16:00+08:00",
     "rule": "凡圖片含小老闆，必須肉眼確認仍為正式Q版小朋友小男孩，年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例一致；只要像長大、像少年／成人或像不同人，直接不合格。",
