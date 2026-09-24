@@ -6,13 +6,12 @@ on:
     branches: [main]
     paths:
       - 'ops/post-image-bindings-current.json'
-      - '.github/workflows/apply-post-image-current-batch.yml'
 
 permissions:
   contents: write
 
 concurrency:
-  group: xianjiawei-post-image-current-batch
+  group: xianjiawei-post-image-queue-write
   cancel-in-progress: false
 
 jobs:
@@ -155,9 +154,13 @@ jobs:
       - name: Commit rebuilt queue
         run: |
           if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
+          cp ops/post-image-production-queue-current.json /tmp/rebuilt-post-image-production-queue.json
+          git checkout -- ops/post-image-production-queue-current.json
+          git pull --rebase
+          cp /tmp/rebuilt-post-image-production-queue.json ops/post-image-production-queue-current.json
+          if git diff --quiet -- ops/post-image-production-queue-current.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add ops/post-image-production-queue-current.json
           git commit -m 'sync: rebuild remaining post image queue'
-          git pull --rebase
           git push
