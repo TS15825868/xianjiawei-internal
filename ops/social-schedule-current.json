@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-15T22:46:00+08:00",
+  "updatedAt": "2026-09-24T20:16:00+08:00",
   "status": "active-with-media-and-review-gate",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -13,7 +13,7 @@
     "threads": "xianjiawei.tw"
   },
   "principle": "少而精、不洗版；生活、料理、品牌、產品、萬華、互動、季節／天氣自然穿插。一般生活內容不硬塞LINE；明確試喝／怎麼選／價格／下單／配送／售後需求才導LINE OA。",
-  "visualGate": "正式Q版小朋友小老闆；小鹿與小烏龜分開；公開只顯示仙加味；產品只用正式產品原圖等比例合成；錯圖、亂碼、療效宣稱、AI亂包裝不得發布。",
+  "visualGate": "正式Q版小朋友小老闆，必須與角色定稿同一人、不得成熟化／少年化／成人化；小鹿與小烏龜分開；公開只顯示仙加味；產品只用正式產品原圖等比例合成；錯圖、亂碼、療效宣稱、AI亂包裝不得發布。",
   "productImageAuthority": {
     "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
     "180cc": "images/customer-display-v20260812/guilu-drink-180cc-product.jpg",
@@ -37,11 +37,12 @@
     "draftRule": "尚未完成唯一正式圖片或尚未經使用者人工審核的Threads項目保持draft=true、autoPublish=false，不得因舊排程資料自動恢復發布。"
   },
   "latestMetricoolVerification": {
-    "verifiedAt": "2026-09-15T22:46:00+08:00",
+    "verifiedAt": "2026-09-24T20:16:00+08:00",
     "brandConnected": true,
     "threadsConnectedAs": "xianjiawei.tw",
-    "observedState": "目前可見Threads候選多為draft=true、autoPublish=false，且多數沒有media；依最新規則視為待補正式圖片草稿，不是正式待發。",
-    "v19ConflictResolution": "v19曾要求UUID -5276545568587758621與-8283886396944593212恢復scheduled-auto；此要求已被2026-09-15最新使用者規則取代。兩篇在正式圖片與最新人工審核完成前維持草稿。"
+    "observedState": "已檢查目前Metricool排程：9/26至10/13既有Threads候選均draft=true、autoPublish=false且多數無media；10/1至10/14既有FB/IG圖片排程均autoPublish=false。未重新確認角色一致性的既有內容不會自動發布。",
+    "replacementPost": "2026-09-24小老闆角色修正版已建立FB／IG／Threads同篇排程，使用者已明確核准該新圖，autoPublish=true。",
+    "v19ConflictResolution": "舊規則不得恢復未經最新角色一致性檢查的自動發布資格。"
   },
   "sourceRule": "Metricool live planner仍為Threads實際發布路徑，但只有同時具備正式圖片、人工審核通過、draft=false且autoPublish=true的項目才算正式待發。",
   "d1Role": "Cloudflare D1 social_posts為ERP／貼文中心內容與審核資料；Metricool為Threads正式發布路徑。兩邊需以貼文ID／內容／媒體核對，不得把純文字草稿誤判成可發布內容。",
@@ -61,5 +62,11 @@
     "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否排程；人工通過媒體不等於自動排程。",
     "metricoolScheduleCreated": false
   },
-  "note": "本檔已以2026-09-15最新規則覆蓋9/13舊Threads autoPublish修復紀錄。沒有正式圖片或未人工審核的內容一律不可正式發布。"
+  "note": "2026-09-24起新增小老闆年齡／同一人硬性守門。任何看起來長大、少年化、成人化或像不同人的圖一律不得發布；換圖後舊核准失效。未完成最新視覺確認的既有排程維持draft或autoPublish=false。",
+  "mascotReleaseGate": {
+    "effectiveAt": "2026-09-24T20:16:00+08:00",
+    "rule": "凡圖片含小老闆，必須肉眼確認仍為正式Q版小朋友小男孩，年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例一致；只要像長大、像少年／成人或像不同人，直接不合格。",
+    "scheduleSafety": "尚未完成角色一致性確認的既有排程維持draft=true或autoPublish=false；換圖後舊核准失效，新圖重新檢查通過才可autoPublish=true。",
+    "companions": "小鹿與小烏龜分開且相對尺寸固定，不得融合或忽大忽小。"
+  }
 }
