@@ -1,11 +1,11 @@
 {
-  "version": "2026-09-30-v2",
-  "updatedAt": "2026-09-30T00:12:00+08:00",
+  "version": "2026-09-30-v3",
+  "updatedAt": "2026-09-30T00:18:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 1,
-  "visualQcPassedAwaitingAssetCommit": 3,
-  "remainingNeedsUniqueImage": 25,
+  "visualQcPassedAwaitingAssetCommit": 7,
+  "remainingNeedsUniqueImage": 21,
   "currentBatch": "batch5",
   "completed": [
     {
@@ -20,40 +20,43 @@
       "postId": "XJW-CONV-chat-picture-or-text",
       "title": "你比較喜歡看圖，還是慢慢看文字？",
       "candidateFilename": "仙加味_看圖還是讀文字.png",
-      "status": "visual_qc_passed",
-      "checks": [
-        "小老闆幼童版一致",
-        "小鹿與小烏龜分開",
-        "看圖／看文字互動主題一致",
-        "無產品重畫風險",
-        "無療效宣稱"
-      ]
+      "status": "visual_qc_passed"
     },
     {
       "postId": "XJW-CONV-chat-quiet-work",
       "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
       "candidateFilename": "仙加味的靜謐午後.png",
-      "status": "visual_qc_passed",
-      "checks": [
-        "小老闆幼童版一致",
-        "小鹿與小烏龜分開",
-        "安靜工作情境一致",
-        "無產品重畫風險",
-        "無療效宣稱"
-      ]
+      "status": "visual_qc_passed"
     },
     {
       "postId": "XJW-CONV-chat-soup-day",
       "title": "你家有固定的煮湯日嗎？",
       "candidateFilename": "固定煮湯日的暖心廚房.png",
-      "status": "visual_qc_passed",
-      "checks": [
-        "小老闆幼童版一致",
-        "小鹿與小烏龜分開",
-        "月曆與家常煮湯情境一致",
-        "料理主題清楚",
-        "無產品重畫風險"
-      ]
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "title": "你家以前最常看到哪一種食材？",
+      "candidateFilename": "童趣廚房的日常食材時光.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "candidateFilename": "今年的小小幸運.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "candidateFilename": "留住一個好習慣.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "title": "新的一年，不一定要突然變得很厲害",
+      "candidateFilename": "新年慢慢開始就好.png",
+      "status": "visual_qc_passed"
     }
   ],
   "rejectedExamples": [
@@ -63,12 +66,13 @@
     }
   ],
   "nextWork": [
-    "先完成3張已通過QC候選圖的正式資產寫入與binding",
-    "補製XJW-CONV-chat-pantry-memory唯一正式圖",
-    "產品類全部改成formalAssets正式實物圖合成後再綁定",
-    "完成後逐篇回pending_review，人工審核前不發布"
+    "只處理既有候選，不重複生成已通過題目",
+    "7張已通過QC候選依序正式落檔與binding",
+    "剩餘21篇優先盤點既有候選，再補真正缺圖",
+    "產品類只用formalAssets正式產品實物圖合成"
   ],
   "rules": [
+    "已通過QC的主題不得任意改文案或重生",
     "每篇唯一圖片，不重複",
     "小老闆固定幼童版，同一角色",
     "小鹿與小烏龜分開",
