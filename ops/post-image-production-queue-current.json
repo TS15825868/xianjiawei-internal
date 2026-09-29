@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-v13-qc-progress",
+  "version": "2026-09-30-v14-all-images-qc-ready",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft",
   "total": 29,
@@ -42,11 +42,13 @@
         "30cc"
       ],
       "scene": "小老闆指著正式30cc小玻璃裸罐，罐身沒有貼紙",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-bare-jar|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/01_30cc裸罐.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "229f99812f75db51"
+      "copyHash": "229f99812f75db51",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-30-vs-180",
@@ -58,11 +60,13 @@
         "180cc"
       ],
       "scene": "小老闆在生活情境中比較正式30cc小玻璃裸罐與180cc鋁袋",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-30-vs-180|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/02_30cc_vs_180cc.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "2a496e49e85666bb"
+      "copyHash": "2a496e49e85666bb",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-drink-made-to-order",
@@ -74,11 +78,13 @@
         "180cc"
       ],
       "scene": "小老闆拿行事曆說明龜鹿飲接單後製作，旁邊是正式30cc與180cc產品",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-drink-made-to-order|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/03_龜鹿飲接單後製作.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "ae97be57918b5a6e"
+      "copyHash": "ae97be57918b5a6e",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-gao-storage",
@@ -89,11 +95,13 @@
         "龜鹿膏"
       ],
       "scene": "小老闆把開罐後的正式龜鹿膏放進冰箱固定位置",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/04_龜鹿膏保存.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "6b51ff1e51335804"
+      "copyHash": "6b51ff1e51335804",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-gao-vs-drink",
@@ -106,11 +114,13 @@
         "龜鹿膏"
       ],
       "scene": "小老闆用聊天方式比較龜鹿膏與龜鹿飲的生活使用情境",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-gao-vs-drink|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/05_龜鹿膏_vs_龜鹿飲.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "31d2b7d646bb73d9"
+      "copyHash": "31d2b7d646bb73d9",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
@@ -122,11 +132,13 @@
         "180cc"
       ],
       "scene": "小老闆整理正式30cc小玻璃裸罐與180cc鋁袋，兩者比例真實",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-glass-vs-pouch-storage|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/06_玻璃罐_vs_鋁袋收納.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "e58c17856e5eb03b"
+      "copyHash": "e58c17856e5eb03b",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-jiao-spec",
@@ -137,11 +149,13 @@
         "龜鹿膠"
       ],
       "scene": "小老闆介紹正式龜鹿膠600g一斤32塊裝",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-jiao-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/07_龜鹿膠600g.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "f1ee3e0bea5de67b"
+      "copyHash": "f1ee3e0bea5de67b",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-luerong-intro",
@@ -152,11 +166,13 @@
         "鹿茸粉"
       ],
       "scene": "小老闆自然介紹正式鹿茸粉75g產品",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-luerong-intro|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/08_鹿茸粉75g.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "ae8ccb4156ac260a"
+      "copyHash": "ae8ccb4156ac260a",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-opening-prep",
@@ -197,11 +213,13 @@
         "30cc"
       ],
       "scene": "小老闆用小尺示意正式30cc玻璃裸罐的實際小尺寸",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-photo-size|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/09_30cc實際尺寸.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "6e1c193912920c67"
+      "copyHash": "6e1c193912920c67",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-picture-or-text",
@@ -258,11 +276,13 @@
         "龜鹿膠"
       ],
       "scene": "小老闆比較正式龜鹿湯塊與龜鹿膠產品外觀",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tang-vs-jiao|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/10_湯塊_vs_龜鹿膠.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "17484aa73f941e38"
+      "copyHash": "17484aa73f941e38",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-tangkuai-spec",
@@ -273,11 +293,13 @@
         "龜鹿湯塊"
       ],
       "scene": "小老闆介紹正式龜鹿湯塊75g八塊裝",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-tangkuai-spec|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:product_cards_20260930/11_龜鹿湯塊75g.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "2e26c2d2fe907068"
+      "copyHash": "2e26c2d2fe907068",
+      "reviewNote": "2026-09-30 已重製為正式產品原圖卡：產品本體使用既有正式DM／實物圖，不使用AI重畫包裝；規格文字依最新正式資料；下一步僅做正式資產落檔與binding。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-trial-first",
