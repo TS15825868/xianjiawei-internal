@@ -1,6 +1,6 @@
 {
-  "version": "2026-09-30-v5",
-  "updatedAt": "2026-09-30T00:38:00+08:00",
+  "version": "2026-09-30-v6",
+  "updatedAt": "2026-09-30T00:45:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 1,
@@ -192,10 +192,10 @@
     }
   ],
   "nextWork": [
-    "29篇製圖題目已全部有唯一正式候選：1篇已pending_review，28篇已visual_qc_passed",
-    "後續不再重生這29篇，只做28張正式資產落檔、binding與貼文中心回填",
-    "完成29篇正式綁定後，再新增過年前的新文案與唯一圖片",
-    "任何產品類後續都沿用formalAssets／正式DM實物外觀，不再AI重畫"
+    "依finalAssetCommitManifest把28張既有QC通過圖正式落檔到assets/post-images/2026-09-30/batch6",
+    "同步更新post-image-bindings-current.json與queue imageSource",
+    "28篇全部改pending_review後，29篇目前佇列即正式清零",
+    "完成後才新增過年前後續不重複文案與唯一圖片"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
@@ -204,5 +204,7 @@
     "小鹿與小烏龜分開",
     "產品只用正式實物素材，不接受AI重畫包裝",
     "完成後只回pending_review，人工審核前不得發布"
-  ]
+  ],
+  "finalAssetCommitManifest": "ops/post-image-asset-commit-manifest-20260930.json",
+  "assetCommitLockedCount": 28
 }
