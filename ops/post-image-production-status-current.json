@@ -1,11 +1,11 @@
 {
-  "version": "2026-09-30-v3",
-  "updatedAt": "2026-09-30T00:18:00+08:00",
+  "version": "2026-09-30-v4",
+  "updatedAt": "2026-09-30T00:26:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 1,
-  "visualQcPassedAwaitingAssetCommit": 7,
-  "remainingNeedsUniqueImage": 21,
+  "visualQcPassedAwaitingAssetCommit": 17,
+  "remainingNeedsUniqueImage": 11,
   "currentBatch": "batch5",
   "completed": [
     {
@@ -16,6 +16,12 @@
     }
   ],
   "validatedAwaitingAssetCommit": [
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "title": "你家以前最常看到哪一種食材？",
+      "candidateFilename": "童趣廚房的日常食材時光.png",
+      "status": "visual_qc_passed"
+    },
     {
       "postId": "XJW-CONV-chat-picture-or-text",
       "title": "你比較喜歡看圖，還是慢慢看文字？",
@@ -35,15 +41,9 @@
       "status": "visual_qc_passed"
     },
     {
-      "postId": "XJW-CONV-chat-pantry-memory",
-      "title": "你家以前最常看到哪一種食材？",
-      "candidateFilename": "童趣廚房的日常食材時光.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-year-end-small-win",
-      "title": "今年有沒有一件小事，你很慶幸自己做了？",
-      "candidateFilename": "今年的小小幸運.png",
+      "postId": "XJW-CONV-chat-trial-first",
+      "title": "想先了解，再決定也可以",
+      "candidateFilename": "溫暖茶鋪的日常相談.png",
       "status": "visual_qc_passed"
     },
     {
@@ -53,9 +53,69 @@
       "status": "visual_qc_passed"
     },
     {
+      "postId": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "candidateFilename": "今年的小小幸運.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "title": "新年第一個開店日，小老闆先做什麼？",
+      "candidateFilename": "新年開店日_小老闆迎春.png",
+      "status": "visual_qc_passed"
+    },
+    {
       "postId": "XJW-CONV-new-year-slow-start",
       "title": "新的一年，不一定要突然變得很厲害",
       "candidateFilename": "新年慢慢開始就好.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "candidateFilename": "童年年味與家人團聚.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "candidateFilename": "團圓餐桌上的新年期待.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "candidateFilename": "年假後的暖心選湯時光.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "candidateFilename": "過年整理冰箱迎新春.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "candidateFilename": "新春送禮_精緻與實用的溫暖選擇.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "candidateFilename": "團圓餐桌上的新年滋味.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "candidateFilename": "過年前先大掃除還是先購物.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "title": "開工第一天，小老闆先做一件小事",
+      "candidateFilename": "開工第一天的溫柔小店.png",
       "status": "visual_qc_passed"
     }
   ],
@@ -66,10 +126,10 @@
     }
   ],
   "nextWork": [
-    "只處理既有候選，不重複生成已通過題目",
-    "7張已通過QC候選依序正式落檔與binding",
-    "剩餘21篇優先盤點既有候選，再補真正缺圖",
-    "產品類只用formalAssets正式產品實物圖合成"
+    "17張已通過QC候選不再重生、不再改題，只做正式資產落檔與binding",
+    "剩餘11篇全部是產品型題目，改用formalAssets正式產品原圖合成",
+    "產品AI重畫候選全部淘汰，不回流",
+    "每完成一批直接更新pending_review與正式進度"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
