@@ -1,7 +1,7 @@
 {
-  "version": "2026-09-23-batch-4",
-  "sourceZip": "ops/incoming/xjw_batch_20260923_4.zip",
-  "targetDir": "assets/post-images/2026-09-23/batch4",
+  "version": "2026-09-29-batch-5-in-progress",
+  "sourceZip": "conversation-generated-and-audited",
+  "targetDir": "assets/post-images/2026-09-29/batch5",
   "statusAfterBind": "pending_review",
   "items": [
     {
@@ -48,6 +48,15 @@
       "height": 1254,
       "bytes": 468939,
       "alt": "溫暖居家工作桌，小老闆翻看舊照片與老物件，小鹿與小烏龜分開陪伴"
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "filename": "XJW-CONV-chat-opening-prep.jpg",
+      "title": "開店前，小老闆先做哪一件事？",
+      "width": 800,
+      "height": 800,
+      "bytes": 107488,
+      "alt": "秋日開店前情境，小老闆擦拭整理桌面，小鹿與小烏龜分開陪伴，畫面對應開店前的日常準備"
     }
   ]
 }
