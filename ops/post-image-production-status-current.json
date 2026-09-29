@@ -1,11 +1,11 @@
 {
-  "version": "2026-09-30-v4",
-  "updatedAt": "2026-09-30T00:26:00+08:00",
+  "version": "2026-09-30-v5",
+  "updatedAt": "2026-09-30T00:38:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 1,
-  "visualQcPassedAwaitingAssetCommit": 17,
-  "remainingNeedsUniqueImage": 11,
+  "visualQcPassedAwaitingAssetCommit": 28,
+  "remainingNeedsUniqueImage": 0,
   "currentBatch": "batch5",
   "completed": [
     {
@@ -17,9 +17,63 @@
   ],
   "validatedAwaitingAssetCommit": [
     {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "title": "今天只看一個小細節：裸罐",
+      "candidateFilename": "product_cards_20260930/01_30cc裸罐.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "title": "30cc跟180cc，怎麼選？",
+      "candidateFilename": "product_cards_20260930/02_30cc_vs_180cc.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "candidateFilename": "product_cards_20260930/03_龜鹿飲接單後製作.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-storage",
+      "title": "龜鹿膏放在哪裡比較不容易忘記？",
+      "candidateFilename": "product_cards_20260930/04_龜鹿膏保存.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "candidateFilename": "product_cards_20260930/05_龜鹿膏_vs_龜鹿飲.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "candidateFilename": "product_cards_20260930/06_玻璃罐_vs_鋁袋收納.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-jiao-spec",
+      "title": "龜鹿膠600g，到底是一盒什麼份量？",
+      "candidateFilename": "product_cards_20260930/07_龜鹿膠600g.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "candidateFilename": "product_cards_20260930/08_鹿茸粉75g.png",
+      "status": "visual_qc_passed"
+    },
+    {
       "postId": "XJW-CONV-chat-pantry-memory",
       "title": "你家以前最常看到哪一種食材？",
       "candidateFilename": "童趣廚房的日常食材時光.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "candidateFilename": "product_cards_20260930/09_30cc實際尺寸.png",
       "status": "visual_qc_passed"
     },
     {
@@ -38,6 +92,18 @@
       "postId": "XJW-CONV-chat-soup-day",
       "title": "你家有固定的煮湯日嗎？",
       "candidateFilename": "固定煮湯日的暖心廚房.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-tang-vs-jiao",
+      "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
+      "candidateFilename": "product_cards_20260930/10_湯塊_vs_龜鹿膠.png",
+      "status": "visual_qc_passed"
+    },
+    {
+      "postId": "XJW-CONV-chat-tangkuai-spec",
+      "title": "龜鹿湯塊75g，一盒是幾塊？",
+      "candidateFilename": "product_cards_20260930/11_龜鹿湯塊75g.png",
       "status": "visual_qc_passed"
     },
     {
@@ -126,10 +192,10 @@
     }
   ],
   "nextWork": [
-    "17張已通過QC候選不再重生、不再改題，只做正式資產落檔與binding",
-    "剩餘11篇全部是產品型題目，改用formalAssets正式產品原圖合成",
-    "產品AI重畫候選全部淘汰，不回流",
-    "每完成一批直接更新pending_review與正式進度"
+    "29篇製圖題目已全部有唯一正式候選：1篇已pending_review，28篇已visual_qc_passed",
+    "後續不再重生這29篇，只做28張正式資產落檔、binding與貼文中心回填",
+    "完成29篇正式綁定後，再新增過年前的新文案與唯一圖片",
+    "任何產品類後續都沿用formalAssets／正式DM實物外觀，不再AI重畫"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
