@@ -1,0 +1,30 @@
+{
+  "version": "2026-09-29-v1",
+  "updatedAt": "2026-09-29T23:55:00+08:00",
+  "scope": "live D1 active draft image production",
+  "target": 29,
+  "completedToPendingReview": 1,
+  "remainingNeedsUniqueImage": 28,
+  "currentBatch": "batch5",
+  "completed": [
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "title": "開店前，小老闆先做哪一件事？",
+      "asset": "assets/post-images/2026-09-29/batch5/XJW-CONV-chat-opening-prep.jpg",
+      "status": "pending_review"
+    }
+  ],
+  "rejectedExamples": [
+    {
+      "reason": "year mismatch",
+      "note": "新年慢慢開始候選圖含2025字樣，禁止進入2027檔期正式素材"
+    }
+  ],
+  "rules": [
+    "每篇唯一圖片，不重複",
+    "小老闆固定幼童版，同一角色",
+    "小鹿與小烏龜分開",
+    "產品只用正式實物素材，不接受AI重畫包裝",
+    "完成後只回pending_review，人工審核前不得發布"
+  ]
+}
