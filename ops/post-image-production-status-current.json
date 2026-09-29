@@ -1,10 +1,11 @@
 {
-  "version": "2026-09-29-v1",
-  "updatedAt": "2026-09-29T23:55:00+08:00",
+  "version": "2026-09-30-v2",
+  "updatedAt": "2026-09-30T00:12:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 1,
-  "remainingNeedsUniqueImage": 28,
+  "visualQcPassedAwaitingAssetCommit": 3,
+  "remainingNeedsUniqueImage": 25,
   "currentBatch": "batch5",
   "completed": [
     {
@@ -14,11 +15,58 @@
       "status": "pending_review"
     }
   ],
+  "validatedAwaitingAssetCommit": [
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "candidateFilename": "仙加味_看圖還是讀文字.png",
+      "status": "visual_qc_passed",
+      "checks": [
+        "小老闆幼童版一致",
+        "小鹿與小烏龜分開",
+        "看圖／看文字互動主題一致",
+        "無產品重畫風險",
+        "無療效宣稱"
+      ]
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "candidateFilename": "仙加味的靜謐午後.png",
+      "status": "visual_qc_passed",
+      "checks": [
+        "小老闆幼童版一致",
+        "小鹿與小烏龜分開",
+        "安靜工作情境一致",
+        "無產品重畫風險",
+        "無療效宣稱"
+      ]
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "title": "你家有固定的煮湯日嗎？",
+      "candidateFilename": "固定煮湯日的暖心廚房.png",
+      "status": "visual_qc_passed",
+      "checks": [
+        "小老闆幼童版一致",
+        "小鹿與小烏龜分開",
+        "月曆與家常煮湯情境一致",
+        "料理主題清楚",
+        "無產品重畫風險"
+      ]
+    }
+  ],
   "rejectedExamples": [
     {
       "reason": "year mismatch",
       "note": "新年慢慢開始候選圖含2025字樣，禁止進入2027檔期正式素材"
     }
+  ],
+  "nextWork": [
+    "先完成3張已通過QC候選圖的正式資產寫入與binding",
+    "補製XJW-CONV-chat-pantry-memory唯一正式圖",
+    "產品類全部改成formalAssets正式實物圖合成後再綁定",
+    "完成後逐篇回pending_review，人工審核前不發布"
   ],
   "rules": [
     "每篇唯一圖片，不重複",
