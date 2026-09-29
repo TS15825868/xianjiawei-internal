@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-29-v11-batch5-in-progress",
+  "version": "2026-09-30-v12-qc-progress",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft",
   "total": 29,
@@ -180,11 +180,13 @@
       "title": "你家以前最常看到哪一種食材？",
       "products": [],
       "scene": "",
-      "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
+      "imageSource": "conversation-candidate:童趣廚房的日常食材時光.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "f4c6af77286bccd1"
+      "copyHash": "f4c6af77286bccd1",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-photo-size",
@@ -208,11 +210,13 @@
       "title": "你比較喜歡看圖，還是慢慢看文字？",
       "products": [],
       "scene": "",
-      "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
+      "imageSource": "conversation-candidate:仙加味_看圖還是讀文字.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "c277d427e5f93c81"
+      "copyHash": "c277d427e5f93c81",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-quiet-work",
@@ -221,11 +225,13 @@
       "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
       "products": [],
       "scene": "",
-      "imageSource": "待重新製作唯一正式情境圖｜2026-09-24重複圖清理",
+      "imageSource": "conversation-candidate:仙加味的靜謐午後.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "a19512bdd2add4f5"
+      "copyHash": "a19512bdd2add4f5",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-soup-day",
@@ -234,11 +240,13 @@
       "title": "你家有固定的煮湯日嗎？",
       "products": [],
       "scene": "小老闆翻月曆規劃家常煮湯日，小鹿與小烏龜分開陪伴",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:chat-soup-day|季節:evergreen|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:固定煮湯日的暖心廚房.png",
       "window": "evergreen",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "7524982aa81ff3f4"
+      "copyHash": "7524982aa81ff3f4",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-chat-tang-vs-jiao",
@@ -293,11 +301,13 @@
       "title": "如果今年只能留下一個習慣，你會留哪個？",
       "products": [],
       "scene": "跨年前小老闆挑選想延續的生活習慣卡",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-keep-habit|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:留住一個好習慣.png",
       "window": "year_end_window",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "75438bedf2dfec52"
+      "copyHash": "75438bedf2dfec52",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-year-end-small-win",
@@ -306,11 +316,13 @@
       "title": "今年有沒有一件小事，你很慶幸自己做了？",
       "products": [],
       "scene": "年底回顧情境，小老闆翻日曆勾選完成的小事",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:year-end-small-win|季節:year_end|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:今年的小小幸運.png",
       "window": "year_end_window",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "59b2a388b8457b54"
+      "copyHash": "59b2a388b8457b54",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-new-year-open-door",
@@ -332,11 +344,13 @@
       "title": "新的一年，不一定要突然變得很厲害",
       "products": [],
       "scene": "新年清爽情境，小老闆跨過年份小牌回頭招手",
-      "imageSource": "待依文案製作專屬正式情境圖|題庫:new-year-slow-start|季節:new_year|版本:2026-09-15-conversation-content-v2-mixed-seasonal",
+      "imageSource": "conversation-candidate:新年慢慢開始就好.png",
       "window": "new_year_window",
-      "status": "needs_unique_image",
+      "status": "visual_qc_passed",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "f19008329f49d2ec"
+      "copyHash": "f19008329f49d2ec",
+      "reviewNote": "2026-09-30 已完成視覺驗收：角色幼童版一致、小鹿與小烏龜分開、圖文主題一致、無產品重畫風險；下一步只做正式資產落檔與binding，不重生、不改題。",
+      "qcPassedAt": "2026-09-30"
     },
     {
       "postId": "XJW-CONV-cny-childhood-now",
