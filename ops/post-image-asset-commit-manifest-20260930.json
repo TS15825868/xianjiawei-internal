@@ -1,0 +1,291 @@
+{
+  "version": "2026-09-30-final-asset-commit-manifest-v1",
+  "brand": "仙加味",
+  "repository": "TS15825868/xianjiawei-internal",
+  "branch": "main",
+  "batch": "batch6",
+  "totalAssets": 28,
+  "rule": "這28張均已通過視覺QC，不得重新生成或改題；只允許正式資產落檔、binding、image_url回填與pending_review。",
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "title": "今天只看一個小細節：裸罐",
+      "sourceCandidate": "product_cards_20260930/01_30cc裸罐.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-30-bare-jar.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "title": "30cc跟180cc，怎麼選？",
+      "sourceCandidate": "product_cards_20260930/02_30cc_vs_180cc.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-30-vs-180.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "sourceCandidate": "product_cards_20260930/03_龜鹿飲接單後製作.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-drink-made-to-order.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-storage",
+      "title": "龜鹿膏放在哪裡比較不容易忘記？",
+      "sourceCandidate": "product_cards_20260930/04_龜鹿膏保存.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-gao-storage.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "sourceCandidate": "product_cards_20260930/05_龜鹿膏_vs_龜鹿飲.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-gao-vs-drink.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "sourceCandidate": "product_cards_20260930/06_玻璃罐_vs_鋁袋收納.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-glass-vs-pouch-storage.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-jiao-spec",
+      "title": "龜鹿膠600g，到底是一盒什麼份量？",
+      "sourceCandidate": "product_cards_20260930/07_龜鹿膠600g.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-jiao-spec.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "sourceCandidate": "product_cards_20260930/08_鹿茸粉75g.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-luerong-intro.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "title": "你家以前最常看到哪一種食材？",
+      "sourceCandidate": "童趣廚房的日常食材時光.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-pantry-memory.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "sourceCandidate": "product_cards_20260930/09_30cc實際尺寸.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-photo-size.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "sourceCandidate": "仙加味_看圖還是讀文字.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-picture-or-text.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "sourceCandidate": "仙加味的靜謐午後.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-quiet-work.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "title": "你家有固定的煮湯日嗎？",
+      "sourceCandidate": "固定煮湯日的暖心廚房.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-soup-day.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-tang-vs-jiao",
+      "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
+      "sourceCandidate": "product_cards_20260930/10_湯塊_vs_龜鹿膠.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-tang-vs-jiao.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-tangkuai-spec",
+      "title": "龜鹿湯塊75g，一盒是幾塊？",
+      "sourceCandidate": "product_cards_20260930/11_龜鹿湯塊75g.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-tangkuai-spec.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-chat-trial-first",
+      "title": "想先了解，再決定也可以",
+      "sourceCandidate": "溫暖茶鋪的日常相談.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-trial-first.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "sourceCandidate": "留住一個好習慣.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-year-end-keep-habit.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "sourceCandidate": "今年的小小幸運.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-year-end-small-win.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "title": "新年第一個開店日，小老闆先做什麼？",
+      "sourceCandidate": "新年開店日_小老闆迎春.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-new-year-open-door.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "title": "新的一年，不一定要突然變得很厲害",
+      "sourceCandidate": "新年慢慢開始就好.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-new-year-slow-start.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "sourceCandidate": "童年年味與家人團聚.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-childhood-now.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "sourceCandidate": "團圓餐桌上的新年期待.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-family-choice.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "sourceCandidate": "年假後的暖心選湯時光.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-first-soup.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "sourceCandidate": "過年整理冰箱迎新春.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-fridge-clean.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "sourceCandidate": "新春送禮_精緻與實用的溫暖選擇.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-gift-choice.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "sourceCandidate": "團圓餐桌上的新年滋味.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-must-have-dish.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "sourceCandidate": "過年前先大掃除還是先購物.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-pre-clean.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "title": "開工第一天，小老闆先做一件小事",
+      "sourceCandidate": "開工第一天的溫柔小店.png",
+      "targetPath": "assets/post-images/2026-09-30/batch6/XJW-CONV-cny-reopen.jpg",
+      "width": 900,
+      "height": 900,
+      "nextStatus": "pending_review",
+      "lock": "do_not_regenerate"
+    }
+  ]
+}
