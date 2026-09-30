@@ -1,0 +1,50 @@
+{
+  "version": "2026-09-30-batch7-next4-v1",
+  "brand": "仙加味",
+  "batchId": "batch7-next4",
+  "targetDir": "assets/post-images/2026-09-30/batch7",
+  "total": 4,
+  "statusAfterBind": "pending_review",
+  "items": [
+    {
+      "postId": "XJW-CONV-care-simple-checkin",
+      "filename": "XJW-CONV-care-simple-checkin.jpg",
+      "title": "一句問候，也是一種關心",
+      "alt": "傍晚生活情境，小老闆寫下簡短問候，小鹿與小烏龜分開陪伴",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 442775,
+      "sha256": "4f4143d84a699e519b9859cfde1c5e16870f2fbdd03ae8ec103b966a601d60cb"
+    },
+    {
+      "postId": "XJW-CONV-care-before-home-message",
+      "filename": "XJW-CONV-care-before-home-message.jpg",
+      "title": "回家前，你會先打一通電話，還是先傳一句問候？",
+      "alt": "傍晚回家前，小老闆拿手機準備聯絡家人，小鹿與小烏龜分開陪伴",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 443512,
+      "sha256": "13a99235ceec5990b5b4ed87d600b10f9d2d23c10d7a6fdfbc4d5b859abc0b64"
+    },
+    {
+      "postId": "XJW-CONV-new-year-warm-cup-share",
+      "filename": "XJW-CONV-new-year-warm-cup-share.jpg",
+      "title": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "alt": "新年晨間，小老闆倒兩杯溫熱飲，一杯給自己、一杯留給家人",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 487261,
+      "sha256": "9ce434b457fdfc797321f0112035061abbc23253b44aa07541a376f97398b7fb"
+    },
+    {
+      "postId": "XJW-CONV-cny-last-day-reset",
+      "filename": "XJW-CONV-cny-last-day-reset.jpg",
+      "title": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "alt": "年假最後一天，小老闆在家整理房間並準備明天用品，小鹿與小烏龜分開陪伴",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 440796,
+      "sha256": "b1961c72d5e6e3adfd4fa6beddf11805c09f1d6c3940308c120e0653916687da"
+    }
+  ]
+}
