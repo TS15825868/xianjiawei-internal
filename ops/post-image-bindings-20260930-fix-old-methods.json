@@ -1,0 +1,22 @@
+{
+  "version": "2026-09-30-fix-old-methods-v1",
+  "brand": "仙加味",
+  "targetDir": "assets/post-images/2026-09-30/fixes",
+  "statusAfterBind": "pending_review",
+  "total": 1,
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-old-methods",
+      "filename": "XJW-CONV-chat-old-methods.jpg",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 376867,
+      "sha256": "761efc1574c34a404b19c2bad4a35f2e70e68c34c65e09cc444e0a183165923b",
+      "path": "assets/post-images/2026-09-30/fixes/XJW-CONV-chat-old-methods.jpg",
+      "source": "ChatGPT正式單張圖｜GitHub main｜人工待審核",
+      "statusAfterBind": "pending_review"
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
-  "version": "rolling-2026-09-30T08:01:59.345Z",
-  "updatedAt": "2026-09-30T08:01:59.345Z",
+  "version": "rolling-2026-09-30T09:22:16.292Z",
+  "updatedAt": "2026-09-30T09:22:16.293Z",
   "scope": "live D1 active draft image production",
-  "target": 34,
-  "completedToPendingReview": 34,
+  "target": 35,
+  "completedToPendingReview": 35,
   "visualQcPassedAwaitingAssetCommit": 0,
   "remainingNeedsUniqueImage": 0,
   "currentBatch": "batch5",
@@ -49,8 +49,8 @@
   "finalAssetDir": "assets/post-images/2026-09-30/batch6",
   "latestCompletedBatch": {
     "total": 1,
-    "targetDir": "assets/post-images/2026-09-30/live",
-    "bindingRecord": "ops/post-image-bindings-20260930-live-hongludi.json",
+    "targetDir": "assets/post-images/2026-09-30/fixes",
+    "bindingRecord": "ops/post-image-bindings-20260930-fix-old-methods.json",
     "status": "pending_review"
   }
 }
