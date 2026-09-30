@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-social-publishing-v4-same-day",
+  "version": "2026-10-01-social-publishing-v5-auto",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -65,11 +65,13 @@
     "publicBrandOnly": "仙加味"
   },
   "reviewFlow": {
-    "manualApprovalRequired": true,
+    "manualApprovalRequired": false,
     "regeneratedImageReturnsTo": "pending_review",
     "unapprovedContentMayPublish": false,
     "immediatePublishRequiresApproval": true,
-    "scheduledPublishRequiresApproval": true
+    "scheduledPublishRequiresApproval": true,
+    "automaticApprovalEnabled": true,
+    "automaticApprovalRule": "文案、圖片、品牌、角色、夥伴、產品外觀、規格、季節、圖文一致、重複檢查與法規檢查全部通過後，自動核准；任何一項失敗則維持pending_review，不得發布。"
   },
   "autoPublish": {
     "enabled": true,
@@ -93,7 +95,8 @@
       "duplicate",
       "compliance_final"
     ],
-    "approvalRequired": true
+    "approvalRequired": true,
+    "automaticApprovalAfterAllChecks": true
   },
   "crossPlatformPublishing": {
     "mode": "same_day_same_post",
