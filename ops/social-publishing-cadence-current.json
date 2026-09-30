@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-v3-same-day-cross-platform",
+  "version": "2026-09-30-v4-same-day-cross-platform-dedup",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
   "rule": "只保留發佈時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。",
@@ -21,7 +21,7 @@
       "proposed_scheduled_at": "2026-10-21T20:30:00+08:00"
     },
     {
-      "postId": "XJW-CONV-chat-small-things-work",
+      "postId": "XJW-CONV-chat-shop-organizing",
       "proposed_scheduled_at": "2026-10-23T19:45:00+08:00"
     },
     {
@@ -53,11 +53,11 @@
       "proposed_scheduled_at": "2026-11-06T20:30:00+08:00"
     },
     {
-      "postId": "XJW-CONV-chat-picture-or-text",
+      "postId": "XJW-CONV-chat-customer-first-question",
       "proposed_scheduled_at": "2026-11-08T11:00:00+08:00"
     },
     {
-      "postId": "XJW-CONV-chat-gao-storage",
+      "postId": "XJW-CONV-chat-tangkuai-spec",
       "proposed_scheduled_at": "2026-11-10T21:00:00+08:00"
     },
     {
@@ -77,7 +77,7 @@
       "proposed_scheduled_at": "2026-11-18T19:45:00+08:00"
     }
   ],
-  "updatedAt": "2026-09-30T12:05:00+08:00",
+  "updatedAt": "2026-09-30T12:12:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -85,5 +85,6 @@
     "Threads"
   ],
   "crossPlatformImageRule": "同一篇貼文三平台使用同一張正式貼文圖；不同篇貼文不得重複使用同一張圖。",
-  "crossPlatformTextRule": "同一主題同一天發布；平台文字只允許格式與字數微調，不改主題、不換圖。"
+  "crossPlatformTextRule": "同一主題同一天發布；平台文字只允許格式與字數微調，不改主題、不換圖。",
+  "note": "9/30–10/14既有15篇Metricool排程已全部改為Facebook、Instagram、Threads同一時間三平台同步且同一張圖；10/15後預排已避開本次提前使用的正式圖與主題。"
 }
