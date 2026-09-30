@@ -1,0 +1,215 @@
+{
+  "version": "2026-09-30-formal-1254-v1",
+  "brand": "仙加味",
+  "repository": "TS15825868/xianjiawei-internal",
+  "branch": "main",
+  "targetDir": "assets/post-images/2026-09-30/batch6",
+  "total": 29,
+  "status": "formal_jpeg_bytes_ready_pending_binary_commit",
+  "rule": "29張正式選定圖已統一轉為1254x1254 JPEG且每張大於250KB；不得重生或改題。XJW-CONV-chat-opening-prep 現行main檔案僅約15KB，必須以本manifest對應正式檔覆蓋後才算正式完成。",
+  "items": [
+    {
+      "filename": "XJW-CONV-chat-30-bare-jar.jpg",
+      "bytes": 317347,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "7e68a13780040a80f11fe4a29912f76b76eb345326d2ed9a2eb588b1016d4908"
+    },
+    {
+      "filename": "XJW-CONV-chat-30-vs-180.jpg",
+      "bytes": 427739,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "3dbd3a15f535aa44489d7facd01e7362b05aed0cce77cd49c736270981eae900"
+    },
+    {
+      "filename": "XJW-CONV-chat-drink-made-to-order.jpg",
+      "bytes": 423034,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "07c65b4affa83e72a3f72044187adf66d9c879c70ccd9f67b9451d6d3f08e9cf"
+    },
+    {
+      "filename": "XJW-CONV-chat-gao-storage.jpg",
+      "bytes": 302507,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "b25f76805c3637883769d514a3e0428f87f2e0032902c311c86ae27ecdceeb90"
+    },
+    {
+      "filename": "XJW-CONV-chat-gao-vs-drink.jpg",
+      "bytes": 406665,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "b50eed7d2bdcfa0f07346273575f65ee40210b3957d9fe863f2a70d170f11697"
+    },
+    {
+      "filename": "XJW-CONV-chat-glass-vs-pouch-storage.jpg",
+      "bytes": 449634,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "ae17f03fe893776dbefabe59f4db29d0d74bf565513e1e08a6ed241629ba9a5d"
+    },
+    {
+      "filename": "XJW-CONV-chat-jiao-spec.jpg",
+      "bytes": 293599,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "5a3d897d4faecbcd0e83f963d80fb4644c5ec516d2dc0b9ea9291c4100ced0c7"
+    },
+    {
+      "filename": "XJW-CONV-chat-luerong-intro.jpg",
+      "bytes": 309660,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "fb318033052e94a8cdfa0863de0ce375aaf3406e1348bbdb97876ef09d0b79b4"
+    },
+    {
+      "filename": "XJW-CONV-chat-opening-prep.jpg",
+      "bytes": 748472,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "c360e37ead434c5f803aa7038cf08c1ebea68e4ea74ebff3e8ca26751475239d"
+    },
+    {
+      "filename": "XJW-CONV-chat-pantry-memory.jpg",
+      "bytes": 698821,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "2b4bf185d4c3cfdf0ac2450171be1ff35e0d07d9a7120eec03068eb2adbf1989"
+    },
+    {
+      "filename": "XJW-CONV-chat-photo-size.jpg",
+      "bytes": 337094,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "70440f05fd432c45d4bd30be626ad7f19099fb292db51b03d68cdb20bc1f346a"
+    },
+    {
+      "filename": "XJW-CONV-chat-picture-or-text.jpg",
+      "bytes": 671210,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "69942ad0488ce9edf9ec21a65281ba8d365397b72bef294ad070882f826f09cb"
+    },
+    {
+      "filename": "XJW-CONV-chat-quiet-work.jpg",
+      "bytes": 640796,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "6633e9ea4d0415c8632b2f0929ff6178bc14e05dbb7170cbf69a49858c352424"
+    },
+    {
+      "filename": "XJW-CONV-chat-soup-day.jpg",
+      "bytes": 588816,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "cc24d9130b8960cdecd0e2c83202ec64c781558df6051d26959667252a5130c4"
+    },
+    {
+      "filename": "XJW-CONV-chat-tang-vs-jiao.jpg",
+      "bytes": 425272,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "c7377e426cbf6ddcd1f97b6c1530c8322bdbdbb985d621b3e3d0b84d622a0613"
+    },
+    {
+      "filename": "XJW-CONV-chat-tangkuai-spec.jpg",
+      "bytes": 319629,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a01242aaf21fa75f196e43aec0d6460bf068275c465cdffbcb2c7c37db13adce"
+    },
+    {
+      "filename": "XJW-CONV-chat-trial-first.jpg",
+      "bytes": 641194,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "1928ee73707d9dbbf968860c39e5b81c60816a93c03c73eb1637e500c3336c58"
+    },
+    {
+      "filename": "XJW-CONV-cny-childhood-now.jpg",
+      "bytes": 665930,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "5cdf55313fb64acaf234a03c2fcbc907d6ec173ee6160d38d56a680521e7ed83"
+    },
+    {
+      "filename": "XJW-CONV-cny-family-choice.jpg",
+      "bytes": 722030,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "b66cdfe178a243a6e14e7959fbe643b23dcf889d521e3d010003689f9dca3b52"
+    },
+    {
+      "filename": "XJW-CONV-cny-first-soup.jpg",
+      "bytes": 695810,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a24118d206e4c20be0c55fbee47131dc97aaf4f3dd8f9de2bc27ed5fbfaadd6c"
+    },
+    {
+      "filename": "XJW-CONV-cny-fridge-clean.jpg",
+      "bytes": 637514,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "04e3e78093ef817bca5f03870c7712803d07007e19a937796e58b63b3929d87e"
+    },
+    {
+      "filename": "XJW-CONV-cny-gift-choice.jpg",
+      "bytes": 679538,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "ed62ad1da9170d1502e5f51d58d0abff66bdef92dc5cbafd1db28c90105091ba"
+    },
+    {
+      "filename": "XJW-CONV-cny-must-have-dish.jpg",
+      "bytes": 760292,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "de17f6272715f52f5c3cbe25b3c1a82535c4496a40f21c85ecbcb15d5c904edc"
+    },
+    {
+      "filename": "XJW-CONV-cny-pre-clean.jpg",
+      "bytes": 703506,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "d827454e6974cc9567c06cc6e90062b528b5b20c573d43f7ec303b91a4c5beb2"
+    },
+    {
+      "filename": "XJW-CONV-cny-reopen.jpg",
+      "bytes": 624671,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "6401ec07b5ad4db24da01b7066de1691d8680407e8976bdaf4b342e4f2442e18"
+    },
+    {
+      "filename": "XJW-CONV-new-year-open-door.jpg",
+      "bytes": 693216,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "e5e55a9c51f239001d2f9f6ce47dc0fa0249ccf5cc9a27ddd0b86fe2db7af274"
+    },
+    {
+      "filename": "XJW-CONV-new-year-slow-start.jpg",
+      "bytes": 691642,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "bcebb82d379a5b823da2b63bf0bb940d16d05b6f7f61eaf1e647e97fb5ac1517"
+    },
+    {
+      "filename": "XJW-CONV-year-end-keep-habit.jpg",
+      "bytes": 692357,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "8e059355dc1108dc5eb054b4128613de92161737d0a2dd99ee115fd814d98b63"
+    },
+    {
+      "filename": "XJW-CONV-year-end-small-win.jpg",
+      "bytes": 659111,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "5db44d57d20555c2fc717e69f38b086f3c08d06731af1c80d1c3819004e1ecc3"
+    }
+  ]
+}
