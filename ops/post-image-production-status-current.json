@@ -1,10 +1,10 @@
 {
-  "version": "2026-09-30-v7",
-  "updatedAt": "2026-09-30T08:10:00+08:00",
+  "version": "2026-09-30-v8-final29-bound",
+  "updatedAt": "2026-09-30T00:59:36.794Z",
   "scope": "live D1 active draft image production",
   "target": 29,
-  "completedToPendingReview": 1,
-  "visualQcPassedAwaitingAssetCommit": 28,
+  "completedToPendingReview": 29,
+  "visualQcPassedAwaitingAssetCommit": 0,
   "remainingNeedsUniqueImage": 0,
   "currentBatch": "batch5",
   "completed": [
@@ -210,7 +210,11 @@
   "formalJpegsReady": 29,
   "formalJpegSpec": "1254x1254 JPEG, each >250KB",
   "formal1254Manifest": "ops/post-image-formal-1254-manifest-20260930.json",
-  "binaryCommitRemaining": 29,
-  "openingPrepReplacementRequired": true,
-  "note": "現行main的opening-prep實體檔約15KB，與舊bindings記錄不一致，因此不再把它視為最終完成；29張正式1254圖都已準備好，下一步只做binary commit、bindings、D1 pending_review。"
+  "binaryCommitRemaining": 0,
+  "openingPrepReplacementRequired": false,
+  "note": "29張正式貼文圖已實體落GitHub main、D1回填並全部進pending_review；未經人工審核不得發布。",
+  "formalJpegsCommitted": 29,
+  "d1BoundPendingReview": 29,
+  "formalBindingRecord": "ops/post-image-bindings-20260930-final29.json",
+  "finalAssetDir": "assets/post-images/2026-09-30/batch6"
 }
