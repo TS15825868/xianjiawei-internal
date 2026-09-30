@@ -44,7 +44,7 @@ jobs:
           for(const x of c.items){
             if(!x.postId||!x.scheduled_at) throw new Error('缺少postId或scheduled_at');
             if(!Number.isFinite(Date.parse(x.scheduled_at))) throw new Error('scheduled_at格式錯誤');
-            lines.push(`UPDATE social_posts SET status='scheduled', scheduled_at=${q(x.scheduled_at)}, proposed_scheduled_at=${q(x.scheduled_at)}, image_approved=1, approved_by='owner', approved_at=COALESCE(approved_at,datetime('now')), updated_at=datetime('now') WHERE id=${q(x.postId)} AND status IN ('pending_review','approved','scheduled');`);
+            lines.push(`UPDATE social_posts SET status='scheduled', scheduled_at=${q(x.scheduled_at)}, proposed_scheduled_at=${q(x.scheduled_at)}, image_approved=1, approved_at=COALESCE(approved_at,datetime('now')), updated_at=datetime('now') WHERE id=${q(x.postId)} AND status IN ('pending_review','approved','scheduled');`);
           }
           fs.writeFileSync('/tmp/apply-approved-schedule.sql',lines.join('\n')+'\n');
           fs.writeFileSync('/tmp/ids.txt',c.items.map(x=>q(x.postId)).join(','));
