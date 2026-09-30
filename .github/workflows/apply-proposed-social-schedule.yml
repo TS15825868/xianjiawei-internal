@@ -1,0 +1,77 @@
+name: 仙加味待審核貼文預排時間同步
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/social-publishing-cadence-current.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xianjiawei-proposed-social-schedule
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Validate plan and build SQL
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const p=JSON.parse(fs.readFileSync('ops/social-publishing-cadence-current.json','utf8'));
+          if(!Array.isArray(p.slots)||!p.slots.length)throw new Error('沒有排程時段');
+          const seen=new Set(), times=new Set(), lines=[];
+          const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
+          let prev=0;
+          for(const x of p.slots){
+            if(!x.postId||!x.proposed_scheduled_at)throw new Error('排程資料不完整');
+            if(seen.has(x.postId))throw new Error('postId重複 '+x.postId);
+            if(times.has(x.proposed_scheduled_at))throw new Error('時間重複 '+x.proposed_scheduled_at);
+            seen.add(x.postId);times.add(x.proposed_scheduled_at);
+            const ms=Date.parse(x.proposed_scheduled_at);
+            if(!Number.isFinite(ms))throw new Error('時間格式錯誤 '+x.proposed_scheduled_at);
+            if(ms<=Date.parse(p.verifiedMetricoolThrough))throw new Error('新時段必須接在Metricool既有排程之後');
+            if(ms<=prev)throw new Error('時段必須遞增');
+            prev=ms;
+            lines.push(`UPDATE social_posts SET proposed_scheduled_at=${q(x.proposed_scheduled_at)}, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='pending_review';`);
+          }
+          fs.writeFileSync('/tmp/proposed-schedule.sql',lines.join('\n')+'\n');
+          fs.writeFileSync('/tmp/proposed-ids.txt',[...seen].map(q).join(','));
+          fs.writeFileSync('/tmp/expected-count.txt',String(seen.size));
+          NODE
+      - name: Apply proposed schedule only
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/proposed-schedule.sql
+      - name: Verify pending-review guard and no gaps in plan
+        run: |
+          IDS="$(cat /tmp/proposed-ids.txt)"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,proposed_scheduled_at,scheduled_at,published_at FROM social_posts WHERE id IN ($IDS) ORDER BY proposed_scheduled_at" > /tmp/proposed-verify.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/proposed-verify.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          const expected=Number(fs.readFileSync('/tmp/expected-count.txt','utf8'));
+          if(rows.length!==expected)throw new Error('預排貼文數不一致 '+rows.length+'/'+expected);
+          for(const r of rows){
+            if(r.status!=='pending_review')throw new Error(r.id+' 狀態被誤改');
+            if(!r.proposed_scheduled_at)throw new Error(r.id+' 缺預排時間');
+            if(r.scheduled_at||r.published_at)throw new Error(r.id+' 不可在人工核准前正式排程或發布');
+          }
+          console.log('PASS proposed schedule',rows.length,'pending_review posts');
+          NODE
