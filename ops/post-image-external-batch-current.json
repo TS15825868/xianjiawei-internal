@@ -1,7 +1,0 @@
-{
-  "version": "2026-09-30-live-hongludi-import-v1",
-  "download_url": "https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-cc28-8206-bbe0-2909fe470b36/raw?se=2026-09-30T08%3A06%3A22Z&sp=r&sv=2026-02-06&sr=b&scid=2ca97b02-e2ca-521e-afee-1d7079825403&skoid=1e4bb9ed-6bb5-424a-a3aa-79f21566e722&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-30T05%3A58%3A49Z&ske=2026-10-01T05%3A58%3A49Z&sks=b&skv=2026-02-06&sig=mCL7ekTzHPuhOd6Zl/v4E29cWFWqNO4544Z61g5XZ1A%3D",
-  "manifestPath": "ops/post-image-manifest-20260930-live-hongludi.json",
-  "bindingRecordPath": "ops/post-image-bindings-20260930-live-hongludi.json",
-  "targetDir": "assets/post-images/2026-09-30/live"
-}

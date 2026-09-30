@@ -1,0 +1,22 @@
+{
+  "version": "2026-09-30-live-hongludi-v1",
+  "brand": "仙加味",
+  "targetDir": "assets/post-images/2026-09-30/live",
+  "statusAfterBind": "pending_review",
+  "total": 1,
+  "items": [
+    {
+      "postId": "XJW-CONV-live-hongludi-outing-20260929",
+      "filename": "XJW-LIVE-20260929-hongludi-outing.jpg",
+      "title": "帶小老闆去烘爐地走走",
+      "alt": "烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 383282,
+      "sha256": "b82f76eacf269133f0e860c7f7ce145f7e8e95ec4cadce1da4c785ed505755e6",
+      "path": "assets/post-images/2026-09-30/live/XJW-LIVE-20260929-hongludi-outing.jpg",
+      "source": "ChatGPT正式單張圖｜GitHub main｜人工待審核",
+      "statusAfterBind": "pending_review"
+    }
+  ]
+}
