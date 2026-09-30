@@ -1,0 +1,20 @@
+{
+  "version": "2026-09-30-fix-old-methods-v1",
+  "brand": "仙加味",
+  "batchId": "fix-old-methods",
+  "targetDir": "assets/post-images/2026-09-30/fixes",
+  "total": 1,
+  "statusAfterBind": "pending_review",
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-old-methods",
+      "filename": "XJW-CONV-chat-old-methods.jpg",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 376867,
+      "sha256": "761efc1574c34a404b19c2bad4a35f2e70e68c34c65e09cc444e0a183165923b"
+    }
+  ]
+}
