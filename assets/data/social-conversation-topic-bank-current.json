@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-conversation-content-v4-same-day-cross-platform",
+  "version": "2026-09-30-conversation-content-v5-live-life-insert",
   "brand": "仙加味",
   "purpose": "仙加味輕鬆互動、聊天、了解、生活知識與季節內容母庫。以混合題材自然穿插，不做制式系列連發；短影片只有正式正常才採用，否則使用完整正式情境圖。",
   "rules": {
@@ -98,6 +98,15 @@
         "post_lunar_new_year"
       ],
       "rule": "節慶題只在適合窗口插入，不提早整批發；年節視覺仍維持仙加味深藍、米白、深紅、金色、深綠，不突然變成廉價大紅促銷版。"
+    },
+    "liveLifeInsertPolicy": {
+      "mode": "fresh_life_insert",
+      "trigger": "使用者上傳最近24～72小時內的真實外出、拜拜、散步、親子、萬華、天氣或節日生活照片",
+      "transformRule": "可保留真實場景，將真人小老闆轉為仙加味正式Q版小老闆，加入分開的小鹿與小烏龜；若有產品則只用正式產品原圖，不得AI重畫包裝。",
+      "reviewRule": "完成圖文後一律先進pending_review，使用者人工審核通過後才可發布。",
+      "publishRule": "有時效的生活內容優先於24～72小時內插播；若原時段已有一般常青貼文，常青貼文順延，不同日內容不重複。",
+      "crossPlatformRule": "Facebook、Instagram、Threads同一天、同一時間、同一張正式圖、同一主題同步。",
+      "fallbackRule": "沒有時效性的戶外照片改排進一般混合內容池，不搶即時插播位。"
     }
   },
   "defaultMixedOrder": [
