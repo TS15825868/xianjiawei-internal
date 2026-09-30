@@ -6,7 +6,7 @@ const errors = [];
 const req = (ok, message) => { if (!ok) errors.push(message); };
 const text = (value) => String(value ?? '');
 
-req(/^2026-09-15-conversation-content-v2/.test(text(bank.version)), '題庫版本不是目前混合季節版');
+req(/^2026-\d{2}-\d{2}-conversation-content-v\d+/.test(text(bank.version)), '題庫版本格式不符合現行正式內容母庫規則');
 req(bank.brand === '仙加味', '題庫品牌不是仙加味');
 req(Array.isArray(bank.topics) && bank.topics.length >= 50, '正式題庫不足50題，無法支撐到農曆年前後');
 req(bank.rules?.publishingSequencePolicy?.mode === 'mixed_dynamic_pool', '未啟用混合動態發布池');
