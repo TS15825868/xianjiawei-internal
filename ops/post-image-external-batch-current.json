@@ -1,0 +1,7 @@
+{
+  "version": "2026-09-30-fix-old-methods-import-v1",
+  "download_url": "https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-5248-8206-a495-dc3830ce1837/raw?se=2026-09-30T09%3A26%3A44Z&sp=r&sv=2026-02-06&sr=b&scid=22c947ca-fb5d-5536-a4d3-31df8f753f63&skoid=1e4bb9ed-6bb5-424a-a3aa-79f21566e722&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-30T06%3A22%3A58Z&ske=2026-10-01T06%3A22%3A58Z&sks=b&skv=2026-02-06&sig=mKo/KEyF8uhLNJaw6IM83mQ%2B7n1gyKFHkqPRbC6tnA4%3D",
+  "manifestPath": "ops/post-image-manifest-20260930-fix-old-methods.json",
+  "bindingRecordPath": "ops/post-image-bindings-20260930-fix-old-methods.json",
+  "targetDir": "assets/post-images/2026-09-30/fixes"
+}
