@@ -1,0 +1,82 @@
+name: 仙加味已核准貼文正式排程同步
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/approved-schedule-current.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-approved-schedule-sync
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Validate request and build SQL
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const c=JSON.parse(fs.readFileSync('ops/approved-schedule-current.json','utf8'));
+          if(!Array.isArray(c.items)||!c.items.length) throw new Error('沒有排程項目');
+          const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
+          const lines=[];
+          for(const x of c.items){
+            if(!x.postId||!x.scheduled_at) throw new Error('缺少postId或scheduled_at');
+            if(!Number.isFinite(Date.parse(x.scheduled_at))) throw new Error('scheduled_at格式錯誤');
+            lines.push(`UPDATE social_posts SET status='scheduled', scheduled_at=${q(x.scheduled_at)}, proposed_scheduled_at=${q(x.scheduled_at)}, image_approved=1, approved_by='owner', approved_at=COALESCE(approved_at,datetime('now')), updated_at=datetime('now') WHERE id=${q(x.postId)} AND status IN ('pending_review','approved','scheduled');`);
+          }
+          fs.writeFileSync('/tmp/apply-approved-schedule.sql',lines.join('\n')+'\n');
+          fs.writeFileSync('/tmp/ids.txt',c.items.map(x=>q(x.postId)).join(','));
+          fs.writeFileSync('/tmp/count.txt',String(c.items.length));
+          NODE
+      - name: Apply approved schedule to D1
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/apply-approved-schedule.sql
+      - name: Verify
+        run: |
+          IDS="$(cat /tmp/ids.txt)"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,scheduled_at,image_approved,approved_by,approved_at FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/verify.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          const n=Number(fs.readFileSync('/tmp/count.txt','utf8'));
+          if(rows.length!==n) throw new Error('D1篇數不一致');
+          for(const r of rows){
+            if(r.status!=='scheduled'||Number(r.image_approved)!==1||!r.scheduled_at) throw new Error(r.id+' 尚未正式排程');
+          }
+          console.log('PASS scheduled',rows.length);
+          NODE
+      - name: Clean request file
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f ops/approved-schedule-current.json
+          git commit -m 'ops: consume approved schedule request'
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            [ "$attempt" = 4 ] && exit 1
+            sleep 2
+          done
