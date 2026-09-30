@@ -1,0 +1,7 @@
+{
+  "version": "2026-09-30-next4-import-v1",
+  "download_url": "https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-5318-8206-b86a-a728ffccaa9c/raw?se=2026-09-30T01%3A12%3A33Z&sp=r&sv=2026-02-06&sr=b&scid=1438fd20-b8e1-552f-91a6-880919f34178&skoid=1e4bb9ed-6bb5-424a-a3aa-79f21566e722&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-29T21%3A46%3A58Z&ske=2026-09-30T21%3A46%3A58Z&sks=b&skv=2026-02-06&sig=G63//NI//EdRIfJ9re3zvGiktmf8gTXrtGvcfUNp4jY%3D",
+  "manifestPath": "ops/post-image-manifest-20260930-batch7-next4.json",
+  "bindingRecordPath": "ops/post-image-bindings-20260930-batch7-next4.json",
+  "targetDir": "assets/post-images/2026-09-30/batch7"
+}
