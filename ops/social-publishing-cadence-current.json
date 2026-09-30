@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-v7-hongludi-insert",
+  "version": "2026-09-30-v8-through-cny-2027",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
   "rule": "只保留發佈時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。",
@@ -75,9 +75,137 @@
     {
       "postId": "XJW-CONV-care-before-home-message",
       "proposed_scheduled_at": "2026-11-18T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-fixed-storage",
+      "proposed_scheduled_at": "2026-11-20T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-jiao-spec",
+      "proposed_scheduled_at": "2026-11-22T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "proposed_scheduled_at": "2026-11-24T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-simple-soup",
+      "proposed_scheduled_at": "2026-11-26T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "proposed_scheduled_at": "2026-11-28T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "proposed_scheduled_at": "2026-11-30T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "proposed_scheduled_at": "2026-12-02T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "proposed_scheduled_at": "2026-12-04T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "proposed_scheduled_at": "2026-12-06T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-traditional-image",
+      "proposed_scheduled_at": "2026-12-08T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "proposed_scheduled_at": "2026-12-10T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-tang-vs-jiao",
+      "proposed_scheduled_at": "2026-12-12T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-receive-package",
+      "proposed_scheduled_at": "2026-12-14T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-no-standard-answer",
+      "proposed_scheduled_at": "2026-12-16T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-season-more-soup",
+      "proposed_scheduled_at": "2026-12-18T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "proposed_scheduled_at": "2026-12-20T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "proposed_scheduled_at": "2026-12-22T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-last-bowl",
+      "proposed_scheduled_at": "2026-12-24T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "proposed_scheduled_at": "2026-12-28T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "proposed_scheduled_at": "2026-12-30T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "proposed_scheduled_at": "2027-01-01T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-new-year-warm-cup-share",
+      "proposed_scheduled_at": "2027-01-03T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "proposed_scheduled_at": "2027-01-04T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "proposed_scheduled_at": "2027-01-24T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "proposed_scheduled_at": "2027-01-29T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "proposed_scheduled_at": "2027-02-02T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "proposed_scheduled_at": "2027-02-05T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "proposed_scheduled_at": "2027-02-06T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "proposed_scheduled_at": "2027-02-08T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-last-day-reset",
+      "proposed_scheduled_at": "2027-02-10T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "proposed_scheduled_at": "2027-02-11T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "proposed_scheduled_at": "2027-02-13T11:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-09-30T16:05:00+08:00",
+  "updatedAt": "2026-09-30T16:15:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -86,7 +214,7 @@
   ],
   "crossPlatformImageRule": "同一篇貼文三平台使用同一張正式貼文圖；不同篇貼文不得重複使用同一張圖。",
   "crossPlatformTextRule": "同一主題同一天發布；平台文字只允許格式與字數微調，不改主題、不換圖。",
-  "note": "9/30–10/14既有15篇Metricool排程已全部改為Facebook、Instagram、Threads同一時間三平台同步且同一張圖；10/15後預排已避開本次提前使用的正式圖與主題。",
+  "note": "排程已由10月延伸到2027年農曆年後；農曆年前保留混合內容插槽，新內容完成並人工審核後再填入，避免同類系列連發。",
   "liveLifeInsertPolicy": {
     "freshnessWindowHours": "24-72",
     "sameDayCrossPlatform": true,
@@ -114,5 +242,48 @@
     "to": "2026-10-16T20:30:00+08:00",
     "metricoolId": "384813613",
     "reason": "讓24～72小時內的最新生活內容優先插播，常青品牌故事順延不刪除"
-  }
+  },
+  "lunarNewYear2027": {
+    "officialHolidayWindow": "2027-02-04 to 2027-02-10",
+    "lunarNewYearDay1": "2027-02-06",
+    "source": "行政院人事行政總處 116年（2027年）政府行政機關紀念日及節日連續假期一覽表"
+  },
+  "reservedMixedWindows": [
+    {
+      "date": "2027-01-07",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-10",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-13",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-16",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-19",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-21",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-26",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-01-31",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    },
+    {
+      "date": "2027-02-03",
+      "purpose": "留給接下來新增的不重複生活／料理／品牌／萬華內容，避免過年前整串只發年節貼文"
+    }
+  ]
 }
