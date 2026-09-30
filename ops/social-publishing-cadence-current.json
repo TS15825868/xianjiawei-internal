@@ -1,0 +1,80 @@
+{
+  "version": "2026-09-30-v1",
+  "timezone": "Asia/Taipei",
+  "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
+  "rule": "只保留發佈時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。",
+  "slots": [
+    {
+      "postId": "XJW-CONV-care-simple-checkin",
+      "proposed_scheduled_at": "2026-10-15T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-home-soup",
+      "proposed_scheduled_at": "2026-10-17T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-wanhua-morning",
+      "proposed_scheduled_at": "2026-10-19T21:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-buy-first-look",
+      "proposed_scheduled_at": "2026-10-21T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-small-things-work",
+      "proposed_scheduled_at": "2026-10-23T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-tradition-today",
+      "proposed_scheduled_at": "2026-10-25T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-recipe-or-feel",
+      "proposed_scheduled_at": "2026-10-27T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "proposed_scheduled_at": "2026-10-29T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-family-old-object",
+      "proposed_scheduled_at": "2026-10-31T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "proposed_scheduled_at": "2026-11-02T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "proposed_scheduled_at": "2026-11-04T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "proposed_scheduled_at": "2026-11-06T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "proposed_scheduled_at": "2026-11-08T11:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-storage",
+      "proposed_scheduled_at": "2026-11-10T21:00:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "proposed_scheduled_at": "2026-11-12T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "proposed_scheduled_at": "2026-11-14T19:45:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "proposed_scheduled_at": "2026-11-16T20:30:00+08:00"
+    },
+    {
+      "postId": "XJW-CONV-care-before-home-message",
+      "proposed_scheduled_at": "2026-11-18T19:45:00+08:00"
+    }
+  ]
+}
