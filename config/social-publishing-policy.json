@@ -1,16 +1,28 @@
 {
-  "version": "2026-09-15-social-publishing-v3",
+  "version": "2026-09-30-social-publishing-v4-same-day",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
-  "contentMix": ["生活","料理","品牌","產品","萬華","互動","季節天氣"],
+  "contentMix": [
+    "生活",
+    "料理",
+    "品牌",
+    "產品",
+    "萬華",
+    "互動",
+    "季節天氣"
+  ],
   "weatherInsert": {
     "enabled": true,
     "rule": "天氣突然變化時可插入即時天氣貼文；先查最新天氣、完成對應圖片與人工審核，再將原排程順延。"
   },
   "platformRouting": {
-    "facebook": {"enabled": true},
-    "instagram": {"enabled": true},
+    "facebook": {
+      "enabled": true
+    },
+    "instagram": {
+      "enabled": true
+    },
     "threads": {
       "enabled": true,
       "authority": "Metricool",
@@ -80,6 +92,29 @@
       "physical_scale",
       "duplicate",
       "compliance_final"
-    ]
+    ],
+    "approvalRequired": true
+  },
+  "crossPlatformPublishing": {
+    "mode": "same_day_same_post",
+    "networks": [
+      "Facebook",
+      "Instagram",
+      "Threads"
+    ],
+    "sameImageRequired": true,
+    "sameTopicRequired": true,
+    "platformTextAdjustment": "只允許格式與字數微調",
+    "forbidStaggeringSamePostAcrossDays": true
+  },
+  "liveLifeInsert": {
+    "enabled": true,
+    "freshnessWindowHours": "24-72",
+    "humanApprovalRequired": true,
+    "replaceEvergreenSlot": true,
+    "shiftReplacedEvergreenForward": true,
+    "preserveRealScene": true,
+    "mascotTransform": "真人小老闆可轉為正式Q版小老闆，加入分開的小鹿與小烏龜",
+    "productRule": "如有產品，只能合成正式產品原圖，不得AI重畫包裝"
   }
 }
