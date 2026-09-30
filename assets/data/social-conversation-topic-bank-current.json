@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-conversation-content-v5-live-life-insert",
+  "version": "2026-09-30-conversation-content-v6-live-hongludi",
   "brand": "仙加味",
   "purpose": "仙加味輕鬆互動、聊天、了解、生活知識與季節內容母庫。以混合題材自然穿插，不做制式系列連發；短影片只有正式正常才採用，否則使用完整正式情境圖。",
   "rules": {
@@ -1571,6 +1571,29 @@
       "imageUrl": "",
       "imageAlt": "年假最後一天，小老闆在家整理房間並準備明天用品，小鹿與小烏龜分開陪伴",
       "imageSource": "使用已完成的年假最後一天整理情境圖，不放產品",
+      "seedToReview": false,
+      "formatPreference": [
+        "full_image_fallback"
+      ]
+    },
+    {
+      "id": "live-hongludi-outing-20260929",
+      "title": "帶小老闆去烘爐地走走",
+      "headline": "拜拜、看看風景，也讓一天慢一點",
+      "category": "戶外生活",
+      "season": "evergreen",
+      "copy": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\\n\\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步這些很普通卻很珍貴的時刻。\\n\\n補養，是一種節奏。你最近有沒有也帶家人出去走走？",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "Threads"
+      ],
+      "productIds": [],
+      "mascotAction": "在烘爐地觀景平台與小鹿、小烏龜一起坐著看城市夕陽",
+      "imageMode": "context_required",
+      "imageUrl": "",
+      "imageAlt": "烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景",
+      "imageSource": "使用者實拍戶外照片轉為仙加味正式小老闆情境圖；保留真實場景，不放產品",
       "seedToReview": false,
       "formatPreference": [
         "full_image_fallback"
