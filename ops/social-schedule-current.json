@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-24T20:22:00+08:00",
-  "status": "active-with-media-and-review-gate",
+  "updatedAt": "2026-09-30T21:00:00+08:00",
+  "status": "active-same-day-cross-platform-with-review-gate",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
   "latestAuthority": "docs/current-system-authority-20260915-v20.json#2026-09-15-v20",
@@ -12,7 +12,7 @@
     "instagram": "xianjiawei.tw",
     "threads": "xianjiawei.tw"
   },
-  "principle": "少而精、不洗版；生活、料理、品牌、產品、萬華、互動、季節／天氣自然穿插。一般生活內容不硬塞LINE；明確試喝／怎麼選／價格／下單／配送／售後需求才導LINE OA。",
+  "principle": "少而精、不洗版；同一篇正式貼文於Facebook、Instagram、Threads同一天同一時間發布並共用同一張正式圖。生活、料理、品牌、產品、萬華、互動、季節／天氣自然穿插。一般生活內容不硬塞LINE；明確試喝／怎麼選／價格／下單／配送／售後需求才導LINE OA。",
   "visualGate": "正式Q版小朋友小老闆，必須與角色定稿同一人、不得成熟化／少年化／成人化；小鹿與小烏龜分開；公開只顯示仙加味；產品只用正式產品原圖等比例合成；錯圖、亂碼、療效宣稱、AI亂包裝不得發布。",
   "productImageAuthority": {
     "30cc": "images/customer-display-v20260812/guilu-drink-30cc.avif",
@@ -37,28 +37,28 @@
     "draftRule": "尚未完成唯一正式圖片或尚未經使用者人工審核的Threads項目保持draft=true、autoPublish=false，不得因舊排程資料自動恢復發布。"
   },
   "latestMetricoolVerification": {
-    "verifiedAt": "2026-09-24T20:22:00+08:00",
+    "verifiedAt": "2026-09-30T20:57:00+08:00",
     "brandConnected": true,
-    "threadsConnectedAs": "xianjiawei.tw",
-    "replacementPost": {
-      "publicationDate": "2026-09-24T20:20:00+08:00",
-      "facebook": "PUBLISHED",
-      "instagram": "PUBLISHED",
-      "threads": "PUBLISHED",
-      "image": "1254x1254 PNG",
+    "brandId": "6889683",
+    "facebook": true,
+    "instagram": "xianjiawei.tw",
+    "threads": "xianjiawei.tw",
+    "sameDayThreePlatformRuleActive": true,
+    "approvedNextPost": {
+      "publicationDate": "2026-10-01T12:30:00+08:00",
+      "title": "帶小老闆去烘爐地走走",
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
       "autoPublish": true,
-      "userApprovedImage": true
+      "draft": false,
+      "mediaReady": true
     },
-    "futureMediaSafety": {
-      "heldForVisualReviewCount": 8,
-      "period": "2026-10-01/2026-10-14",
-      "state": "draft=true, autoPublish=false",
-      "reason": "既有媒體為1024x768，且尚未完成2026-09-24新增的小老闆年齡／同一人視覺確認；先停止任何自動發布。"
-    },
-    "threadsDrafts": "9/26至10/13原Threads候選仍維持draft=true、autoPublish=false且多數無media，不會自動發布。",
-    "v19ConflictResolution": "任何舊排程、舊核准或舊守門紀錄均不得繞過2026-09-24角色一致性硬性守門。"
+    "unapprovedItemsRule": "仍為draft=true、autoPublish=false者不得因排程時間到達而發布；需人工審核後才可啟用正式發佈。"
   },
-  "sourceRule": "Metricool為實際發布路徑；只有正式圖片已完成最新角色／產品／圖文一致性檢查，且使用者核准後，才可draft=false且autoPublish=true。未完成最新視覺確認者必須維持draft=true或autoPublish=false。",
+  "sourceRule": "Metricool為Facebook／Instagram／Threads正式排程發布路徑；D1為ERP／貼文中心內容與人工審核權威。只有正式圖文完成檢查且使用者人工核准後，才可在Metricool設為draft=false、autoPublish=true。",
   "d1Role": "Cloudflare D1 social_posts為ERP／貼文中心內容與審核資料；Metricool為Threads正式發布路徑。兩邊需以貼文ID／內容／媒體核對，不得把純文字草稿誤判成可發布內容。",
   "weatherInsertRule": "天氣突然變化時可插入即時天氣貼文；必須先取得當下最新天氣、完成對應圖片與人工審核，原排程再順延。",
   "nextCycleMediaApproval": {
@@ -76,11 +76,28 @@
     "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否排程；人工通過媒體不等於自動排程。",
     "metricoolScheduleCreated": false
   },
-  "note": "2026-09-24角色異常事件已修正：新版小老闆圖於20:20成功發布FB／IG／Threads。另將10/01至10/14共8筆既有媒體排程暫轉草稿，避免未重新確認角色一致性的圖片誤發。",
+  "note": "2026-09-30正式統一為同篇三平台同日同步；10/01烘爐地生活插播已核准並排程。任何舊的單平台交錯規則均視為過期，不得回流。",
   "mascotReleaseGate": {
     "effectiveAt": "2026-09-24T20:16:00+08:00",
     "rule": "凡圖片含小老闆，必須肉眼確認仍為正式Q版小朋友小男孩，年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例一致；只要像長大、像少年／成人或像不同人，直接不合格。",
     "scheduleSafety": "尚未完成角色一致性確認的既有排程維持draft=true或autoPublish=false；換圖後舊核准失效，新圖重新檢查通過才可autoPublish=true。",
     "companions": "小鹿與小烏龜分開且相對尺寸固定，不得融合或忽大忽小。"
+  },
+  "crossPlatformMode": {
+    "mode": "same_day_same_post",
+    "networks": [
+      "Facebook",
+      "Instagram",
+      "Threads"
+    ],
+    "sameImage": true,
+    "textRule": "同一主題，僅可依平台格式與字數微調，不換主題、不換圖",
+    "reviewGate": "未經使用者人工審核不得正式排程或發布"
+  },
+  "liveLifeInsertRule": {
+    "enabled": true,
+    "freshnessWindowHours": "24-72",
+    "rule": "使用者最新外出、拜拜、散步、親子、萬華、天氣或節日實拍，可轉成正式小老闆＋小鹿＋小烏龜情境圖；人工審核通過後優先插播，原常青內容順延。",
+    "productRule": "若畫面涉及產品，產品本體只能使用正式原圖，不得AI重畫。"
   }
 }
