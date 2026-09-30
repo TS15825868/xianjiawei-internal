@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-30T21:00:00+08:00",
-  "status": "active-same-day-cross-platform-with-review-gate",
+  "updatedAt": "2026-10-01T00:13:00+08:00",
+  "status": "active-auto-generate-auto-review-auto-schedule",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
   "latestAuthority": "docs/current-system-authority-20260915-v20.json#2026-09-15-v20",
@@ -58,7 +58,7 @@
     },
     "unapprovedItemsRule": "仍為draft=true、autoPublish=false者不得因排程時間到達而發布；需人工審核後才可啟用正式發佈。"
   },
-  "sourceRule": "Metricool為Facebook／Instagram／Threads正式排程發布路徑；D1為ERP／貼文中心內容與人工審核權威。只有正式圖文完成檢查且使用者人工核准後，才可在Metricool設為draft=false、autoPublish=true。",
+  "sourceRule": "Metricool為Facebook／Instagram／Threads正式排程發布路徑；D1為內容與審核紀錄。新貼文可由自動檢查通過後自動核准，只有全部守門檢查通過才可在Metricool設為draft=false、autoPublish=true。",
   "d1Role": "Cloudflare D1 social_posts為ERP／貼文中心內容與審核資料；Metricool為Threads正式發布路徑。兩邊需以貼文ID／內容／媒體核對，不得把純文字草稿誤判成可發布內容。",
   "weatherInsertRule": "天氣突然變化時可插入即時天氣貼文；必須先取得當下最新天氣、完成對應圖片與人工審核，原排程再順延。",
   "nextCycleMediaApproval": {
@@ -76,7 +76,7 @@
     "activationGate": "2026-10-15後先讀取2026-10-01至2026-10-14實際發布表現、互動、退追與LINE導流訊號，再決定是否排程；人工通過媒體不等於自動排程。",
     "metricoolScheduleCreated": false
   },
-  "note": "2026-09-30正式統一為同篇三平台同日同步；10/01烘爐地生活插播已核准並排程。任何舊的單平台交錯規則均視為過期，不得回流。",
+  "note": "2026-10-01起依使用者最新指示，後續內容改為自動生成→自動檢查→通過則自動核准→三平台同日排程發布；任何檢查失敗則不發。",
   "mascotReleaseGate": {
     "effectiveAt": "2026-09-24T20:16:00+08:00",
     "rule": "凡圖片含小老闆，必須肉眼確認仍為正式Q版小朋友小男孩，年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例一致；只要像長大、像少年／成人或像不同人，直接不合格。",
@@ -99,5 +99,12 @@
     "freshnessWindowHours": "24-72",
     "rule": "使用者最新外出、拜拜、散步、親子、萬華、天氣或節日實拍，可轉成正式小老闆＋小鹿＋小烏龜情境圖；人工審核通過後優先插播，原常青內容順延。",
     "productRule": "若畫面涉及產品，產品本體只能使用正式原圖，不得AI重畫。"
+  },
+  "autoContentMode": {
+    "enabled": true,
+    "rule": "後續貼文由系統自動生成文案與唯一圖片，自動完成品牌／角色／夥伴／產品／圖文一致／重複／法規檢查；全部通過後自動核准並排程發布，失敗則留在pending_review。",
+    "crossPlatform": "Facebook、Instagram、Threads同一篇同一天同一時間同一張正式圖",
+    "productRule": "任何含產品內容只使用正式產品原圖，不得AI重畫包裝；無法保證正式外觀時改用非產品生活題材或暫緩該篇。",
+    "mascotRule": "固定Q版小朋友小老闆、短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、紅色直式仙加味印章；小鹿與小烏龜分開。"
   }
 }
