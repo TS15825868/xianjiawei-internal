@@ -6,5 +6,6 @@
       "scheduled_at": "2026-10-01T12:30:00+08:00",
       "approval": "user explicitly approved scheduling in chat after approving the transformed lifestyle image"
     }
-  ]
+  ],
+  "retry": "2026-09-30T16:10:00+08:00"
 }
