@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-09-30T08:12:25.064Z",
+  "generatedAt": "2026-09-30T09:22:56.679Z",
   "counts": {
     "scheduled": 1,
     "pending_review": 59
@@ -74,28 +74,6 @@
       ]
     },
     {
-      "id": "XJW-CONV-chat-old-methods",
-      "title": "有些老方法，為什麼到現在還有人在做？",
-      "copy": "有些方法一直留到今天，不只是因為它夠老，而是有人持續做、持續整理經驗。\n\n仙加味看待傳統工藝也是這樣：留下核心，再把今天能做得更好的地方慢慢整理。",
-      "category": "工藝故事",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": null,
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/undefined",
-      "image_alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴",
-      "image_source": "ChatGPT正式生成｜GitHub main｜人工待審核",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-09-22 16:28:29",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
       "id": "XJW-CONV-chat-opening-prep",
       "title": "開店前，小老闆先做哪一件事？",
       "copy": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先擦桌子，有人先把昨天沒收好的東西整理完。\n\n小老闆今天先從桌面開始。你開始工作前的第一件事通常是什麼？",
@@ -155,6 +133,28 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-09-30 00:59:33",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "Threads"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-old-methods",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "copy": "有些方法一直留到今天，不只是因為它夠老，而是有人持續做、持續整理經驗。\n\n仙加味看待傳統工藝也是這樣：留下核心，再把今天能做得更好的地方慢慢整理。",
+      "category": "工藝故事",
+      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
+      "status": "pending_review",
+      "scheduled_at": null,
+      "proposed_scheduled_at": null,
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/fixes/XJW-CONV-chat-old-methods.jpg",
+      "image_alt": "傳統工作桌情境，小老闆觀察原料與老工具，小鹿與小烏龜分開陪伴",
+      "image_source": "ChatGPT正式單張圖｜GitHub main｜人工待審核",
+      "image_approved": 0,
+      "approved_at": null,
+      "published_at": null,
+      "updated_at": "2026-09-30 09:22:14",
       "platforms": [
         "Facebook",
         "Instagram",
