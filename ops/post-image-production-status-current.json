@@ -1,6 +1,6 @@
 {
-  "version": "2026-09-30-v8-final29-bound",
-  "updatedAt": "2026-09-30T00:59:36.794Z",
+  "version": "2026-09-30-v9-final29-verified",
+  "updatedAt": "2026-09-30T09:02:00+08:00",
   "scope": "live D1 active draft image production",
   "target": 29,
   "completedToPendingReview": 29,
@@ -9,182 +9,15 @@
   "currentBatch": "batch5",
   "completed": [
     {
-      "postId": "XJW-CONV-chat-opening-prep",
-      "title": "開店前，小老闆先做哪一件事？",
-      "asset": "assets/post-images/2026-09-29/batch5/XJW-CONV-chat-opening-prep.jpg",
-      "status": "pending_review"
+      "batch": "2026-09-30-final29",
+      "total": 29,
+      "assetDir": "assets/post-images/2026-09-30/batch6",
+      "bindingRecord": "ops/post-image-bindings-20260930-final29.json",
+      "d1Status": "pending_review",
+      "githubActionRun": 36652869508
     }
   ],
-  "validatedAwaitingAssetCommit": [
-    {
-      "postId": "XJW-CONV-chat-30-bare-jar",
-      "title": "今天只看一個小細節：裸罐",
-      "candidateFilename": "product_cards_20260930/01_30cc裸罐.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-30-vs-180",
-      "title": "30cc跟180cc，怎麼選？",
-      "candidateFilename": "product_cards_20260930/02_30cc_vs_180cc.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-drink-made-to-order",
-      "title": "龜鹿飲是先做好放著嗎？",
-      "candidateFilename": "product_cards_20260930/03_龜鹿飲接單後製作.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-gao-storage",
-      "title": "龜鹿膏放在哪裡比較不容易忘記？",
-      "candidateFilename": "product_cards_20260930/04_龜鹿膏保存.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-gao-vs-drink",
-      "title": "龜鹿膏跟龜鹿飲，差在哪？",
-      "candidateFilename": "product_cards_20260930/05_龜鹿膏_vs_龜鹿飲.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
-      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
-      "candidateFilename": "product_cards_20260930/06_玻璃罐_vs_鋁袋收納.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-jiao-spec",
-      "title": "龜鹿膠600g，到底是一盒什麼份量？",
-      "candidateFilename": "product_cards_20260930/07_龜鹿膠600g.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-luerong-intro",
-      "title": "今天認識一個比較少聊到的：鹿茸粉",
-      "candidateFilename": "product_cards_20260930/08_鹿茸粉75g.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-pantry-memory",
-      "title": "你家以前最常看到哪一種食材？",
-      "candidateFilename": "童趣廚房的日常食材時光.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-photo-size",
-      "title": "一張產品照，為什麼尺寸看起來會差很多？",
-      "candidateFilename": "product_cards_20260930/09_30cc實際尺寸.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-picture-or-text",
-      "title": "你比較喜歡看圖，還是慢慢看文字？",
-      "candidateFilename": "仙加味_看圖還是讀文字.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-quiet-work",
-      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
-      "candidateFilename": "仙加味的靜謐午後.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-soup-day",
-      "title": "你家有固定的煮湯日嗎？",
-      "candidateFilename": "固定煮湯日的暖心廚房.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-tang-vs-jiao",
-      "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
-      "candidateFilename": "product_cards_20260930/10_湯塊_vs_龜鹿膠.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-tangkuai-spec",
-      "title": "龜鹿湯塊75g，一盒是幾塊？",
-      "candidateFilename": "product_cards_20260930/11_龜鹿湯塊75g.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-chat-trial-first",
-      "title": "想先了解，再決定也可以",
-      "candidateFilename": "溫暖茶鋪的日常相談.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-year-end-keep-habit",
-      "title": "如果今年只能留下一個習慣，你會留哪個？",
-      "candidateFilename": "留住一個好習慣.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-year-end-small-win",
-      "title": "今年有沒有一件小事，你很慶幸自己做了？",
-      "candidateFilename": "今年的小小幸運.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-new-year-open-door",
-      "title": "新年第一個開店日，小老闆先做什麼？",
-      "candidateFilename": "新年開店日_小老闆迎春.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-new-year-slow-start",
-      "title": "新的一年，不一定要突然變得很厲害",
-      "candidateFilename": "新年慢慢開始就好.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-childhood-now",
-      "title": "小時候過年跟現在，哪裡最不一樣？",
-      "candidateFilename": "童年年味與家人團聚.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-family-choice",
-      "title": "過年最期待的是吃飯、見家人，還是放假？",
-      "candidateFilename": "團圓餐桌上的新年期待.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-first-soup",
-      "title": "年假後第一鍋湯，你會選雞還是排骨？",
-      "candidateFilename": "年假後的暖心選湯時光.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-fridge-clean",
-      "title": "過年前整理冰箱，最常找到什麼？",
-      "candidateFilename": "過年整理冰箱迎新春.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-gift-choice",
-      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
-      "candidateFilename": "新春送禮_精緻與實用的溫暖選擇.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-must-have-dish",
-      "title": "過年煮一桌菜，你家一定不能少哪一道？",
-      "candidateFilename": "團圓餐桌上的新年滋味.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-pre-clean",
-      "title": "過年前，你家會先大掃除還是先買東西？",
-      "candidateFilename": "過年前先大掃除還是先購物.png",
-      "status": "visual_qc_passed"
-    },
-    {
-      "postId": "XJW-CONV-cny-reopen",
-      "title": "開工第一天，小老闆先做一件小事",
-      "candidateFilename": "開工第一天的溫柔小店.png",
-      "status": "visual_qc_passed"
-    }
-  ],
+  "validatedAwaitingAssetCommit": [],
   "rejectedExamples": [
     {
       "reason": "year mismatch",
@@ -192,10 +25,9 @@
     }
   ],
   "nextWork": [
-    "依finalAssetCommitManifest把28張既有QC通過圖正式落檔到assets/post-images/2026-09-30/batch6",
-    "同步更新post-image-bindings-current.json與queue imageSource",
-    "28篇全部改pending_review後，29篇目前佇列即正式清零",
-    "完成後才新增過年前後續不重複文案與唯一圖片"
+    "開始下一批不重複貼文文案與唯一圖片，延伸至2027農曆年前後",
+    "新批次仍需自動檢查角色、圖文一致、產品正式外觀、季節與法規",
+    "合格後只進pending_review，未經人工審核不得發布"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
@@ -206,13 +38,13 @@
     "完成後只回pending_review，人工審核前不得發布"
   ],
   "finalAssetCommitManifest": "ops/post-image-asset-commit-manifest-20260930.json",
-  "assetCommitLockedCount": 28,
+  "assetCommitLockedCount": 0,
   "formalJpegsReady": 29,
   "formalJpegSpec": "1254x1254 JPEG, each >250KB",
   "formal1254Manifest": "ops/post-image-formal-1254-manifest-20260930.json",
   "binaryCommitRemaining": 0,
   "openingPrepReplacementRequired": false,
-  "note": "29張正式貼文圖已實體落GitHub main、D1回填並全部進pending_review；未經人工審核不得發布。",
+  "note": "2026-09-30 已驗證29張正式1254x1254 JPEG全部實體落GitHub main；Cloudflare D1 29篇全部pending_review；目前active draft製圖佇列為0。",
   "formalJpegsCommitted": 29,
   "d1BoundPendingReview": 29,
   "formalBindingRecord": "ops/post-image-bindings-20260930-final29.json",
