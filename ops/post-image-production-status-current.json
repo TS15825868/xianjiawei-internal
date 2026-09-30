@@ -1,9 +1,9 @@
 {
-  "version": "2026-09-30-v9-final29-verified",
-  "updatedAt": "2026-09-30T09:02:00+08:00",
+  "version": "rolling-2026-09-30T01:08:09.363Z",
+  "updatedAt": "2026-09-30T01:08:09.363Z",
   "scope": "live D1 active draft image production",
-  "target": 29,
-  "completedToPendingReview": 29,
+  "target": 33,
+  "completedToPendingReview": 33,
   "visualQcPassedAwaitingAssetCommit": 0,
   "remainingNeedsUniqueImage": 0,
   "currentBatch": "batch5",
@@ -25,9 +25,7 @@
     }
   ],
   "nextWork": [
-    "開始下一批不重複貼文文案與唯一圖片，延伸至2027農曆年前後",
-    "新批次仍需自動檢查角色、圖文一致、產品正式外觀、季節與法規",
-    "合格後只進pending_review，未經人工審核不得發布"
+    "目前draft製圖佇列已清零；繼續新增不重複內容至農曆年前後"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
@@ -44,9 +42,15 @@
   "formal1254Manifest": "ops/post-image-formal-1254-manifest-20260930.json",
   "binaryCommitRemaining": 0,
   "openingPrepReplacementRequired": false,
-  "note": "2026-09-30 已驗證29張正式1254x1254 JPEG全部實體落GitHub main；Cloudflare D1 29篇全部pending_review；目前active draft製圖佇列為0。",
+  "note": "最新批次4張已實體落GitHub main並回填D1 pending_review；目前剩餘draft=0。",
   "formalJpegsCommitted": 29,
   "d1BoundPendingReview": 29,
   "formalBindingRecord": "ops/post-image-bindings-20260930-final29.json",
-  "finalAssetDir": "assets/post-images/2026-09-30/batch6"
+  "finalAssetDir": "assets/post-images/2026-09-30/batch6",
+  "latestCompletedBatch": {
+    "total": 4,
+    "targetDir": "assets/post-images/2026-09-30/batch7",
+    "bindingRecord": "ops/post-image-bindings-20260930-batch7-next4.json",
+    "status": "pending_review"
+  }
 }
