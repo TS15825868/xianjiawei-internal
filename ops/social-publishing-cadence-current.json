@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-30-v1",
+  "version": "2026-09-30-v2",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
   "rule": "只保留發佈時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。",
@@ -76,5 +76,6 @@
       "postId": "XJW-CONV-care-before-home-message",
       "proposed_scheduled_at": "2026-11-18T19:45:00+08:00"
     }
-  ]
+  ],
+  "updatedAt": "2026-09-30T10:22:00+08:00"
 }
