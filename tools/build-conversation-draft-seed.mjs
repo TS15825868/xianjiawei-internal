@@ -29,10 +29,10 @@ for(const topic of rows){
 const statements=[];
 // normalize-literal-newlines: semantic-preserving cleanup for legacy draft copies only.
 statements.push(`UPDATE social_posts
-  SET copy=replace(copy,'\\n',char(10)), updated_at=CURRENT_TIMESTAMP
+  SET copy=replace(copy,char(92)||'n',char(10)), updated_at=CURRENT_TIMESTAMP
   WHERE id LIKE 'XJW-CONV-%'
     AND status='draft'
-    AND instr(copy,'\\n')>0;`);
+    AND instr(copy,char(92)||'n')>0;`);
 statements.push(`CREATE TABLE IF NOT EXISTS social_posts(
   id TEXT PRIMARY KEY,title TEXT NOT NULL DEFAULT '',headline TEXT NOT NULL DEFAULT '',copy TEXT NOT NULL DEFAULT '',category TEXT NOT NULL DEFAULT '日常節奏',
   platforms_json TEXT NOT NULL DEFAULT '[]',status TEXT NOT NULL DEFAULT 'draft',scheduled_at TEXT,proposed_scheduled_at TEXT,approved_by TEXT,approved_at TEXT,published_at TEXT,
