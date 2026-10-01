@@ -13,6 +13,16 @@ must(hours.closed === "週六、週日店休", "週末店休規則回退");
 must(hours.website === "24 小時可瀏覽", "官網24小時可瀏覽規則缺失");
 must(String(hours.lineOA || "").startsWith("24 小時可留言"), "LINE 24小時可留言規則缺失");
 
+const funnel = data.funnel || {};
+must(funnel.lineOA?.id === "@762jybnm", "LINE OA ID 回退");
+must(funnel.lineOA?.url === "https://lin.ee/sHZW7NkR", "LINE OA URL 回退");
+must(funnel.lineOA?.primary === true && funnel.lineOA?.defaultCta === true, "LINE OA 必須維持主要預設CTA");
+must(funnel.lineCommunity?.notTransactionCenter === true, "LINE 社群不得成為交易中心");
+must(funnel.lineCommunity?.defaultCta === false && funnel.lineCommunity?.optionalOnly === true, "LINE 社群只能選擇性提及，不得成為預設CTA");
+must(funnel.lineCommunity?.noPersonalOrTransactionData === true, "LINE 社群不得承接個資或交易資料");
+must(data.socialAutomation?.allCommercialHandoff === "LINE OA", "商業需求必須統一交給 LINE OA");
+must(data.socialAutomation?.neverRouteTransactionsToCommunity === true, "不得把交易需求導向 LINE 社群");
+
 const gb = data.googleBusiness || {};
 const allowed = new Set(["verification_processing","verified","verification_failed","suspended","unknown"]);
 must(allowed.has(gb.managementStatus), "Google 商家狀態不在允許集合");
@@ -23,4 +33,4 @@ if (gb.managementStatus === "verification_processing") {
   must(Array.isArray(gb.pendingTasks) && gb.pendingTasks.length >= 3, "Google 驗證後待辦未完整保存");
 }
 
-console.log("PASS：服務時間權威一致；Google 商家驗證中狀態有防寫入與驗證後待辦。");
+console.log("PASS：服務時間、LINE OA主要導流、LINE社群非交易中心與Google商家驗證防寫入規則一致。");
