@@ -43,6 +43,7 @@ for (const topic of bank.topics || []) {
   if ((topic.productIds || []).some(x => !allowedProducts.has(x))) errors.push(`${id}: 使用未核准產品ID ${JSON.stringify(topic.productIds)}`);
   if (topic.seedToReview !== false) errors.push(`${id}: seedToReview必須維持false，未完成素材不得直接送審`);
   if (!Array.isArray(topic.formatPreference) || !topic.formatPreference.includes('full_image_fallback')) errors.push(`${id}: 缺少完整正式情境圖fallback`);
+  if (text(topic.copy).includes('\\\\n')) errors.push(`${id}: 文案含字面\\\\n，必須使用真正換行`);
   if (text(topic.imageUrl).trim()) errors.push(`${id}: 題庫不應預綁未審核圖片`);
   if (!text(topic.imageSource).trim()) errors.push(`${id}: 缺少圖片來源/製作規則`);
   if (!text(topic.mascotAction).trim()) errors.push(`${id}: 缺少小老闆動作設定`);
