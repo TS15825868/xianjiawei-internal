@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01-v8-brand-name",
+  "version": "2026-10-01-v9-google-legal-entity-exception",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -204,9 +204,9 @@
     "mutationPolicy": "verified_normal",
     "pendingTasks": [
       "等待目前 Google 商家名稱審核完成",
-      "審核完成後確認 Maps 公開名稱；若仍不是「仙加味」，再提交一次正式名稱「仙加味」",
+      "審核完成後確認 Google Maps 公開名稱是否為「仙加味｜台興山產有限公司」",
       "確認 Google Maps 公開頁已同步最新一般營業時間與自取時間",
-      "確認商家群組歸屬是否為使用者預期"
+      "未來仙加味取得可供 Google 接受的商業登記／實體證明後，再評估簡化為「仙加味」"
     ],
     "configuredHours": {
       "regular": "週一至週五 10:30－20:00；週六、週日休息",
@@ -215,20 +215,25 @@
       "note": "已在 Google 商家後台按確認提交；公開 Maps 顯示可能有同步延遲"
     },
     "publicMapsNameObserved": "仙加味・龜鹿",
-    "desiredFinalPublicName": "仙加味",
+    "desiredFinalPublicName": "仙加味｜台興山產有限公司",
     "nameReviewStatus": "pending",
     "nameMutationPolicy": "wait_for_current_review_before_new_name_change",
-    "nameNote": "目前 Google Maps 公開頁仍顯示舊名「仙加味・龜鹿」；後台目前名稱變更仍顯示處理中。等本次審核結束後，再把最終公開名稱收斂為「仙加味」，不在審核中重送。"
+    "nameNote": "目前仙加味尚未另設商業／公司登記；Google 驗證法律主體為台興山產有限公司，因此本通路暫以「仙加味｜台興山產有限公司」作為品牌＋法律主體名稱。其他公開通路主品牌仍只使用「仙加味」。"
   },
   "brandNaming": {
     "publicBrandName": "仙加味",
+    "legalEntityName": "台興山產有限公司",
     "guiluRole": "龜鹿只作為產品／系列名稱，不再綁在品牌名稱後面",
     "futureProductRule": "未來其他產品仍統一使用仙加味主品牌",
     "forbiddenPublicBrandForms": [
       "仙加味・龜鹿",
-      "仙加味｜台興山產有限公司",
       "台興山產・仙加味"
     ],
-    "googleDesiredPublicName": "仙加味"
+    "googleBusiness": {
+      "currentName": "仙加味｜台興山產有限公司",
+      "doNotTreatAsMainBrand": true,
+      "futurePreferredName": "仙加味",
+      "futureCondition": "待仙加味有可被 Google 接受的商業登記、實體招牌或其他一致實際證明後，再評估改為品牌名「仙加味」"
+    }
   }
 }
