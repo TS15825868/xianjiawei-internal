@@ -31,7 +31,7 @@ const statements=[];
 statements.push(`UPDATE social_posts
   SET copy=replace(copy,char(92)||'n',char(10)), updated_at=CURRENT_TIMESTAMP
   WHERE id LIKE 'XJW-CONV-%'
-    AND status='draft'
+    AND status<>'published'
     AND instr(copy,char(92)||'n')>0;`);
 statements.push(`CREATE TABLE IF NOT EXISTS social_posts(
   id TEXT PRIMARY KEY,title TEXT NOT NULL DEFAULT '',headline TEXT NOT NULL DEFAULT '',copy TEXT NOT NULL DEFAULT '',category TEXT NOT NULL DEFAULT '日常節奏',
