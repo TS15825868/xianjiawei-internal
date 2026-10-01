@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01-v6-line-oa-primary-routing",
+  "version": "2026-10-01-v7-google-verified-hours-submitted",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -149,7 +149,7 @@
     "blockingGuardMayRemainPausedUntilFullLiveVerification": true,
     "publicContentNoMedicalClaims": true,
     "formalProductImagesOnly": true,
-    "googleBusinessPendingNoMutation": true,
+    "googleBusinessPendingNoMutation": false,
     "googleBusinessDesiredHoursSource": "serviceHours"
   },
   "repositories": {
@@ -169,28 +169,29 @@
     "authority": "observed-current-state",
     "observedAt": "2026-10-01T13:57:00+08:00",
     "profileDisplayNameObserved": "仙加味｜台興山產有限公司",
-    "managementStatus": "verification_processing",
-    "managementStatusLabel": "處理中",
+    "managementStatus": "verified",
+    "managementStatusLabel": "已驗證",
     "managementAccessAvailable": true,
     "verification": {
       "method": "video",
+      "status": "completed",
       "submittedEvidence": [
         "店面門口",
         "門牌",
         "營業登記"
       ],
-      "googleNotice": "Google 正在處理驗證資訊，最多可能需要 5 天才會完成。",
-      "actionWhilePending": "等待審核結果；不得重送驗證、不得重新建立商家、不得刪除正式商家"
+      "latestObservation": "Google 商家後台顯示 100% 已完成驗證，無補件、停權或失敗提示"
     },
     "currentObserved": {
       "group": "未分組",
       "primaryCategory": "中藥店",
       "regularHours": "週一至週日 09:30－21:30",
-      "pickupHours": "週一至週日 09:30－21:30"
+      "pickupHours": "週一至週日 09:30－21:30",
+      "verificationStatus": "已驗證"
     },
     "desiredAfterVerification": {
       "regularHours": "週一至週五 10:30－20:00；週六、週日休息",
-      "pickupHours": "依實際營業與預約安排重新確認，不先在審核中送出",
+      "pickupHours": "週一至週五 10:30－20:00；週六、週日休息",
       "website": "24 小時可瀏覽",
       "lineOA": "24 小時可留言；店休及非營業時間依實際情況回覆",
       "weekendFulfillment": "週末配送／自取可先透過 LINE 詢問，依當天實際情況協調"
@@ -200,13 +201,17 @@
       "reportSubmitted": true,
       "rule": "只回報重複地點，不將正式商家標成永久停業；等待 Google 審核後再確認結果"
     },
-    "mutationPolicy": "freeze_until_verification_complete",
+    "mutationPolicy": "verified_normal",
     "pendingTasks": [
-      "驗證完成後確認正式商家恢復已驗證狀態",
-      "驗證完成後把一般營業時間改為週一至週五10:30－20:00、週六週日休息",
-      "重新確認自取時間是否需與一般營業時間一致",
+      "確認 Google Maps 公開頁已同步最新一般營業時間與自取時間",
       "確認重複地點「仙加味・龜鹿」是否已合併或移除",
       "確認商家群組歸屬是否為使用者預期"
-    ]
+    ],
+    "configuredHours": {
+      "regular": "週一至週五 10:30－20:00；週六、週日休息",
+      "pickup": "週一至週五 10:30－20:00；週六、週日休息",
+      "saved": true,
+      "note": "已在 Google 商家後台按確認提交；公開 Maps 顯示可能有同步延遲"
+    }
   }
 }
