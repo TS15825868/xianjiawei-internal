@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01-v4-service-hours-authority",
+  "version": "2026-10-01-v5-google-business-verification-guard",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -141,7 +141,9 @@
     "guardPurpose": "防止錯誤，不得以舊資料阻擋新版正確資料",
     "blockingGuardMayRemainPausedUntilFullLiveVerification": true,
     "publicContentNoMedicalClaims": true,
-    "formalProductImagesOnly": true
+    "formalProductImagesOnly": true,
+    "googleBusinessPendingNoMutation": true,
+    "googleBusinessDesiredHoursSource": "serviceHours"
   },
   "repositories": {
     "website": "TS15825868/xianjiawei@main",
@@ -155,5 +157,49 @@
     "lineOA": "24 小時可留言；店休及非營業時間的訊息，將依實際情況回覆",
     "weekendFulfillment": "週末如有配送、自取需求，可先透過 LINE 詢問，依當天實際情況協調安排",
     "googleBusinessRule": "Google 商家只顯示實體店真正營業時間，不把 LINE、官網或彈性配送算作實體營業時間"
+  },
+  "googleBusiness": {
+    "authority": "observed-current-state",
+    "observedAt": "2026-10-01T13:57:00+08:00",
+    "profileDisplayNameObserved": "仙加味｜台興山產有限公司",
+    "managementStatus": "verification_processing",
+    "managementStatusLabel": "處理中",
+    "managementAccessAvailable": true,
+    "verification": {
+      "method": "video",
+      "submittedEvidence": [
+        "店面門口",
+        "門牌",
+        "營業登記"
+      ],
+      "googleNotice": "Google 正在處理驗證資訊，最多可能需要 5 天才會完成。",
+      "actionWhilePending": "等待審核結果；不得重送驗證、不得重新建立商家、不得刪除正式商家"
+    },
+    "currentObserved": {
+      "group": "未分組",
+      "primaryCategory": "中藥店",
+      "regularHours": "週一至週日 09:30－21:30",
+      "pickupHours": "週一至週日 09:30－21:30"
+    },
+    "desiredAfterVerification": {
+      "regularHours": "週一至週五 10:30－20:00；週六、週日休息",
+      "pickupHours": "依實際營業與預約安排重新確認，不先在審核中送出",
+      "website": "24 小時可瀏覽",
+      "lineOA": "24 小時可留言；店休及非營業時間依實際情況回覆",
+      "weekendFulfillment": "週末配送／自取可先透過 LINE 詢問，依當天實際情況協調"
+    },
+    "duplicatePlaceHandling": {
+      "duplicatePlaceName": "仙加味・龜鹿",
+      "reportSubmitted": true,
+      "rule": "只回報重複地點，不將正式商家標成永久停業；等待 Google 審核後再確認結果"
+    },
+    "mutationPolicy": "freeze_until_verification_complete",
+    "pendingTasks": [
+      "驗證完成後確認正式商家恢復已驗證狀態",
+      "驗證完成後把一般營業時間改為週一至週五10:30－20:00、週六週日休息",
+      "重新確認自取時間是否需與一般營業時間一致",
+      "確認重複地點「仙加味・龜鹿」是否已合併或移除",
+      "確認商家群組歸屬是否為使用者預期"
+    ]
   }
 }
