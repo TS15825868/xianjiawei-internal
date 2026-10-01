@@ -1,7 +1,10 @@
 name: 仙加味有效貼文圖片製作清單守門
-# validation-trigger-20260924-v2
+# validation-trigger-20261001-v3-chain-after-sync
 
 on:
+  workflow_run:
+    workflows: ["仙加味有效貼文圖片佇列同步"]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -16,6 +19,7 @@ permissions:
 
 jobs:
   verify:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
