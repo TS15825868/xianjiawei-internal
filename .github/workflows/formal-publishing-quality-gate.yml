@@ -1,6 +1,9 @@
 name: 仙加味貼文中心正式品質守門
 
 on:
+  workflow_run:
+    workflows: ["仙加味有效貼文圖片佇列同步"]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -24,6 +27,7 @@ concurrency:
 
 jobs:
   quality:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
