@@ -47,13 +47,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-CONV-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS active_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived'; SELECT COUNT(*) AS threads_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND platforms_json LIKE '%Threads%';" > /tmp/verify.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-CONV-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS active_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived'; SELECT COUNT(*) AS threads_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND platforms_json LIKE '%Threads%'; SELECT COUNT(*) AS literal_newline_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'published' AND instr(copy,char(92)||'n')>0;" > /tmp/verify.txt
           cat /tmp/verify.txt
           node - <<'NODE'
           const fs=require('fs');
           const text=fs.readFileSync('/tmp/verify.txt','utf8');
-          const values=[...text.matchAll(/"(active_count|threads_count)"\s*:\s*(\d+)/g)].reduce((m,x)=>(m[x[1]]=Number(x[2]),m),{});
+          const values=[...text.matchAll(/"(active_count|threads_count|literal_newline_count)"\s*:\s*(\d+)/g)].reduce((m,x)=>(m[x[1]]=Number(x[2]),m),{});
           if(!values.active_count||values.active_count<40)throw new Error(`可見草稿不足，active_count=${values.active_count||0}`);
           if(values.threads_count!==values.active_count)throw new Error(`Threads 覆蓋不完整：threads=${values.threads_count||0} active=${values.active_count||0}`);
-          console.log(`PASS visible conversation drafts=${values.active_count}, Threads=${values.threads_count}`);
+          if(Number(values.literal_newline_count||0)!==0)throw new Error(`D1仍有字面\\n：${values.literal_newline_count}`);
+          console.log(`PASS visible conversation drafts=${values.active_count}, Threads=${values.threads_count}, literalNewlines=${values.literal_newline_count||0}`);
           NODE
