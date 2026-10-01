@@ -113,10 +113,10 @@ jobs:
           set -euo pipefail
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           echo "maintenance=$maintenance"
-          html="$(curl -fsS --max-time 25 "$BASE_URL/publishing.html")"
-          grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' <<<"$html"
-          grep -q "'/assets/js/publishing-readiness-ui.js?v=" <<<"$html"
           if [ "$maintenance" = 'true' ]; then
+            html="$(curl -fsS --max-time 25 "$BASE_URL/publishing.html")"
+            grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' <<<"$html"
+            grep -q "'/assets/js/publishing-readiness-ui.js?v=" <<<"$html"
             curl -fsS --max-time 25 "$BASE_URL/api/me" > live-me.json
             curl -fsS --max-time 25 "$BASE_URL/api/posts?limit=18&offset=0" > live-posts.json
             curl -fsS --max-time 25 "$BASE_URL/healthz/platform-connections" > live-platform-connections.json
@@ -134,7 +134,7 @@ jobs:
               test "$code" -ge 200
               test "$code" -lt 500
             done
-            echo 'PASS protected live boundary responds without server errors.'
+            echo 'PASS Cloudflare Access protected live boundary responds without server errors; login page is not misread as app HTML.'
           fi
 
       - name: Upload verification evidence
