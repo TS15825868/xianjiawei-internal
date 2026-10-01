@@ -5,6 +5,16 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/full-internal-verification-current.yml'
+      - 'package.json'
+      - 'src/**'
+      - 'tools/**'
+      - 'config/**'
+      - 'assets/js/**'
+      - 'assets/css/**'
+      - 'index.html'
+      - 'erp.html'
+      - 'publishing.html'
+      - 'wrangler.jsonc'
   workflow_dispatch:
   schedule:
     - cron: '23 19 * * 0'
@@ -66,6 +76,9 @@ jobs:
           grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
           grep -q 'XJW_MAINTENANCE_PRIVATE_READ_LOCKED' src/full-system-entry.js
           echo 'PASS static current-authority verification without stale version locks.'
+
+      - name: Validate ecosystem authority explicitly
+        run: node tools/validate-ecosystem-authority.mjs
 
       - name: Verify remote D1 integrity without fixed record counts
         shell: bash
