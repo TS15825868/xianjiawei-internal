@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-10-02T09:36:06.929Z",
+  "generatedAt": "2026-10-02T10:01:11.247Z",
   "counts": {
     "scheduled": 1,
     "pending_review": 59
@@ -14,15 +14,15 @@
       "category": "品牌手記",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "scheduled",
-      "scheduled_at": "2026-10-03T20:30:00+08:00",
-      "proposed_scheduled_at": "2026-10-03T20:30:00+08:00",
+      "scheduled_at": "2026-10-03T10:00:00+08:00",
+      "proposed_scheduled_at": "2026-10-03T10:00:00+08:00",
       "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
       "image_alt": "仙加味品牌手記主視覺：第三代在萬華老店工作情境，主題為有些東西真的不能只用價格來算。",
       "image_source": "ChatGPT正式單張圖｜Metricool已建立排程｜GitHub main封存｜使用者人工核准",
       "image_approved": 1,
       "approved_at": "2026-10-02 09:35:01",
       "published_at": null,
-      "updated_at": "2026-10-02 09:35:01",
+      "updated_at": "2026-10-02 10:00:10",
       "platforms": [
         "Facebook",
         "Instagram",
