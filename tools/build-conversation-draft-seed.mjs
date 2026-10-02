@@ -50,12 +50,11 @@ for(const topic of rows){
   if(!platforms.includes('Facebook'))platforms.unshift('Facebook');
   if(!platforms.includes('Instagram'))platforms.splice(1,0,'Instagram');
   const source=`待依文案製作專屬正式情境圖|題庫:${slug}|季節:${topic.season||'evergreen'}|版本:${bank.version||''}`;
-  const title=sqlString(topic.title),copy=sqlString(topic.copy),id=sqlString(postId);
-  statements.push(`INSERT INTO social_posts(
+  const title=sqlString(topic.title),copy=sqlString(topic.copy),id=sqlString(postId);\n  const proposedScheduledAt=String(topic.proposedScheduledAt||'').trim();\n  const proposedScheduledAtSql=proposedScheduledAt?sqlString(proposedScheduledAt):'NULL';\n  statements.push(`INSERT INTO social_posts(
     id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,
     image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at
   )
-  SELECT ${id},${title},${sqlString(topic.headline)},${copy},${sqlString(topic.category||'生活聊天')},${jsonString(platforms)},'draft',NULL,NULL,NULL,NULL,NULL,
+  SELECT ${id},${title},${sqlString(topic.headline)},${copy},${sqlString(topic.category||'生活聊天')},${jsonString(platforms)},'draft',NULL,${proposedScheduledAtSql},NULL,NULL,NULL,
     '',${sqlString(topic.imageAlt||topic.title)},${sqlString(source)},0,0,0,0,'unknown',${sqlString(SEED_CREATED_BY)},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
   WHERE NOT EXISTS(
     SELECT 1 FROM social_posts existing
@@ -65,7 +64,7 @@ for(const topic of rows){
   )
   ON CONFLICT(id) DO NOTHING;`);
   statements.push(`UPDATE social_posts SET
-    title=${title},headline=${sqlString(topic.headline)},copy=${copy},category=${sqlString(topic.category||'生活聊天')},platforms_json=${jsonString(platforms)},
+    title=${title},headline=${sqlString(topic.headline)},copy=${copy},category=${sqlString(topic.category||'生活聊天')},platforms_json=${jsonString(platforms)},proposed_scheduled_at=${proposedScheduledAtSql},
     image_alt=CASE WHEN trim(image_alt)='' THEN ${sqlString(topic.imageAlt||topic.title)} ELSE image_alt END,
     image_source=CASE WHEN trim(image_url)='' THEN ${sqlString(source)} ELSE image_source END,
     updated_at=CURRENT_TIMESTAMP
@@ -76,7 +75,7 @@ for(const topic of rows){
         AND existing.status IN ('published','scheduled','approved','manual_required')
         AND (trim(existing.title)=trim(${title}) OR trim(existing.copy)=trim(${copy}))
     )
-    AND (title<>${title} OR headline<>${sqlString(topic.headline)} OR copy<>${copy} OR category<>${sqlString(topic.category||'生活聊天')} OR platforms_json<>${jsonString(platforms)});`);
+    AND (title<>${title} OR headline<>${sqlString(topic.headline)} OR copy<>${copy} OR category<>${sqlString(topic.category||'生活聊天')} OR platforms_json<>${jsonString(platforms)} OR COALESCE(proposed_scheduled_at,'')<>COALESCE(${proposedScheduledAtSql},''));`);
   statements.push(`INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip)
     SELECT ${sqlString(auditId)},'github-actions-conversation-bank','輕鬆互動母庫建立可見草稿','貼文',${id},NULL,${sqlString(JSON.stringify({topic_id:slug,bank_version:bank.version||'',status:'draft',threads:true,image_required:true}))},''
     WHERE EXISTS(SELECT 1 FROM social_posts WHERE id=${id});`);
