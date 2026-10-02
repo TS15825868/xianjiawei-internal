@@ -1,211 +1,211 @@
 {
-  "version": "2026-10-01-v9-auto-content",
+  "version": "2026-10-02-v10-best-time-optimized",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
-  "rule": "只保留發佈時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。",
+  "rule": "只保留發佈候選時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。時段以目前Metricool Facebook最佳時段為基準，正式發布日前7天內再校正一次。",
   "slots": [
     {
       "postId": "XJW-CONV-care-simple-checkin",
-      "proposed_scheduled_at": "2026-10-15T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-10-15T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-home-soup",
-      "proposed_scheduled_at": "2026-10-17T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-10-17T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-wanhua-morning",
-      "proposed_scheduled_at": "2026-10-19T21:00:00+08:00"
+      "proposed_scheduled_at": "2026-10-19T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-buy-first-look",
-      "proposed_scheduled_at": "2026-10-21T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-10-21T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-shop-organizing",
-      "proposed_scheduled_at": "2026-10-23T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-10-23T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-tradition-today",
-      "proposed_scheduled_at": "2026-10-25T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-10-25T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-recipe-or-feel",
-      "proposed_scheduled_at": "2026-10-27T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-10-27T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-30-bare-jar",
-      "proposed_scheduled_at": "2026-10-29T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-10-29T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-family-old-object",
-      "proposed_scheduled_at": "2026-10-31T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-10-31T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-dayoff-cook",
-      "proposed_scheduled_at": "2026-11-02T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-02T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-30-vs-180",
-      "proposed_scheduled_at": "2026-11-04T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-11-04T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-elder-kitchen-habit",
-      "proposed_scheduled_at": "2026-11-06T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-06T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-customer-first-question",
-      "proposed_scheduled_at": "2026-11-08T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-11-08T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-tangkuai-spec",
-      "proposed_scheduled_at": "2026-11-10T21:00:00+08:00"
+      "proposed_scheduled_at": "2026-11-10T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-brand-not-only-product",
-      "proposed_scheduled_at": "2026-11-12T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-12T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-soup-day",
-      "proposed_scheduled_at": "2026-11-14T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-11-14T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-luerong-intro",
-      "proposed_scheduled_at": "2026-11-16T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-16T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-care-before-home-message",
-      "proposed_scheduled_at": "2026-11-18T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-11-18T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-fixed-storage",
-      "proposed_scheduled_at": "2026-11-20T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-20T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-jiao-spec",
-      "proposed_scheduled_at": "2026-11-22T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-11-22T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-craft-years",
-      "proposed_scheduled_at": "2026-11-24T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-24T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-simple-soup",
-      "proposed_scheduled_at": "2026-11-26T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-11-26T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-photo-size",
-      "proposed_scheduled_at": "2026-11-28T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-11-28T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
-      "proposed_scheduled_at": "2026-11-30T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-11-30T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-drink-made-to-order",
-      "proposed_scheduled_at": "2026-12-02T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-12-02T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-ask-boss-topic",
-      "proposed_scheduled_at": "2026-12-04T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-04T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-gao-vs-drink",
-      "proposed_scheduled_at": "2026-12-06T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-12-06T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-traditional-image",
-      "proposed_scheduled_at": "2026-12-08T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-08T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-pantry-memory",
-      "proposed_scheduled_at": "2026-12-10T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-12-10T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-tang-vs-jiao",
-      "proposed_scheduled_at": "2026-12-12T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-12-12T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-receive-package",
-      "proposed_scheduled_at": "2026-12-14T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-14T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-no-standard-answer",
-      "proposed_scheduled_at": "2026-12-16T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-12-16T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-season-more-soup",
-      "proposed_scheduled_at": "2026-12-18T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-18T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-year-end-clean",
-      "proposed_scheduled_at": "2026-12-20T11:00:00+08:00"
+      "proposed_scheduled_at": "2026-12-20T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
-      "proposed_scheduled_at": "2026-12-22T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-22T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-chat-last-bowl",
-      "proposed_scheduled_at": "2026-12-24T19:45:00+08:00"
+      "proposed_scheduled_at": "2026-12-24T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-year-end-small-win",
-      "proposed_scheduled_at": "2026-12-28T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-28T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-year-end-keep-habit",
-      "proposed_scheduled_at": "2026-12-30T20:30:00+08:00"
+      "proposed_scheduled_at": "2026-12-30T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-new-year-slow-start",
-      "proposed_scheduled_at": "2027-01-01T11:00:00+08:00"
+      "proposed_scheduled_at": "2027-01-01T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-new-year-warm-cup-share",
-      "proposed_scheduled_at": "2027-01-03T20:30:00+08:00"
+      "proposed_scheduled_at": "2027-01-03T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-new-year-open-door",
-      "proposed_scheduled_at": "2027-01-04T19:45:00+08:00"
+      "proposed_scheduled_at": "2027-01-04T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-pre-clean",
-      "proposed_scheduled_at": "2027-01-24T11:00:00+08:00"
+      "proposed_scheduled_at": "2027-01-24T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-gift-choice",
-      "proposed_scheduled_at": "2027-01-29T20:30:00+08:00"
+      "proposed_scheduled_at": "2027-01-29T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-fridge-clean",
-      "proposed_scheduled_at": "2027-02-02T19:45:00+08:00"
+      "proposed_scheduled_at": "2027-02-02T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-must-have-dish",
-      "proposed_scheduled_at": "2027-02-05T11:00:00+08:00"
+      "proposed_scheduled_at": "2027-02-05T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-family-choice",
-      "proposed_scheduled_at": "2027-02-06T20:30:00+08:00"
+      "proposed_scheduled_at": "2027-02-06T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-childhood-now",
-      "proposed_scheduled_at": "2027-02-08T19:45:00+08:00"
+      "proposed_scheduled_at": "2027-02-08T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-last-day-reset",
-      "proposed_scheduled_at": "2027-02-10T20:30:00+08:00"
+      "proposed_scheduled_at": "2027-02-10T12:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-reopen",
-      "proposed_scheduled_at": "2027-02-11T19:45:00+08:00"
+      "proposed_scheduled_at": "2027-02-11T10:00:00+08:00"
     },
     {
       "postId": "XJW-CONV-cny-first-soup",
-      "proposed_scheduled_at": "2027-02-13T11:00:00+08:00"
+      "proposed_scheduled_at": "2027-02-13T10:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-10-01T00:13:00+08:00",
+  "updatedAt": "2026-10-02T18:15:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -214,7 +214,7 @@
   ],
   "crossPlatformImageRule": "同一篇貼文三平台使用同一張正式貼文圖；不同篇貼文不得重複使用同一張圖。",
   "crossPlatformTextRule": "同一主題同一天發布；平台文字只允許格式與字數微調，不改主題、不換圖。",
-  "note": "排程已由10月延伸到2027年農曆年後；農曆年前保留混合內容插槽，新內容完成並人工審核後再填入，避免同類系列連發。",
+  "note": "2026-10-02已依Metricool目前受眾資料把長期候選時段由晚間為主調整成10:00／週三12:00；這些仍是待審核候選，不代表自動發布。季節、天氣與臨時生活內容仍可依最新情況插播，常青內容順延。",
   "liveLifeInsertPolicy": {
     "freshnessWindowHours": "24-72",
     "sameDayCrossPlatform": true,
@@ -307,5 +307,15 @@
     "uniqueImagePerPost": true,
     "autoApproveOnlyAfterAllChecks": true,
     "failedChecksStayPendingReview": true
+  },
+  "timingPolicy": {
+    "source": "Metricool Facebook best-time data checked 2026-10-02; Instagram currently has insufficient best-time history",
+    "crossPlatformAnchor": "Facebook目前資料作為三平台共同時段基準，Instagram／Threads沿用同日同時；未來資料足夠再重新比較",
+    "defaultTime": "10:00",
+    "wednesdayTime": "12:00",
+    "weekdayCookingTime": "12:00",
+    "rationale": "仙加味目前Facebook受眾在多數星期的10:00最強；星期三12:00略高於10:00。舊19:45／20:30／21:00時段普遍低於上午與中午。",
+    "recheckRule": "正式發布日前7天內再次讀取Metricool最新最佳時段；若受眾分布改變，可調整候選時間，但人工審核規則不變。",
+    "noAutoPublishBeforeHumanApproval": true
   }
 }
