@@ -1,28 +1,28 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-09-30T09:22:56.679Z",
+  "generatedAt": "2026-10-02T09:36:06.929Z",
   "counts": {
     "scheduled": 1,
     "pending_review": 59
   },
   "items": [
     {
-      "id": "XJW-CONV-live-hongludi-outing-20260929",
-      "title": "帶小老闆去烘爐地走走",
-      "copy": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\\n\\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步這些很普通卻很珍貴的時刻。\\n\\n補養，是一種節奏。你最近有沒有也帶家人出去走走？",
-      "category": "戶外生活",
+      "id": "XJW-CONV-brand-third-generation-note",
+      "title": "有些東西，真的不能只用價格來算",
+      "copy": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一買就是很多年。\n\n現在大家生活都不容易，買東西之前先看看價格、比較一下，其實很正常，我們也完全能理解。\n\n只是做了這麼多年，有些地方還是捨不得省。\n\n原料怎麼挑、工序怎麼做、哪些地方需要時間，都是上一代和老師傅一點一點留下來的經驗。\n\n龜鹿膠這項老工藝做到今天，對仙加味來說，早就不只是賣一樣東西，而是把該做好的事情繼續做好。\n\n這條路不一定好走，但只要還有人記得、還有人願意相信，我們就想繼續把這份做事的方法留下來。\n\n也想問問一路支持仙加味的老朋友：\n你還記得第一次認識我們，是什麼時候嗎？\n\n不用買東西，留言跟我們聊幾句也很好。\n\n謝謝一路沒有忘記我們的人。\n\n——仙加味",
+      "category": "品牌手記",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "scheduled",
-      "scheduled_at": "2026-10-01T12:30:00+08:00",
-      "proposed_scheduled_at": "2026-10-01T12:30:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/live/XJW-LIVE-20260929-hongludi-outing.jpg",
-      "image_alt": "烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景",
-      "image_source": "ChatGPT正式單張圖｜GitHub main｜人工待審核",
+      "scheduled_at": "2026-10-03T20:30:00+08:00",
+      "proposed_scheduled_at": "2026-10-03T20:30:00+08:00",
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
+      "image_alt": "仙加味品牌手記主視覺：第三代在萬華老店工作情境，主題為有些東西真的不能只用價格來算。",
+      "image_source": "ChatGPT正式單張圖｜Metricool已建立排程｜GitHub main封存｜使用者人工核准",
       "image_approved": 1,
-      "approved_at": "2026-09-30 08:07:14",
+      "approved_at": "2026-10-02 09:35:01",
       "published_at": null,
-      "updated_at": "2026-09-30 08:07:14",
+      "updated_at": "2026-10-02 09:35:01",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -164,7 +164,7 @@
     {
       "id": "XJW-CONV-care-simple-checkin",
       "title": "一句問候，也是一種關心",
-      "copy": "忙的時候，關心不一定要做很大的事。午休或工作空檔，傳一句「今天好嗎？」給家人，也提醒自己有沒有好好吃飯、喝點溫熱的。\\n\\n仙加味想說的生活節奏，很多時候就是這些小小的照顧。\\n\\n你今天最想問候誰？",
+      "copy": "忙的時候，關心不一定要做很大的事。午休或工作空檔，傳一句「今天好嗎？」給家人，也提醒自己有沒有好好吃飯、喝點溫熱的。\n\n仙加味想說的生活節奏，很多時候就是這些小小的照顧。\n\n你今天最想問候誰？",
       "category": "生活關心",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -176,7 +176,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-10-01 07:24:21",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -198,7 +198,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -220,7 +220,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -242,7 +242,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -264,7 +264,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -308,7 +308,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -330,7 +330,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -352,7 +352,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -374,7 +374,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -396,7 +396,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -418,7 +418,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -440,7 +440,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -462,7 +462,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -528,7 +528,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -550,7 +550,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -572,7 +572,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -594,7 +594,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -604,7 +604,7 @@
     {
       "id": "XJW-CONV-care-before-home-message",
       "title": "回家前，你會先打一通電話，還是先傳一句問候？",
-      "copy": "下班、收店或準備回家的路上，有時候一通電話、一句「等等回去」，就能讓家裡的人知道你平安。\\n\\n仙加味想把補養放回日常，不一定每次都要很正式，先從關心身邊的人開始。\\n\\n你比較習慣打電話，還是先傳訊息？",
+      "copy": "下班、收店或準備回家的路上，有時候一通電話、一句「等等回去」，就能讓家裡的人知道你平安。\n\n仙加味想把補養放回日常，不一定每次都要很正式，先從關心身邊的人開始。\n\n你比較習慣打電話，還是先傳訊息？",
       "category": "生活關心",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -616,7 +616,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-10-01 07:24:21",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -638,7 +638,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -660,7 +660,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -682,7 +682,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -704,7 +704,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -726,7 +726,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -748,7 +748,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -770,7 +770,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -792,7 +792,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -814,7 +814,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -836,7 +836,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -858,7 +858,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -880,7 +880,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -902,7 +902,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -924,7 +924,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -946,7 +946,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -968,7 +968,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -990,7 +990,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1012,7 +1012,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1034,7 +1034,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1056,7 +1056,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1078,7 +1078,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1088,7 +1088,7 @@
     {
       "id": "XJW-CONV-new-year-warm-cup-share",
       "title": "新年第一杯溫熱的，你想留給自己還是家人？",
-      "copy": "新的一年不用一開始就排滿很多目標。早上先倒一杯溫熱的，自己慢慢喝，或順手替家人也準備一杯。\\n\\n仙加味一直想做的，就是把補養放進這些簡單、做得到的生活節奏裡。\\n\\n新年第一杯，你會先留給自己還是家人？",
+      "copy": "新的一年不用一開始就排滿很多目標。早上先倒一杯溫熱的，自己慢慢喝，或順手替家人也準備一杯。\n\n仙加味一直想做的，就是把補養放進這些簡單、做得到的生活節奏裡。\n\n新年第一杯，你會先留給自己還是家人？",
       "category": "新年生活",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -1100,7 +1100,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-10-01 07:24:21",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1122,7 +1122,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1144,7 +1144,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1166,7 +1166,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1188,7 +1188,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1210,7 +1210,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1232,7 +1232,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1254,7 +1254,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1264,7 +1264,7 @@
     {
       "id": "XJW-CONV-cny-last-day-reset",
       "title": "年假最後一天，你會先整理房間，還是先準備明天？",
-      "copy": "年假最後一天，想到明天要回到原本的生活節奏，有人會先整理房間，有人先把明天要用的東西準備好。\\n\\n不用一次做很多，先完成一件小事就好。仙加味的「補養，是一種節奏」，也想留在這種慢慢收心的日常裡。\\n\\n你會先整理房間，還是先準備明天？",
+      "copy": "年假最後一天，想到明天要回到原本的生活節奏，有人會先整理房間，有人先把明天要用的東西準備好。\n\n不用一次做很多，先完成一件小事就好。仙加味的「補養，是一種節奏」，也想留在這種慢慢收心的日常裡。\n\n你會先整理房間，還是先準備明天？",
       "category": "年後生活",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -1276,7 +1276,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-10-01 07:24:21",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1298,7 +1298,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1320,7 +1320,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-09-30 08:11:12",
+      "updated_at": "2026-09-30 16:15:27",
       "platforms": [
         "Facebook",
         "Instagram",
