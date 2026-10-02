@@ -1,0 +1,160 @@
+name: 仙加味 Metricool 已核准貼文正式同步
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/metricool-approved-post-current.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-metricool-approved-post-sync
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Validate request
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const p='ops/metricool-approved-post-current.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          for(const k of ['postId','title','copy','category','imageUrl','imageAlt','scheduledAt','metricoolPostId','metricoolUuid','plannerUrl']){
+            if(!String(x[k]??'').trim()) throw new Error('缺少 '+k);
+          }
+          if(!String(x.imageUrl).startsWith('https://static.metricool.com/')) throw new Error('imageUrl 必須來自目前已排程的 Metricool 媒體');
+          if(!Number.isFinite(Date.parse(x.scheduledAt))) throw new Error('scheduledAt 格式錯誤');
+          if(x.userApproved!==true) throw new Error('本流程只接受使用者已明確核准的貼文');
+          const safe=String(x.postId).replace(/[^A-Za-z0-9_-]+/g,'-');
+          const date=String(x.scheduledAt).slice(0,10);
+          const targetDir='assets/post-images/'+date;
+          const filename=safe+'.png';
+          fs.writeFileSync('/tmp/xjw-target-dir.txt',targetDir);
+          fs.writeFileSync('/tmp/xjw-filename.txt',filename);
+          fs.writeFileSync('/tmp/xjw-image-url.txt',x.imageUrl);
+          NODE
+
+      - name: Download and validate approved image
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 60 "$(cat /tmp/xjw-image-url.txt)" -o /tmp/xjw-approved.png
+          node - <<'NODE'
+          const fs=require('fs');
+          const b=fs.readFileSync('/tmp/xjw-approved.png');
+          if(b.length<250000) throw new Error('圖片檔案過小');
+          if(b.subarray(0,8).toString('hex')!=='89504e470d0a1a0a') throw new Error('不是PNG');
+          const width=b.readUInt32BE(16),height=b.readUInt32BE(20);
+          if(width<1080||height<1080) throw new Error('圖片解析度不足 '+width+'x'+height);
+          fs.writeFileSync('/tmp/xjw-image-meta.json',JSON.stringify({width,height,bytes:b.length}));
+          console.log('PASS image',width,height,b.length);
+          NODE
+
+      - name: Commit formal image to main
+        run: |
+          set -euo pipefail
+          TARGET="$(cat /tmp/xjw-target-dir.txt)"
+          FILE="$(cat /tmp/xjw-filename.txt)"
+          mkdir -p "$TARGET"
+          cp /tmp/xjw-approved.png "$TARGET/$FILE"
+          cp "$TARGET/$FILE" /tmp/xjw-formal-image.png
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p "$TARGET"
+            cp /tmp/xjw-formal-image.png "$TARGET/$FILE"
+            git add "$TARGET/$FILE"
+            if git diff --cached --quiet; then break; fi
+            git commit -m 'content: archive approved Metricool post image'
+            if git push origin HEAD:main; then break; fi
+            [ "$attempt" = 4 ] && exit 1
+            sleep 2
+          done
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Sync approved schedule to formal D1
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
+          const meta=JSON.parse(fs.readFileSync('/tmp/xjw-image-meta.json','utf8'));
+          const target=fs.readFileSync('/tmp/xjw-target-dir.txt','utf8').trim();
+          const filename=fs.readFileSync('/tmp/xjw-filename.txt','utf8').trim();
+          const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
+          const formalUrl='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+target+'/'+filename;
+          const source='ChatGPT正式單張圖｜Metricool已建立排程｜GitHub main封存｜使用者人工核准';
+          const sql=`UPDATE social_posts SET
+            title=${q(x.title)}, copy=${q(x.copy)}, category=${q(x.category)},
+            platforms_json='["Facebook","Instagram","Threads"]',
+            status='scheduled',
+            scheduled_at=${q(x.scheduledAt)},
+            proposed_scheduled_at=${q(x.scheduledAt)},
+            image_url=${q(formalUrl)},
+            image_alt=${q(x.imageAlt)},
+            image_source=${q(source)},
+            image_approved=1,
+            image_width=${Number(meta.width)},
+            image_height=${Number(meta.height)},
+            image_bytes=${Number(meta.bytes)},
+            image_quality_status='ok',
+            approved_by=${q(x.approvedBy||'user')},
+            approved_at=COALESCE(approved_at,datetime('now')),
+            published_at=NULL,
+            updated_at=datetime('now')
+          WHERE id=${q(x.postId)} AND status IN ('draft','pending_review','approved','scheduled');`;
+          fs.writeFileSync('/tmp/xjw-apply.sql',sql+'\n');
+          fs.writeFileSync('/tmp/xjw-post-id.txt',x.postId);
+          NODE
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/xjw-apply.sql
+
+      - name: Verify formal D1 schedule
+        run: |
+          set -euo pipefail
+          ID="$(cat /tmp/xjw-post-id.txt)"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,scheduled_at,image_url,image_approved,approved_by,approved_at FROM social_posts WHERE id='${ID}'" > /tmp/xjw-verify.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/xjw-verify.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          if(rows.length!==1) throw new Error('找不到正式貼文');
+          const r=rows[0];
+          if(r.status!=='scheduled'||Number(r.image_approved)!==1||!r.scheduled_at) throw new Error('D1尚未正式排程');
+          if(!String(r.image_url||'').includes('/assets/post-images/')) throw new Error('D1正式圖未封存GitHub');
+          console.log('PASS scheduled',JSON.stringify(r));
+          NODE
+
+      - name: Clean consumed request
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            if [ ! -f ops/metricool-approved-post-current.json ]; then exit 0; fi
+            git rm -f ops/metricool-approved-post-current.json
+            git commit -m 'ops: consume Metricool approved post sync request'
+            if git push origin HEAD:main; then exit 0; fi
+            [ "$attempt" = 4 ] && exit 1
+            sleep 2
+          done
