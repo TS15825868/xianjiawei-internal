@@ -50,7 +50,10 @@ for(const topic of rows){
   if(!platforms.includes('Facebook'))platforms.unshift('Facebook');
   if(!platforms.includes('Instagram'))platforms.splice(1,0,'Instagram');
   const source=`待依文案製作專屬正式情境圖|題庫:${slug}|季節:${topic.season||'evergreen'}|版本:${bank.version||''}`;
-  const title=sqlString(topic.title),copy=sqlString(topic.copy),id=sqlString(postId);\n  const proposedScheduledAt=String(topic.proposedScheduledAt||'').trim();\n  const proposedScheduledAtSql=proposedScheduledAt?sqlString(proposedScheduledAt):'NULL';\n  statements.push(`INSERT INTO social_posts(
+  const title=sqlString(topic.title),copy=sqlString(topic.copy),id=sqlString(postId);
+  const proposedScheduledAt=String(topic.proposedScheduledAt||'').trim();
+  const proposedScheduledAtSql=proposedScheduledAt?sqlString(proposedScheduledAt):'NULL';
+  statements.push(`INSERT INTO social_posts(
     id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,
     image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at
   )
