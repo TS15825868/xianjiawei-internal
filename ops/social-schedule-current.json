@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T18:00:00+08:00",
+  "updatedAt": "2026-10-02T18:20:00+08:00",
   "status": "active-auto-generate-auto-check-human-review-schedule",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -129,5 +129,120 @@
       "Threads"
     ],
     "autoPublish": true
+  },
+  "timingOptimization": {
+    "checkedAt": "2026-10-02T18:05:00+08:00",
+    "source": "Metricool Facebook Best Time data",
+    "instagramBestTimeStatus": "目前資料不足，所有時段值為0；暫不單獨用Instagram時段覆蓋三平台排程",
+    "rule": "三平台同日同時；目前以Facebook受眾最佳時段作共同基準。一般貼文以10:00為主，星期三與部分平日料理內容以12:00為主。正式發布日前7天內再依Metricool最新資料校正。",
+    "currentFacebookPattern": {
+      "monday": "10:00",
+      "tuesday": "10:00",
+      "wednesday": "12:00",
+      "thursday": "10:00",
+      "friday": "10:00",
+      "saturday": "10:00",
+      "sunday": "10:00"
+    },
+    "noLateEveningDefault": true,
+    "reason": "目前Facebook 19:45／20:30／21:00的可觸及受眾指標普遍低於10:00與12:00"
+  },
+  "metricoolCurrentPlan": [
+    {
+      "date": "2026-10-03",
+      "time": "10:00",
+      "title": "第三代品牌手記：有些東西，真的不能只用價格來算",
+      "status": "scheduled_auto"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "10:00",
+      "title": "龜鹿膏日常使用方式",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "12:00",
+      "title": "第一次看仙加味：常見問題",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "10:00",
+      "title": "龜鹿膏開罐後冷藏",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "10:00",
+      "title": "料理搭配不用特別複雜",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "10:00",
+      "title": "第一次接觸龜鹿系列怎麼選",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "10:00",
+      "title": "仙加味從萬華開始",
+      "status": "scheduled_auto"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "10:00",
+      "title": "什麼問題適合到LINE OA詢問",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "10:00",
+      "title": "把產品資訊整理清楚",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-26",
+      "time": "10:00",
+      "title": "開店前的日常整理",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "12:00",
+      "title": "仙加味想做的不是把日常變複雜",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "10:00",
+      "title": "熱、溫、常溫你習慣哪一種",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-11-02",
+      "time": "10:00",
+      "title": "下午幾分鐘空檔",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "12:00",
+      "title": "早上或下午的生活空檔",
+      "status": "draft_review_required"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "10:00",
+      "title": "龜鹿系列依生活方式怎麼選",
+      "status": "draft_review_required"
+    }
+  ],
+  "longTermCandidateTiming": {
+    "authority": "ops/social-publishing-cadence-current.json",
+    "status": "optimized_pending_review",
+    "latestVersion": "2026-10-02-v10-best-time-optimized",
+    "rule": "長期候選已由晚間為主改為目前10:00／週三12:00最佳時段；仍須人工審核，不等於正式發布。"
   }
 }
