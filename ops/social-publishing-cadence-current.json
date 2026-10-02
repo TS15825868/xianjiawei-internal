@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-02-v10-best-time-optimized",
+  "version": "2026-10-02-v11-weekly-3-posts",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
   "rule": "只保留發佈候選時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。時段以目前Metricool Facebook最佳時段為基準，正式發布日前7天內再校正一次。",
@@ -205,7 +205,7 @@
       "proposed_scheduled_at": "2027-02-13T10:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-10-02T18:15:00+08:00",
+  "updatedAt": "2026-10-02T18:25:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -317,5 +317,13 @@
     "rationale": "仙加味目前Facebook受眾在多數星期的10:00最強；星期三12:00略高於10:00。舊19:45／20:30／21:00時段普遍低於上午與中午。",
     "recheckRule": "正式發布日前7天內再次讀取Metricool最新最佳時段；若受眾分布改變，可調整候選時間，但人工審核規則不變。",
     "noAutoPublishBeforeHumanApproval": true
+  },
+  "weeklyCadence": {
+    "normalPostsPerWeek": 3,
+    "specialWeekMaxPosts": 4,
+    "spacing": "2-3 days",
+    "principle": "少而精；品牌／產品知識／料理或互動自然穿插。",
+    "liveInsert": "即時天氣、節日、萬華實拍等時效內容可插播，原常青貼文順延。",
+    "noForcedVolume": true
   }
 }
