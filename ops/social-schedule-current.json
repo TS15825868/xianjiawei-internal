@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T17:00:00+08:00",
+  "updatedAt": "2026-10-02T17:35:00+08:00",
   "status": "active-auto-generate-auto-check-human-review-schedule",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -37,7 +37,7 @@
     "draftRule": "尚未完成唯一正式圖片或尚未經使用者人工審核的Threads項目保持draft=true、autoPublish=false，不得因舊排程資料自動恢復發布。"
   },
   "latestMetricoolVerification": {
-    "verifiedAt": "2026-09-30T20:57:00+08:00",
+    "verifiedAt": "2026-10-02T17:30:00+08:00",
     "brandConnected": true,
     "brandId": "6889683",
     "facebook": true,
@@ -45,8 +45,8 @@
     "threads": "xianjiawei.tw",
     "sameDayThreePlatformRuleActive": true,
     "approvedNextPost": {
-      "publicationDate": "2026-10-01T12:30:00+08:00",
-      "title": "帶小老闆去烘爐地走走",
+      "publicationDate": "2026-10-03T20:30:00+08:00",
+      "title": "有些東西，真的不能只用價格來算",
       "networks": [
         "facebook",
         "instagram",
@@ -54,7 +54,10 @@
       ],
       "autoPublish": true,
       "draft": false,
-      "mediaReady": true
+      "mediaReady": true,
+      "metricoolPostId": "386497992",
+      "metricoolUuid": "-6901715357797955670",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=6889683&openWithPostUuid=-6901715357797955670"
     },
     "unapprovedItemsRule": "仍為draft=true、autoPublish=false者不得因排程時間到達而發布；需人工審核後才可啟用正式發佈。"
   },
@@ -112,9 +115,19 @@
   "brandNoteCurrent": {
     "id": "XJW-CONV-brand-third-generation-note",
     "title": "有些東西，真的不能只用價格來算",
-    "proposedScheduledAt": "2026-10-05T20:30:00+08:00",
-    "status": "draft_waiting_unique_image_then_pending_review",
+    "proposedScheduledAt": "2026-10-03T20:30:00+08:00",
+    "status": "scheduled",
     "signature": "——仙加味",
-    "publishBeforeHumanApproval": false
+    "publishBeforeHumanApproval": false,
+    "userApproved": true,
+    "imageArchived": "assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
+    "metricoolPostId": "386497992",
+    "metricoolUuid": "-6901715357797955670",
+    "networks": [
+      "Facebook",
+      "Instagram",
+      "Threads"
+    ],
+    "autoPublish": true
   }
 }
