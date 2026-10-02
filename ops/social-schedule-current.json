@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T17:35:00+08:00",
+  "updatedAt": "2026-10-02T18:00:00+08:00",
   "status": "active-auto-generate-auto-check-human-review-schedule",
   "authorityRepo": "TS15825868/xianjiawei",
   "authorityPath": "content/social-schedule-20260911-0924.json",
@@ -45,7 +45,7 @@
     "threads": "xianjiawei.tw",
     "sameDayThreePlatformRuleActive": true,
     "approvedNextPost": {
-      "publicationDate": "2026-10-03T20:30:00+08:00",
+      "publicationDate": "2026-10-03T10:00:00+08:00",
       "title": "有些東西，真的不能只用價格來算",
       "networks": [
         "facebook",
@@ -55,7 +55,7 @@
       "autoPublish": true,
       "draft": false,
       "mediaReady": true,
-      "metricoolPostId": "386497992",
+      "metricoolPostId": "386519368",
       "metricoolUuid": "-6901715357797955670",
       "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=6889683&openWithPostUuid=-6901715357797955670"
     },
@@ -115,13 +115,13 @@
   "brandNoteCurrent": {
     "id": "XJW-CONV-brand-third-generation-note",
     "title": "有些東西，真的不能只用價格來算",
-    "proposedScheduledAt": "2026-10-03T20:30:00+08:00",
+    "proposedScheduledAt": "2026-10-03T10:00:00+08:00",
     "status": "scheduled",
     "signature": "——仙加味",
     "publishBeforeHumanApproval": false,
     "userApproved": true,
     "imageArchived": "assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
-    "metricoolPostId": "386497992",
+    "metricoolPostId": "386519368",
     "metricoolUuid": "-6901715357797955670",
     "networks": [
       "Facebook",
