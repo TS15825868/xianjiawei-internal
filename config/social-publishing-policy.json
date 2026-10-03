@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-02-social-publishing-v7-weekly-cadence",
+  "version": "2026-10-03-social-publishing-v8-bio-hub",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -128,5 +128,15 @@
     "insertRule": "遇到即時天氣、節日、萬華實拍或真正有時效性的生活內容，可插播；原常青內容順延，不同日硬擠。",
     "storyRule": "限時動態不計入每週3篇主貼文。",
     "qualityRule": "少而精，不為湊篇數發文；每篇必須圖文一致、主題不重複、品牌一致、人工審核後才能發布。"
+  },
+  "profileLinkPolicy": {
+    "label": "仙加味｜連結入口",
+    "url": "https://ts15825868.github.io/xianjiawei/links.html",
+    "applyTo": [
+      "Facebook",
+      "Instagram",
+      "Threads"
+    ],
+    "rule": "平台個人檔案／Bio統一使用此入口；貼文內若為產品詢問、試喝、價格、下單、配送、售後，仍直接導LINE OA。"
   }
 }
