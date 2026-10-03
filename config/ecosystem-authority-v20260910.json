@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01-v9-google-legal-entity-exception",
+  "version": "2026-10-03-v10-social-bio-hub",
   "authority": "user-confirmed-current",
   "brand": {
     "publicName": "仙加味",
@@ -39,7 +39,15 @@
       "primary": true,
       "defaultCta": true
     },
-    "principle": "Facebook、Instagram、Threads、Google商家、官網與其他公開入口的主要CTA統一導向仙加味官方LINE OA；LINE社群只作選擇性日常交流，不承接客服、交易、售後或個資。"
+    "principle": "Facebook、Instagram、Threads 個人檔案統一先放「仙加味｜連結入口」；完整品牌與產品資訊由官網承接；產品進一步詢問、怎麼選、試喝、價格、下單、配送、售後與個別問題仍統一由LINE OA一對一處理；Google Maps只負責門市導航與商家資訊。",
+    "bioHub": {
+      "name": "仙加味｜連結入口",
+      "url": "https://ts15825868.github.io/xianjiawei/links.html",
+      "role": "Facebook、Instagram、Threads 個人檔案統一入口",
+      "primaryForSocialProfiles": true,
+      "doesNotReplaceWebsite": true,
+      "doesNotReplaceLineOA": true
+    }
   },
   "metaAutomation": {
     "doNotWasteWorkQuota": true,
@@ -64,14 +72,16 @@
       "龜鹿飲180cc"
     ],
     "cadence": {
-      "facebook": "約每週2篇",
-      "instagram": "約每週2篇",
-      "threads": "約每週4篇"
+      "facebook": "正常每週3篇",
+      "instagram": "正常每週3篇",
+      "threads": "正常每週3篇"
     },
     "lineCommunityPromotion": "不固定導流；只有高度相關的生活交流內容才可選擇性提及",
     "allCommercialHandoff": "LINE OA",
     "defaultPublicCta": "LINE OA",
-    "neverRouteTransactionsToCommunity": true
+    "neverRouteTransactionsToCommunity": true,
+    "specialWeekMaxPosts": 4,
+    "cadenceRule": "三平台同篇同日發布；正常每週3篇，特殊週最多4篇，臨時時效內容插播時常青內容順延。"
   },
   "n8n": {
     "role": "旁路自動化與協調層；不取代LINE OA Webhook、Cloudflare Worker、D1、GitHub main或其他正式服務",
@@ -235,5 +245,12 @@
       "futurePreferredName": "仙加味",
       "futureCondition": "待仙加味有可被 Google 接受的商業登記、實體招牌或其他一致實際證明後，再評估改為品牌名「仙加味」"
     }
+  },
+  "socialProfileRouting": {
+    "facebook": "https://ts15825868.github.io/xianjiawei/links.html",
+    "instagram": "https://ts15825868.github.io/xianjiawei/links.html",
+    "threads": "https://ts15825868.github.io/xianjiawei/links.html",
+    "linkLabel": "仙加味｜連結入口",
+    "directCommercialHandoff": "https://lin.ee/sHZW7NkR"
   }
 }
