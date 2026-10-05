@@ -7,6 +7,7 @@ on:
       - '.github/workflows/full-internal-verification-current.yml'
       - 'package.json'
       - 'src/**'
+      - 'n8n-runtime/smoke-readonly.js'
       - 'tools/**'
       - 'config/**'
       - 'assets/js/**'
@@ -76,6 +77,9 @@ jobs:
           grep -q 'XJW_MAINTENANCE_READ_ONLY' src/full-system-entry.js
           grep -q 'XJW_MAINTENANCE_PRIVATE_READ_LOCKED' src/full-system-entry.js
           echo 'PASS static current-authority verification without stale version locks.'
+
+      - name: Verify live ecosystem product facts without fixed counts
+        run: node n8n-runtime/smoke-readonly.js
 
       - name: Validate ecosystem authority explicitly
         run: node tools/validate-ecosystem-authority.mjs
@@ -151,3 +155,4 @@ jobs:
             live-*.json
           if-no-files-found: warn
           retention-days: 7
+

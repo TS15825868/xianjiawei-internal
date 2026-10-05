@@ -15,6 +15,7 @@ on:
       - 'package-lock.json'
       - 'wrangler.jsonc'
       - '.github/workflows/deploy-cloudflare-publishing.yml'
+      - '.github/workflows/current-product-d1-audit.yml'
   workflow_dispatch:
 
 permissions:
@@ -102,3 +103,4 @@ jobs:
             test "$code" -lt 500
           done
           echo 'PASS production deployment verification.'
+
