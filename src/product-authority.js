@@ -53,6 +53,9 @@ function publicProductContextErrors(text=''){
     errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
   }
   if(/建議白天飲用/.test(source))errors.push('龜鹿飲不設定固定白天時段；飲用時間請依個人使用習慣與作息安排。');
+  for(const segment of productSegments(source,'龜鹿飲30cc玻璃罐')){
+    if(/每日\s*1\s*罐/.test(segment)&&!/每日\s*1\s*[–-]\s*2\s*罐/.test(segment))errors.push('龜鹿飲30cc目前正式使用方式為「每日 1–2 罐」，可依個人需求調整。');
+  }
   for(const segment of productSegments(source,'龜鹿膏')){
     if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。');
   }
@@ -125,7 +128,7 @@ export const PRODUCT_AUTHORITY=Object.freeze({
   guiluJiaoMain:guiluJiao?.allowedSpecs?.[0]||'',
   guiluJiaoDetail:`${guiluJiao?.detailUnitApprox||''}（顧客文字可顯示）`,
   guiluGaoUsagePrimary:guiluGao?.usagePrimary||'',
-  guiluDrink30UsagePrimary:[drink30?.usagePrimary,drink30?.usageTiming].filter(Boolean).join('；'),
+  guiluDrink30UsagePrimary:[drink30?.usagePrimary,drink30?.usageAdjustment,drink30?.usageTiming].filter(Boolean).join('；'),
   guiluDrink180UsagePrimary:[drink180?.usagePrimary,drink180?.usageTiming].filter(Boolean).join('；'),
   qixuanPublicVisible:false,
   postImageMatchBlocking:true,
