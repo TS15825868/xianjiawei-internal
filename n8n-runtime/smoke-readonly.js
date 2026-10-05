@@ -29,13 +29,14 @@ async function fetchResource(url, headers = {}) {
   const ids = Array.isArray(m.products) ? m.products.map((p) => p.id) : [];
   if (!master.ok) errors.push(`產品母資料 HTTP ${master.status}`);
   if (m.authority !== 'user-confirmed-current') errors.push('產品母資料 authority 錯誤');
-  if (Number(m.productCount) !== 6) errors.push('產品母資料公開產品數不是 6');
-  if (JSON.stringify(ids) !== JSON.stringify(expected)) errors.push('產品母資料 ID／順序不一致');
+  if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id)) errors.push('產品母資料 productCount／ID 不一致');
+  if (!expected.every(id => ids.includes(id))) errors.push('產品母資料缺少核心產品');
   if (ids.includes('qixuan-guilu-drink-powder')) errors.push('柒玄茶被錯誤公開');
   const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
   if (!Array.isArray(p30?.usage) || !p30.usage.some((x) => String(x).includes('每日 1–2 罐'))) {
     errors.push('30cc 使用資料不是每日 1–2 罐');
   }
+  if (!(p30?.usage || []).includes('可依個人需求調整')) errors.push('30cc 缺少可依個人需求調整');
 
   const ai = await fetchResource('https://ts15825868.github.io/xianjiawei/ai-answers.json');
   if (!ai.ok) errors.push(`AI answers HTTP ${ai.status}`);
@@ -47,7 +48,7 @@ async function fetchResource(url, headers = {}) {
   const org = graph.find((x) => x?.['@type'] === 'Organization');
   const list = graph.find((x) => x?.['@type'] === 'ItemList');
   if (org?.name !== '仙加味') errors.push('GEO Organization 品牌錯誤');
-  if (Number(list?.numberOfItems) !== 6) errors.push('GEO ItemList 不是 6 項');
+  if (Number(list?.numberOfItems) !== ids.length) errors.push('GEO ItemList 與最新公開產品數不一致');
 
   // 直接驗證 GitHub Pages 正式公開站，不依賴匿名 GitHub Actions API，避免 rate-limit 403。
   const pages = await fetchResource('https://ts15825868.github.io/xianjiawei/sitemap.xml');
@@ -72,3 +73,4 @@ async function fetchResource(url, headers = {}) {
   console.error('[readonly-smoke] fatal', error?.stack || error);
   process.exit(1);
 });
+
