@@ -37,7 +37,7 @@ function selected(source){
 
 function render(master){
   const products=master.products.map(selected);
-  const lines=products.map(product=>`  Object.freeze(${JSON.stringify(product).replace('"allowedSpecs":[','"allowedSpecs":Object.freeze([').replace('],"ingredients"',']),"ingredients"').replace('"ingredients":[','"ingredients":Object.freeze([').replace(/](,"usagePrimary"|,"usageTiming"|,"detailUnitApprox"|})/,'])$1')})`);
+  const lines=products.map(product=>`  Object.freeze(${JSON.stringify(product).replace('"allowedSpecs":[','"allowedSpecs":Object.freeze([').replace('],"ingredients"',']),"ingredients"').replace('"ingredients":[','"ingredients":Object.freeze([').replace(/](,"usagePrimary"|,"usageAdjustment"|,"usageTiming"|,"detailUnitApprox"|})/,'])$1')})`);
   return `// AUTO-GENERATED FROM ${MASTER_URL}\n// Do not hand-edit product facts here. Run: npm run sync:product-master\n// Website public authority is six products; ERP may retain additional internal/deferred records elsewhere.\nexport const PRODUCT_MASTER_META=Object.freeze({\n  authority:${JSON.stringify(master.authority)},\n  version:${JSON.stringify(master.version)},\n  source:${JSON.stringify(MASTER_URL)},\n  productCount:${master.productCount}\n});\n\nexport const PRODUCTS=Object.freeze([\n${lines.join(',\n')}\n]);\n`;
 }
 
