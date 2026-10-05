@@ -56,9 +56,6 @@ function publicProductContextErrors(text=''){
   for(const segment of productSegments(source,'龜鹿膏')){
     if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。');
   }
-  for(const segment of productSegments(source,'龜鹿飲30cc玻璃罐')){
-    if(/每日\s*1\s*罐/.test(segment)&&!/每日\s*1\s*[–-]\s*2\s*罐/.test(segment))errors.push('龜鹿飲30cc目前正式使用方式為「每日 1–2 罐」，可依個人需求調整；飲用時間依個人使用習慣與作息安排。');
-  }
   for(const segment of productSegments(source,'龜鹿湯塊')){
     if(/(300\s*g|600\s*g|2\s*兩)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g／盒｜8塊裝」。');
   }
