@@ -23,7 +23,7 @@ for(const spec of [
 ]) must(source.includes(spec),`前端產品權威缺少目前完整正式主規格：${spec}`);
 
 must(source.includes("usagePrimary:'食用時間可依個人使用習慣與作息時間安排'"),'前端龜鹿膏主要使用資料必須依個人習慣與作息');
-must(source.includes("usagePrimary:'每日 1 罐；飲用時間可依個人使用習慣與作息時間安排'"),'前端30cc使用方式必須是目前確認版本「每日 1 罐」');
+must(source.includes("usagePrimary:'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排'"),'前端30cc使用方式必須同步目前確認版本「每日 1–2 罐」');
 must(source.includes("usagePrimary:'每日一包；飲用時間可依個人使用習慣與作息時間安排'"),'前端180cc需保留每日一包並依個人作息安排時間');
 for(const retired of ['一天一次一小匙','每日一次一小匙','早晚各一小匙'])must(source.includes(retired),`前端需保留對舊龜鹿膏用法的拒絕判斷：${retired}`);
 for(const retired of [
@@ -47,8 +47,8 @@ must(source.includes('每塊約9.375g（顧客文字可顯示）'),'湯塊每塊
 must(source.includes('每塊約18.75g（顧客文字可顯示）'),'龜鹿膠每塊約重應允許顧客文字顯示');
 must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
 must(source.includes('龜鹿飲不設定固定白天時段'),'前端必須移除龜鹿飲固定白天時段');
-must(source.includes('龜鹿飲30cc目前使用方式為「每日 1 罐」'),'前端必須拒絕30cc舊每日 1–2 罐用法');
+must(source.includes('龜鹿飲30cc目前正式使用方式為「每日 1–2 罐」'),'前端必須同步目前30cc正式用法');
 must(source.includes("image:image('images/customer-display-v20260812/guilu-drink-30cc.avif')"),'30cc一般顧客產品圖必須使用目前customer-display');
 must(source.includes("identity:image('images/products-v3/guilu-drink-30.jpg')"),'30cc products-v3只能保留身份參考');
 
-console.log('PASS：前端產品權威已同步目前官網六項公開主規格；龜鹿膏依個人作息、30cc每日 1 罐、龜鹿湯塊75g／盒｜8塊裝、180cc每日一包，產品圖角色與比例規則維持正式版。');
+console.log('PASS：前端產品權威已同步目前官網六項公開主規格；龜鹿膏依個人作息、30cc每日 1–2 罐、龜鹿湯塊75g／盒｜8塊裝、180cc每日一包，產品圖角色與比例規則維持正式版。');
