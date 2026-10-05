@@ -21,6 +21,7 @@ async function fetchMaster(){
 
 function selected(source){
   const usagePrimary=String(source?.usagePrimary||source?.usage?.[0]||'').trim();
+  const usageAdjustment=String(source?.usageAdjustment||source?.usage?.find?.(item=>String(item||'').trim()==='可依個人需求調整')||'').trim();
   const detailUnitApprox=String(source?.detailUnitApprox||source?.detail||'').trim();
   return {
     id:source.id,
@@ -28,6 +29,7 @@ function selected(source){
     allowedSpecs:[source.specification],
     ingredients:[...(source.ingredients||[])],
     ...(usagePrimary?{usagePrimary}:{}),
+    ...(usageAdjustment?{usageAdjustment}:{}),
     ...(source.usageTiming?{usageTiming:source.usageTiming}:{}),
     ...(detailUnitApprox?{detailUnitApprox}:{})
   };
@@ -50,6 +52,7 @@ async function assertSnapshot(master){
     allowedSpecs:[...(product.allowedSpecs||[])],
     ingredients:[...(product.ingredients||[])],
     ...(product.usagePrimary?{usagePrimary:product.usagePrimary}:{}),
+    ...(product.usageAdjustment?{usageAdjustment:product.usageAdjustment}:{}),
     ...(product.usageTiming?{usageTiming:product.usageTiming}:{}),
     ...(product.detailUnitApprox?{detailUnitApprox:product.detailUnitApprox}:{})
   }));
