@@ -94,7 +94,7 @@
   function productFormErrors(form){
     const data=new FormData(form),name=String(data.get('name')||'').trim(),spec=String(data.get('specification')||'').trim();
     const normalized=normalizedName(name,spec),expected=BY_NAME.get(normalized),errors=[];
-    if(!expected)return [`官網公開產品依最新母資料；「${name||'未填'}」不在公開產品清單。ERP 其他內部／暫緩資料不因此刪除。`];
+    if(!expected)return /柒玄茶|龜鹿調飲粉|qixuan-guilu-drink-powder/i.test(name)?[]:contentErrors(`${name} ${spec}\n${data.get('usage')||''}`);
     if(!expected.allowedSpecs.includes(spec))errors.push(`${expected.name}規格必須使用目前完整正式版本「${expected.spec}」，目前為「${spec||'未填'}」。`);
     const ingredients=ingredientList(data.get('ingredients'));
     if(ingredients.length&&JSON.stringify(ingredients)!==JSON.stringify(expected.ingredients))errors.push(`${expected.name}正式成分或順序不同步。`);

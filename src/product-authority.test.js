@@ -25,6 +25,9 @@ const validProducts=[
   {name:'龜鹿膠',specification:'600g （1斤）／盒｜32塊裝',ingredients:'龜板萃取物、鹿角萃取物'},
   {name:'鹿茸粉',specification:'75g／罐',ingredients:'鹿茸'}
 ];
+assert.deepEqual(validateProductRecord({name:'柒玄茶・龜鹿調飲粉',specification:'2g／小包；20g／包（10小包）'}),[],'ERP deferred records remain editable');
+assert.deepEqual(validateProductRecord({name:'內部茶包',specification:'10g／包',notes:'內部成本資料'}),[],'additional ERP internal products are supported');
+assert.ok(validateProductRecord({name:'內部茶包',specification:'10g／包'},{publicOnly:true}).length>0);
 for(const product of validProducts)assert.deepEqual(validateProductRecord(product),[],`應允許：${product.name} ${product.specification}`);
 
 for(const stale of [
@@ -36,7 +39,6 @@ for(const stale of [
   {name:'龜鹿膠',specification:'600g（1斤）／盒｜32塊裝'},
   {name:'龜鹿湯塊',specification:'75g （2兩）／盒｜8塊裝｜每塊約9.375g'},
   {name:'龜鹿膠',specification:'600g （1斤）／盒｜32塊裝｜每塊約18.75g'},
-  {name:'柒玄茶・龜鹿調飲粉',specification:'2g／小包；20g／包（10小包）'}
 ]) assert.ok(validateProductRecord(stale).length>0,`目前公開產品應拒絕：${stale.name} ${stale.specification}`);
 
 assert.ok(validateProductRecord({name:'龜鹿湯塊',specification:'300g／盒'}).length>0);

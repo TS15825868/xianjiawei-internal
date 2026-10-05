@@ -73,7 +73,11 @@ export function validateProductRecord(body={},options={}){
   const name=clean(body?.name),spec=clean(body?.specification||body?.spec);
   if(options.partial&&(!name||!spec))return [];
   const normalized=normalizedName(name,spec),product=BY_NAME.get(normalized);
-  if(!product)return [`產品中心依目前官網公開母資料驗證產品，目前名稱「${name||'未填'}」不在公開清單；ERP 其他內部／暫緩資料不得因此刪除。`];
+  if(!product){
+    if(options.publicOnly)return [`「${name||'未填'}」不在目前公開產品母資料清單。`];
+    if(/柒玄茶|龜鹿調飲粉|qixuan-guilu-drink-powder/i.test(name))return [];
+    return validatePublicProductText(`${name} ${spec}\n${body.usage||''}`);
+  }
   const errors=[];
   if(!product.allowedSpecs.includes(spec))errors.push(`${product.name}規格不在目前完整正式主規格清單。`);
   const ingredients=ingredientList(body?.ingredients);
