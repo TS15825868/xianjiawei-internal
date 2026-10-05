@@ -9,14 +9,14 @@ assert.equal(PRODUCT_AUTHORITY.qixuanPublicVisible,false);
 assert.equal(PRODUCT_AUTHORITY.soupBlockMain,'75g／盒｜8塊裝');
 assert.equal(PRODUCT_AUTHORITY.guiluJiaoMain,'600g （1斤）／盒｜32塊裝');
 assert.equal(PRODUCT_AUTHORITY.guiluGaoUsagePrimary,'食用時間可依個人使用習慣與作息時間安排');
-assert.equal(PRODUCT_AUTHORITY.guiluDrink30UsagePrimary,'每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排');
+assert.equal(PRODUCT_AUTHORITY.guiluDrink30UsagePrimary,'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排');
 assert.equal(PRODUCT_AUTHORITY.guiluDrink180UsagePrimary,'每日一包；飲用時間可依個人使用習慣與作息時間安排');
 assert.equal(PRODUCT_AUTHORITY.postImageMatchBlocking,true);
 assert.match(String(PRODUCT_AUTHORITY.mediaGuardPolicy||''),/customer-display.*dm-final.*trial.*products-v3/i);
 
 const validProducts=[
   {name:'龜鹿膏',specification:'100g／罐',ingredients:'鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始'},
-  {name:'龜鹿飲30cc玻璃罐',specification:'30cc／罐（小玻璃罐）',ingredients:'水、龜板萃取物、鹿角萃取物、粉光蔘、枸杞、紅棗、黃耆',usage:'每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排'},
+  {name:'龜鹿飲30cc玻璃罐',specification:'30cc／罐（小玻璃罐）',ingredients:'水、龜板萃取物、鹿角萃取物、粉光蔘、枸杞、紅棗、黃耆',usage:'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排'},
   {name:'龜鹿飲180cc鋁袋',specification:'180cc／包（鋁袋）',ingredients:'水、龜板萃取物、鹿角萃取物、粉光蔘、枸杞、紅棗、黃耆',usage:'每日一包；飲用時間可依個人使用習慣與作息時間安排'},
   {name:'龜鹿湯塊',specification:'75g／盒｜8塊裝',ingredients:'龜板萃取物、鹿角萃取物'},
   {name:'龜鹿膠',specification:'600g （1斤）／盒｜32塊裝',ingredients:'龜板萃取物、鹿角萃取物'},
@@ -55,8 +55,8 @@ assert.deepEqual(validatePublicProductText('龜鹿膏食用時間可依個人使
 assert.ok(validatePublicProductText('龜鹿膏每日早上及下午各一小匙').length>0);
 assert.ok(validatePublicProductText('龜鹿膏一天一次一小匙').length>0);
 assert.ok(validatePublicProductText('龜鹿膏早晚各一小匙').length>0);
-assert.deepEqual(validatePublicProductText('龜鹿飲30cc玻璃罐每日 1 罐；飲用時間可依個人使用習慣與作息時間安排'),[]);
-assert.deepEqual(validatePublicProductText('龜鹿飲30cc玻璃罐每日 1–2 罐；飲用時間可依個人使用習慣與作息時間安排'),[]);
+assert.ok(validatePublicProductText('龜鹿飲30cc玻璃罐每日 1 罐；飲用時間可依個人使用習慣與作息時間安排').length>0);
+assert.deepEqual(validatePublicProductText('龜鹿飲30cc玻璃罐每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排'),[]);
 assert.ok(validatePublicProductText('龜鹿飲30cc玻璃罐建議白天飲用').length>0);
 assert.deepEqual(validatePublicProductText('龜鹿飲180cc鋁袋每日一包；飲用時間可依個人使用習慣與作息時間安排'),[]);
 assert.deepEqual(validatePublicProductText('龜鹿湯塊75g／盒｜8塊裝，龜鹿膠600g （1斤）／盒｜32塊裝'),[],'不同產品規格不得互相誤判');
