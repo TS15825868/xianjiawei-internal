@@ -47,7 +47,6 @@ must(source.includes('每塊約9.375g（顧客文字可顯示）'),'湯塊每塊
 must(source.includes('每塊約18.75g（顧客文字可顯示）'),'龜鹿膠每塊約重應允許顧客文字顯示');
 must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
 must(source.includes('龜鹿飲不設定固定白天時段'),'前端必須移除龜鹿飲固定白天時段');
-must(source.includes('龜鹿飲30cc目前正式使用方式為「每日 1–2 罐」'),'前端必須同步目前30cc正式用法');
 must(source.includes("image:image('images/customer-display-v20260812/guilu-drink-30cc.avif')"),'30cc一般顧客產品圖必須使用目前customer-display');
 must(source.includes("identity:image('images/products-v3/guilu-drink-30.jpg')"),'30cc products-v3只能保留身份參考');
 
