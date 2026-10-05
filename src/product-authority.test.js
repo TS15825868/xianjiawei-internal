@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
+import {PRODUCTS,PRODUCT_MASTER_META} from './product-master-snapshot.js';
 import { PRODUCT_AUTHORITY, validateProductRecord, validatePublicProductText, validatePostPayload, validatePostImageMatch } from './product-authority.js';
 
 assert.equal(PRODUCT_AUTHORITY.sourceAuthority,'user-confirmed-current');
-assert.match(PRODUCT_AUTHORITY.version,/six-public-product-master.*-erp-guard-current/);
+assert.match(PRODUCT_AUTHORITY.version,/public-product-master.*-erp-guard-current/);
 assert.match(PRODUCT_AUTHORITY.source,/public-product-master\.json$/);
-assert.equal(PRODUCT_AUTHORITY.productCount,6);
+assert.equal(PRODUCT_AUTHORITY.productCount,PRODUCTS.length);
+assert.equal(PRODUCT_MASTER_META.productCount,PRODUCTS.length);
+assert.equal(new Set(PRODUCTS.map(p=>p.id)).size,PRODUCTS.length);
 assert.equal(PRODUCT_AUTHORITY.qixuanPublicVisible,false);
 assert.equal(PRODUCT_AUTHORITY.soupBlockMain,'75g／盒｜8塊裝');
 assert.equal(PRODUCT_AUTHORITY.guiluJiaoMain,'600g （1斤）／盒｜32塊裝');
@@ -71,3 +74,4 @@ assert.ok(validatePostPayload({title:'龜鹿膏日常',image_url:'https://exampl
 assert.deepEqual(validatePostPayload({title:'雨天的日常節奏',copy:'下雨天慢一點也很好',image_url:'https://example.com/media/IMG-123',image_alt:'窗邊雨天情境'}),[]);
 
 console.log('PASS：ERP 公開產品守門同步目前六項正式產品；柒玄茶只留內部資料且不得進公開貼文，30cc每日 1–2 罐、龜鹿湯塊75g／盒｜8塊裝、龜鹿膏依個人作息、180cc每日一包。');
+

@@ -62,7 +62,7 @@
       'use strict';
       window.__XJW_BOOT_VERSION__='20260916-lean-boot-v13-mobile-tools';
       var loaded={},optionalScheduled=false;
-      function loadScript(src){if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.async=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
+      function loadScript(src){if(src.indexOf("/assets/js/product-authority-guard.js")===0&&!window.XJW_CURRENT_PUBLIC_PRODUCTS)return loadScript("/assets/js/current-public-product-master.js?v=20261005-authority-v1").then(function(){return loadScript(src)});if(loaded[src])return loaded[src];loaded[src]=new Promise(function(resolve,reject){var s=document.createElement('script');s.src=src;s.async=true;s.onload=function(){resolve(true)};s.onerror=function(){reject(new Error('無法載入 '+src))};document.head.appendChild(s)});return loaded[src]}
       window.XJWLoadOptionalScript=loadScript;
       function stillLoading(){var root=document.getElementById('listRoot');if(!root)return true;var loading=root.querySelector('.loading-card');return !!(loading&&/正在載入|正在啟動|啟動中|讀取中/.test(loading.textContent||''))}
       function showHelp(message){var help=document.getElementById('bootHelp'),text=document.getElementById('bootHelpText');if(text&&message)text.textContent=message;if(help)help.classList.add('show')}

@@ -3,7 +3,7 @@
   const SITE='https://ts15825868.github.io/xianjiawei/';
   const MEDIA_VERSION='20260814-product-modal-media-v3';
   const image=path=>`${SITE}${path}?v=${MEDIA_VERSION}`;
-  const PRODUCTS=Object.freeze([
+  const PRESENTATION=Object.freeze([
     {id:'guilu-gao',name:'龜鹿膏',spec:'100g／罐',allowedSpecs:['100g／罐'],ingredients:['鹿角萃取物','龜板萃取物','枸杞','紅棗','黃耆','粉光蔘'],usagePrimary:'食用時間可依個人使用習慣與作息時間安排',image:image('images/customer-display-v20260812/guilu-gao.avif'),identity:image('images/products-v3/guilu-gao.jpg'),dimensions:{widthMm:51,heightMm:78},scaleRule:'六角玻璃罐只允許等比例縮放，不改罐型、金色蓋或標籤比例。'},
     {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',spec:'30cc／罐（小玻璃罐）',allowedSpecs:['30cc／罐（小玻璃罐）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],usagePrimary:'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排',image:image('images/customer-display-v20260812/guilu-drink-30cc.avif'),identity:image('images/products-v3/guilu-drink-30.jpg'),dimensions:{diameterMm:42,heightMm:51},scaleRule:'必須維持小玻璃裸罐原罐型與比例；無貼紙，不得稱瓶、做高、做胖或放大。'},
     {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',spec:'180cc／包（鋁袋）',allowedSpecs:['180cc／包（鋁袋）'],ingredients:['水','龜板萃取物','鹿角萃取物','粉光蔘','枸杞','紅棗','黃耆'],usagePrimary:'每日一包；飲用時間可依個人使用習慣與作息時間安排',image:image('images/customer-display-v20260812/guilu-drink-180cc-product.jpg'),identity:image('images/products-v3/guilu-drink-180.jpg'),aspectRatio:{min:0.60,target:0.64,max:0.68},scaleRule:'狹長直立鋁袋；禁止橫向拉寬、加高或誇張放大。'},
@@ -11,6 +11,7 @@
     {id:'guilu-jiao',name:'龜鹿膠',spec:'600g （1斤）／盒｜32塊裝',allowedSpecs:['600g （1斤）／盒｜32塊裝'],detailUnitApprox:'每塊約18.75g（顧客文字可顯示）',ingredients:['龜板萃取物','鹿角萃取物'],image:image('images/customer-display-v20260812/guilu-jiao.avif'),identity:image('images/products-v3/guilu-jiao.jpg'),dimensions:null,scaleRule:'毫米尺寸未知時不得自行猜測；不得與75g龜鹿湯塊混用或做成相近尺寸。'},
     {id:'luerong-fen',name:'鹿茸粉',spec:'75g／罐',allowedSpecs:['75g／罐'],ingredients:['鹿茸'],image:image('images/customer-display-v20260812/luerong-fen.avif'),identity:image('images/products-v3/luerong-fen.jpg'),dimensions:null,scaleRule:'毫米尺寸未知時不得自行猜測，只依正式產品圖等比例呈現。'}
   ]);
+  const PRODUCTS=Object.freeze((window.XJW_CURRENT_PUBLIC_PRODUCTS||PRESENTATION).map(product=>Object.freeze({...PRESENTATION.find(item=>item.id===product.id),...product})));
   const BY_NAME=new Map(PRODUCTS.map(item=>[item.name,item]));
   const BY_ID=new Map(PRODUCTS.map(item=>[item.id,item]));
   const PRODUCT_NAMES=PRODUCTS.map(item=>item.name);
@@ -93,7 +94,7 @@
   function productFormErrors(form){
     const data=new FormData(form),name=String(data.get('name')||'').trim(),spec=String(data.get('specification')||'').trim();
     const normalized=normalizedName(name,spec),expected=BY_NAME.get(normalized),errors=[];
-    if(!expected)return [`官網公開產品目前為六項；「${name||'未填'}」不在公開產品清單。ERP 其他內部／暫緩資料不因此刪除。`];
+    if(!expected)return [`官網公開產品依最新母資料；「${name||'未填'}」不在公開產品清單。ERP 其他內部／暫緩資料不因此刪除。`];
     if(!expected.allowedSpecs.includes(spec))errors.push(`${expected.name}規格必須使用目前完整正式版本「${expected.spec}」，目前為「${spec||'未填'}」。`);
     const ingredients=ingredientList(data.get('ingredients'));
     if(ingredients.length&&JSON.stringify(ingredients)!==JSON.stringify(expected.ingredients))errors.push(`${expected.name}正式成分或順序不同步。`);
@@ -169,3 +170,4 @@
   observer.observe(document.documentElement,{childList:true,subtree:true});
   refresh();
 })();
+

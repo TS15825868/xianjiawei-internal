@@ -1,4 +1,5 @@
 name: 仙加味有效貼文圖片佇列同步
+# Refresh live D1 queue after current authority maintenance; never alter post approval.
 
 on:
   workflow_dispatch:
@@ -186,3 +187,4 @@ jobs:
           done
           echo 'Unable to update queue after retries' >&2
           exit 1
+

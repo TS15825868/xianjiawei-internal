@@ -1,6 +1,6 @@
 // AUTO-GENERATED FROM https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json
 // Do not hand-edit product facts here. Run: npm run sync:product-master
-// Website public authority is six products; ERP may retain additional internal/deferred records elsewhere.
+// Website public authority follows the latest public product master; ERP may retain additional internal/deferred records elsewhere.
 export const PRODUCT_MASTER_META=Object.freeze({
   authority:"user-confirmed-current",
   version:"2026-10-05-six-public-product-master-v8",

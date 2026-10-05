@@ -5,17 +5,24 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const ROOT=path.resolve(HERE,'..');
 const SNAPSHOT_PATH=path.join(ROOT,'src/product-master-snapshot.js');
+const CLIENT_PATH=path.join(ROOT,'assets/js/current-public-product-master.js');
 const MASTER_URL=process.env.PRODUCT_MASTER_URL||'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json';
 const EXPECTED_IDS=['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen'];
 
 async function fetchMaster(){
-  const response=await fetch(MASTER_URL,{headers:{'user-agent':'xianjiawei-internal-current-public-authority'}});
-  if(!response.ok)throw new Error(`無法下載目前公開產品母資料：HTTP ${response.status}`);
-  const master=await response.json();
+  let master;
+  if(process.env.PRODUCT_MASTER_FILE)master=JSON.parse(fs.readFileSync(process.env.PRODUCT_MASTER_FILE,'utf8'));
+  else{
+    const response=await fetch(MASTER_URL,{headers:{'user-agent':'xianjiawei-internal-current-public-authority'}});
+    if(!response.ok)throw new Error(`無法下載目前公開產品母資料：HTTP ${response.status}`);
+    master=await response.json();
+  }
   if(master?.authority!=='user-confirmed-current')throw new Error('目前公開產品母資料 authority 錯誤');
-  if(master?.productCount!==6||!Array.isArray(master?.products)||master.products.length!==6)throw new Error('官網目前公開產品母資料必須剛好6項');
+  if(!Array.isArray(master?.products)||!master.products.length||master.productCount!==master.products.length)throw new Error('官網公開產品數與母資料不一致');
   const ids=master.products.map(item=>item.id);
-  if(JSON.stringify(ids)!==JSON.stringify(EXPECTED_IDS))throw new Error(`目前公開產品品項或順序錯誤：${ids.join(',')}`);
+  if(ids.some(id=>!id)||new Set(ids).size!==ids.length||!EXPECTED_IDS.every(id=>ids.includes(id)))throw new Error('公開產品ID重複、空白或缺少核心產品');
+  if(ids.includes('qixuan-guilu-drink-powder'))throw new Error('柒玄茶暫緩公開，不得自動上架');
+  if(!master.products.find(p=>p.id==='guilu-drink-30')?.usage?.includes('可依個人需求調整'))throw new Error('30cc缺少可依個人需求調整');
   return master;
 }
 
@@ -38,7 +45,15 @@ function selected(source){
 function render(master){
   const products=master.products.map(selected);
   const lines=products.map(product=>`  Object.freeze(${JSON.stringify(product).replace('"allowedSpecs":[','"allowedSpecs":Object.freeze([').replace('],"ingredients"',']),"ingredients"').replace('"ingredients":[','"ingredients":Object.freeze([').replace(/](,"usagePrimary"|,"usageAdjustment"|,"usageTiming"|,"detailUnitApprox"|})/,'])$1')})`);
-  return `// AUTO-GENERATED FROM ${MASTER_URL}\n// Do not hand-edit product facts here. Run: npm run sync:product-master\n// Website public authority is six products; ERP may retain additional internal/deferred records elsewhere.\nexport const PRODUCT_MASTER_META=Object.freeze({\n  authority:${JSON.stringify(master.authority)},\n  version:${JSON.stringify(master.version)},\n  source:${JSON.stringify(MASTER_URL)},\n  productCount:${master.productCount}\n});\n\nexport const PRODUCTS=Object.freeze([\n${lines.join(',\n')}\n]);\n`;
+  return `// AUTO-GENERATED FROM ${MASTER_URL}\n// Do not hand-edit product facts here. Run: npm run sync:product-master\n// Website public authority follows the latest public product master; ERP may retain additional internal/deferred records elsewhere.\nexport const PRODUCT_MASTER_META=Object.freeze({\n  authority:${JSON.stringify(master.authority)},\n  version:${JSON.stringify(master.version)},\n  source:${JSON.stringify(MASTER_URL)},\n  productCount:${master.productCount}\n});\n\nexport const PRODUCTS=Object.freeze([\n${lines.join(',\n')}\n]);\n`;
+}
+
+function renderClient(master){
+  const products=master.products.map(source=>({
+    ...selected(source),spec:source.specification,
+    usagePrimary:[...(source.usage||[]).slice(0,1),source.usageAdjustment||source.usage?.find(x=>x==='可依個人需求調整'),source.usageTiming].filter(Boolean).join('；')
+  }));
+  return `// Generated from current public-product-master.json; never removes ERP internal records.\nwindow.XJW_CURRENT_PUBLIC_PRODUCTS=Object.freeze(${JSON.stringify(products)}.map(product=>Object.freeze(product)));\n`;
 }
 
 async function assertSnapshot(master){
@@ -58,12 +73,14 @@ async function assertSnapshot(master){
   }));
   const expected=master.products.map(selected);
   if(JSON.stringify(actual)!==JSON.stringify(expected))throw new Error('ERP 產品守門快照與目前公開產品母資料不同步；請執行 npm run sync:product-master');
+  if(!fs.existsSync(CLIENT_PATH)||fs.readFileSync(CLIENT_PATH,'utf8')!==renderClient(master))throw new Error('ERP前端公開產品清單尚未跟最新母資料同步');
 }
 
 async function main(){
   const master=await fetchMaster();
   if(process.argv.includes('--write')){
     fs.writeFileSync(SNAPSHOT_PATH,render(master),'utf8');
+    fs.writeFileSync(CLIENT_PATH,renderClient(master),'utf8');
     console.log(`SYNCED ERP public product snapshot <- ${master.version}`);
     return;
   }
