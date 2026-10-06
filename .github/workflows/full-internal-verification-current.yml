@@ -1,4 +1,5 @@
 name: 仙加味內部系統與貼文中心完整驗收（現行版）
+# cross-system-final-verification-20261007
 
 on:
   push:
