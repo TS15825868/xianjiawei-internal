@@ -1,4 +1,4 @@
 {
-  "requestedAt": "2026-10-07T21:45:00+08:00",
-  "reason": "finalize 10 restored post images and reconcile two Metricool-published D1 state drifts"
+  "requestedAt": "2026-10-07T22:00:00+08:00",
+  "reason": "reconcile two Metricool-published D1 states after restoring ten missing images"
 }
