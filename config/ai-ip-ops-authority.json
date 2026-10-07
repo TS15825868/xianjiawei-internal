@@ -1,0 +1,63 @@
+{
+  "version": "2026-10-07-ai-ip-ops-v1",
+  "status": "formal",
+  "principle": [
+    "資料正確",
+    "圖文一致",
+    "品牌一致",
+    "功能正常",
+    "正式可上線"
+  ],
+  "precedence": [
+    "latest_user_instruction",
+    "latest_formal_project_assets_and_code",
+    "github_main_current",
+    "newer_project_context",
+    "confirmed_formal_spec",
+    "legacy_data"
+  ],
+  "repositories": {
+    "website": "TS15825868/xianjiawei",
+    "line": "TS15825868/TS-LINE",
+    "internal": "TS15825868/xianjiawei-internal",
+    "branch": "main"
+  },
+  "authorities": {
+    "product": "config/official-products.json",
+    "brand": "config/ai-brand-control.json",
+    "visual": "config/visual-production-spec.json",
+    "publishing": "config/social-publishing-policy.json",
+    "system": "docs/current-system-authority-current.json",
+    "content": "config/content-authority-v6.json"
+  },
+  "publicBrand": "仙加味",
+  "manualApproval": {
+    "required": true,
+    "autoApproval": false,
+    "regenerationReturnsTo": "pending_review",
+    "publishRequiresApproved": true
+  },
+  "aiPermissions": {
+    "mayDraft": true,
+    "mayValidate": true,
+    "mayCreatePendingReview": true,
+    "mayAutoApprove": false,
+    "mayPublishUnapproved": false
+  },
+  "productImage": {
+    "officialAssetsOnly": true,
+    "aiRedraw": false
+  },
+  "guardrail": {
+    "useLatestAuthority": true,
+    "legacyVersionLockForbidden": true
+  },
+  "workflow": [
+    "draft",
+    "pending_review",
+    "approved",
+    "scheduled_or_immediate_publish",
+    "published"
+  ],
+  "sop": "docs/AI-IP-AUTOMATION-SOP.md"
+}
