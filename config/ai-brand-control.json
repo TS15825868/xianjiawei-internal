@@ -1,7 +1,7 @@
 {
-  "version": "20261007-ai-brand-manual-approval-v3",
+  "version": "20261007-ai-brand-manual-approval-v4-current-products",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/ai-brand-control-v20260807.json",
-  "officialProducts": "https://ts15825868.github.io/xianjiawei/catalog-public.json",
+  "officialProducts": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json",
   "formalMediaAuthority": "https://ts15825868.github.io/xianjiawei/data/formal-media-authority-v20260810.json",
   "formalMediaRelease": "assets/data/formal-media-release-v20260812.json",
   "publicPostLibrary": "https://ts15825868.github.io/xianjiawei/content/public-post-library.json",
