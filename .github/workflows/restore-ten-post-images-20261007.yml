@@ -1,0 +1,159 @@
+name: 仙加味10篇缺圖正式復原 20261007
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-ten-post-images-20261007.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xianjiawei-restore-ten-post-images-20261007
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Require formal credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+
+      - name: Restore the original ten approved image files from retained source ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/xjw-a /tmp/xjw-b
+          mkdir -p /tmp/xjw-a /tmp/xjw-b assets/post-images/2026-09-23
+          unzip -q ops/incoming/xjw_batch_next_5_20260923_jpg.zip -d /tmp/xjw-a
+          unzip -q ops/incoming/xjw_batch_20260923_4.zip -d /tmp/xjw-b
+          node - <<'NODE'
+          const fs=require('fs'),path=require('path');
+          const groups=[
+            {
+              dir:'/tmp/xjw-a',
+              files:[
+                ['XJW-CONV-chat-deer-turtle-soup-choice.jpg',518427],
+                ['XJW-CONV-chat-elder-kitchen-habit.jpg',472269],
+                ['XJW-CONV-chat-family-old-object.jpg',532889],
+                ['XJW-CONV-chat-fixed-storage.jpg',524338],
+                ['XJW-CONV-chat-last-bowl.jpg',414773],
+              ]
+            },
+            {
+              dir:'/tmp/xjw-b',
+              files:[
+                ['XJW-CONV-chat-receive-package.jpg',408363],
+                ['XJW-CONV-chat-recipe-or-feel.jpg',483430],
+                ['XJW-CONV-chat-shop-organizing.jpg',506611],
+                ['XJW-CONV-chat-simple-soup.jpg',516613],
+                ['XJW-CONV-chat-traditional-image.jpg',468939],
+              ]
+            }
+          ];
+          for(const g of groups){
+            for(const [name,expected] of g.files){
+              const src=path.join(g.dir,name);
+              if(!fs.existsSync(src)) throw new Error('source ZIP missing '+name);
+              const st=fs.statSync(src);
+              if(st.size!==expected) throw new Error(name+' bytes changed '+st.size+' != '+expected);
+              fs.copyFileSync(src,path.join('assets/post-images/2026-09-23',name));
+            }
+          }
+          console.log('PASS restored exact 10 original image binaries');
+          NODE
+
+      - name: Commit restored image files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- assets/post-images/2026-09-23; then
+            echo "Image files already restored"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add assets/post-images/2026-09-23
+            git commit -m 'content: restore ten formal post images'
+            git push origin HEAD:main
+          fi
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Rebind the ten posts to restored formal images
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const items=[
+            ['XJW-CONV-chat-deer-turtle-soup-choice','居家廚房情境，小老闆在湯鍋旁準備料理，小鹿與小烏龜分開在旁看著食材',518427],
+            ['XJW-CONV-chat-elder-kitchen-habit','居家廚房情境，小老闆翻看料理筆記並整理日常食材，小鹿與小烏龜分開陪伴',472269],
+            ['XJW-CONV-chat-family-old-object','溫暖居家情境，小老闆在老木櫃旁查看舊照片與家中老物件，小鹿與小烏龜分開陪伴',532889],
+            ['XJW-CONV-chat-fixed-storage','整理收納情境，小老闆把日常用品分類放回固定位置，小鹿與小烏龜分開陪伴',524338],
+            ['XJW-CONV-chat-last-bowl','家常晚餐接近尾聲，小老闆拿著最後一小碗熱湯，小鹿與小烏龜分開陪伴',414773],
+            ['XJW-CONV-chat-receive-package','收到包裹的居家情境，小老闆打開紙箱先查看隨附說明卡，小鹿與小烏龜分開陪伴',408363],
+            ['XJW-CONV-chat-recipe-or-feel','家常廚房情境，小老闆一邊看料理筆記一邊準備食材，小鹿與小烏龜分開陪伴',483430],
+            ['XJW-CONV-chat-shop-organizing','整潔工作桌情境，小老闆分類整理紙張與日常物件，小鹿與小烏龜分開互動',506611],
+            ['XJW-CONV-chat-simple-soup','家常廚房情境，小老闆守著一鍋熱湯與一般食材，小鹿與小烏龜分開陪伴',516613],
+            ['XJW-CONV-chat-traditional-image','溫暖居家工作桌，小老闆翻看舊照片與老物件，小鹿與小烏龜分開陪伴',468939],
+          ];
+          const q=v=>"'"+String(v??'').replaceAll("'","''")+"'";
+          const base='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/';
+          const lines=items.map(([id,alt,bytes])=>{
+            const url=base+id+'.jpg';
+            return `UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(alt)}, image_source=${q('原正式圖復原｜Git歷史保留來源ZIP｜2026-10-07｜人工待審核')}, image_width=1254, image_height=1254, image_bytes=${bytes}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(id)} AND status='draft' AND TRIM(COALESCE(image_url,''))='';`;
+          });
+          fs.writeFileSync('/tmp/rebind-ten.sql',lines.join('\n')+'\n');
+          NODE
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/rebind-ten.sql
+
+      - name: Verify D1 state and all ten raw image URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          IDS="'XJW-CONV-chat-deer-turtle-soup-choice','XJW-CONV-chat-elder-kitchen-habit','XJW-CONV-chat-family-old-object','XJW-CONV-chat-fixed-storage','XJW-CONV-chat-last-bowl','XJW-CONV-chat-receive-package','XJW-CONV-chat-recipe-or-feel','XJW-CONV-chat-shop-organizing','XJW-CONV-chat-simple-soup','XJW-CONV-chat-traditional-image'"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_width,image_height,image_bytes,image_quality_status,image_approved,approved_by,scheduled_at,published_at FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify-ten.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/verify-ten.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
+          if(rows.length!==10) throw new Error('expected 10 rows, got '+rows.length);
+          for(const r of rows){
+            if(r.status!=='pending_review') throw new Error(r.id+' status '+r.status);
+            if(!String(r.image_url||'').includes('/assets/post-images/2026-09-23/'+r.id+'.jpg')) throw new Error(r.id+' wrong image_url');
+            if(Number(r.image_width)!==1254||Number(r.image_height)!==1254) throw new Error(r.id+' wrong dimensions');
+            if(Number(r.image_bytes)<400000) throw new Error(r.id+' image bytes too small');
+            if(r.image_quality_status!=='ok') throw new Error(r.id+' quality not ok');
+            if(Number(r.image_approved)!==0||r.approved_by||r.scheduled_at||r.published_at) throw new Error(r.id+' must remain manual pending_review');
+          }
+          fs.writeFileSync('/tmp/urls.txt',rows.map(r=>r.image_url).join('\n')+'\n');
+          console.log('PASS D1: 10/10 pending_review with restored formal images');
+          NODE
+          while IFS= read -r u; do
+            curl -L --fail --retry 4 --retry-delay 2 -sS -o /dev/null "$u"
+          done < /tmp/urls.txt
+          echo "PASS HTTP: 10/10 restored image URLs are reachable"
+
+      - name: Upload formal restoration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: xianjiawei-ten-post-image-restoration-${{ github.run_id }}
+          path: /tmp/verify-ten.json
+          retention-days: 7
