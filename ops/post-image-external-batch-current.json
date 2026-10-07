@@ -1,0 +1,7 @@
+{
+  "version": "2026-10-07-restore-missing-10-batch-b",
+  "download_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/ops/incoming/xjw_batch_20260923_4.zip",
+  "manifestPath": "ops/post-image-manifest-20261007-restored-b.json",
+  "bindingRecordPath": "ops/post-image-bindings-20261007-restored-b.json",
+  "targetDir": "assets/post-images/2026-09-23"
+}
