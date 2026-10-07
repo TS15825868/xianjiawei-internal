@@ -1,5 +1,5 @@
 {
-  "version": "20260903-ai-brand-social-autopublish-v2",
+  "version": "20261007-ai-brand-manual-approval-v3",
   "publicAuthority": "https://ts15825868.github.io/xianjiawei/content/ai-brand-control-v20260807.json",
   "officialProducts": "https://ts15825868.github.io/xianjiawei/catalog-public.json",
   "formalMediaAuthority": "https://ts15825868.github.io/xianjiawei/data/formal-media-authority-v20260810.json",
@@ -23,7 +23,7 @@
   "contentGrowthPolicy": "continuous-no-fixed-cap",
   "contentGrowthRule": "貼文母庫可持續增加，不以固定篇數作為上限；正式社群節奏目前以每週約3篇為主，避免過度發文；以題材完整、圖文一致、無重複與可正式發布為準",
   "socialPublishing": {
-    "mode": "safe_auto_publish",
+    "mode": "manual_approval_then_publish",
     "weeklyTarget": 3,
     "maximumNormalWeeklyPosts": 3,
     "days": [
@@ -37,7 +37,7 @@
     "onePostPerRun": true,
     "topicMode": "free_non_repeating",
     "videoRule": "有符合正式規格的新短影片時，優先取代本次圖文名額，不另外增加當週貼文數量",
-    "failureRule": "任一品牌、產品、規格、圖文、重複、視覺、拼湊剪貼或法規檢查不合格就不發布，改回待審核"
+    "failureRule": "任一品牌、產品、規格、圖文、重複、視覺、拼湊剪貼或法規檢查不合格就不發布，回待審核或草稿；所有公開發布前必須由使用者人工核准"
   },
   "productCount": 6,
   "sellableSpecificationCount": 6,
@@ -134,9 +134,9 @@
     "sceneRule": "季節、場景、環境、冷熱、表情、動作與道具必須和文案一致"
   },
   "reviewDimensions": 16,
-  "brandGuardianMode": "blocking-for-auto-publish",
+  "brandGuardianMode": "blocking-for-publish-after-manual-approval",
   "formalProductWriteValidation": "blocking-current-six-spec-authority",
-  "generatedStatus": "auto_publish_if_all_gates_pass_else_pending_review",
+  "generatedStatus": "pending_review_after_all_automated_checks",
   "regenerationMode": "chatgpt_handoff",
   "paidOpenAIApiEnabled": false,
   "currentTrialAsset": {
@@ -165,5 +165,8 @@
     }
   ],
   "publicPositioning": "現代漢方生活品牌",
-  "publicProductScopeLine": "龜鹿｜漢方生活選品"
+  "publicProductScopeLine": "龜鹿｜漢方生活選品",
+  "manualApprovalRequired": true,
+  "automaticApprovalEnabled": false,
+  "aiIpOpsAuthority": "config/ai-ip-ops-authority.json"
 }
