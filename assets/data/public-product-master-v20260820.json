@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "version": "2026-10-05-six-public-product-master-mirror-v5",
   "updatedAt": "2026-10-05",
-  "role": "ERP／貼文中心使用的仙加味公開產品基礎資料鏡像；只同步目前官網六項公開產品事實，不覆蓋內部價格、成本、庫存、客戶、通路或暫緩產品資料。",
+  "role": "ERP／貼文中心使用的仙加味公開產品基礎資料鏡像；同步目前官網已核准公開產品事實，不以目前產品數量作永久上限，也不覆蓋內部價格、成本、庫存、客戶、通路或暫緩產品資料。",
   "source": {
     "repository": "TS15825868/xianjiawei",
     "branch": "main",
@@ -21,9 +21,10 @@
       "漢方飲食文化",
       "以現代、方便、貼近日常的方式呈現"
     ],
-    "productScopeLine": "龜鹿｜漢方生活選品"
+    "productScopeLine": "龜鹿系列與多元日常漢方選擇"
   },
   "productCount": 6,
+  "productCountPolicy": "6為目前公開數量，不是系統永久上限；未來新增不同型態產品時依最新使用者核准資料擴充",
   "products": [
     {
       "id": "guilu-gao",
