@@ -196,6 +196,33 @@ function card(post){
   </article>`;
 }
 
+function markBrokenImages(root){
+  if(!root)return;
+  root.querySelectorAll('article.publish-card img.xjw-image-preview').forEach(img=>{
+    if(img.dataset.loadGuard==='1')return;
+    img.dataset.loadGuard='1';
+    const fail=()=>{
+      const card=img.closest('article.publish-card');
+      if(!card)return;
+      card.dataset.imageBroken='true';
+      img.hidden=true;
+      let note=card.querySelector('[data-broken-image-warning]');
+      if(!note){
+        note=document.createElement('div');
+        note.dataset.brokenImageWarning='1';
+        note.className='xjw-danger';
+        note.innerHTML='<strong>圖片載入失敗，禁止審核通過／發布。</strong><br>請先重新上傳正式圖片或修正圖片網址，再進行人工視覺審核。';
+        const actions=card.querySelector('.xjw-actions');
+        card.insertBefore(note,actions||null);
+      }
+      card.querySelectorAll('[data-post-status="approved"],[data-post-publish-now],[data-post-schedule]').forEach(button=>{button.disabled=true;});
+    };
+    img.addEventListener('error',fail,{once:true});
+    img.addEventListener('load',()=>{if(img.naturalWidth<2)fail();},{once:true});
+    if(img.complete&&img.naturalWidth<2)fail();
+  });
+}
+
 function renderList(){
   const root=$('#listRoot');
   if(!root)return;
@@ -207,6 +234,7 @@ function renderList(){
     ?`<div class="xjw-list">${state.items.map(card).join('')}</div>${remaining>0?`<div class="publish-load-more"><button class="btn primary" data-load-more>載入下一批 ${Math.min(PAGE_SIZE,remaining)} 篇 <small>（尚有 ${remaining} 篇）</small></button></div>`:''}`
     :'<section class="card empty-state"><h3>沒有符合條件的貼文</h3><p>可調整搜尋／狀態條件，或新增貼文草稿。</p></section>';
   renderMetrics();
+  markBrokenImages(root);
   requestAnimationFrame(()=>document.dispatchEvent(new CustomEvent('xjw-publishing-list-rendered')));
 }
 
