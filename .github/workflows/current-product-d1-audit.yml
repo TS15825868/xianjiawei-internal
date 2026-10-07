@@ -36,7 +36,7 @@ jobs:
             if(name==='龜鹿飲30cc玻璃瓶')name='龜鹿飲30cc玻璃罐';
             const product=PRODUCTS.find(p=>p.name===name);
             if(!product)continue;
-            if(row.specification!==product.specification)errors.push({id:row.id,name,field:'specification',actual:row.specification,expected:product.specification});
+            if(!(product.allowedSpecs||[]).includes(row.specification))errors.push({id:row.id,name,field:'specification',actual:row.specification,expected:product.allowedSpecs});
             if(product.id==='guilu-drink-30'&&(!String(row.usage).includes('每日 1–2 罐')||!String(row.usage).includes('可依個人需求調整')))errors.push({id:row.id,name,field:'usage',actual:row.usage});
           }
           console.log('D1 active product records:',rows.length,'current public authority:',PRODUCTS.length,'internal/deferred records retained');
