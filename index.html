@@ -17,18 +17,18 @@
   <section class="hero">
     <div class="eyebrow">INTERNAL OPERATIONS</div>
     <h1>一個入口，管理日常營運</h1>
-    <p>ERP 與貼文中心維持同一個內部入口。系統目前正在完整整理，Cloudflare Access 暫時旁路；等功能、圖文與手機操作全部驗收完成後再恢復正式驗證。</p>
-    <div class="maintenance-note"><strong>目前整理模式：</strong>貼文中心可免登入檢視正式貼文、搜尋與篩選；新增、修改、審核、排程與發布暫時鎖定。ERP／客戶／財務等敏感資料仍封鎖，不會因暫停登入驗證而公開。</div>
+    <p>ERP 與貼文中心維持同一個內部入口。Cloudflare Access 已恢復正式保護；登入後依角色權限使用 ERP 與貼文中心。</p>
+    <div class="maintenance-note"><strong>目前正式營運模式：</strong>Cloudflare Access 保護已啟用。ERP、客戶、財務與貼文操作皆依登入帳號與角色權限開放；未授權使用者無法存取敏感資料。</div>
     <div class="grid">
-      <a class="card erp" href="/erp.html"><div class="icon">ERP</div><h2>ERP／營運中控</h2><p>介面可供整理與巡檢；產品、庫存、客戶、訂單、採購、財務等正式資料目前維持安全鎖定。</p><span class="mode-tag">整理期間：敏感資料鎖定</span><br><span class="go">查看 ERP 介面 →</span></a>
-      <a class="card publish" href="/publishing.html"><div class="icon">文</div><h2>貼文中心</h2><p>正式貼文目前可唯讀檢視、搜尋與篩選；圖文、手機流暢度與後續內容持續整理。</p><span class="mode-tag">整理期間：免登入唯讀</span><br><span class="go">進入貼文中心 →</span></a>
+      <a class="card erp" href="/erp.html"><div class="icon">ERP</div><h2>ERP／營運中控</h2><p>產品、庫存、客戶、訂單、採購、財務等正式資料集中於營運中控，依角色權限安全存取。</p><span class="mode-tag">正式模式：Access 保護</span><br><span class="go">查看 ERP 介面 →</span></a>
+      <a class="card publish" href="/publishing.html"><div class="icon">文</div><h2>貼文中心</h2><p>正式貼文可檢視、搜尋、篩選與進行人工審核；核准後才可排程或立即發布。</p><span class="mode-tag">正式模式：人工審核</span><br><span class="go">進入貼文中心 →</span></a>
     </div>
     <div class="status" id="systemStatus"><span class="dot"></span><span><strong>系統狀態：</strong><span id="statusText">正在檢查…</span></span></div>
   </section>
-  <div class="foot">仙加味內部使用｜系統整理期間不開放敏感資料</div>
+  <div class="foot">仙加味內部使用｜Cloudflare Access 保護</div>
 </main>
 <script>
-(async()=>{const box=document.getElementById('systemStatus'),text=document.getElementById('statusText');try{const r=await fetch('/healthz/core',{credentials:'same-origin',cache:'no-store'});const t=await r.text();let d={};try{d=JSON.parse(t)}catch{}if(r.ok&&d.ok!==false){box.classList.add('ok');text.textContent=d.maintenanceReadOnly?'整理模式正常｜貼文唯讀・ERP資料鎖定':'連線正常';}else{box.classList.add('bad');text.textContent='需要檢查';}}catch{box.classList.add('bad');text.textContent='暫時無法讀取';}})();
+(async()=>{const box=document.getElementById('systemStatus'),text=document.getElementById('statusText');try{const r=await fetch('/healthz/core',{credentials:'same-origin',cache:'no-store'});const t=await r.text();let d={};try{d=JSON.parse(t)}catch{}if(r.ok&&d.ok!==false){box.classList.add('ok');text.textContent=d.maintenanceReadOnly?'正式保護中':'連線正常';}else{box.classList.add('bad');text.textContent='需要檢查';}}catch{box.classList.add('bad');text.textContent='暫時無法讀取';}})();
 </script>
 </body>
 </html>
