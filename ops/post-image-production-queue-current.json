@@ -1,36 +1,38 @@
 {
-  "version": "2026-10-01-v12-image-missing-drafts-current-media",
+  "version": "rolling-after-external-batch",
   "brand": "仙加味",
-  "source": "Cloudflare D1 live social_posts WHERE status=draft AND image_url is empty",
-  "total": 0,
+  "source": "Cloudflare D1 live social_posts WHERE status=draft",
+  "total": 2,
   "status": "production-queue",
-  "supersedes": "2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流",
-  "rule": "只為live D1目前status=draft且尚無image_url的有效貼文製作唯一正式圖片；已有圖片的draft不重複進製圖佇列；人工視覺審核前不得approved/scheduled/published。",
-  "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-  "threadsQueue": "ops/metricool-threads-media-queue-current.json",
-  "formalAssets": {
-    "30cc": "images/dm-v3/guilu-drink-30.jpg",
-    "180cc": "images/dm-v3/guilu-drink-180.jpg",
-    "龜鹿膏": "images/dm-v3/guilu-gao.jpg",
-    "龜鹿湯塊": "images/dm-v3/guilu-tangkuai.jpg",
-    "龜鹿膠": "images/dm-v3/guilu-jiao.jpg",
-    "鹿茸粉": "images/dm-v3/luerong-fen.jpg"
-  },
-  "visualRules": [
-    "固定已確認Q版小朋友小男孩角色，不自由重畫角色；年齡感、頭身比、臉型、眼睛、髮型、服裝與圍裙比例須與定稿同一人；不得成熟化、少年化、成人化；小鹿與小烏龜分開且相對尺寸固定",
-    "生活、料理、品牌、產品、萬華、互動、季節自然穿插，不連發同系列",
-    "產品只用formalAssets正式實物圖等比例合成，AI不得重畫；30cc小玻璃裸罐無貼紙；180cc正式鋁袋比例；龜鹿膠舊AI紫盒全部禁用",
-    "找不到正式產品原圖時寧可不放產品；公開只顯示仙加味",
-    "圖文、季節、天氣、冷熱、動作一致；無亂碼、怪字、療效宣稱",
-    "完成後回pending_review，未經使用者人工審核不得發布"
-  ],
-  "windowPolicy": {
-    "evergreen": "優先依混合題材製作",
-    "weather_dynamic": "只在實際天氣符合時插播",
-    "cool_season_dynamic": "進入適合溫度窗口再啟用",
-    "year_end_window": "年底窗口再啟用",
-    "new_year_window": "新年窗口再啟用",
-    "lunar_new_year_window": "農曆年前後適合窗口再啟用"
-  },
-  "items": []
+  "rule": "只為live D1目前status=draft的有效貼文製作唯一正式圖片；人工視覺審核前不得發布。",
+  "items": [
+    {
+      "postId": "XJW-CONV-brand-third-generation-note",
+      "imageId": "XJW-ACTIVE-IMG-001",
+      "kind": "品牌手記",
+      "title": "有些東西，真的不能只用價格來算",
+      "products": [
+        "龜鹿膠"
+      ],
+      "scene": "仙加味品牌手記主視覺：第三代在萬華老店工作情境，主題為有些東西真的不能只用價格來算。",
+      "imageSource": "ChatGPT正式單張圖｜Metricool已建立排程｜GitHub main封存｜使用者人工核准",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "copyHash": "124625f3ed55519c"
+    },
+    {
+      "postId": "XJW-CONV-live-hongludi-outing-20260929",
+      "imageId": "XJW-ACTIVE-IMG-002",
+      "kind": "戶外生活",
+      "title": "帶小老闆去烘爐地走走",
+      "products": [],
+      "scene": "烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景",
+      "imageSource": "ChatGPT正式單張圖｜GitHub main｜人工待審核",
+      "window": "evergreen",
+      "status": "needs_unique_image",
+      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
+      "copyHash": "2d89d993cab671cb"
+    }
+  ]
 }

@@ -1,11 +1,11 @@
 {
-  "version": "rolling-2026-09-30T09:22:16.292Z",
-  "updatedAt": "2026-09-30T09:22:16.293Z",
+  "version": "rolling-2026-10-07T13:36:41.475Z",
+  "updatedAt": "2026-10-07T13:36:41.475Z",
   "scope": "live D1 active draft image production",
-  "target": 35,
-  "completedToPendingReview": 35,
+  "target": 40,
+  "completedToPendingReview": 40,
   "visualQcPassedAwaitingAssetCommit": 0,
-  "remainingNeedsUniqueImage": 0,
+  "remainingNeedsUniqueImage": 2,
   "currentBatch": "batch5",
   "completed": [
     {
@@ -25,7 +25,7 @@
     }
   ],
   "nextWork": [
-    "目前draft製圖佇列已清零；繼續新增不重複內容至農曆年前後"
+    "先完成remaining draft唯一正式圖，合格後只進pending_review"
   ],
   "rules": [
     "已通過QC的主題不得任意改文案或重生",
@@ -42,15 +42,15 @@
   "formal1254Manifest": "ops/post-image-formal-1254-manifest-20260930.json",
   "binaryCommitRemaining": 0,
   "openingPrepReplacementRequired": false,
-  "note": "最新批次1張已實體落GitHub main並回填D1 pending_review；目前剩餘draft=0。",
+  "note": "最新批次5張已實體落GitHub main並回填D1 pending_review；目前剩餘draft=2。",
   "formalJpegsCommitted": 29,
   "d1BoundPendingReview": 29,
   "formalBindingRecord": "ops/post-image-bindings-20260930-final29.json",
   "finalAssetDir": "assets/post-images/2026-09-30/batch6",
   "latestCompletedBatch": {
-    "total": 1,
-    "targetDir": "assets/post-images/2026-09-30/fixes",
-    "bindingRecord": "ops/post-image-bindings-20260930-fix-old-methods.json",
+    "total": 5,
+    "targetDir": "assets/post-images/2026-09-23",
+    "bindingRecord": "ops/post-image-bindings-20261007-restored-a.json",
     "status": "pending_review"
   }
 }
