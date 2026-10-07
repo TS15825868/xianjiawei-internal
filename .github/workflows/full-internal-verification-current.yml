@@ -96,6 +96,8 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')" > d1-invalid-status.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') AND TRIM(COALESCE(image_url,''))=''" > d1-ready-missing-image.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status='scheduled' AND (scheduled_at IS NULL OR TRIM(scheduled_at)='')" > d1-scheduled-missing-time.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.id,p.status,p.image_url FROM social_posts p LEFT JOIN media_assets m ON m.id=substr(p.image_url,instr(p.image_url,'/media/')+7) WHERE p.status IN ('draft','pending_review','approved','scheduled') AND p.image_url LIKE '%/media/%' AND (m.id IS NULL OR TRIM(COALESCE(m.data_base64,''))='')" > d1-broken-media-refs.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND TRIM(COALESCE(image_url,''))<>'' ORDER BY status,id" > d1-active-image-refs.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > d1-fk.json
           node - <<'NODE'
           const fs=require('fs');
@@ -108,6 +110,8 @@ jobs:
           for(const file of ['d1-invalid-status.json','d1-ready-missing-image.json','d1-scheduled-missing-time.json']){
             const bad=Number(rows(file)[0]?.bad||0);if(bad!==0)throw new Error(`${file} bad=${bad}`);
           }
+          const brokenMedia=rows('d1-broken-media-refs.json');
+          if(brokenMedia.length)throw new Error('D1存在失效的貼文媒體參照：'+JSON.stringify(brokenMedia));
           if(rows('d1-fk.json').length!==0)throw new Error('D1 foreign_key_check 失敗');
           console.log('PASS D1 dynamic integrity',total,st);
           NODE
@@ -152,6 +156,8 @@ jobs:
             d1-invalid-status.json
             d1-ready-missing-image.json
             d1-scheduled-missing-time.json
+            d1-broken-media-refs.json
+            d1-active-image-refs.json
             d1-fk.json
             live-*.json
           if-no-files-found: warn
