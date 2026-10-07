@@ -1,0 +1,7 @@
+{
+  "version": "2026-10-07-finalize-published-drift-via-known-batch",
+  "download_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/ops/incoming/xjw_batch_next_5_20260923_jpg.zip",
+  "manifestPath": "ops/post-image-bindings-20260923-batch2.json",
+  "bindingRecordPath": "ops/post-image-bindings-20261007-final-recheck.json",
+  "targetDir": "assets/post-images/2026-09-23"
+}
