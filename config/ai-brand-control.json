@@ -40,7 +40,9 @@
     "failureRule": "任一品牌、產品、規格、圖文、重複、視覺、拼湊剪貼或法規檢查不合格就不發布，回待審核或草稿；所有公開發布前必須由使用者人工核准"
   },
   "productCount": 6,
+  "productCountPolicy": "current-public-count-only-not-a-permanent-limit; future user-approved products may be added without changing system architecture",
   "sellableSpecificationCount": 6,
+  "sellableSpecificationCountPolicy": "current-public-count-only-not-a-permanent-limit",
   "mainSpecs": {
     "guiluTangkuai": "75g／盒｜8塊裝",
     "guiluJiao": "600g（1斤）／盒｜32塊裝"
@@ -50,8 +52,8 @@
     "guiluJiao": "每塊約18.75g"
   },
   "mediaRoles": {
-    "product": "六張正式產品圖，只放產品本體，不嵌小老闆",
-    "dm": "六張正式詳細DM，只在明確DM／詳細資料情境使用",
+    "product": "目前每項正式公開產品各有正式產品圖；未來新增產品依最新核准產品資料與實物圖加入，不鎖死固定張數；產品圖只放產品本體，不嵌小老闆",
+    "dm": "目前公開產品各自可有正式詳細DM；未來新增產品依核准資料擴充，不鎖死固定張數；只在明確DM／詳細資料情境使用",
     "trial": "目前核准的小老闆正式試喝主圖",
     "rule": "產品圖、DM圖、試喝圖不可混用；社群情境圖不得做拼湊、剪貼或浮貼式組合"
   },
@@ -135,7 +137,7 @@
   },
   "reviewDimensions": 16,
   "brandGuardianMode": "blocking-for-publish-after-manual-approval",
-  "formalProductWriteValidation": "blocking-current-six-spec-authority",
+  "formalProductWriteValidation": "blocking-current-authority-no-fixed-count",
   "generatedStatus": "pending_review_after_all_automated_checks",
   "regenerationMode": "chatgpt_handoff",
   "paidOpenAIApiEnabled": false,
@@ -165,7 +167,7 @@
     }
   ],
   "publicPositioning": "現代漢方生活品牌",
-  "publicProductScopeLine": "龜鹿｜漢方生活選品",
+  "publicProductScopeLine": "龜鹿系列與多元日常漢方選擇",
   "manualApprovalRequired": true,
   "automaticApprovalEnabled": false,
   "aiIpOpsAuthority": "config/ai-ip-ops-authority.json"
