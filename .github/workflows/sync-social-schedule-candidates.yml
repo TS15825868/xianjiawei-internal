@@ -33,11 +33,6 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Reconcile two Metricool-verified published posts
-        run: |
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "UPDATE social_posts SET status='published', image_url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/live/XJW-LIVE-20260929-hongludi-outing.jpg', image_alt='烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景', image_source='GitHub main正式圖｜Metricool 384813552｜Facebook/Instagram/Threads PUBLISHED verified 2026-10-07', image_quality_status='ok', image_approved=1, approved_by='使用者人工核准｜Metricool三平台已發布', approved_at=COALESCE(approved_at,'2026-10-01T12:30:00+08:00'), scheduled_at='2026-10-01T12:30:00+08:00', published_at='2026-10-01T12:30:00+08:00', updated_at=datetime('now') WHERE id='XJW-CONV-live-hongludi-outing-20260929';"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "UPDATE social_posts SET status='published', image_url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png', image_alt='仙加味品牌手記主視覺：第三代在萬華老店工作情境，主題為有些東西真的不能只用價格來算。', image_source='GitHub main正式圖｜Metricool 386519368｜Facebook/Instagram/Threads PUBLISHED verified 2026-10-07', image_quality_status='ok', image_approved=1, approved_by='使用者人工核准｜Metricool三平台已發布', approved_at=COALESCE(approved_at,'2026-10-02T17:30:00+08:00'), scheduled_at='2026-10-03T10:00:00+08:00', published_at='2026-10-03T10:00:00+08:00', updated_at=datetime('now') WHERE id='XJW-CONV-brand-third-generation-note';"
-
       - name: Export approved, scheduled and pending-review posts
         run: |
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,image_url,image_alt,image_source,image_approved,approved_at,published_at,updated_at FROM social_posts WHERE status IN ('approved','scheduled','pending_review') ORDER BY CASE status WHEN 'approved' THEN 0 WHEN 'scheduled' THEN 1 ELSE 2 END, COALESCE(scheduled_at, proposed_scheduled_at, updated_at), id" > /tmp/schedule-candidates.json
