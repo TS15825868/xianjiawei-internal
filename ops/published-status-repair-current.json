@@ -1,0 +1,30 @@
+{
+  "version": "2026-10-07-v1",
+  "evidence": "Metricool brand 6889683 current provider status verified PUBLISHED on Facebook Instagram Threads",
+  "items": [
+    {
+      "postId": "XJW-CONV-live-hongludi-outing-20260929",
+      "userApproved": true,
+      "metricoolStatus": "PUBLISHED",
+      "metricoolPostId": "384813552",
+      "publishedAt": "2026-10-01T12:30:00+08:00",
+      "approvedAt": "2026-10-01T12:30:00+08:00",
+      "approvedBy": "使用者人工核准｜Metricool三平台已發布",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/live/XJW-LIVE-20260929-hongludi-outing.jpg",
+      "imageAlt": "烘爐地觀景平台夕陽情境，小老闆與小鹿、小烏龜分開坐著看城市風景",
+      "imageSource": "GitHub main正式圖｜Metricool 384813552｜Facebook/Instagram/Threads PUBLISHED verified 2026-10-07"
+    },
+    {
+      "postId": "XJW-CONV-brand-third-generation-note",
+      "userApproved": true,
+      "metricoolStatus": "PUBLISHED",
+      "metricoolPostId": "386519368",
+      "publishedAt": "2026-10-03T10:00:00+08:00",
+      "approvedAt": "2026-10-02T17:30:00+08:00",
+      "approvedBy": "使用者人工核准｜Metricool三平台已發布",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
+      "imageAlt": "仙加味品牌手記主視覺：第三代在萬華老店工作情境，主題為有些東西真的不能只用價格來算。",
+      "imageSource": "GitHub main正式圖｜Metricool 386519368｜Facebook/Instagram/Threads PUBLISHED verified 2026-10-07"
+    }
+  ]
+}
