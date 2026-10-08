@@ -8,8 +8,6 @@ const POST_IMAGE_RULES=Object.freeze([
   {id:'guilu-gao',copy:[/龜鹿膏/i],image:[/guilu-gao/i,/龜鹿膏/i]},
   {id:'guilu-drink-30',copy:[/龜鹿飲\s*30\s*cc/i,/30\s*cc/i],image:[/guilu-drink-30/i,/龜鹿飲\s*30\s*cc/i,/30\s*cc/i]},
   {id:'guilu-drink-180',copy:[/龜鹿飲\s*180\s*cc/i,/180\s*cc/i],image:[/guilu-drink-180/i,/龜鹿飲\s*180\s*cc/i,/180\s*cc/i]},
-  {id:'guilu-tangkuai',copy:[/龜鹿湯塊/i,/湯塊/i],image:[/guilu-tangkuai/i,/龜鹿湯塊/i,/湯塊/i]},
-  {id:'guilu-jiao',copy:[/龜鹿膠/i],image:[/guilu-jiao/i,/龜鹿膠/i]},
   {id:'luerong-fen',copy:[/鹿茸粉/i],image:[/luerong-fen/i,/鹿茸粉/i]}
 ]);
 const RETIRED_MEDIA_MARKERS=Object.freeze([
@@ -48,6 +46,7 @@ function productSegments(text='',target=''){
 
 function publicProductContextErrors(text=''){
   const source=String(text||''),errors=[];
+  if(/龜鹿湯塊|龜鹿膠|guilu-tangkuai|guilu-jiao/i.test(source))errors.push('龜鹿湯塊與龜鹿膠已退出目前對外產品清單，公開貼文及推薦不得使用。');
   if(/柒玄茶|龜鹿調飲粉/i.test(source))errors.push('柒玄茶目前暫時隱藏，只可保留於ERP內部資料，不得出現在公開貼文、官網或LINE OA公開內容。');
   if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source)){
     errors.push('30cc正式產品必須使用「龜鹿飲30cc玻璃罐／30cc／罐（小玻璃罐）」，不得稱瓶。');
@@ -58,9 +57,6 @@ function publicProductContextErrors(text=''){
   }
   for(const segment of productSegments(source,'龜鹿膏')){
     if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。');
-  }
-  for(const segment of productSegments(source,'龜鹿湯塊')){
-    if(/(300\s*g|600\s*g|2\s*兩)/i.test(segment))errors.push('龜鹿湯塊正式主規格只有「75g／盒｜8塊裝」。');
   }
   return [...new Set(errors)];
 }
@@ -75,6 +71,7 @@ export function validateProductRecord(body={},options={}){
   const normalized=normalizedName(name,spec),product=BY_NAME.get(normalized);
   if(!product){
     if(options.publicOnly)return [`「${name||'未填'}」不在目前公開產品母資料清單。`];
+    if(/龜鹿湯塊|龜鹿膠|guilu-tangkuai|guilu-jiao/i.test(name))return [];
     if(/柒玄茶|龜鹿調飲粉|qixuan-guilu-drink-powder/i.test(name))return [];
     return validatePublicProductText(`${name} ${spec}\n${body.usage||''}`);
   }
@@ -116,8 +113,6 @@ export function validatePostPayload(body={}){
   return [...new Set([...textErrors,...validatePostImageMatch(body)])];
 }
 
-const soupBlock=BY_ID.get('guilu-tangkuai');
-const guiluJiao=BY_ID.get('guilu-jiao');
 const guiluGao=BY_ID.get('guilu-gao');
 const drink30=BY_ID.get('guilu-drink-30');
 const drink180=BY_ID.get('guilu-drink-180');
@@ -127,10 +122,6 @@ export const PRODUCT_AUTHORITY=Object.freeze({
   sourceAuthority:PRODUCT_MASTER_META.authority,
   source:PRODUCT_MASTER_META.source,
   productCount:PRODUCTS.length,
-  soupBlockMain:soupBlock?.allowedSpecs?.[0]||'',
-  soupBlockDetail:`${soupBlock?.detailUnitApprox||''}（顧客文字可顯示）`,
-  guiluJiaoMain:guiluJiao?.allowedSpecs?.[0]||'',
-  guiluJiaoDetail:`${guiluJiao?.detailUnitApprox||''}（顧客文字可顯示）`,
   guiluGaoUsagePrimary:guiluGao?.usagePrimary||'',
   guiluDrink30UsagePrimary:[drink30?.usagePrimary,drink30?.usageAdjustment,drink30?.usageTiming].filter(Boolean).join('；'),
   guiluDrink180UsagePrimary:[drink180?.usagePrimary,drink180?.usageTiming].filter(Boolean).join('；'),
