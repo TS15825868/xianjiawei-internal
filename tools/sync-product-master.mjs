@@ -7,7 +7,7 @@ const ROOT=path.resolve(HERE,'..');
 const SNAPSHOT_PATH=path.join(ROOT,'src/product-master-snapshot.js');
 const CLIENT_PATH=path.join(ROOT,'assets/js/current-public-product-master.js');
 const MASTER_URL=process.env.PRODUCT_MASTER_URL||'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json';
-const EXPECTED_IDS=['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen'];
+const EXPECTED_IDS=['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'];
 
 async function fetchMaster(){
   let master;
