@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "2026-10-05-six-public-product-master-mirror-v5",
-  "updatedAt": "2026-10-05",
+  "version": "2026-10-08-four-active-public-products-retired-jiao-tangkuai",
+  "updatedAt": "2026-10-08",
   "role": "ERP／貼文中心使用的仙加味公開產品基礎資料鏡像；同步目前官網已核准公開產品事實，不以目前產品數量作永久上限，也不覆蓋內部價格、成本、庫存、客戶、通路或暫緩產品資料。",
   "source": {
     "repository": "TS15825868/xianjiawei",
@@ -23,8 +23,8 @@
     ],
     "productScopeLine": "龜鹿系列與多元日常漢方選擇"
   },
-  "productCount": 6,
-  "productCountPolicy": "6為目前公開數量，不是系統永久上限；未來新增不同型態產品時依最新使用者核准資料擴充",
+  "productCount": 4,
+  "productCountPolicy": "目前公開4項；不是永久上限。龜鹿膠與龜鹿湯塊已下架；ERP舊訂單及歷史資料保留。",
   "products": [
     {
       "id": "guilu-gao",
@@ -50,20 +50,6 @@
       "package": "狹長直立鋁袋",
       "usagePrimary": "每日一包",
       "fulfillment": "接單後製作，約5～7個工作天出貨"
-    },
-    {
-      "id": "guilu-tangkuai",
-      "name": "龜鹿湯塊",
-      "specification": "75g／盒｜8塊裝",
-      "detail": "每塊約9.375g",
-      "form": "塊狀"
-    },
-    {
-      "id": "guilu-jiao",
-      "name": "龜鹿膠",
-      "specification": "600g （1斤）／盒｜32塊裝",
-      "detail": "每塊約18.75g",
-      "form": "塊狀"
     },
     {
       "id": "luerong-fen",
