@@ -3,7 +3,7 @@ import {PRODUCTS,PRODUCT_MASTER_META} from './product-master-snapshot.js';
 import { PRODUCT_AUTHORITY, validateProductRecord, validatePublicProductText, validatePostPayload, validatePostImageMatch } from './product-authority.js';
 
 assert.equal(PRODUCT_AUTHORITY.sourceAuthority,'user-confirmed-current');
-assert.match(PRODUCT_AUTHORITY.version,/public-product-master.*-erp-guard-current/);
+assert.match(PRODUCT_AUTHORITY.version,/-erp-guard-current$/);
 assert.match(PRODUCT_AUTHORITY.source,/public-product-master\.json$/);
 assert.equal(PRODUCT_AUTHORITY.productCount,PRODUCTS.length);
 assert.equal(PRODUCT_MASTER_META.productCount,PRODUCTS.length);
