@@ -17,8 +17,6 @@ for(const spec of [
   '100g／罐',
   '30cc／罐（小玻璃罐）',
   '180cc／包（鋁袋）',
-  '75g／盒｜8塊裝',
-  '600g （1斤）／盒｜32塊裝',
   '75g／罐'
 ]) must(source.includes(spec),`前端產品權威缺少目前完整正式主規格：${spec}`);
 
@@ -41,13 +39,11 @@ must(/dimensions:\{widthMm:51,heightMm:78\}/.test(source),'龜鹿膏前端權威
 must(/aspectRatio:\{min:0\.60,target:0\.64,max:0\.68\}/.test(source),'180cc前端權威必須保留狹長鋁袋比例');
 must(source.includes('沒有可信尺寸或相對尺度依據時不得自行猜測'),'未知包裝尺寸不得自行猜測');
 
+must(source.includes('已下架，不得出現在公開貼文或推薦中。'),'下架產品必須阻擋進入公開貼文');
 must(source.includes('不得稱瓶'),'前端必須拒絕30cc瓶型退役稱呼');
-must(source.includes('龜鹿湯塊目前正式主規格只有')&&source.includes('75g／盒｜8塊裝'),'前端必須拒絕龜鹿湯塊退役容量與舊2兩標示');
-must(source.includes('每塊約9.375g（顧客文字可顯示）'),'湯塊每塊約重應允許顧客文字顯示');
-must(source.includes('每塊約18.75g（顧客文字可顯示）'),'龜鹿膠每塊約重應允許顧客文字顯示');
 must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
 must(source.includes('龜鹿飲不設定固定白天時段'),'前端必須移除龜鹿飲固定白天時段');
 must(source.includes("image:image('images/customer-display-v20260812/guilu-drink-30cc.avif')"),'30cc一般顧客產品圖必須使用目前customer-display');
 must(source.includes("identity:image('images/products-v3/guilu-drink-30.jpg')"),'30cc products-v3只能保留身份參考');
 
-console.log('PASS：前端產品權威已同步目前官網六項公開主規格；龜鹿膏依個人作息、30cc每日 1–2 罐、龜鹿湯塊75g／盒｜8塊裝、180cc每日一包，產品圖角色與比例規則維持正式版。');
+console.log('PASS：前端產品權威已同步四項公開產品，下架品不可公開推薦，歷史資料保留。');
