@@ -41,6 +41,8 @@ jobs:
           set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,rejection_reason,review_note,created_at,updated_at FROM social_posts ORDER BY CASE status WHEN 'pending_review' THEN 0 WHEN 'approved' THEN 1 WHEN 'scheduled' THEN 2 WHEN 'draft' THEN 3 WHEN 'published' THEN 4 ELSE 5 END, updated_at DESC, id ASC" > current-social-posts.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > current-social-post-counts.json
+          # 對齊圖片實際狀態：僅取公開貼文影像綁定欄位，不讀客戶資料；避免拿舊快照進行重製。
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_quality_status,image_approved,scheduled_at,updated_at FROM social_posts ORDER BY id" > current-social-image-states.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > foreign-key-check.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')" > invalid-status.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE TRIM(id)='' OR TRIM(title)=''" > required-text.json
@@ -74,6 +76,7 @@ jobs:
           path: |
             current-social-posts.json
             current-social-post-counts.json
+            current-social-image-states.json
             foreign-key-check.json
             invalid-status.json
             required-text.json
