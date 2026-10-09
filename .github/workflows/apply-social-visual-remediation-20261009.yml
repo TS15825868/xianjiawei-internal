@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'ops/social-visual-remediation-20261009.json'
+      - '.github/workflows/apply-social-visual-remediation-20261009.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -41,7 +42,8 @@ jobs:
           const q=s=>"'"+s.replaceAll("'","''")+"'";
           fs.writeFileSync('/tmp/check-social-visual.sql','SELECT id,status,image_url,image_quality_status,copy FROM social_posts WHERE id IN ('+ids.map(q).join(',')+');');
           NODE
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --file /tmp/check-social-visual.sql > /tmp/check-social-visual.json
+          QUERY="$(cat /tmp/check-social-visual.sql)"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "$QUERY" > /tmp/check-social-visual.json
           node - <<'NODE'
           const fs=require('fs');
           const manifest=JSON.parse(fs.readFileSync('ops/social-visual-remediation-20261009.json','utf8'));
