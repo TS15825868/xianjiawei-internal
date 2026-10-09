@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260915-content-guidance-v6-timed-mixed';
+  const VERSION='20261009-content-guidance-v7-idempotent-button';
   const TOPIC_SOURCES=[
     {url:'/assets/data/social-conversation-topic-bank-current.json?v='+VERSION,label:'輕鬆互動',priority:0},
     {url:'/assets/data/guilu-content-topic-bank-v20260814.json?v='+VERSION,label:'龜鹿長青',priority:1}
@@ -159,7 +159,10 @@
       const add=actions.querySelector('[data-add-post]');if(add)actions.insertBefore(button,add);else actions.appendChild(button);
       button.addEventListener('click',openTopics);
     }
-    button.textContent=topics.length?`內容題庫（${topics.length}）`:'內容題庫';
+    const label=topics.length?`內容題庫（${topics.length}）`:'內容題庫';
+    // This runs inside a subtree MutationObserver. Rewriting identical text
+    // creates another childList mutation and prevents the browser from yielding.
+    if(button.textContent!==label)button.textContent=label;
   }
   async function loadTopics(){
     const settled=await Promise.allSettled(TOPIC_SOURCES.map(async source=>{
