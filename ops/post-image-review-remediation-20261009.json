@@ -1,0 +1,84 @@
+{
+  "version": "2026-10-09-visual-audit-v1",
+  "source": "2026-10-09T06:32Z Cloudflare D1 readonly production snapshot; manually inspected main image files",
+  "policy": "不合格退回草稿並清空舊圖等待新圖；新版完成才送待審核。退役產品僅封存公開貼文，保留ERP歷史。絕不更動published。",
+  "rework": [
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "expectedFilename": "XJW-CONV-chat-30-bare-jar.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "expectedFilename": "XJW-CONV-chat-30-vs-180.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "expectedFilename": "XJW-CONV-chat-drink-made-to-order.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-storage",
+      "expectedFilename": "XJW-CONV-chat-gao-storage.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "expectedFilename": "XJW-CONV-chat-gao-vs-drink.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "expectedFilename": "XJW-CONV-chat-glass-vs-pouch-storage.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "expectedFilename": "XJW-CONV-chat-luerong-intro.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "expectedFilename": "XJW-CONV-chat-photo-size.jpg",
+      "reason": "白底產品DM／資訊卡硬貼入畫面，缺少小老闆生活情境"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "expectedFilename": "XJW-CONV-cny-family-choice.jpg",
+      "reason": "畫面含拼貼式選項或多重框，需改為單一自然情境"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "expectedFilename": "XJW-CONV-cny-gift-choice.jpg",
+      "reason": "畫面含拼貼式選項或多重框，需改為單一自然情境"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "expectedFilename": "XJW-CONV-cny-pre-clean.jpg",
+      "reason": "畫面含拼貼式選項或多重框，需改為單一自然情境"
+    },
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "expectedFilename": "XJW-ACTIVE-IMG-003.png",
+      "reason": "相同實體圖片被多篇重用"
+    }
+  ],
+  "archive": [
+    {
+      "postId": "XJW-CONV-chat-jiao-spec",
+      "expectedFilename": "XJW-CONV-chat-jiao-spec.jpg",
+      "reason": "龜鹿膠、龜鹿湯塊已退出公開產品清單，僅保留歷史"
+    },
+    {
+      "postId": "XJW-CONV-chat-tang-vs-jiao",
+      "expectedFilename": "XJW-CONV-chat-tang-vs-jiao.jpg",
+      "reason": "龜鹿膠、龜鹿湯塊已退出公開產品清單，僅保留歷史"
+    },
+    {
+      "postId": "XJW-CONV-chat-tangkuai-spec",
+      "expectedFilename": "XJW-CONV-chat-tangkuai-spec.jpg",
+      "reason": "龜鹿膠、龜鹿湯塊已退出公開產品清單，僅保留歷史"
+    }
+  ]
+}
