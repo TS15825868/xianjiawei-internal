@@ -8,7 +8,7 @@ const MODULES=new Set(['products','customers','visits','orders','inventory','pur
 const MODULE_PREFIX={products:'PRD',customers:'CUS',visits:'VIS',orders:'ORD',inventory:'INV',purchases:'PUR',suppliers:'SUP',finance:'FIN',tasks:'TSK',documents:'DOC',templates:'TPL',assets:'AST'};
 const READ_RESTRICTED={finance:['owner','admin','accounting']};
 const WRITE_ROLES={products:['owner','admin'],customers:['owner','admin','sales'],visits:['owner','admin','sales'],orders:['owner','admin','sales','warehouse','accounting'],inventory:['owner','admin','warehouse'],purchases:['owner','admin','warehouse','accounting'],suppliers:['owner','admin','warehouse','accounting'],finance:['owner','admin','accounting'],tasks:['owner','admin','sales','warehouse','accounting','content'],documents:['owner','admin','content'],templates:['owner','admin','content'],assets:['owner','admin','content'],posts:['owner','admin','content']};
-const ALLOWED_PLATFORMS=new Set(['Facebook','Instagram','LINE OA','LINE OA 廣播','LINE VOOM','Google 商家']);
+const ALLOWED_PLATFORMS=new Set(['Facebook','Instagram','Threads','LINE OA','LINE OA 廣播','LINE VOOM','Google 商家']);
 let schemaPromise=null;
 
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:JSON_HEADERS});}
