@@ -19,6 +19,7 @@ for(const item of manifest.items){
     sql.push("UPDATE social_posts SET status='draft', image_url=NULL,image_quality_status='needs_regeneration',image_width=0,image_height=0,image_bytes=0, "+common+" WHERE "+where+";");
   }else throw Error('unknown action: '+item.action);
 }
+sql.push("UPDATE social_posts SET status='archived',review_note='2026-10-09 舊版DM已被新版正式已發佈圖取代，避免重複發布',updated_at=datetime('now') WHERE id='XJW-CONV-chat-gao-storage' AND status='draft' AND image_url IS NULL;");
 sql.push("UPDATE social_posts SET copy=REPLACE(copy,'龜鹿膠這項老工藝做到今天','熬膠這項老工藝延續到今天'),review_note='2026-10-09：已下架品公開文案替換為工藝主題，須人工審核後才可發佈',updated_at=datetime('now') WHERE id='XJW-CONV-brand-third-generation-note' AND status='draft' AND copy LIKE '%龜鹿膠這項老工藝做到今天%';");
 fs.writeFileSync('/tmp/social-visual-remediation-20261009.sql',sql.join('\n')+'\n');
 console.log('Prepared audited conditional D1 updates:',manifest.items.length,'plus one copy correction.');
