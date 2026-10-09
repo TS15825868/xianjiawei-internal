@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/sync-active-post-image-queue.yml'
+      - 'ops/social-post-image-scenes-20261010.json'
 
 permissions:
   contents: write
@@ -60,6 +61,8 @@ jobs:
           const crypto=require('crypto');
           const raw=JSON.parse(fs.readFileSync('/tmp/active-drafts.json','utf8'));
           const formalMedia=JSON.parse(fs.readFileSync('/tmp/website-formal-media-authority.json','utf8'));
+          const sceneBook=JSON.parse(fs.readFileSync('ops/social-post-image-scenes-20261010.json','utf8'));
+          const sceneById=sceneBook.sceneByPostId||{};
           const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
           const windowFor=(id='')=>{
             const s=String(id).toLowerCase();
@@ -90,7 +93,9 @@ jobs:
               kind:r.category||'生活內容',
               title:r.title||'',
               products:productListFor(text),
-              scene:r.image_alt||'',
+              scene:String(sceneById[r.id]||r.image_alt||''),
+              sceneSource:sceneById[r.id]?'formal_unique_scene_20261010':'needs_unique_scene_review',
+              generationPolicy:'AI only environment and fixed mascots. Formal product photo only via locked post-compositing. No AI products, labels or poster text.',
               imageSource:r.image_source||'',
               window:windowFor(r.id),
               proposedScheduledAt:r.proposed_scheduled_at||null,
