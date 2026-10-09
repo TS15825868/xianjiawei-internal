@@ -1,14 +1,16 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-09-15-content-image-audit-v8-conversation-flex';
+const VERSION='2026-10-09-content-image-audit-v9-visual-rework';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
 const uniq=items=>[...new Set(items.filter(Boolean))];
 const RISKY=Object.freeze(['治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質']);
 const BLOCKED_OLD_PUBLIC_NAMES=Object.freeze(['台興山產']);
-const BLOCKED_UNFINISHED_PUBLIC_NAMES=Object.freeze(['柒玄茶','龜鹿調飲粉']);
+const BLOCKED_UNFINISHED_PUBLIC_NAMES=Object.freeze(['柒玄茶','龜鹿調飲粉','龜鹿膠','龜鹿湯塊']);
+// Confirmed, image-specific rejects. A genuinely new and correctly reviewed image path can replace any rejected one.
+const KNOWN_BAD_VISUAL_FILENAMES=Object.freeze(['xjw-conv-chat-30-bare-jar.jpg','xjw-conv-chat-30-vs-180.jpg','xjw-conv-chat-drink-made-to-order.jpg','xjw-conv-chat-gao-storage.jpg','xjw-conv-chat-gao-vs-drink.jpg','xjw-conv-chat-glass-vs-pouch-storage.jpg','xjw-conv-chat-luerong-intro.jpg','xjw-conv-chat-photo-size.jpg','xjw-conv-chat-jiao-spec.jpg','xjw-conv-chat-tang-vs-jiao.jpg','xjw-conv-chat-tangkuai-spec.jpg','xjw-conv-cny-family-choice.jpg','xjw-conv-cny-gift-choice.jpg','xjw-conv-cny-pre-clean.jpg']);
 const LIFESTYLE_CONTEXT_TERMS=Object.freeze([
   '在家','居家','外出','通勤','工作空檔','工作','上班','早上','上午','下午','雨天','下雨','換季','早晚溫差','溫差',
   '悶熱','炎熱','夏天','冬天','春天','秋天','溫熱飲用','溫熱','熱水','家常料理','料理','燉湯','餐桌','保存整理','保存','冷藏','收納',
@@ -67,6 +69,10 @@ function lifestyleRuleErrors(row){
 function semanticErrors(row,liveRows=[]){
   const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=[];
   const imageUrl=normalizedImageUrl(row?.image_url);
+  const imageFilename=imageUrl.split('/').pop();
+  if(KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已經實際視覺覆核為產品DM拼貼、非生活情境或多畫框拼湊；必須重新製作完整單一情境圖。');
+  if(row?.id==='XJW-CONV-chat-brand-not-only-product' && imageUrl.endsWith('/2026-09-22/xjw-active-img-003.png'))errors.push('此圖片與另一篇使用相同Git實體圖片，禁止一圖多文，需重製專屬情境。');
+  if(['rejected','needs_regeneration','needs_rework','low','missing'].includes(clean(row?.image_quality_status).toLowerCase()))errors.push('目前圖片尚未通過正式視覺驗收，禁止核准、排程或發布。');
 
   const risky=RISKY.find(term=>text.includes(term));
   if(risky)errors.push(`公開文案含不適合食品廣告的字詞「${risky}」`);
@@ -116,7 +122,7 @@ async function authorize(request,env,ctx){
 async function postRow(env,id){return env?.DB?.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first()}
 async function liveRows(env){
   if(!env?.DB)return[];
-  const result=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,status FROM social_posts WHERE status<>'archived'").all();
+  const result=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
   return result.results||[];
 }
 async function auditOne(env,row,rows){
