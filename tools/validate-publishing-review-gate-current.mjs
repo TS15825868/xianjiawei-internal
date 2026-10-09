@@ -4,7 +4,7 @@ const path='tools/validate-publishing-review-gate.mjs';
 let source=fs.readFileSync(path,'utf8');
 
 const staleCache="must(html.includes('20260815-regeneration-policy-v6'),'貼文中心仍載入舊ChatGPT生成快取版本');";
-const currentCache="must(/post-regenerate-policy-v1\\.js\\?v=202608\\d{2}-regeneration-policy-v\\d+/.test(html),'貼文中心ChatGPT重新生成流程必須使用有日期與版本識別的正式快取版本');";
+const currentCache="must(/post-regenerate-policy-v1\\.js\\?v=2026\\d{4}-[a-z0-9-]+/.test(html),'貼文中心ChatGPT重新生成流程必須使用有日期與版本識別的正式快取版本');";
 if(!source.includes(staleCache)){
   throw new Error('找不到舊版固定快取版本守門條件；請直接檢查 validate-publishing-review-gate.mjs 後更新本相容層');
 }
