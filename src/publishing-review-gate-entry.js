@@ -9,10 +9,9 @@ const PRODUCT_RULES=Object.freeze([
   {id:'guilu-gao',name:'龜鹿膏',terms:['龜鹿膏'],image:['guilu-gao','龜鹿膏']},
   {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',terms:['30cc','龜鹿飲30'],image:['guilu-drink-30','30cc','龜鹿飲30']},
   {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',terms:['180cc','龜鹿飲180'],image:['guilu-drink-180','180cc','龜鹿飲180']},
-  {id:'guilu-tangkuai',name:'龜鹿湯塊',terms:['龜鹿湯塊','湯塊'],image:['guilu-tangkuai','龜鹿湯塊','湯塊']},
-  {id:'guilu-jiao',name:'龜鹿膠',terms:['龜鹿膠'],image:['guilu-jiao','龜鹿膠']},
   {id:'luerong-fen',name:'鹿茸粉',terms:['鹿茸粉'],image:['luerong-fen','鹿茸粉']},
 ]);
+const RETIRED_PUBLIC_PRODUCT_NAMES=Object.freeze(['龜鹿膠','龜鹿湯塊']);
 const REGENERATION_ROLES=new Set(['owner','admin','content']);
 const CUSTOMER_INTERNAL_TERMS=Object.freeze([
   '待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料','Cloudflare','API Token','Secret','Repository','Repo','commit','deploy','部署','快取版本','測試資料','內部檢查','客戶實際會看到的文案','產品原圖','正式資訊','正式說明'
@@ -38,7 +37,7 @@ async function ensureSchema(env){if(!env?.DB)throw new Error('D1 資料庫尚未
 async function postRow(env,id){return env.DB.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first()}
 function postMaterial(row){return{title:clean(row?.title),headline:clean(row?.headline),copy:clean(row?.copy),category:clean(row?.category),image_url:clean(row?.image_url),image_alt:clean(row?.image_alt),image_source:clean(row?.image_source),image_width:Number(row?.image_width||0),image_height:Number(row?.image_height||0),image_quality_status:clean(row?.image_quality_status)}}
 async function fingerprint(row){const bytes=new TextEncoder().encode(JSON.stringify(postMaterial(row)));const digest=await crypto.subtle.digest('SHA-256',bytes);return[...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('')}
-const REVIEW_PRODUCT_NAMES=['龜鹿膏','龜鹿飲30cc','龜鹿飲180cc','龜鹿湯塊','龜鹿膠','鹿茸粉'];
+const REVIEW_PRODUCT_NAMES=['龜鹿膏','龜鹿飲30cc','龜鹿飲180cc','鹿茸粉'];
 function reviewProductSegments(value,target){const source=String(value||''),segments=[];let start=0;while(target){const pos=source.indexOf(target,start);if(pos<0)break;let end=source.length,after=pos+target.length;for(const name of REVIEW_PRODUCT_NAMES){const next=source.indexOf(name,after);if(next>=0)end=Math.min(end,next)}segments.push(source.slice(pos,end));start=after}return segments}
 function publicNorm(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/仙加味[｜|]?補養，是一種節奏。?/g,'').replace(/[^\p{L}\p{N}]+/gu,'')}
 function imageNorm(value){try{const u=new URL(String(value||''),'https://xjw.invalid');u.search='';u.hash='';return `${u.origin}${u.pathname}`.toLowerCase()}catch{return String(value||'').split(/[?#]/)[0].trim().toLowerCase()}}
@@ -72,7 +71,7 @@ function productMatchErrors(row){
     for(const rule of visual){if(mentioned.length&&!mentioned.some(m=>m.id===rule.id))errors.push(`圖片呈現「${rule.name}」，但文案沒有對應該產品`) }
   }
   if(/30\s*cc/i.test(combined)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(combined))errors.push('30cc正式名稱必須是小玻璃罐／30cc／罐，不得稱瓶');
-  for(const segment of reviewProductSegments(combined,'龜鹿湯塊'))if(/(300\s*g|600\s*g)/i.test(segment))errors.push('龜鹿湯塊正式規格只有75g／盒｜8塊裝');
+  if(RETIRED_PUBLIC_PRODUCT_NAMES.some(name=>text.includes(name)||image.includes(name)))errors.push('龜鹿膠與龜鹿湯塊已退出公開產品清單，禁止新貼文與新圖片；僅保留歷史資料');
   for(const segment of reviewProductSegments(combined,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排');
   if(!clean(row?.image_url))errors.push('缺少圖片');
   if(!clean(row?.image_alt))errors.push('缺少圖片說明，無法完成圖文一致審核');
