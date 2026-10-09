@@ -4,7 +4,7 @@ name: 仙加味有效貼文圖片佇列同步
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["仙加味輕鬆互動題庫同步到貼文中心"]
+    workflows: ["仙加味輕鬆互動題庫同步到貼文中心", "仙加味全庫不合格貼文圖片安全退回"]
     types: [completed]
   push:
     branches: [main]
