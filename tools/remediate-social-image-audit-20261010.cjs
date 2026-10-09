@@ -17,7 +17,7 @@ for(const t of target){
  }
  const reason='圖像重審不合格：'+String(t.reason||'不符合圖文／角色／產品正式規格');
  const where="id="+q(t.post_id)+" AND status="+q(now.status)+" AND image_url="+q(t.image_url)+" AND image_approved=0";
- commands.push("UPDATE social_posts SET status='draft',image_url=NULL,media_id=NULL,image_alt='',image_source="+q('2026-10-10 已退回不合格舊圖，GitHub 原圖保留作為稽核記錄')+",image_quality_status='needs_regeneration',image_width=0,image_height=0,image_bytes=0,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,proposed_scheduled_at=NULL,rejection_reason="+q(reason)+",review_note="+q('2026-10-10 全庫正式視覺盤點，退回草稿重製；不得未審發布')+",updated_at=datetime('now') WHERE "+where+";");
+ commands.push("UPDATE social_posts SET status='draft',image_url='',media_id=NULL,image_alt='',image_source="+q('2026-10-10 已退回不合格舊圖，GitHub 原圖保留作為稽核記錄')+",image_quality_status='needs_regeneration',image_width=0,image_height=0,image_bytes=0,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,proposed_scheduled_at=NULL,rejection_reason="+q(reason)+",review_note="+q('2026-10-10 全庫正式視覺盤點，退回草稿重製；不得未審發布')+",updated_at=datetime('now') WHERE "+where+";");
  applied.push({id:t.post_id,oldStatus:now.status,oldImageUrl:t.image_url,reason:t.reason});
 }
 fs.writeFileSync('/tmp/full-library-visual-updates.sql',commands.join('\n')+'\n');
