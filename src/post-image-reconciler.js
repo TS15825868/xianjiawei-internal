@@ -4,8 +4,6 @@ const OFFICIAL_MEDIA=[
   {id:'XJW-GUILU-drink30-work-break',file:'01-work-30cc.webp',bytes:49620,sha:'2126f7218e28840d691d3e7e9277e2e4b3877d7394d3fa1cc9454fce475fdb4d',alt:'仙加味上班日常；小老闆手持30cc小玻璃罐',status:'pending_review'},
   {id:'XJW-GUILU-drink180-home',file:'02-home-180cc.webp',bytes:53070,sha:'f346affa8e5387ba9323bb1cfaccacab739b06d5f45fdaa0f9c469d966a8b401',alt:'仙加味居家溫飲；180cc鋁袋生活情境',status:'pending_review'},
   {id:'XJW-GUILU-gao-storage',file:'03-gao-storage.webp',bytes:47502,sha:'d9072baa0d40dce6ab1dac9c750fac0badeee188c7f24558cedd97aff6c6c41f',alt:'仙加味保存提醒；龜鹿膏開罐後冷藏',status:'pending_review'},
-  {id:'XJW-GUILU-tangkuai-soup',file:'04-tangkuai-soup.webp',bytes:50334,sha:'f9ad9d7b153ad8da3761b17e7bbacda268361f67986b88a7ca823224150e99a7',alt:'仙加味料理搭配；龜鹿湯塊家常燉湯',status:'pending_review'},
-  {id:'XJW-GUILU-jiao-600g',file:'05-jiao-600g.webp',bytes:48654,sha:'4c2566ffcbdb0af564ebe8c6182ccc3c7d9e51b09c31f7238591052f5835a0bf',alt:'仙加味型態認識；600g／32塊龜鹿膠',status:'pending_review'},
   {id:'XJW-GUILU-luerong-75g',file:'06-lurong-75g.webp',bytes:46950,sha:'0d0cbdf260af3f9d067205eba476d833d016ad85b16feb27e2bcf1f8c8c494de',alt:'仙加味粉末安排；75g鹿茸粉',status:'pending_review'},
   {id:'XJW-SOCIAL-20260815-02-line-consult-and-trial',file:'07-line-consult.webp',bytes:52640,sha:'dc2ab1d8516eb1e133853ad40a8f8128ae6c154c31dba76b7e61d7266ada55e9',alt:'仙加味LINE諮詢；依日常協助挑選產品',status:'pending_review'},
   {id:'XJW-GUILU-choose-by-place',file:'08-home-out.webp',bytes:50190,sha:'17a75dff9fa92cbe164bb9e729ab6bcf49a8c5011c43b83f9f809d835856d38b',alt:'仙加味生活節奏；在家與外出依情境選擇',status:'pending_review'},
@@ -97,8 +95,11 @@ export async function reconcileOfficialPostMedia(env){
     for(const item of OFFICIAL_MEDIA){
       const media=matched.get(item.id);
       if(!media)continue;
-      const current=await db.prepare('SELECT id,status,platforms_json,image_url,media_id,image_source FROM social_posts WHERE id=? LIMIT 1').bind(item.id).first();
+      const current=await db.prepare('SELECT id,status,platforms_json,image_url,media_id,image_source,image_quality_status,image_approved FROM social_posts WHERE id=? LIMIT 1').bind(item.id).first();
       if(!current)continue;
+      // 歷史、已發布、已核准及退回重製資料不得被舊媒體權威重新開啟。
+      if(current.status!=='pending_review' || String(current.image_url||'').trim() || Number(current.image_approved||0)!==0)continue;
+      if(!['','missing','candidate'].includes(String(current.image_quality_status||'').trim()))continue;
       if(isExplicitUserReplacement(current,media.id)){
         userReplacementsPreserved+=1;
         continue;
@@ -106,13 +107,8 @@ export async function reconcileOfficialPostMedia(env){
       const platforms=String(current.platforms_json||'').trim();
       const nextPlatforms=!platforms||platforms==='[]'?DEFAULT_PLATFORMS:platforms;
       const url=`/media/${encodeURIComponent(media.id)}`;
-      if(item.status==='published'){
-        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='published_approved',image_approved=1,status='published',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,updated_at=? WHERE id=?")
-          .bind(url,media.id,item.alt,SOURCE,Number(media.width||0),Number(media.height||0),Number(media.bytes||0),nextPlatforms,now,item.id).run();
-      }else{
-        await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='candidate',image_approved=0,status='pending_review',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=?")
-          .bind(url,media.id,item.alt,SOURCE,Number(media.width||0),Number(media.height||0),Number(media.bytes||0),nextPlatforms,now,item.id).run();
-      }
+      await db.prepare("UPDATE social_posts SET image_url=?,media_id=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status='candidate',image_approved=0,status='pending_review',platforms_json=?,scheduled_at=NULL,proposed_scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=? AND status='pending_review' AND COALESCE(image_url,'')='' AND image_approved=0")
+        .bind(url,media.id,item.alt,SOURCE,Number(media.width||0),Number(media.height||0),Number(media.bytes||0),nextPlatforms,now,item.id).run();
       updated+=1;
     }
     return{ok:true,matched:matched.size,updated,user_replacements_preserved:userReplacementsPreserved,expected:OFFICIAL_MEDIA.length,missing:OFFICIAL_MEDIA.filter(x=>!matched.has(x.id)).map(x=>x.file),rejected};
