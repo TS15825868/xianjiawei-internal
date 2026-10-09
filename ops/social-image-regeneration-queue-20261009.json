@@ -1,0 +1,150 @@
+{
+  "version": "2026-10-09-current",
+  "scope": "仙加味不合格貼文圖片逐篇重製；正式 D1 鎖定 published/archived 不改動",
+  "basedOn": [
+    "ops/post-image-review-remediation-20261009.json",
+    "ops/social-visual-remediation-20261009.json",
+    "GitHub Actions 37902410368",
+    "正式照片與固定Q版小老闆素材"
+  ],
+  "characterLock": "Q版小男孩，短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；小鹿與小烏龜分開，不拼貼、不過度3D。",
+  "reviewRules": [
+    "真正單一生活場景，不准格狀拼版或DM硬套",
+    "出現實物必須用已確認正式產品原圖等比例處理",
+    "禁止AI自創貼紙或瓶型，禁療效宣稱",
+    "同一張成圖不可對應多篇貼文",
+    "每張完成後必須實際視覺審核，合格才回填 D1 pending_review，保持 image_approved=0",
+    "人工審核前不核准、不排程、不發布",
+    "年節題材需對應正確年份與季節"
+  ],
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "topic": "品牌／生活紀錄",
+      "scene": "萬華店內工作桌旁，小老闆翻看老店紀錄與家庭料理筆記，桌上有歷史照片、整理用紙筆，窗外隱約可見萬華街屋；小鹿看著老照片，小烏龜看筆記。不是單純舊物特寫，而是整理品牌生活文化的動作。",
+      "hardRules": "不出現任何產品、標語板或新增AI文字",
+      "type": "brand",
+      "priority": "priority-1",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "topic": "30cc小玻璃裸罐",
+      "scene": "小老闆在日光柔和的工作桌檢查一罐30cc正式小玻璃裸罐，尺標或手掌自然顯示小尺寸；小鹿、小烏龜在桌邊觀看。",
+      "hardRules": "產品罐必須使用正式小玻璃裸罐實物原圖，無貼紙，不可AI重新畫；禁止任何DM、說明卡嵌入",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "topic": "30cc與180cc怎麼選",
+      "scene": "仙加味櫃台早午，兩種尺寸放在同一張真實木桌上，一個是小玻璃裸罐、一個是180cc鋁袋；小老闆自然介紹，小鹿靠近小罐、小烏龜望向鋁袋，真實比例有別。",
+      "hardRules": "兩品都必須正式原圖等比例融入，同一透視與光影，不做左右兩欄廣告",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "topic": "接單後製作與交期",
+      "scene": "老店接單後，小老闆在桌面記錄新訂單與工作日行事曆，夥伴幫忙核對備料工作；氛圍乾淨專業。",
+      "hardRules": "不要畫虛構產品、不要畫不存在的生產流程；交期約5–7個工作天用正式文字疊加工具處理，不要AI文字",
+      "type": "scene",
+      "priority": "priority-1",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "topic": "龜鹿膏與龜鹿飲使用方式",
+      "scene": "居家早餐桌，一側熱水與乾淨小匙，一側正式龜鹿飲30cc小玻璃裸罐；龜鹿膏正式原罐依比例放桌面，小老闆展示兩種生活選擇，鹿龜分開自然。",
+      "hardRules": "不做海報對比、不隨意重畫貼紙或產品外盒；溫熱與常溫不混淆",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "topic": "玻璃罐與鋁袋居家收納",
+      "scene": "家中乾淨開放式收納櫃，小老闆分別收整正式30cc裸小玻璃罐和180cc狹長鋁袋；小鹿看小罐、小烏龜旁觀分類，自然真實光線。",
+      "hardRules": "正式產品原圖、尺寸差距明顯、不能像大瓶飲料或超大鋁袋",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "topic": "鹿茸粉75g基本認識",
+      "scene": "午後整潔的仙加味工作桌，小老闆把正式75g鹿茸粉原罐擺在木質托盤，旁邊是用途無關的筆記與收納架，兩夥伴自然陪伴，畫面留白乾淨。",
+      "hardRules": "75g正式產品實物原圖，包裝貼紙不許AI重畫，不能畫成新藥罐",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "topic": "30cc真實比例",
+      "scene": "拍攝產品照片的自然場景，小老闆在窗邊桌面用手機拍攝一罐30cc小玻璃裸罐，正常成年人手掌和尺規可作比例參考，小鹿和小烏龜不遮擋。",
+      "hardRules": "正式小裸罐原圖，必須符合30cc大小；無大幅手機畫中畫、無產品DM",
+      "type": "product",
+      "priority": "priority-2",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "topic": "年節家人團聚互動",
+      "scene": "除夕傍晚家常餐桌，仙加味小老闆與小鹿小烏龜準備家常菜與團圓座位，燈光溫暖，有正在擺碗筷的動作；不做三個選項泡泡。",
+      "hardRules": "單一完整年節場景，禁止選項拼貼與療效文案；貼文文案需補仙加味關聯",
+      "type": "scene",
+      "priority": "seasonal",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "topic": "過年送禮體貼",
+      "scene": "年節前木桌上的普通素雅禮品布袋和卡片，小老闆思考送給親友的適合物品，小鹿幫拿緞帶，小烏龜看著手寫清單；不出現虛構產品禮盒。",
+      "hardRules": "若要展示仙加味實品則必須另用正式實拍素材；不得自創品牌禮盒；文案補品牌關聯",
+      "type": "scene",
+      "priority": "seasonal",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "topic": "年前收拾整理",
+      "scene": "年前萬華居家/老店，仙加味小老闆整理櫥櫃與桌面，小鹿用抹布擦矮桌，小烏龜在收納籃旁協助，紅色新年裝飾少量且自然。",
+      "hardRules": "只用單一完整空間，不做掃除／採買左右分割圖；文案補仙加味關聯",
+      "type": "scene",
+      "priority": "seasonal",
+      "status": "needs_unique_approved_image",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    }
+  ],
+  "archivedInPreviousRun": [
+    "XJW-CONV-chat-gao-storage",
+    "XJW-CONV-chat-jiao-spec",
+    "XJW-CONV-chat-tang-vs-jiao",
+    "XJW-CONV-chat-tangkuai-spec"
+  ],
+  "notes": "先前AI產出的九宮格與模仿產品圖全部不合格，不得導入。此清單是待製圖生產計畫，不代表圖片已產出或已回填。"
+}
