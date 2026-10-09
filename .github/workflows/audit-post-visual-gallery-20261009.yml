@@ -90,6 +90,36 @@ jobs:
             for e in ordered:f.write(str(e['index']).zfill(2)+' '+e['id']+' ['+e['status']+'] '+','.join(e['flags'])+'\n')
           print('audit candidates:',len(ordered),'suspected:',sum(bool(x['flags']) for x in ordered))
           PY
+      - name: Review current Metricool pending image gallery
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import json,io,urllib.request,math
+          from PIL import Image,ImageOps,ImageDraw,ImageFont
+          rows=json.load(open('audits/metricool-visual-snapshot-20261009.json'))['items']
+          w,h=300,360
+          canvas=Image.new('RGB',(5*w,math.ceil(len(rows)/5)*h),'#E6E3DF')
+          pen=ImageDraw.Draw(canvas)
+          font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',20)
+          out=[]
+          for idx,p in enumerate(rows):
+            x=idx%5*w;y=idx//5*h
+            item={'id':p['id'],'title':p['text'][:130],'draft':p['draft'],'autoPublish':p['autoPublish'],'image':p['media'][0] if p['media'] else None,'error':None}
+            try:
+              req=urllib.request.Request(item['image'],headers={'User-Agent':'Mozilla/5.0'})
+              with urllib.request.urlopen(req,timeout=16) as resp: data=resp.read(12*1024*1024)
+              im=ImageOps.contain(Image.open(io.BytesIO(data)).convert('RGB'),(280,284))
+              canvas.paste(im,(x+(w-im.width)//2,y+(284-im.height)//2))
+              item['width'],item['height']=Image.open(io.BytesIO(data)).size
+            except Exception as exc:item['error']=str(exc)[:100]
+            pen.rectangle((x+1,y+289,x+w-1,y+h-1),fill='#FCFAF7')
+            pen.text((x+8,y+295),str(idx+1)+': '+str(p['id']),fill='#0D2944',font=font)
+            pen.text((x+8,y+323),'DRAFT' if p['draft'] else 'SCHEDULED',fill='#7B2525',font=font)
+            out.append(item)
+          canvas.save('visual-audit/metricool-gallery.jpg',quality=86,optimize=True)
+          with open('visual-audit/metricool-audit.json','w') as f:json.dump(out,f,ensure_ascii=False,indent=2)
+          print('metricool items',len(out),'download_errors',sum(bool(x['error']) for x in out))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: xianjiawei-visual-gallery-${{ github.run_id }}
