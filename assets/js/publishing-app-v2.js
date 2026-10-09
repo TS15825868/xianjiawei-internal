@@ -324,6 +324,23 @@ async function decodeImageFile(file){
 async function canvasBlob(canvas,type='image/jpeg',quality=.88){
   return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('圖片壓縮失敗')),type,quality));
 }
+async function readImageUrlMetadata(value){
+  const url=new URL(value,location.href);
+  if(!['https:','http:'].includes(url.protocol))throw new Error('圖片網址必須使用 HTTP 或 HTTPS');
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  try{
+    const response=await fetch(url.href,{credentials:url.origin===location.origin?'same-origin':'omit',signal:controller.signal});
+    if(!response.ok)throw new Error('圖片網址無法讀取');
+    const blob=await response.blob();
+    if(!blob.size||blob.size>12*1024*1024)throw new Error('圖片檔案大小不符合要求');
+    const decoded=await decodeImageFile(blob);
+    try{return{width:decoded.width,height:decoded.height,bytes:blob.size};}
+    finally{decoded.close?.();}
+  }catch(error){
+    throw new Error('無法驗證圖片網址；請確認網址可讀取，或改用直接上傳圖片。');
+  }finally{clearTimeout(timer);}
+}
 async function prepareUploadImage(file){
   const mime=String(file?.type||'').toLowerCase();
   if(!file)throw new Error('請先選擇圖片');
@@ -379,6 +396,7 @@ async function uploadImageFile(form,file){
     form.dataset.uploadedImageWidth=String(result.width||prepared.width||0);
     form.dataset.uploadedImageHeight=String(result.height||prepared.height||0);
     form.dataset.uploadedImageBytes=String(result.bytes||prepared.file.size||0);
+    form.dataset.uploadedImageUrl=result.url||'';
     setUploadPreview(form,result.url||'');
     if(stateNode)stateNode.textContent=`已上傳 ${prepared.width||0}×${prepared.height||0}｜${Math.round((result.bytes||0)/1024)}KB`;
     toast('圖片已上傳並套用到貼文');
@@ -443,10 +461,18 @@ uploadButton?.addEventListener('click',async()=>{
       if(selectedFile&&form.dataset.uploadedFileKey!==fileKey(selectedFile))await uploadImageFile(form,selectedFile);
       const body=Object.fromEntries(new FormData(form).entries());
       delete body.image_file;
-      if(form.dataset.uploadedImageWidth)body.image_width=Number(form.dataset.uploadedImageWidth||0);
-      if(form.dataset.uploadedImageHeight)body.image_height=Number(form.dataset.uploadedImageHeight||0);
-      if(form.dataset.uploadedImageBytes)body.image_bytes=Number(form.dataset.uploadedImageBytes||0);
-      if(selectedFile&&String(body.image_url||'').trim())body.image_source='貼文中心直接上傳｜使用者人工指定';
+      const imageUrl=String(body.image_url||'').trim();
+      if(imageUrl&&imageUrl===form.dataset.uploadedImageUrl){
+        body.image_width=Number(form.dataset.uploadedImageWidth||0);
+        body.image_height=Number(form.dataset.uploadedImageHeight||0);
+        body.image_bytes=Number(form.dataset.uploadedImageBytes||0);
+        body.image_source='貼文中心直接上傳｜使用者人工指定';
+      }else if(imageUrl&&(imageUrl!==String(post?.image_url||'').trim()||!post?.image_width||!post?.image_height||!post?.image_bytes)){
+        const metadata=await readImageUrlMetadata(imageUrl);
+        body.image_width=metadata.width;body.image_height=metadata.height;body.image_bytes=metadata.bytes;
+      }else if(!imageUrl){
+        body.image_width=0;body.image_height=0;body.image_bytes=0;
+      }
       body.platforms=selectedPlatforms(form);
       await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
         method:edit?'PUT':'POST',body:JSON.stringify(body)
