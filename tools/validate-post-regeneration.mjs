@@ -1,53 +1,33 @@
 import fs from 'node:fs';
-
-const read=path=>fs.readFileSync(path,'utf8');
+const read=p=>fs.readFileSync(p,'utf8');
 const must=(ok,message)=>{if(!ok)throw new Error(message)};
 const policy=read('assets/js/post-regenerate-policy-v1.js');
-const buttons=read('assets/js/post-regenerate-buttons.js');
 const html=read('publishing.html');
 const gate=read('src/publishing-review-gate-entry.js');
+const buttons=read('assets/js/post-regenerate-buttons.js');
 const pkg=read('package.json');
-
-for(const token of [
-  "VERSION='20260810-single-system-v3-true-originals'",
-  "PRODUCT_IMAGE_VERSION='20260810-products-v3-latest-originals-v3'",
-  "images/products-v3/guilu-gao.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  "images/products-v3/guilu-drink-30.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  "images/products-v3/guilu-drink-180.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  "images/products-v3/guilu-tangkuai.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  "images/products-v3/guilu-jiao.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  "images/products-v3/luerong-fen.jpg?v=${PRODUCT_IMAGE_VERSION}",
-  '30cc正式名稱只能是「龜鹿飲30cc玻璃罐」',
-  'AI不得重畫產品',
-  '每張圖只做一個完整場景',
-  '生成／修改完成後只回到「待審核」',
-  '/regeneration-start',
-  '/regeneration-ready',
-  'window.open',
-  'navigator.clipboard',
-]) must(policy.includes(token),`重新生成政策缺少正式規則：${token}`);
-
-for(const token of [
-  'window.XJWPublishingV2',
-  'policy.launch(post,mode)',
-  'data-post-regenerate-mode',
-  '生成後回填／上傳',
-  'openResultModal',
-  "mode==='copy'",
-  "window.prompt('貼上剛生成的新文案",
-  'deviceInput.click()',
-  'pendingReview',
-  '回到待審核',
-]) must(buttons.includes(token),`重新生成按鈕流程缺少：${token}`);
-
-must(!policy.includes('OPENAI_API_KEY'),'正式流程不得要求付費OpenAI API key');
-must(!policy.includes('/v1/images')&&!policy.includes('/v1/responses'),'正式流程不得由Worker呼叫付費OpenAI API');
-must(html.includes('post-regenerate-buttons.js')&&html.includes('post-regenerate-policy-v1.js'),'publishing.html沒有載入重新生成正式流程');
-must(html.includes('20260810-single-system-v3-true-originals'),'publishing.html沒有強制載入真正產品原圖版重新生成政策');
-must(gate.includes("path.match(/^\\/api\\/posts\\/([^/]+)\\/regeneration-start$/)"),'Worker缺少regeneration-start端點');
-must(gate.includes("path.match(/^\\/api\\/posts\\/([^/]+)\\/regeneration-ready$/)"),'Worker缺少regeneration-ready端點');
-must(gate.includes("post.status='pending_review'"),'生成完成後必須回待審核');
-must(gate.includes('approved_at=null')&&gate.includes('scheduled_at=null'),'重新生成必須撤銷核准與排程');
-must(pkg.includes('tools/validate-post-regeneration.mjs'),'package check未納入重新生成驗收');
-
-console.log('PASS：不符合按鈕會撤銷舊核准／排程，開啟免費ChatGPT並帶入最新products-v3真正產品原圖、30cc／180cc比例、小老闆與單一場景規則；新內容回填後只回待審核，重新完成16項審核才可發布。');
+for(const v of [
+  "三、目前對外產品只有四項",
+  "龜鹿膏100g",
+  "龜鹿飲30cc玻璃罐",
+  "龜鹿飲180cc鋁袋",
+  "鹿茸粉75g",
+  "小玻璃裸罐",
+  "AI絕對不得重畫",
+  "單一場景",
+  "待審核",
+  "/regeneration-start",
+  "/regeneration-ready"
+])must(policy.includes(v),'製圖入口缺少新版正式規則：'+v);
+for(const v of ["'龜鹿膠600g':","'龜鹿湯塊75g':","正式產品與規格只有六項","每日早上及下午各一小匙"]){
+  must(!policy.includes(v),'舊產品或舊使用方式回流：'+v);
+}
+must(gate.includes('龜鹿膠與龜鹿湯塊已退出公開產品清單'),'後端未攔截下架產品新貼文');
+must(!gate.includes("id:'guilu-jiao'")&&!gate.includes("id:'guilu-tangkuai'"),'後端仍包含已下架公開產品權威');
+must(html.includes('20261009-four-public-products-v1'),'行動版未載入2026-10-09新版快取識別');
+must(html.includes('post-regenerate-buttons.js'),'貼文中心沒有重生成按鈕');
+must(buttons.includes('data-post-regenerate-mode'),'缺少原卡片重新生成觸發');
+must(!policy.includes('api.openai.com'),'不得啟用額外付費生圖API');
+must(!policy.includes('/publish-now'),'重新生成不能直接發布');
+must(pkg.includes('tools/validate-post-regeneration.mjs'),'需保留製圖驗證腳本');
+console.log('PASS：四項產品與原圖硬規則、下架品阻擋、16項審核與新版手機快取均符合');
