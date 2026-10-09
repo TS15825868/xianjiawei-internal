@@ -1,11 +1,12 @@
 {
-  "version": "2026-10-09-current",
+  "version": "2026-10-09-full-library-after-nine-bindings",
   "scope": "仙加味不合格貼文圖片逐篇重製；正式 D1 鎖定 published/archived 不改動",
   "basedOn": [
     "ops/post-image-review-remediation-20261009.json",
     "ops/social-visual-remediation-20261009.json",
     "GitHub Actions 37902410368",
-    "正式照片與固定Q版小老闆素材"
+    "正式照片與固定Q版小老闆素材",
+    "GitHub Actions 37921428907：最新 D1 全庫 132 篇"
   ],
   "characterLock": "Q版小男孩，短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章；小鹿與小烏龜分開，不拼貼、不過度3D。",
   "reviewRules": [
@@ -25,9 +26,11 @@
       "hardRules": "不出現任何產品、標語板或新增AI文字",
       "type": "brand",
       "priority": "priority-1",
-      "status": "needs_unique_approved_image",
+      "status": "bound_pending_human_review",
       "destinationStatus": "pending_review",
-      "publishAllowed": false
+      "publishAllowed": false,
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-brand-not-only-product.jpg",
+      "d1EvidenceRunId": 37921428907
     },
     {
       "postId": "XJW-CONV-chat-30-bare-jar",
@@ -36,7 +39,7 @@
       "hardRules": "產品罐必須使用正式小玻璃裸罐實物原圖，無貼紙，不可AI重新畫；禁止任何DM、說明卡嵌入",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -47,7 +50,7 @@
       "hardRules": "兩品都必須正式原圖等比例融入，同一透視與光影，不做左右兩欄廣告",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -58,9 +61,11 @@
       "hardRules": "不要畫虛構產品、不要畫不存在的生產流程；交期約5–7個工作天用正式文字疊加工具處理，不要AI文字",
       "type": "scene",
       "priority": "priority-1",
-      "status": "needs_unique_approved_image",
+      "status": "bound_pending_human_review",
       "destinationStatus": "pending_review",
-      "publishAllowed": false
+      "publishAllowed": false,
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+      "d1EvidenceRunId": 37921428907
     },
     {
       "postId": "XJW-CONV-chat-gao-vs-drink",
@@ -69,7 +74,7 @@
       "hardRules": "不做海報對比、不隨意重畫貼紙或產品外盒；溫熱與常溫不混淆",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -80,7 +85,7 @@
       "hardRules": "正式產品原圖、尺寸差距明顯、不能像大瓶飲料或超大鋁袋",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -91,7 +96,7 @@
       "hardRules": "75g正式產品實物原圖，包裝貼紙不許AI重畫，不能畫成新藥罐",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -102,7 +107,7 @@
       "hardRules": "正式小裸罐原圖，必須符合30cc大小；無大幅手機畫中畫、無產品DM",
       "type": "product",
       "priority": "priority-2",
-      "status": "needs_unique_approved_image",
+      "status": "awaiting_product_composition",
       "destinationStatus": "pending_review",
       "publishAllowed": false
     },
@@ -113,9 +118,11 @@
       "hardRules": "單一完整年節場景，禁止選項拼貼與療效文案；貼文文案需補仙加味關聯",
       "type": "scene",
       "priority": "seasonal",
-      "status": "needs_unique_approved_image",
+      "status": "bound_pending_human_review",
       "destinationStatus": "pending_review",
-      "publishAllowed": false
+      "publishAllowed": false,
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-cny-family-choice-scene-v2.jpg",
+      "d1EvidenceRunId": 37921428907
     },
     {
       "postId": "XJW-CONV-cny-gift-choice",
@@ -124,9 +131,11 @@
       "hardRules": "若要展示仙加味實品則必須另用正式實拍素材；不得自創品牌禮盒；文案補品牌關聯",
       "type": "scene",
       "priority": "seasonal",
-      "status": "needs_unique_approved_image",
+      "status": "bound_pending_human_review",
       "destinationStatus": "pending_review",
-      "publishAllowed": false
+      "publishAllowed": false,
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-cny-gift-choice-scene-v2.jpg",
+      "d1EvidenceRunId": 37921428907
     },
     {
       "postId": "XJW-CONV-cny-pre-clean",
@@ -135,8 +144,350 @@
       "hardRules": "只用單一完整空間，不做掃除／採買左右分割圖；文案補仙加味關聯",
       "type": "scene",
       "priority": "seasonal",
-      "status": "needs_unique_approved_image",
+      "status": "bound_pending_human_review",
       "destinationStatus": "pending_review",
+      "publishAllowed": false,
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-cny-pre-clean-scene-v2.jpg",
+      "d1EvidenceRunId": 37921428907
+    },
+    {
+      "postId": "XJW-CONV-chat-small-things-work",
+      "topic": "小老闆今天忙的，都是一些很小的事",
+      "reason": "新情境圖已逐張視覺檢查、正式落檔與 D1 回填，尚未經使用者核准",
+      "status": "bound_pending_human_review",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "topic": "放假在家，你會想慢慢準備一餐嗎？",
+      "reason": "新情境圖已逐張視覺檢查、正式落檔與 D1 回填，尚未經使用者核准",
+      "status": "bound_pending_human_review",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "topic": "今天讓小鹿跟小烏龜來選",
+      "reason": "新情境圖已逐張視覺檢查、正式落檔與 D1 回填，尚未經使用者核准",
+      "status": "bound_pending_human_review",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-deer-turtle-soup-choice-scene-v2.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-simple-soup",
+      "topic": "一鍋湯，其實不用放得很複雜",
+      "reason": "新情境圖已逐張視覺檢查、正式落檔與 D1 回填，尚未經使用者核准",
+      "status": "bound_pending_human_review",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-shop-organizing",
+      "topic": "小老闆今天在整理什麼？",
+      "reason": "道具上出現不可核實的 AI 手寫文字",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-shop-organizing.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-traditional-image",
+      "topic": "看到「傳統」兩個字，你第一個想到什麼？",
+      "reason": "前景舊紙張有不可讀的 AI 手寫文字",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-traditional-image.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "topic": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "reason": "角色以思考代替準備料理，並有 AI 手寫道具",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-elder-kitchen-habit.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-care-before-home-message",
+      "topic": "回家前，你會先打一通電話，還是先傳一句問候？",
+      "reason": "海報文字占比過高、胸章位置不符、節慶布置與常態問候不符",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch7/XJW-CONV-care-before-home-message.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-care-simple-checkin",
+      "topic": "一句問候，也是一種關心",
+      "reason": "海報文字過多，晚間場景不符午休問候",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch7/XJW-CONV-care-simple-checkin.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "topic": "一件事情做久了，還會覺得新鮮嗎？",
+      "reason": "角色核心造型偏離正式小老闆",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-005.png",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-no-standard-answer",
+      "topic": "有些問題，其實沒有標準答案",
+      "reason": "天冷捧杯場景不符合個別生活選擇主題",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-021.png",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "topic": "你家以前最常看到哪一種食材？",
+      "reason": "大型海報文字，主食材不符合紅棗／枸杞記憶主題",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-pantry-memory.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "topic": "你家有固定的煮湯日嗎？",
+      "reason": "大型海報文字與資訊卡，日曆出現非品牌語言",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-soup-day.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "topic": "小時候過年跟現在，哪裡最不一樣？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-cny-childhood-now.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "topic": "年假後第一鍋湯，你會選雞還是排骨？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-cny-first-soup.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "topic": "過年前整理冰箱，最常找到什麼？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-cny-fridge-clean.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-last-day-reset",
+      "topic": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch7/XJW-CONV-cny-last-day-reset.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "topic": "過年煮一桌菜，你家一定不能少哪一道？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-cny-must-have-dish.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "topic": "開工第一天，小老闆先做一件小事",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-cny-reopen.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "topic": "新年第一個開店日，小老闆先做什麼？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-new-year-open-door.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "topic": "新的一年，不一定要突然變得很厲害",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-new-year-slow-start.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-new-year-warm-cup-share",
+      "topic": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch7/XJW-CONV-new-year-warm-cup-share.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "topic": "如果今年只能留下一個習慣，你會留哪個？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-year-end-keep-habit.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "topic": "今年有沒有一件小事，你很慶幸自己做了？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-year-end-small-win.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-old-methods",
+      "topic": "有些老方法，為什麼到現在還有人在做？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/fixes/XJW-CONV-chat-old-methods.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "topic": "你比較喜歡看圖，還是慢慢看文字？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-picture-or-text.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "topic": "開店前，小老闆先做哪一件事？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-opening-prep.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "topic": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-quiet-work.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-trial-first",
+      "topic": "想先了解，再決定也可以",
+      "reason": "大型海報文字／資訊卡占比過高，未符合完整自然生活情境的製圖要求",
+      "status": "needs_unique_replacement",
+      "currentStatus": "pending_review",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/batch6/XJW-CONV-chat-trial-first.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-brand-third-generation-note",
+      "topic": "有些東西，真的不能只用價格來算",
+      "reason": "成人取代固定 Q 版小老闆，且出現退場產品湯塊",
+      "status": "needs_unique_replacement",
+      "currentStatus": "draft",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-03/XJW-CONV-brand-third-generation-note.png",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-CONV-live-hongludi-outing-20260929",
+      "topic": "帶小老闆去烘爐地走走",
+      "reason": "品牌印章被畫在背面而非胸前，需維持正式核心造型",
+      "status": "needs_unique_replacement",
+      "currentStatus": "draft",
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-30/live/XJW-LIVE-20260929-hongludi-outing.jpg",
+      "destinationStatus": "pending_review",
+      "publishAllowed": false
+    },
+    {
+      "postId": "XJW-SOCIAL-20260904-0900-FIRST",
+      "topic": "週五早上，先把今天想問的整理好",
+      "reason": "舊海報／DM 圖文字過多或圖文不符，保留歷史資料，須準備替代圖後人工核准",
+      "status": "prepare_replacement_preserve_published",
+      "currentStatus": "published",
+      "currentImageUrl": "https://ts15825868.github.io/xianjiawei/images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "destinationStatus": "published_history_preserved",
+      "publishAllowed": false
+    },
+    {
+      "postId": "POST-BRAND-START",
+      "topic": "仙加味，從萬華開始",
+      "reason": "舊海報／DM 圖文字過多或圖文不符，保留歷史資料，須準備替代圖後人工核准",
+      "status": "prepare_replacement_preserve_published",
+      "currentStatus": "published",
+      "currentImageUrl": "/media/IMG-OFFICIAL-13-BRAND-STORY",
+      "destinationStatus": "published_history_preserved",
+      "publishAllowed": false
+    },
+    {
+      "postId": "POST-TRIAL-MAIN",
+      "topic": "龜鹿飲試喝組｜先試喝，再決定",
+      "reason": "舊海報／DM 圖文字過多或圖文不符，保留歷史資料，須準備替代圖後人工核准",
+      "status": "prepare_replacement_preserve_published",
+      "currentStatus": "published",
+      "currentImageUrl": "/media/IMG-OFFICIAL-12-TRIAL",
+      "destinationStatus": "published_history_preserved",
       "publishAllowed": false
     }
   ],
@@ -146,5 +497,5 @@
     "XJW-CONV-chat-tang-vs-jiao",
     "XJW-CONV-chat-tangkuai-spec"
   ],
-  "notes": "先前AI產出的九宮格與模仿產品圖全部不合格，不得導入。此清單是待製圖生產計畫，不代表圖片已產出或已回填。"
+  "notes": "全庫巡檢延伸原 11 篇，不覆蓋歷史。已綁定 9 张新圖均為待審核；原圖保留 15 篇；仍有 27 篇未發布圖片需重製、3 篇已發布需準備人工核准替代圖、6 篇產品情境待合成。全案尚未完成。"
 }
