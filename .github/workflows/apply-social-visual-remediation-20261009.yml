@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'ops/social-visual-remediation-20261009.json'
+      - 'tools/apply-social-visual-remediation-20261009.cjs'
       - '.github/workflows/apply-social-visual-remediation-20261009.yml'
   workflow_dispatch:
 permissions:
