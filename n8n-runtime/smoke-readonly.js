@@ -25,12 +25,14 @@ async function fetchResource(url, headers = {}) {
 
   const master = await fetchResource('https://ts15825868.github.io/xianjiawei/public-product-master.json');
   const m = master.body || {};
-  const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','guilu-tangkuai','guilu-jiao','luerong-fen'];
+  const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'];
+  const retired = ['guilu-tangkuai','guilu-jiao'];
   const ids = Array.isArray(m.products) ? m.products.map((p) => p.id) : [];
   if (!master.ok) errors.push(`產品母資料 HTTP ${master.status}`);
   if (m.authority !== 'user-confirmed-current') errors.push('產品母資料 authority 錯誤');
   if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id)) errors.push('產品母資料 productCount／ID 不一致');
   if (!expected.every(id => ids.includes(id))) errors.push('產品母資料缺少核心產品');
+  if (retired.some(id => ids.includes(id))) errors.push('已下架產品回流到公開產品母資料');
   if (ids.includes('qixuan-guilu-drink-powder')) errors.push('柒玄茶被錯誤公開');
   const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
   if (!Array.isArray(p30?.usage) || !p30.usage.some((x) => String(x).includes('每日 1–2 罐'))) {
