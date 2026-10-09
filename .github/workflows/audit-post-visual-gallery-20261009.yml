@@ -1,0 +1,98 @@
+name: 仙加味待審核貼文圖片完整視覺盤點
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-post-visual-gallery-20261009.yml'
+      - 'assets/post-images/**'
+
+permissions:
+  contents: read
+
+jobs:
+  gallery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Read live D1 (do not change post statuses)
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url,image_alt,image_approved,scheduled_at FROM social_posts WHERE status IN ('pending_review','draft','approved','scheduled') ORDER BY CASE status WHEN 'scheduled' THEN 0 WHEN 'approved' THEN 1 WHEN 'pending_review' THEN 2 ELSE 3 END,id" > live-posts.json
+      - name: Build gallery and flag possible poster reuse or removed products
+        run: |
+          python -m pip install Pillow --quiet
+          mkdir -p visual-audit
+          python - <<'PY'
+          import json,os,hashlib,math
+          from urllib.parse import unquote
+          from PIL import Image,ImageOps,ImageDraw,ImageFont
+          raw=json.load(open('live-posts.json'))
+          rows=(raw[0].get('results',[]) if isinstance(raw,list) else raw.get('results',[]))
+          base='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'
+          ordered=[]; seen={}
+          font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',20)
+          for i,r in enumerate(rows,1):
+            entry={'index':i,'id':r.get('id'),'title':r.get('title'),'status':r.get('status'),'image_url':r.get('image_url'),'flags':[]}
+            combined=' '.join(str(r.get(k) or '') for k in ('title','copy','image_alt'))
+            if any(x in combined for x in ('龜鹿膠','龜鹿湯塊')):
+              entry['flags'].append('retired_product_public')
+            url=str(r.get('image_url') or '')
+            rel=unquote(url[len(base):]) if url.startswith(base) else None
+            entry['repo_path']=rel
+            if not rel or not os.path.isfile(rel):
+              entry['flags'].append('missing_or_external_source')
+            else:
+              try:
+                data=open(rel,'rb').read()
+                sha=hashlib.sha256(data).hexdigest()
+                if sha in seen:entry['flags'].append('same_binary_as_'+seen[sha])
+                else:seen[sha]=r.get('id')
+                with Image.open(rel) as f:
+                  img=f.convert('RGB');entry['width'],entry['height']=img.size
+                  sm=img.resize((120,120))
+                  pix=list(sm.getdata())
+                  nearwhite=sum(1 for r0,g,b in pix if min(r0,g,b)>220 and max(r0,g,b)-min(r0,g,b)<30)/len(pix)
+                  entry['nearwhite_ratio']=round(nearwhite,3)
+                  if nearwhite>0.40:entry['flags'].append('suspected_poster_layout_review')
+              except Exception as e:entry['flags'].append('unreadable_image')
+            ordered.append(entry)
+          w,h=260,290
+          for group in range(math.ceil(len(ordered)/20)):
+            segment=ordered[group*20:(group+1)*20]
+            board=Image.new('RGB',(5*w,4*h),'#E6E3DF')
+            pen=ImageDraw.Draw(board)
+            for k,e in enumerate(segment):
+              x=(k%5)*w;y=(k//5)*h
+              im=None
+              if e['repo_path'] and os.path.isfile(e['repo_path']):
+                try:im=ImageOps.contain(Image.open(e['repo_path']).convert('RGB'),(240,235))
+                except Exception:pass
+              if im:board.paste(im,(x+(w-im.width)//2,y+(235-im.height)//2))
+              pen.rectangle((x+1,y+236,x+w-2,y+h-2),fill='#FCFAF7')
+              pen.text((x+8,y+238),str(e['index'])+' '+e['status'][:12],font=font,fill='#172C42')
+              ident=e['id'].replace('XJW-CONV-','')
+              for v,line in enumerate((ident[:29],ident[29:58])):
+                pen.text((x+8,y+261+v*16),line,fill='#5A3032')
+            board.save('visual-audit/gallery-%02d.jpg'%(group+1),quality=84,optimize=True)
+          with open('visual-audit/audit.json','w') as f:json.dump({'total':len(ordered),'items':ordered},f,ensure_ascii=False,indent=2)
+          with open('visual-audit/index.txt','w') as f:
+            for e in ordered:f.write(str(e['index']).zfill(2)+' '+e['id']+' ['+e['status']+'] '+','.join(e['flags'])+'\n')
+          print('audit candidates:',len(ordered),'suspected:',sum(bool(x['flags']) for x in ordered))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xianjiawei-visual-gallery-${{ github.run_id }}
+          path: visual-audit/
+          retention-days: 7
+          if-no-files-found: error
