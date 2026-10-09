@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/remediate-full-library-post-images-20261010.yml'
+      - 'tools/remediate-social-image-audit-20261010.cjs'
   workflow_dispatch:
 permissions:
   contents: read
