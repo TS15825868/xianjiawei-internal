@@ -40,7 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           curl -fsS --retry 3 --max-time 30 \
-            'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/data/formal-media-authority-v20260810.json' \
+            'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json' \
             -o website-formal-media-authority.json
           node -e "const x=require('./website-formal-media-authority.json');if(!Array.isArray(x.products)||x.products.length<1)process.exit(1)"
 
@@ -55,14 +55,13 @@ jobs:
           const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
           const items=Array.isArray(q.items)?q.items:[];
           const errors=[];
-          const allowedProducts=new Set(['30cc','180cc','龜鹿膏','龜鹿湯塊','龜鹿膠','鹿茸粉']);
+          const allowedProducts=new Set(['30cc','180cc','龜鹿膏','鹿茸粉']);
+          if(!Array.isArray(media.products)||media.productCount!==4||media.products.length!==4)errors.push('目前官網正式產品權威必須是四品');
           const authorityById=new Map((media.products||[]).map(p=>[p.id,p]));
           const assetMap={
-            '30cc':'guilu-drink-30cc',
-            '180cc':'guilu-drink-180cc',
+            '30cc':'guilu-drink-30',
+            '180cc':'guilu-drink-180',
             '龜鹿膏':'guilu-gao',
-            '龜鹿湯塊':'guilu-tangkuai',
-            '龜鹿膠':'guilu-jiao',
             '鹿茸粉':'luerong-fen'
           };
 
@@ -75,9 +74,10 @@ jobs:
           for(const [queueName,id] of Object.entries(assetMap)){
             const current=String(q.formalAssets?.[queueName]||'').replace(/^\//,'');
             const product=authorityById.get(id);
-            const expected=String(product?.image||'').replace(/^\//,'');
-            if(!expected)errors.push(`官網正式媒體權威缺 ${id}`);
-            else if(product?.status!=='approved_display')errors.push(`官網 ${id} 尚非 approved_display`);
+            const approvedPaths={'guilu-drink-30':'images/product-main/guilu-drink-30.jpg','guilu-drink-180':'images/product-main/guilu-drink-180.jpg','guilu-gao':'images/product-main/guilu-gao.jpg','luerong-fen':'images/product-main/luerong-fen.jpg'};
+            const expected=approvedPaths[id];
+            if(!expected||!product)errors.push(`官網正式媒體權威缺 ${id}`);
+            else if(product.mediaStatus!=='approved-formal-product-image')errors.push(`官網 ${id} 尚未核准正式主圖`);
             else if(current!==expected)errors.push(`${queueName}: queue產品主圖 ${current||'(空)'} 與官網權威 ${expected} 不一致`);
           }
 
@@ -95,8 +95,7 @@ jobs:
             const t=String(x.title||'');
             if(/180cc/i.test(t)&&!/30cc/i.test(t)&&products.includes('30cc'))errors.push(`${x.postId}: 單一180cc情境混入30cc`);
             if(/30cc/i.test(t)&&!/180cc/i.test(t)&&products.includes('180cc'))errors.push(`${x.postId}: 單一30cc情境混入180cc`);
-            if(/龜鹿膠/.test(t)&&!/(龜鹿湯塊|湯塊)/.test(t)&&products.includes('龜鹿湯塊'))errors.push(`${x.postId}: 單一龜鹿膠情境混入龜鹿湯塊`);
-            if(/龜鹿湯塊|湯塊/.test(t)&&!/龜鹿膠/.test(t)&&products.includes('龜鹿膠'))errors.push(`${x.postId}: 單一龜鹿湯塊情境混入龜鹿膠`);
+            if(/龜鹿膠|龜鹿湯塊/.test([x.title,x.scene].join(' ')))errors.push(`${x.postId}: 出現退場產品，不可恢復對外製圖`);
             if(/試喝/.test(t)){
               if(!products.includes('30cc'))errors.push(`${x.postId}: 試喝情境缺正式30cc小玻璃裸罐`);
               if(products.includes('180cc'))errors.push(`${x.postId}: 試喝情境不得混入180cc`);
@@ -114,7 +113,7 @@ jobs:
 
           for(const x of items)if(!posts.some(p=>p.id===x.postId))errors.push(`${x.postId}: 清單項目已不在live draft，需移出queue`);
           if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-          console.log(`PASS ${posts.length}篇live draft：唯一imageId、文案雜湊、角色年齡鎖、情境產品對應與六項正式產品主圖一致`);
+          console.log(`PASS ${posts.length}篇live draft：唯一imageId、文案雜湊、角色年齡鎖、情境產品對應與現行四項正式產品主圖一致`);
           NODE
 
       - uses: actions/upload-artifact@v4
