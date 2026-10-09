@@ -1,0 +1,96 @@
+{
+  "version": "2026-10-09-visual-audit-v1",
+  "sourceOfTruth": "Cloudflare D1 social_posts (readonly snapshot via GitHub Actions 37894016145, 2026-10-09 14:31 Taiwan)",
+  "brand": "仙加味",
+  "activePublicProducts": [
+    "龜鹿膏100g",
+    "龜鹿飲30cc玻璃罐",
+    "龜鹿飲180cc鋁袋",
+    "鹿茸粉75g"
+  ],
+  "activePostsSnapshot": {
+    "total": 132,
+    "pending_review": 59,
+    "draft": 2,
+    "published": 3,
+    "archived": 68
+  },
+  "rule": "只修改以上已核實舊圖且原image_url未變、狀態仍為draft或pending_review的內容；絕不修改published。下架產品保留歷史，錯誤DM圖片不發佈；重做經實際視覺檢查後回待審核，由使用者核准後才排程或發佈。",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-30-bare-jar",
+      "expectedFilename": "XJW-CONV-chat-30-bare-jar.jpg",
+      "action": "regenerate",
+      "reason": "DM 截圖套框取代30cc裸罐生活情境"
+    },
+    {
+      "id": "XJW-CONV-chat-30-vs-180",
+      "expectedFilename": "XJW-CONV-chat-30-vs-180.jpg",
+      "action": "regenerate",
+      "reason": "兩張DM並排，無真實選擇情境"
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "expectedFilename": "XJW-CONV-chat-drink-made-to-order.jpg",
+      "action": "regenerate",
+      "reason": "DM卡片未呈現接單後製作情境"
+    },
+    {
+      "id": "XJW-CONV-chat-gao-vs-drink",
+      "expectedFilename": "XJW-CONV-chat-gao-vs-drink.jpg",
+      "action": "regenerate",
+      "reason": "兩張DM並排，無生活情境"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "expectedFilename": "XJW-CONV-chat-glass-vs-pouch-storage.jpg",
+      "action": "regenerate",
+      "reason": "DM卡片非收納情境"
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "expectedFilename": "XJW-CONV-chat-luerong-intro.jpg",
+      "action": "regenerate",
+      "reason": "產品DM硬嵌入白框；缺生活情境"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "expectedFilename": "XJW-CONV-chat-photo-size.jpg",
+      "action": "regenerate",
+      "reason": "DM卡片非產品尺寸比較情境"
+    },
+    {
+      "id": "XJW-CONV-chat-gao-storage",
+      "expectedFilename": "XJW-CONV-chat-gao-storage.jpg",
+      "action": "archive",
+      "reason": "已由使用者重新發布合格新圖；封存舊DM版本防止重複"
+    },
+    {
+      "id": "XJW-CONV-chat-jiao-spec",
+      "expectedFilename": "XJW-CONV-chat-jiao-spec.jpg",
+      "action": "archive",
+      "reason": "龜鹿膠已下架，不再公開宣傳"
+    },
+    {
+      "id": "XJW-CONV-chat-tang-vs-jiao",
+      "expectedFilename": "XJW-CONV-chat-tang-vs-jiao.jpg",
+      "action": "archive",
+      "reason": "龜鹿膠與龜鹿湯塊已下架"
+    },
+    {
+      "id": "XJW-CONV-chat-tangkuai-spec",
+      "expectedFilename": "XJW-CONV-chat-tangkuai-spec.jpg",
+      "action": "archive",
+      "reason": "龜鹿湯塊已下架，不再公開宣傳"
+    }
+  ],
+  "priorityRegeneration": [
+    "XJW-CONV-chat-30-bare-jar",
+    "XJW-CONV-chat-30-vs-180",
+    "XJW-CONV-chat-drink-made-to-order",
+    "XJW-CONV-chat-gao-vs-drink",
+    "XJW-CONV-chat-glass-vs-pouch-storage",
+    "XJW-CONV-chat-luerong-intro",
+    "XJW-CONV-chat-photo-size"
+  ]
+}
