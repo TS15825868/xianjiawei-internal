@@ -52,6 +52,7 @@ jobs:
           const q=JSON.parse(fs.readFileSync('ops/post-image-production-queue-current.json','utf8'));
           const d=JSON.parse(fs.readFileSync('active-drafts.json','utf8'));
           const media=JSON.parse(fs.readFileSync('website-formal-media-authority.json','utf8'));
+          const sceneMap=JSON.parse(fs.readFileSync('ops/social-post-image-scenes-20261010.json','utf8')).sceneByPostId;
           const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
           const items=Array.isArray(q.items)?q.items:[];
           const errors=[];
@@ -84,6 +85,8 @@ jobs:
           const byPost=new Map(), imageIds=new Set();
           for(const x of items){
             if(!x.postId||!x.imageId||!x.title||!x.copyHash)errors.push('圖片清單存在缺欄位項目');
+            if(sceneMap[x.postId] && (x.scene!==sceneMap[x.postId] || x.sceneSource!=='formal_unique_scene_20261010'))errors.push(`${x.postId}: 情境與正式逐篇圖片劇本不一致，拒絕舊空白prompt回流`);
+            if(!String(x.scene||'').trim())console.warn(`${x.postId}: 無特定情境，禁止進行自動影像生成，先補圖文一致劇本`);
             if(byPost.has(x.postId))errors.push(`postId重複 ${x.postId}`); else byPost.set(x.postId,x);
             if(imageIds.has(x.imageId))errors.push(`imageId重複 ${x.imageId}`); else imageIds.add(x.imageId);
             if(!String(x.characterLock||'').includes('不得成熟化')||!String(x.characterLock||'').includes('同一位角色'))errors.push(`${x.postId}: 缺小老闆年齡／同一人硬鎖`);
