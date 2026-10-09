@@ -45,7 +45,7 @@ must(gate.includes("['PUT','PATCH'].includes(request.method)"),'文案或圖片P
 must(gate.includes('invalidateEditedPost'),'缺少貼文修改後立即退回草稿與清核准機制');
 must(gate.includes("status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0"),'修改後未完整清除排程／核准／圖片核准狀態');
 must(gate.includes('30cc正式名稱必須是小玻璃罐'),'30cc玻璃罐正式名稱守門缺失');
-must(gate.includes('龜鹿湯塊正式規格只有75g'),'龜鹿湯塊75g唯一規格守門缺失');
+must(gate.includes('龜鹿膠與龜鹿湯塊已退出公開產品清單'),'已下架龜鹿產品必須禁止新公開貼文');
 must(gate.includes('CUSTOMER_INTERNAL_TERMS'),'正式審核缺少顧客文案內部用語守門');
 must(gate.includes('row?.image_alt'),'正式審核必須把圖片替代文字納入顧客可見文字守門');
 must(gate.includes('duplicatePostErrors'),'正式審核缺少重複貼文守門');
@@ -72,8 +72,8 @@ must(!generation.includes('每日早上及下午各一小匙'),'ChatGPT生成規
 must(generation.includes('食用時間可依個人使用習慣與作息時間安排'),'ChatGPT生成規則缺少龜鹿膏目前個人作息原則');
 must(generation.includes('每日 1-2罐'),'ChatGPT生成規則缺少30cc目前每日 1-2罐');
 must(generation.includes('龜鹿飲180cc目前使用方式為每日一包'),'ChatGPT生成規則缺少180cc目前每日一包');
-must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約9.375g'),'ChatGPT生成規則沒有允許湯塊目前完整顧客文字規格');
-must(generation.includes('顧客文案／FAQ／產品文字可在需要時補充每塊約18.75g'),'ChatGPT生成規則沒有允許龜鹿膠目前完整顧客文字規格');
+must(generation.includes('三、目前對外產品只有四項'),'重新生成必須只使用四項對外產品');
+must(!generation.includes("'龜鹿膠600g':")&&!generation.includes("'龜鹿湯塊75g':"),'重新生成不得再帶出已下架產品圖');
 must(html.includes('免費重新生成流程'),'貼文中心沒有向使用者說明免費重生成回填流程');
 must(/post-regenerate-policy-v1\.js\?v=[^"']+/.test(html),'貼文中心重生成流程缺少正式快取版本識別');
 must(html.includes('20260815-regeneration-policy-v6'),'貼文中心仍載入舊ChatGPT生成快取版本');
