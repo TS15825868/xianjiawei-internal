@@ -1,0 +1,67 @@
+name: 仙加味正式新圖檢查與安全回填
+on:
+  push:
+    branches: [main]
+    paths: ['ops/post-image-production-reviewed-current.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read latest D1 and validate exact drafts before writes
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/image-production-before.json
+          node tools/apply-image-production-reviewed.cjs prepare
+      - name: Bind inspected new images only; never approve or publish
+        run: |
+          if test -s /tmp/image-production-apply.sql; then
+            npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/image-production-apply.sql
+          fi
+      - name: Verify actual D1 state and preserved history
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/image-production-after.json
+          node tools/apply-image-production-reviewed.cjs verify
+      - name: Refresh only remaining queue with a main-file lease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const path='ops/post-image-production-queue-current.json';
+          const endpoint=`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/contents/${path}`;
+          const headers={Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+          const response=await fetch(endpoint+'?ref=main',{headers});
+          if(!response.ok)throw Error('Cannot read current main queue');
+          const current=await response.json();
+          const previous=JSON.parse(Buffer.from(current.content,'base64').toString('utf8'));
+          const checkout=JSON.parse(fs.readFileSync(path,'utf8'));
+          if(JSON.stringify(previous)!==JSON.stringify(checkout))throw Error('Main queue changed; preserve newer queue');
+          const content=fs.readFileSync('/tmp/image-production-remaining-queue.json').toString('base64');
+          const update=await fetch(endpoint,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({message:'sync: remove verified bound posts from current image queue',branch:'main',sha:current.sha,content})});
+          if(!update.ok)throw Error('Queue lease update failed: '+update.status);
+          console.log('Remaining production queue refreshed from verified live D1.');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: image-production-evidence-${{ github.run_id }}
+          path: |
+            /tmp/image-production-result.json
+            /tmp/image-production-after.json
+            /tmp/image-production-before.json
+            /tmp/image-production-remaining-queue.json
+          retention-days: 7
