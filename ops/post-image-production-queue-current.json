@@ -2,7 +2,7 @@
   "version": "2026-10-10-v13-four-current-products-image-missing-drafts",
   "brand": "仙加味",
   "source": "Cloudflare D1 live social_posts WHERE status=draft AND image_url is empty",
-  "total": 28,
+  "total": 27,
   "status": "production-queue",
   "supersedes": "2026-09-14-v2-product-map：舊68篇已在live D1封存，不得再製作或回流",
   "rule": "只為live D1目前status=draft且尚無image_url的有效貼文製作唯一正式圖片；已有圖片的draft不重複進製圖佇列；人工視覺審核前不得approved/scheduled/published。",
@@ -67,22 +67,6 @@
       "status": "needs_unique_image",
       "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
       "copyHash": "2a496e49e85666bb"
-    },
-    {
-      "postId": "XJW-CONV-chat-elder-kitchen-habit",
-      "imageId": "XJW-ACTIVE-IMG-007",
-      "kind": "飲食文化",
-      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
-      "products": [],
-      "scene": "居家廚房午後，小老闆把剛洗好的紅棗與枸杞瀝乾、把蔬菜放入備料碗；小鹿扶著空竹籃、小烏龜旁觀食材整理。要有真實料理準備動作，不用手寫字或對話框。",
-      "sceneSource": "formal_unique_scene_20261010",
-      "generationPolicy": "AI only environment and fixed mascots. Formal product photo only via locked post-compositing. No AI products, labels or poster text.",
-      "imageSource": "2026-10-10 已退回不合格舊圖，GitHub 原圖保留作為稽核記錄",
-      "window": "evergreen",
-      "proposedScheduledAt": null,
-      "status": "needs_unique_image",
-      "characterLock": "正式Q版小朋友小男孩、同一位角色；短黑髮、大眼睛、圓潤幼童臉型、固定頭身比；不得成熟化、少年化、成人化或像不同人；小鹿與小烏龜分開且相對尺寸固定。",
-      "copyHash": "60f3c36bcb878fdb"
     },
     {
       "postId": "XJW-CONV-chat-gao-vs-drink",
@@ -499,5 +483,5 @@
       "copyHash": "b6ba0afda6690118"
     }
   ],
-  "updatedAt": "2026-10-10T12:08:23.004Z"
+  "updatedAt": "2026-10-10T13:48:36.745Z"
 }
