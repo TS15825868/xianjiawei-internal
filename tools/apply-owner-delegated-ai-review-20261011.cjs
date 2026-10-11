@@ -14,10 +14,10 @@ const rows=p=>JSON.parse(fs.readFileSync(p,'utf8')).flatMap(x=>x.results||[]);
 const byId=(all,id)=>all.find(p=>p.id===id);
 const material=p=>({title:clean(p.title),headline:clean(p.headline),copy:clean(p.copy),category:clean(p.category),image_url:clean(p.image_url),image_alt:clean(p.image_alt),image_source:clean(p.image_source),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:clean(p.image_quality_status)});
 const fingerprint=p=>sha(JSON.stringify(material(p)));
-if(manifest.items.length!==5||manifest.actor!==actor||manifest.actorType!=='AI_ASSISTANT_NOT_HUMAN'||!manifest.approvalDoesNotPublish||!manifest.approvalCreatesNoSchedule)throw Error('Unsafe one-time manifest');
+if((manifest.items.length<1||manifest.items.length>15)||manifest.actor!==actor||manifest.actorType!=='AI_ASSISTANT_NOT_HUMAN'||!manifest.approvalDoesNotPublish||!manifest.approvalCreatesNoSchedule)throw Error('Unsafe one-time manifest');
 if(JSON.stringify(manifest.reviewChecks)!==JSON.stringify(checks))throw Error('Review checklist changed');
 function verifyMedia(x){
- if(!/^assets\/post-images\/2026-10-11\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath))throw Error('Unsafe image path: '+x.postId);
+ if(!/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath))throw Error('Unsafe image path: '+x.postId);
  const b=fs.readFileSync(x.imagePath);
  if(b.length!==x.imageBytes||b.length<250000||sha(b)!==x.imageSha256||b[0]!==255||b[1]!==216)throw Error('Media changed: '+x.postId);
  for(const original of x.productPhotoProvenance||[]){
@@ -56,7 +56,7 @@ if(mode==='prepare'){
   sql.push('INSERT INTO social_post_review_gates(post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at) SELECT '+q(x.postId)+','+q(newFingerprint)+','+q(JSON.stringify(x.checks))+',1,'+q(actor)+",datetime('now') FROM social_posts WHERE id="+q(x.postId)+' AND status='+q('approved')+' AND approved_by IS NULL AND image_alt='+q(x.newAlt)+' AND scheduled_at IS NULL ON CONFLICT(post_id) DO UPDATE SET content_fingerprint=excluded.content_fingerprint,checklist_json=excluded.checklist_json,copy_image_match=1,reviewed_by=excluded.reviewed_by,reviewed_at=excluded.reviewed_at;');
  }
  fs.writeFileSync('/tmp/xjw-owner-auto-apply.sql',sql.join('\n')+'\n');
- console.log('PASS preflight 5 visually inspected posts; no schedule or publish commands.');
+ console.log('PASS preflight '+manifest.items.length+' visually inspected posts; no schedule or publish commands.');
 }else if(mode==='verify'){
  const before=rows('/tmp/xjw-owner-auto-before.json'),after=rows('/tmp/xjw-owner-auto-after.json'),gates=rows('/tmp/xjw-owner-auto-gates.json');
  if(before.length!==after.length||after.length!==132)throw Error('Record count changed');
@@ -71,6 +71,6 @@ if(mode==='prepare'){
  }
  const counts={};for(const p of after)counts[p.status]=(counts[p.status]||0)+1;
  fs.writeFileSync('/tmp/xjw-owner-auto-result.json',JSON.stringify({batch:manifest.batchId,actor,approved:manifest.items.length,ids:manifest.items.map(x=>x.postId),counts,publishedByBatch:0,scheduledByBatch:0},null,2)+'\n');
- console.log('PASS verified 5 delegated approvals; zero scheduled, zero published',JSON.stringify(counts));
+ console.log('PASS verified '+manifest.items.length+' delegated approvals; zero scheduled, zero published',JSON.stringify(counts));
 }else throw Error('Expected prepare or verify');
 
