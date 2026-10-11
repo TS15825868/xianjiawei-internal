@@ -1,0 +1,38 @@
+[
+  {
+    "product": "30cc",
+    "source": "uploaded 產品原圖&原物料(10).zip / 4C70AD84-32DD-4C39-82A5-74A6F5DF761B.PNG; top jar only",
+    "sourceSha256": "a7a56482af5b03ec92f5376470e57ce363e58dbb467d05ada8b4c870cdfea76b",
+    "mask": "manual outline; product RGB preserved; uniform scaling only",
+    "path": "assets/product-photo-cutouts/2026-10-11/drink-30.png",
+    "width": 500,
+    "height": 601
+  },
+  {
+    "product": "龜鹿膏",
+    "source": "TS15825868/xianjiawei main / images/guilu-gao.jpg",
+    "sourceSha256": "110aa1abe5d80e6ce7e15cb4247466583406d62144bc5ac8abc82241bf1d8e58",
+    "mask": "manual outline; product RGB preserved; uniform scaling only",
+    "path": "assets/product-photo-cutouts/2026-10-11/gao.png",
+    "width": 825,
+    "height": 1280
+  },
+  {
+    "product": "180cc",
+    "source": "TS15825868/xianjiawei main / images/guilu-drink.jpg",
+    "sourceSha256": "f80d6a7e1ad8eaf4431c823bd091b45e9015d8945316daada4959ff2cf421c71",
+    "mask": "manual outline; product RGB preserved; uniform scaling only",
+    "path": "assets/product-photo-cutouts/2026-10-11/drink-180.png",
+    "width": 715,
+    "height": 1066
+  },
+  {
+    "product": "鹿茸粉",
+    "source": "TS15825868/xianjiawei main / images/luerong-fen.jpg",
+    "sourceSha256": "40146214e6995cefdcf970649bb4f6d2fd560ff5928e9d268ef5236655125268",
+    "mask": "manual outline; product RGB preserved; uniform scaling only",
+    "path": "assets/product-photo-cutouts/2026-10-11/luerong.png",
+    "width": 402,
+    "height": 645
+  }
+]

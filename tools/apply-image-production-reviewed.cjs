@@ -11,7 +11,7 @@ const ids = new Set(), hashes = new Set();
 for (const item of manifest.items) {
   if (ids.has(item.postId) || hashes.has(item.sha256)) throw Error('Duplicate post/image');
   ids.add(item.postId); hashes.add(item.sha256);
-  if (!/^assets\/post-images\/2026-10-10\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(item.path)) throw Error('Unsafe image path');
+  if (!/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(item.path)) throw Error('Unsafe image path');
   const bytes = fs.readFileSync(item.path);
   if (bytes.length !== item.bytes || bytes.length < 250000 || hash(bytes) !== item.sha256) throw Error('Image bytes/hash mismatch: ' + item.postId);
   if (item.visualCheck !== 'pass' || item.width !== 1254 || item.height !== 1254) throw Error('Uninspected image: ' + item.postId);
@@ -25,7 +25,7 @@ if (mode === 'prepare') {
     if (!post || hash(post.copy).slice(0, 16) !== item.copyHash) throw Error('Live copy changed: ' + item.postId);
     if (post.image_url === url(item) && post.status === 'pending_review' && Number(post.image_approved) === 0) continue;
     if (post.status !== 'draft' || String(post.image_url || '').trim()) throw Error('Post is no longer an empty-image draft: ' + item.postId);
-    sql.push(`UPDATE social_posts SET image_url=${quote(url(item))},media_id=NULL,image_alt=${quote(item.alt)},image_source='ChatGPT重新生成｜2026-10-10正式原照後製｜GitHub main｜人工待審核',image_width=1254,image_height=1254,image_bytes=${item.bytes},image_quality_status='clear',image_approved=0,status='pending_review',approved_by=NULL,approved_at=NULL,scheduled_at=NULL,rejection_reason='',updated_at=datetime('now') WHERE id=${quote(item.postId)} AND status='draft' AND TRIM(COALESCE(image_url,''))='' AND copy=${quote(post.copy)};`);
+    sql.push(`UPDATE social_posts SET image_url=${quote(url(item))},media_id=NULL,image_alt=${quote(item.alt)},image_source='ChatGPT重新生成｜2026-10-11正式原照後製｜GitHub main｜人工待審核',image_width=1254,image_height=1254,image_bytes=${item.bytes},image_quality_status='clear',image_approved=0,status='pending_review',approved_by=NULL,approved_at=NULL,scheduled_at=NULL,rejection_reason='',updated_at=datetime('now') WHERE id=${quote(item.postId)} AND status='draft' AND TRIM(COALESCE(image_url,''))='' AND copy=${quote(post.copy)};`);
   }
   fs.writeFileSync('/tmp/image-production-apply.sql', sql.join('\n'));
   console.log('Validated exact live copies and empty-image drafts:', sql.length);
