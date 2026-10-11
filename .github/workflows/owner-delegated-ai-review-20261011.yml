@@ -1,0 +1,55 @@
+name: 仙加味單次委託自動審核｜真實16項與D1驗證
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/owner-delegated-ai-review-20261011.yml'
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-one-time-owner-delegated-review-20261011
+  cancel-in-progress: false
+jobs:
+  owner_delegated_review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate read-only source and script
+        run: |
+          set -euo pipefail
+          node --check tools/apply-owner-delegated-ai-review-20261011.cjs
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read live production D1 before any approval
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-owner-auto-before.json
+          node tools/apply-owner-delegated-ai-review-20261011.cjs prepare
+      - name: Apply only five genuinely inspected reviews
+        run: |
+          set -euo pipefail
+          test -s /tmp/xjw-owner-auto-apply.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/xjw-owner-auto-apply.sql
+      - name: Verify 16-point review gates and preserve all unrelated posts
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-owner-auto-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates ORDER BY post_id" > /tmp/xjw-owner-auto-gates.json
+          node tools/apply-owner-delegated-ai-review-20261011.cjs verify
+      - name: Keep evidence without publishing or scheduling
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owner-delegated-review-evidence-${{ github.run_id }}
+          path: |
+            /tmp/xjw-owner-auto-result.json
+          if-no-files-found: warn
+          retention-days: 7
