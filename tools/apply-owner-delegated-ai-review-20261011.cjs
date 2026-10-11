@@ -3,6 +3,9 @@ const fs=require('node:fs');
 const crypto=require('node:crypto');
 const manifest=JSON.parse(fs.readFileSync('ops/owner-delegated-ai-review-20261011.json','utf8'));
 const actor='chatgpt:owner-delegated-reviewed';
+// AI actor is recorded in the review gate, never impersonated as an existing human profile.
+// social_posts.approved_by is a foreign key to profiles(email), so autonomous approval leaves it NULL.
+const auditNote='使用者授權 AI 自動審核：16項圖文與原圖核對通過；審核者 ChatGPT AI（非人工點選）；未排程且未發布';
 const checks=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
 const sha=v=>crypto.createHash('sha256').update(v).digest('hex');
 const q=v=>"'"+String(v??'').replaceAll("'","''")+"'";
@@ -49,8 +52,8 @@ if(mode==='prepare'){
  for(const x of manifest.items){
   const p=byId(before,x.postId),newFingerprint=fingerprint({...p,image_alt:x.newAlt});
   const where=' WHERE id='+q(x.postId)+' AND status='+q('pending_review')+' AND image_url='+q(p.image_url)+' AND image_alt='+q(p.image_alt)+' AND copy='+q(p.copy)+' AND updated_at='+q(p.updated_at)+' AND image_approved=0 AND approved_at IS NULL AND scheduled_at IS NULL';
-  sql.push('UPDATE social_posts SET image_alt='+q(x.newAlt)+',status='+q('approved')+',image_approved=1,approved_by='+q(actor)+",approved_at=datetime('now'),updated_at=datetime('now')"+where+';');
-  sql.push('INSERT INTO social_post_review_gates(post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at) SELECT '+q(x.postId)+','+q(newFingerprint)+','+q(JSON.stringify(x.checks))+',1,'+q(actor)+",datetime('now') FROM social_posts WHERE id="+q(x.postId)+' AND status='+q('approved')+' AND approved_by='+q(actor)+' AND image_alt='+q(x.newAlt)+' AND scheduled_at IS NULL ON CONFLICT(post_id) DO UPDATE SET content_fingerprint=excluded.content_fingerprint,checklist_json=excluded.checklist_json,copy_image_match=1,reviewed_by=excluded.reviewed_by,reviewed_at=excluded.reviewed_at;');
+  sql.push('UPDATE social_posts SET image_alt='+q(x.newAlt)+',status='+q('approved')+',image_approved=1,approved_by=NULL,review_note='+q(auditNote)+",approved_at=datetime('now'),updated_at=datetime('now')"+where+';');
+  sql.push('INSERT INTO social_post_review_gates(post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at) SELECT '+q(x.postId)+','+q(newFingerprint)+','+q(JSON.stringify(x.checks))+',1,'+q(actor)+",datetime('now') FROM social_posts WHERE id="+q(x.postId)+' AND status='+q('approved')+' AND approved_by IS NULL AND image_alt='+q(x.newAlt)+' AND scheduled_at IS NULL ON CONFLICT(post_id) DO UPDATE SET content_fingerprint=excluded.content_fingerprint,checklist_json=excluded.checklist_json,copy_image_match=1,reviewed_by=excluded.reviewed_by,reviewed_at=excluded.reviewed_at;');
  }
  fs.writeFileSync('/tmp/xjw-owner-auto-apply.sql',sql.join('\n')+'\n');
  console.log('PASS preflight 5 visually inspected posts; no schedule or publish commands.');
@@ -61,7 +64,7 @@ if(mode==='prepare'){
  for(const original of before)if(!modified.has(original.id)&&JSON.stringify(byId(after,original.id))!==JSON.stringify(original))throw Error('Unrelated post modified: '+original.id);
  for(const x of manifest.items){
   const p=byId(after,x.postId),gate=gates.find(g=>g.post_id===x.postId);
-  if(!p||p.status!=='approved'||Number(p.image_approved)!==1||p.approved_by!==actor||p.image_alt!==x.newAlt||p.scheduled_at||p.published_at)throw Error('Approval not verified: '+x.postId);
+  if(!p||p.status!=='approved'||Number(p.image_approved)!==1||p.approved_by!==null||p.review_note!==auditNote||p.image_alt!==x.newAlt||p.scheduled_at||p.published_at)throw Error('Approval not verified: '+x.postId);
   if(!gate||gate.content_fingerprint!==fingerprint(p)||gate.reviewed_by!==actor||Number(gate.copy_image_match)!==1)throw Error('Gate not verified: '+x.postId);
   const actual=JSON.parse(gate.checklist_json||'{}');
   if(!checks.every(k=>actual[k]===true))throw Error('Missing review criterion: '+x.postId);
