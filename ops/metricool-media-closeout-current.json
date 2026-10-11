@@ -1,0 +1,42 @@
+{
+  "version": "2026-10-11",
+  "publishedByThisBatch": 0,
+  "images": [
+    {
+      "originalMetricoolId": 386526334,
+      "imagePath": "assets/metricool-images/2026-10-11/metricool-386526334-scene-v1.jpg",
+      "sha256": "f679ada3b065f1e2eee1b2e468a2163db4f18fa19cef6fb3df3b026ebbe1fab5",
+      "bytes": 809779,
+      "draft": true,
+      "autoPublish": false,
+      "visualCheck": "pass",
+      "productOriginals": [
+        "gao.png",
+        "drink-30.png"
+      ],
+      "sourceBackground": "exec-d3d543da-854b-4d37-9431-5af5dcc19496.png"
+    },
+    {
+      "originalMetricoolId": 386526357,
+      "imagePath": "assets/metricool-images/2026-10-11/metricool-386526357-scene-v1.jpg",
+      "sha256": "9f47d5422f5ba098e1fb9bd28cbdc9e9599f168f567a2b01f6426693907783db",
+      "bytes": 905962,
+      "draft": true,
+      "autoPublish": false,
+      "visualCheck": "pass",
+      "productOriginals": [],
+      "sourceBackground": "exec-788674b0-3431-41c5-97c9-cd3d7b2cd231.png"
+    },
+    {
+      "originalMetricoolId": 386526755,
+      "imagePath": "assets/metricool-images/2026-10-11/metricool-386526755-scene-v1.jpg",
+      "sha256": "dc6a55f14a6faee68b3c06c815ca0b003f25b5b7c082e0998e55dc08908d07d7",
+      "bytes": 798183,
+      "draft": true,
+      "autoPublish": false,
+      "visualCheck": "pass",
+      "productOriginals": [],
+      "sourceBackground": "exec-1d6de647-5ed9-447f-ac67-51b350c668a2.png"
+    }
+  ]
+}
