@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/owner-delegated-ai-review-20261011.yml'
+      - 'tools/apply-owner-delegated-ai-review-20261011.cjs'
 permissions:
   contents: read
 concurrency:
