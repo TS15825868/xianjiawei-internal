@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "batchId": "2026-10-12-owner-delegated-brand-link-remediation-v1",
+  "brand": "仙加味",
+  "source": "2026-10-11T22:18:33Z remote D1 read-only snapshot, 132 posts, 15 approved before three new approval batches",
+  "approvalAllowed": false,
+  "schedulingAllowed": false,
+  "publishingAllowed": false,
+  "sourceD1HealthRun": 38179868081,
+  "description": "僅修正28篇尚在pending_review且缺少仙加味/產品連結的生活文案，逐篇增加獨立且符合原情境的品牌連結，不改圖片、排程、發布、歷史資料、不代為16項核准。即時雨天/降溫兩篇保持不動，待發布前天氣查證。",
+  "items": [
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "oldCopyHash": "f4c6af77286bccd1",
+      "brandParagraph": "仙加味也從紅棗、枸杞這些家常食材出發，整理四代家庭留下的飲食習慣。"
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "oldCopyHash": "7524982aa81ff3f4",
+      "brandParagraph": "仙加味平常分享家常料理時，也常想到每個家庭都有自己習慣的一鍋湯。"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "oldCopyHash": "885ff48f46a655e5",
+      "brandParagraph": "仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "oldCopyHash": "9ac4c8a2e1925175",
+      "brandParagraph": "仙加味很喜歡記錄這些回到平常餐桌的家常湯品，簡單的飲食習慣也值得保留。"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "oldCopyHash": "cc93296508fe7c18",
+      "brandParagraph": "仙加味整理保存資訊時，也會提醒先確認食材的收納位置與保存方式。"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "oldCopyHash": "f1bd95a693b6f56a",
+      "brandParagraph": "仙加味想聊的漢方飲食文化，也包括每個家庭年節餐桌上熟悉的料理。"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "oldCopyHash": "b6ba0afda6690118",
+      "brandParagraph": "仙加味萬華工作間也從開門、擦桌這些小動作，慢慢接回熟悉的日常。"
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "oldCopyHash": "bebcd82e870234d1",
+      "brandParagraph": "仙加味在萬華迎接新年時，也從打開店門、整理桌面這些熟悉的小事開始。"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "oldCopyHash": "75438bedf2dfec52",
+      "brandParagraph": "仙加味希望把家族做事的細節傳承下去，也想聽聽你最想留下的生活習慣。"
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "oldCopyHash": "a19512bdd2add4f5",
+      "brandParagraph": "仙加味萬華工作間也有這種安靜時刻，讓小老闆專心整理眼前的工具。"
+    },
+    {
+      "postId": "XJW-CONV-chat-shop-organizing",
+      "oldCopyHash": "11c4b23974ff0396",
+      "brandParagraph": "仙加味店裡每天都要把杯碗、布巾和工作用品歸位，細節就是這樣累積的。"
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "oldCopyHash": "60f3c36bcb878fdb",
+      "brandParagraph": "仙加味整理家常飲食文化時，也會留意長輩教過的備料與保存小習慣。"
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "oldCopyHash": "b772a79fba80b17f",
+      "brandParagraph": "對仙加味來說，鹿角與熬膠工藝不只是一句傳承，還有每天慢慢累積的現場經驗。"
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "oldCopyHash": "b6a8bf6aa986306e",
+      "brandParagraph": "仙加味萬華店內也從擦桌、排好杯子和整理工作工具開始一天。"
+    },
+    {
+      "postId": "XJW-CONV-chat-small-things-work",
+      "oldCopyHash": "fad5b8c4a0dbaad2",
+      "brandParagraph": "仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。"
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "oldCopyHash": "f67c8d2e9de1d425",
+      "brandParagraph": "仙加味想分享的漢方生活，不只有產品，也有在家慢慢準備一餐的日子。"
+    },
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "oldCopyHash": "f47a7b5d066b6261",
+      "brandParagraph": "這也是仙加味小老闆在家常料理時喜歡和小鹿、小烏龜討論的選擇。"
+    },
+    {
+      "postId": "XJW-CONV-chat-simple-soup",
+      "oldCopyHash": "3eac049a0e72524f",
+      "brandParagraph": "仙加味分享家常料理時，也常從雞腿、排骨和自己熟悉的食材開始。"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "oldCopyHash": "0564c7d33ca0f300",
+      "brandParagraph": "仙加味整理送禮與產品資訊時，也希望先讓大家看清楚使用方式和實際需要。"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "oldCopyHash": "e6548f2102cfc266",
+      "brandParagraph": "仙加味從萬華的四代家族工作走到現在，也特別珍惜一家人相聚吃飯的時候。"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "oldCopyHash": "6f9c584a0f017a97",
+      "brandParagraph": "仙加味小老闆也在年前把店裡的布巾與工具整理好，準備迎接新的工作日。"
+    },
+    {
+      "postId": "XJW-CONV-chat-recipe-or-feel",
+      "oldCopyHash": "e145ae45db6a5d4e",
+      "brandParagraph": "仙加味聊料理搭配時，也喜歡聽大家分享自己家裡最順手的煮法。"
+    },
+    {
+      "postId": "XJW-CONV-chat-fixed-storage",
+      "oldCopyHash": "41d75ae2246d78be",
+      "brandParagraph": "仙加味的工作桌也有固定位置放工具和杯子，收納清楚做起事來更順手。"
+    },
+    {
+      "postId": "XJW-CONV-chat-last-bowl",
+      "oldCopyHash": "c9006509723cbc40",
+      "brandParagraph": "仙加味喜歡記錄這些餐桌小事情，因為飲食文化最後還是回到一家人的日常。"
+    },
+    {
+      "postId": "XJW-CONV-chat-home-soup",
+      "oldCopyHash": "1c2237409d1a77b8",
+      "brandParagraph": "仙加味從萬華的熬煮工序延伸到家常料理，也想聽每個家庭的湯鍋習慣。"
+    },
+    {
+      "postId": "XJW-CONV-chat-tradition-today",
+      "oldCopyHash": "282889af93f09900",
+      "brandParagraph": "仙加味把四代累積的鹿角與熬膠工藝整理成今天更容易理解的資訊，也是這個想法。"
+    },
+    {
+      "postId": "XJW-CONV-season-more-soup",
+      "oldCopyHash": "c84d338a0f627301",
+      "brandParagraph": "仙加味在換季的生活話題裡，也會分享溫熱飲用與家常燉湯的日常安排。"
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "oldCopyHash": "bc2723f27307b69e",
+      "brandParagraph": "仙加味在萬華整理老照片和工作器具時，也常翻出以前留下來的記憶。"
+    }
+  ]
+}
