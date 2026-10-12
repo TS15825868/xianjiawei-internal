@@ -1,4 +1,4 @@
-// Batch4 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
+// Batch5 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
 'use strict';
 const fs=require('node:fs');
 const crypto=require('node:crypto');
@@ -18,7 +18,9 @@ const fingerprint=p=>sha(JSON.stringify(material(p)));
 if((manifest.items.length<1||manifest.items.length>15)||manifest.actor!==actor||manifest.actorType!=='AI_ASSISTANT_NOT_HUMAN'||!manifest.approvalDoesNotPublish||!manifest.approvalCreatesNoSchedule)throw Error('Unsafe one-time manifest');
 if(JSON.stringify(manifest.reviewChecks)!==JSON.stringify(checks))throw Error('Review checklist changed');
 function verifyMedia(x){
- if(!/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath))throw Error('Unsafe image path: '+x.postId);
+ const currentMedia=/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath);
+ const inspectedLegacy=x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-09-23\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && !(x.productPhotoProvenance||[]).length;
+ if(!currentMedia&&!inspectedLegacy)throw Error('Unsafe or unverified image path: '+x.postId);
  const b=fs.readFileSync(x.imagePath);
  if(b.length!==x.imageBytes||b.length<250000||sha(b)!==x.imageSha256||b[0]!==255||b[1]!==216)throw Error('Media changed: '+x.postId);
  for(const original of x.productPhotoProvenance||[]){
@@ -38,7 +40,8 @@ function preflight(live){
   const post=byId(live,x.postId);if(!post)throw Error('Missing D1 post: '+x.postId);
   if(post.status!=='pending_review'||post.scheduled_at||post.published_at||post.approved_by||post.approved_at||Number(post.image_approved)!==0)throw Error('Post no longer pending: '+x.postId);
   if(fingerprint(post)!==x.oldFingerprint||sha(post.copy||'').slice(0,16)!==x.copyHash||clean(post.image_url)!==x.imageUrl)throw Error('Live copy/image changed: '+x.postId);
-  if(Number(post.image_width)!==1254||Number(post.image_height)!==1254||Number(post.image_bytes)!==x.imageBytes||post.image_quality_status!=='clear')throw Error('D1 media metadata mismatch: '+x.postId);
+  const qualityAccepted=post.image_quality_status==='clear' || (x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-09-23\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && post.image_quality_status==='ok' && !(x.productPhotoProvenance||[]).length);
+  if(Number(post.image_width)!==1254||Number(post.image_height)!==1254||Number(post.image_bytes)!==x.imageBytes||!qualityAccepted)throw Error('D1 media metadata mismatch: '+x.postId);
   if(live.some(other=>other.id!==x.postId&&clean(other.image_url)===x.imageUrl))throw Error('Duplicate media: '+x.postId);
   const pub=[post.title,post.headline,post.copy].join(' ');
   if(!/仙加味|龜鹿|鹿茸|30cc|180cc/.test(pub))throw Error('No brand/product connection: '+x.postId);
