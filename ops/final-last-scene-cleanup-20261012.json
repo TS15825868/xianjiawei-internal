@@ -1,0 +1,104 @@
+{
+  "actor": "chatgpt:delegated-ai-maintenance",
+  "total": 132,
+  "changes": [
+    {
+      "postId": "XJW-CONV-weather-rain-chat",
+      "before": {
+        "id": "XJW-CONV-weather-rain-chat",
+        "title": "下雨天，你會想喝什麼？",
+        "headline": "雨一來，生活節奏好像也會慢一點",
+        "copy": "下雨的時候，把手邊的事情整理好，坐到窗邊看一會兒雨，也是很平常的片刻。\n\n仙加味想記錄的生活節奏，不只在產品裡，也在萬華店裡這些安靜的小事裡。\n\n雨天，你比較想喝熱茶、咖啡、湯，還是其他的？",
+        "category": "即時天氣",
+        "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
+        "status": "pending_review",
+        "scheduled_at": null,
+        "approved_by": null,
+        "approved_at": null,
+        "published_at": null,
+        "created_by": "tung314069@gmail.com",
+        "created_at": "2026-09-15 01:13:51",
+        "updated_at": "2026-10-12 06:08:04",
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-041.jpg",
+        "image_alt": "窗外下雨的室內情境，小老闆坐在窗邊捧著溫熱杯，小鹿與小烏龜分開陪伴",
+        "image_source": "仙加味品牌與漢方生活情境",
+        "image_approved": 0,
+        "image_width": 1254,
+        "image_height": 1254,
+        "image_bytes": 354836,
+        "image_quality_status": "ok",
+        "media_id": null,
+        "review_note": "",
+        "brand_check_json": "{}",
+        "rejection_reason": "",
+        "proposed_scheduled_at": null
+      },
+      "expected": "8592ddfbebd41f5a9f92dc8c1efcf2ba4d72233bc8085bf1664936d58563f18f",
+      "invalidatesApproval": true,
+      "reason": "移除模擬字跡與布品陳列，保留雨天喝飲與年末記憶整理主題",
+      "imageProof": {
+        "id": "XJW-CONV-weather-rain-chat",
+        "imagePath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+        "imageBytes": 707768,
+        "imageSha256": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+        "productPhotoProvenance": [],
+        "reason": "移除模擬字跡與布品陳列，保留雨天喝飲與年末記憶整理主題"
+      },
+      "patch": {
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+        "image_bytes": 707768,
+        "image_quality_status": "clear",
+        "review_note": ""
+      }
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "before": {
+        "id": "XJW-CONV-year-end-clean",
+        "title": "年底整理時，最常翻出什麼忘記的東西？",
+        "headline": "有些東西放了一整年，整理才又看到",
+        "copy": "每到年底整理櫃子，總會翻出一些「原來它在這裡」的東西。\n\n仙加味在萬華整理老照片和工作器具時，也常翻出以前留下來的記憶。\n\n小老闆今天也在慢慢整理，該放回去的放回去，該留下的好好收著。你年底整理最常翻出什麼？",
+        "category": "年末生活",
+        "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
+        "status": "pending_review",
+        "scheduled_at": null,
+        "approved_by": null,
+        "approved_at": null,
+        "published_at": null,
+        "created_by": "tung314069@gmail.com",
+        "created_at": "2026-09-15 01:13:51",
+        "updated_at": "2026-10-12 06:08:04",
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-043.jpg",
+        "image_alt": "年底整理居家收納情境，小老闆翻看收納箱裡的舊照片與物件，小鹿與小烏龜分開陪伴",
+        "image_source": "仙加味品牌與漢方生活情境",
+        "image_approved": 0,
+        "image_width": 1254,
+        "image_height": 1254,
+        "image_bytes": 390217,
+        "image_quality_status": "ok",
+        "media_id": null,
+        "review_note": "",
+        "brand_check_json": "{}",
+        "rejection_reason": "",
+        "proposed_scheduled_at": "2026-12-20T10:00:00+08:00"
+      },
+      "expected": "d4ae7b04c03d7ab4f37fe06700f7b94fa71c9c771213c89c0cb0e7f4b8406f17",
+      "invalidatesApproval": true,
+      "reason": "移除模擬字跡與布品陳列，保留雨天喝飲與年末記憶整理主題",
+      "imageProof": {
+        "id": "XJW-CONV-year-end-clean",
+        "imagePath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-clean-audit-v1.jpg",
+        "imageBytes": 777704,
+        "imageSha256": "4a81e9c17fd802a5aca83b95426b324e887cda7cedb1deea27795cc3ccae3dd8",
+        "productPhotoProvenance": [],
+        "reason": "移除模擬字跡與布品陳列，保留雨天喝飲與年末記憶整理主題"
+      },
+      "patch": {
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-clean-audit-v1.jpg",
+        "image_bytes": 777704,
+        "image_quality_status": "clear",
+        "review_note": ""
+      }
+    }
+  ]
+}
