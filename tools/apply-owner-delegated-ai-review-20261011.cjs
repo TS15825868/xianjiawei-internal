@@ -1,4 +1,4 @@
-// Batch3 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
+// Batch4 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
 'use strict';
 const fs=require('node:fs');
 const crypto=require('node:crypto');
@@ -74,4 +74,5 @@ if(mode==='prepare'){
  fs.writeFileSync('/tmp/xjw-owner-auto-result.json',JSON.stringify({batch:manifest.batchId,actor,approved:manifest.items.length,ids:manifest.items.map(x=>x.postId),counts,publishedByBatch:0,scheduledByBatch:0},null,2)+'\n');
  console.log('PASS verified '+manifest.items.length+' delegated approvals; zero scheduled, zero published',JSON.stringify(counts));
 }else throw Error('Expected prepare or verify');
+
 
