@@ -1,0 +1,104 @@
+{
+  "actor": "chatgpt:delegated-ai-maintenance",
+  "total": 132,
+  "changes": [
+    {
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "before": {
+        "id": "XJW-CONV-chat-ask-boss-topic",
+        "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+        "headline": "料理、萬華、以前的生活，還是你自己出題？",
+        "copy": "仙加味不想每一篇都只是產品介紹。可以聊吃的、聊萬華、聊以前家裡的習慣，也可以回答大家真的好奇的事。\n\n如果下一篇讓你指定，你最想跟小老闆聊什麼？",
+        "category": "自由聊天",
+        "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
+        "status": "pending_review",
+        "scheduled_at": null,
+        "approved_by": null,
+        "approved_at": null,
+        "published_at": null,
+        "created_by": "tung314069@gmail.com",
+        "created_at": "2026-09-15 01:13:51",
+        "updated_at": "2026-10-12 06:08:04",
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-003.png",
+        "image_alt": "溫暖室內聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起等大家出題，桌面為一般生活與書寫小物，無產品",
+        "image_source": "仙加味品牌與漢方生活情境",
+        "image_approved": 0,
+        "image_width": 1254,
+        "image_height": 1254,
+        "image_bytes": 2309374,
+        "image_quality_status": "ok",
+        "media_id": null,
+        "review_note": "",
+        "brand_check_json": "{}",
+        "rejection_reason": "",
+        "proposed_scheduled_at": "2026-12-04T10:00:00+08:00"
+      },
+      "expected": "b40cc417650af100897f3f06aff34f1a1ff89b7d2a7d741c92dd0526d1a8b00b",
+      "invalidatesApproval": true,
+      "reason": "清除書封與背景疑似模擬文字，保留正式角色和原有完整聊天場景",
+      "imageProof": {
+        "id": "XJW-CONV-chat-ask-boss-topic",
+        "imagePath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
+        "imageBytes": 745220,
+        "imageSha256": "a7ac0e6b871ad2fa7abca873b2db8f289f58b22ba87b8a965317cb1f1ed494f9",
+        "productPhotoProvenance": [],
+        "reason": "清除書封與背景疑似模擬文字，保留正式角色和原有完整聊天場景"
+      },
+      "patch": {
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
+        "image_bytes": 745220,
+        "image_quality_status": "clear",
+        "review_note": ""
+      }
+    },
+    {
+      "postId": "XJW-CONV-chat-customer-first-question",
+      "before": {
+        "id": "XJW-CONV-chat-customer-first-question",
+        "title": "如果小老闆真的跟你聊天，你第一句會問什麼？",
+        "headline": "產品、料理、萬華，還是今天小鹿在做什麼？",
+        "copy": "今天不準備答案，換你問。可以問產品、料理、仙加味、萬華、生活習慣，甚至只是想知道小鹿跟小烏龜今天在做什麼。\n\n如果小老闆就在你面前，你第一句會問什麼？",
+        "category": "開放互動",
+        "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
+        "status": "pending_review",
+        "scheduled_at": null,
+        "approved_by": null,
+        "approved_at": null,
+        "published_at": null,
+        "created_by": "tung314069@gmail.com",
+        "created_at": "2026-09-15 01:13:51",
+        "updated_at": "2026-10-12 06:08:04",
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-006.png",
+        "image_alt": "小老闆坐在木桌後拿著鉛筆面對空白紙張等大家提問，小鹿在左、小烏龜在右",
+        "image_source": "仙加味品牌與漢方生活情境",
+        "image_approved": 0,
+        "image_width": 1254,
+        "image_height": 1254,
+        "image_bytes": 2089450,
+        "image_quality_status": "ok",
+        "media_id": null,
+        "review_note": "",
+        "brand_check_json": "{}",
+        "rejection_reason": "",
+        "proposed_scheduled_at": "2026-11-08T10:00:00+08:00"
+      },
+      "expected": "d69180c330a85f63b355980e2e0747a2d9a9c32f7a9abe1da96f39b17e7af098",
+      "invalidatesApproval": true,
+      "reason": "清除書封與背景疑似模擬文字，保留正式角色和原有完整聊天場景",
+      "imageProof": {
+        "id": "XJW-CONV-chat-customer-first-question",
+        "imagePath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-customer-first-question-audit-v1.jpg",
+        "imageBytes": 642410,
+        "imageSha256": "149f09686eb9880b0289b0d481369a407d70e247e38807b74d4dc2aa722cde32",
+        "productPhotoProvenance": [],
+        "reason": "清除書封與背景疑似模擬文字，保留正式角色和原有完整聊天場景"
+      },
+      "patch": {
+        "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-customer-first-question-audit-v1.jpg",
+        "image_bytes": 642410,
+        "image_quality_status": "clear",
+        "review_note": ""
+      }
+    }
+  ]
+}
