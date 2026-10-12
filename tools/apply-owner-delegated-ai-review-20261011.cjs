@@ -1,4 +1,4 @@
-// Batch5 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
+// Batch6 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
 'use strict';
 const fs=require('node:fs');
 const crypto=require('node:crypto');
@@ -20,7 +20,8 @@ if(JSON.stringify(manifest.reviewChecks)!==JSON.stringify(checks))throw Error('R
 function verifyMedia(x){
  const currentMedia=/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath);
  const inspectedLegacy=x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-09-23\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && !(x.productPhotoProvenance||[]).length;
- if(!currentMedia&&!inspectedLegacy)throw Error('Unsafe or unverified image path: '+x.postId);
+ const inspectedOct09=x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-10-09\/quality-upgrade\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && !(x.productPhotoProvenance||[]).length;
+ if(!currentMedia&&!inspectedLegacy&&!inspectedOct09)throw Error('Unsafe or unverified image path: '+x.postId);
  const b=fs.readFileSync(x.imagePath);
  if(b.length!==x.imageBytes||b.length<250000||sha(b)!==x.imageSha256||b[0]!==255||b[1]!==216)throw Error('Media changed: '+x.postId);
  for(const original of x.productPhotoProvenance||[]){
