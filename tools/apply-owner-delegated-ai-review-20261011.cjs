@@ -1,4 +1,4 @@
-// Batch7 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
+// Batch8 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
 'use strict';
 const fs=require('node:fs');
 const crypto=require('node:crypto');
