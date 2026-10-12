@@ -1,4 +1,4 @@
-// Batch8 repeatable fail-closed one-time review invocation: only manifest-specified post IDs, no scheduling or publishing.
+// Batch9 repeatable fail-closed one-time review: exactly verified October 9/10/11/12 JPEGs, no scheduling or publishing.
 'use strict';
 const fs=require('node:fs');
 const crypto=require('node:crypto');
@@ -18,7 +18,7 @@ const fingerprint=p=>sha(JSON.stringify(material(p)));
 if((manifest.items.length<1||manifest.items.length>15)||manifest.actor!==actor||manifest.actorType!=='AI_ASSISTANT_NOT_HUMAN'||!manifest.approvalDoesNotPublish||!manifest.approvalCreatesNoSchedule)throw Error('Unsafe one-time manifest');
 if(JSON.stringify(manifest.reviewChecks)!==JSON.stringify(checks))throw Error('Review checklist changed');
 function verifyMedia(x){
- const currentMedia=/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath);
+ const currentMedia=/^assets\/post-images\/2026-10-(?:10|11|12)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath);
  const inspectedLegacy=x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-09-23\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && !(x.productPhotoProvenance||[]).length;
  const inspectedOct09=x.legacyVisualProof==='independent-visual-verified-2026-10-12' && /^assets\/post-images\/2026-10-09\/quality-upgrade\/[A-Za-z0-9-]+\.jpg$/.test(x.imagePath) && !(x.productPhotoProvenance||[]).length;
  if(!currentMedia&&!inspectedLegacy&&!inspectedOct09)throw Error('Unsafe or unverified image path: '+x.postId);
