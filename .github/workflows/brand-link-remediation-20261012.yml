@@ -1,0 +1,54 @@
+name: 仙加味待審核生活貼文品牌連結一次性修正
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/brand-link-remediation-20261012.yml'
+      - 'tools/apply-owner-delegated-brand-link-remediation-20261012.cjs'
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-brand-link-remediation-once-20261012
+  cancel-in-progress: false
+jobs:
+  repair_pending_copy_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate source and safe script
+        run: |
+          set -euo pipefail
+          node --check tools/apply-owner-delegated-brand-link-remediation-20261012.cjs
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read live D1 and prepare exact copy-only changes
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-brand-link-before.json
+          node tools/apply-owner-delegated-brand-link-remediation-20261012.cjs prepare
+      - name: Update only pending copy text
+        run: |
+          set -euo pipefail
+          test -s /tmp/xjw-brand-link-apply.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/xjw-brand-link-apply.sql
+      - name: Verify every exact edit and preserve all unrelated records
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-brand-link-after.json
+          node tools/apply-owner-delegated-brand-link-remediation-20261012.cjs verify
+      - name: Archive actual result without publishing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brand-link-remediation-evidence-${{ github.run_id }}
+          path: /tmp/xjw-brand-link-result.json
+          if-no-files-found: warn
+          retention-days: 7
