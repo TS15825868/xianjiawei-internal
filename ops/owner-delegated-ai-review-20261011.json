@@ -89,7 +89,8 @@
         "physical_scale": true,
         "duplicate": true,
         "compliance_final": true
-      }
+      },
+      "legacyVisualProof": "independent-visual-verified-2026-10-12"
     },
     {
       "postId": "XJW-CONV-chat-elder-kitchen-habit",
@@ -182,7 +183,8 @@
         "physical_scale": true,
         "duplicate": true,
         "compliance_final": true
-      }
+      },
+      "legacyVisualProof": "independent-visual-verified-2026-10-12"
     }
   ]
 }
