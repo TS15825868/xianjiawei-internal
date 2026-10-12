@@ -1,0 +1,139 @@
+{
+  "version": "2026-10-12-review-backlog-post-batch9-v1",
+  "sourceOfTruth": "Cloudflare D1",
+  "sourceD1HealthRun": 38212103204,
+  "successfulReviewRun": 38267358381,
+  "sourceHeadBeforeThisIndex": "98ff5cc8a93c1620d8028c2c7a666ef9ca99794e",
+  "totalLivePosts": 132,
+  "lastVerifiedCounts": {
+    "approved": 38,
+    "pending_review": 19,
+    "published": 3,
+    "archived": 72,
+    "missingImageDrafts": 0
+  },
+  "ownerConstraints": {
+    "all16ChecksRequired": true,
+    "neverPublishWithoutReview": true,
+    "freeToolsOnly": true,
+    "noRecurringSchedule": true,
+    "onlyFourCurrentPublicProducts": true
+  },
+  "notes": "本索引只記錄疑點與審查優先順序，不等於不合格判決或核准；D1正式狀態仍是唯一權威。兩張新年圖僅完成審核資料準備，未執行D1核准。",
+  "items": [
+    {
+      "postId": "XJW-CONV-brand-third-generation-note",
+      "reviewStatus": "full_scene_review",
+      "reason": "需要複核長文與家族工藝歷史照片的吻合度，避免影像誤示為真實家族照片",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "reviewStatus": "formal_product_verify",
+      "reason": "需逐像素核對30cc正式裸玻璃罐與真實產品來源",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "reviewStatus": "full_scene_review",
+      "reason": "圖文初步相符；正式高畫質素材與夥伴需再核對",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-buy-first-look",
+      "reviewStatus": "full_scene_review",
+      "reason": "放大鏡與標示卡為概念情境，需避免誤解為正式標示",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-customer-first-question",
+      "reviewStatus": "full_scene_review",
+      "reason": "互動情境與其他提問主題需檢查重複角度",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "reviewStatus": "formal_product_verify",
+      "reason": "正式30cc裸罐和180cc鋁袋均需核對來源和比例，文案近期變動須重審",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "reviewStatus": "formal_product_verify",
+      "reason": "必須核對鹿茸粉75g罐的正式實物原圖，不能用AI重畫罐身",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "reviewStatus": "retail_tableware_risk",
+      "reason": "畫面含杯碗，需再次確認主視覺是店務準備而非餐具販售",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-chat-wanhua-morning",
+      "reviewStatus": "location_visual_review",
+      "reason": "需檢查萬華街景是否過度虛構或造成具體地點誤認",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-cny-last-day-reset",
+      "reviewStatus": "seasonal_brand_review",
+      "reason": "待驗新年最後一天場景與生活動作，並確保仙加味連結不只是口號",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-live-hongludi-outing-20260929",
+      "reviewStatus": "place_authenticity_review",
+      "reason": "真實烘爐地活動文字不應搭配使人誤認為實景照片的虛構場景",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-new-year-open-door",
+      "reviewStatus": "prepared_not_executed",
+      "reason": "本回合已逐張檢視並提交batch10審核清單；安全工具阻擋執行，D1仍待審",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-new-year-warm-cup-share",
+      "reviewStatus": "prepared_not_executed",
+      "reason": "本回合已逐張檢視並提交batch10審核清單；安全工具阻擋執行，D1仍待審",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-season-more-soup",
+      "reviewStatus": "seasonal_review",
+      "reason": "換季內容需避免把情境錯當成目前即時天氣；正式發布時再確認",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-weather-cool-drink",
+      "reviewStatus": "fresh_weather_required",
+      "reason": "即時天氣的審核效期短，須依發布時天氣重新核對",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-weather-rain-chat",
+      "reviewStatus": "fresh_weather_required",
+      "reason": "發布前需核對實際降雨，防止把雨景當成即時實況",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "reviewStatus": "seasonal_review",
+      "reason": "年末主題需在正確時段使用，檢查不是泛用收納圖",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "reviewStatus": "needs_image_rework",
+      "reason": "杯子與布巾過於突出，存在雜貨/餐具品牌誤解，優先重製為仙加味工藝或品牌日常",
+      "approvalConfirmed": false
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "reviewStatus": "needs_image_rework",
+      "reason": "圖中大量展示碗盤布巾與收納籃，視覺如餐具商店，優先重製為仙加味漢方工作場景",
+      "approvalConfirmed": false
+    }
+  ]
+}
