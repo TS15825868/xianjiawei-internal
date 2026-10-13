@@ -17,8 +17,8 @@ assert.match(String(PRODUCT_AUTHORITY.mediaGuardPolicy||''),/customer-display.*d
 
 const validProducts=[
   {name:'龜鹿膏',specification:'100g／罐',ingredients:'鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始'},
-  {name:'龜鹿飲30cc玻璃罐',specification:'30cc／罐（小玻璃罐）',ingredients:'水、龜板萃取物、鹿角萃取物、粉光蔘、枸杞、紅棗、黃耆',usage:'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排'},
-  {name:'龜鹿飲180cc鋁袋',specification:'180cc／包（鋁袋）',ingredients:'水、龜板萃取物、鹿角萃取物、粉光蔘、枸杞、紅棗、黃耆',usage:'每日一包；飲用時間可依個人使用習慣與作息時間安排'},
+  {name:'龜鹿飲30cc玻璃罐',specification:'30cc／罐（小玻璃罐）',ingredients:'水、鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排'},
+  {name:'龜鹿飲180cc鋁袋',specification:'180cc／包（鋁袋）',ingredients:'水、鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘',usage:'每日一包；飲用時間可依個人使用習慣與作息時間安排'},
   {name:'鹿茸粉',specification:'75g／罐',ingredients:'鹿茸'}
 ];
 assert.deepEqual(validateProductRecord({name:'柒玄茶・龜鹿調飲粉',specification:'2g／小包；20g／包（10小包）'}),[],'ERP deferred records remain editable');
