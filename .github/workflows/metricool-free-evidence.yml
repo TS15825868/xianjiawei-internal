@@ -1,0 +1,69 @@
+name: 仙加味免費排程證據回填（不呼叫Metricool API）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/metricool-free-evidence/*.json']
+  workflow_dispatch:
+    inputs:
+      receipt:
+        description: 已由Work重新查詢驗證的JSON路徑
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      REQUESTED_RECEIPT: ${{ inputs.receipt }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Select one receipt
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),cp=require('child_process');
+          const files=process.env.REQUESTED_RECEIPT?[process.env.REQUESTED_RECEIPT]:cp.execFileSync('git',['diff','--name-only','HEAD^','HEAD','--','ops/metricool-free-evidence/'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
+          if(files.length!==1||!/^ops\/metricool-free-evidence\/[a-zA-Z0-9_-]+\.json$/.test(files[0]))throw Error('Exactly one safe receipt path required');
+          fs.appendFileSync(process.env.GITHUB_ENV,'RECEIPT_FILE='+files[0]+'\n');
+          NODE
+      - name: Check current D1 and store verified evidence only
+        run: |
+          set -euo pipefail
+          node tools/test-metricool-human-review.mjs
+          node tools/test-metricool-free-evidence.cjs
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.* FROM social_posts p WHERE p.id IN (SELECT post_id FROM social_metricool_sync)" > free-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates WHERE post_id IN (SELECT post_id FROM social_metricool_sync)" > free-gates.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_metricool_sync" > free-links.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "CREATE TABLE IF NOT EXISTS social_metricool_evidence(batch TEXT,post_id TEXT,evidence_json TEXT,before_json TEXT,verified_at TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(batch,post_id))"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT batch,post_id FROM social_metricool_evidence" > free-existing-evidence.json
+          node tools/apply-metricool-free-evidence.cjs
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/metricool-free-evidence.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.id,p.status,p.scheduled_at,p.approved_by,p.review_note,m.metricool_id,m.uuid,m.publication_at,m.state,m.last_error,m.last_sync_at FROM social_posts p JOIN social_metricool_sync m ON p.id=m.post_id" > free-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status" > free-counts.json
+          node - <<'NODE'
+          const fs=require('fs'),assert=require('assert/strict'),r=JSON.parse(fs.readFileSync(process.env.RECEIPT_FILE)),rows=JSON.parse(fs.readFileSync('free-after.json'))[0].results;
+          for(const e of r.posts){const p=rows.find(p=>p.id===e.d1Id);assert(p);assert.equal(p.uuid,e.remote.uuid);assert.equal(p.metricool_id,e.remote.id);if(e.result==='scheduled')assert.equal(p.state,'scheduled');if(e.result==='draft')assert.equal(p.state,'pending_review');if(e.result==='result'){const statuses=e.remote.providers.map(x=>x.status);assert.equal(p.state,statuses.every(x=>x==='PUBLISHED')?'published':statuses.includes('ERROR')?'failed':'awaiting_verification');}}
+          console.log('PASS formal readback for every receipt');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: metricool-free-evidence-${{ github.run_id }}
+          path: |
+            free-before.json
+            free-gates.json
+            free-links.json
+            free-existing-evidence.json
+            free-after.json
+            free-counts.json
+          retention-days: 7

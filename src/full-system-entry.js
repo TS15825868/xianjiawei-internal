@@ -210,7 +210,7 @@ export default{
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
     if(request.method==='GET'&&path==='/api/metricool-sync'){
       const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
-      let rows=[];try{rows=(await env.DB.prepare('SELECT post_id,metricool_id,uuid,publication_at,state,attempts,last_error,last_sync_at FROM social_metricool_sync ORDER BY publication_at').all()).results||[]}catch(error){if(!/no such table/.test(String(error)))throw error}
+      let rows=[];try{rows=(await env.DB.prepare('SELECT m.post_id,p.title,p.status AS post_status,p.image_url,p.copy,m.metricool_id,m.uuid,m.publication_at,m.state,m.attempts,m.last_error,m.last_sync_at FROM social_metricool_sync m JOIN social_posts p ON p.id=m.post_id ORDER BY m.publication_at').all()).results||[]}catch(error){if(!/no such table/.test(String(error)))throw error}
       return json({configuration:metricoolConfiguration(env),posts:rows});
     }
 

@@ -19,24 +19,19 @@ const unbound={METRICOOL_API_TOKEN:'unit-test-not-a-real-credential',DB:{prepare
 assert.equal((await syncMetricool(unbound,{})).blocked,'METRICOOL_EXISTING_UUID_BOOTSTRAP_REQUIRED');
 assert.equal(unboundQueries,0);
 const nativeFetch=globalThis.fetch;
-async function simulate(link,{gateOK=true,remote=[]}={}){
+async function simulate(link,{gateOK=true,now='2026-10-13T12:00:00Z'}={}){
   const writes=[],calls=[];
   const scheduledRow={...row,status:'scheduled'};
-  const db={prepare:sql=>{const statement={bind(...args){this.args=args;return this},async first(){if(sql.includes('social_metricool_control'))return{setting_value:'20261013-eight-recovery'};if(sql.includes('FROM social_posts'))return scheduledRow;throw Error(sql)},async all(){if(sql.includes('LEFT JOIN'))return{results:[]};if(sql.includes('SELECT * FROM social_metricool_sync'))return{results:[link]};throw Error(sql)},async run(){writes.push({sql,args:this.args});return{meta:{changes:1}}}};return statement}};
-  globalThis.fetch=async(url,opts={})=>{calls.push({url:String(url),opts});return Response.json(remote)};
-  try{await syncMetricool({DB:db,METRICOOL_API_TOKEN:'test'}, {gateState:async()=>({ok:gateOK,reason:'test invalid review'}),fingerprint:async()=>link.content_fingerprint});return{writes,calls}}finally{globalThis.fetch=nativeFetch}
+  const db={prepare:sql=>{const statement={bind(...args){this.args=args;return this},async first(){if(sql.includes('social_metricool_control'))return{setting_value:'20261013-eight-recovery'};if(sql.includes('FROM social_posts'))return scheduledRow;throw Error(sql)},async all(){if(sql.includes('LEFT JOIN'))return{results:[]};if(sql.includes('SELECT * FROM social_metricool_sync'))return{results:['scheduled','queued','blocked_config','awaiting_work'].includes(link.state)?[link]:[]};throw Error(sql)},async run(){writes.push({sql,args:this.args});return{meta:{changes:1}}}};return statement}};
+  globalThis.fetch=async()=>{calls.push(1);throw Error('Free Worker must never call Metricool')};
+  try{await syncMetricool({DB:db,METRICOOL_API_TOKEN:'ignored'}, {gateState:async()=>({ok:gateOK,reason:'test invalid review'}),fingerprint:async()=>link.content_fingerprint},new Date(now));return{writes,calls}}finally{globalThis.fetch=nativeFetch}
 }
 const baseLink={post_id:row.id,metricool_id:1,uuid:'stable-uuid',state:'scheduled',content_fingerprint:'fp',publication_at:'2026-11-06T10:00:00+08:00',attempts:0};
-const publishedRemote={id:1,uuid:'stable-uuid',text:row.copy,draft:false,autoPublish:true,providers:['facebook','instagram','threads'].map(network=>({network,status:'PUBLISHED',id:network+'-id',publicUrl:'https://example.com/'+network}))};
-const successful=await simulate(baseLink,{remote:publishedRemote});
-assert.equal(successful.calls.length,1);assert.equal(successful.calls[0].opts.method,'GET');
-assert.equal(successful.writes.filter(x=>x.sql.includes('INSERT INTO social_publish_deliveries')).length,3);
-assert(successful.writes.some(x=>x.sql.includes("SET status='published'")));
-const unknown=await simulate({...baseLink,state:'unknown',metricool_id:null});
-assert.equal(unknown.calls.length,1);assert.equal(unknown.calls[0].opts.method,'GET');
-assert(unknown.writes.some(x=>x.args?.includes('failed')));
-const invalid=await simulate(baseLink,{gateOK:false,remote:{...publishedRemote,providers:publishedRemote.providers.map(p=>({...p,status:'PENDING'}))}});
-assert.equal(invalid.calls.length,2);assert.equal(invalid.calls[1].opts.method,'PUT');
-const paused=JSON.parse(invalid.calls[1].opts.body);assert.equal(paused.draft,true);assert.equal(paused.autoPublish,false);
-console.log('PASS: bootstrap cannot create duplicates; three-platform publication result writes back; ambiguous requests never create another post; invalid review pauses the same UUID');
-console.log('PASS: AI cannot approve; 16 checks + actor + fingerprint; Taipei slot reservation; stable UUID; three platforms; missing credentials fail closed');
+const future=await simulate(baseLink);assert.equal(future.calls.length,0);assert.equal(future.writes.filter(x=>x.sql.startsWith('UPDATE')).length,0);
+const elapsed=await simulate(baseLink,{now:'2026-11-07T00:00:00Z'});assert(elapsed.writes.some(x=>x.args?.includes('awaiting_verification')));assert.equal(elapsed.calls.length,0);assert(!elapsed.writes.some(x=>x.sql.includes("SET status='published'")));
+const invalid=await simulate(baseLink,{gateOK:false});assert(invalid.writes.some(x=>x.args?.includes('cancel_required')));assert.equal(invalid.calls.length,0);
+const queued=await simulate({...baseLink,state:'blocked_config'});assert(queued.writes.some(x=>x.args?.includes('awaiting_work')));
+const unknown=await simulate({...baseLink,state:'unknown'});assert.equal(unknown.calls.length,0);assert.equal(unknown.writes.filter(x=>x.sql.startsWith('UPDATE')).length,0);
+assert.equal(metricoolConfiguration({METRICOOL_API_TOKEN:'ignored'}).serverApiEnabled,false);
+assert.equal(metricoolConfiguration().monthlyPublishedPlatformLimit,20);
+console.log('PASS: free plan never calls server API; existing schedules unchanged; elapsed dates await verification, not success; invalid review needs cancellation; unknown writes never retry; AI cannot approve');

@@ -1,0 +1,15 @@
+const assert=require('assert/strict'),{fingerprint,validate}=require('./metricool-free-evidence.cjs');
+const keys=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
+const p={id:'TEST',status:'scheduled',copy:'仙加味日常',image_url:'https://raw.githubusercontent.com/test/image.jpg',approved_by:'human@example.com'};
+const fp=fingerprint(p),g={reviewed_by:p.approved_by,content_fingerprint:fp,checklist_json:JSON.stringify(Object.fromEntries(keys.map(k=>[k,true]))),copy_image_match:1},l={uuid:'stable',metricool_id:1};
+const e={result:'scheduled',sourceFingerprint:fp,imageSource:p.image_url,imageSHA256:'a'.repeat(64),verifiedAt:'2026-10-13T12:00:00Z',publicationAt:'2026-10-16T10:00:00+08:00',remote:{id:1,uuid:'stable',text:p.copy,publicationDate:{dateTime:'2026-10-16T10:00:00',timezone:'Asia/Taipei'},media:['https://static.metricool.com/image.jpg'],providers:['facebook','instagram','threads'].map(network=>({network,status:'PENDING'})),draft:false,autoPublish:true,instagramData:{autoPublish:true}}};
+assert.equal(validate(p,g,l,e),'scheduled');
+assert.throws(()=>validate({...p,copy:'changed'},g,l,e));
+assert.throws(()=>validate(p,{...g,reviewed_by:'chatgpt:owner-delegated-reviewed'},l,e));
+assert.throws(()=>validate(p,g,l,{...e,remote:{...e.remote,uuid:'duplicate'}}));
+assert.throws(()=>validate(p,g,l,{...e,remote:{...e.remote,id:394674560}}));
+assert.equal(validate(p,g,l,{...e,result:'result'}),'awaiting_verification');
+const published=structuredClone(e);published.result='result';published.remote.providers.forEach(x=>{x.status='PUBLISHED';x.id='actual-id';x.publicUrl='https://www.'+{facebook:'facebook.com',instagram:'instagram.com',threads:'threads.com'}[x.network]+'/actual-post'});
+assert.equal(validate(p,g,l,published),'published');delete published.remote.providers[2].publicUrl;assert.throws(()=>validate(p,g,l,published));
+assert.equal(validate({...p,status:'pending_review'},null,l,{...e,result:'draft',remote:{...e.remote,draft:true,autoPublish:false}}),'pending_review');
+console.log('PASS evidence: source version and UUID lease; no AI approval; no protected post; pending is not published; three actual URLs required; drafts stay pending');
