@@ -160,5 +160,25 @@
       "Threads"
     ],
     "rule": "平台個人檔案／Bio統一使用此入口；貼文內若為產品詢問、試喝、價格、下單、配送、售後，仍直接導LINE OA。"
+  },
+  "automationTransition": {
+    "authorizedAt": "2026-10-13",
+    "authorization": "使用者明確授權AI自動產文、製圖、品質審核、排程及正式發布；高風險或不確定內容保留人工確認",
+    "targetMode": "ai_quality_approved_auto_publish",
+    "currentEnforcement": "legacy_manual_gate_until_runtime_migration_and_live_verification",
+    "aiReviewMustNotImpersonateHuman": true,
+    "requiredEvidence": [
+      "formal_product_asset_provenance",
+      "visual_scene_match",
+      "mascot_identity",
+      "traditional_chinese",
+      "regulatory_copy_check",
+      "duplicate_check",
+      "platform_publish_receipt"
+    ],
+    "unsafeOrUncertainAction": "hold_for_human_review",
+    "existingScheduledPostAction": "preserve_and_never_duplicate",
+    "freeMetricoolConstraint": "no_paid_rest_api_no_unattended_connector_claim",
+    "rolloutState": "authorized_not_deployed"
   }
 }
