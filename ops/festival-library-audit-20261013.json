@@ -1,0 +1,1422 @@
+{
+  "version": "2026-10-13",
+  "sourceD1Run": 38279698923,
+  "scope": "132篇全庫資料；2026年底至2027元宵的下一輪節慶內容。2026已過節慶只盤點，不建立過期排程。",
+  "officialCalendar": "https://www.dgpa.gov.tw/uploads/dgpa/files/202609/116%E5%B9%B4%E8%BE%A6%E5%85%AC%E6%97%A5%E6%9B%86%E8%A1%A8-6.pdf",
+  "dates": {
+    "crossYear": "2026-12-31",
+    "newYear": "2027-01-01",
+    "eve": "2027-02-05",
+    "springFirst": "2027-02-06",
+    "lantern": "2027-02-20",
+    "businessReopening": "須由仙加味另行確認，不能以政府機關復工日代替"
+  },
+  "coverageBefore": {
+    "跨年": [
+      "XJW-CONV-year-end-keep-habit"
+    ],
+    "元旦": [],
+    "年節準備": [
+      "XJW-CONV-cny-fridge-clean",
+      "XJW-CONV-cny-gift-choice",
+      "XJW-CONV-cny-pre-clean"
+    ],
+    "除夕": [],
+    "春節": [
+      "XJW-CONV-cny-childhood-now",
+      "XJW-CONV-cny-family-choice",
+      "XJW-CONV-cny-must-have-dish"
+    ],
+    "走春": [],
+    "開工": [
+      "XJW-CONV-cny-reopen"
+    ],
+    "年後生活": [
+      "XJW-CONV-cny-last-day-reset",
+      "XJW-CONV-cny-first-soup"
+    ],
+    "元宵": []
+  },
+  "auxiliary": {
+    "年末通用": [
+      "XJW-CONV-year-end-clean",
+      "XJW-CONV-year-end-small-win"
+    ],
+    "新年未區分公曆農曆": [
+      "XJW-CONV-new-year-open-door",
+      "XJW-CONV-new-year-slow-start",
+      "XJW-CONV-new-year-warm-cup-share"
+    ]
+  },
+  "missingTopics": [
+    "元旦",
+    "除夕",
+    "走春",
+    "元宵"
+  ],
+  "newIds": [
+    "XJW-FEST-2027-newyear-breakfast",
+    "XJW-FEST-2027-eve-welcome-home",
+    "XJW-FEST-2027-spring-walk",
+    "XJW-FEST-2027-lantern-riceballs"
+  ],
+  "badImages": [
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "reason": "原圖有成疊碗盤與布巾突出；本輪改為抱長輩的家庭團聚場景",
+      "resolution": "新圖替換，撤銷舊核准並回待審"
+    }
+  ],
+  "captionIssues": [
+    "XJW-CONV-cny-childhood-now"
+  ],
+  "duplicateTopics": [
+    {
+      "ids": [
+        "XJW-CONV-new-year-open-door",
+        "XJW-CONV-cny-reopen"
+      ],
+      "reason": "兩篇均為開門／整理桌面／開始工作，語意重複候選；保留，不再新增第三篇同類",
+      "disposition": "須人工選一篇或明確區分公曆新年與農曆開工，未自行刪除"
+    }
+  ],
+  "dateErrors": [],
+  "dateNotAssigned": [
+    "XJW-CONV-year-end-keep-habit",
+    "XJW-CONV-cny-fridge-clean",
+    "XJW-CONV-cny-gift-choice",
+    "XJW-CONV-cny-pre-clean",
+    "XJW-CONV-cny-childhood-now",
+    "XJW-CONV-cny-family-choice",
+    "XJW-CONV-cny-must-have-dish",
+    "XJW-CONV-cny-reopen",
+    "XJW-CONV-cny-last-day-reset",
+    "XJW-CONV-cny-first-soup",
+    "XJW-CONV-year-end-small-win",
+    "XJW-CONV-new-year-open-door",
+    "XJW-CONV-new-year-slow-start",
+    "XJW-CONV-new-year-warm-cup-share"
+  ],
+  "rows": [
+    {
+      "id": "XJW-CONV-chat-craft-years",
+      "status": "approved",
+      "title": "一件事情做久了，還會覺得新鮮嗎？",
+      "copySha256": "b67fc553b8a6b75a1ad4be572381bdd58027e44e4ff1e025cb277cb5666c33d5",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "status": "approved",
+      "title": "今天讓小鹿跟小烏龜來選",
+      "copySha256": "9bdde6e0321327a77d9b71247ed4441728d326aa27dcdbccd4acfda34597ae9b",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-11-30T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "status": "approved",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "copySha256": "d64559d907eb17e57816e1043695b66869924ac0c210d7b6cc3a814e6fe85bb0",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "status": "approved",
+      "title": "小老闆今天在整理什麼？",
+      "copySha256": "77b8a97a84ab7a19adcfb16181980d20cd0ef526bc9dc456e283c47c5e213afa",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-brand-third-generation-note",
+      "status": "approved",
+      "title": "有些東西，真的不能只用價格來算",
+      "copySha256": "2a146a1c5f43e1fe23e7bd78240fbf67f92627621f0dfe1d33907f9fb27e1a03",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-30-bare-jar",
+      "status": "approved",
+      "title": "今天只看一個小細節：裸罐",
+      "copySha256": "15232a61ceb2f6a3ad6aa558d4d288e3bd7c7e8e631582fcc5b0012ca30b83d7",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "status": "approved",
+      "title": "買東西時，你第一個看什麼？",
+      "copySha256": "27563fd236fb10e756fbb5db18898479e338e613c811e2336729cc2979824221",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-21T12:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "status": "approved",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "copySha256": "485aa61cb7a9260119a15e0b757c8a8d1bd617b4c7523ee1390a5816296e2aac",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-wanhua-morning",
+      "status": "approved",
+      "title": "萬華的早上，你第一個想到什麼聲音？",
+      "copySha256": "002956c14dd706372cb8f8017d116d4a1e4a43d6b2dc794464da24a4edeefca6",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-19T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "status": "approved",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "copySha256": "066e63f6e3927a53b86525c94f207db4d727dfa342f3a69490301decc76793ac",
+      "festivalTopic": "年節準備",
+      "imageInspection": "掃地整理食材工作間，年前清掃主題一致",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-live-hongludi-outing-20260929",
+      "status": "approved",
+      "title": "帶小老闆去烘爐地走走",
+      "copySha256": "7bf1888c0543063b3f525ed10fff22e191b49a44ebea2fea23c9a9148d29b6fd",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-new-year-open-door",
+      "status": "approved",
+      "title": "新年第一個開店日，小老闆先做什麼？",
+      "copySha256": "eea639ecb6274693f50c332201543d559c2d143f4fe83601525fcdf4c32f1e6d",
+      "festivalTopic": "新年未區分公曆農曆",
+      "imageInspection": "開門閂街景，梅花紅裝飾；可能同農曆開工主題，未指定公曆用途",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "status": "approved",
+      "title": "新的一年，不一定要突然變得很厲害",
+      "copySha256": "f19008329f49d2ec4a3cf315d86ca6d37abd78b6f0b0b290c9ef2506f683d183",
+      "festivalTopic": "新年未區分公曆農曆",
+      "imageInspection": "閱讀角落規劃一件小事，福字梅花；公曆農曆用途未限定",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "status": "approved",
+      "title": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "copySha256": "293bbd8fe5a39fb2ad94aaf8c2d784c1ba642f3da59b4ce2ae1dc97ebeaea12c",
+      "festivalTopic": "新年未區分公曆農曆",
+      "imageInspection": "遞杯給家人，紅燈籠與年節飾品；不是明確公曆元旦專篇",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "status": "approved",
+      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
+      "copySha256": "39578e0d83cc2e0a0dad35d07c72dce17797204fcd5f0f945156fbd64325f477",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-12-18T12:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "status": "approved",
+      "title": "突然變涼了，你也開始想喝溫熱的嗎？",
+      "copySha256": "6b31fe01bb1f02c45866ff74d27d8c69a39268811997b0f61f266e810b60aaff",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-year-end-keep-habit",
+      "status": "approved",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "copySha256": "e9ab3e645d6bc25c65d295a37de352e8e146d36e9e853f13219412004492a646",
+      "festivalTopic": "跨年",
+      "imageInspection": "年末食材工作桌記錄習慣；跨年前文案一致",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "status": "approved",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "copySha256": "b969c866d291675dff2ea236f724a4c328e7c247dc40686c6bbc56870eef5525",
+      "festivalTopic": "年末通用",
+      "imageInspection": "整理完食材抽屜露出笑容，年末小事完成",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-ask-boss-topic",
+      "status": "approved",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "copySha256": "1d35cfb13185197bc0348ec7b18590c35e7302e30506ebe80ef10e65147861f3",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-12-04T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-customer-first-question",
+      "status": "approved",
+      "title": "如果小老闆真的跟你聊天，你第一句會問什麼？",
+      "copySha256": "43963b9716790190f81237960b3ef2e9ec0d8ff13e9a50505c3d351599c8ae8c",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-11-08T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "status": "approved",
+      "title": "家裡有沒有一個固定放東西的位置？",
+      "copySha256": "c592146d44359c22556afcb39688666ef4dacff05b1f8b266d569ba66cac4f12",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-11-20T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-home-soup",
+      "status": "approved",
+      "title": "你家煮湯，最常放什麼？",
+      "copySha256": "c2341f1e89644920f1f989352f529c27b76a0604bffb157a941b5a87a8c5df93",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-17T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "status": "approved",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "copySha256": "e1be6084c1e2b4068a3aefb7990794c919aad84cba51f179c1016c0b7270c143",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-old-methods",
+      "status": "approved",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "copySha256": "c561311039aa774d6f81682963ff28c8c5af4569e2a990736e16f8986b1f593f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "status": "approved",
+      "title": "開店前，小老闆先做哪一件事？",
+      "copySha256": "bfb3371d59ba48ae253cd94002b58fef17808bcaa9f1dfeeaaca978351eae57b",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "status": "approved",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "copySha256": "c277d427e5f93c8106db557c739a125e92cf93bca4e9256e36427da5b4dae65f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "status": "approved",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "copySha256": "653d8458d9dd195100e4b8a4e16f55fbe7a48bf56b14ca0888fa347127fd6b17",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-simple-soup",
+      "status": "approved",
+      "title": "一鍋湯，其實不用放得很複雜",
+      "copySha256": "10d4e2e6685e34cdd330f757766804e8f6ee64944a7a9fcaa467c6be64854346",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-11-26T12:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-first-soup",
+      "status": "approved",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "copySha256": "879b7e3b0879fc67cc62093e088200d4f1e3c933e1531dd1a7de077617426cfd",
+      "festivalTopic": "年後生活",
+      "imageInspection": "雞腿排骨分開，空鍋尚未烹煮，符合二選一",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "status": "approved",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "copySha256": "5056fad2113fc95f4699a4e8a769a8424d1915498eba485f30e12ea5c51d6f07",
+      "festivalTopic": "年節準備",
+      "imageInspection": "送禮思考心意卡，前景龜鹿膏實物照片與正式來源一致",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-last-day-reset",
+      "status": "approved",
+      "title": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "copySha256": "ba20c6f554a65e8bcd784ae6867e9954584ae5e9ce3a167867c6336205eac657",
+      "festivalTopic": "年後生活",
+      "imageInspection": "年假最後一天備好隨身包與筆記，回復節奏",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "status": "approved",
+      "title": "下雨天，你會想喝什麼？",
+      "copySha256": "c09f1c3f736b8ca3028880d95d6fe3cb5a4eb785c260c01678552590d147d9cf",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-year-end-clean",
+      "status": "approved",
+      "title": "年底整理時，最常翻出什麼忘記的東西？",
+      "copySha256": "defffc3e6322d90041bddf366162c84d8a0e60ee10a21156f07d7e5a6a1bc37e",
+      "festivalTopic": "年末通用",
+      "imageInspection": "木抽屜風景照片與木匙回憶，年底整理主題",
+      "proposedScheduledAt": "2026-12-20T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-care-before-home-message",
+      "status": "approved",
+      "title": "回家前，你會先打一通電話，還是先傳一句問候？",
+      "copySha256": "3c9b1e9d97cc60155a37d0b396d36dff38155766181e9f1d64529c4e0788b797",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "status": "approved",
+      "title": "一句問候，也是一種關心",
+      "copySha256": "09af99ae30cd6db8b8fb19d8c00847eee00c157198255eb8bb0013900c50977c",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-30-vs-180",
+      "status": "approved",
+      "title": "30cc跟180cc，怎麼選？",
+      "copySha256": "2a496e49e85666bb69228986acfc1a496ea6cd2137527600bc1b6e8c5c610048",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-brand-not-only-product",
+      "status": "approved",
+      "title": "為什麼有些貼文不放產品？",
+      "copySha256": "5a3eb12c8d0ae260a9f61be4257ce2c084605b3d2541bd27360ee62af0ba5174",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "status": "approved",
+      "title": "放假在家，你會想慢慢準備一餐嗎？",
+      "copySha256": "dc53c44e7169e3fbe7c6ec62b16471e06b10121438f6df46c9fecae93cb78182",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-11-02T12:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "status": "approved",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "copySha256": "ae97be57918b5a6e4b6b7bec11e2f3fa9f3a5fdd33095917dba90ab8d04d2787",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "status": "approved",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "copySha256": "5223015dc252da212928a9f88fefe46c11fae0b6d84c12b7478012d9008fa497",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-31T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-gao-vs-drink",
+      "status": "approved",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "copySha256": "31d2b7d646bb73d95ec9ddaebf8dff076f98aeb741b5d7f647d872637b68a72c",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "status": "approved",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "copySha256": "3122295dfed83223ab6a1759d3e7966b0590c166e1bbcee3f8bea1ce91ec2a2f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-12-24T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "status": "approved",
+      "title": "有些問題，其實沒有標準答案",
+      "copySha256": "5fbde8f25a8fdfc309cebc5fb11db8f8464d0aa4ff16ae88e04bfdf4cf3ec16c",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "status": "approved",
+      "title": "你家以前最常看到哪一種食材？",
+      "copySha256": "b19096624c1dcae87068e296bdff8d920c3cd45d92953b1095c103be7638d693",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "status": "approved",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "copySha256": "6e1c193912920c67bfd408c23f741ada37cc587282fa33dd066685fdef4af614",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "status": "approved",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "copySha256": "4d88fd665d487316b15419229064830b3fdf9872e5ad5bbebb212fdc7761a3ba",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-12-14T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "status": "approved",
+      "title": "你煮東西是照食譜，還是憑感覺？",
+      "copySha256": "7bef76cdcba1d13e5efaa7cc9e91f5ce08caa60b17043b4a27e867f58d54af5e",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-27T12:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "status": "approved",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "copySha256": "b8c162c4e16759dc001f98473ac9814c39f5b2efa719519739a94888eceda7af",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-23T19:45:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-soup-day",
+      "status": "approved",
+      "title": "你家有固定的煮湯日嗎？",
+      "copySha256": "56e32b30edbd80361802a8bc6e183dbc2220f9414822a040a2cb6794dc9a9ead",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "status": "approved",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "copySha256": "c96fb019888cc1f7bc9dd11f30472d3c3a3d18f57481a0945975b48b2246c079",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-10-25T10:00:00+08:00",
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "status": "approved",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "copySha256": "87a3d4fd8792d9348e4e64ee80289f81b867246a74a193bde8f5ee2d87c93d4f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-trial-first",
+      "status": "approved",
+      "title": "想先了解，再決定也可以",
+      "copySha256": "fdf45d7dc56c9019da9fad6413e3a7e28c3a57f02a45f7a1ea0a8fb0f13c0708",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "status": "approved",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "copySha256": "8e1874ee7b2af86e3cad25170e4274ccc0eff55ec026cd9c1985908cadd46437",
+      "festivalTopic": "春節",
+      "imageInspection": "角色翻看插畫中的年節舊照片道具；圖說需明示不是實際家族照片",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "status": "approved",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "copySha256": "f227b003acddf3f18fcee41e08cf64f3c2b6904fb94a1aadeb60d89793a3fdc1",
+      "festivalTopic": "春節",
+      "imageInspection": "原圖有成疊碗盤與布巾突出；本輪改為抱長輩的家庭團聚場景",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "status": "approved",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "copySha256": "71f3e110f34aade5e6ae4f4c1f783a5e02ef120ec6a774d2229590f885499033",
+      "festivalTopic": "年節準備",
+      "imageInspection": "年前整理冰箱，蔬菜水果及冷藏位置明確",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "status": "approved",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "copySha256": "d695584a06a2e25a8ead78d540ce5300e6a64ec9373df74518d1c696693052ec",
+      "festivalTopic": "春節",
+      "imageInspection": "角色替年菜擺蔬菜，菜餚為主而非器皿商品",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "status": "approved",
+      "title": "開工第一天，小老闆先做一件小事",
+      "copySha256": "c718889890afc56bb39d7df7f222593870fc3d8703ac62907ae74c0f9934fcd7",
+      "festivalTopic": "開工",
+      "imageInspection": "年假後開門與工具歸位，未聲稱特定店面復工日",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260904-0900-FIRST",
+      "status": "published",
+      "title": "週五早上，先把今天想問的整理好",
+      "copySha256": "e6e03c578d8814f2f75fe09eb21ec9719bd3f6ef09337cb35ab7c346f38bbc5f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": "2026-09-04T01:00:00.000Z",
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-BRAND-START",
+      "status": "published",
+      "title": "仙加味，從萬華開始",
+      "copySha256": "d4babc073c6d3c3ba2d08be3a4be04f0ae067eec35059045baaa446aa07346d0",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-TRIAL-MAIN",
+      "status": "published",
+      "title": "龜鹿飲試喝組｜先試喝，再決定",
+      "copySha256": "c6663dc6823e19203fb022d7346874e5101104cfdc2a02b2c9db2892904bd311",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-gao-storage",
+      "status": "archived",
+      "title": "龜鹿膏放在哪裡比較不容易忘記？",
+      "copySha256": "6b51ff1e513358043266ef6f8b190dad326bc896f072f91fad3494ce37b203e2",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-jiao-spec",
+      "status": "archived",
+      "title": "龜鹿膠600g，到底是一盒什麼份量？",
+      "copySha256": "f1ee3e0bea5de67b777a4a45d1907b9b1469ebc2fd894b1d96bc6465baeddb8f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-tang-vs-jiao",
+      "status": "archived",
+      "title": "龜鹿湯塊跟龜鹿膠，看起來很像嗎？",
+      "copySha256": "17484aa73f941e3834059a8047a5cbe34a9c0d8f5364d147a489c2501d8616fc",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-CONV-chat-tangkuai-spec",
+      "status": "archived",
+      "title": "龜鹿湯塊75g，一盒是幾塊？",
+      "copySha256": "2e26c2d2fe9070680788e35a031de740f6410af1067d726309fdebe18c6e600e",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260909-0900-CHOOSE",
+      "status": "archived",
+      "title": "週三早上，先看今天的生活動線再決定怎麼安排",
+      "copySha256": "20075f8b2b9e8c366a45999d98d2fe376104c6da3fcfe1db8e9eca078df39185",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260911-0900-RECIPE",
+      "status": "archived",
+      "title": "週五回家想煮一鍋熱湯，先把晚餐時間留出來",
+      "copySha256": "1388ad5fb5ca46618567bb6408387d8d55e2fd1228e2bc8bce91875a9bb47955",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-INGREDIENT-PRINCIPLE",
+      "status": "archived",
+      "title": "晚上看標示，比只看包裝更重要：先把龜鹿飲成分讀清楚",
+      "copySha256": "528591b0079d9a19f7e6d23437f1a918151797fd9384f2339d1e8bf5ca619643",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-LUERONG",
+      "status": "archived",
+      "title": "下午整理飲品區時，把鹿茸粉75g放回固定乾燥處",
+      "copySha256": "fa206f71866eaf65d725c9b44f8fe71f71a3e2e488d012ed62a1ba3a9fb2b57f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-STORE",
+      "status": "archived",
+      "title": "到萬華附近辦事，想了解產品可以先到官方 LINE OA 問今天是否方便",
+      "copySha256": "2d4e682010e9e2e3b461855e8620adf0770878efe162f1fcc8184cf1f5ab8591",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink180-made-order",
+      "status": "archived",
+      "title": "準備下週在家喝180cc？記得把5～7個工作天算進去",
+      "copySha256": "fb7cb240813ed0039aa0ed98139a5e1a77555998b4830d5fe489bdccbbea9c3a",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink30-made-order",
+      "status": "archived",
+      "title": "通勤族補貨別等最後一罐：30cc也要預留5～7個工作天",
+      "copySha256": "143c0efcba737af95e43ec6c1723d02f4161cfcff0e5b3917d5f2a11c3797af9",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-gao-first-half",
+      "status": "archived",
+      "title": "第一次接觸龜鹿膏，可以先從半匙認識自己的日常節奏",
+      "copySha256": "0180bd5b1c0676dae4044f73b33e75ec2b14f00de7b97924abce9117029f87b7",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-guilu-first-three",
+      "status": "archived",
+      "title": "第一次到 LINE OA 問龜鹿，不用背產品名：先說你的生活方式",
+      "copySha256": "fea314e4b4c9e6d05fc59481f1402e14491140c764073958835dfe272187ccd4",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-luerong-single-material",
+      "status": "archived",
+      "title": "晚上整理產品標示：鹿茸粉75g先從規格與保存看起",
+      "copySha256": "12d87c3d80728835cb0c06a76f132d70049db84520a98301355ea3b759bf3187",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-luerong-storage",
+      "status": "archived",
+      "title": "梅雨季收納鹿茸粉：用完蓋緊，別把罐子留在潮濕流理台",
+      "copySha256": "43060ef86620f9bfa75a99e96f7cfa8854bd6758aeb8f5fddd362a10c69e1bd9",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-trial-first",
+      "status": "archived",
+      "title": "申請試喝前，先把收件方式與最新說明確認好",
+      "copySha256": "030710c80f62fc6bcb720396a4339ee1430d27951f9a7b24175785a564013d81",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-trial-shipping",
+      "status": "archived",
+      "title": "試喝申請完成後別急著等物流：龜鹿飲要先製作5～7個工作天",
+      "copySha256": "f7752d0aa23fef36c3cb0829f13ceda3564a7e7142bc06bae095ab363b95c79e",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-brand-rhythm",
+      "status": "archived",
+      "title": "每天開店前的第一件事：先把仙加味產品與桌面整理好",
+      "copySha256": "033ba085344383f3438879405188706789cfbc8de4213bda816393cc86855bd3",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-trial-first",
+      "status": "archived",
+      "title": "試喝寄到超商後，先確認3罐外觀再帶回家",
+      "copySha256": "70359420eba85aace47fb00a2e183aa67dc68468f18108c2f2f701183ee0a6a7",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-drink-made-to-order",
+      "status": "archived",
+      "title": "週末要送人龜鹿飲？星期一就先問交期，不要到週五才急",
+      "copySha256": "688a1e2ba50c802f370ff1a60a4525c4af0b935a134846644b0dc9b944720fd6",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-luerong-daily-drink",
+      "status": "archived",
+      "title": "下午整理桌面時，先從鹿茸粉75g的標示與保存開始",
+      "copySha256": "0f8615660e80f7a30b623961e816282f1f0f261c0fb7f9db388dde6d46ae94d6",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-ask-line-before-order",
+      "status": "archived",
+      "title": "下單前先想想生活動線：到 LINE OA 告訴我們在家多還是外出多",
+      "copySha256": "50251b5a7e4df2890639d7b6a6231230128c7806b8840859c5dfe71b5e85a217",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-four-generation-work",
+      "status": "archived",
+      "title": "整理老工具時，才看得見四代之間真正留下來的工作習慣",
+      "copySha256": "c5532a2c1a77506e0a20cc1eae49a468a089db69f527c8a74e93e1c31edd77c3",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-gao-half-spoon-start",
+      "status": "archived",
+      "title": "週末第一次開龜鹿膏，先用乾淨小匙從半匙開始",
+      "copySha256": "aec338f80f16eb2452c33c4484436d56fba2fe9947c7895694e8f842b9d0af94",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-ingredient-info-clear",
+      "status": "archived",
+      "title": "買回家先把成分拍下來：仙加味希望你真的看得懂產品標示",
+      "copySha256": "d221070bca20b49ea05e0a018087ca99c7255a2146491106a454b842186ed9b5",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-thirty-cc-package-detail",
+      "status": "archived",
+      "title": "30cc真正的大小，用手掌旁邊看最清楚",
+      "copySha256": "2e04926fee6d7adb96939c9e542d521a789cfabddf6386fbd6273760b26fe5a9",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-trial-first-then-decide",
+      "status": "archived",
+      "title": "試喝收到後，先記下你在哪個時段喝最順手",
+      "copySha256": "789e6c3b3f285544dcff5cf02d84a1ee161b1b78d9142ecc0de42dde75fd5565",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-wanhua-visit-brand",
+      "status": "archived",
+      "title": "到萬華散步想順路了解仙加味？先到 LINE OA 確認再出發",
+      "copySha256": "d6f8a743fb97751b9a560767739a7643ce92547d4f5371988adfe127d9389ddf",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-why-exact-specs",
+      "status": "archived",
+      "title": "整理訂單時最怕寫錯：30cc、180cc、75g、600g一定分開",
+      "copySha256": "4a73bbaf3a1800d3ef05eca05d9f98e215a26c41e004d171d01dd2c736a6fa5b",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-WORK-REST-001",
+      "status": "archived",
+      "title": "下午工作告一段落，30cc小玻璃罐也能配合休息空檔",
+      "copySha256": "4da9d81d993f0345e0b8e117edbdccc07614353dac0eaffcb9360e554c03034b",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-COMBO",
+      "status": "archived",
+      "title": "平日在外、週末在家：龜鹿膏與30cc可以分開安排",
+      "copySha256": "2f8cfaa97e8c21a99ddd1bf97150463598ac1485de55f25bc5370babb4faced1",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-DRINK",
+      "status": "archived",
+      "title": "趕著出門還是在家吃早餐？龜鹿飲先看今天的動線",
+      "copySha256": "5e2c1670edb636e096814b7745e7d1fd5ad6709bc74fe92a6b34df7a7de78ff0",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-GAO-100",
+      "status": "archived",
+      "title": "早上取用完就放回原位：龜鹿膏100g的居家小習慣",
+      "copySha256": "8ea36b81d8118630b38369b6df641adaf273d17a5440c181a144dc198c3f5add",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-SEASONS-RHYTHM",
+      "status": "archived",
+      "title": "換季整理衣櫃時，也順便整理家裡的仙加味產品",
+      "copySha256": "08078e852d98a3f363397afb701dd69a314577494f1739005053264701fbaa00",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-WEATHER-HOT",
+      "status": "archived",
+      "title": "悶熱午後外出：水瓶放前面，30cc放包內固定小袋",
+      "copySha256": "87ec7ced9fc4b1ae5f4b90179132354554d57360df58b07e61cc9dfecad213b8",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-WEATHER-RAIN",
+      "status": "archived",
+      "title": "雨天回家先擦乾，再把180cc溫熱成一杯晚間飲品",
+      "copySha256": "43e28fb93810f5c32e93855670810b8e8961e617fd6d9e2ad5169f63f8a3b13d",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "POST-WEATHER-TEMP",
+      "status": "archived",
+      "title": "早晚溫差大的日子：早上30cc，晚上不必照抄同一套",
+      "copySha256": "bea4b1c424a6e248ca9a6767c9bdc5a1a7cbb5d26be8db1788a77b45f0be918a",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink180-pouch",
+      "status": "archived",
+      "title": "把180cc放進家中飲品區：先認清它是鋁袋，不是大瓶裝",
+      "copySha256": "a3456ae22d78ad4b06d110aaba2c0f80243a2b107a679a5571b2a75d049a98da",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink180-storage",
+      "status": "archived",
+      "title": "180cc收到後先做一件事：看包裝上的保存標示再收進固定位置",
+      "copySha256": "8eb9d6f4d2f5f88b571624b1128f120f6d4864e6d8a0ce1a086296728ab96cf6",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink180-warm",
+      "status": "archived",
+      "title": "晚餐後想喝溫一點：180cc用隔水方式溫熱",
+      "copySha256": "26d92d3bb863836a6ef53e21c053f5439c4a71d34c5aae6c064d20ce6b4b621e",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink30-small-jar",
+      "status": "archived",
+      "title": "先看實際比例：30cc就是小玻璃裸罐",
+      "copySha256": "9de0086e15f22896e16ade231216b279feff3e90f648c99e88da9c38f4b1f00d",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink30-storage",
+      "status": "archived",
+      "title": "週五下班前整理抽屜：把沒喝的30cc帶回家妥善收好",
+      "copySha256": "f21cd4a42b2d0802633fce907a62dfedf6b6131d155a9a8022cb6e6fecfe975a",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-drink30-warm",
+      "status": "archived",
+      "title": "早上不想喝冰的：30cc先放到合適溫度再飲用",
+      "copySha256": "fbccc495864b91e95021ee1a6f359949c059f3e1978a2e36804b3823aed2ba8d",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-gao-100g",
+      "status": "archived",
+      "title": "家裡只留一個固定位置：龜鹿膏100g不必跟所有食品混放",
+      "copySha256": "d299e8ed8c4fdce6c0d62a755560b34f001ea6b2edcfeab4a732b8c952fcfc2f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-gao-routine",
+      "status": "archived",
+      "title": "下午回家先洗手再取一匙：把龜鹿膏變成固定的小流程",
+      "copySha256": "5dd2ff7e1f4313d94fb8ec1d12cdfc844674f0af38faa3d276b5f37da6882f7a",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-gao-warm-water",
+      "status": "archived",
+      "title": "不想直接吃龜鹿膏？在家用100～300ml熱水化開也可以",
+      "copySha256": "f69bbdb8eb65a32122c0f221895179c8bffb20dfac9dbf58fbcc56da16f69d5e",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-guilu-forms",
+      "status": "archived",
+      "title": "同一天也能換型態：白天30cc，晚餐料理則看湯塊",
+      "copySha256": "8ab81b87ac573a3e07eafd0e240290c0ac285fed10dcb1bf2ecaca0152749de1",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-jiao-detail-weight",
+      "status": "archived",
+      "title": "週末分裝前先看清楚：龜鹿膠600g／32塊，每塊約18.75g",
+      "copySha256": "3482ed7028a143e03e53b76932a709dc370c6bc69a3f6b350f1b6e8ebdcd40d5",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-jiao-family",
+      "status": "archived",
+      "title": "家裡多人一起吃飯，龜鹿膠先從一鍋湯的料理情境認識",
+      "copySha256": "632887239b941d5c062a455da07ca8a794af7e4e7be8e4a1ed1de5c4149b8955",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-jiao-hot-water",
+      "status": "archived",
+      "title": "第一次看龜鹿膠，先從600g／32塊與料理情境認識",
+      "copySha256": "f54dc951cc58b99d37d3e63c8b937f4a2ac384a67948bed278939f9cc6e3f47f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-modern-tradition",
+      "status": "archived",
+      "title": "老方法不必只放在老故事裡：今天先從保存與規格做清楚",
+      "copySha256": "c66d6a95fb977ab7a368eff6da7bbb73be23938994bbf15bcd86f5378a5097ab",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-tangkuai-75g",
+      "status": "archived",
+      "title": "冰箱還有排骨？晚餐前先認識龜鹿湯塊75g／8塊裝",
+      "copySha256": "02654c539dfe0840febc99d1df7778daddac27bc0730a52780d7843cbac7d626",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-tangkuai-hot-water",
+      "status": "archived",
+      "title": "臨時不煮大鍋湯？先把龜鹿湯塊的規格與料理方式看懂",
+      "copySha256": "0a2d74e05a7f7a68cc5a480fca79946ea94d10f1c868a9ed532d7dc1538db152",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-warm-food-culture",
+      "status": "archived",
+      "title": "週末煮雞湯時，再談龜鹿的溫熱飲食文化會比較有畫面",
+      "copySha256": "c3c8ba29a9267212c22a639f36d693cd3be0d71cce830a668180cdab56b2c416",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-GUILU-why-guilu-daily",
+      "status": "archived",
+      "title": "不是每天都要同一種：仙加味龜鹿先跟著你的行程走",
+      "copySha256": "eeebbb678e05a1efade6fcd0603603226d256fca13c853745827d97fccf34027",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-daily-cooking",
+      "status": "archived",
+      "title": "冰箱有雞腿就不必想太複雜：今晚用龜鹿湯塊煮家常湯",
+      "copySha256": "8f9cbd311ca4efda3b578745672d102d9c20b0c29b46b7a451776bc20ca4f5d7",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-product-drink-180",
+      "status": "archived",
+      "title": "週六下午在家整理家務，180cc放在餐桌比帶出門更順手",
+      "copySha256": "00b631d1c065d19637b6a928b35a7458a02a5bdc87afc149a64a7ec2960f35d9",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-product-drink-30",
+      "status": "archived",
+      "title": "早上八點出門前，把30cc放進側袋就好",
+      "copySha256": "5a08c0beb7520c694c372a283c0c640532ed7d55e285f772f68c0f8d47cb08ee",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-product-guilu-gao",
+      "status": "archived",
+      "title": "早餐後整理廚房時，順手把龜鹿膏放回冰箱",
+      "copySha256": "b5ae8eab4377f271428ea000a018f016575310e30c701dea4a5a4635a6548b59",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-product-guilu-jiao",
+      "status": "archived",
+      "title": "星期日下午有時間，先把龜鹿膠32塊的盒裝看清楚",
+      "copySha256": "7bdd0a72d0fc07a2bdd233e1b9b35262922242d854d930df5188d87f20d5f5d0",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-six-products-overview",
+      "status": "archived",
+      "title": "整理購物清單時，不用一次買齊：先圈出這週真正會用的仙加味型態",
+      "copySha256": "b75ffd473893457560a020093fbb4d91c5090dde376fff182dcc86da68d6e7fb",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-usage-personal-routine",
+      "status": "archived",
+      "title": "你習慣早出晚歸？先把仙加味放進「真的有空」的時段",
+      "copySha256": "5629325984062780c3c4cd6ea6c117c9bfb90ea860f1e53d62f86f0ca57169a2",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-choose-by-routine-first",
+      "status": "archived",
+      "title": "先看一週行程表，再決定仙加味要放家裡還是包包裡",
+      "copySha256": "80daf05481d8410340d4b1d6a1b1ee810ed5478d88725abd05ee3c6d57370f6a",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-drink-180-home",
+      "status": "archived",
+      "title": "晚餐備料開始前，把180cc先放到今天要用的餐桌區",
+      "copySha256": "cc000f6cfbcd88755142f24f1f5de20255e3b031f1f923fcd553b08bdedf5af7",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-drink-30-outside",
+      "status": "archived",
+      "title": "外出跑行程時，30cc放進有緩衝的小袋更安心",
+      "copySha256": "a02bb17206a9272ae3829c5b922fcfba7ce7a61e9f80910939f2039d431e4c84",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-drink-30-vs-180",
+      "status": "archived",
+      "title": "一個放包包、一個放家裡：用位置記住30cc與180cc差別",
+      "copySha256": "00894379e41c2f79f7c6bfd257a59fbb5e0dd157dcd734bd42a6a53190b88bed",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-faq-flexible-time",
+      "status": "archived",
+      "title": "今天會議排滿？龜鹿飲不必固定在某個分鐘",
+      "copySha256": "61f4baebe55017aeac50d02edbbe84f6295e411d2750ba3317725338e8e64d92",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-jiao-family-cooking",
+      "status": "archived",
+      "title": "週日一家人煮湯：先決定鍋子與人數，再拿龜鹿膠",
+      "copySha256": "3f5009da187350c2551b9a7788f9bb4f9d2f968eace63eb69def1ac1ac9930f0",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-tangkuai-thermos-soup",
+      "status": "archived",
+      "title": "早上燉好湯帶午餐？龜鹿湯塊先在家完成料理再裝保溫罐",
+      "copySha256": "f804ca5656a50b46944e57cd1f473f3690bc8836262004d494c8c1190136379f",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-02-tangkuai-vs-jiao",
+      "status": "archived",
+      "title": "同樣是塊狀，放桌上一比就懂：75g湯塊和600g龜鹿膠不是同一盒",
+      "copySha256": "2a7ba5c10d1338bd9d0e4adf1d83dc21e5cf7a15d3d3a331addc2dba7bad0407",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-craft-time-and-heat",
+      "status": "archived",
+      "title": "從實際工序看時間與火候：每一步都需要現場確認",
+      "copySha256": "681c138f03b9475da78a704994317ce2e1f1429f8008bd2f73ff433378beb161",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-warm-not-iced",
+      "status": "archived",
+      "title": "從冰箱拿出來不想直接喝冰的？先讓龜鹿飲回到你舒服的溫度",
+      "copySha256": "b4486f7e3dea1940c391c5fd6c69965839b0eac625731ed5032065b2ee4d177c",
+      "festivalTopic": null,
+      "imageInspection": "不屬本輪節慶主題；歷史保留，不計入節慶覆蓋",
+      "proposedScheduledAt": null,
+      "scheduledAt": null
+    }
+  ]
+}
