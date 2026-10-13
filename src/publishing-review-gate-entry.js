@@ -47,7 +47,29 @@ function customerCopyErrors(row){const text=[row?.title,row?.headline,row?.copy,
 function officialProductMedia(row){const image=`${row?.image_url||''} ${row?.image_source||''}`.toLowerCase();return /products-v3|customer-display-v20260812|official[-_ ]?(?:product|v3)|正式產品/.test(image)}
 function mentionedProducts(row){const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.terms.some(term=>text.includes(term.toLowerCase())))}
 function visualProducts(row){const image=[row?.image_url,row?.image_alt,row?.image_source].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.image.some(term=>image.includes(term.toLowerCase())))}
-function semanticSceneErrors(row){if(officialProductMedia(row))return[];const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();const image=[row?.image_alt,row?.image_source,row?.image_url].filter(Boolean).join(' ').toLowerCase();const errors=[];for(const group of SCENE_GROUPS){if(!group.copy.some(term=>text.includes(term.toLowerCase())))continue;if(!group.image.some(term=>image.includes(term.toLowerCase())))errors.push(`文案屬「${group.id}」情境，但圖片說明／來源沒有對應情境線索`)}return errors}
+function semanticSceneErrors(row){
+  if(officialProductMedia(row))return[];
+  const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();
+  const image=[row?.image_alt,row?.image_source,row?.image_url].filter(Boolean).join(' ').toLowerCase();
+  const topic=[row?.title,row?.headline,row?.category].filter(Boolean).join(' ');
+  const receiptContext=/(收到|拆開|拆箱|包裹)/.test(text)&&/(先看|先確認|第一個|資訊)/.test(text);
+  const explicitStorage=/(怎麼保存|保存方式教學|保存提醒|開封前後|開封後|保存重點)/.test(topic)||['保存','保存方式','保存提醒'].includes(clean(row?.category))||/(開封後|需冷藏|請冷藏|陰涼處|常溫保存|保存期限)/.test(row?.copy||'');
+  const productComparison=/(龜鹿膏)/.test(text)&&/(龜鹿飲)/.test(text)&&/(差在哪|差別|比較|怎麼選|選擇|習慣)/.test(text);
+  const comparisonVisual=/(龜鹿膏)/.test(image)&&/(龜鹿飲)/.test(image)&&/(介紹|比較|桌|小匙)/.test(image);
+  const explicitBoard=/(分類看板|選擇看板|指著看板|對照表)/.test(text);
+  const names={rain:'雨天',hot:'炎熱',temperature:'溫差',work:'工作',cook:'料理',storage:'保存',family:'家人',choose:'產品選擇',use:'使用方式'};
+  const errors=[];
+  for(const group of SCENE_GROUPS){
+    if(!group.copy.some(term=>text.includes(term.toLowerCase())))continue;
+    // Reading product information during unboxing is not a storage tutorial.
+    if(group.id==='storage'&&receiptContext&&!explicitStorage)continue;
+    // A two-product introduction can illustrate a comparison without a board.
+    // This only checks the scene; physical product authenticity still needs review.
+    if(group.id==='choose'&&productComparison&&comparisonVisual&&!explicitBoard)continue;
+    if(!group.image.some(term=>image.includes(term.toLowerCase())))errors.push(`文案屬「${names[group.id]||group.id}」情境，但圖片說明／來源沒有對應情境線索`);
+  }
+  return errors;
+}
 function isWeatherPost(row){const text=[row?.title,row?.headline,row?.copy,row?.category,row?.image_alt].filter(Boolean).join(' ');return /(天氣|悶熱|炎熱|下雨|雨天|溫差|換季|寒冷|轉涼|颱風|豪雨)/.test(text)}
 async function duplicatePostErrors(env,row,liveRows=null){
   const title=publicNorm(row?.title),copy=publicNorm(row?.copy),image=imageNorm(row?.image_url);
