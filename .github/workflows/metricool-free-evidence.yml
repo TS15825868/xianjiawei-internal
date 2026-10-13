@@ -44,6 +44,7 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.* FROM social_posts p WHERE p.id IN (SELECT post_id FROM social_metricool_sync)" > free-before.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates WHERE post_id IN (SELECT post_id FROM social_metricool_sync)" > free-gates.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_metricool_sync" > free-links.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_quality_reviews" > free-ai-reviews.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --command "CREATE TABLE IF NOT EXISTS social_metricool_evidence(batch TEXT,post_id TEXT,evidence_json TEXT,before_json TEXT,verified_at TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(batch,post_id))"
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT batch,post_id FROM social_metricool_evidence" > free-existing-evidence.json
           node tools/apply-metricool-free-evidence.cjs
@@ -63,6 +64,7 @@ jobs:
             free-before.json
             free-gates.json
             free-links.json
+            free-ai-reviews.json
             free-existing-evidence.json
             free-after.json
             free-counts.json

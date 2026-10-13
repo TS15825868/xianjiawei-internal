@@ -4,6 +4,7 @@ import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
 import {syncMetricool,metricoolConfiguration} from './metricool-sync.js';
+import {ensureAiSchema} from './ai-quality-review.js';
 import {gateState,fingerprint} from './publishing-review-gate-entry.js';
 
 const VERSION='2026-09-14-full-system-entry-v6-platform-connection-health';
@@ -208,6 +209,10 @@ export default{
     const maintenance=maintenanceNoLogin(env);
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+    if(request.method==='GET'&&path==='/api/ai-quality-reviews'){
+      const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
+      await ensureAiSchema(env);const reviews=await env.DB.prepare('SELECT id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,model,policy_version,reviewed_at,old_status,new_status FROM social_post_quality_reviews ORDER BY reviewed_at DESC LIMIT 100').all();return json({reviews:reviews.results||[],approvalDoesNotImpersonateHuman:true});
+    }
     if(request.method==='GET'&&path==='/api/metricool-sync'){
       const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
       let rows=[];try{rows=(await env.DB.prepare('SELECT m.post_id,p.title,p.status AS post_status,p.image_url,p.copy,m.metricool_id,m.uuid,m.publication_at,m.state,m.attempts,m.last_error,m.last_sync_at FROM social_metricool_sync m JOIN social_posts p ON p.id=m.post_id ORDER BY m.publication_at').all()).results||[]}catch(error){if(!/no such table/.test(String(error)))throw error}
@@ -272,6 +277,7 @@ export default{
     return response;
   },
   async scheduled(controller,env,ctx){
+    await ensureAiSchema(env);
     try{await syncMetricool(env,{gateState,fingerprint},new Date(controller?.scheduledTime||Date.now()))}catch(error){console.error('Metricool排程同步錯誤',String(error?.message||error))}
     const firstPost=await ensureFormalFirstPost(env);
     if(!firstPost?.ok)console.warn('first post bootstrap failed',String(firstPost?.error||'unknown'));

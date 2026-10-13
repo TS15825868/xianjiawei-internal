@@ -1,5 +1,6 @@
 import app from './flexible-publish-entry.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
+import {aiGate,imageHash,recordAiReview} from './ai-quality-review.js';
 
 const VERSION='2026-09-13-publishing-review-gate-v8-contextual-scene-intent';
 const REQUIRED_CHECKS=Object.freeze([
@@ -106,6 +107,13 @@ function productMatchErrors(row){
 function checklistFrom(body){const value=body?.review_checklist&&typeof body.review_checklist==='object'&&!Array.isArray(body.review_checklist)?body.review_checklist:{};return{value,missing:REQUIRED_CHECKS.filter(key=>value[key]!==true)}}
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};
+  if(clean(row.approved_by).startsWith('ai:')){
+    const current=await fingerprint(row),gate=await aiGate(env,row,current);
+    if(!gate.ok)return gate;
+    if(isWeatherPost(row)&&Date.now()-Date.parse(gate.reviewed_at)>12*3600000)return{ok:false,reason:'AI天氣證據已過期，需重新查證'};
+    try{if(await imageHash(row.image_url)!==gate.image_sha256)return{ok:false,reason:'圖片實際版本已變更，AI核准失效'}}catch{return{ok:false,reason:'圖片目前無法驗證，禁止發布'}};
+    return gate;
+  }
   await ensureSchema(env);
   const gate=await env.DB.prepare('SELECT * FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(row.id).first();
   if(!gate)return{ok:false,reason:'尚未完成16項正式圖文審核'};
@@ -141,6 +149,12 @@ export default{async fetch(request,env,ctx){
     return json({...body,publishingReviewGateVersion:VERSION,publishingReviewChecklistCount:REQUIRED_CHECKS.length,copyImageMatchHardGate:true,semanticSceneMatch:true,duplicateLifestyleImageGate:true,weatherReviewFreshnessHours:12,editImmediatelyInvalidatesApproval:true,freeRegenerationRoundTrip:true,draftToPendingReviewRequired:true,directDraftApprovalBlocked:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready',regenerationReturnsToPendingReview:true},response.status)
   }
   const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
+  const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
+  if(aiMatch&&request.method==='POST'){
+    const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+    const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
+    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);if(result.decision==='AI_APPROVED')result.metricool=await enqueueMetricool(env,latest,{gateState,fingerprint});return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
+  }
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
   if(gateMatch&&request.method==='GET'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;await ensureSchema(env);const id=decodeURIComponent(gateMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const duplicates=await duplicatePostErrors(env,row);return json({id,...await gateState(env,row),errors:[...new Set([...productMatchErrors(row),...duplicates])],required_checks:REQUIRED_CHECKS})}

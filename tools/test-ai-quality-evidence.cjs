@@ -1,0 +1,13 @@
+const assert=require('assert/strict'),{CHECKS,assess}=require('../src/ai-quality-evidence.cjs');
+const e={reviewer_type:'AI',model:'ChatGPT-Work',post_id:'TEST',content_fingerprint:'b'.repeat(64),image_url:'https://raw.githubusercontent.com/example/image.jpg',image_sha256:'a'.repeat(64),reviewed_at:new Date().toISOString(),checks:Object.fromEntries(CHECKS.map(k=>[k,{result:'PASS',evidence:'測試證據：逐項比對目前圖文及正式品牌參考，已確認本項符合。'}])),risk:{level:'LOW',uncertainties:[],flags:[]},visual:{image_sha256:'a'.repeat(64),scene_summary:'測試證據：完整生活場景呈現小老闆整理桌面，角色、動作、光影與圖文一致，沒有產品或包裝。',mascot_reference:{url:'https://raw.githubusercontent.com/example/reference.png',sha256:'c'.repeat(64)},products_visible:false,product_assets:[]}};
+const run=x=>assess(x,'TEST','b'.repeat(64),e.image_url).decision;
+assert.equal(run(e),'AI_APPROVED');
+assert.equal(run({...e,checks:{...e.checks,brand:{result:'FAIL',evidence:'品牌Logo錯誤，禁止公開發布。'}}}),'REJECTED');
+assert.equal(run({...e,checks:{...e.checks,action:{result:'UNKNOWN',evidence:'無法確認角色是否真的在翻閱筆記。'}}}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,risk:{level:'HIGH',uncertainties:['天氣未查證'],flags:[]}}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,image_sha256:'unknown'}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,content_fingerprint:'edited'}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,reviewer_type:'HUMAN'}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,visual:{...e.visual,products_visible:true}}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,visual:{...e.visual,products_visible:true,product_assets:[{product_id:'guilu-jiao',url:'https://example.com/a.jpg',sha256:'d'.repeat(64),original_photo_verified:true,pixel_preservation_evidence:'不可公開的舊產品'}]}}),'NEEDS_HUMAN_REVIEW');
+console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL rejects; UNKNOWN/higher risk needs human; edited content and unverified/retired packaging blocked; no human impersonation');

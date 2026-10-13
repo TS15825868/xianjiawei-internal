@@ -7,6 +7,7 @@ assert.equal(receipt.source,'official_metricool_connector');assert.equal(receipt
 assert(receipt.batch&&receipt.posts?.length&&receipt.posts.length<=20);
 const read=p=>JSON.parse(fs.readFileSync(p))[0].results;
 const posts=read('free-before.json'),gates=read('free-gates.json'),links=read('free-links.json');
+const aiReviews=fs.existsSync('free-ai-reviews.json')?read('free-ai-reviews.json'):[];
 const q=x=>x==null?'NULL':"'"+String(x).replaceAll("'","''")+"'";
 const sql=[`CREATE TABLE IF NOT EXISTS social_metricool_evidence(batch TEXT,post_id TEXT,evidence_json TEXT,before_json TEXT,verified_at TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(batch,post_id));`];
 const leases=[];
@@ -14,7 +15,8 @@ async function imageBytes(url){const u=new URL(url);if(u.protocol!=='https:'||![
 (async()=>{
  for(const e of receipt.posts){
   const p=posts.find(x=>x.id===e.d1Id),g=gates.find(x=>x.post_id===e.d1Id),l=links.find(x=>x.post_id===e.d1Id);
-  const state=validate(p,g,l,e);
+  const ai=aiReviews.filter(r=>r.post_id===e.d1Id).sort((a,b)=>b.reviewed_at.localeCompare(a.reviewed_at))[0];
+  const state=validate(p,g,l,e,ai);
   if(!Number.isFinite(Date.parse(e.verifiedAt))||Math.abs(Date.now()-Date.parse(e.verifiedAt))>6*3600000)throw Error('Evidence stale');
   const [source,remote]=await Promise.all([imageBytes(e.imageSource),imageBytes(e.remote.media[0])]);
   if(!source.equals(remote)||crypto.createHash('sha256').update(source).digest('hex')!==e.imageSHA256)throw Error('Image pixels/file changed');

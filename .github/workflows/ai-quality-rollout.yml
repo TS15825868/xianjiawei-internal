@@ -1,0 +1,51 @@
+name: 仙加味AI審核安全Migration與正式狀態驗收
+on:
+  push:
+    branches: [main]
+    paths: ['src/ai-quality-review.js','src/ai-quality-evidence.cjs','.github/workflows/ai-quality-rollout.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  migrate-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Test typed AI decisions and preserve human gate
+        run: |
+          node tools/test-ai-quality-evidence.cjs
+          node tools/test-metricool-human-review.mjs
+          node tools/test-metricool-free-evidence.cjs
+      - name: Append safe schema only; no approval, publication or content overwrite
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          import {ensureAiSchema} from './src/ai-quality-review.js';
+          await ensureAiSchema({DB:{prepare:sql=>({run:async()=>fs.writeFileSync('/tmp/ai-quality-schema.sql',sql)})}});
+          NODE
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/ai-quality-schema.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status" > ai-live-counts.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,m.metricool_id,m.uuid,m.state AS metricool_state FROM social_posts p JOIN social_metricool_sync m ON p.id=m.post_id" > ai-live-eight.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates WHERE post_id IN (SELECT post_id FROM social_metricool_sync)" > ai-live-human-gates.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_quality_reviews ORDER BY reviewed_at DESC LIMIT 100" > ai-live-evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-quality-live-${{ github.run_id }}
+          path: |
+            ai-live-counts.json
+            ai-live-eight.json
+            ai-live-human-gates.json
+            ai-live-evidence.json
+          retention-days: 7
