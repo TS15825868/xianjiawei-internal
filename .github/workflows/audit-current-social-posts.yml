@@ -1,5 +1,5 @@
 name: 仙加味貼文中心／D1 唯讀健康巡檢
-# 2026-10-13 16:07：恢復正式接續，重新讀取節慶回填後D1與人工核准證據；不改既有排程。
+# 2026-10-13 18:52：八篇Metricool版本同步前，取得正式人工審核指紋與操作者；不寫入貼文。
 
 on:
   push:
@@ -42,6 +42,8 @@ jobs:
           set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,platforms_json,status,scheduled_at,proposed_scheduled_at,approved_by,approved_at,published_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,rejection_reason,review_note,created_at,updated_at FROM social_posts ORDER BY CASE status WHEN 'pending_review' THEN 0 WHEN 'approved' THEN 1 WHEN 'scheduled' THEN 2 WHEN 'draft' THEN 3 WHEN 'published' THEN 4 ELSE 5 END, updated_at DESC, id ASC" > current-social-posts.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > current-social-post-counts.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at FROM social_post_review_gates ORDER BY post_id" > current-review-gates.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT entity_id,actor_email,action,created_at FROM audit_logs WHERE entity_type='貼文' AND (action LIKE '%核准%' OR action LIKE '%審核%') ORDER BY created_at DESC LIMIT 250" > current-review-audit.json
           # 對齊圖片實際狀態：僅取公開貼文影像綁定欄位，不讀客戶資料；避免拿舊快照進行重製。
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_quality_status,image_approved,scheduled_at,updated_at FROM social_posts ORDER BY id" > current-social-image-states.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > foreign-key-check.json
@@ -78,6 +80,8 @@ jobs:
             current-social-posts.json
             current-social-post-counts.json
             current-social-image-states.json
+            current-review-gates.json
+            current-review-audit.json
             foreign-key-check.json
             invalid-status.json
             required-text.json
