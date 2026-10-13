@@ -1,0 +1,77 @@
+{
+  "batch": "20261013-human-opening-verified",
+  "source": "official_metricool_connector",
+  "brandId": "6889683",
+  "posts": [
+    {
+      "d1Id": "XJW-CONV-chat-opening-prep",
+      "sourceFingerprint": "7b557d9a87faa6af1ca076cc435d4986f0d48eab409c4ae57ea94ab09231e50a",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "imageSHA256": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+      "verifiedAt": "2026-10-13T13:52:10.893Z",
+      "publicationAt": "2026-10-26T10:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 394971497,
+        "publicationDate": {
+          "dateTime": "2026-10-26T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-13T21:51:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先把昨天沒收好的東西整理完。\n\n仙加味萬華工作間的一天，從拉起竹簾、放好木匙和確認食材抽屜開始。\n\n小老闆先把眼前的小事做好。你開始工作前的第一件事通常是什麼？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-7102648335025741341.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "清晨的仙加味萬華工作間，小老闆拉起竹簾並將木匙放回食材抽屜，小鹿與小烏龜陪著準備開店。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4058297471817699092",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    }
+  ]
+}
