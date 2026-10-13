@@ -3,6 +3,8 @@ import productionApp from './production-entry.js';
 import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
+import {syncMetricool,metricoolConfiguration} from './metricool-sync.js';
+import {gateState,fingerprint} from './publishing-review-gate-entry.js';
 
 const VERSION='2026-09-14-full-system-entry-v6-platform-connection-health';
 const HOME_PATH='/index.html';
@@ -206,6 +208,11 @@ export default{
     const maintenance=maintenanceNoLogin(env);
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+    if(request.method==='GET'&&path==='/api/metricool-sync'){
+      const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
+      let rows=[];try{rows=(await env.DB.prepare('SELECT post_id,metricool_id,uuid,publication_at,state,attempts,last_error,last_sync_at FROM social_metricool_sync ORDER BY publication_at').all()).results||[]}catch(error){if(!/no such table/.test(String(error)))throw error}
+      return json({configuration:metricoolConfiguration(env),posts:rows});
+    }
 
     if(request.method==='GET'&&path==='/healthz/social-first-post')return firstPostHealth(request,env,ctx);
     if(request.method==='GET'&&path==='/healthz/platform-connections')return platformConnectionHealth(env);
@@ -240,6 +247,7 @@ export default{
         return json({...body,
           fullSystem:true,
           fullSystemVersion:VERSION,
+          metricool:metricoolConfiguration(env),
           internalHomeEnabled:true,
           internalHomePath:'/',
           erpUiEnabled:true,
@@ -264,6 +272,7 @@ export default{
     return response;
   },
   async scheduled(controller,env,ctx){
+    try{await syncMetricool(env,{gateState,fingerprint},new Date(controller?.scheduledTime||Date.now()))}catch(error){console.error('Metricool排程同步錯誤',String(error?.message||error))}
     const firstPost=await ensureFormalFirstPost(env);
     if(!firstPost?.ok)console.warn('first post bootstrap failed',String(firstPost?.error||'unknown'));
     if(typeof publishingApp.scheduled==='function')return publishingApp.scheduled(controller,env,ctx);

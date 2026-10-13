@@ -1,0 +1,47 @@
+name: 仙加味八篇Metricool圖文同步與人工審核安全回填
+on:
+  push:
+    branches: [main]
+    paths: ['ops/metricool-eight-recovery-20261013.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Verify and bind only the eight UUIDs; no platform publication
+        run: |
+          set -euo pipefail
+          node tools/test-metricool-human-review.mjs
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id IN (SELECT post_id FROM social_post_review_gates) OR status='pending_review'" > before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates" > gates.json
+          node tools/apply-metricool-eight-recovery.cjs
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/metricool-eight.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,metricool_id,uuid,publication_at,state,last_error FROM social_metricool_sync ORDER BY publication_at" > mappings.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) count FROM social_posts GROUP BY status" > counts.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,m.metricool_id,m.uuid,m.state AS metricool_state FROM social_posts p JOIN social_metricool_sync m ON p.id=m.post_id" > after.json
+          node tools/verify-metricool-eight-recovery.cjs
+          npx wrangler secret list > worker-secret-names.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: metricool-eight-recovery-${{ github.run_id }}
+          path: |
+            before.json
+            gates.json
+            mappings.json
+            counts.json
+            after.json
+            worker-secret-names.json
+          retention-days: 7

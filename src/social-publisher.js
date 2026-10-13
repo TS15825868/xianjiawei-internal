@@ -289,6 +289,7 @@ export function publisherConfiguration(env){
   return{cronEnabled:true,approvalGate:true,mediaRequired:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,threadsFormalRoute:'Metricool xianjiawei.tw',lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>!['LINE VOOM','Threads'].includes(name)).every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
+  try{const owned=await env.DB.prepare('SELECT post_id FROM social_metricool_sync WHERE post_id=?').bind(postId).first();if(owned)return{ok:false,id:postId,external_scheduler:'Metricool',error:'此貼文由Metricool唯一排程管理，禁止由第二路徑重複發布'};}catch(error){if(!/no such table/.test(String(error)))throw error}
   const post=await env.DB.prepare("SELECT * FROM social_posts WHERE id=? AND status IN ('approved','scheduled') LIMIT 1").bind(postId).first();
   if(!post) return{ok:false,error:'找不到已核准或已排程貼文',id:postId};
   return publishOne(env,post,now);
@@ -297,6 +298,7 @@ export async function publishDuePosts(env,now=new Date()){
   const rows=await env.DB.prepare("SELECT * FROM social_posts WHERE status='scheduled' AND scheduled_at IS NOT NULL AND datetime(scheduled_at)<=datetime(?) ORDER BY datetime(scheduled_at) ASC LIMIT 20").bind(now.toISOString()).all();
   const results=[];
   for(const post of rows.results||[]){
+    try{const owned=await env.DB.prepare('SELECT post_id FROM social_metricool_sync WHERE post_id=?').bind(post.id).first();if(owned){results.push({id:post.id,external_scheduler:'Metricool',skipped:true});continue;}}catch(error){if(!/no such table/.test(String(error)))throw error}
     if(scheduleLatenessMinutes(post,now)>MAX_SCHEDULE_LATENESS_MINUTES)results.push(await expireLateScheduledPost(env,post,now));
     else results.push(await publishOne(env,post,now));
   }

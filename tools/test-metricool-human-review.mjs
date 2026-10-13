@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
+import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool} from '../src/metricool-sync.js';
+const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com'};
+let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
+const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
+assert.equal((await gateState(env,row)).ok,true);
+gate={...gate,reviewed_by:'chatgpt:owner-delegated-reviewed'};assert.equal((await gateState(env,row)).ok,false);
+gate={...gate,reviewed_by:'human@example.com',checklist_json:'{}'};assert.equal((await gateState(env,row)).ok,false);
+gate={...gate,checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true])))};assert.equal((await gateState(env,{...row,copy:'版本已變更'})).ok,false);
+assert.equal((await gateState(env,{...row,approved_by:null})).ok,false);
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-14T01:00:00.000Z');
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-14T10:00:00+08:00']),'2026-10-16T01:00:00.000Z');
+const body=metricoolBody(row,{uuid:'stable-uuid',metricool_id:1,template_json:'{"twitterData":{"type":"POST"}}'},'2026-10-16T10:00:00+08:00');
+assert.equal(body.uuid,'stable-uuid');assert.equal(body.publicationDate.dateTime,'2026-10-16T10:00:00');assert.equal(body.twitterData,undefined);assert.equal(body.instagramData.autoPublish,true);assert.deepEqual(body.providers.map(p=>p.network),['facebook','instagram','threads']);
+assert.equal(metricoolConfiguration({}).enabled,false);
+let unboundQueries=0;
+const unbound={METRICOOL_API_TOKEN:'unit-test-not-a-real-credential',DB:{prepare:sql=>({run:async()=>({}),first:async()=>null,all:async()=>{unboundQueries++;throw Error('Must not discover before existing UUIDs are bound')}})}};
+assert.equal((await syncMetricool(unbound,{})).blocked,'METRICOOL_EXISTING_UUID_BOOTSTRAP_REQUIRED');
+assert.equal(unboundQueries,0);
+const nativeFetch=globalThis.fetch;
+async function simulate(link,{gateOK=true,remote=[]}={}){
+  const writes=[],calls=[];
+  const scheduledRow={...row,status:'scheduled'};
+  const db={prepare:sql=>{const statement={bind(...args){this.args=args;return this},async first(){if(sql.includes('social_metricool_control'))return{setting_value:'20261013-eight-recovery'};if(sql.includes('FROM social_posts'))return scheduledRow;throw Error(sql)},async all(){if(sql.includes('LEFT JOIN'))return{results:[]};if(sql.includes('SELECT * FROM social_metricool_sync'))return{results:[link]};throw Error(sql)},async run(){writes.push({sql,args:this.args});return{meta:{changes:1}}}};return statement}};
+  globalThis.fetch=async(url,opts={})=>{calls.push({url:String(url),opts});return Response.json(remote)};
+  try{await syncMetricool({DB:db,METRICOOL_API_TOKEN:'test'}, {gateState:async()=>({ok:gateOK,reason:'test invalid review'}),fingerprint:async()=>link.content_fingerprint});return{writes,calls}}finally{globalThis.fetch=nativeFetch}
+}
+const baseLink={post_id:row.id,metricool_id:1,uuid:'stable-uuid',state:'scheduled',content_fingerprint:'fp',publication_at:'2026-11-06T10:00:00+08:00',attempts:0};
+const publishedRemote={id:1,uuid:'stable-uuid',text:row.copy,draft:false,autoPublish:true,providers:['facebook','instagram','threads'].map(network=>({network,status:'PUBLISHED',id:network+'-id',publicUrl:'https://example.com/'+network}))};
+const successful=await simulate(baseLink,{remote:publishedRemote});
+assert.equal(successful.calls.length,1);assert.equal(successful.calls[0].opts.method,'GET');
+assert.equal(successful.writes.filter(x=>x.sql.includes('INSERT INTO social_publish_deliveries')).length,3);
+assert(successful.writes.some(x=>x.sql.includes("SET status='published'")));
+const unknown=await simulate({...baseLink,state:'unknown',metricool_id:null});
+assert.equal(unknown.calls.length,1);assert.equal(unknown.calls[0].opts.method,'GET');
+assert(unknown.writes.some(x=>x.args?.includes('failed')));
+const invalid=await simulate(baseLink,{gateOK:false,remote:{...publishedRemote,providers:publishedRemote.providers.map(p=>({...p,status:'PENDING'}))}});
+assert.equal(invalid.calls.length,2);assert.equal(invalid.calls[1].opts.method,'PUT');
+const paused=JSON.parse(invalid.calls[1].opts.body);assert.equal(paused.draft,true);assert.equal(paused.autoPublish,false);
+console.log('PASS: bootstrap cannot create duplicates; three-platform publication result writes back; ambiguous requests never create another post; invalid review pauses the same UUID');
+console.log('PASS: AI cannot approve; 16 checks + actor + fingerprint; Taipei slot reservation; stable UUID; three platforms; missing credentials fail closed');

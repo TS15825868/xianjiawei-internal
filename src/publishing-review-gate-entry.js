@@ -1,4 +1,5 @@
 import app from './flexible-publish-entry.js';
+import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
 
 const VERSION='2026-09-13-publishing-review-gate-v8-contextual-scene-intent';
 const REQUIRED_CHECKS=Object.freeze([
@@ -86,6 +87,11 @@ async function gateState(env,row){
   await ensureSchema(env);
   const gate=await env.DB.prepare('SELECT * FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(row.id).first();
   if(!gate)return{ok:false,reason:'尚未完成16項正式圖文審核'};
+  const identity=clean(gate.reviewed_by);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity)||/^(?:chatgpt|ai|bot|assistant)[:\-]/i.test(identity))return{ok:false,reason:'審核紀錄不是可驗證的人工帳號；AI檢查不能代替人工核准'};
+  if(clean(row.approved_by)!==identity)return{ok:false,reason:'貼文核准者與人工圖文審核者不一致'};
+  let reviewedChecks;try{reviewedChecks=JSON.parse(gate.checklist_json||'{}')}catch{return{ok:false,reason:'人工審核檢查表格式錯誤'}};
+  if(REQUIRED_CHECKS.some(key=>reviewedChecks[key]!==true))return{ok:false,reason:'人工16項圖文檢查尚未全部完成'};
   const current=await fingerprint(row);
   if(gate.content_fingerprint!==current)return{ok:false,reason:'文案或圖片已變更，先前圖文審核已自動失效'};
   if(Number(gate.copy_image_match||0)!==1)return{ok:false,reason:'文案與圖片尚未確認一致'};
@@ -118,11 +124,11 @@ export default{async fetch(request,env,ctx){
   if(statusMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const profile=await authorization.json(),id=decodeURIComponent(statusMatch[1]),body=await readBody(request),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     if(body?.status==='pending_review')return submitForReview(request,env,profile,id,row);
-    if(body?.status==='approved'){if(clean(row.status)!=='pending_review')return json({error:'請先將草稿送待審核，再進行16項人工圖文審核。'},409);try{await saveGate(env,row,body,profile)}catch(error){return json({error:clean(error?.message||error)},409)}const response=await app.fetch(request,env,ctx);if(!response.ok)await clearGate(env,id);return response}
+    if(body?.status==='approved'){if(clean(row.status)!=='pending_review')return json({error:'請先將草稿送待審核，再進行16項人工圖文審核。'},409);try{await saveGate(env,row,body,profile)}catch(error){return json({error:clean(error?.message||error)},409)}const response=await app.fetch(request,env,ctx);if(!response.ok){await clearGate(env,id);return response}let metricool;try{metricool=await enqueueMetricool(env,await postRow(env,id),{gateState,fingerprint})}catch(error){metricool={ok:false,error:clean(error?.message||error)}}const result=await response.json();return json({...result,metricool},response.status)}
     if(body?.status==='scheduled'||body?.status==='published'){const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409)}
     const response=await app.fetch(request,env,ctx);if(response.ok&&body?.status==='draft')await clearGate(env,id);return response
   }
-  if(publishMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const id=decodeURIComponent(publishMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409);const errors=productMatchErrors(row);errors.push(...await duplicatePostErrors(env,row));if(errors.length)return json({error:'正式發布守門：圖文檢查未通過',details:[...new Set(errors)]},409);return app.fetch(request,env,ctx)}
+  if(publishMatch&&request.method==='POST'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const id=decodeURIComponent(publishMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const gate=await gateState(env,row);if(!gate.ok)return json({error:`正式發布守門：${gate.reason}`},409);const errors=productMatchErrors(row);errors.push(...await duplicatePostErrors(env,row));if(errors.length)return json({error:'正式發布守門：圖文檢查未通過',details:[...new Set(errors)]},409);if(await metricoolOwns(env,id)){const result=await metricoolImmediate(env,row,{gateState,fingerprint});return json(result,result.ok?200:503)}return app.fetch(request,env,ctx)}
   if(postMatch&&['PUT','PATCH'].includes(request.method)){const id=decodeURIComponent(postMatch[1]),before=await postRow(env,id),response=await app.fetch(request,env,ctx);if(response.ok)await invalidateEditedPost(env,id,before);return response}
   return app.fetch(request,env,ctx)
 },async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
