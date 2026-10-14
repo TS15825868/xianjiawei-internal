@@ -8,7 +8,9 @@ function validate(p,gate,link,e,aiReview=null){
   const r=e.remote;if(!r||Number(r.id)===394674560)throw Error('Protected published post');
   if(e.sourceFingerprint!==fingerprint(p)||e.imageSource!==p.image_url)throw Error('Source version changed');
   if(link?.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
-  if(r.text!==p.copy||r.publicationDate?.timezone!=='Asia/Taipei'||r.media?.length!==1)throw Error('Copy, timezone or image mismatch');
+  if(r.text!==p.copy)throw Error(`Copy mismatch (D1 ${String(p.copy||'').length} chars, Metricool ${String(r.text||'').length} chars)`);
+  if(r.publicationDate?.timezone!=='Asia/Taipei')throw Error(`Timezone mismatch (${String(r.publicationDate?.timezone||'missing')})`);
+  if(r.media?.length!==1)throw Error(`Media count mismatch (${Array.isArray(r.media)?r.media.length:'missing'})`);
   if(!/^[0-9a-f]{64}$/.test(e.imageSHA256||''))throw Error('Missing verified image hash');
   const names=['facebook','instagram','threads'];if(!names.every(n=>r.providers?.some(x=>x.network===n))||r.providers.length!==3)throw Error('Three platforms required');
   if(e.result==='draft'){if(p.status!=='pending_review'||r.draft!==true||r.autoPublish!==false)throw Error('Unreviewed content must remain draft');return'pending_review'}
