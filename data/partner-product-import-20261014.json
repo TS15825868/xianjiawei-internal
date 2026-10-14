@@ -16,7 +16,18 @@
       "IMG_9934",
       "IMG_9935"
     ],
-    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期"
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "photo_metadata": {
+      "sourceFile": "IMG_9934.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": true,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/jinan-siwuyin-label.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-JIANFENG-ROSE",
@@ -42,7 +53,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-rose-fruit-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9963.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JIANFENG-TEA",
@@ -68,7 +87,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-leisure-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9964.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WUDAHAN",
@@ -94,7 +121,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-wudahan-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9965.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JIANFENG-LOTUS",
@@ -120,7 +155,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-fiber-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9966.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WHITE",
@@ -146,7 +189,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-white-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9967.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JIANFENG-REFRESH",
@@ -172,7 +223,15 @@
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-refresh-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
-    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對"
+    "compliance_review_status": "原廠食品原料、現貨效期及適用交易通路仍須依實際資料核對",
+    "photo_metadata": {
+      "sourceFile": "IMG_9968.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-LIAN-GUILU",
@@ -203,7 +262,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9920.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9920.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-BUSHENWAN",
@@ -218,7 +286,19 @@
     "manufacturing_mode": "原廠商品轉售",
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
-    "public_product_card_enabled": false
+    "public_product_card_enabled": false,
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9921.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9921.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9927.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-JINAN-NINGSHENWAN",
@@ -232,7 +312,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9922.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9922.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINSUO-GUJINGWAN",
@@ -246,7 +335,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9923.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9923.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-JISHENG-SHENQI",
@@ -260,7 +358,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9925.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9925.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-LIUWEI-DIHUANG",
@@ -274,7 +381,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9929.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9929.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-FENGSHIWAN",
@@ -288,7 +404,16 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9931.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9931.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-GUILU-ERXIANWAN",
@@ -302,7 +427,16 @@
     "manufacturing_mode": "原廠商品轉售",
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
-    "public_product_card_enabled": false
+    "public_product_card_enabled": false,
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9939.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9939.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-JINAN-ZUOGUIWAN",
@@ -319,7 +453,19 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9950.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9950.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9951.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-AIKANG-ZHISOUHUATAN",
@@ -336,7 +482,19 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false,
-    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9953.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9953.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9954.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-JINGYONG-COMBAT",
@@ -352,7 +510,19 @@
     "manufacturing_mode": "原廠商品轉售",
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
-    "public_product_card_enabled": false
+    "public_product_card_enabled": false,
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9956.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9956.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9957.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-JINAN-SHENGXUE-TIAOJING",
@@ -371,7 +541,19 @@
     "public_product_card_enabled": false,
     "listing_status": "內部建檔／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "樣品正面標示晉安生血調經丸、背面標示100錠與衛署成製011171；原廠核准資訊未完全驗收，公開展示方式另依法判定。不得使用療效宣稱。"
+    "notes": "樣品正面標示晉安生血調經丸、背面標示100錠與衛署成製011171；原廠核准資訊未完全驗收，公開展示方式另依法判定。不得使用療效宣稱。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9942.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9942.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    },
+    "additional_product_images": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9943.jpg"
+    ]
   },
   {
     "id": "PRD-PARTNER-JINAN-QIBAO-MEIRAN",
@@ -388,7 +570,16 @@
     "public_product_card_enabled": false,
     "listing_status": "內部建檔／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "樣品為橘紅瓶蓋透明罐，原廠標示成藥。須補背面實際容量規格，依法核對販售類別及公開展示。"
+    "notes": "樣品為橘紅瓶蓋透明罐，原廠標示成藥。須補背面實際容量規格，依法核對販售類別及公開展示。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9946.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9946.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   },
   {
     "id": "PRD-PARTNER-BROWN-SUGAR-UME-TEA",
@@ -405,6 +596,15 @@
     "public_product_card_enabled": false,
     "listing_status": "內部建檔／待確認",
     "manufacturing_mode": "其他廠牌商品",
-    "notes": "樣品包裝正面有中醫師人物圖像，必須核對姓名、肖像授權與品牌關係；公開主圖不得直接以未授權肖像廣告。出貨效期以實際批次為準。"
+    "notes": "樣品包裝正面有中醫師人物圖像，必須核對姓名、肖像授權與品牌關係；公開主圖不得直接以未授權肖像廣告。出貨效期以實際批次為準。",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9959.jpg",
+    "photo_metadata": {
+      "sourceFile": "IMG_9959.JPG",
+      "verifiedAsOriginalProductPhoto": true,
+      "noChatScreenshot": true,
+      "productLabelMatched": true,
+      "publicPromotionAllowed": false,
+      "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
+    }
   }
 ]
