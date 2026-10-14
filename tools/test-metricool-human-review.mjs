@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
-import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool} from '../src/metricool-sync.js';
+import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool} from '../src/metricool-sync.js';
 const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
@@ -35,3 +35,9 @@ const unknown=await simulate({...baseLink,state:'unknown'});assert.equal(unknown
 assert.equal(metricoolConfiguration({METRICOOL_API_TOKEN:'ignored'}).serverApiEnabled,false);
 assert.equal(metricoolConfiguration().monthlyPublishedPlatformLimit,20);
 console.log('PASS: free plan never calls server API; existing schedules unchanged; elapsed dates await verification, not success; invalid review needs cancellation; unknown writes never retry; AI cannot approve');
+assert.equal(requiresDatedSchedule({...row,title:'元宵，一起把湯圓搓好'}),true);
+assert.equal(requiresDatedSchedule(row),false);
+const festivalDB={prepare:sql=>({bind(){return this},run:async()=>({}),first:async()=>null,all:async()=>{throw Error('Seasonal post must not reserve an arbitrary weekday')}})};
+const festival=await enqueueMetricool({DB:festivalDB},{...row,status:'approved',title:'除夕，替家人留一個位置'},{gateState:async()=>({ok:true}),fingerprint:async()=> 'fp'},new Date('2026-10-14T00:00:00Z'));
+assert.equal(festival.ok,false);assert.match(festival.error,/節慶/);
+console.log('PASS holiday posts without explicit dates cannot enter ordinary October slots');
