@@ -5,10 +5,10 @@
       "reviewer_type": "AI",
       "model": "ChatGPT-Work",
       "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
-      "content_fingerprint": "00ec73c8851f028e5fc013728f6693276bb5e64c33b82596027253d54e03d689",
+      "content_fingerprint": "a4335888a69a5ab50fd57aff872559dd46565a7145b05ad1d8b369e03455d8ee",
       "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-14/formal-production/XJW-drink180-ingredients.png",
       "image_sha256": "be6c09f2537a703a255e9f82de511c70ce233d7c5403d4cd42f222e3e02e4a52",
-      "reviewed_at": "2026-10-14T04:52:02.340Z",
+      "reviewed_at": "2026-10-14T04:54:10.979Z",
       "checks": {
         "brand": {
           "result": "PASS",
