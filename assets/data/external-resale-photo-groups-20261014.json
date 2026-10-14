@@ -25,12 +25,20 @@
     },
     {
       "id": "green-can",
-      "type": "unknown-regulated",
+      "type": "prescription-herbal-medicine",
       "images": [
         "IMG_9950",
         "IMG_9951"
       ],
-      "notes": "同一罐裝商品的正反面待確認"
+      "notes": "IMG_9950 原廠正面為晉安左歸丸，IMG_9951 背面印有藥品許可證與須由中醫師處方使用；衛福部官方許可資料已核對，不得混入一般食品商品型錄",
+      "visibleLabel": "晉安・左歸丸",
+      "manufacturer": "晉安製藥股份有限公司",
+      "licenseNumber": "衛署藥製049412",
+      "licenseValidThrough": "2028-05-05",
+      "licenseCategory": "須由中醫師處方使用",
+      "officialLicenseUrl": "https://service.mohw.gov.tw/DOCMAP/CusSite/TCMLResultDetail.aspx?LICENUM=049412&LICEWORDID=01",
+      "reviewStatus": "verified-prescription-drug-not-for-general-public-sale",
+      "publicListing": false
     },
     {
       "id": "bulk-pack",
@@ -82,24 +90,37 @@
     },
     {
       "id": "boxed-traditional",
-      "type": "boxed-product",
+      "type": "licensed-herbal-medicine",
       "images": [
         "IMG_9953",
         "IMG_9954"
       ],
-      "notes": "白色直式盒裝商品正反面；需核對正式品名與販售資格",
-      "reviewStatus": "name-unverified"
+      "notes": "IMG_9953、9954 為愛康治嗽化痰散盒正反面，標示38克。衛福部許可資料確認為成藥，需依藥事法及販售資格處理，不得當食品公開宣傳",
+      "reviewStatus": "verified-medicine-sales-channel-review",
+      "visibleLabel": "愛康・治嗽化痰散（寧嗽化痰湯）",
+      "manufacturer": "愛康製藥廠股份有限公司",
+      "licenseNumber": "衛署成製007278",
+      "licenseValidThrough": "2030-09-30",
+      "licenseCategory": "成藥",
+      "officialLicenseUrl": "https://service.mohw.gov.tw/DOCMAP/CusSite/TCMLResultDetail.aspx?LICENUM=007278&LICEWORDID=03",
+      "publicListing": false
     },
     {
       "id": "green-capsule-box",
-      "type": "capsule-box",
+      "type": "labeled-food-supplement",
       "images": [
         "IMG_9956",
         "IMG_9957"
       ],
-      "notes": "照片正面可見大力寶 COMBAT CAPSULE 字樣，背面有標示與日期；產品屬性、合法販售資格與規格待核對，不可直接公開販售",
-      "reviewStatus": "regulated-review",
-      "visibleLabel": "大力寶 COMBAT CAPSULE"
+      "notes": "IMG_9956 品名強龍大力寶戰鬥膠囊，IMG_9957 背面明確標示食品，10粒／盒，每粒500毫克；照片樣品效期2025-11-02不能視為目前現貨批次，原廠宣稱須先審查",
+      "reviewStatus": "food-label-verified-public-claims-and-fresh-batch-pending",
+      "visibleLabel": "精勇生技・強龍大力寶戰鬥膠囊",
+      "labelCategory": "食品",
+      "labelContents": "10粒／盒，每粒500毫克",
+      "labelMaker": "精勇生技有限公司",
+      "sampleManufacturedDate": "2023-11-03",
+      "sampleExpirationDate": "2025-11-02",
+      "publicListing": false
     },
     {
       "id": "rose-tea",
