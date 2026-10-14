@@ -1,0 +1,49 @@
+name: 仙加味AI圖文審核證據入庫
+on:
+  push:
+    branches: [main]
+    paths: ['ops/ai-quality-evidence/*.json']
+  workflow_dispatch:
+    inputs:
+      evidence_file:
+        description: 已逐篇看圖審核的證據JSON路徑
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      REQUESTED_AI_FILE: ${{ inputs.evidence_file }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Select exactly one evidence batch
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),cp=require('child_process');
+          const files=process.env.REQUESTED_AI_FILE?[process.env.REQUESTED_AI_FILE]:cp.execFileSync('git',['diff','--name-only','HEAD^','HEAD','--','ops/ai-quality-evidence/'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
+          if(files.length!==1||!/^ops\/ai-quality-evidence\/[A-Za-z0-9_-]+\.json$/.test(files[0]))throw Error('One safe evidence path required');
+          fs.appendFileSync(process.env.GITHUB_ENV,'AI_REVIEW_FILE='+files[0]+'\n');
+          NODE
+      - name: Validate and import real AI evidence with current source checks
+        run: |
+          node tools/test-ai-quality-evidence.cjs
+          node tools/test-metricool-free-evidence.cjs
+          node tools/apply-ai-quality-evidence.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-review-result-${{ github.run_id }}
+          path: ai-review-result.json
+          retention-days: 7
