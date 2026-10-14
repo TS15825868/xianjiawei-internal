@@ -26,11 +26,14 @@
     },
     {
       "id": "bulk-pack",
-      "type": "unknown",
+      "type": "tea",
       "images": [
         "IMG_9959"
       ],
-      "notes": "大包裝，需確認標示"
+      "notes": "IMG_9959實物包裝顯示黑糖仙楂烏梅茶、20公克包裝資訊與中醫師人物照片；公開圖片須確認肖像與品牌授權；不使用包裝功能宣稱",
+      "visibleLabel": "黑糖仙楂烏梅茶",
+      "matchedImportId": "PRD-PARTNER-BROWN-SUGAR-UME-TEA",
+      "reviewStatus": "label-read-brand-photo-use-pending"
     },
     {
       "id": "jinan-drink-box",
@@ -56,22 +59,29 @@
     },
     {
       "id": "small-red-bottle",
-      "type": "bottled-product",
+      "type": "chinese-patent-medicine",
       "images": [
         "IMG_9942",
         "IMG_9943"
       ],
-      "notes": "照片顯示紅白標籤棕色小瓶的正反面，標示文字需以原圖放大核對；不得自動填入未確認品名",
-      "reviewStatus": "name-unverified"
+      "notes": "IMG_9942正面、IMG_9943背面；樣品許可證字號實拍為011171，需與政府許可有效狀態及出貨批次再確認",
+      "reviewStatus": "identity-license-number-matched-commerce-review-pending",
+      "visibleLabel": "晉安・生血調經丸糖衣錠",
+      "specification": "100錠／瓶",
+      "licenseNumberFromLabel": "衛署成製011171",
+      "matchedImportId": "PRD-PARTNER-JINAN-SHENGXUE-TIAOJING"
     },
     {
       "id": "clear-orange-cap-jar",
-      "type": "jarred-product",
+      "type": "chinese-patent-medicine",
       "images": [
         "IMG_9946"
       ],
-      "notes": "透明罐橘色瓶蓋，與紅白標籤小瓶不同商品，不可合併 SKU",
-      "reviewStatus": "name-unverified"
+      "notes": "IMG_9946原廠正面有晉安七寶美髯丹及成藥標示；缺少背面實際規格",
+      "reviewStatus": "identity-matched-size-pending",
+      "visibleLabel": "晉安・七寶美髯丹",
+      "licenseNumberFromOfficial": "衛署成製011212",
+      "matchedImportId": "PRD-PARTNER-JINAN-QIBAO-MEIRAN"
     },
     {
       "id": "boxed-traditional",

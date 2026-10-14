@@ -276,5 +276,58 @@
     "listing_status": "內部建檔／待對照",
     "online_transaction_enabled": false,
     "public_product_card_enabled": false
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-SHENGXUE-TIAOJING",
+    "name": "生血調經丸糖衣錠",
+    "brand_name": "晉安",
+    "manufacturer_brand": "晉安製藥股份有限公司",
+    "category": "其他品牌商品／中藥成藥",
+    "specification": "100錠／瓶（依樣品標示）",
+    "source_image_ids": [
+      "IMG_9942",
+      "IMG_9943"
+    ],
+    "license_number": "衛署成製011171",
+    "license_matching_status": "樣品標示與政府許可品名、證號已比對，仍須核對許可有效狀態及現貨批次",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "listing_status": "內部建檔／待確認",
+    "manufacturing_mode": "原廠商品轉售",
+    "notes": "樣品正面標示晉安生血調經丸、背面標示100錠與衛署成製011171；原廠核准資訊未完全驗收，公開展示方式另依法判定。不得使用療效宣稱。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-QIBAO-MEIRAN",
+    "name": "七寶美髯丹",
+    "brand_name": "晉安",
+    "manufacturer_brand": "晉安製藥股份有限公司",
+    "category": "其他品牌商品／中藥成藥",
+    "source_image_ids": [
+      "IMG_9946"
+    ],
+    "license_number": "衛署成製011212",
+    "license_matching_status": "衛福部官方許可資訊對應晉安七寶美髯丹；瓶身可辨識品名但背面規格照片不足",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "listing_status": "內部建檔／待確認",
+    "manufacturing_mode": "原廠商品轉售",
+    "notes": "樣品為橘紅瓶蓋透明罐，原廠標示成藥。須補背面實際容量規格，依法核對販售類別及公開展示。"
+  },
+  {
+    "id": "PRD-PARTNER-BROWN-SUGAR-UME-TEA",
+    "name": "黑糖仙楂烏梅茶",
+    "brand_name": "待核對",
+    "category": "其他品牌商品／茶飲",
+    "specification": "20公克／包（樣品標示）；袋內份數需確認",
+    "ingredients": "黑糖、仙楂、烏梅、香料、己二烯酸（防腐劑）",
+    "source_image_ids": [
+      "IMG_9959"
+    ],
+    "source_label_note": "外袋人物照片及無忌中醫文字；經銷商標示需再次核對",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "listing_status": "內部建檔／待確認",
+    "manufacturing_mode": "其他廠牌商品",
+    "notes": "樣品包裝正面有中醫師人物圖像，必須核對姓名、肖像授權與品牌關係；公開主圖不得直接以未授權肖像廣告。出貨效期以實際批次為準。"
   }
 ]
