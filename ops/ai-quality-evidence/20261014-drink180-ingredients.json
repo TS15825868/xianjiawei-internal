@@ -1,0 +1,95 @@
+{
+  "authorized_by": "tung314069@gmail.com",
+  "items": [
+    {
+      "reviewer_type": "AI",
+      "model": "ChatGPT-Work",
+      "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "content_fingerprint": "00ec73c8851f028e5fc013728f6693276bb5e64c33b82596027253d54e03d689",
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-14/formal-production/XJW-drink180-ingredients.png",
+      "image_sha256": "be6c09f2537a703a255e9f82de511c70ce233d7c5403d4cd42f222e3e02e4a52",
+      "reviewed_at": "2026-10-14T04:52:02.340Z",
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "圍裙紅色直標清楚寫仙加味三字，文案只使用仙加味與補養，是一種節奏。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "本文介紹仙加味龜鹿飲180cc的七項成分，順序逐字符合使用者最新確認；配圖為閱讀資訊情境，不呈現產品包裝。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "文案一致標示龜鹿飲180cc鋁袋及每包180cc，未混用30cc玻璃罐、其他品牌60毫升罐或固體重量。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇完全沒有價格、優惠、限量或試喝承諾，僅邀請官方LINE詢問產品，不使用未查證活動。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "畫面為一般日間居家整理資訊情境，沒有節日、月份或季節特有活動，可於十月十四日使用。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "文案與配圖沒有宣稱今天氣溫、下雨、轉涼等即時天氣，窗外日光僅作生活插畫背景。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "小老闆在家用鉛筆整理飲品資訊，對應先了解成分再依生活習慣安排的主題，沒有假冒客人證言。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "現代居家木桌、書架、窗邊植栽，未聲稱此處是實際萬華門市或捏造商家招牌地址。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "書桌、筆記本、陶瓷水杯和紅棗枸杞小碟連成完整日常場景，沒有藥房格櫃或商品海報拼貼。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "桌上陶瓷水杯沒有冰塊或滾沸操作，文案說可直接或溫熱後飲用，未聲稱特定溫度或強制食用時段。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "小老闆微笑且視線向筆記本，小鹿與小烏龜表情友善，與平實認識產品資訊的文案相符。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "右手實際持鉛筆接觸筆記本頁面，另一手放在紙上，呈現整理筆記的可理解動作，沒有手指穿透或漂浮道具。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "逐一對照十月十二日正式參考：黑髮Q版小男生、米白中式上衣、深綠圍裙及仙加味紅標；橙色小鹿與綠色小烏龜左右分開。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "小鹿坐在桌邊，小烏龜站在書本上，角色、桌子、杯碟與筆記本比例及接觸陰影合理，沒有偽造產品尺寸。"
+        },
+        "duplicate": {
+          "result": "PASS",
+          "evidence": "比對此次即時D1的65篇有效內容，既有180cc是容量比較與收納，本篇改成完整七項成分介紹；圖片雜湊為新素材，無有效貼文共用。"
+        },
+        "compliance_final": {
+          "result": "PASS",
+          "evidence": "文案只有成分、180cc規格與一般飲用方式；沒有改善、關節、補氣等療效字眼，沒有內部工作術語，官方LINE連結與最新品牌一致。"
+        }
+      },
+      "risk": {
+        "level": "LOW",
+        "uncertainties": [],
+        "flags": []
+      },
+      "visual": {
+        "image_sha256": "be6c09f2537a703a255e9f82de511c70ce233d7c5403d4cd42f222e3e02e4a52",
+        "scene_summary": "明亮現代居家木桌前，小老闆以鉛筆整理飲品資訊筆記，左側小鹿與右側小烏龜分開陪伴，陶瓷水杯及紅棗枸杞呈現認識內容物的日常情境；画面没有產品包裝。",
+        "mascot_reference": {
+          "url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-quiet-work-audit-v1.jpg",
+          "sha256": "6ba0b003357cbdb58839aee704b6630a3ea599775f894bae0d999d4a0694572d"
+        },
+        "products_visible": false,
+        "product_assets": []
+      }
+    }
+  ]
+}
