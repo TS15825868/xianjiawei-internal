@@ -11,7 +11,12 @@
     "description": "晉安原廠盒裝飲品，每盒12入，每入60毫升；保留原廠包裝與商品標示。",
     "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/jinan-siwuyin-front.jpg",
     "listing_status": "已核准公開",
-    "manufacturing_mode": "原廠商品轉售"
+    "manufacturing_mode": "原廠商品轉售",
+    "source_image_ids": [
+      "IMG_9934",
+      "IMG_9935"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-ROSE",
@@ -25,7 +30,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9963"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-JIANFENG-TEA",
@@ -39,7 +51,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9964"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WUDAHAN",
@@ -53,7 +72,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9965"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-JIANFENG-LOTUS",
@@ -67,7 +93,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9966"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WHITE",
@@ -81,7 +114,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9967"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-JIANFENG-REFRESH",
@@ -95,7 +135,14 @@
     "storage": "陰涼乾燥處，避免陽光直射；拆封後短期內飲用完畢",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。"
+    "notes": "已核對包裝實拍；尚需核實食品原料使用及公開販售資格。樣品照片日期不作為供貨批次效期。",
+    "source_image_ids": [
+      "IMG_9968"
+    ],
+    "source_photo_review": "以原始照片對應商品正面及背面；禁止使用聊天截圖；樣品照片舊效期不是現貨效期",
+    "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-LIAN-GUILU",

@@ -194,5 +194,22 @@
       "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
       "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
     }
-  ]
+  ],
+  "regulatoryReview": {
+    "status": "pending-supplier-evidence",
+    "verifiedAuthority": "TFDA 可同時提供食品使用之中藥材食品原料表（目前適用版本需上架前再確認）",
+    "applicableIngredient": "丹參 Salvia miltiorrhiza Bge. 乾燥根與根莖",
+    "verified2019Rule": "每人日食用限量2.5公克丹參原料；外包裝應載明避免同時服用阿斯匹靈和其他抗凝血藥物",
+    "ruleSource": "https://www.fda.gov.tw/TC/includes/GetFile.ashx?id=f636984514723143965",
+    "newer2026Draft": "2026年公告草案曾建議增加出血疾病患者及孕婦警語，但草案不是已生效規定，須再查正式公告",
+    "draftSource": "https://www.mohw.gov.tw/dl-99974-a3cc8742-616e-4a2b-baf8-4d3933766551.html",
+    "supplierQuestions": [
+      "確認每包所含丹參的實際公克數及原料部位",
+      "確認原廠最新包裝的食用方法、法定警語與原料合法性",
+      "確認每項商品最新批次、效期及供貨情況",
+      "取得不含未經核准功效宣稱的合法公開展示照片",
+      "確認包裝出品商與製造商角色，不將出品商自動當成製造商"
+    ],
+    "policy": "確認商品資料與合法公開展示方式後逐項上架；上架與能否由LINE遠距交易獨立判定"
+  }
 }
