@@ -8,21 +8,6 @@
   "disclaimer": "根據照片視覺分組及已存在的官網資料進行核對；除已對應的晉安品項外，未確認正式品名、規格及販售資格；不允許自動公開上架或公開對話截圖",
   "groups": [
     {
-      "id": "tea-boxes",
-      "type": "tea",
-      "images": [
-        "IMG_9965",
-        "IMG_9966",
-        "IMG_9967",
-        "IMG_9963",
-        "IMG_9964",
-        "IMG_9968",
-        "IMG_9969",
-        "IMG_9970"
-      ],
-      "notes": "多款茶盒與茶包照片；正反面需逐項核對"
-    },
-    {
       "id": "yellow-cans",
       "type": "unknown-regulated",
       "images": [
@@ -62,9 +47,8 @@
         "IMG_9934",
         "IMG_9935"
       ],
-      "notes": "已與官網晉安・參仲四物飲商品資料對應；原廠包裝正反面，仍須以實際批次標示核對",
-      "matchedCatalogId": "jinan-sisheng-siwuyin",
-      "reviewStatus": "catalog-record-exists"
+      "notes": "照片顯示粉紅色『參仲 四物飲』包裝及背面標示；官網既有晉安商品紀錄需再比對製造商、品名及容量，不能僅憑相似名稱認定完全一致",
+      "reviewStatus": "needs-catalog-label-crosscheck"
     },
     {
       "id": "pink-gift-bag",
@@ -82,7 +66,7 @@
         "IMG_9942",
         "IMG_9943"
       ],
-      "notes": "同一紅白標籤小瓶的正反面，品名及產品屬性待核對",
+      "notes": "照片顯示紅白標籤棕色小瓶的正反面，標示文字需以原圖放大核對；不得自動填入未確認品名",
       "reviewStatus": "name-unverified"
     },
     {
@@ -111,8 +95,52 @@
         "IMG_9956",
         "IMG_9957"
       ],
-      "notes": "綠色膠囊盒裝正反面；需核對品名、原廠及產品分類，不得逕自公開販售",
-      "reviewStatus": "regulated-review"
+      "notes": "照片正面可見大力寶 COMBAT CAPSULE 字樣，背面有標示與日期；產品屬性、合法販售資格與規格待核對，不可直接公開販售",
+      "reviewStatus": "regulated-review",
+      "visibleLabel": "大力寶 COMBAT CAPSULE"
+    },
+    {
+      "id": "rose-tea",
+      "type": "tea",
+      "images": [
+        "IMG_9963"
+      ],
+      "visibleLabel": "玫瑰果茶",
+      "notes": "粉紅色盒裝玫瑰果茶，正反標示同框；正式品牌與規格仍需核對",
+      "reviewStatus": "label-partially-readable"
+    },
+    {
+      "id": "fiber-tea",
+      "type": "tea",
+      "images": [
+        "IMG_9966"
+      ],
+      "visibleLabel": "纖體茶",
+      "notes": "粉紫色盒裝，正反標示同框；正式品牌與規格仍需核對",
+      "reviewStatus": "label-partially-readable"
+    },
+    {
+      "id": "dan-shen-tea",
+      "type": "tea",
+      "images": [
+        "IMG_9967"
+      ],
+      "visibleLabel": "丹參飲",
+      "notes": "白綠色盒裝，正反標示同框；正式品牌與規格仍需核對",
+      "reviewStatus": "label-partially-readable"
+    },
+    {
+      "id": "remaining-tea-photos",
+      "type": "tea",
+      "images": [
+        "IMG_9965",
+        "IMG_9964",
+        "IMG_9968",
+        "IMG_9969",
+        "IMG_9970"
+      ],
+      "notes": "其餘茶盒照片尚未逐張核對，禁止視為同一品項",
+      "reviewStatus": "name-unverified"
     }
   ]
 }
