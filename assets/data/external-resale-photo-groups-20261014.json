@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "source": "仙加味_商品實物照片篩選預覽.jpg／原圖 ZIP",
+  "scope": "internal-review-only",
+  "publicListing": false,
+  "publicPricing": false,
+  "containsChatScreenshots": false,
+  "disclaimer": "照片分組僅為內部初步視覺辨識，不代表品名、SKU、販售資格或照片已完成核准；禁止自動公開上架",
+  "groups": [
+    {
+      "id": "tea-boxes",
+      "type": "tea",
+      "images": [
+        "IMG_9965",
+        "IMG_9966",
+        "IMG_9967",
+        "IMG_9963",
+        "IMG_9964",
+        "IMG_9968",
+        "IMG_9969",
+        "IMG_9970"
+      ],
+      "notes": "多款茶盒與茶包照片；正反面需逐項核對"
+    },
+    {
+      "id": "gift-bag",
+      "type": "gift-set",
+      "images": [
+        "IMG_9917",
+        "IMG_9934",
+        "IMG_9935"
+      ],
+      "notes": "粉紅色禮盒／提袋，確認是否同一品項"
+    },
+    {
+      "id": "yellow-cans",
+      "type": "unknown-regulated",
+      "images": [
+        "IMG_9920",
+        "IMG_9921",
+        "IMG_9922",
+        "IMG_9923",
+        "IMG_9925",
+        "IMG_9927",
+        "IMG_9929",
+        "IMG_9931",
+        "IMG_9939"
+      ],
+      "notes": "多款罐裝丸劑或粉末，先核對產品分類及販售資格"
+    },
+    {
+      "id": "green-can",
+      "type": "unknown-regulated",
+      "images": [
+        "IMG_9950",
+        "IMG_9951"
+      ],
+      "notes": "同一罐裝商品的正反面待確認"
+    },
+    {
+      "id": "small-bottles",
+      "type": "unknown-regulated",
+      "images": [
+        "IMG_9942",
+        "IMG_9943",
+        "IMG_9946"
+      ],
+      "notes": "小瓶產品，需核對是否相同 SKU"
+    },
+    {
+      "id": "boxed-other",
+      "type": "unknown-regulated",
+      "images": [
+        "IMG_9953",
+        "IMG_9954",
+        "IMG_9956",
+        "IMG_9957"
+      ],
+      "notes": "盒裝商品正反面，需核對許可與品名"
+    },
+    {
+      "id": "bulk-pack",
+      "type": "unknown",
+      "images": [
+        "IMG_9959"
+      ],
+      "notes": "大包裝，需確認標示"
+    }
+  ]
+}
