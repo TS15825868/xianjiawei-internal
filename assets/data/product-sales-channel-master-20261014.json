@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-14",
+  "scope": "ERP internal policy, not public site content",
+  "brand": "仙加味",
+  "merchantUserStatement": {
+    "isRegisteredChineseMedicineMerchant": true,
+    "registeredShopOperation": true,
+    "noF399040Registration": true,
+    "verifiedPermitDocumentInProject": false,
+    "internalCompanyName": "台興山產有限公司"
+  },
+  "positioning": "仙加味官網作為品牌兼多廠牌商品展示入口，LINE OA 人工諮詢，不使用公開線上購物車或公開價格",
+  "salesStages": [
+    "網站瀏覽產品資料",
+    "LINE 人工詢問品牌、品名、規格及供貨",
+    "依產品所屬法規判斷可否遠距成立交易",
+    "合法可遠距銷售的商品才安排匯款配送、貨到付款、門市自取",
+    "需實體藥事程序或處方的產品改由合法門市途徑處理"
+  ],
+  "perType": {
+    "food": {
+      "label": "一般食品及確認可食用的茶飲",
+      "publicProductCard": "符合正確標示及廣告法規後可公開圖卡和資訊",
+      "lineContact": "允許一般資訊及人工報價",
+      "remittanceShippingCod": "如商品與業者所需登記及法規皆符合，使用 LINE 付款、貨到付款或門市自取",
+      "advertising": "不宣稱醫療療效，不任意複製原廠包裝上的功效口號"
+    },
+    "classBOverTheCounterDrug": {
+      "label": "乙類成藥",
+      "publicProductCard": "依法核對乙類成藥資格、商家資格、網站揭露及廣告規則",
+      "lineContact": "符合法定網路零售條件後再進入訂購流程",
+      "remittanceShippingCod": "僅於符合法令、業者資格與網站資訊揭露規範的條件下開放",
+      "advertising": "藥物廣告另須依法審核"
+    },
+    "otherDrug": {
+      "label": "中藥製劑、甲類成藥及其他藥品",
+      "publicProductCard": "一般商品平台上之公開資料須審查資訊與廣告區別，不因中藥商資格自動核准線上交易",
+      "lineContact": "可為一般商品與門市洽詢，不能把 LINE 自動當成藥品網路交易合法管道",
+      "remittanceShippingCod": "預設不開放透過網站或 LINE 成立非實體交易；如有特殊合法通路須有主管機關確認",
+      "advertising": "不得宣稱效能；若涉及藥物廣告依藥事法辦理"
+    },
+    "prescriptionDrug": {
+      "label": "須醫師處方之藥品",
+      "publicProductCard": "未核准作公開廣告或專業限定展示前不納入一般顧客交易型商品卡",
+      "lineContact": "僅一般門市程序諮詢，不收受網路購藥訂單",
+      "remittanceShippingCod": "不得藉 LINE 匯款與宅配規避處方及實體調劑、販售限制"
+    },
+    "ambiguous": {
+      "label": "規格、產品屬性或販售條件未確認",
+      "publicProductCard": "可先於ERP建立完整品項及照片對應，待分類核對後再決定公開內容",
+      "lineContact": "僅一般業務洽詢",
+      "remittanceShippingCod": "先不自動開放",
+      "advertising": "不以不完整原廠資訊自行宣傳"
+    }
+  },
+  "independentFlags": [
+    "internalInventoryEligible",
+    "publicInformationEligible",
+    "productImageApproved",
+    "onlineTransactionEligible",
+    "storeSaleEligible",
+    "regulatoryCategoryVerified"
+  ],
+  "officialReferences": [
+    {
+      "title": "經濟部中小及新創企業署 網路商店登記說明",
+      "url": "https://startup.sme.gov.tw/home/modules/faq/detial.php?sId=56"
+    },
+    {
+      "title": "食藥署 網路藥品販售適法說明",
+      "url": "https://www.fda.gov.tw/TC/newsContent.aspx?id=25487"
+    },
+    {
+      "title": "衛福部 網路零售乙類成藥注意事項",
+      "url": "https://dep.mohw.gov.tw/DOCMAP/fp-755-5408-108.html"
+    },
+    {
+      "title": "藥事法",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=L0030001"
+    }
+  ],
+  "managementNotes": "商品展示與付款配送是不同的法律判定，不能只以有無F399040營登項目作藥品可網路販售的判準；使用者確認的中藥商資格保留為內部紀錄，尚須核對證明與適用範圍。公開仙加味品牌不顯示內部法定公司名稱。"
+}
