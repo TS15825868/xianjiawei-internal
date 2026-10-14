@@ -1,0 +1,47 @@
+name: Apply verified human review hold 20261014
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/human-review-hold-20261014.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  hold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Match verified external draft state without changing content or history
+        run: |
+          cat > /tmp/review-hold.sql <<'SQL'
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-opening-prep' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596100,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-opening-prep';
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-trial-first' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596116,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-trial-first';
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-receive-package' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596139,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-receive-package';
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-quiet-work' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596162,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-quiet-work';
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-gao-vs-drink' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596178,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-gao-vs-drink';
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-0663bdeb-49aa-46bf-8a41-95a14486f425' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=395596198,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-0663bdeb-49aa-46bf-8a41-95a14486f425';
+          SELECT id,status,approved_by,image_approved,scheduled_at FROM social_posts WHERE id IN ('XJW-CONV-chat-opening-prep','XJW-CONV-chat-trial-first','XJW-CONV-chat-receive-package','XJW-CONV-chat-quiet-work','XJW-CONV-chat-gao-vs-drink','XJW-0663bdeb-49aa-46bf-8a41-95a14486f425');
+          SELECT post_id,metricool_id,state FROM social_metricool_sync WHERE post_id IN ('XJW-CONV-chat-opening-prep','XJW-CONV-chat-trial-first','XJW-CONV-chat-receive-package','XJW-CONV-chat-quiet-work','XJW-CONV-chat-gao-vs-drink','XJW-0663bdeb-49aa-46bf-8a41-95a14486f425');
+          SQL
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --file /tmp/review-hold.sql > human-review-hold-result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: human-review-hold-${{ github.run_id }}
+          path: human-review-hold-result.json
+          retention-days: 7
