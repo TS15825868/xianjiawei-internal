@@ -76,6 +76,28 @@ jobs:
             if(value!==0) throw new Error(`${file} 異常筆數 ${value}`);
           }
           console.log('PASS D1 readonly health',Object.fromEntries(counts.map(r=>[r.status,Number(r.count||0)])));
+          // 正式排程必須綁定目前圖文指紋的有效人工核准；AI_APPROVED 只能作為品質證據。
+          const posts=rows('current-social-posts.json');
+          const gates=rows('current-review-gates.json');
+          const links=rows('current-metricool-sync.json');
+          const {fingerprint}=require('./tools/metricool-free-evidence.cjs');
+          const checklistKeys=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
+          const scheduled=posts.filter(p=>p.status==='scheduled');
+          for(const post of scheduled){
+            const gate=gates.find(g=>g.post_id===post.id);
+            const link=links.find(l=>l.post_id===post.id);
+            let checks={};
+            try{checks=JSON.parse(gate?.checklist_json||'{}')}catch{}
+            const validEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(gate?.reviewed_by||''));
+            const human=gate&&validEmail&&gate.reviewed_by===post.approved_by&&gate.content_fingerprint===fingerprint(post)&&Number(gate.copy_image_match)===1&&checklistKeys.every(k=>checks[k]===true);
+            if(!human||String(post.review_note||'').startsWith('AI審核：AI_APPROVED；')){
+              throw new Error(`scheduled post lacks current verified human approval: ${post.id}`);
+            }
+            if(!link||link.state!=='scheduled'||!link.uuid||!link.metricool_id){
+              throw new Error(`scheduled post lacks verified Metricool linkage: ${post.id}`);
+            }
+          }
+          console.log('PASS scheduled human approval',scheduled.map(p=>p.id));
           NODE
       - name: Upload read-only evidence
         uses: actions/upload-artifact@v4
