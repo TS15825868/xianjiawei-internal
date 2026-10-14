@@ -38,7 +38,7 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
   if(link?.state==='scheduled')return{ok:false,error:'既有外部排程版本已變更；請先透過Work取消／更新原UUID'};
   if(requiresDatedSchedule(row)&&!hasExplicitFutureDate(row,now))return{ok:false,error:'節慶內容需先指定符合節日的日期，禁止自動套用一般週間時段'};
   const reserved=await env.DB.prepare("SELECT publication_at FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','scheduled','blocked_config','awaiting_verification') AND post_id<>?").bind(row.id).all();
-  const preferred=link?.publication_at||row.scheduled_at||row.proposed_scheduled_at;
+  const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
   const at=Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,(reserved.results||[]).map(x=>x.publication_at));
   await env.DB.prepare(`INSERT INTO social_metricool_sync(post_id,uuid,publication_at,content_fingerprint,state) VALUES(?,?,?,?,?) ON CONFLICT(post_id) DO UPDATE SET publication_at=excluded.publication_at,content_fingerprint=excluded.content_fingerprint,state=excluded.state,attempts=0,last_error='',updated_at=datetime('now')`).bind(row.id,link?.uuid||crypto.randomUUID(),at,fp,'awaiting_work').run();
   return{ok:true,queued:true,state:'awaiting_work',scheduledAt:at,externalScheduled:false,message:'已人工核准並加入待Work排程；尚未送入Metricool，不代表已正式排程。'};
@@ -49,7 +49,7 @@ export async function syncMetricool(env,checks,now=new Date()){
   if(initialized?.setting_value!=='20261013-eight-recovery')return{ok:false,blocked:'METRICOOL_EXISTING_UUID_BOOTSTRAP_REQUIRED'};
   const approved=await env.DB.prepare("SELECT p.* FROM social_posts p LEFT JOIN social_metricool_sync m ON p.id=m.post_id WHERE p.status='approved' AND (m.post_id IS NULL OR m.state IN ('pending_review','blocked_context')) ORDER BY p.approved_at LIMIT 20").all();
   for(const row of approved.results||[]){if((await checks.gateState(env,row)).ok)await enqueueMetricool(env,row,checks,now)}
-  const result=await env.DB.prepare("SELECT * FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','blocked_config','scheduled') ORDER BY publication_at LIMIT 100").all();
+  const result=await env.DB.prepare("SELECT * FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','blocked_config','scheduled','expired') ORDER BY publication_at LIMIT 100").all();
   for(const link of result.results||[]){
     const row=await env.DB.prepare('SELECT * FROM social_posts WHERE id=?').bind(link.post_id).first();
     const valid=row&&['approved','scheduled'].includes(row.status)&&(await checks.gateState(env,row)).ok&&(await checks.fingerprint(row))===link.content_fingerprint;
