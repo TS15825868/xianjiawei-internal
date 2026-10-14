@@ -5,24 +5,8 @@
   "publicListing": false,
   "publicPricing": false,
   "containsChatScreenshots": false,
-  "disclaimer": "內部素材照片核對清冊；可讀到的原廠品名與成分保留作證據，仍須判斷現行可販售資格、廣告圖片中的功效文字及正式出貨批次。不可公開聊天截圖或自行編造規格。",
+  "disclaimer": "原始商品照片內部辨識，圖片對應不等於法定販售資格。中藥產品必須核對衛福部許可類別與店家資格，食品廣告圖片不可直接引用功能宣稱，聊天截圖不得公開。",
   "groups": [
-    {
-      "id": "yellow-cans",
-      "type": "unknown-regulated",
-      "images": [
-        "IMG_9920",
-        "IMG_9921",
-        "IMG_9922",
-        "IMG_9923",
-        "IMG_9925",
-        "IMG_9927",
-        "IMG_9929",
-        "IMG_9931",
-        "IMG_9939"
-      ],
-      "notes": "多款罐裝丸劑或粉末，先核對產品分類及販售資格"
-    },
     {
       "id": "green-can",
       "type": "prescription-herbal-medicine",
@@ -198,6 +182,95 @@
       "notes": "IMG_9969及IMG_9970背景可見玫瑰果茶粉紅盒，茶包圖與其可能同品項；照片未見完整包裝標示，列為疑似相符，公開使用前仍需複核",
       "reviewStatus": "probable-rose-tea-sachet-detail",
       "probableSkuMasterId": "tj-rose-fruit-tea"
+    },
+    {
+      "id": "jinyan-huanshaodan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9920"
+      ],
+      "visibleLabel": "晉安・還少丹",
+      "notes": "原廠瓶身正面可辨識還少丹，未取得背面核准資料",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-bushenwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9921",
+        "IMG_9927"
+      ],
+      "visibleLabel": "晉安・補腎丸",
+      "notes": "同名補腎丸有兩張不同容器照片，須核對淨重或包裝是否不同，不可逕自視為同 SKU",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-ningshenwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9922"
+      ],
+      "visibleLabel": "晉安・寧神丸",
+      "notes": "標籤顯示寧神丸、原方名天王補心丹、成藥字樣；須另查許可證",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-jinsuo-gijingwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9923"
+      ],
+      "visibleLabel": "金鎖固精丸",
+      "notes": "罐裝標示金鎖固精丸；正面可見濃縮顆粒，藥品許可及製造商待查",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-jishenqiwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9925"
+      ],
+      "visibleLabel": "晉安・濟生腎氣丸",
+      "notes": "罐裝標示濟生腎氣丸，原廠與許可待核對",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-liuweidihuangwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9929"
+      ],
+      "visibleLabel": "晉安・六味地黃丸",
+      "notes": "罐裝六味地黃丸，許可待核對",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-fengshiwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9931"
+      ],
+      "visibleLabel": "晉安・風濕丸",
+      "notes": "罐裝風濕丸，許可待核對",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
+    },
+    {
+      "id": "jinyan-guiluerxianwan",
+      "type": "herbal-medicine-photo",
+      "images": [
+        "IMG_9939"
+      ],
+      "visibleLabel": "晉安・龜鹿二仙丸",
+      "notes": "罐裝龜鹿二仙丸，需與立安龜鹿二仙膠分開建檔",
+      "reviewStatus": "name-visible-license-and-sales-channel-unverified",
+      "publicListing": false
     }
   ]
 }
