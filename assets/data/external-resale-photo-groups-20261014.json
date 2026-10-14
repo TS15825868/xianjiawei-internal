@@ -5,7 +5,7 @@
   "publicListing": false,
   "publicPricing": false,
   "containsChatScreenshots": false,
-  "disclaimer": "根據照片視覺分組及已存在的官網資料進行核對；除已對應的晉安品項外，未確認正式品名、規格及販售資格；不允許自動公開上架或公開對話截圖",
+  "disclaimer": "照片分組為內部核對紀錄，並非已合法上架清單；原廠包裝印刷的功效宣稱不可直接用於仙加味公開廣告，舊樣品效期不可當作現貨效期，聊天截圖一律禁止公開",
   "groups": [
     {
       "id": "yellow-cans",
@@ -130,17 +130,44 @@
       "reviewStatus": "label-partially-readable"
     },
     {
-      "id": "remaining-tea-photos",
+      "id": "wudahan-danshen-tea",
       "type": "tea",
       "images": [
-        "IMG_9965",
-        "IMG_9964",
-        "IMG_9968",
+        "IMG_9965"
+      ],
+      "visibleLabel": "武大漢丹參茶",
+      "notes": "盒裝正反面同框；標示每盒10包、每包3公克，出品商健逢生物科技企業有限公司；樣品照片印有製造日期2024-07-23、有效日期2026-07-22，不代表現貨批次",
+      "reviewStatus": "label-reviewed-needs-legal-check"
+    },
+    {
+      "id": "taiwan-danshen-leisure-tea",
+      "type": "tea",
+      "images": [
+        "IMG_9964"
+      ],
+      "visibleLabel": "臺灣丹參懈悠活養生茶",
+      "notes": "盒裝正反面同框；每盒10包、每包3公克，出品商健逢生物科技企業有限公司；樣品照片舊日期僅供參考，需確認實際供貨批次",
+      "reviewStatus": "label-reviewed-needs-legal-check"
+    },
+    {
+      "id": "taiwan-danshen-soothing-tea",
+      "type": "tea",
+      "images": [
+        "IMG_9968"
+      ],
+      "visibleLabel": "臺灣丹參舒活茶",
+      "notes": "盒裝正反面同框；每盒10包、每包3公克，出品商健逢生物科技企業有限公司；不得將包裝上的功效宣稱直接轉為公開廣告文案",
+      "reviewStatus": "label-reviewed-needs-legal-check"
+    },
+    {
+      "id": "tea-sachet-detail",
+      "type": "tea-detail-photo",
+      "images": [
         "IMG_9969",
         "IMG_9970"
       ],
-      "notes": "其餘茶盒照片尚未逐張核對，禁止視為同一品項",
-      "reviewStatus": "name-unverified"
+      "notes": "茶包內容物與外袋近照，僅供對應品項的詳細頁輔助圖；需核對背景盒裝品名，不可建立獨立商品 SKU",
+      "reviewStatus": "detail-image-unmatched"
     }
   ]
 }
