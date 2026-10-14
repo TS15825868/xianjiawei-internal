@@ -83,20 +83,18 @@ jobs:
           const {fingerprint}=require('./tools/metricool-free-evidence.cjs');
           const checklistKeys=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
           const scheduled=posts.filter(p=>p.status==='scheduled');
+          const invalid=[];
           for(const post of scheduled){
             const gate=gates.find(g=>g.post_id===post.id);
             const link=links.find(l=>l.post_id===post.id);
             let checks={};
             try{checks=JSON.parse(gate?.checklist_json||'{}')}catch{}
             const validEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(gate?.reviewed_by||''));
-            const human=gate&&validEmail&&gate.reviewed_by===post.approved_by&&gate.content_fingerprint===fingerprint(post)&&Number(gate.copy_image_match)===1&&checklistKeys.every(k=>checks[k]===true);
-            if(!human||String(post.review_note||'').startsWith('AI審核：AI_APPROVED；')){
-              throw new Error(`scheduled post lacks current verified human approval: ${post.id}`);
-            }
-            if(!link||link.state!=='scheduled'||!link.uuid||!link.metricool_id){
-              throw new Error(`scheduled post lacks verified Metricool linkage: ${post.id}`);
-            }
+            const human=gate&&validEmail&&gate.reviewed_by===post.approved_by&&gate.content_fingerprint===fingerprint(post)&&Number(gate.copy_image_match)===1&&checklistKeys.every(k=>checks[k]===true)&&!String(post.review_note||'').startsWith('AI審核：AI_APPROVED；');
+            const linked=link&&link.state==='scheduled'&&link.uuid&&link.metricool_id;
+            if(!human||!linked) invalid.push({id:post.id,human:Boolean(human),linked:Boolean(linked)});
           }
+          if(invalid.length) throw new Error(`scheduled posts fail publication gate: ${JSON.stringify(invalid)}`);
           console.log('PASS scheduled human approval',scheduled.map(p=>p.id));
           NODE
       - name: Upload read-only evidence
