@@ -113,13 +113,15 @@ async function fastPostList(request,env){
   const url=new URL(request.url),limit=Math.min(60,Math.max(1,int(url.searchParams.get('limit'),18))),offset=Math.max(0,int(url.searchParams.get('offset'),0));
   const status=clean(url.searchParams.get('status')),q=clean(url.searchParams.get('q')).slice(0,100);
   const where=["status<>'archived'"];const binds=[];
-  if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status);}
+  if(status==='ai_pending'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))=''");}
+  else if(status==='human_approved'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))<>''");}
+  else if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status);}
   if(q){where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');const like=`%${q}%`;binds.push(like,like,like,like,like);}
   const clause=where.join(' AND ');
   const fields='id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,proposed_scheduled_at';
   const rowsStmt=env.DB.prepare(`SELECT ${fields} FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC,id DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset);
   const totalStmt=env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds);
-  const groupedStmt=env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status");
+  const groupedStmt=env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting FROM social_posts WHERE status<>'archived' GROUP BY status");
   let rows,totalRow,grouped;
   if(typeof env.DB.batch==='function'){
     const result=await withTimeout(env.DB.batch([rowsStmt,totalStmt,groupedStmt]),D1_TIMEOUT_MS,'D1 貼文清單查詢暫時逾時');
@@ -127,9 +129,10 @@ async function fastPostList(request,env){
   }else{
     [rows,totalRow,grouped]=await withTimeout(Promise.all([rowsStmt.all(),totalStmt.first(),groupedStmt.all()]),D1_TIMEOUT_MS,'D1 貼文清單查詢暫時逾時');
   }
-  const counts={draft:0,pending_review:0,approved:0,scheduled:0,published:0,manual_required:0,failed:0};
-  for(const row of grouped.results||[])counts[row.status]=Number(row.count||0);
-  return json({items:(rows.results||[]).map(mapFastPost),total:Number(totalRow?.count||0),limit,offset,counts,query:q,status:POST_STATUSES.has(status)?status:'all',fast_api:FAST_READ_VERSION});
+  const counts={draft:0,pending_review:0,approved:0,ai_pending:0,human_approved:0,scheduled:0,published:0,manual_required:0,failed:0};
+  for(const row of grouped.results||[]){counts[row.status]=Number(row.count||0);if(row.status==='approved')counts.ai_pending=Number(row.ai_review_waiting||0);}
+  counts.human_approved=Math.max(0,counts.approved-counts.ai_pending);
+  return json({items:(rows.results||[]).map(mapFastPost),total:Number(totalRow?.count||0),limit,offset,counts,query:q,status:(POST_STATUSES.has(status)||status==='ai_pending'||status==='human_approved')?status:'all',fast_api:FAST_READ_VERSION});
 }
 async function fastMe(request,env){const profile=await verifyResilientAccess(request,env);return json({...profile,role_label:roleLabel(profile.role),fast_api:FAST_READ_VERSION});}
 async function fastPlatformAuthorization(request,env){await verifyResilientAccess(request,env);return json({...publisherConfiguration(env),fast_api:FAST_READ_VERSION});}
