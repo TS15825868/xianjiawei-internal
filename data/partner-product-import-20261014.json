@@ -691,7 +691,7 @@
     "name": "黑糖仙楂烏梅茶",
     "brand_name": "待核對",
     "category": "其他品牌商品／茶飲",
-    "specification": "20公克／包（樣品標示）；袋內份數需確認",
+    "specification": "20公克±4.5%／包，10份／袋（依樣品標示）",
     "ingredients": "黑糖、仙楂、烏梅、香料、己二烯酸（防腐劑）",
     "source_image_ids": [
       "IMG_9959"
@@ -710,6 +710,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "storage": "請保存於陰涼乾燥處，避免陽光直射、高溫與潮濕環境",
+    "notices": "內含仙楂；孕婦、芒果、蜂蜜、堅果類及其製品、食物過敏者請留意；無法從現有照片確認沖泡方式，公開狀態仍待核對",
+    "source_photo_review": "IMG_9959包裝標示：每份20g，本包裝含10份；袋身有醫師形象，公開圖片及宣傳資格須另審，不擅自抹除標示"
   }
 ]
