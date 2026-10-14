@@ -1,5 +1,5 @@
 (()=>{
-  const labels={scheduled:'已送入Metricool',pending_review:'待人工審核',awaiting_work:'待Work處理',awaiting_verification:'待查證發布結果',cancel_required:'需Work處理外部排程',expired:'未送出且已過期',failed:'失敗，需查原因',unknown:'結果不明，禁止重建',published:'已查證發布'};
+  const labels={scheduled:'已送入Metricool',pending_review:'待審核',awaiting_work:'待送入排程',blocked_context:'待核對節慶日期',awaiting_verification:'待查證發布結果',cancel_required:'需處理外部排程',expired:'未送出且已過期',failed:'失敗，需查原因',unknown:'結果不明，禁止重建',published:'已查證發布'};
   let loaded=false;
   async function load(){
     if(loaded)return;loaded=true;
