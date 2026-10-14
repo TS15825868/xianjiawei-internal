@@ -32,6 +32,7 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count,SUM(CASE WHEN image_approved=1 AND TRIM(COALESCE(image_url,''))<>'' THEN 1 ELSE 0 END) AS has_approved_image,SUM(CASE WHEN approved_at IS NOT NULL AND TRIM(COALESCE(approved_by,''))<>'' THEN 1 ELSE 0 END) AS has_approval_record,SUM(CASE WHEN image_approved=1 AND TRIM(COALESCE(image_url,''))<>'' AND approved_at IS NOT NULL AND TRIM(COALESCE(approved_by,''))<>'' THEN 1 ELSE 0 END) AS potentially_eligible_for_schedule,SUM(CASE WHEN scheduled_at IS NOT NULL AND TRIM(scheduled_at)<>'' THEN 1 ELSE 0 END) AS has_scheduled_at FROM social_posts GROUP BY status ORDER BY status" > /tmp/social-status-audit.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT state,COUNT(*) AS count,SUM(CASE WHEN metricool_id IS NOT NULL THEN 1 ELSE 0 END) AS with_metricool_id FROM social_metricool_sync GROUP BY state ORDER BY state" > /tmp/metricool-link-audit.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS approved_no_external_sync FROM social_posts p LEFT JOIN social_metricool_sync m ON m.post_id=p.id WHERE p.status='approved' AND m.post_id IS NULL" > /tmp/missing-link-audit.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.status,COUNT(*) AS count,SUM(CASE WHEN g.post_id IS NOT NULL THEN 1 ELSE 0 END) AS with_review_gate,SUM(CASE WHEN g.post_id IS NOT NULL AND g.copy_image_match=1 AND LENGTH(TRIM(COALESCE(g.reviewed_by,'')))>4 AND TRIM(COALESCE(g.reviewed_at,''))<>'' THEN 1 ELSE 0 END) AS with_review_evidence FROM social_posts p LEFT JOIN social_post_review_gates g ON g.post_id=p.id GROUP BY p.status ORDER BY p.status" > /tmp/review-gates-audit.json
           node - <<'NODE'
           const fs=require('fs');
           function rows(path) {
@@ -41,10 +42,12 @@ jobs:
           const posts=rows('/tmp/social-status-audit.json');
           const metrics=rows('/tmp/metricool-link-audit.json');
           const missing=rows('/tmp/missing-link-audit.json')[0]||{};
+          const reviewGates=rows('/tmp/review-gates-audit.json');
           const total=posts.reduce((s,x)=>s+Number(x.count||0),0);
           if(total===0) throw new Error('找不到貼文資料，停止判斷');
           console.log('D1 social_posts totals and review eligibility:',JSON.stringify(posts));
           console.log('D1 metricool sync state totals:',JSON.stringify(metrics));
           console.log('Approved posts without Metricool mapping:',Number(missing.approved_no_external_sync||0));
+          console.log('Human review gate evidence totals:',JSON.stringify(reviewGates));
           console.log('Audit is read only. Counts are not proof of real-time autoPublish settings.');
           NODE
