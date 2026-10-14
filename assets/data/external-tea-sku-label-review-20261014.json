@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-10-14",
+  "authority": "photo label transcription, not manufacturer confirmation",
+  "visibility": "erp-only",
+  "intendedUse": "上架前原廠標示資料核對；不含價格、聊天截圖或不實療效文案",
+  "reviewPolicy": {
+    "source": "本專案上傳的 IMG_9963～IMG_9968 實物原圖",
+    "noChatScreenshots": true,
+    "preserveExactPackaging": true,
+    "expiryRule": "樣品照片印刷有效日期不是目前出貨批次效期，須另外核對最新批次",
+    "imageClaimsRule": "原廠盒上含功能宣稱，未審核前不可將圖片或文字直接用於對外廣告"
+  },
+  "products": [
+    {
+      "id": "tj-rose-fruit-tea",
+      "name": "臺灣丹參玫瑰果茶",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9963.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣丹參",
+        "玫瑰",
+        "檸檬",
+        "綠茶",
+        "水果乾"
+      ],
+      "originFromLabel": "臺灣、德國",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    },
+    {
+      "id": "tj-leisure-tea",
+      "name": "臺灣丹參懈悠活養生茶",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9964.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣丹參",
+        "茶葉"
+      ],
+      "originFromLabel": "臺灣",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    },
+    {
+      "id": "tj-wudahan-tea",
+      "name": "武大漢丹參茶",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9965.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣丹參",
+        "瑪卡",
+        "紅景天",
+        "刺五加"
+      ],
+      "originFromLabel": "臺灣、秘魯、中國",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    },
+    {
+      "id": "tj-fiber-tea",
+      "name": "臺灣丹參纖體茶",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9966.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣丹參",
+        "荷葉",
+        "綠茶"
+      ],
+      "originFromLabel": "臺灣",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    },
+    {
+      "id": "tj-white-tea-drink",
+      "name": "臺灣白茶丹參飲",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9967.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣白茶",
+        "臺灣丹參"
+      ],
+      "originFromLabel": "臺灣",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    },
+    {
+      "id": "tj-soothing-tea",
+      "name": "臺灣丹參舒活茶",
+      "category": "漢方茶飲",
+      "sourceImage": "IMG_9968.jpeg",
+      "ingredientsFromLabel": [
+        "臺灣丹參",
+        "西洋參",
+        "三七葉",
+        "薄荷"
+      ],
+      "originFromLabel": "臺灣、美國",
+      "packageType": "盒裝茶包",
+      "specification": "每盒10包，每包3公克",
+      "labeledProductCompany": "健逢生物科技企業有限公司",
+      "companyRoleOnLabel": "出品商",
+      "usageFromLabel": "每包以約500cc冷或溫開水浸泡3至5分鐘；如需增添濃度，依原廠標示調整",
+      "storageFromLabel": "置於陰涼乾燥處，避免陽光直射；拆封後盡早飲用完畢",
+      "sampleManufacturedDate": "2024-07-23",
+      "sampleExpirationDate": "2026-07-22",
+      "currentStockBatchVerified": false,
+      "publicListing": false,
+      "publicClaimsApproved": false,
+      "listingBlockers": [
+        "原廠及最新批次標示核對",
+        "食材屬性與廣告文案法規審查",
+        "正式可供貨商品原圖核對"
+      ],
+      "photoUseRestriction": "僅供內部核對；不得把盒上功效文字、舊效期或原圖錯配直接當成對外廣告或現貨資訊",
+      "reviewStatus": "label-transcribed-needs-regulatory-and-batch-verification"
+    }
+  ]
+}
