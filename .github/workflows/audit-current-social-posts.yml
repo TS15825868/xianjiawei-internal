@@ -89,7 +89,7 @@ jobs:
             const link=links.find(l=>l.post_id===post.id);
             let checks={};
             try{checks=JSON.parse(gate?.checklist_json||'{}')}catch{}
-            const validEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(gate?.reviewed_by||''));
+            const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(gate?.reviewed_by||''));
             const human=gate&&validEmail&&gate.reviewed_by===post.approved_by&&gate.content_fingerprint===fingerprint(post)&&Number(gate.copy_image_match)===1&&checklistKeys.every(k=>checks[k]===true)&&!String(post.review_note||'').startsWith('AI審核：AI_APPROVED；');
             const linked=link&&link.state==='scheduled'&&link.uuid&&link.metricool_id;
             if(!human||!linked) invalid.push({id:post.id,human:Boolean(human),linked:Boolean(linked)});
