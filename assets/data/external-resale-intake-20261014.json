@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-14",
+  "source": "使用者上傳產品.zip",
+  "status": "internal-review-only",
+  "userAuthorization": "可販售商品來源；不代表已核准公開上架",
+  "pricingPolicy": "所有對外售價由LINE OA人工回覆，官網及貼文不公開價格",
+  "classificationPolicy": "逐項核對原廠品名、食品/藥品分類、標示、供應商與販售資格；不得推定60張照片等於60個SKU",
+  "sourceImages": [
+    "IMG_9966.JPG",
+    "IMG_9967.JPG",
+    "IMG_9965.JPG",
+    "IMG_9964.JPG",
+    "IMG_9963.JPG",
+    "IMG_9968.JPG",
+    "IMG_9956.JPG",
+    "IMG_9957.JPG",
+    "IMG_9948.JPG",
+    "IMG_9950.JPG",
+    "IMG_9953.JPG",
+    "IMG_9934.JPG",
+    "IMG_9935.JPG",
+    "IMG_9917.JPG",
+    "IMG_9918.JPG"
+  ],
+  "sourceImagesAreExamples": true,
+  "notes": "來源包含產品實拍、正反面、標籤、聊天截圖；所有圖片需個別對應正式SKU。不得直接發佈。",
+  "workflow": [
+    "辨識並分組",
+    "核對標籤與法規",
+    "建立SKU與原廠圖片",
+    "ERP內部待審",
+    "人工核准後開放官網及LINE詢價"
+  ]
+}
