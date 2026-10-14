@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-14",
+  "scope": "ERP internal category authority",
+  "publicBrand": "仙加味",
+  "categories": [
+    {
+      "id": "xjw-owned",
+      "name": "仙加味自有產品",
+      "ownership": "own-brand",
+      "source": "existing product authority",
+      "preserveExistingRecords": true
+    },
+    {
+      "id": "external-resale",
+      "name": "其他廠商商品",
+      "ownership": "third-party-resale",
+      "children": [
+        {
+          "id": "external-lian",
+          "name": "立安系列",
+          "manufacturerBrand": "立安",
+          "products": [
+            {
+              "id": "lian-guilu-erxian-jiao",
+              "name": "龜鹿二仙膠",
+              "costTWD": 5000,
+              "wholesaleTWD": 6500,
+              "retailTWD": 16000,
+              "visibility": "internal-only",
+              "specificationStatus": "pending-original-label-verification"
+            },
+            {
+              "id": "lian-guilu-vitality-drink",
+              "name": "龜鹿活力飲",
+              "costTWD": 900,
+              "wholesaleTWD": 1200,
+              "retailTWD": 1800,
+              "visibility": "internal-only",
+              "specificationStatus": "pending-original-label-verification"
+            }
+          ]
+        },
+        {
+          "id": "external-other-pending",
+          "name": "其他廠商待分類商品",
+          "products": [],
+          "source": "產品.zip",
+          "status": "pending-image-to-SKU-identification"
+        }
+      ]
+    }
+  ],
+  "policies": {
+    "publicPriceDisplay": false,
+    "priceInquiryChannel": "LINE OA @762jybnm",
+    "lineUrl": "https://lin.ee/sHZW7NkR",
+    "doNotRelabelManufacturer": true,
+    "noPublicListingUntilVerified": true,
+    "noAutomaticPublishing": true,
+    "doNotModifyOwnedProductAuthority": true,
+    "doNotDeleteERPHistory": true,
+    "sourceImageCountIsNotSKUCount": true
+  }
+}
