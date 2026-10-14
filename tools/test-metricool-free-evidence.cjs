@@ -16,7 +16,7 @@ console.log('PASS evidence: source version and UUID lease; no AI approval; no pr
 const ap={...p,review_note:'AI審核：AI_APPROVED；'};
 const proof={reviewer_type:'AI',model:'test-model',post_id:p.id,content_fingerprint:fp,image_url:p.image_url,image_sha256:e.imageSHA256,reviewed_at:e.verifiedAt,checks:Object.fromEntries(keys.map(k=>[k,{result:'PASS',evidence:'測試：逐項檢查目前完整圖文與正式參考，確認符合本項。'}])),risk:{level:'LOW',uncertainties:[],flags:[]},visual:{image_sha256:e.imageSHA256,scene_summary:'測試：小老闆在完整生活情境整理工作桌，小鹿與小烏龜分開，圖文動作光影與情境一致且沒有產品。',mascot_reference:{url:'https://raw.githubusercontent.com/test/reference.png',sha256:'b'.repeat(64)},products_visible:false,product_assets:[]}};
 const review={decision:'AI_APPROVED',model:'test-model',policy_version:'2026-10-13-ai-evidence-v1',authorized_by:p.approved_by,evidence_json:JSON.stringify(proof)};
-assert.equal(validate(ap,null,l,e,review),'scheduled');
+assert.throws(()=>validate(ap,null,l,e,review),/human approval/);
 assert.throws(()=>validate(ap,null,l,e,{...review,authorized_by:'other@example.com'}));
 assert.throws(()=>validate(ap,null,l,e,{...review,evidence_json:JSON.stringify({...proof,content_fingerprint:'changed'})}));
 assert.throws(()=>validate(ap,null,l,e,{...review,evidence_json:JSON.stringify({...proof,risk:{level:'HIGH',uncertainties:['未確認'],flags:[]}})}));

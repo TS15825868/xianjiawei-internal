@@ -21,7 +21,10 @@ console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL reject
   const DB={prepare:sql=>({bind(...values){this.values=values;return this},async run(){},async first(){return review},sql}),async batch(statements){
     const insert=statements[0].values,update=statements[1].values;
     // Model identities are not profiles: this reproduces the production FK constraint.
-    assert.equal(update[1],owner,'approved_by must reference the authorizing profile');
+    assert.equal(update[0],'pending_review');
+    assert.equal(update[1],null,'AI must not impersonate human approval');
+    assert.equal(update[2],null);
+    assert.equal(update[3],0);
     assert.equal(insert[2],'AI');assert.equal(insert[8],'ChatGPT-Work');
     review={decision:insert[3],model:insert[8],policy_version:insert[9],authorized_by:insert[10],reviewed_at:insert[11],evidence_json:insert[7],image_sha256:hash};
     Object.assign(post,{status:update[0],approved_by:update[1],review_note:update[4]});
@@ -32,7 +35,7 @@ console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL reject
   try{
     await recordAiReview({DB},post,proof,{role:'owner',email:owner},{fingerprint:async()=>e.content_fingerprint,productMatchErrors:()=>[],duplicatePostErrors:async()=>[],isWeatherPost:()=>false});
     assert.equal(review.policy_version,AI_POLICY_VERSION);
-    assert.equal((await aiGate({DB},post,e.content_fingerprint)).ok,true);
+    assert.equal((await aiGate({DB},post,e.content_fingerprint)).ok,false);
     assert.equal((await aiGate({DB},post,'changed')).ok,false);
     assert.equal((await aiGate({DB},{...post,approved_by:'other@example.com'},e.content_fingerprint)).ok,false);
     review.decision='REJECTED';assert.equal((await aiGate({DB},post,e.content_fingerprint)).ok,false);

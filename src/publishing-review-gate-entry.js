@@ -1,6 +1,6 @@
 import app from './flexible-publish-entry.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
-import {aiGate,imageHash,recordAiReview} from './ai-quality-review.js';
+import {imageHash,recordAiReview} from './ai-quality-review.js';
 
 const VERSION='2026-09-13-publishing-review-gate-v8-contextual-scene-intent';
 const REQUIRED_CHECKS=Object.freeze([
@@ -108,11 +108,7 @@ function checklistFrom(body){const value=body?.review_checklist&&typeof body.rev
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};
   if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
-    const current=await fingerprint(row),gate=await aiGate(env,row,current);
-    if(!gate.ok)return gate;
-    if(isWeatherPost(row)&&Date.now()-Date.parse(gate.reviewed_at)>12*3600000)return{ok:false,reason:'AI天氣證據已過期，需重新查證'};
-    try{if(await imageHash(row.image_url)!==gate.image_sha256)return{ok:false,reason:'圖片實際版本已變更，AI核准失效'}}catch{return{ok:false,reason:'圖片目前無法驗證，禁止發布'}};
-    return gate;
+    return{ok:false,reason:'AI品質檢查僅供參考；必須由使用者完成人工核准後才可排程或發布'};
   }
   await ensureSchema(env);
   const gate=await env.DB.prepare('SELECT * FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(row.id).first();
@@ -153,7 +149,7 @@ export default{async fetch(request,env,ctx){
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
-    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);if(result.decision==='AI_APPROVED')result.metricool=await enqueueMetricool(env,latest,{gateState,fingerprint});return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
+    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=true;return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));

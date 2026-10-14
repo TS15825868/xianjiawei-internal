@@ -41,3 +41,8 @@ const festivalDB={prepare:sql=>({bind(){return this},run:async()=>({}),first:asy
 const festival=await enqueueMetricool({DB:festivalDB},{...row,status:'approved',title:'除夕，替家人留一個位置'},{gateState:async()=>({ok:true}),fingerprint:async()=> 'fp'},new Date('2026-10-14T00:00:00Z'));
 assert.equal(festival.ok,false);assert.match(festival.error,/節慶/);
 console.log('PASS holiday posts without explicit dates cannot enter ordinary October slots');
+
+assert.equal(metricoolConfiguration().humanReviewRequired,true);
+assert.deepEqual(metricoolConfiguration().approvalModes,['HUMAN_APPROVED']);
+assert.equal((await gateState(env,{...row,approved_by:'ai:model',review_note:'AI審核：AI_APPROVED；'})).ok,false);
+assert.equal((await gateState(env,{...row,review_note:'AI審核：AI_APPROVED；'})).ok,false);

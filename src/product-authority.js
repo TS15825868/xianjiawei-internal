@@ -46,6 +46,7 @@ function productSegments(text='',target=''){
 
 function publicProductContextErrors(text=''){
   const source=String(text||''),errors=[];
+  if(/(?:NT\$|NTD|TWD|新[臺台]幣|售價|零售價|批發價|成本|優惠價)\s*[：:]?\s*[\d,]+|[\d,]+\s*元|[$＄]\s*[\d,]+/i.test(source))errors.push('公開內容不得列出售價、成本或批發價格；請引導至LINE OA詢價。');
   if(/龜鹿湯塊|龜鹿膠|guilu-tangkuai|guilu-jiao/i.test(source))errors.push('龜鹿湯塊與龜鹿膠已退出目前對外產品清單，公開貼文及推薦不得使用。');
   if(/柒玄茶|龜鹿調飲粉/i.test(source))errors.push('柒玄茶目前暫時隱藏，只可保留於ERP內部資料，不得出現在公開貼文、官網或LINE OA公開內容。');
   if(/30\s*cc/i.test(source)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(source)){

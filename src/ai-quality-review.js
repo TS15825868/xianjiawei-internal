@@ -25,12 +25,11 @@ export async function recordAiReview(env,row,e,profile,checks){
     if(checks.isWeatherPost(row)&&Date.now()-Date.parse(e.reviewed_at)>12*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('天氣需重新查證')}
     if(Math.abs(Date.now()-Date.parse(e.reviewed_at))>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期')}
   }
-  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review';
+  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next='pending_review';
   const saved=await env.DB.batch([
     env.DB.prepare('INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result}),e?.model||'unverified',AI_POLICY_VERSION,profile.email,e?.reviewed_at||now,row.status,next),
-    // approved_by references profiles(email): retain the authorizing manager here.
-    // reviewer_type/model in the evidence record identify the actual AI reviewer.
-    env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review')").bind(next,approved?profile.email:null,approved?now:null,approved?1:0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at)
+    // AI assessment is evidence only; clear human approval and scheduling.
+    env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review')").bind(next,null,null,0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at)
   ]);
   if(saved[1]?.meta?.changes!==1)throw Error('正式內容已變更；舊核准證據不生效');
   return{ok:true,review_id:id,reviewer_type:'AI',...result,status:next};
