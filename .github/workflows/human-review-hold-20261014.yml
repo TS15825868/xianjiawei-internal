@@ -24,6 +24,10 @@ jobs:
       - name: Match verified external draft state without changing content or history
         run: |
           cat > /tmp/review-hold.sql <<'SQL'
+          UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布；天氣與圖文一致性須於發布前重審。',updated_at=datetime('now') WHERE id='XJW-CONV-weather-cool-drink' AND status IN ('approved','scheduled');
+          UPDATE social_metricool_sync SET metricool_id=394828939,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-weather-cool-drink';
+          SELECT id,status,approved_by,approved_at,image_approved,scheduled_at,review_note FROM social_posts WHERE id='XJW-CONV-weather-cool-drink';
+          SELECT post_id,metricool_id,uuid,state FROM social_metricool_sync WHERE post_id='XJW-CONV-weather-cool-drink';
           UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-opening-prep' AND status IN ('approved','scheduled');
           UPDATE social_metricool_sync SET metricool_id=395596100,state='pending_review',last_error='外部草稿已停用自動發布，等待人工核准',updated_at=datetime('now') WHERE post_id='XJW-CONV-chat-opening-prep';
           UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,review_note='待使用者人工核准；2026-10-14已查證Metricool外部草稿停用自動發布。',updated_at=datetime('now') WHERE id='XJW-CONV-chat-trial-first' AND status IN ('approved','scheduled');
