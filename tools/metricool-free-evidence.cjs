@@ -8,7 +8,7 @@ function validate(p,gate,link,e,aiReview=null){
   const r=e.remote;if(!r||Number(r.id)===394674560)throw Error('Protected published post');
   if(e.sourceFingerprint!==fingerprint(p)||e.imageSource!==p.image_url)throw Error('Source version changed');
   if(link?.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
-  if(r.text!==p.copy)throw Error(`Copy mismatch (D1 ${String(p.copy||'').length} chars, Metricool ${String(r.text||'').length} chars)`);
+  if(r.text!==p.copy)throw Error(`Copy mismatch; D1=${JSON.stringify(String(p.copy||''))}; Metricool=${JSON.stringify(String(r.text||''))}`);
   if(r.publicationDate?.timezone!=='Asia/Taipei')throw Error(`Timezone mismatch (${String(r.publicationDate?.timezone||'missing')})`);
   if(r.media?.length!==1)throw Error(`Media count mismatch (${Array.isArray(r.media)?r.media.length:'missing'})`);
   if(!/^[0-9a-f]{64}$/.test(e.imageSHA256||''))throw Error('Missing verified image hash');
