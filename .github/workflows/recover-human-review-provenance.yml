@@ -1,0 +1,35 @@
+name: 仙加味真實人工審核紀錄中斷復原
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/recover-human-review-provenance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-human-review-recovery
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read original approvals with review fingerprints, with no private content printed
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,g.content_fingerprint,g.checklist_json,g.copy_image_match,g.reviewed_by,g.reviewed_at,CASE WHEN EXISTS(SELECT 1 FROM profiles x WHERE x.email=g.reviewed_by AND x.active=1 AND x.role IN ('owner','admin','content')) THEN 1 ELSE 0 END AS reviewer_active FROM social_posts p INNER JOIN social_post_review_gates g ON g.post_id=p.id WHERE p.status='approved' AND p.approved_at IS NULL AND TRIM(COALESCE(p.approved_by,''))=''" > /tmp/xjw-review-provenance-before.json
+          node --check tools/reconcile-approved-provenance.cjs
+          node tools/reconcile-approved-provenance.cjs
+          echo 'READ ONLY preview: no D1 changes or external scheduling performed'
