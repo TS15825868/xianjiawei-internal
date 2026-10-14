@@ -59,7 +59,11 @@
     "doNotDeleteERPHistory": true,
     "sourceImageCountIsNotSKUCount": true,
     "privatePricingRule": "成本、批發價、零售價僅限受權限保護的ERP資料庫，禁止寫入公開GitHub或靜態資產",
-    "doNotInferManufacturingFromBrand": true
+    "doNotInferManufacturingFromBrand": true,
+    "samplePhotoRule": "產品圖片為展示樣品；圖片上的舊批號及有效日期不得當作現貨或出貨批次資料，出貨時另核對新批次效期及包裝",
+    "missingPriceRule": "商品無成本／批發價／零售價仍可內部建檔；價格留空，客人詢價後向供應商核實，再由仙加味 LINE OA 人工文字回覆",
+    "restrictedProductRule": "疑似藥品、特殊藥材及管制商品僅內部建檔，需核實合法販售資格、許可證與配送限制後方可公開展示或販售",
+    "historicalPriceRule": "舊對話、截圖、Google文件的價格僅作內部歷史詢價佐證，不覆蓋最新確認價格"
   },
   "manufacturingModes": [
     "自行製作",
