@@ -172,24 +172,27 @@ function renderPlatforms(){
 
 function card(post){
   const a=audit(post);
+  const aiNeedsHuman=post.status==='approved'&&!String(post.approved_by||'').trim();
   const locked=post.status==='published';
   const readOnly=state.maintenanceReadonly;
   return`<article class="card xjw-row publish-card" data-status="${esc(post.status)}" data-locked="${locked?'true':'false'}">
     <div class="xjw-row-head">
       <div><p class="eyebrow">${esc(post.category||'貼文')}</p><h3>${esc(post.title||'未命名貼文')}</h3></div>
-      <span class="status-pill ${esc(post.status)}">${esc(statusLabel(post.status))}</span>
+      <span class="status-pill ${esc(aiNeedsHuman?'pending_review':post.status)}">${esc(aiNeedsHuman?'AI 預審完成・待人工核准':statusLabel(post.status))}</span>
     </div>
     <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:''}</div>
     ${post.headline?`<h4>${esc(post.headline)}</h4>`:''}
     <div class="public-copy-label">客戶實際會看到的文案</div><div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
     ${post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:''}
     <div class="xjw-${a.level}"><strong>內部檢查（不會發布）</strong><br>${esc(a.text)}</div>
+    ${aiNeedsHuman?'<div class="xjw-warning"><strong>AI 已完成品質初審，但不是人工核准。</strong><br>原文案、圖片及預審證據已保留，請進行16項人工確認後才能排程或發布。</div>':''}
     <div class="xjw-actions">
       <button class="btn small" data-post-view="${esc(post.id)}">查看／發布結果</button>
       ${!readOnly&&!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
       ${!readOnly&&post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}
       ${!readOnly&&post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
-      ${!readOnly&&post.status==='approved'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
+      ${!readOnly&&aiNeedsHuman?`<button class="btn small orange" data-post-prepare-human-review="${esc(post.id)}">進行人工16項審核</button>`:''}
+      ${!readOnly&&post.status==='approved'&&!aiNeedsHuman?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${!readOnly&&post.status==='scheduled'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">修改時間</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">取消排程</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${post.status==='manual_required'?`<button class="btn small" data-post-deliveries="${esc(post.id)}">查看各平台狀態</button>`:''}
     </div>
