@@ -49,7 +49,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-rose-fruit-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-rose-fruit-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-rose-fruit-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -61,7 +61,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-rose-fruit-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-TEA",
@@ -83,7 +85,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-leisure-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-leisure-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-leisure-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -95,7 +97,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-leisure-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WUDAHAN",
@@ -117,7 +121,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-wudahan-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-wudahan-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-wudahan-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -129,7 +133,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-wudahan-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-LOTUS",
@@ -151,7 +157,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-lotus-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-lotus-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-fiber-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -163,7 +169,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-lotus-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WHITE",
@@ -185,7 +193,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-white-danshen-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-white-danshen-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-white-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -197,7 +205,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-white-danshen-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-REFRESH",
@@ -219,7 +229,7 @@
     "product_ingredient_review": "丹參食品原料的實際部位、用量及警語需由供應商資料確認；產品本身標示3g／包不等於純丹參3g",
     "public_product_card_enabled": true,
     "online_transaction_enabled": false,
-    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-refresh-label-source.jpg",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-refresh-front.webp",
     "public_information_url": "https://ts15825868.github.io/xianjiawei/product-jianfeng-refresh-tea.html",
     "public_information_only": true,
     "public_information_status": "官網已建立中性商品資訊頁，未開放線上購物或付款",
@@ -231,7 +241,9 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "original_package_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/tea-danshen-refresh-label-source.jpg",
+    "photo_presentation_policy": "對外商品卡片使用原廠完整正面包裝實拍；原始正反面照片供內部包裝核對；不改包裝不拉伸不自創產品"
   },
   {
     "id": "PRD-PARTNER-LIAN-GUILU",
