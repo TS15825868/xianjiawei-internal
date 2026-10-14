@@ -1,0 +1,291 @@
+{
+  "batch": "20261014-human-approved-four-scheduled",
+  "source": "official_metricool_connector",
+  "brandId": "6889683",
+  "posts": [
+    {
+      "d1Id": "XJW-CONV-chat-trial-first",
+      "sourceFingerprint": "4c82fd390a0db71da8d3adb13c951afaae8c87f28f54a6d1627b445b0455b507",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-trial-first-scene-v1.jpg",
+      "imageSHA256": "47fad428d814e3c20cdce1e4c617793c1977b30038ccaef88d4ff729f4464954",
+      "verifiedAt": "2026-10-14T04:26:17.948Z",
+      "publicationAt": "2026-10-20T10:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395536508,
+        "publicationDate": {
+          "dateTime": "2026-10-20T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:25:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "第一次接觸一個沒用過的產品，本來就不一定要馬上決定。可以先問、先了解，也可以看看龜鹿飲的試喝方式。\n\n如果你第一次接觸龜鹿系列，最想先知道的是產品差別、使用方式、試喝，還是其他問題？有需要再到仙加味官方LINE OA慢慢問我們就好。",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-15144720058520428122.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味店內的木桌前，小老闆拿著白色小杯介紹試喝，30cc 小玻璃裸罐擺在桌上，小鹿與小烏龜在旁觀看。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "5662205195050239362",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      },
+      "reviewFindings": "自動初檢：繁體文案、仙加味／龜鹿飲連結、圖片可讀且與Metricool檔案相同；待人工確認小老闆、30cc裸罐外觀與比例。"
+    },
+    {
+      "d1Id": "XJW-CONV-chat-receive-package",
+      "sourceFingerprint": "ed58faa4f8dd9f0b3e6fe0c43231cc2b7fff1ba11602d44ba9efa9ce8e5d0e2f",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+      "imageSHA256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "verifiedAt": "2026-10-14T04:26:17.948Z",
+      "publicationAt": "2026-10-22T10:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395536528,
+        "publicationDate": {
+          "dateTime": "2026-10-22T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:25:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8463241700005616996.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味小老闆在家打開紙箱，先閱讀隨附說明卡，小鹿與小烏龜在旁陪伴。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-8941937064773136394",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      },
+      "reviewFindings": "自動初檢：品牌、拆箱讀說明情境、圖片可讀、無明示療效字詞；維持人工待審。"
+    },
+    {
+      "d1Id": "XJW-CONV-chat-quiet-work",
+      "sourceFingerprint": "7feeec978077ba0faa5bc477cff4831b6447f47fced0ee8c2bb073e17fb09088",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-quiet-work-audit-v1.jpg",
+      "imageSHA256": "6ba0b003357cbdb58839aee704b6630a3ea599775f894bae0d999d4a0694572d",
+      "verifiedAt": "2026-10-14T04:26:17.948Z",
+      "publicationAt": "2026-11-02T10:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395536548,
+        "publicationDate": {
+          "dateTime": "2026-11-02T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:25:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "今天店裡比較安靜。小老闆整理完桌子，就坐著慢慢把事情做完。\n\n有些人工作時喜歡安靜，有些人旁邊一定要有點聲音才習慣。\n\n仙加味萬華工作間也有這種安靜時刻，讓小老闆專心翻看工作筆記。\n\n你是哪一種？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-15692021012977458124.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "安靜的午後，仙加味小老闆在萬華工作間專心翻看工作筆記，小鹿坐在矮凳休息，小烏龜陪在食材桌旁。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "2443915431236944055",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      },
+      "reviewFindings": "自動初檢：安靜工作情境與仙加味連結、圖片可讀；請人工確認工作筆記動作與角色，維持待審。"
+    },
+    {
+      "d1Id": "XJW-CONV-chat-gao-vs-drink",
+      "sourceFingerprint": "ed217f4c619002de2d2997be546ce64e8880e88d1da7dd7881400763753559ef",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-gao-vs-drink-scene-v1.jpg",
+      "imageSHA256": "3d8bad5f45121f48530b15a12e2faa0a6623264c356725bac7b24f282143fb66",
+      "verifiedAt": "2026-10-14T04:26:17.948Z",
+      "publicationAt": "2026-11-06T10:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395536558,
+        "publicationDate": {
+          "dateTime": "2026-11-06T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:25:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "最近有人問我們：「龜鹿膏跟龜鹿飲，到底差在哪？」\n\n如果只問哪個比較好，其實很難回答。我們反而會先問：你平常比較習慣怎麼準備？有人喜歡在家慢慢來，有人比較喜歡方便一點的形式。\n\n你比較像在家慢慢準備型，還是方便快速型？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8086255241733285392.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味小老闆在居家早餐桌前，拿著小匙介紹龜鹿膏100g罐與龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在桌旁聆聽。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-3743061634977870369",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      },
+      "reviewFindings": "需修正／確認：產品標籤呈插畫外觀，尚未驗證使用正式實拍包裝；不能認定產品真實性合格，維持待審。"
+    }
+  ]
+}
