@@ -1,0 +1,431 @@
+{
+  "batch": "20261014-reviewed-festival-correct-dates",
+  "source": "official_metricool_connector",
+  "brandId": "6889683",
+  "calendarSources": [
+    "https://www.dgpa.gov.tw/information?pid=13114&uid=55",
+    "https://www.hko.gov.hk/tc/gts/time/calendar/pdf/files/2027.pdf"
+  ],
+  "posts": [
+    {
+      "d1Id": "XJW-FEST-2027-newyear-breakfast",
+      "sourceFingerprint": "41abc5bfc7d47af0e26bf1ef9594d6cecbffd95dc87e5210cd9b35468d518ec9",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+      "imageSHA256": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-01-01T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538575,
+        "publicationDate": {
+          "dateTime": "2027-01-01T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "元旦早上，不一定要急著列出一整年的目標。把熱粥、饅頭和家人喜歡的小菜準備好，坐下來一起吃一餐，也是一個踏實的開始。\n\n仙加味想留下的漢方生活，不只在產品裡，也在這些照顧日常、好好相聚的小事裡。\n\n新年的第一餐，你最想和誰一起吃？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-16045741437240520312.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "元旦清晨的居家早餐情境，仙加味小老闆將熱粥與饅頭放上餐桌，小鹿與小烏龜陪在旁邊，家人在桌邊等著一起吃早餐。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-4666029736018688758",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    },
+    {
+      "d1Id": "XJW-CONV-cny-childhood-now",
+      "sourceFingerprint": "40716682fc44503e9dc3c1962195fe1f80ac546217f5c273a65b7b7092244fdd",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+      "imageSHA256": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-02-03T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538608,
+        "publicationDate": {
+          "dateTime": "2027-02-03T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "小時候期待過年，跟長大後期待的事情常常完全不一樣。有人記得的是年夜飯，有人記得長輩家，也有人現在最期待的是終於可以休息。\n\n仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。\n\n你覺得自己家過年最大的改變是什麼？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-12814483511703246351.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "年節回憶的情境插畫，仙加味小老闆與小鹿、小烏龜一起翻看家庭聚餐照片道具，聊聊小時候與現在的過年記憶。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-2388141536229897403",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    },
+    {
+      "d1Id": "XJW-FEST-2027-eve-welcome-home",
+      "sourceFingerprint": "8a66887ecfb0038945668d2d6cb116077015f170593ee4ddc1222a0a8adb5b24",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+      "imageSHA256": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-02-05T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538690,
+        "publicationDate": {
+          "dateTime": "2027-02-05T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "除夕準備年夜飯時，小老闆想先做一件小事：替剛回到家的家人拉好椅子，讓大家不用急，慢慢坐下來。\n\n仙加味從萬華走過幾代家庭日常，一直珍惜的，是有人一起吃飯、有人願意等你回家的時刻。\n\n今年的年夜飯，你最想把哪個位置留給誰？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-6558028986205356845.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "除夕傍晚，仙加味小老闆替剛回家的家人拉開餐桌旁的椅子，小鹿與小烏龜在安全位置陪伴，屋內亮著溫暖燈光。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4739607617070649128",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    },
+    {
+      "d1Id": "XJW-CONV-cny-family-choice",
+      "sourceFingerprint": "15b7df70bf70082c4355839e46e47498b5d4a7e04b0dd82a059d47e4b95ce5f5",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-CONV-cny-family-choice-scene-v1.jpg",
+      "imageSHA256": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-02-06T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538701,
+        "publicationDate": {
+          "dateTime": "2027-02-06T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "過年的期待每個人都不一樣。有人等的是一桌菜，有人是想見家人，也有人很單純就是想好好放假。\n\n仙加味從萬華的四代家族工作走到現在，也特別珍惜一家人相聚吃飯的時候。\n\n如果今天只能選一個，你會選哪一個？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8500998457063675502.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "春節團聚的情境插畫，仙加味小老闆抱抱坐在家中的長輩，小鹿與小烏龜分開陪伴，背景餐桌上有簡單家常菜。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "8803367464274840026",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    },
+    {
+      "d1Id": "XJW-FEST-2027-spring-walk",
+      "sourceFingerprint": "b2ab91e43ab23be1a731ba9813fb512a3a137828add0a746633d7b628632a280",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
+      "imageSHA256": "6bc35f1ba7f8cd60849b0b264395a1fa40664ec33812e8da65c0019cfc353e31",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-02-08T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538728,
+        "publicationDate": {
+          "dateTime": "2027-02-08T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-3009410446491271438.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "7059549514727835567",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    },
+    {
+      "d1Id": "XJW-FEST-2027-lantern-riceballs",
+      "sourceFingerprint": "fc9fa6fa87bc004c261297c880c4d76c5a80e69e821f07ec5222a5a12b612dcf",
+      "imageSource": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+      "imageSHA256": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "verifiedAt": "2026-10-14T04:32:34.264Z",
+      "publicationAt": "2027-02-20T09:00:00+08:00",
+      "result": "scheduled",
+      "remote": {
+        "id": 395538799,
+        "publicationDate": {
+          "dateTime": "2027-02-20T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T12:31:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "元宵節，把一小塊糯米糰慢慢搓圓，大小不必每顆都一模一樣。有人喜歡甜湯圓，也有人想念鹹湯圓，口味不同，坐在一起就很好。\n\n仙加味喜歡記錄這些傳統飲食文化裡的日常動作：一起準備、一起聊天，再把熟悉的味道留在家裡。\n\n你家的元宵湯圓，是甜的還是鹹的？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-16719444663384245047.jpeg"
+        ],
+        "autoPublish": true,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "元宵夜的家常廚房，仙加味小老闆和家人一起搓小顆白色湯圓，小鹿與小烏龜在旁陪伴，窗外可見素面燈籠與月光。"
+        ],
+        "shortener": false,
+        "draft": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": true,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-4565812021150200465",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        }
+      }
+    }
+  ]
+}
