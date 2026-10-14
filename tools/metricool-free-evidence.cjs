@@ -4,10 +4,10 @@ const keys=['brand','product','specification','pricing_activity','season','weath
 const material=p=>({title:String(p.title||'').trim(),headline:String(p.headline||'').trim(),copy:String(p.copy||'').trim(),category:String(p.category||'').trim(),image_url:String(p.image_url||'').trim(),image_alt:String(p.image_alt||'').trim(),image_source:String(p.image_source||'').trim(),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:String(p.image_quality_status||'').trim()});
 const fingerprint=p=>crypto.createHash('sha256').update(JSON.stringify(material(p))).digest('hex');
 function validate(p,gate,link,e,aiReview=null){
-  if(!p||!e||!link)throw Error('Missing post, mapping or evidence');
+  if(!p||!e)throw Error('Missing post or evidence');
   const r=e.remote;if(!r||Number(r.id)===394674560)throw Error('Protected published post');
   if(e.sourceFingerprint!==fingerprint(p)||e.imageSource!==p.image_url)throw Error('Source version changed');
-  if(link.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
+  if(link?.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
   if(r.text!==p.copy||r.publicationDate?.timezone!=='Asia/Taipei'||r.media?.length!==1)throw Error('Copy, timezone or image mismatch');
   if(!/^[0-9a-f]{64}$/.test(e.imageSHA256||''))throw Error('Missing verified image hash');
   const names=['facebook','instagram','threads'];if(!names.every(n=>r.providers?.some(x=>x.network===n))||r.providers.length!==3)throw Error('Three platforms required');
