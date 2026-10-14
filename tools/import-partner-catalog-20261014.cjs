@@ -12,6 +12,6 @@ for(const product of targets){
   // Unknown source fields and all existing private cost/inventory fields remain intact.
   for(const key of ['notes','listing_status'])if(old[key])merged[key]=key==='notes'?[old[key],product[key]].filter(Boolean).join('\n'):old[key];
   sql.push(`UPDATE app_records SET data_json=${q(JSON.stringify(merged))},updated_at=CURRENT_TIMESTAMP WHERE module='products' AND id=${q(row.id)} AND archived=0 AND data_json=${q(row.data_json)};`);
- }else sql.push(`INSERT INTO app_records(module,id,data_json,archived,created_by,created_at,updated_at) VALUES('products',${q(product.id)},${q(JSON.stringify(product))},0,'chatgpt:catalog-maintenance',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);`);
+ }else sql.push(`INSERT INTO app_records(module,id,data_json,archived,created_by,created_at,updated_at) VALUES('products',${q(product.id)},${q(JSON.stringify(product))},0,(SELECT email FROM profiles WHERE role='owner' AND active=1 AND (SELECT COUNT(*) FROM profiles WHERE role='owner' AND active=1)=1),CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);`);
 }
 fs.writeFileSync('/tmp/partner-import.sql',sql.join('\n'));console.log('Prepared',targets.length,'product merges; private pricing fields preserved');
