@@ -24,20 +24,16 @@
             {
               "id": "lian-guilu-erxian-jiao",
               "name": "龜鹿二仙膠",
-              "costTWD": 5000,
-              "wholesaleTWD": 6500,
-              "retailTWD": 16000,
               "visibility": "internal-only",
-              "specificationStatus": "pending-original-label-verification"
+              "specificationStatus": "pending-original-label-verification",
+              "pricingStorage": "restricted ERP database only; no values in repository"
             },
             {
               "id": "lian-guilu-vitality-drink",
               "name": "龜鹿活力飲",
-              "costTWD": 900,
-              "wholesaleTWD": 1200,
-              "retailTWD": 1800,
               "visibility": "internal-only",
-              "specificationStatus": "pending-original-label-verification"
+              "specificationStatus": "pending-original-label-verification",
+              "pricingStorage": "restricted ERP database only; no values in repository"
             }
           ]
         },
@@ -60,6 +56,7 @@
     "noAutomaticPublishing": true,
     "doNotModifyOwnedProductAuthority": true,
     "doNotDeleteERPHistory": true,
-    "sourceImageCountIsNotSKUCount": true
+    "sourceImageCountIsNotSKUCount": true,
+    "privatePricingRule": "成本、批發價、零售價僅限受權限保護的ERP資料庫，禁止寫入公開GitHub或靜態資產"
   }
 }
