@@ -240,7 +240,24 @@
     "category": "其他品牌商品／立安系列",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "使用者確認販售品項；待原廠包裝規格、藥品許可與實際販售資格核對，不開放網路交易。"
+    "notes": "使用者確認販售品項；待原廠包裝規格、藥品許可與實際販售資格核對，不開放網路交易。",
+    "manufacturer": "立安生物科技製藥股份有限公司",
+    "regulatoryReference": {
+      "officialRecord": "https://service.mohw.gov.tw/DOCMAP/CusSite/TCMLResultDetail.aspx?LICENUM=013857&LICEWORDID=03",
+      "officialLicensedName": "「立安」龜鹿二仙膠",
+      "licenseNumber": "衛署成製013857",
+      "licenseValidThrough": "2030-10-11",
+      "category": "成藥",
+      "association": "possible; must match actual package and label"
+    },
+    "packageReference": {
+      "manufacturerPage": "https://www.lian6981929.com.tw/med_glue_list.html",
+      "sizeFromManufacturerPage": "一斤／盒",
+      "matchesUserActualPackage": false,
+      "note": "原廠官網為一斤／盒；不得在核對使用者實物包裝前當作本站確定規格"
+    },
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false
   },
   {
     "id": "PRD-PARTNER-GUILU-VITALITY",
@@ -248,7 +265,11 @@
     "category": "其他品牌商品／漢方飲品",
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
-    "notes": "使用者確認販售品項；品牌、規格、標示及公開資格待核對，不自行編造。"
+    "notes": "使用者確認販售品項；品牌、規格、標示及公開資格待核對，不自行編造。",
+    "brand_name": "立安",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false,
+    "packageVerification": "使用者確認系列；原廠包裝實拍、成分、容量及許可／食品分類仍待對照"
   },
   {
     "id": "PRD-PARTNER-JINAN-HUANSHAODAN",
