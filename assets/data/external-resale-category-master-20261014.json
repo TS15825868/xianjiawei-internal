@@ -145,7 +145,10 @@
     "historicalPriceRule": "舊對話、截圖、Google文件的價格僅作內部歷史詢價佐證，不覆蓋最新確認價格",
     "publicImageRule": "公開商品圖片僅限已核對商品的原廠正式圖片、實物正面照及必要包裝標示；LINE、Messenger、微信等對話截圖、報價紀錄、社群截圖及任何個人資料一律禁止公開",
     "imageReviewRule": "上架前核對商品名稱、品牌、包裝與圖片的對應關係，商品圖維持比例不變形、不裁切重要標示；樣品日期不代表實際出貨批次",
-    "publicationGate": "已確認商品均可內部建檔；公開上架需實物正確、正式品名與規格核對、合法商品屬性及使用文案審查。不得將處方藥混入一般商品自由購買流程"
+    "publicationGate": "已確認商品均可內部建檔；公開上架需實物正確、正式品名與規格核對、合法商品屬性及使用文案審查。不得將處方藥混入一般商品自由購買流程",
+    "publicCardDisplayRule": "仙加味公開商品卡片與商品總覽以分類、正式品名、規格及已確認實物照片呈現；不特別列出供應商或出品公司名稱。原廠名稱、許可證、進貨來源仍保留 ERP 內部資料；依法必須揭露的事項不得刪減或從原廠包裝抹除。",
+    "groupedDanshenTeaRule": "丹參茶包六款共用一個公開商品系列入口及完整介紹頁；ERP 保留六個獨立 SKU、成分、原圖、庫存及價目，不合併供應商成本或庫存。",
+    "groupedSeriesCatalogPage": "https://ts15825868.github.io/xianjiawei/product-danshen-tea.html"
   },
   "manufacturingModes": [
     "自行製作",
