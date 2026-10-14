@@ -107,7 +107,7 @@ function productMatchErrors(row){
 function checklistFrom(body){const value=body?.review_checklist&&typeof body.review_checklist==='object'&&!Array.isArray(body.review_checklist)?body.review_checklist:{};return{value,missing:REQUIRED_CHECKS.filter(key=>value[key]!==true)}}
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};
-  if(clean(row.approved_by).startsWith('ai:')){
+  if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
     const current=await fingerprint(row),gate=await aiGate(env,row,current);
     if(!gate.ok)return gate;
     if(isWeatherPost(row)&&Date.now()-Date.parse(gate.reviewed_at)>12*3600000)return{ok:false,reason:'AI天氣證據已過期，需重新查證'};
