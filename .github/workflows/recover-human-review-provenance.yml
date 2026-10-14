@@ -29,7 +29,7 @@ jobs:
           set -euo pipefail
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,g.content_fingerprint,g.checklist_json,g.copy_image_match,g.reviewed_by,g.reviewed_at,CASE WHEN EXISTS(SELECT 1 FROM profiles x WHERE x.email=g.reviewed_by AND x.active=1 AND x.role IN ('owner','admin','content')) THEN 1 ELSE 0 END AS reviewer_active FROM social_posts p INNER JOIN social_post_review_gates g ON g.post_id=p.id WHERE p.status='approved' AND p.approved_at IS NULL AND TRIM(COALESCE(p.approved_by,''))=''" > /tmp/xjw-review-provenance-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,g.content_fingerprint,g.checklist_json,g.copy_image_match,g.reviewed_by,g.reviewed_at,CASE WHEN EXISTS(SELECT 1 FROM profiles x WHERE x.email=g.reviewed_by AND x.active=1 AND x.role IN ('owner','admin','content')) THEN 1 ELSE 0 END AS reviewer_active FROM social_posts p INNER JOIN social_post_review_gates g ON g.post_id=p.id WHERE p.status='approved' AND p.approved_at IS NOT NULL AND TRIM(COALESCE(p.approved_by,''))=''" > /tmp/xjw-review-provenance-before.json
           node --check tools/reconcile-approved-provenance.cjs
           node tools/reconcile-approved-provenance.cjs
           echo 'READ ONLY preview: no D1 changes or external scheduling performed'
