@@ -98,6 +98,7 @@ jobs:
           console.log('PASS scheduled human approval',scheduled.map(p=>p.id));
           NODE
       - name: Upload read-only evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: current-social-posts-${{ github.run_id }}
