@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-10-15T01:10:00+08:00",
+  "website": {
+    "commit": "803d60c49ade358f45fe532f4c41acd80967d03c",
+    "changes": [
+      "instant scrolling in brand visual audit",
+      "visible controls and grouped tea navigation in text audit"
+    ],
+    "brandAuditRun": 38603853317,
+    "landscapeAuditRun": 38604039112,
+    "finalAuditStatus": "in-progress"
+  },
+  "line": {
+    "deploymentCommit": "e34ac73b4a641a99383415206e2cd06e0c680446",
+    "renderDeploy": "dep-db7r50egekts73ea8lug",
+    "status": "live",
+    "healthHttp": 200
+  },
+  "n8n": {
+    "formalService": "srv-da8s2r49v7es73cefob0",
+    "formalDatabasePreserved": true,
+    "observedActivatedWorkflows": 3,
+    "latestReadinessObservation": "HTTP503 during cold startup; not yet verified healthy",
+    "legacyService": "srv-da6oanad0e5s73d96ep0",
+    "legacyDatabaseHost": "dpg-da6oa2m417fc73civs0g-a",
+    "legacyError": "getaddrinfo ENOTFOUND",
+    "renderPostgresInstances": 0,
+    "mutations": []
+  },
+  "metricool": {
+    "lastObservedDraftCount": 15,
+    "autoPublish": false,
+    "approvalNotChanged": true
+  },
+  "pending": [
+    "16 partner items require verified specifications/photos/publication eligibility",
+    "human approval provenance and D1 scheduling audit",
+    "social profile and Google Business updates",
+    "formal n8n readiness endpoint and workflow execution validation"
+  ]
+}
