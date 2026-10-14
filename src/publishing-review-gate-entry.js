@@ -144,7 +144,7 @@ export default{async fetch(request,env,ctx){
     const response=await app.fetch(request,env,ctx),text=await response.text();let body={};try{body=text?JSON.parse(text):{}}catch{return response}
     return json({...body,publishingReviewGateVersion:VERSION,publishingReviewChecklistCount:REQUIRED_CHECKS.length,copyImageMatchHardGate:true,semanticSceneMatch:true,duplicateLifestyleImageGate:true,weatherReviewFreshnessHours:12,editImmediatelyInvalidatesApproval:true,freeRegenerationRoundTrip:true,draftToPendingReviewRequired:true,directDraftApprovalBlocked:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready',regenerationReturnsToPendingReview:true},response.status)
   }
-  const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
+  const returnAiReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/prepare-human-review$/),statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
@@ -154,6 +154,30 @@ export default{async fetch(request,env,ctx){
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
   if(gateMatch&&request.method==='GET'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;await ensureSchema(env);const id=decodeURIComponent(gateMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const duplicates=await duplicatePostErrors(env,row);return json({id,...await gateState(env,row),errors:[...new Set([...productMatchErrors(row),...duplicates])],required_checks:REQUIRED_CHECKS})}
+  if(returnAiReviewMatch&&request.method==='POST'){
+    const auth=await authorize(request,env,ctx);
+    if(!auth.ok)return auth;
+    const profile=await auth.json();
+    if(!REGENERATION_ROLES.has(clean(profile?.role)))return json({error:'沒有操作人工審核的權限'},403);
+    const id=decodeURIComponent(returnAiReviewMatch[1]);
+    const row=await postRow(env,id);
+    if(!row)return json({error:'找不到貼文'},404);
+    if(clean(row.status)!=='approved'||clean(row.approved_by)||row.scheduled_at||row.published_at)
+      return json({error:'此篇不符合 AI 預審待人工確認條件，未修改資料'},409);
+    if(await activeExternalSchedule(env,id))
+      return json({error:'已存在外部排程，須先核對平台狀態'},409);
+    await ensureSchema(env);
+    const gate=await env.DB.prepare('SELECT reviewed_by FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(id).first();
+    if(clean(gate?.reviewed_by)!=='chatgpt:owner-delegated-reviewed')
+      return json({error:'原審核來源不是已確認的 AI 預審批次；無法自動轉換'},409);
+    const now=new Date().toISOString();
+    const changed=await env.DB.prepare("UPDATE social_posts SET status='pending_review',approved_by=NULL,approved_at=NULL,image_approved=0,scheduled_at=NULL,updated_at=? WHERE id=? AND status='approved' AND approved_by IS NULL AND scheduled_at IS NULL AND published_at IS NULL")
+      .bind(now,id).run();
+    if(Number(changed.meta?.changes||0)!==1)return json({error:'貼文已被其他操作變更，請重新整理'},409);
+    const after=await postRow(env,id);
+    await regenerationAudit(env,request,profile,'AI預審轉待人工圖文審核',id,row,after,'');
+    return json({ok:true,id,status:'pending_review',image_preserved:true,ai_review_evidence_preserved:true,message:'原文案及圖片已保留，請完成16項人工圖文審核'});
+  }
   if(statusMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;const profile=await authorization.json(),id=decodeURIComponent(statusMatch[1]),body=await readBody(request),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     if(body?.status==='pending_review')return submitForReview(request,env,profile,id,row);
