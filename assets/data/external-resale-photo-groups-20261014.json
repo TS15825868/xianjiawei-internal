@@ -5,7 +5,7 @@
   "publicListing": false,
   "publicPricing": false,
   "containsChatScreenshots": false,
-  "disclaimer": "照片分組僅為內部初步視覺辨識，不代表品名、SKU、販售資格或照片已完成核准；禁止自動公開上架",
+  "disclaimer": "根據照片視覺分組及已存在的官網資料進行核對；除已對應的晉安品項外，未確認正式品名、規格及販售資格；不允許自動公開上架或公開對話截圖",
   "groups": [
     {
       "id": "tea-boxes",
@@ -21,16 +21,6 @@
         "IMG_9970"
       ],
       "notes": "多款茶盒與茶包照片；正反面需逐項核對"
-    },
-    {
-      "id": "gift-bag",
-      "type": "gift-set",
-      "images": [
-        "IMG_9917",
-        "IMG_9934",
-        "IMG_9935"
-      ],
-      "notes": "粉紅色禮盒／提袋，確認是否同一品項"
     },
     {
       "id": "yellow-cans",
@@ -58,33 +48,71 @@
       "notes": "同一罐裝商品的正反面待確認"
     },
     {
-      "id": "small-bottles",
-      "type": "unknown-regulated",
-      "images": [
-        "IMG_9942",
-        "IMG_9943",
-        "IMG_9946"
-      ],
-      "notes": "小瓶產品，需核對是否相同 SKU"
-    },
-    {
-      "id": "boxed-other",
-      "type": "unknown-regulated",
-      "images": [
-        "IMG_9953",
-        "IMG_9954",
-        "IMG_9956",
-        "IMG_9957"
-      ],
-      "notes": "盒裝商品正反面，需核對許可與品名"
-    },
-    {
       "id": "bulk-pack",
       "type": "unknown",
       "images": [
         "IMG_9959"
       ],
       "notes": "大包裝，需確認標示"
+    },
+    {
+      "id": "jinan-drink-box",
+      "type": "boxed-drink",
+      "images": [
+        "IMG_9934",
+        "IMG_9935"
+      ],
+      "notes": "已與官網晉安・參仲四物飲商品資料對應；原廠包裝正反面，仍須以實際批次標示核對",
+      "matchedCatalogId": "jinan-sisheng-siwuyin",
+      "reviewStatus": "catalog-record-exists"
+    },
+    {
+      "id": "pink-gift-bag",
+      "type": "gift-bag",
+      "images": [
+        "IMG_9917"
+      ],
+      "notes": "粉紅色提袋，不能直接視為參仲四物飲的另一角度",
+      "reviewStatus": "name-unverified"
+    },
+    {
+      "id": "small-red-bottle",
+      "type": "bottled-product",
+      "images": [
+        "IMG_9942",
+        "IMG_9943"
+      ],
+      "notes": "同一紅白標籤小瓶的正反面，品名及產品屬性待核對",
+      "reviewStatus": "name-unverified"
+    },
+    {
+      "id": "clear-orange-cap-jar",
+      "type": "jarred-product",
+      "images": [
+        "IMG_9946"
+      ],
+      "notes": "透明罐橘色瓶蓋，與紅白標籤小瓶不同商品，不可合併 SKU",
+      "reviewStatus": "name-unverified"
+    },
+    {
+      "id": "boxed-traditional",
+      "type": "boxed-product",
+      "images": [
+        "IMG_9953",
+        "IMG_9954"
+      ],
+      "notes": "白色直式盒裝商品正反面；需核對正式品名與販售資格",
+      "reviewStatus": "name-unverified"
+    },
+    {
+      "id": "green-capsule-box",
+      "type": "capsule-box",
+      "images": [
+        "IMG_9956",
+        "IMG_9957"
+      ],
+      "notes": "綠色膠囊盒裝正反面；需核對品名、原廠及產品分類，不得逕自公開販售",
+      "reviewStatus": "regulated-review"
     }
   ]
 }
