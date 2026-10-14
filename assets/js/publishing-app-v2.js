@@ -137,7 +137,8 @@ function metricsData(){
   return{
     draft:Number(c.draft||0),
     pending:Number(c.pending_review||0),
-    approved:Number(c.approved||0),
+    approved:Number(c.human_approved??c.approved||0),
+    aiPending:Number(c.ai_pending||0),
     scheduled:Number(c.scheduled||0),
     published:Number(c.published||0),
     manual:Number(c.manual_required||0)
@@ -151,7 +152,8 @@ function renderMetrics(){
   root.innerHTML=[
     ['草稿',c.draft,'draft'],
     ['待審核',c.pending,'pending_review'],
-    ['已核准',c.approved,'approved'],
+    ['AI 預審待人工',c.aiPending,'ai_pending'],
+    ['人工已核准',c.approved,'human_approved'],
     ['已排程',c.scheduled,'scheduled'],
     ['已發布',c.published,'published'],
     ['需人工發布',c.manual,'manual_required']
