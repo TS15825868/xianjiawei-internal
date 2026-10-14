@@ -113,5 +113,168 @@
     "listing_status": "內部保留／待確認",
     "manufacturing_mode": "原廠商品轉售",
     "notes": "使用者確認販售品項；品牌、規格、標示及公開資格待核對，不自行編造。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-HUANSHAODAN",
+    "name": "還少丹",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9920"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-BUSHENWAN",
+    "name": "補腎丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9921",
+      "IMG_9927"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "notes": "兩種罐裝照片是否相同規格仍待核對，勿直接視為不同或相同SKU；商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-NINGSHENWAN",
+    "name": "寧神丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9922"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINSUO-GUJINGWAN",
+    "name": "金鎖固精丸",
+    "brand_name": "待核對",
+    "source_image_ids": [
+      "IMG_9923"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-JISHENG-SHENQI",
+    "name": "濟生腎氣丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9925"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-LIUWEI-DIHUANG",
+    "name": "六味地黃丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9929"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-FENGSHIWAN",
+    "name": "風濕丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9931"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-GUILU-ERXIANWAN",
+    "name": "龜鹿二仙丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9939"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "notes": "與立安龜鹿二仙膠為不同產品，禁止合併；商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false
+  },
+  {
+    "id": "PRD-PARTNER-JINAN-ZUOGUIWAN",
+    "name": "左歸丸",
+    "brand_name": "晉安",
+    "source_image_ids": [
+      "IMG_9950",
+      "IMG_9951"
+    ],
+    "category": "其他品牌商品／中藥製劑",
+    "license_number": "衛署藥製049412",
+    "drug_restriction": "須由中醫師處方使用",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-AIKANG-ZHISOUHUATAN",
+    "name": "治嗽化痰散",
+    "brand_name": "愛康",
+    "source_image_ids": [
+      "IMG_9953",
+      "IMG_9954"
+    ],
+    "category": "其他品牌商品／中藥成藥",
+    "license_number": "衛署成製007278",
+    "drug_restriction": "成藥，甲乙類型與販售通路尚待核對",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false,
+    "notes": "商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。"
+  },
+  {
+    "id": "PRD-PARTNER-JINGYONG-COMBAT",
+    "name": "強龍大力寶戰鬥膠囊",
+    "brand_name": "精勇生技",
+    "source_image_ids": [
+      "IMG_9956",
+      "IMG_9957"
+    ],
+    "category": "其他品牌商品／食品",
+    "specification": "500毫克×10粒／盒",
+    "notes": "照片是舊樣品，出貨批次、食品原料合法性及公開文案待核對；不得宣稱功效；商品原圖可供內部辨識，價格僅於 ERP 權限內管理；公開品名、圖片與取得方式需逐項區分藥品資訊、藥物廣告及合法交易流程。",
+    "manufacturing_mode": "原廠商品轉售",
+    "listing_status": "內部建檔／待對照",
+    "online_transaction_enabled": false,
+    "public_product_card_enabled": false
   }
 ]
