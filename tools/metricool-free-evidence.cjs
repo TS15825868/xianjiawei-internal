@@ -15,7 +15,7 @@ function validate(p,gate,link,e,aiReview=null){
   const checks=JSON.parse(gate?.checklist_json||'{}');
   const human=gate&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.reviewed_by)&&gate.reviewed_by===p.approved_by&&gate.content_fingerprint===e.sourceFingerprint&&gate.copy_image_match===1&&keys.every(k=>checks[k]===true);
   let ai=false;
-  if(aiReview?.decision==='AI_APPROVED'&&aiReview.policy_version==='2026-10-13-ai-evidence-v1'&&p.approved_by===`ai:${aiReview.model}`){const evidence=JSON.parse(aiReview.evidence_json);ai=aiEvidence.assess(evidence,p.id,e.sourceFingerprint,p.image_url).decision==='AI_APPROVED'&&evidence.image_sha256===e.imageSHA256;}
+  if(aiReview?.decision==='AI_APPROVED'&&aiReview.policy_version==='2026-10-13-ai-evidence-v1'&&p.approved_by===aiReview.authorized_by&&String(p.review_note||'').startsWith('AI審核：AI_APPROVED；')){const evidence=JSON.parse(aiReview.evidence_json);ai=aiEvidence.assess(evidence,p.id,e.sourceFingerprint,p.image_url).decision==='AI_APPROVED'&&evidence.image_sha256===e.imageSHA256;}
   if(!human&&!ai)throw Error('Verified human or complete AI evidence required');
   if(!['approved','scheduled','manual_required'].includes(p.status))throw Error('Post not approved or already published');
   if(e.result==='scheduled'){
