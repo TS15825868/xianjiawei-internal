@@ -20,12 +20,13 @@
     "formalService": "srv-da8s2r49v7es73cefob0",
     "formalDatabasePreserved": true,
     "observedActivatedWorkflows": 3,
-    "latestReadinessObservation": "HTTP503 during cold startup; not yet verified healthy",
+    "latestReadinessObservation": "HTTP200 {status:ok}",
     "legacyService": "srv-da6oanad0e5s73d96ep0",
     "legacyDatabaseHost": "dpg-da6oa2m417fc73civs0g-a",
     "legacyError": "getaddrinfo ENOTFOUND",
     "renderPostgresInstances": 0,
-    "mutations": []
+    "mutations": [],
+    "readinessHttp": 200
   },
   "metricool": {
     "lastObservedDraftCount": 15,
