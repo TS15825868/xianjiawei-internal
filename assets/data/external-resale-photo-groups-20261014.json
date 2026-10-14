@@ -5,7 +5,7 @@
   "publicListing": false,
   "publicPricing": false,
   "containsChatScreenshots": false,
-  "disclaimer": "照片分組為內部核對紀錄，並非已合法上架清單；原廠包裝印刷的功效宣稱不可直接用於仙加味公開廣告，舊樣品效期不可當作現貨效期，聊天截圖一律禁止公開",
+  "disclaimer": "內部素材照片核對清冊；可讀到的原廠品名與成分保留作證據，仍須判斷現行可販售資格、廣告圖片中的功效文字及正式出貨批次。不可公開聊天截圖或自行編造規格。",
   "groups": [
     {
       "id": "yellow-cans",
@@ -47,8 +47,10 @@
         "IMG_9934",
         "IMG_9935"
       ],
-      "notes": "照片顯示粉紅色『參仲 四物飲』包裝及背面標示；官網既有晉安商品紀錄需再比對製造商、品名及容量，不能僅憑相似名稱認定完全一致",
-      "reviewStatus": "needs-catalog-label-crosscheck"
+      "notes": "IMG_9934 正面顯示晉安及含鐵參仲四物飲，IMG_9935 背面標示60毫升×12入，成分／保存／食用與既有官網商品資料可對應；背面樣品效期標示20280108；包裝功能文案公開使用前仍需法規核對",
+      "reviewStatus": "catalog-identity-label-crosschecked",
+      "visibleLabel": "晉安・含鐵參仲四物飲",
+      "matchedCatalogId": "jinan-sisheng-siwuyin"
     },
     {
       "id": "pink-gift-bag",
@@ -105,9 +107,10 @@
       "images": [
         "IMG_9963"
       ],
-      "visibleLabel": "玫瑰果茶",
-      "notes": "粉紅色盒裝玫瑰果茶，正反標示同框；正式品牌與規格仍需核對",
-      "reviewStatus": "label-partially-readable"
+      "visibleLabel": "臺灣丹參玫瑰果茶",
+      "notes": "IMG_9963 正反盒同框，原廠標示10包×3公克；成分臺灣丹參、玫瑰、檸檬、綠茶、水果乾；出品商健逢生物科技企業有限公司；公開宣傳需檢查原圖功能文字",
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-rose-fruit-tea"
     },
     {
       "id": "fiber-tea",
@@ -115,9 +118,10 @@
       "images": [
         "IMG_9966"
       ],
-      "visibleLabel": "纖體茶",
-      "notes": "粉紫色盒裝，正反標示同框；正式品牌與規格仍需核對",
-      "reviewStatus": "label-partially-readable"
+      "visibleLabel": "臺灣丹參纖體茶",
+      "notes": "IMG_9966 正反盒同框，原廠標示10包×3公克；成分臺灣丹參、荷葉、綠茶；不得直接引用包裝上的功效文字",
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-fiber-tea"
     },
     {
       "id": "dan-shen-tea",
@@ -125,9 +129,10 @@
       "images": [
         "IMG_9967"
       ],
-      "visibleLabel": "丹參飲",
-      "notes": "白綠色盒裝，正反標示同框；正式品牌與規格仍需核對",
-      "reviewStatus": "label-partially-readable"
+      "visibleLabel": "臺灣白茶丹參飲",
+      "notes": "IMG_9967 正反盒同框，正式品名為臺灣白茶丹參飲，舊核對紀錄的「丹參飲」不完整；10包×3公克；成分臺灣白茶、臺灣丹參",
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-white-tea-drink"
     },
     {
       "id": "wudahan-danshen-tea",
@@ -137,7 +142,8 @@
       ],
       "visibleLabel": "武大漢丹參茶",
       "notes": "盒裝正反面同框；標示每盒10包、每包3公克，出品商健逢生物科技企業有限公司；樣品照片印有製造日期2024-07-23、有效日期2026-07-22，不代表現貨批次",
-      "reviewStatus": "label-reviewed-needs-legal-check"
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-wudahan-tea"
     },
     {
       "id": "taiwan-danshen-leisure-tea",
@@ -147,7 +153,8 @@
       ],
       "visibleLabel": "臺灣丹參懈悠活養生茶",
       "notes": "盒裝正反面同框；每盒10包、每包3公克，出品商健逢生物科技企業有限公司；樣品照片舊日期僅供參考，需確認實際供貨批次",
-      "reviewStatus": "label-reviewed-needs-legal-check"
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-leisure-tea"
     },
     {
       "id": "taiwan-danshen-soothing-tea",
@@ -157,7 +164,8 @@
       ],
       "visibleLabel": "臺灣丹參舒活茶",
       "notes": "盒裝正反面同框；每盒10包、每包3公克，出品商健逢生物科技企業有限公司；不得將包裝上的功效宣稱直接轉為公開廣告文案",
-      "reviewStatus": "label-reviewed-needs-legal-check"
+      "reviewStatus": "label-verified-pending-public-compliance",
+      "skuMasterId": "tj-soothing-tea"
     },
     {
       "id": "tea-sachet-detail",
@@ -166,8 +174,9 @@
         "IMG_9969",
         "IMG_9970"
       ],
-      "notes": "茶包內容物與外袋近照，僅供對應品項的詳細頁輔助圖；需核對背景盒裝品名，不可建立獨立商品 SKU",
-      "reviewStatus": "detail-image-unmatched"
+      "notes": "IMG_9969及IMG_9970背景可見玫瑰果茶粉紅盒，茶包圖與其可能同品項；照片未見完整包裝標示，列為疑似相符，公開使用前仍需複核",
+      "reviewStatus": "probable-rose-tea-sachet-detail",
+      "probableSkuMasterId": "tj-rose-fruit-tea"
     }
   ]
 }
