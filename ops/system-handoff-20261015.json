@@ -1,20 +1,41 @@
 {
   "observedAt": "2026-10-15T01:10:00+08:00",
   "website": {
-    "commit": "803d60c49ade358f45fe532f4c41acd80967d03c",
+    "commit": "d56f978fabb86ffde8bc59bd41726cda1efaaf40",
     "changes": [
-      "instant scrolling in brand visual audit",
-      "visible controls and grouped tea navigation in text audit"
+      "compact previews for all public products",
+      "one shared specification/brewing/storage/notices section for tea series",
+      "uniform page cache release and core runtime version",
+      "updated current product and LINE-only pricing guards",
+      "series Safari installation metadata"
     ],
-    "brandAuditRun": 38603853317,
-    "landscapeAuditRun": 38604039112,
-    "finalAuditStatus": "in-progress"
+    "pagesDeployment": "success",
+    "brandAudit": "success",
+    "brandAuditRun": 38613278840,
+    "landscapeAuditRun": 38613278778,
+    "crossDeviceAuditRun": 38613278772,
+    "remainingAuditStatus": "in-progress",
+    "liveDesktopVerification": {
+      "publicCards": 6,
+      "photoModalOpenClose": 6,
+      "detailLinksPerModal": 1,
+      "nestedModals": 0,
+      "teaFilterShowsOneSeries": true,
+      "teaVariantPhotos": 6,
+      "brokenTeaImages": 0,
+      "sharedBrewingSections": 1,
+      "detailNavigation": true
+    }
   },
   "line": {
-    "deploymentCommit": "e34ac73b4a641a99383415206e2cd06e0c680446",
-    "renderDeploy": "dep-db7r50egekts73ea8lug",
+    "commit": "95ddfa7ea70ed5afe4e279816a83dbfe239b6ccf",
+    "renderDeploy": "dep-db7sce60tbcc73er7lig",
     "status": "live",
-    "healthHttp": 200
+    "inquiryRecordsRecognized": 24,
+    "pendingProductsManualOnly": true,
+    "publicPriceEnabled": false,
+    "actualLINEConversationTest": "not-completed",
+    "ci": "success"
   },
   "n8n": {
     "formalService": "srv-da8s2r49v7es73cefob0",
@@ -38,5 +59,44 @@
     "human approval provenance and D1 scheduling audit",
     "social profile and Google Business updates",
     "formal n8n readiness endpoint and workflow execution validation"
-  ]
+  ],
+  "d1": {
+    "observedAt": "2026-10-15T01:29:33+08:00",
+    "sourceRun": 38607026573,
+    "counts": {
+      "approved": 47,
+      "archived": 72,
+      "pending_review": 15,
+      "published": 3,
+      "scheduled": 0
+    },
+    "approvedCountIsNotProofOfHumanApproval": true
+  },
+  "publishingAccess": "Cloudflare Access login not completed; no credentials or approval state changed",
+  "pendingPartnerProducts": {
+    "count": 16,
+    "newPublicListings": 0,
+    "missingOriginalPhotoAndConfirmedSize": [
+      "立安龜鹿二仙膠",
+      "龜鹿活力飲"
+    ],
+    "medicineFactsAndPublicationReviewPending": [
+      "還少丹",
+      "補腎丸",
+      "寧神丸",
+      "金鎖固精丸",
+      "濟生腎氣丸",
+      "六味地黃丸",
+      "風濕丸",
+      "龜鹿二仙丸",
+      "左歸丸",
+      "治嗽化痰散",
+      "生血調經丸糖衣錠",
+      "七寶美髯丹"
+    ],
+    "foodReviewPending": {
+      "強龍大力寶戰鬥膠囊": "500mg×10粒已記錄；原料及公開資格仍未完成核對",
+      "黑糖仙楂烏梅茶": "20g±4.5%／包、10份／袋已記錄；沖泡方式及包裝醫師形象待核對"
+    }
+  }
 }
