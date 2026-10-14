@@ -39,10 +39,11 @@
         "IMG_9934",
         "IMG_9935"
       ],
-      "notes": "IMG_9934 正面顯示晉安及含鐵參仲四物飲，IMG_9935 背面標示60毫升×12入，成分／保存／食用與既有官網商品資料可對應；背面樣品效期標示20280108；包裝功能文案公開使用前仍需法規核對",
+      "notes": "IMG_9934 原廠正面正式品名為參仲四物飲，另以金色區塊標示含鐵；IMG_9935 背面標示60毫升×12入與成分、保存及使用方式。與既有官網晉安商品資料相符；包裝印刷功能宣稱不能未經審查直接變成官網廣告文案，樣品效期不代表出貨批次。",
       "reviewStatus": "catalog-identity-label-crosschecked",
-      "visibleLabel": "晉安・含鐵參仲四物飲",
-      "matchedCatalogId": "jinan-sisheng-siwuyin"
+      "visibleLabel": "晉安・參仲四物飲",
+      "matchedCatalogId": "jinan-sisheng-siwuyin",
+      "packagingAttribute": "含鐵（正面標示）"
     },
     {
       "id": "pink-gift-bag",
