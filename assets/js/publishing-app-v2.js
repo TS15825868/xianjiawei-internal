@@ -137,7 +137,7 @@ function metricsData(){
   return{
     draft:Number(c.draft||0),
     pending:Number(c.pending_review||0),
-    approved:Number(c.human_approved??c.approved||0),
+    approved:Number(c.human_approved??c.approved??0),
     aiPending:Number(c.ai_pending||0),
     scheduled:Number(c.scheduled||0),
     published:Number(c.published||0),
