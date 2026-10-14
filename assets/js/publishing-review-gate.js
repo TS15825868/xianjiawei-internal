@@ -106,6 +106,16 @@
     }catch(error){toast(error.message||String(error),true)}finally{button.disabled=false;button.textContent=old}
   }
   document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-post-prepare-human-review]');
+    if(!button||button.disabled)return;
+    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+    const id=button.dataset.postPrepareHumanReview;
+    button.disabled=true;const label=button.textContent;button.textContent='準備人工審核…';
+    api('/posts/'+encodeURIComponent(id)+'/prepare-human-review',{method:'POST'})
+      .then(()=>{toast('原文案和圖片保留，已準備16項人工圖文審核。');document.querySelector('[data-refresh]')?.click()})
+      .catch(error=>{button.disabled=false;button.textContent=label;toast(error.message||String(error),true)});
+  },true);
+  document.addEventListener('click',event=>{
     const submit=event.target.closest('[data-post-status="pending_review"]');
     if(submit&&!submit.disabled){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();submitForReview(submit);return}
     const button=event.target.closest('[data-post-status="approved"]');
