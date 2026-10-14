@@ -3,13 +3,21 @@ const aiEvidence=require('../src/ai-quality-evidence.cjs');
 const keys=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
 const material=p=>({title:String(p.title||'').trim(),headline:String(p.headline||'').trim(),copy:String(p.copy||'').trim(),category:String(p.category||'').trim(),image_url:String(p.image_url||'').trim(),image_alt:String(p.image_alt||'').trim(),image_source:String(p.image_source||'').trim(),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:String(p.image_quality_status||'').trim()});
 const fingerprint=p=>crypto.createHash('sha256').update(JSON.stringify(material(p))).digest('hex');
+function wallClockEpoch(dateTime,timeZone){
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(dateTime||''))||!timeZone)throw Error('Missing remote publication time');
+  const target=Date.parse(dateTime+'Z');
+  let guess=target;
+  const fmt=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  for(let i=0;i<3;i++){const p=Object.fromEntries(fmt.formatToParts(new Date(guess)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const shown=Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);guess+=target-shown;}
+  return guess;
+}
 function validate(p,gate,link,e,aiReview=null){
   if(!p||!e)throw Error('Missing post or evidence');
   const r=e.remote;if(!r||Number(r.id)===394674560)throw Error('Protected published post');
   if(e.sourceFingerprint!==fingerprint(p)||e.imageSource!==p.image_url)throw Error('Source version changed');
   if(link?.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
   if(r.text!==p.copy)throw Error(`Copy mismatch; D1=${JSON.stringify(String(p.copy||''))}; Metricool=${JSON.stringify(String(r.text||''))}`);
-  if(r.publicationDate?.timezone!=='Asia/Taipei')throw Error(`Timezone mismatch (${String(r.publicationDate?.timezone||'missing')})`);
+  try{wallClockEpoch(r.publicationDate?.dateTime,r.publicationDate?.timezone)}catch{throw Error(`Invalid publication timezone (${String(r.publicationDate?.timezone||'missing')})`)}
   if(r.media?.length!==1)throw Error(`Media count mismatch (${Array.isArray(r.media)?r.media.length:'missing'})`);
   if(!/^[0-9a-f]{64}$/.test(e.imageSHA256||''))throw Error('Missing verified image hash');
   const names=['facebook','instagram','threads'];if(!names.every(n=>r.providers?.some(x=>x.network===n))||r.providers.length!==3)throw Error('Three platforms required');
@@ -21,8 +29,8 @@ function validate(p,gate,link,e,aiReview=null){
   if(!human&&!ai)throw Error('Verified human or complete AI evidence required');
   if(!['approved','scheduled','manual_required'].includes(p.status))throw Error('Post not approved or already published');
   if(e.result==='scheduled'){
-    const local=new Date(Date.parse(e.publicationAt)+8*3600000).toISOString().slice(0,19);
-    if(local!==r.publicationDate.dateTime||Date.parse(e.publicationAt)<=Date.parse(e.verifiedAt)||r.draft!==false||r.autoPublish!==true||r.instagramData?.autoPublish!==true)throw Error('Saved schedule settings invalid');
+    const remoteAt=wallClockEpoch(r.publicationDate.dateTime,r.publicationDate.timezone);
+    if(remoteAt!==Date.parse(e.publicationAt)||Date.parse(e.publicationAt)<=Date.parse(e.verifiedAt)||r.draft!==false||r.autoPublish!==true||r.instagramData?.autoPublish!==true)throw Error('Saved schedule settings invalid');
     return'scheduled';
   }
   if(e.result!=='result')throw Error('Unknown evidence type');
