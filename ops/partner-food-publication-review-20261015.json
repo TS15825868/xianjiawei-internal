@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-15",
+  "purpose": "仙加味新增合作商品原圖與法規審核工作底稿；非已上架承諾",
+  "guidanceSources": [
+    {
+      "type": "law",
+      "title": "藥事法第65～67條",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=L0030001"
+    },
+    {
+      "type": "law",
+      "title": "食品安全衛生管理法第28條",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=L0040001"
+    },
+    {
+      "type": "law",
+      "title": "食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則第3～5條",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCODE=L0040140"
+    }
+  ],
+  "verifiedOriginals": [
+    {
+      "productId": "guilu-vitality",
+      "name": "龜鹿活力飲（葡萄糖胺）",
+      "supplierFromLabel": "晉安製藥股份有限公司",
+      "categoryFromPackage": "食品／保健概念之飲料，待確認最新正式批次",
+      "packageSpec": "60毫升×12罐／盒",
+      "origin": "臺灣",
+      "shelfLife": "二年",
+      "ingredients": [
+        "純水",
+        "大棗",
+        "黨參",
+        "龜甲",
+        "鹿角萃取液",
+        "葡萄糖胺"
+      ],
+      "originalPhotoRole": {
+        "front": "IMG_8899(2).jpeg",
+        "jarAndBox": "IMG_8904(2).jpeg",
+        "rearLabel": "IMG_8902(2).jpeg",
+        "claimsSide": "IMG_8900(2).jpeg",
+        "sealedBox": "IMG_8901(1).jpeg"
+      },
+      "candidateHero": "IMG_8899(2).jpeg",
+      "storageOnLabel": "室溫貯存，避免高溫與日照；開封後請一次飲用完畢",
+      "useOnLabel": "每日一瓶，食用前先搖勻再飲用",
+      "sampleDateObserved": "20280515",
+      "sampleDateNote": "瓶蓋或盒身照片可見，不代表現貨效期",
+      "photoClaimRisk": "側盒含調整體質、滋補強身、增強體力、養顏美容等文字，必須依食品廣告整體表現及可使用詞句檢視，不得直接照抄到官網",
+      "publicReady": false,
+      "blockers": [
+        "原廠現行產品標籤與合法販售資格待核對",
+        "網站用正式原圖未進入GitHub正式媒體路徑",
+        "圖片上可見文案需廣告整體審查"
+      ]
+    },
+    {
+      "productId": "uboss-sizhenbao",
+      "name": "四珍寶精華膏湯塊",
+      "supplierFromLabel": "御聖堂生技商品有限公司",
+      "brandCorrection": "過去誤列御博生技，依 IMG_9833(2).jpeg 的實拍出品商更正，御博生技屬另一項產品資料來源，不可沿用",
+      "categoryFromPackage": "食品",
+      "packageSpec": "600g±15g／盒｜64塊",
+      "piecesPerTray": "每盤8塊，非整盒8塊",
+      "origin": "臺灣",
+      "shelfLife": "三年",
+      "ingredients": [
+        "鹿角萃取物",
+        "全龜萃取物",
+        "黨參萃取物",
+        "枸杞",
+        "紅棗",
+        "葡萄糖胺",
+        "鯊魚軟骨素"
+      ],
+      "originalPhotoRole": {
+        "front": "IMG_9834(2).jpeg",
+        "rearLabel": "IMG_9833(2).jpeg",
+        "insideTrayOpen": "IMG_9831(3).jpeg",
+        "insideTrayClosed": "IMG_9832(3).jpeg",
+        "rearOriginal": "IMG_9835(1).jpeg"
+      },
+      "candidateHero": "IMG_9834(2).jpeg",
+      "photoClaimRisk": "原盒文字含「調節生理機能」、「滋補強身」、「增強體力」、「病後」及適合族群等宣傳，需檢查合法性；不在官網複製療效宣稱",
+      "publicReady": false,
+      "blockers": [
+        "包裝內容含宣傳性說法待審查",
+        "正式商品主圖未上傳到GitHub正式媒體路徑",
+        "食品原料標示、最新批次與供貨資格待核實"
+      ]
+    },
+    {
+      "productId": "jingyong-combat",
+      "name": "強龍大力寶戰鬥膠囊",
+      "originalPhotoRole": {
+        "front": "IMG_9956.JPG",
+        "label": "IMG_9957.JPG"
+      },
+      "publicReady": false,
+      "blockers": [
+        "照片中的樣品效期2025-11-02已過",
+        "包裝宣傳詞句需符合食品廣告法規",
+        "需新批次實物原圖"
+      ]
+    },
+    {
+      "productId": "brown-sugar-ume-tea",
+      "name": "黑糖仙楂烏梅茶",
+      "originalPhotoRole": {
+        "front": "IMG_9959.JPG"
+      },
+      "publicReady": false,
+      "blockers": [
+        "原廠名稱尚未確認",
+        "原圖含醫師宣傳元素",
+        "沖泡資訊與更新批次待核對"
+      ]
+    }
+  ],
+  "medicationPublicationPolicy": {
+    "default": "藥品及中藥製劑不加入一般官網商品卡，不以『需洽詢中醫師』註記取代藥商資格、廣告核准及合法交易通路。",
+    "privateData": "ERP保留全品項的圖片、核准證資料、成本與供應商，不因官網未展示而刪除。",
+    "customerFlow": "商品／規格詢問先進仙加味官方LINE；個人疾病、用藥及是否適合使用由醫師獨立判斷。轉介醫師不等於仙加味取得藥品網路販售權。",
+    "potentialException": "未來取得可核實的正式適法核准及公開資料後，可依新版證據重新審查，不受舊守門員永久阻擋。"
+  },
+  "publicWebsiteState": {
+    "ownBrandCards": 4,
+    "approvedPartnerCards": 2,
+    "teaCollectionVariants": 6,
+    "totalVisibleCards": 6,
+    "newUnapprovedItemsPublished": 0
+  },
+  "nextWork": "正式產品圖需以原圖上傳GitHub，原廠包裝與食品廣告核准檢核完成後，方可更改public=true並新增正式詳細頁、跳窗與圖片驗收。"
+}
