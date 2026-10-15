@@ -67,6 +67,20 @@
   "photo_target_in_github": "images/partner-products/er-zhen-bao-royalherb-original.webp",
   "product_differs_from": "四珍寶精華膏湯塊（紅盒，含黨蔘、枸杞、紅棗；二珍寶紫盒不含這三項）",
   "marketing_policy": "只採用實物可核成分、食用、保存、規格等中性資料，不沿用原廠包裝上的療效宣稱與舊價；售價詢問交給仙加味LINE",
-  "publication_status": "pending-confirmed-original-photo-import-before-public-site-listing",
-  "important_note": "工廠登記字號與四珍寶有可能相同，但出品商品名、配方、外盒和圖片均獨立建檔，不可用另一款原圖"
+  "publication_status": "public website partner food using authenticated manufacturer original photo; not using old price or medicine claims",
+  "important_note": "工廠登記字號與四珍寶有可能相同，但出品商品名、配方、外盒和圖片均獨立建檔，不可用另一款原圖",
+  "publication_commit": "b57b864d8e492efe8102b1948910a92d00744240",
+  "product_image_commit": "8b0777b91a9c6f73110d805b70a0f62e2eef3988",
+  "product_image_sha": "b44d0577d2f23046b1e6341f3af7a6d6e3e633dc",
+  "website_public_detail": "https://ts15825868.github.io/xianjiawei/product-er-zhen-bao.html",
+  "website_public_listing": "https://ts15825868.github.io/xianjiawei/products.html",
+  "line_category_sync_commit": "36efe982568c4513f8f2207ac7a8834067b5f6f2",
+  "nutrition_qc": {
+    "issue": "原廠紫盒背標顯示每份9.3公克，蛋白質欄疑似記9.4公克，數字大於每份總重；照片亦顯示每100公克蛋白質87.7公克，與每份數值不一致。",
+    "approach": "保留來源及原文，不自行更正營養數值；官網詳細頁只寫每份9.3g/64份，待出品商確認後再公開完整數值",
+    "status": "need-supplier-confirmation",
+    "source": "IMG_9998.jpeg/IMG_0001.jpeg"
+  },
+  "public_marketing_policy": "僅展示正式紫色二珍寶實物與中性食品資訊；不使用醫療功效詞句、樣品建議售價或無保單證據的保障保證。",
+  "verified_external_reference": "https://royalherb.com.tw/product/guilu-erxian-jiao-2-main-old-64-pieces/"
 }
