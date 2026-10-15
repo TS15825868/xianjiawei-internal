@@ -17,6 +17,16 @@
       "type": "law",
       "title": "食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則第3～5條",
       "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCODE=L0040140"
+    },
+    {
+      "type": "judgment",
+      "title": "最高行政法院113年度上字第261號判決",
+      "url": "https://judgment.judicial.gov.tw/FJUD/printData.aspx?id=TPAA%2C113%2C%E4%B8%8A%2C261%2C20251226%2C1"
+    },
+    {
+      "type": "authority",
+      "title": "衛福部中醫藥司115年得供食品原料使用之中藥材認定基準【草案，尚非正式施行】",
+      "url": "https://dep.mohw.gov.tw/DOCMAP/cp-754-86095-108.html"
     }
   ],
   "verifiedOriginals": [
@@ -48,13 +58,18 @@
       "useOnLabel": "每日一瓶，食用前先搖勻再飲用",
       "sampleDateObserved": "20280515",
       "sampleDateNote": "瓶蓋或盒身照片可見，不代表現貨效期",
-      "photoClaimRisk": "側盒含調整體質、滋補強身、增強體力、養顏美容等文字，必須依食品廣告整體表現及可使用詞句檢視，不得直接照抄到官網",
+      "photoClaimRisk": "原盒標示包含部分食品廣告附件一通常可使用詞句；不因一般詞句自動退件。需核對全體廣告語及龜甲、鹿角液類原料之食品使用與配方屬性。",
       "publicReady": false,
       "blockers": [
-        "原廠現行產品標籤與合法販售資格待核對",
-        "網站用正式原圖未進入GitHub正式媒體路徑",
-        "圖片上可見文案需廣告整體審查"
-      ]
+        "原廠需提供龜甲、鹿角萃取液等原料可供食品使用與整體配方食品屬性證據",
+        "正式原圖需進入網站主圖路徑",
+        "核對現行批次有效日期及製造廠商資料"
+      ],
+      "productLiabilityInsuranceLabel": {
+        "sumInsuredText": "1000萬元",
+        "source": "IMG_8902(2).jpeg",
+        "verification": "包裝宣稱，保單與保險期間尚未查核"
+      }
     },
     {
       "productId": "uboss-sizhenbao",
@@ -83,13 +98,24 @@
         "rearOriginal": "IMG_9835(1).jpeg"
       },
       "candidateHero": "IMG_9834(2).jpeg",
-      "photoClaimRisk": "原盒文字含「調節生理機能」、「滋補強身」、「增強體力」、「病後」及適合族群等宣傳，需檢查合法性；不在官網複製療效宣稱",
+      "photoClaimRisk": "原盒有調節生理機能、滋補強身、增強體力、養顏美容等，屬食品廣告通常得使用詞句，不得單獨判違規。但另須檢查原料配方是否涉及中藥固有成方及宣傳整體表現。",
       "publicReady": false,
       "blockers": [
-        "包裝內容含宣傳性說法待審查",
-        "正式商品主圖未上傳到GitHub正式媒體路徑",
-        "食品原料標示、最新批次與供貨資格待核實"
-      ]
+        "原廠需提供產品食品屬性或產品核判可供食品類販售之證據（龜鹿原料與黨蔘枸杞等配方）",
+        "正式原圖需進入網站主圖路徑並通過比例及文字檢查",
+        "核對目前出貨批次及標籤"
+      ],
+      "factoryRegistrationLabel": {
+        "number": "66-006365",
+        "source": "IMG_9833(2).jpeg",
+        "verification": "包裝印刷，尚未向主管機關查核"
+      },
+      "productLiabilityInsuranceLabel": {
+        "insurer": "國泰產物",
+        "sumInsuredText": "伍仟萬",
+        "source": "IMG_9833(2).jpeg",
+        "verification": "包裝宣稱，保單與保險期間尚未查核"
+      }
     },
     {
       "productId": "jingyong-combat",
@@ -132,5 +158,8 @@
     "totalVisibleCards": 6,
     "newUnapprovedItemsPublished": 0
   },
-  "nextWork": "正式產品圖需以原圖上傳GitHub，原廠包裝與食品廣告核准檢核完成後，方可更改public=true並新增正式詳細頁、跳窗與圖片驗收。"
+  "nextWork": "取得兩家原廠足以辨識產品的食品屬性／原料用途佐證與完整可公開原圖後，立即以相同商品卡+跳窗+詳細頁上架；非龜鹿配方食品可按原本法規正常上架，勿被舊守門員封鎖。其他藥品僅保留內部及人工作業，不直接廣告。",
+  "latestLegalReview": "2026-10-15 official food advertisements and 2025 Supreme Administrative Court 113 appeal 261",
+  "legalReadiness": "包裝完整且有食品、工廠字號、營養標示、產品責任保險，是可上架之重要佐證，但不等於食品藥品屬性判定或廣告合法性保證。傳統龜鹿配方需原廠屬性判定資料。",
+  "commonFoodAdvertisingExpressions": "《食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則》第4條附件一列有調整體質、調節生理機能、滋補強身、增強體力、精神旺盛、養顏美容、青春美麗、產前產後或病後之補養等通常可用詞句。原包裝用到上述字詞，不等於必須禁止上架；仍須整體審視是否涉及疾病療效或不實。"
 }
