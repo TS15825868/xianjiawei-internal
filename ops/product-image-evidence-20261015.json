@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-15-source-image-matching-staging",
+  "version": "2026-10-15-license-evidence-correction",
   "scope": {
     "four_asset_zip_photos": 60,
     "new_partner_photos": 13,
@@ -115,7 +115,11 @@
       ],
       "package": "600g／塑膠袋裝",
       "kind": "packaged traditional medicine; do not market as food",
-      "warning": "source package ingredient amounts internally inconsistent; verify with manufacturer; no public efficacy claims"
+      "warning": "官方中藥許可證所列處方原料數字與外盒相同；原料投料量與製成膠一公克屬不同意義。先前認為毫克數相加不等於成品一公克所以標示矛盾，是誤判。藥商營業範圍、網路藥品資訊與販售方式分別確認。",
+      "license": "衛署成製013857",
+      "licenseValidUntil": "2030-10-11",
+      "licensedCategory": "成藥",
+      "licenseUrl": "https://service.mohw.gov.tw/DOCMAP/CusSite/TCMLResultDetail.aspx?LICENUM=013857&LICEWORDID=03"
     },
     {
       "id": "partner-si-zhen-bao",
