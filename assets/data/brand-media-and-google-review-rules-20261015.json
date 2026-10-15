@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-15",
+  "authority": "latest-user-confirmed",
+  "brand": {
+    "publicPrimaryName": "仙加味",
+    "tagline": "補養，是一種節奏。",
+    "positioning": "現代漢方生活品牌",
+    "origin": "萬華",
+    "generations": 4
+  },
+  "googleBusiness": {
+    "currentStatus": "existing-google-map-business-approved",
+    "currentNameRule": "KEEP_APPROVED_NAME_UNCHANGED",
+    "exceptionToPublicBrandName": "Existing Google Maps listing retains its currently approved registered-company-qualified name because previous standalone-brand-name review could not pass.",
+    "futureChange": "Only after the user independently registers a 仙加味 business entity and explicitly asks, assess a separate new Google Maps business application. Do not rename existing listing proactively.",
+    "isApprovalForNewListing": false
+  },
+  "newProductMedia": {
+    "mandatory": true,
+    "sourcePriority": "user-supplied-physical-product-originals-only",
+    "method": "precise background removal on original photos, then equal-aspect compositing on approved 仙加味 premium cream/mountain background",
+    "alterationPolicy": {
+      "aiMayGenerateBackdropOnly": true,
+      "aiMayGenerateProduct": false,
+      "aiMayRepaintProduct": false,
+      "aiMayModifyPackaging": false,
+      "aiMayInventLabels": false,
+      "aiMayAlterProductText": false,
+      "stretchOrDistort": false
+    },
+    "sourceArchiveRequired": true,
+    "reviewGate": "keep outputs pending visual review before replacing existing public images",
+    "scope": [
+      "own products",
+      "commissioned products",
+      "curated third-party products",
+      "all future added products"
+    ],
+    "deliveryTargets": [
+      "product cards",
+      "intro modal",
+      "product pages",
+      "approved DM only"
+    ]
+  },
+  "publication": {
+    "postImageRegenerationGoesTo": "待審核",
+    "postsRequireHumanApproval": true,
+    "pricesPublic": false,
+    "privateCostDataMustNotBeDeleted": true
+  }
+}
