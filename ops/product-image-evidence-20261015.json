@@ -1,0 +1,158 @@
+{
+  "version": "2026-10-15-source-image-matching-staging",
+  "scope": {
+    "four_asset_zip_photos": 60,
+    "new_partner_photos": 13,
+    "total_source_images": 73,
+    "legacy_website_line_zip_image_assets": 113
+  },
+  "authority": "evidence-only, not publicly approved; use GitHub main current product/media data before changes",
+  "source_id_scheme": "P01-P17 original ingredients and pack photos; D01-D12 old DMs; M01-M15 mascot website visuals; X01-X16 social post visuals; IMG_* = user-submitted partner photos",
+  "pairs": [
+    {
+      "id": "guilu-gao",
+      "name": "龜鹿膏",
+      "photo_ids": [
+        "P09"
+      ],
+      "dm_ids": [
+        "D06",
+        "D11"
+      ],
+      "visual_ids": [
+        "M15",
+        "X15"
+      ]
+    },
+    {
+      "id": "guilu-drink-30",
+      "name": "龜鹿飲30cc玻璃罐",
+      "photo_ids": [
+        "P15"
+      ],
+      "dm_ids": [
+        "D01",
+        "D12"
+      ],
+      "visual_ids": [
+        "M14"
+      ],
+      "warning": "D01 uses 30cc／瓶, conflicts with approved 30cc玻璃罐"
+    },
+    {
+      "id": "guilu-drink-180",
+      "name": "龜鹿飲180cc鋁袋",
+      "photo_ids": [
+        "P07"
+      ],
+      "dm_ids": [
+        "D03",
+        "D09"
+      ],
+      "visual_ids": [
+        "M08",
+        "X05",
+        "X06"
+      ],
+      "warning": "X05 and X06 near-duplicate topic; verify pouch proportions"
+    },
+    {
+      "id": "luerong-fen",
+      "name": "鹿茸粉",
+      "photo_ids": [
+        "P10"
+      ],
+      "dm_ids": [
+        "D07",
+        "D08"
+      ],
+      "visual_ids": [
+        "M13",
+        "X01"
+      ]
+    },
+    {
+      "id": "guilu-tangkuai",
+      "name": "龜鹿湯塊",
+      "photo_ids": [
+        "P03",
+        "P16"
+      ],
+      "dm_ids": [
+        "D05",
+        "D10"
+      ],
+      "visual_ids": [
+        "M03",
+        "X14"
+      ],
+      "warning": "public state must follow current master; don't confuse P03 with 龜鹿膠"
+    },
+    {
+      "id": "guilu-jiao",
+      "name": "龜鹿膠",
+      "photo_ids": [
+        "P12",
+        "P17"
+      ],
+      "dm_ids": [
+        "D02",
+        "D04"
+      ],
+      "visual_ids": [
+        "M05",
+        "X16"
+      ],
+      "warning": "public state must follow current master"
+    },
+    {
+      "id": "partner-li-an",
+      "name": "立安龜鹿二仙膠",
+      "photo_ids": [
+        "IMG_9911(1).jpeg",
+        "IMG_9912(1).jpeg",
+        "IMG_9913(1).jpeg"
+      ],
+      "package": "600g／塑膠袋裝",
+      "kind": "packaged traditional medicine; do not market as food",
+      "warning": "source package ingredient amounts internally inconsistent; verify with manufacturer; no public efficacy claims"
+    },
+    {
+      "id": "partner-si-zhen-bao",
+      "name": "四珍寶精華膏湯塊",
+      "photo_ids": [
+        "IMG_9831(3).jpeg",
+        "IMG_9832(3).jpeg",
+        "IMG_9833(2).jpeg",
+        "IMG_9834(2).jpeg",
+        "IMG_9835(1).jpeg"
+      ],
+      "package": "600g±15g／盒，64塊",
+      "kind": "package marked food",
+      "warning": "8 pieces in one tray; do not mistake for 8 per whole box"
+    },
+    {
+      "id": "partner-active-drink",
+      "name": "龜鹿活力飲（葡萄糖胺）",
+      "photo_ids": [
+        "IMG_8899(2).jpeg",
+        "IMG_8900(2).jpeg",
+        "IMG_8901(1).jpeg",
+        "IMG_8902(2).jpeg",
+        "IMG_8904(2).jpeg"
+      ],
+      "package": "60mL×12罐／盒",
+      "kind": "package marked food",
+      "warning": "60mL labeled glass jar must not be mistaken for own-brand 30cc naked jar"
+    }
+  ],
+  "transcriptionCoverage": "Key readable texts transcribed for 13 partner photos and D01,D03; remaining designed visuals categorized but not claimed verbatim proofread.",
+  "privatePricePolicy": "Internal cost/wholesale/retail source must be kept separately; no public price or uncontrolled auto-publish.",
+  "changesMade": "Index only; no public media, listing, or publishing changes in this record.",
+  "followUp": [
+    "compare main latest public product master and live image URLs",
+    "validate all small print and new item public eligibility",
+    "obtain manufacturer confirmation for conflicted fields",
+    "upload approved originals after review only"
+  ]
+}
