@@ -4,7 +4,7 @@
   "status": "partial_verified_not_all_systems_complete",
   "github": {
     "website": {
-      "sha": "2a2a63a9e9d718967075f72282c9211dadba5150",
+      "sha": "bcbad74e72dc1bf1971a44fb2e6e28471192e076",
       "contentCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
     },
     "line": {
@@ -132,10 +132,12 @@
     "websiteCatalogLinksAssets": "success",
     "websiteBrandChromeSafari": "success",
     "websitePages8fa63f": "success",
-    "responsiveAudit": "舊run失敗原因為4款主圖仍期待JPG及品牌商品表預期固定4；已改讀現行媒體與合併公開名單，修正commit 2a2a63a，待新run結果",
+    "responsiveAudit": "38795775327 pending於bcbad74e；已改讀現行媒體、合併公開名單並涵蓋所有核准商品詳細頁，node --check通過；舊run失敗不可當成新run通過",
     "landscapeAudit": "CSS舊版本等待已改雜湊比較；實際視覺測試仍執行中",
     "lineThreeVerifiersAndPages": "success",
     "lineRender": "live609a106",
-    "erpCloudflare13101c": "success"
+    "erpCloudflare13101c": "success",
+    "websiteLatestPages": "2a2a63a部署success；bcbad74e僅驗收workflow變更、Pages queued",
+    "erpRuntimeDeployment": "13101c Cloudflare success；其後僅ops/docs保存不觸發正式應用部署"
   }
 }
