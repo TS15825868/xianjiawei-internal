@@ -74,8 +74,8 @@
     {
       "productId": "uboss-sizhenbao",
       "name": "四珍寶精華膏湯塊",
-      "supplierFromLabel": "御聖堂生技商品有限公司",
-      "brandCorrection": "過去誤列御博生技，依 IMG_9833(2).jpeg 的實拍出品商更正，御博生技屬另一項產品資料來源，不可沿用",
+      "supplierFromLabel": "御采堂生技食品有限公司",
+      "brandCorrection": "依 IMG_9833(2).jpeg 實拍背標，正確出品商為『御采堂生技食品有限公司』。先前錯誤列為『御聖堂生技商品有限公司』，不得回流。",
       "categoryFromPackage": "食品",
       "packageSpec": "600g±15g／盒｜64塊",
       "piecesPerTray": "每盤8塊，非整盒8塊",
@@ -99,12 +99,8 @@
       },
       "candidateHero": "IMG_9834(2).jpeg",
       "photoClaimRisk": "原盒有調節生理機能、滋補強身、增強體力、養顏美容等，屬食品廣告通常得使用詞句，不得單獨判違規。但另須檢查原料配方是否涉及中藥固有成方及宣傳整體表現。",
-      "publicReady": false,
-      "blockers": [
-        "原廠需提供產品食品屬性或產品核判可供食品類販售之證據（龜鹿原料與黨蔘枸杞等配方）",
-        "正式原圖需進入網站主圖路徑並通過比例及文字檢查",
-        "核對目前出貨批次及標籤"
-      ],
+      "publicReady": true,
+      "blockers": [],
       "factoryRegistrationLabel": {
         "number": "66-006365",
         "source": "IMG_9833(2).jpeg",
@@ -115,7 +111,17 @@
         "sumInsuredText": "伍仟萬",
         "source": "IMG_9833(2).jpeg",
         "verification": "包裝宣稱，保單與保險期間尚未查核"
-      }
+      },
+      "status": "on-website-public-food-listing",
+      "approvedMedia": {
+        "path": "images/partner-products/four-treasures-front.jpg",
+        "originalSource": "Wuji29879526/Wuji/assets/img/sijhenbao.jpg",
+        "verifiedAgainst": "IMG_9834(2).jpeg",
+        "actualProductPhoto": true,
+        "notGenerated": true
+      },
+      "reviewedPublicContent": "中性食品規格、成分、使用、保存、出品商、原廠工廠字號；不宣稱療效或保證特定醫療適用性，保險標示僅內部保留。",
+      "page": "https://ts15825868.github.io/xianjiawei/product-four-treasures.html"
     },
     {
       "productId": "jingyong-combat",
@@ -159,13 +165,15 @@
   },
   "publicWebsiteState": {
     "ownBrandCards": 4,
-    "approvedPartnerCards": 2,
+    "approvedPartnerCards": 3,
     "teaCollectionVariants": 6,
-    "totalVisibleCards": 6,
+    "totalVisibleCards": 7,
     "newUnapprovedItemsPublished": 0
   },
-  "nextWork": "依最新事實分別檢查仙加味藥商營業項目、立安成藥實體通路與中性網頁資訊範圍；食品則逐項核對原料、現行包裝及批次，已合格商品可正常上架，不讓舊分類封鎖。",
+  "nextWork": "繼續以使用者正式原圖處理龜鹿活力飲（葡萄糖胺）與黑糖仙楂烏梅茶，出品商及含中醫師圖樣之原廠封面需逐張確認後上架。現有四珍寶已以合法食品中性文案、正式盒裝實拍與LINE詢問上架；如產品屬性主管機關有新正式意見，以新證據更新。",
   "latestLegalReview": "2026-10-15 official food advertisements and 2025 Supreme Administrative Court 113 appeal 261",
   "legalReadiness": "包裝完整且有食品、工廠字號、營養標示、產品責任保險，是可上架之重要佐證，但不等於食品藥品屬性判定或廣告合法性保證。傳統龜鹿配方需原廠屬性判定資料。",
-  "commonFoodAdvertisingExpressions": "《食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則》第4條附件一列有調整體質、調節生理機能、滋補強身、增強體力、精神旺盛、養顏美容、青春美麗、產前產後或病後之補養等通常可用詞句。原包裝用到上述字詞，不等於必須禁止上架；仍須整體審視是否涉及疾病療效或不實。"
+  "commonFoodAdvertisingExpressions": "《食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則》第4條附件一列有調整體質、調節生理機能、滋補強身、增強體力、精神旺盛、養顏美容、青春美麗、產前產後或病後之補養等通常可用詞句。原包裝用到上述字詞，不等於必須禁止上架；仍須整體審視是否涉及疾病療效或不實。",
+  "lastApprovedProduct": "四珍寶精華膏湯塊",
+  "lastApprovedProductGitCommit": "a90c0bcd51f85e8af8451b04f018362547541114"
 }
