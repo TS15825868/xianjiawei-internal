@@ -92,15 +92,36 @@ jobs:
         run: npx wrangler deploy --keep-vars
       - name: Verify live routes
         shell: bash
+        env:
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           set -euo pipefail
           base='https://xianjiawei-internal.tung314069.workers.dev'
+          curl_headers=()
+          if [[ -n "${CF_ACCESS_CLIENT_ID:-}" && -n "${CF_ACCESS_CLIENT_SECRET:-}" ]]; then
+            curl_headers=(-H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET")
+          fi
+          access_blocked=0
           for path in '/' '/erp.html' '/publishing.html' '/healthz/core'; do
-            result="$(curl -LsS --max-redirs 6 --max-time 25 -o /tmp/xjw-body -w '%{http_code} %{num_redirects} %{url_effective}' "$base$path")"
-            echo "$path -> $result"
-            code="${result%% *}"
-            test "$code" -ge 200
-            test "$code" -lt 500
+            result="$(curl -sSL "${curl_headers[@]}" --max-redirs 6 --max-time 25 -o /tmp/xjw-body -w '%{http_code}|%{url_effective}' "$base$path")"
+            code="${result%%|*}"
+            destination="${result#*|}"
+            if [[ "$destination" == *cloudflareaccess.com/cdn-cgi/access/login/* ]]; then
+              echo "::warning title=Cloudflare Access::$path requires authenticated verification; the redirected login page is not a passed app-health check."
+              access_blocked=1
+              continue
+            fi
+            echo "$path -> HTTP $code"
+            [[ "$code" == "200" ]] || { echo "::error::$path returned HTTP $code"; exit 1; }
+            if [[ "$path" != '/healthz/core' ]]; then
+              grep -q '仙加味' /tmp/xjw-body || { echo "::error::$path returned HTTP 200 without the expected app branding"; exit 1; }
+            fi
           done
-          echo 'PASS production deployment verification.'
+          if [[ "$access_blocked" == "1" ]]; then
+            echo 'Cloudflare Worker deployed and D1 responded, but protected app routes still require an authenticated smoke test.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'NOTICE: deployment succeeded; app/browser validation remains pending behind Cloudflare Access.'
+          else
+            echo 'PASS authenticated production route verification.'
+          fi
 
