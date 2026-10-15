@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-16",
+  "status": "partial_verified_not_all_systems_complete",
+  "github": {
+    "website": {
+      "sha": "8fa63f144a55af742ad1f737d1bc0ee16492a1c3",
+      "contentCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
+    },
+    "line": {
+      "sha": "609a10640e3715e2a77f021dea26945e26507860",
+      "renderDeploy": "dep-db8id560tbcc738f8a0g",
+      "renderStatus": "live"
+    },
+    "erp": {
+      "productPhotoIndexCommit": "13101c1a29bab2c460252b8bcd2dcf8a68505def",
+      "cloudflareDeploy": "success"
+    }
+  },
+  "publicCatalog": {
+    "cards": 9,
+    "groupedTeaVariants": 6,
+    "changeToPublicProductList": false,
+    "privatePricesDetectedInCurrentWebsiteCatalog": false
+  },
+  "media": {
+    "newPhotoDerivatives": 3,
+    "originalPhotoRetouch": false,
+    "newOriginalLabelViewers": 6,
+    "damagedVitalityMatteReplacedWithFullSourcePhoto": true,
+    "qualifiedNewAIGeneratedImages": 0,
+    "allProductBackgroundCleanupComplete": false,
+    "pending": [
+      "參仲原始提繩缺角，無完整來源不能補畫",
+      "龜鹿活力飲完整原照保留，但專業去背仍未合格",
+      "兩款湯塊背標原廠建議售價貼紙與宣傳用語，未公開新背標照片",
+      "玫瑰果茶茶袋補照未上站"
+    ]
+  },
+  "lineOa": {
+    "loggedInAdminVerified": true,
+    "businessProfile": "已公開：現代漢方生活品牌、多元選擇、links.html、週一至週五10:30–20:00",
+    "welcome": "已保存並重新載入驗證，移除暫緩湯塊及龜鹿膠介紹",
+    "richMenu": "6個文字動作已讀取；Messaging API實際選單及客戶對話尚未完整實測",
+    "prices": "人工詢價"
+  },
+  "publishing": {
+    "liveUiVerified": true,
+    "total": 65,
+    "pendingReview": 15,
+    "aiPrescreenAwaitingHuman": 47,
+    "humanApproved": 0,
+    "scheduled": 0,
+    "published": 3,
+    "metricoolFutureDraftsThroughNovember": 9,
+    "newPostsPublishedThisRun": 0,
+    "endToEndPublishTest": false,
+    "reason": "沒有目前可驗證的人工核准內容，不建立公開測試貼文"
+  },
+  "social": {
+    "facebook": {
+      "bioAndLinkVerified": true,
+      "trialPostEdited": true,
+      "oldPricedAttachmentRemoved": true,
+      "url": "https://www.facebook.com/TAISHING15825868/posts/pfbid0WZMsyf9LfuXjHoY5zPy9e4u8oLiQTVAQKvyXARstFpzooPRjPYJFEGwSt24koT9wl",
+      "allHistoricalPostsAudited": false
+    },
+    "instagram": {
+      "bioAndLinkVerified": true,
+      "trialCaptionUpdated": true,
+      "oldPricePhotoRemains": true,
+      "url": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+      "blocker": "網頁版已發布單張照片無替換或封存選項，未不可逆刪文"
+    },
+    "threads": {
+      "bioAndLinkVerified": true,
+      "allHistoricalPostsAudited": false
+    },
+    "googleBusiness": {
+      "verified": false,
+      "blocker": "Google異常流量攔截，未繞過"
+    },
+    "lineVoom": {
+      "verified": false
+    }
+  },
+  "automation": {
+    "gptActiveTasks": 2,
+    "rolesSeparated": true,
+    "updatedDynamicCatalogAndRealPhotoRules": true,
+    "n8nService": "xianjiawei-n8n-longterm",
+    "n8nLiveDeploy": "dep-dabcqri3dvoc73cobrpg",
+    "n8nAppLogs": "2026-10-15T18:19Z曾啟動三項監控workflow；先前有DB逾時後恢復、runner警告",
+    "currentHealth": "Render cold-start interstitial, no ready response verified",
+    "aiContentToPublishEndToEndVerified": false
+  },
+  "preservation": {
+    "erpCostsWholesaleInventoryCustomerHistoryUnchanged": true,
+    "databaseWrites": false,
+    "forcePush": false,
+    "publicTestPost": false,
+    "oldZipOverwrites": false
+  },
+  "followup": [
+    "最新跨裝置與山水對比Actions尚需最終結果",
+    "完成兩項主圖去背並實際視覺驗收",
+    "IG舊價格圖需可封存介面；勿以文字已修改宣稱舊圖消失",
+    "Google商家通過瀏覽限制後再驗收",
+    "n8n健康及AI產文產圖排程發布回寫完整流程仍需驗證"
+  ]
+}
