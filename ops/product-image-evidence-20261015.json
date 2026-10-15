@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-15-license-evidence-correction",
+  "version": "2026-10-15-four-treasures-latest-source-matched",
   "scope": {
     "four_asset_zip_photos": 60,
     "new_partner_photos": 13,
@@ -125,15 +125,40 @@
       "id": "partner-si-zhen-bao",
       "name": "四珍寶精華膏湯塊",
       "photo_ids": [
-        "IMG_9831(3).jpeg",
-        "IMG_9832(3).jpeg",
-        "IMG_9833(2).jpeg",
-        "IMG_9834(2).jpeg",
-        "IMG_9835(1).jpeg"
+        "IMG_9831(4).jpeg",
+        "IMG_9832(4).jpeg",
+        "IMG_9833(3).jpeg",
+        "IMG_9834(3).jpeg",
+        "IMG_9835(2).jpeg"
       ],
       "package": "600g±15g／盒，64塊",
       "kind": "package marked food",
-      "warning": "8 pieces in one tray; do not mistake for 8 per whole box"
+      "warning": "8 pieces in one tray; do not mistake for 8 per whole box",
+      "ingredientsFromLabel": [
+        "鹿角萃取物",
+        "全龜萃取物",
+        "黨蔘萃取物",
+        "枸杞",
+        "紅棗",
+        "葡萄糖胺",
+        "鯊魚軟骨素"
+      ],
+      "producerFromLabel": "御采堂生技食品有限公司",
+      "nutritionPerServing": {
+        "servingGrams": 9.3,
+        "servingsPerBox": 64,
+        "caloriesKcal": 29,
+        "proteinGrams": 6.8,
+        "fatGrams": 0.1,
+        "saturatedFatGrams": 0,
+        "transFatGrams": 0,
+        "carbohydrateGrams": 0.2,
+        "sugarGrams": 0.2,
+        "sodiumMilligrams": 35
+      },
+      "publicInfoPath": "product-four-treasures.html",
+      "originalPhotoPath": "images/partner-products/four-treasures-front.jpg",
+      "note": "使用者於2026-10-15重傳5張原廠原圖，實際位元組對應舊圖；以最新背標核對為準。網站主圖取自使用者先前Wuji專案原廠實拍，未重畫。"
     },
     {
       "id": "partner-active-drink",
