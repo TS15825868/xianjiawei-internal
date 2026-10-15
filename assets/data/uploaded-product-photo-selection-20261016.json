@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "sourceArchive": "新增商品.zip",
+  "sourceImageCount": 25,
+  "reviewedOn": "2026-10-16",
+  "purpose": "同一商品主圖挑選、背標及內容物照片分流；原圖不重畫或變形",
+  "websiteDisplayPrinciple": "商品品名及開頭介紹以品項、規格、使用情境為主，不刻意強調製造公司；法定必要原廠或出品商標示保留於詳細資料。",
+  "imagePrinciples": {
+    "realPhotosOnly": true,
+    "aiRedrawProduct": false,
+    "ratioPreserved": true,
+    "sharpPackagingText": true,
+    "avoidGrayBlurredColor": true,
+    "sourceOriginalPreserved": true
+  },
+  "groups": [
+    {
+      "name": "參仲四物飲",
+      "websiteRecordId": "jinan-sisheng-siwuyin",
+      "mainChoice": "IMG_9934.JPG",
+      "detail": [
+        "IMG_9935.JPG"
+      ],
+      "websiteMain": "images/partner-products/jinan-siwuyin-front.jpg",
+      "liveImageUpdated": false,
+      "note": "完整包裝上方提繩在原始攝影構圖有裁切，保持現有實拍主圖，待取得完整正面照片才以去背圖替換"
+    },
+    {
+      "name": "丹參茶包系列",
+      "websiteRecordId": "danshen-tea-collection",
+      "mainChoice": "六款各用獨立真實包裝正面照片；系列卡代表圖使用玫瑰果茶",
+      "detail": [
+        "IMG_9963.JPG",
+        "IMG_9964.JPG",
+        "IMG_9965.JPG",
+        "IMG_9966.JPG",
+        "IMG_9967.JPG",
+        "IMG_9968.JPG"
+      ],
+      "physicalTeaBagImages": [
+        "IMG_9969.JPG",
+        "IMG_9970.JPG"
+      ],
+      "teaBagProductMatch": "玫瑰果茶原包裝同框；勿未核對就套用到其他五款",
+      "liveMainGroupUpdated": true,
+      "liveRearLabelsLinked": true,
+      "uploadedTeaBagSupplementUploadedToGit": false
+    },
+    {
+      "name": "二珍寶精華膏湯塊",
+      "websiteRecordId": "royalherb-erzhenbao-64",
+      "mainChoice": "現有原始紫盒實拍製成之正式主圖；IMG_9999.HEIC 為清楚外盒對照",
+      "alternateMain": "IMG_9999.HEIC",
+      "insidePhotos": [
+        "IMG_0002.HEIC",
+        "IMG_0003.HEIC",
+        "IMG_0004.HEIC",
+        "IMG_9996.HEIC"
+      ],
+      "backLabels": [
+        "IMG_0001.HEIC",
+        "IMG_9997.HEIC",
+        "IMG_9998.HEIC"
+      ],
+      "liveMainUpdated": true,
+      "uploadedInsideSupplementUploadedToGit": false
+    },
+    {
+      "name": "四珍寶精華膏湯塊",
+      "websiteRecordId": "uboss-sizhenbao",
+      "mainChoice": "現有紅盒原始實拍製成之正式主圖；IMG_9834.heic 為替代正面照",
+      "alternateMain": "IMG_9834.heic",
+      "insidePhotos": [
+        "IMG_9831.heic",
+        "IMG_9832.heic"
+      ],
+      "backLabels": [
+        "IMG_9833.heic",
+        "IMG_9835.heic"
+      ],
+      "liveMainUpdated": true,
+      "uploadedInsideSupplementUploadedToGit": false
+    },
+    {
+      "name": "龍鳳登古飲（藍色男方／粉色女方）",
+      "mainChoice": null,
+      "candidates": [
+        "IMG_0005.JPG",
+        "IMG_0006.JPG"
+      ],
+      "status": "internal-pending-specification-classification-and-public-photo-claim-review",
+      "public": false,
+      "reason": "僅有正面外盒照片且含醫事人員形象；不能由圖片推測正式規格、食品屬性或廣告可否使用。"
+    }
+  ],
+  "notCoveredByUserArchive": "龜鹿活力飲及仙加味四項原公開產品的正式主圖不在這份新增商品 ZIP；仍維持已核准圖片，不用錯誤新包裝替換。",
+  "outputArtifactLocalName": "仙加味_實拍主圖與內容物_待上站補圖_20261016.zip",
+  "nextSteps": [
+    "把新 ZIP 的盒內實拍檔安全傳入官網 GitHub 靜態素材；目前未完成，不能假稱內容物已上站",
+    "依真實照片比對四珍寶、二珍寶的內容物與品名後，追加詳細頁圖片",
+    "參仲、龜鹿活力飲需無缺角且無雜物的完整正面實體照片才換正式主圖",
+    "發布前檢查尺寸、像素、法規性質與實際批次，科學中藥粉維持不上架"
+  ]
+}
