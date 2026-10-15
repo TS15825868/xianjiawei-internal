@@ -120,5 +120,21 @@
     "玫瑰果茶茶袋原照尚未補到詳細頁，勿套到其他五款",
     "科學中藥粉與尚未核准商品維持不上架"
   ],
-  "verifiedSupplementCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
+  "verifiedSupplementCommit": "443696b9c12ec52008a88f7837b804550bb346d8",
+  "additionalVerifiedPackaging": [
+    {
+      "productId": "guilu-gao",
+      "name": "龜鹿膏100g罐身與正式外盒",
+      "scene": "https://ts15825868.github.io/xianjiawei/images/product-main/gao-packaging-v20261016/box-jar-scene.webp",
+      "original": "https://ts15825868.github.io/xianjiawei/images/product-main/gao-packaging-v20261016/box-jar-original.jpg",
+      "detailPage": "https://ts15825868.github.io/xianjiawei/product-guilu-gao.html",
+      "sourceFilename": "IMG_6137.heic",
+      "sameShotRelativeProportions": true,
+      "productRedrawn": false,
+      "role": "supplemental packaging gallery; approved primary image unchanged",
+      "websiteCommit": "540be67e18454edde90c8892e84e254de63dcea8",
+      "sourceArchive": "產品原圖&原物料(10).zip",
+      "standaloneBox": "原照為罐盒同框，本輪未虛構獨立完整側面"
+    }
+  ]
 }

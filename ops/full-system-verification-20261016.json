@@ -4,11 +4,11 @@
   "status": "partial_verified_not_all_systems_complete",
   "github": {
     "website": {
-      "sha": "bcbad74e72dc1bf1971a44fb2e6e28471192e076",
+      "sha": "540be67e18454edde90c8892e84e254de63dcea8",
       "contentCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
     },
     "line": {
-      "sha": "609a10640e3715e2a77f021dea26945e26507860",
+      "sha": "c93c89142ffd7ba08ae1ff1e607c5c6bd1ee3f21",
       "renderDeploy": "dep-db8id560tbcc738f8a0g",
       "renderStatus": "live"
     },
@@ -35,7 +35,17 @@
       "龜鹿活力飲完整原照保留，但專業去背仍未合格",
       "兩款湯塊背標原廠建議售價貼紙與宣傳用語，未公開新背標照片",
       "玫瑰果茶茶袋補照未上站"
-    ]
+    ],
+    "gaoPackaging": {
+      "found": true,
+      "galleryScenePublishedToGit": true,
+      "originalPreserved": true,
+      "productRedrawn": false,
+      "mainImageUnchanged": true
+    },
+    "detailPageImageDisclosures": 9,
+    "thisRoundQualifiedNewCompositions": 1,
+    "thisRoundGeneratedBackgrounds": 2
   },
   "lineOa": {
     "loggedInAdminVerified": true,
@@ -110,7 +120,14 @@
     "n8nLiveDeploy": "dep-dabcqri3dvoc73cobrpg",
     "n8nAppLogs": "2026-10-15T18:19Z曾啟動三項監控workflow；先前有DB逾時後恢復、runner警告",
     "currentHealth": "Render deploy顯示live，但瀏覽器健康頁未取得ready；不宣稱AI內容發布全流程通過",
-    "aiContentToPublishEndToEndVerified": false
+    "aiContentToPublishEndToEndVerified": false,
+    "resumeAfterQuota": {
+      "taskId": "6aa11cf356f88191b8786a1d04348676",
+      "enabled": true,
+      "cadence": "hourly",
+      "timezone": "Asia/Taipei",
+      "limitation": "可用額度與排程執行能力允許時下輪續作；無額度恢復即時觸發保證"
+    }
   },
   "preservation": {
     "erpCostsWholesaleInventoryCustomerHistoryUnchanged": true,
@@ -138,6 +155,9 @@
     "lineRender": "live609a106",
     "erpCloudflare13101c": "success",
     "websiteLatestPages": "2a2a63a部署success；bcbad74e僅驗收workflow變更、Pages queued",
-    "erpRuntimeDeployment": "13101c Cloudflare success；其後僅ops/docs保存不觸發正式應用部署"
+    "erpRuntimeDeployment": "13101c Cloudflare success；其後僅ops/docs保存不觸發正式應用部署",
+    "previousResponsiveAudit": "38795775327 success on bcbad74e (all approved details included)",
+    "previousLandscapeAudit": "38794685295 Chromium success; WebKit failed29 findings, details now logged by script in540be67",
+    "thisRound": "本輪Git提交成功，新部署/Actions待驗證"
   }
 }
