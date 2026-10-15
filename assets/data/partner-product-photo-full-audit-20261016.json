@@ -1,0 +1,586 @@
+{
+  "schemaVersion": 1,
+  "checkedOn": "2026-10-16",
+  "basis": {
+    "websiteMain": "bd5288decca07d8ad90ed22e77839fab3d9c0a00",
+    "lineMain": "ec1c78bccc494c3f12828fe7d9a0a26d655bff10",
+    "erpMain": "3758adf34ace6825002a05f45158e917604bd5bf",
+    "note": "Data audit from repository latest known main; visual quality requires manual examination and original photo comparison. ERP import snapshot excludes some separately added new products; missing import record does not prove absence in live D1."
+  },
+  "totals": {
+    "partnerSkuRecords": 26,
+    "publicPartnerCards": 5,
+    "groupedIndividualTeaSku": 6,
+    "internalNotPublic": 15,
+    "publicOwnProducts": 4,
+    "websiteMissingReferencedMedia": 0
+  },
+  "issues": [
+    {
+      "severity": "block-publication",
+      "scope": "new product composites",
+      "finding": "Most foreground removal results fail matte quality; do not swap any unapproved image into live site"
+    },
+    {
+      "severity": "block-publication",
+      "scope": "guilu-vitality",
+      "finding": "Previous generated cutout retains background shelves/objects; source must be carefully cleaned or retaken without changing label"
+    },
+    {
+      "severity": "review",
+      "scope": "six grouped tea variants",
+      "finding": "Group page displays product information but ERP supplier evidence and current batch compliance reviews remain pending; informational display is not permission for public advertising or checkout"
+    },
+    {
+      "severity": "review",
+      "scope": "lian-guilu",
+      "finding": "Internal item has no approved website photo/page; do not synthesize packaging or publish until verified"
+    },
+    {
+      "severity": "review",
+      "scope": "line-website dosage",
+      "finding": "30cc usage wording requires checking authoritative latest label before updating either platform; do not auto-reconcile by older static rule"
+    }
+  ],
+  "items": [
+    {
+      "id": "jinan-sisheng-siwuyin",
+      "name": "參仲四物飲",
+      "brand": "晉安",
+      "websiteStatus": "published_information_or_product",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/jinan-siwuyin-front.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jinan-siwuyin.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9934.JPG",
+        "IMG_9935.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "failed_quality_gate",
+      "photoAction": "needs_retake_or_manual_cutout",
+      "canAutoPublish": false
+    },
+    {
+      "id": "danshen-tea-collection",
+      "name": "丹參茶包系列",
+      "brand": "健逢",
+      "websiteStatus": "published_information_or_product",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/tea-rose-fruit-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-danshen-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9963.jpeg",
+        "IMG_9964.jpeg",
+        "IMG_9965.jpeg",
+        "IMG_9966.jpeg",
+        "IMG_9967.jpeg",
+        "IMG_9968.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": false,
+      "photoComposition": "failed_quality_gate",
+      "photoAction": "needs_retake_or_manual_cutout",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-rose-fruit-tea",
+      "name": "臺灣丹參玫瑰果茶",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-rose-fruit-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-rose-fruit-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9963.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-leisure-tea",
+      "name": "臺灣丹參懈悠活養生茶",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-danshen-leisure-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-leisure-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9964.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-wudahan-tea",
+      "name": "武大漢丹參茶",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-wudahan-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-wudahan-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9965.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-fiber-tea",
+      "name": "臺灣丹參纖體茶",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-danshen-lotus-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-fiber-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9966.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-white-tea",
+      "name": "臺灣白茶丹參飲",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-white-danshen-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-white-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9967.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jianfeng-refresh-tea",
+      "name": "臺灣丹參舒活茶",
+      "brand": "健逢",
+      "websiteStatus": "individual_hidden_grouped_variant",
+      "groupedIn": "danshen-tea-collection",
+      "websitePhoto": "images/partner-products/tea-danshen-refresh-front.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-jianfeng-refresh-tea.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9968.jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "original_photo_ok_as_evidence_but_background_layout_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "lian-guilu",
+      "name": "龜鹿二仙膠",
+      "brand": "立安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": null,
+      "photoPathExists": false,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9911(1).jpeg",
+        "IMG_9912(1).jpeg",
+        "IMG_9913(1).jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "guilu-vitality",
+      "name": "龜鹿活力飲（葡萄糖胺）",
+      "brand": "晉安製藥",
+      "websiteStatus": "published_information_or_product",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/jinan-vitality-front-original.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-guilu-vitality.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_8899(2).jpeg",
+        "IMG_8900(2).jpeg",
+        "IMG_8901(1).jpeg",
+        "IMG_8902(2).jpeg",
+        "IMG_8904(2).jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": false,
+      "photoComposition": "needs_manual_cleanup",
+      "photoAction": "reject_first_pass_background_clutter",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-huanshaodan",
+      "name": "還少丹",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9920.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9920.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-bushenwan",
+      "name": "補腎丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9921.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9921.JPG",
+        "IMG_9927.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-ningshenwan",
+      "name": "寧神丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9922.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9922.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinsuo-gujingwan",
+      "name": "金鎖固精丸",
+      "brand": "原廠待核對",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9923.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9923.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-jisheng-shenqi",
+      "name": "濟生腎氣丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9925.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9925.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-liuwei-dihuang",
+      "name": "六味地黃丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9929.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9929.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-fengshiwan",
+      "name": "風濕丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9931.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9931.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-guilu-erxianwan",
+      "name": "龜鹿二仙丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9939.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9939.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-zuoguiwan",
+      "name": "左歸丸",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9950.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9950.JPG",
+        "IMG_9951.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "aikang-zhisouhuatan",
+      "name": "治嗽化痰散",
+      "brand": "愛康",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9953.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9953.JPG",
+        "IMG_9954.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jingyong-combat",
+      "name": "強龍大力寶戰鬥膠囊",
+      "brand": "精勇生技",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9956.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9956.JPG",
+        "IMG_9957.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-shengxue-tiaojing",
+      "name": "生血調經丸糖衣錠",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9942.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9942.JPG",
+        "IMG_9943.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "jinan-qibao-meiran",
+      "name": "七寶美髯丹",
+      "brand": "晉安",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9946.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9946.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "brown-sugar-ume-tea",
+      "name": "黑糖仙楂烏梅茶",
+      "brand": "原廠待核對",
+      "websiteStatus": "internal_staging_not_published",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/staging/IMG_9959.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": null,
+      "pagePathExists": false,
+      "originalSourceFiles": [
+        "IMG_9959.JPG"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": true,
+      "photoComposition": "not_submitted_to_review",
+      "photoAction": "check_original_physical_product_and_approved_usage",
+      "canAutoPublish": false
+    },
+    {
+      "id": "uboss-sizhenbao",
+      "name": "四珍寶精華膏湯塊",
+      "brand": "御采堂",
+      "websiteStatus": "published_information_or_product",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/four-treasures-front.jpg",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-four-treasures.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [
+        "IMG_9831(4).jpeg",
+        "IMG_9832(4).jpeg",
+        "IMG_9833(3).jpeg",
+        "IMG_9834(3).jpeg",
+        "IMG_9835(2).jpeg"
+      ],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": false,
+      "photoComposition": "pending_visual_review",
+      "photoAction": "manual_visual_validation_pending",
+      "canAutoPublish": false
+    },
+    {
+      "id": "royalherb-erzhenbao-64",
+      "name": "二珍寶精華膏湯塊",
+      "brand": "御漢堂",
+      "websiteStatus": "published_information_or_product",
+      "groupedIn": null,
+      "websitePhoto": "images/partner-products/er-zhen-bao-royalherb-original.webp",
+      "photoPathExists": true,
+      "missingOtherPhotos": [],
+      "websiteDetailPage": "product-er-zhen-bao.html",
+      "pagePathExists": true,
+      "originalSourceFiles": [],
+      "lineCatalogRecordExists": true,
+      "erpImportRecordExists": false,
+      "photoComposition": "failed_quality_gate",
+      "photoAction": "needs_retake_or_manual_cutout",
+      "canAutoPublish": false
+    }
+  ]
+}
