@@ -5,7 +5,12 @@
     "websiteMain": "bd5288decca07d8ad90ed22e77839fab3d9c0a00",
     "lineMain": "ec1c78bccc494c3f12828fe7d9a0a26d655bff10",
     "erpMain": "3758adf34ace6825002a05f45158e917604bd5bf",
-    "note": "Data audit from repository latest known main; visual quality requires manual examination and original photo comparison. ERP import snapshot excludes some separately added new products; missing import record does not prove absence in live D1."
+    "note": "Data audit from repository latest known main; visual quality requires manual examination and original photo comparison. ERP import snapshot excludes some separately added new products; missing import record does not prove absence in live D1. Later new artifact supersedes old checked-in review manifest for automatic matte status; product images still require human inspection.",
+    "newestCandidateArtifact": {
+      "runId": 38767163295,
+      "artifactId": 11988503842,
+      "description": "2026-10-16 latest original-photo silhouette compositions saved as GitHub Actions artifact, not published"
+    }
   },
   "totals": {
     "partnerSkuRecords": 26,
@@ -13,18 +18,21 @@
     "groupedIndividualTeaSku": 6,
     "internalNotPublic": 15,
     "publicOwnProducts": 4,
-    "websiteMissingReferencedMedia": 0
+    "websiteMissingReferencedMedia": 0,
+    "latestCandidatePreviewCount": 9,
+    "latestCandidateAutomaticGateFailed": 1,
+    "humanApprovedNewMainImages": 0
   },
   "issues": [
     {
       "severity": "block-publication",
       "scope": "new product composites",
-      "finding": "Most foreground removal results fail matte quality; do not swap any unapproved image into live site"
+      "finding": "Latest artifact produced nine candidate composites pending visual approval, one failed quality gate (guilu-vitality). Candidate results are not published."
     },
     {
       "severity": "block-publication",
       "scope": "guilu-vitality",
-      "finding": "Previous generated cutout retains background shelves/objects; source must be carefully cleaned or retaken without changing label"
+      "finding": "guilu-vitality still fails alpha-edge gate; do not publish as redesigned image or repaint package; user original photo remains official display until suitable photograph/cutout passes review."
     },
     {
       "severity": "review",
@@ -60,7 +68,7 @@
       ],
       "lineCatalogRecordExists": true,
       "erpImportRecordExists": true,
-      "photoComposition": "failed_quality_gate",
+      "photoComposition": "pending_visual_review",
       "photoAction": "needs_retake_or_manual_cutout",
       "canAutoPublish": false
     },
@@ -85,7 +93,7 @@
       ],
       "lineCatalogRecordExists": true,
       "erpImportRecordExists": false,
-      "photoComposition": "failed_quality_gate",
+      "photoComposition": "pending_visual_review",
       "photoAction": "needs_retake_or_manual_cutout",
       "canAutoPublish": false
     },
@@ -251,7 +259,7 @@
       ],
       "lineCatalogRecordExists": true,
       "erpImportRecordExists": false,
-      "photoComposition": "needs_manual_cleanup",
+      "photoComposition": "failed_quality_gate",
       "photoAction": "reject_first_pass_background_clutter",
       "canAutoPublish": false
     },
@@ -578,7 +586,7 @@
       "originalSourceFiles": [],
       "lineCatalogRecordExists": true,
       "erpImportRecordExists": false,
-      "photoComposition": "failed_quality_gate",
+      "photoComposition": "pending_visual_review",
       "photoAction": "needs_retake_or_manual_cutout",
       "canAutoPublish": false
     }
