@@ -1,0 +1,84 @@
+{
+  "observedAt": "2026-10-15",
+  "verified": {
+    "line": {
+      "gitCommit": "fca5bdf146cbf3dcc06d0b2f5074b109b2aff354",
+      "renderService": "srv-d4rddeidbo4c73cabnug",
+      "latestLiveDeployment": "dep-db84ffjll67s73b5p830",
+      "liveHealthz": {
+        "ok": true,
+        "commit": "fca5bdf146cbf3dcc06d0b2f5074b109b2aff354",
+        "credentialsConfigured": true,
+        "ownerAlertConfigured": true,
+        "productCount": 4
+      },
+      "merchantFirstDoctorReferral": true,
+      "ownerAlert": "generic no-health-details, 30-minute throttle",
+      "inquiries": 25,
+      "approvedPartnerProducts": 2,
+      "customerConversationTest": "not-performed",
+      "doctorReferralRecipientAcknowledgement": "not-confirmed",
+      "testRun": "38676220450 success"
+    },
+    "website": {
+      "latestReferenceCommit": "d535a21fb3f53e8f8cdd6e6146696c9612de98b6",
+      "changes": [
+        "CTA solid red/gold and font-size adjustments",
+        "FAQ and AI catalog now include approved partner lines",
+        "supplier original-photo evidence recorded and Four Treasures pending item added"
+      ],
+      "productCatalogVersion": "2026-10-15-source-photo-evidence-review-25",
+      "totalPartnerInquiryRecords": 25,
+      "publiclyApprovedPartnerListings": 2,
+      "brandVisualSuccessRun": "38675606506",
+      "pagesDeploySuccessRun": "38676124279",
+      "outstandingLandscapeVisualRun": "38676099084 in_progress at observation",
+      "productPhotosNotYetApprovedOrCopiedToPublicSite": [
+        "IMG_9911-9913",
+        "IMG_8899-8904",
+        "IMG_9831-9835"
+      ]
+    },
+    "metricool": {
+      "queriedRange": "2026-10-01 to 2027-01-31",
+      "returnedPosts": 20,
+      "drafts": 13,
+      "approvalState": "unchanged",
+      "newPublishing": "none"
+    },
+    "n8n": {
+      "formalService": "srv-da8s2r49v7es73cefob0",
+      "currentRenderDeployment": "dep-dabcqri3dvoc73cobrpg",
+      "deploymentStatus": "live according to Render metadata",
+      "publicEndpoints": {
+        "root": 503,
+        "healthz": 503,
+        "health": 503
+      },
+      "newRenderApplicationLogsSince": "none observed after 2026-10-15T01:30:00Z",
+      "lastKnownActivatedWorkflows": [
+        "仙加味｜系統健康總監控",
+        "仙加味｜產品母資料 AI GEO 一致性檢查",
+        "仙加味｜LINE OA 健康監控"
+      ],
+      "diagnosis": "public endpoint unavailable; startup behavior not confirmed; live metadata does not imply service healthy",
+      "actionsTaken": "read-only checks, no redeployment or database mutations; protect persistent workflows/data",
+      "resolved": false
+    }
+  },
+  "remaining": [
+    "Restore/verify n8n health without losing workflows or database",
+    "Complete in-progress landscape contrast and all-browser checks",
+    "Perform live LINE OA customer-side conversation verification",
+    "Finish real original photo/media suitability and legal publication review before new partner products are public",
+    "Human approval and origin verification before scheduling/publishing Metricool drafts",
+    "Confirm doctor partnership attribution and permitted lawful sales arrangements"
+  ],
+  "rules": [
+    "Public price display remains disabled",
+    "Only approved supplier products may be publicly visible",
+    "No customer health details forwarded to doctor or owner alerts without explicit consent",
+    "Medicine items do not become purchasable simply by doctor referral"
+  ],
+  "mutationScope": "Ops verification record only; no CRM, n8n database, or publishing state modified"
+}
