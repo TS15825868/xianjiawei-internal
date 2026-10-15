@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "effectiveDate": "2026-10-16",
+  "source": "user-explicit-instruction",
+  "category": "科學中藥粉／濃縮中藥粉／科學中藥顆粒",
+  "publicationHold": true,
+  "publicSurfaces": [
+    "官網",
+    "LINE OA公開商品介紹／推薦",
+    "社群貼文",
+    "DM",
+    "自動發布"
+  ],
+  "publicListingsAllowed": false,
+  "internalERP": {
+    "preserveRecords": true,
+    "preserveCostInventoryBatchAndSupplier": true,
+    "allowIntake": true,
+    "publicationStatus": "暫不上架"
+  },
+  "exception": "鹿茸粉、食品調飲粉等不同類別不自動納入；其他藥品劑型仍遵循其獨立審查",
+  "resumeWhen": "user-explicitly-approves-after-case-review"
+}
