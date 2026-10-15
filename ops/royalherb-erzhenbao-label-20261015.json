@@ -1,0 +1,72 @@
+{
+  "evidence_version": "2026-10-15",
+  "classification": "食品（使用者提供原廠外盒明示「食品」，並由御漢堂官網列為二珍寶64片）",
+  "identifier": "PRD-PARTNER-ROYALHERB-ERZHENBAO-64",
+  "product_name": "二珍寶精華膏湯塊",
+  "front_label": "二珍寶",
+  "brand": "御漢堂 ROYALHERB",
+  "producer_from_package": "御漢堂康健股份有限公司",
+  "producer_address": "臺中市烏日區太明路211巷42號",
+  "manufacturer_factory_registration_from_package": "66-006365",
+  "factory_address_from_package": "臺中市大里區瑞城里中興路一段2巷25弄12號",
+  "country_of_origin": "臺灣",
+  "package_size": "600g±15g／盒，共64塊",
+  "individual_serving": "9.3公克，每盒64份",
+  "ingredients_in_printed_order": [
+    "全龜萃取物",
+    "馴鹿角萃取物",
+    "水",
+    "葡萄糖胺",
+    "鯊魚軟骨素"
+  ],
+  "use_on_package": "開封後加熱開水食用，或置入電鍋內加熱溶解；燉食亦可酌量增加，每日適量。",
+  "storage_on_package": "開封後請冷藏或放置陰涼處，且避免陽光直射",
+  "warnings_on_package": "嬰幼兒、孕婦、哺育母乳者，如欲食用本產品，請洽詢醫師及醫療專業人員",
+  "shelf_life": "三年",
+  "batch_date_note": "製造日期與有效日期標示於實際外盒，未由本批照片確定",
+  "photo_file_roles": [
+    {
+      "name": "IMG_9996.jpeg",
+      "role": "紫盒和兩盤共16塊照片，部分內裝實拍"
+    },
+    {
+      "name": "IMG_9997.jpeg",
+      "role": "紫盒正面"
+    },
+    {
+      "name": "IMG_9998.jpeg",
+      "role": "紫盒背標文字與營養"
+    },
+    {
+      "name": "IMG_9999.jpeg",
+      "role": "紫盒正面立放"
+    },
+    {
+      "name": "IMG_0001.jpeg",
+      "role": "紫盒背標與營養"
+    },
+    {
+      "name": "IMG_0002.jpeg",
+      "role": "紫盒打開內部兩盤16塊，僅整盒部分內裝"
+    }
+  ],
+  "nutrition_per_serving_9_3_g": {
+    "calories_kcal": 38,
+    "protein_g": 9.4,
+    "fat_g": 0,
+    "saturated_fat_g": 0,
+    "trans_fat_g": 0,
+    "carbohydrate_g": 0.1,
+    "sugars_g": 0,
+    "sodium_mg": 35
+  },
+  "packaging_suggested_retail_price_internal_only": "NT$13,800（樣品包裝貼紙，未視為仙加味目前確認售價）",
+  "insurance": "外盒標示投保產品責任險新臺幣五千萬元；未取得有效保單影本，不宣稱保證理賠",
+  "original_vendor_listing": "https://royalherb.com.tw/product/guilu-erxian-jiao-2-main-old-64-pieces/",
+  "authorized_original_photo": "https://royalherb.com.tw/wp-content/uploads/2026/08/product-guilu-erxian-jiao-2-main-64-pieces-cover-002.webp",
+  "photo_target_in_github": "images/partner-products/er-zhen-bao-royalherb-original.webp",
+  "product_differs_from": "四珍寶精華膏湯塊（紅盒，含黨蔘、枸杞、紅棗；二珍寶紫盒不含這三項）",
+  "marketing_policy": "只採用實物可核成分、食用、保存、規格等中性資料，不沿用原廠包裝上的療效宣稱與舊價；售價詢問交給仙加味LINE",
+  "publication_status": "pending-confirmed-original-photo-import-before-public-site-listing",
+  "important_note": "工廠登記字號與四珍寶有可能相同，但出品商品名、配方、外盒和圖片均獨立建檔，不可用另一款原圖"
+}
