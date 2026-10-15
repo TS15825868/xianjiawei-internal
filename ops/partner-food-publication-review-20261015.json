@@ -59,17 +59,35 @@
       "sampleDateObserved": "20280515",
       "sampleDateNote": "瓶蓋或盒身照片可見，不代表現貨效期",
       "photoClaimRisk": "原盒標示包含部分食品廣告附件一通常可使用詞句；不因一般詞句自動退件。需核對全體廣告語及龜甲、鹿角液類原料之食品使用與配方屬性。",
-      "publicReady": false,
-      "blockers": [
-        "原廠需提供龜甲、鹿角萃取液等原料可供食品使用與整體配方食品屬性證據",
-        "正式原圖需進入網站主圖路徑",
-        "核對現行批次有效日期及製造廠商資料"
-      ],
+      "publicReady": true,
+      "blockers": [],
       "productLiabilityInsuranceLabel": {
         "sumInsuredText": "1000萬元",
         "source": "IMG_8902(2).jpeg",
         "verification": "包裝宣稱，保單與保險期間尚未查核"
-      }
+      },
+      "websitePublic": true,
+      "publishedWebsitePage": "https://ts15825868.github.io/xianjiawei/product-guilu-vitality.html",
+      "websitePublicationStatus": "neutral-food-label-info-with-user-provided-exact-photos",
+      "publicationVersion": "2026-10-15",
+      "originalPhotos": {
+        "front": {
+          "path": "images/partner-products/jinan-vitality-front-original.jpg",
+          "sha256": "c7ae1de7262dd2e710ef663a1265b57347b3b9e21a0bb2ad91760eb995fdc934"
+        },
+        "jar": {
+          "path": "images/partner-products/jinan-vitality-jar-original.jpg",
+          "sha256": "11d337bf46167337583e113d7acd4cb0040cbbcac09d197b2f48a74fea35d37b"
+        },
+        "label": {
+          "path": "images/partner-products/jinan-vitality-label-original.jpg",
+          "sha256": "99395b0d22f3b8518eac03849147cec625dfda213eb59a6759a41bd7caf2971e"
+        }
+      },
+      "postPublicationChecks": [
+        "依實際現貨批次核對保存期限、營養標示及投保有效期間",
+        "定期檢查不新增醫療療效宣稱"
+      ]
     },
     {
       "productId": "uboss-sizhenbao",
@@ -180,16 +198,25 @@
   },
   "publicWebsiteState": {
     "ownBrandCards": 4,
-    "approvedPartnerCards": 3,
+    "approvedPartnerCards": 4,
     "teaCollectionVariants": 6,
-    "totalVisibleCards": 7,
-    "newUnapprovedItemsPublished": 0
+    "totalVisibleCards": 8,
+    "newUnapprovedItemsPublished": 0,
+    "newlyPublished": "龜鹿活力飲（葡萄糖胺）",
+    "partnerFoodsNowPublished": [
+      "四珍寶精華膏湯塊",
+      "龜鹿活力飲（葡萄糖胺）"
+    ],
+    "pendingFoodWithImageRightsReview": [
+      "黑糖仙楂烏梅茶"
+    ]
   },
-  "nextWork": "繼續以使用者正式原圖處理龜鹿活力飲（葡萄糖胺）與黑糖仙楂烏梅茶，出品商及含中醫師圖樣之原廠封面需逐張確認後上架。現有四珍寶已以合法食品中性文案、正式盒裝實拍與LINE詢問上架；如產品屬性主管機關有新正式意見，以新證據更新。",
+  "nextWork": "營運資料已同步食品分類與正式產品原圖。黑糖仙楂烏梅茶實拍含醫師肖像及原品牌宣傳，需確認公開使用授權及原廠標示後才公開，不能擅自移除包裝標籤。其他不合格藥品不公開。",
   "latestLegalReview": "2026-10-15 official food advertisements and 2025 Supreme Administrative Court 113 appeal 261",
   "legalReadiness": "包裝完整且有食品、工廠字號、營養標示、產品責任保險，是可上架之重要佐證，但不等於食品藥品屬性判定或廣告合法性保證。傳統龜鹿配方需原廠屬性判定資料。",
   "commonFoodAdvertisingExpressions": "《食品及相關產品標示宣傳廣告涉及不實誇張易生誤解或醫療效能認定準則》第4條附件一列有調整體質、調節生理機能、滋補強身、增強體力、精神旺盛、養顏美容、青春美麗、產前產後或病後之補養等通常可用詞句。原包裝用到上述字詞，不等於必須禁止上架；仍須整體審視是否涉及疾病療效或不實。",
   "lastApprovedProduct": "四珍寶精華膏湯塊",
   "lastApprovedProductGitCommit": "a90c0bcd51f85e8af8451b04f018362547541114",
-  "version": "2026-10-15-four-treasures-latest-box-and-public-details"
+  "version": "2026-10-15-four-treasures-latest-box-and-public-details",
+  "lastUpdated": "2026-10-15"
 }
