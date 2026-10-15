@@ -4,7 +4,7 @@
   "status": "partial_verified_not_all_systems_complete",
   "github": {
     "website": {
-      "sha": "8fa63f144a55af742ad1f737d1bc0ee16492a1c3",
+      "sha": "2a2a63a9e9d718967075f72282c9211dadba5150",
       "contentCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
     },
     "line": {
@@ -42,7 +42,20 @@
     "businessProfile": "已公開：現代漢方生活品牌、多元選擇、links.html、週一至週五10:30–20:00",
     "welcome": "已保存並重新載入驗證，移除暫緩湯塊及龜鹿膠介紹",
     "richMenu": "6個文字動作已讀取；Messaging API實際選單及客戶對話尚未完整實測",
-    "prices": "人工詢價"
+    "prices": "Git程式採人工詢價；Manager歷史回覆仍有舊價，尚未全數清除",
+    "legacyManagerReplies": {
+      "status": "not_corrected_save_failed",
+      "observed": [
+        "舊1800元價格",
+        "TaiShing舊網址",
+        "台興山產公開稱呼",
+        "暫緩龜鹿膠介紹與舊食用方式"
+      ],
+      "rowEnableState": "價格與容量編輯頁顯示啟用按鈕，不能把系統使用中橫幅視為每筆都已啟用；未變更啟用狀態",
+      "saveAttempts": 2,
+      "lastError": "無法儲存",
+      "attemptedReplacementNotPersisted": true
+    }
   },
   "publishing": {
     "liveUiVerified": true,
@@ -81,7 +94,12 @@
       "blocker": "Google異常流量攔截，未繞過"
     },
     "lineVoom": {
-      "verified": false
+      "verified": false,
+      "status": "service_ended",
+      "officialNotice": "https://help.line.me/line/smartphone/sp?contentId=200000301&lang=zh-Hant",
+      "endedAt": "2026-09-30T10:00:00+08:00",
+      "studioHistoricalTrialPricesObserved": true,
+      "changed": false
     }
   },
   "automation": {
@@ -91,7 +109,7 @@
     "n8nService": "xianjiawei-n8n-longterm",
     "n8nLiveDeploy": "dep-dabcqri3dvoc73cobrpg",
     "n8nAppLogs": "2026-10-15T18:19Z曾啟動三項監控workflow；先前有DB逾時後恢復、runner警告",
-    "currentHealth": "Render cold-start interstitial, no ready response verified",
+    "currentHealth": "Render deploy顯示live，但瀏覽器健康頁未取得ready；不宣稱AI內容發布全流程通過",
     "aiContentToPublishEndToEndVerified": false
   },
   "preservation": {
@@ -106,6 +124,18 @@
     "完成兩項主圖去背並實際視覺驗收",
     "IG舊價格圖需可封存介面；勿以文字已修改宣稱舊圖消失",
     "Google商家通過瀏覽限制後再驗收",
-    "n8n健康及AI產文產圖排程發布回寫完整流程仍需驗證"
-  ]
+    "n8n健康及AI產文產圖排程發布回寫完整流程仍需驗證",
+    "LINE Manager舊回覆儲存失敗2次，未變更正式內容；下次只接此缺口，勿誤報已清除",
+    "LINE VOOM官方已停服，不再作為可正常排程發布的平台"
+  ],
+  "validation": {
+    "websiteCatalogLinksAssets": "success",
+    "websiteBrandChromeSafari": "success",
+    "websitePages8fa63f": "success",
+    "responsiveAudit": "舊run失敗原因為4款主圖仍期待JPG及品牌商品表預期固定4；已改讀現行媒體與合併公開名單，修正commit 2a2a63a，待新run結果",
+    "landscapeAudit": "CSS舊版本等待已改雜湊比較；實際視覺測試仍執行中",
+    "lineThreeVerifiersAndPages": "success",
+    "lineRender": "live609a106",
+    "erpCloudflare13101c": "success"
+  }
 }
