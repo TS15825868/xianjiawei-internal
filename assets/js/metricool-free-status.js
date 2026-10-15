@@ -5,7 +5,7 @@
     if(loaded)return;loaded=true;
     const box=document.createElement('section');box.id='metricoolFreeStatus';box.className='xjw-warning';box.style.cssText='margin:16px;padding:16px;max-width:100%;overflow-wrap:anywhere';
     const title=document.createElement('strong');title.textContent='免費排程與發布紀錄';box.append(title);
-    const note=document.createElement('p');note.textContent='人工核准或完整證據AI核准後，仍需Work送入排程。Metricool每月20次發布，三平台各計一次；結果未查證時不標記成功。';box.append(note);
+    const note=document.createElement('p');note.textContent='AI 預審後仍須使用者人工核准，才可由 Work 送入排程。Metricool每月20次發布，三平台各計一次；結果未查證時不標記成功。';box.append(note);
     (document.querySelector('main')||document.body).append(box);
     const button=document.createElement('button');button.type='button';button.className='btn';button.textContent='重新讀取狀態';box.append(button);
     const list=document.createElement('div');list.setAttribute('aria-live','polite');box.append(list);
