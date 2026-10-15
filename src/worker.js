@@ -213,9 +213,10 @@ async function publishNow(request,env,profile,id){
   return json({ok:true,partially_published:Boolean(result.manual_required),manual_required:Boolean(result.manual_required),id,status:after?.status||'published',message:result.manual_required?'自動平台已完成；LINE VOOM 仍需人工發布。':'立即發布完成。',result});
 }
 
-async function overview(env){
-  const modules={};
-  for(const module of MODULES){const row=await env.DB.prepare("SELECT COUNT(*) AS count FROM app_records WHERE module=? AND archived=0").bind(module).first();modules[module]=Number(row?.count||0);}
+export async function overview(env){
+  const modules=Object.fromEntries(Array.from(MODULES,module=>[module,0]));
+  const moduleCounts=await env.DB.prepare("SELECT module,COUNT(*) AS count FROM app_records WHERE archived=0 GROUP BY module").all();
+  for(const row of moduleCounts.results||[]){if(Object.hasOwn(modules,row.module))modules[row.module]=Number(row.count||0);}
   const result=await env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting FROM social_posts WHERE status<>'archived' GROUP BY status").all();
   const posts={draft:0,pending_review:0,approved:0,ai_pending:0,human_approved:0,scheduled:0,published:0};
   for(const row of result.results||[]){posts[row.status]=Number(row.count||0);if(row.status==='approved')posts.ai_pending=Number(row.ai_review_waiting||0);}
