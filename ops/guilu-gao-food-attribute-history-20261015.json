@@ -1,0 +1,70 @@
+{
+  "version": "2026-10-15-historical-food-approval-and-guilu-comparison",
+  "product": {
+    "id": "guilu-gao",
+    "brand": "仙加味",
+    "name": "龜鹿膏",
+    "size": "100g／罐",
+    "ingredientsInApprovedPublicOrder": [
+      "鹿角萃取物",
+      "龜板萃取物",
+      "枸杞",
+      "紅棗",
+      "黃耆",
+      "粉光蔘"
+    ],
+    "currentPublicCategory": "食品",
+    "formalMainProductPublic": true
+  },
+  "historicalFoodOfficialLetter": {
+    "claim": "使用者明確告知此六味配方早年曾取得衛生署『衛署食字』核准函",
+    "claimSource": "user-confirmed 2026-10-15",
+    "documentId": null,
+    "issueDate": null,
+    "formalApplicant": null,
+    "fileScanReceived": false,
+    "documentationStatus": "historical-letter-claimed-awaiting-original-verification",
+    "publicLicenseClaimsAllowed": false,
+    "note": "不可因尚未找到舊公文即把已公開食品產品誤改藥品；若對外公開歷史核准沿革，應先取得公文原件核對字號與適用範圍，歷史函文不代表任何新商品自動被核准"
+  },
+  "comparison": {
+    "officialHistoricalChinesePatentCoreIngredients": [
+      "龜板",
+      "鹿角",
+      "人參",
+      "枸杞子"
+    ],
+    "productLabelIngredients": [
+      "鹿角萃取物",
+      "龜板萃取物",
+      "枸杞",
+      "紅棗",
+      "黃耆",
+      "粉光蔘"
+    ],
+    "importantDistinctions": [
+      "粉光蔘係西洋參常用稱呼，與龜鹿二仙膠經典成方所列人參不可僅因『參』字而視為相同",
+      "龜板萃取物、鹿角萃取物及其他原料之食用合法性應依各產品實際原料部位、製法與現行規範確認",
+      "使用者表示龜鹿膏原有衛署食字核准紀錄，是重要既有個案證據，應與一般配方推定分開管理"
+    ],
+    "notAllowedInference": "固有四味全部相同後加材料而形成加方，不能因此自動改作食品；少一味或替換也非任何情況都保證是食品"
+  },
+  "judicialPrecedent": {
+    "title": "最高行政法院113年度上字第261號判決",
+    "date": "2025-12-26",
+    "url": "https://judgment.judicial.gov.tw/FJUD/printData.aspx?id=TPAA%2C113%2C%E4%B8%8A%2C261%2C20251226%2C1",
+    "finding": "含原固有成方四味龜鹿人參枸杞，再加黃耆、茯苓之產品，該個案經認定涉及固有成方加方、依藥品管理；不應把食品品名原則當成豁免"
+  },
+  "foodLabelGuidance": {
+    "title": "食品品名標示原則",
+    "url": "https://foodlabel.fda.gov.tw/FdaFrontEndApp/Law/Edit?SystemId=6bcc94c8-6d64-4950-beb6-fa474e9da8f0",
+    "note": "符合條件的衍生品名規範 ≠ 每件含中藥原料的配方當然都是食品"
+  },
+  "operationalRules": [
+    "官網龜鹿膏保留現行正式食品商品與真實產品圖片",
+    "ERP紀錄歷史核准存在之使用者主張和原件未核實兩種不同事實",
+    "藥廠可按規範兼製食品；不可只看GMP字樣把食品改認為藥品",
+    "其他廠商三款由使用者確認以食品販售，維持食品類別並逐品確認包裝與原料",
+    "仙加味官方LINE先承接價格、供貨與一般食品購買，個別疾病用藥適用性轉專業醫師"
+  ]
+}
