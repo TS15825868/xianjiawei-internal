@@ -105,7 +105,7 @@ async function dashboard(){
   const posts=data?.posts||{}; const modules=data?.modules||{};
   const metrics=[
     ['待審貼文',Number(posts.draft||0)+Number(posts.pending_review||0),'posts'],
-    ['已核准',Number(posts.approved||0),'posts'],['已排程',Number(posts.scheduled||0),'calendar'],
+    ['AI 預審待人工',Number(posts.ai_pending||0),'posts'],['人工已核准',Number(posts.human_approved||0),'posts'],['已排程',Number(posts.scheduled||0),'calendar'],
     ['產品',Number(modules.products||0),'products'],['庫存項目',Number(modules.inventory||0),'inventory'],['訂單',Number(modules.orders||0),'orders']
   ];
   $('#app').innerHTML=`
