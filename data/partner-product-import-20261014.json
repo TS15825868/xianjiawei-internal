@@ -27,7 +27,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/jinan-siwuyin-label.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/jinan-sisheng-siwuyin-main.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/siwuyin-real-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-ROSE",
@@ -75,7 +80,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-rose-fruit-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-rose-fruit-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-rose-fruit-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-TEA",
@@ -123,7 +134,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-leisure-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-leisure-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-leisure-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WUDAHAN",
@@ -171,7 +188,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-wudahan-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-wudahan-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-wudahan-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-LOTUS",
@@ -219,7 +242,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-fiber-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-fiber-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-fiber-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-WHITE",
@@ -267,7 +296,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-white-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-white-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-white-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JIANFENG-REFRESH",
@@ -315,7 +350,13 @@
       "specification",
       "original_product_image"
     ],
-    "internal_sku_retention": true
+    "internal_sku_retention": true,
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-refresh-box-detail.webp",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/tea-refresh-box-detail.webp",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-refresh-label-detail.webp"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-LIAN-GUILU",
@@ -376,7 +417,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9920.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-BUSHENWAN",
@@ -403,7 +447,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9927.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9921.jpg",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9927.jpg"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-NINGSHENWAN",
@@ -426,7 +475,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9922.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINSUO-GUJINGWAN",
@@ -449,7 +501,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9923.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-JISHENG-SHENQI",
@@ -472,7 +527,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9925.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-LIUWEI-DIHUANG",
@@ -495,7 +553,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9929.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-FENGSHIWAN",
@@ -518,7 +579,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9931.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-GUILU-ERXIANWAN",
@@ -541,7 +605,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9939.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-ZUOGUIWAN",
@@ -570,7 +637,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9951.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9950.jpg",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9951.jpg"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-AIKANG-ZHISOUHUATAN",
@@ -599,7 +671,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9954.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9953.jpg",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9954.jpg"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINGYONG-COMBAT",
@@ -627,7 +704,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9957.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9956.jpg",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9957.jpg"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-SHENGXUE-TIAOJING",
@@ -658,7 +740,12 @@
     },
     "additional_product_images": [
       "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9943.jpg"
-    ]
+    ],
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9942.jpg",
+    "approved_detail_image_urls": [
+      "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9943.jpg"
+    ],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-JINAN-QIBAO-MEIRAN",
@@ -684,7 +771,10 @@
       "productLabelMatched": true,
       "publicPromotionAllowed": false,
       "notes": "網站使用等比例真實商品照片；公開宣傳與交易權限依商品本身另行審查"
-    }
+    },
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9946.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   },
   {
     "id": "PRD-PARTNER-BROWN-SUGAR-UME-TEA",
@@ -713,6 +803,9 @@
     },
     "storage": "請保存於陰涼乾燥處，避免陽光直射、高溫與潮濕環境",
     "notices": "內含仙楂；孕婦、芒果、蜂蜜、堅果類及其製品、食物過敏者請留意；無法從現有照片確認沖泡方式，公開狀態仍待核對",
-    "source_photo_review": "IMG_9959包裝標示：每份20g，本包裝含10份；袋身有醫師形象，公開圖片及宣傳資格須另審，不擅自抹除標示"
+    "source_photo_review": "IMG_9959包裝標示：每份20g，本包裝含10份；袋身有醫師形象，公開圖片及宣傳資格須另審，不擅自抹除標示",
+    "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9959.jpg",
+    "approved_detail_image_urls": [],
+    "display_media_version": "20261016-calm-catalog-v1"
   }
 ]
