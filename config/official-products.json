@@ -2,7 +2,7 @@
   "version": "2026-10-08-four-active-public-products-retired-jiao-tangkuai",
   "authority": "user-confirmed-current",
   "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json",
-  "visualAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/data/formal-media-authority-v20260810.json",
+  "visualAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/data/product-media-authority.json",
   "rule": "目前僅公開龜鹿膏、龜鹿飲30cc玻璃罐、龜鹿飲180cc鋁袋與鹿茸粉。龜鹿膠與龜鹿湯塊停止對外展示／推薦／報價，歷史ERP紀錄保留。",
   "products": [
     {
@@ -16,6 +16,10 @@
         "紅棗",
         "黃耆",
         "粉光蔘"
+      ],
+      "approvedProductImage": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/guilu-gao-main.webp",
+      "approvedDetailImages": [
+        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-gao-box-jar-detail.webp"
       ]
     },
     {
@@ -24,7 +28,17 @@
       "spec": "30cc／罐（小玻璃罐）",
       "usage": "每日 1–2 罐；可依個人需求調整；飲用時間可依個人使用習慣與作息時間安排",
       "ingredients": [
-        "水","鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"
+        "水",
+        "鹿角萃取物",
+        "龜板萃取物",
+        "枸杞",
+        "紅棗",
+        "黃耆",
+        "粉光蔘"
+      ],
+      "approvedProductImage": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/guilu-drink-30-main.webp",
+      "approvedDetailImages": [
+        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-30-closed-detail.webp"
       ]
     },
     {
@@ -33,7 +47,17 @@
       "spec": "180cc／包（鋁袋）",
       "usage": "每日一包；飲用時間可依個人使用習慣與作息時間安排",
       "ingredients": [
-        "水","鹿角萃取物","龜板萃取物","枸杞","紅棗","黃耆","粉光蔘"
+        "水",
+        "鹿角萃取物",
+        "龜板萃取物",
+        "枸杞",
+        "紅棗",
+        "黃耆",
+        "粉光蔘"
+      ],
+      "approvedProductImage": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/guilu-drink-180-main.webp",
+      "approvedDetailImages": [
+        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-180-closed-detail.webp"
       ]
     },
     {
@@ -42,6 +66,10 @@
       "spec": "75g／罐",
       "ingredients": [
         "鹿茸"
+      ],
+      "approvedProductImage": "https://ts15825868.github.io/xianjiawei/images/catalog-calm-v20261016/luerong-fen-main.webp",
+      "approvedDetailImages": [
+        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/luerong-fen-closed-detail.webp"
       ]
     }
   ],
@@ -66,8 +94,8 @@
     "luerongFen": "75g／罐；正式原圖等比例"
   },
   "mediaRoles": {
-    "product": "官網目前六張customer-display正式顧客產品圖",
-    "dm": "官網目前images/dm-final六張高解析正式詳細DM",
+    "product": "以官網目前公開商品清單與產品媒體權威為準；20261016-calm-catalog-v2實拍主圖",
+    "dm": "原DM歷史素材保留；商品詳細頁使用目前核准實拍展示、內容物及原廠標示照片",
     "trial": "images/trial/trial-poster-small-boss-official-v20260814.jpg",
     "identityReference": "images/products-v3/真實產品身份、包裝與比例校正參考",
     "rule": "一般產品圖、詳細DM、試喝海報與products-v3身份參考四種角色分離，不得互相取代；產品本體不得AI重畫或變形"
