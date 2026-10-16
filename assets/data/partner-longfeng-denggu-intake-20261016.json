@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-16",
+  "recordType": "partner-original-packaging-intake",
+  "brand": "仙加味",
+  "productGroupId": "longfeng-denggu",
+  "productName": "龍鳳登古飲",
+  "salesStatus": "pending-full-label-and-photo-qa",
+  "public": false,
+  "onlineTransactionEligible": false,
+  "brandManufacturer": "not-verified-from-front-package",
+  "source": "2026-10-16 customer-provided unaltered package front photos",
+  "mediaSourceRepo": "TS15825868/xianjiawei",
+  "mediaRefBranch": "main",
+  "variants": [
+    {
+      "id": "longfeng-denggu-male-blue",
+      "displayName": "龍鳳登古飲・男方",
+      "packagingColor": "藍色",
+      "frontPackage": "12入",
+      "imageCandidate": "images/partner-products/longfeng-denggu-review-v20261016-v2/male-blue-main-candidate.webp",
+      "original": "images/partner-products/longfeng-denggu-review-v20261016-v2/male-blue-source.jpg",
+      "originalSha256": "3ed508ffb6b5f9627485477c868d88a55c8b58af85a0f4284c3e38b1c9a3e4d8",
+      "ingredients": null,
+      "usage": null,
+      "storage": null,
+      "manufacturer": null,
+      "contentPerUnit": null
+    },
+    {
+      "id": "longfeng-denggu-female-pink",
+      "displayName": "龍鳳登古飲・女方",
+      "packagingColor": "粉紅色",
+      "frontPackage": "12入",
+      "imageCandidate": "images/partner-products/longfeng-denggu-review-v20261016-v2/female-pink-main-candidate.webp",
+      "original": "images/partner-products/longfeng-denggu-review-v20261016-v2/female-pink-source.jpg",
+      "originalSha256": "7d4fb9caacbb2fafe2981f6dada7c22ae9ded7b18e2f3be083b08d053eace6b8",
+      "ingredients": null,
+      "usage": null,
+      "storage": null,
+      "manufacturer": null,
+      "contentPerUnit": null
+    }
+  ],
+  "notes": [
+    "產品為男方與女方兩種不同原廠盒裝，不能合成單一虛構包裝",
+    "僅依原廠正面盒照辨識外觀及12入，不推測容量、成分、用法或製造者",
+    "待使用者後續提供完整背標後核對並決定公開資訊",
+    "候選圖去背繩子與右側邊緣需完成視覺驗收才能正式替換",
+    "價格僅內部及 LINE 人工回覆，公開不顯示價錢"
+  ],
+  "deletionsAllowed": false
+}
