@@ -136,5 +136,36 @@
       "sourceArchive": "產品原圖&原物料(10).zip",
       "standaloneBox": "原照為罐盒同框，本輪未虛構獨立完整側面"
     }
-  ]
+  ],
+  "verifiedSceneRelease": {
+    "websiteContentCommit": "1bd54facf3fa9c940f1e819f65777e27348e57ae",
+    "version": "20261016-real-pixel-scenes-v2",
+    "newScenePhotos": 12,
+    "originalProductPixelsRetained": true,
+    "reusedExistingCutouts": 8,
+    "mainImageMapping": {
+      "images/partner-products/site-hero-v20261016/tea-rose-fruit-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-rose-fruit-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/tea-danshen-leisure-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-danshen-leisure-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/tea-wudahan-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-wudahan-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/tea-danshen-lotus-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-danshen-lotus-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/tea-white-danshen-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-white-danshen-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/tea-danshen-refresh-front-cutout.webp": "images/partner-products/scenes-v20261016/tea-danshen-refresh-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/four-treasures-front-cutout.webp": "images/partner-products/scenes-v20261016/four-treasures-front-scene.webp",
+      "images/partner-products/site-hero-v20261016/er-zhen-bao-royalherb-original-cutout.webp": "images/partner-products/scenes-v20261016/er-zhen-bao-royalherb-original-scene.webp",
+      "images/partner-products/jinan-vitality-front-original.jpg": "images/partner-products/scenes-v20261016/vitality-jar-scene.webp"
+    },
+    "manifestUrl": "https://ts15825868.github.io/xianjiawei/data/verified-product-scenes-v20261016.json",
+    "unresolved": [
+      {
+        "id": "jinan-sisheng-siwuyin",
+        "scope": "front gift box and full handle",
+        "reason": "Both original front views crop the handle or box edge. Existing front source retained; no missing part invented."
+      },
+      {
+        "id": "guilu-vitality",
+        "scope": "complete gift box front",
+        "reason": "Original box front clipped at image edges. Complete real jar used for main, original gift box remains accessible."
+      }
+    ]
+  }
 }
