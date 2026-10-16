@@ -1,19 +1,20 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-10-16T07:56:00+08:00",
+  "observedAt": "2026-10-16T12:00:00+08:00",
   "status": "partial_verified_not_all_systems_complete",
   "github": {
     "website": {
-      "sha": "540be67e18454edde90c8892e84e254de63dcea8",
-      "contentCommit": "443696b9c12ec52008a88f7837b804550bb346d8"
+      "sha": "33ce55111de2e353fb77d7225452d84ae8df635b",
+      "contentCommit": "1bd54facf3fa9c940f1e819f65777e27348e57ae"
     },
     "line": {
       "sha": "c93c89142ffd7ba08ae1ff1e607c5c6bd1ee3f21",
       "renderDeploy": "dep-db8ja8flk1mc739bgcb0",
-      "renderStatus": "live"
+      "renderStatus": "live",
+      "imageSyncCommit": "c2f5f04a26df1e16685d3ee15648a1d396cc4d82"
     },
     "erp": {
-      "productPhotoIndexCommit": "13101c1a29bab2c460252b8bcd2dcf8a68505def",
+      "productPhotoIndexCommit": "70b6a0a4fd0adb16e3d745f15b911016c100bb72",
       "cloudflareDeploy": "success",
       "latestMain": "532ccd7b22fc8a4abdd264fd59873887fad18b77",
       "cloudflareVersion": "b51ab349-4ff1-4095-adec-d5d0fd1b75bd"
@@ -29,14 +30,14 @@
     "newPhotoDerivatives": 3,
     "originalPhotoRetouch": false,
     "newOriginalLabelViewers": 6,
-    "damagedVitalityMatteReplacedWithFullSourcePhoto": true,
+    "damagedVitalityMatteReplacedWithFullSourcePhoto": false,
     "qualifiedNewAIGeneratedImages": 0,
     "allProductBackgroundCleanupComplete": false,
     "pending": [
-      "參仲原始提繩缺角，無完整來源不能補畫",
-      "龜鹿活力飲完整原照保留，但專業去背仍未合格",
-      "兩款湯塊背標原廠建議售價貼紙與宣傳用語，未公開新背標照片",
-      "玫瑰果茶茶袋補照未上站"
+      "參仲四物飲完整正面含提繩：現有兩張原圖分別缺提繩或盒側，不補畫缺失部位",
+      "龜鹿活力飲完整禮盒正面：原圖裁斷盒緣，已用完整實拍玻璃罐作主圖",
+      "湯塊分盤補照保留完整原照與統一容器，尚未全部精準去背",
+      "兩款湯塊背標包含原廠建議售價，不公開價格照片"
     ],
     "gaoPackaging": {
       "found": true,
@@ -46,8 +47,19 @@
       "mainImageUnchanged": true
     },
     "detailPageImageDisclosures": 9,
-    "thisRoundQualifiedNewCompositions": 1,
-    "thisRoundGeneratedBackgrounds": 2
+    "thisRoundQualifiedNewCompositions": 12,
+    "thisRoundGeneratedBackgrounds": 2,
+    "realPixelSceneRelease": {
+      "newCompositions": 12,
+      "reusedApprovedCutouts": 8,
+      "manifest": "xianjiawei/data/verified-product-scenes-v20261016.json",
+      "publicCards": 9,
+      "mainCardModalDetailConsistent": true,
+      "liveVitalityMainVerified": true,
+      "roseTeabagPublished": true,
+      "sourcePixelsPreserved": true,
+      "publicStatusChanged": false
+    }
   },
   "lineOa": {
     "loggedInAdminVerified": true,
@@ -139,7 +151,7 @@
     "oldZipOverwrites": false
   },
   "followup": [
-    "完成兩項主圖去背並實際視覺驗收",
+    "只續作缺完整原圖的兩款禮盒與分盤補照；12張新圖已上站，不重做。",
     "IG舊價格圖需可封存介面；勿以文字已修改宣稱舊圖消失",
     "Google商家通過瀏覽限制後再驗收",
     "n8n健康及AI產文產圖排程發布回寫完整流程仍需驗證",
@@ -160,6 +172,20 @@
     "previousResponsiveAudit": "38795775327 success on bcbad74e (all approved details included)",
     "previousLandscapeAudit": "38794685295 Chromium success; WebKit failed29 findings, details now logged by script in540be67",
     "thisRound": "完成原待定Actions與最新平台部署驗證；沒有生成新商品圖、沒有更動商品公開資格、沒有社群核准或發布。",
-    "erpCloudflare": "38800901985 success on 532ccd7b；remote D1 SELECT 1成功，Cloudflare Worker version b51ab349-4ff1-4095-adec-d5d0fd1b75bd；Access登入後本文仍待驗證。"
+    "erpCloudflare": "38800901985 success on 532ccd7b；remote D1 SELECT 1成功，Cloudflare Worker version b51ab349-4ff1-4095-adec-d5d0fd1b75bd；Access登入後本文仍待驗證。",
+    "imageRelease20261016": {
+      "websitePages": "38844610138 success",
+      "catalog": "38844611275 success",
+      "entry": "38844611305 success",
+      "assets": "38844555497 success",
+      "line": "38844761173 and 38844761106 success; Pages38844760410 success",
+      "erp": "38844762495 success",
+      "visual": [
+        "38844555592 in_progress",
+        "38844555564 in_progress",
+        "38844555468 in_progress"
+      ],
+      "local": "12 WebP full decode 1122x1402; JSON and JSON-LD parsed; source originals retained"
+    }
   }
 }
