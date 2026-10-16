@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-16",
+  "scope": "ERP internal product image link ledger; do not overwrite stock/costs or hidden medicine records",
+  "brand": "仙加味",
+  "websiteRepo": "TS15825868/xianjiawei",
+  "lineRepo": "TS15825868/TS-LINE",
+  "siteBranch": "main",
+  "lineBranch": "main",
+  "version": "20261016-real-physical-packaging-main-v3",
+  "publicProductCount": 9,
+  "publicAssets": [
+    {
+      "id": "guilu-gao",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/guilu-gao-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "guilu-drink-30",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/guilu-drink-30-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "guilu-drink-180",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/guilu-drink-180-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "luerong-fen",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/luerong-fen-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "fully sealed original jar only",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "jinan-sisheng-siwuyin",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/jinan-sisheng-siwuyin-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "danshen-tea-collection",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/danshen-tea-collection-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "guilu-vitality",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/guilu-vitality-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "needs extra alpha-edge visual inspection"
+    },
+    {
+      "id": "uboss-sizhenbao",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/uboss-sizhenbao-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    },
+    {
+      "id": "royalherb-erzhenbao-64",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-real-v20261016/royalherb-erzhenbao-64-main.webp?v=20261016-real-physical-packaging-main-v3",
+      "imageOrigin": "physical-source photograph (not AI drawing)",
+      "displayRole": "complete-box-first-except-original-bare-container",
+      "detailRole": "original item, inner packaging or original label in detail gallery",
+      "review": "pending final live device verification"
+    }
+  ],
+  "hiddenProductPolicy": "Non-public medicine, deferred brand products and incomplete original packaging remain internal; do not auto-list or invent products",
+  "noAiRepaint": true,
+  "officialPackagingFirst": true,
+  "internalContentsPhotosPreserved": true,
+  "noRetailPriceInPublicImage": true,
+  "allowNoOuterCartonFor": "30cc bare glass jar, 180cc foil pouch, 75g deer antler powder sealed jar",
+  "status": "public main references committed to website and LINE source; production Pages / LINE service / manual photo edge validation requires confirmation"
+}
