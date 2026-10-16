@@ -1,9 +1,9 @@
 {
-  "version": "2026-10-08-four-active-public-products-retired-jiao-tangkuai",
+  "version": "2026-10-17-dynamic-public-product-sources",
   "authority": "user-confirmed-current",
   "publicAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json",
   "visualAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/data/product-media-authority.json",
-  "rule": "目前僅公開龜鹿膏、龜鹿飲30cc玻璃罐、龜鹿飲180cc鋁袋與鹿茸粉。龜鹿膠與龜鹿湯塊停止對外展示／推薦／報價，歷史ERP紀錄保留。",
+  "rule": "公開商品名單必須即時合併 public-product-master.json 的 products 與 partner-catalog.json 中 public=true 的紀錄；不得固定為四項、六項、九項或其他永久數量。未核准商品不公開，暫緩商品不得由舊資料重新啟用。",
   "products": [
     {
       "id": "guilu-gao",
@@ -101,7 +101,8 @@
     "rule": "一般產品圖、詳細DM、試喝海報與products-v3身份參考四種角色分離，不得互相取代；產品本體不得AI重畫或變形"
   },
   "guardRules": [
-    "對外內容只允許products六項正式產品；deferredInternalProducts只可留在ERP內部",
+    "對外商品名單必須由publicAuthority products與partnerAuthority中public=true紀錄動態合併，不得以歷史固定數量限制新增合格商品",
+    "partnerAuthority中public不為true的商品不得公開；暫緩商品不得由舊資料重新啟用",
     "龜鹿湯塊主規格只顯示75g／盒｜8塊裝；每塊約9.375g只放詳細資料",
     "龜鹿膠主規格只顯示600g （1斤）／盒｜32塊裝；每塊約18.75g只放詳細資料",
     "龜鹿膠與龜鹿湯塊不得互換規格或包裝",
@@ -112,5 +113,22 @@
     "試喝類只使用目前正式試喝主圖，不得回退舊圖",
     "產品圖、DM圖、試喝圖必須分開",
     "守門依目前最新權威與功能能力驗收，不綁歷史版號、舊檔名或退役圖片"
-  ]
+  ],
+  "partnerAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/partner-catalog.json",
+  "productSources": {
+    "brandProducts": {
+      "url": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json",
+      "selector": "products[]",
+      "role": "仙加味品牌目前核准公開商品"
+    },
+    "partnerProducts": {
+      "url": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/partner-catalog.json",
+      "selector": "products[public === true]",
+      "role": "其他品牌目前核准公開商品；保留原廠品牌、名稱、規格與正式圖片"
+    },
+    "mergeKey": "id",
+    "countPolicy": "dynamic-no-hard-coded-limit",
+    "refreshPolicy": "read-latest-main-before-content-generation-and-review"
+  },
+  "productsRole": "仙加味品牌商品鏡像；完整公開商品名單尚須動態合併 partnerAuthority 的 public=true 紀錄。"
 }
