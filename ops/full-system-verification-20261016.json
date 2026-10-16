@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-10-16",
+  "observedAt": "2026-10-16T07:56:00+08:00",
   "status": "partial_verified_not_all_systems_complete",
   "github": {
     "website": {
@@ -9,12 +9,14 @@
     },
     "line": {
       "sha": "c93c89142ffd7ba08ae1ff1e607c5c6bd1ee3f21",
-      "renderDeploy": "dep-db8id560tbcc738f8a0g",
+      "renderDeploy": "dep-db8ja8flk1mc739bgcb0",
       "renderStatus": "live"
     },
     "erp": {
       "productPhotoIndexCommit": "13101c1a29bab2c460252b8bcd2dcf8a68505def",
-      "cloudflareDeploy": "success"
+      "cloudflareDeploy": "success",
+      "latestMain": "532ccd7b22fc8a4abdd264fd59873887fad18b77",
+      "cloudflareVersion": "b51ab349-4ff1-4095-adec-d5d0fd1b75bd"
     }
   },
   "publicCatalog": {
@@ -119,7 +121,7 @@
     "n8nService": "xianjiawei-n8n-longterm",
     "n8nLiveDeploy": "dep-dabcqri3dvoc73cobrpg",
     "n8nAppLogs": "2026-10-15T18:19Z曾啟動三項監控workflow；先前有DB逾時後恢復、runner警告",
-    "currentHealth": "Render deploy顯示live，但瀏覽器健康頁未取得ready；不宣稱AI內容發布全流程通過",
+    "currentHealth": "2026-10-16 06:12台北全系統健康監控成功；正式n8n冷啟動後3個監控workflow已啟用。仍未驗證AI內容產生至人工核准、排程、發布與回寫完整流程。",
     "aiContentToPublishEndToEndVerified": false,
     "resumeAfterQuota": {
       "taskId": "6aa11cf356f88191b8786a1d04348676",
@@ -137,7 +139,6 @@
     "oldZipOverwrites": false
   },
   "followup": [
-    "最新跨裝置與山水對比Actions尚需最終結果",
     "完成兩項主圖去背並實際視覺驗收",
     "IG舊價格圖需可封存介面；勿以文字已修改宣稱舊圖消失",
     "Google商家通過瀏覽限制後再驗收",
@@ -149,15 +150,16 @@
     "websiteCatalogLinksAssets": "success",
     "websiteBrandChromeSafari": "success",
     "websitePages8fa63f": "success",
-    "responsiveAudit": "38795775327 pending於bcbad74e；已改讀現行媒體、合併公開名單並涵蓋所有核准商品詳細頁，node --check通過；舊run失敗不可當成新run通過",
-    "landscapeAudit": "CSS舊版本等待已改雜湊比較；實際視覺測試仍執行中",
+    "responsiveAudit": "38800716293 success on 540be67e；Chromium與WebKit均完成，涵蓋目前全部核准商品詳細頁。",
+    "landscapeAudit": "38800716091 success on 540be67e；部署CSS雜湊驗證與Chromium/WebKit視覺證據均通過。",
     "lineThreeVerifiersAndPages": "success",
-    "lineRender": "live609a106",
+    "lineRender": "dep-db8ja8flk1mc739bgcb0 live on c93c89142ffd7ba08ae1ff1e607c5c6bd1ee3f21",
     "erpCloudflare13101c": "success",
-    "websiteLatestPages": "2a2a63a部署success；bcbad74e僅驗收workflow變更、Pages queued",
-    "erpRuntimeDeployment": "13101c Cloudflare success；其後僅ops/docs保存不觸發正式應用部署",
+    "websiteLatestPages": "38800714248 success on 540be67e",
+    "erpRuntimeDeployment": "532ccd7b Cloudflare部署成功；Access保護保留，未把登入邊界視為登入後功能通過。",
     "previousResponsiveAudit": "38795775327 success on bcbad74e (all approved details included)",
     "previousLandscapeAudit": "38794685295 Chromium success; WebKit failed29 findings, details now logged by script in540be67",
-    "thisRound": "本輪Git提交成功，新部署/Actions待驗證"
+    "thisRound": "完成原待定Actions與最新平台部署驗證；沒有生成新商品圖、沒有更動商品公開資格、沒有社群核准或發布。",
+    "erpCloudflare": "38800901985 success on 532ccd7b；remote D1 SELECT 1成功，Cloudflare Worker version b51ab349-4ff1-4095-adec-d5d0fd1b75bd；Access登入後本文仍待驗證。"
   }
 }
