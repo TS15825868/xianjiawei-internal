@@ -1,18 +1,28 @@
 (()=>{
   'use strict';
-  const VERSION='2026-10-09-four-active-products-generation-v1';
+  const VERSION='20261017-current-brand-product-visual-policy-v2';
   const SITE='https://ts15825868.github.io/xianjiawei/';
-  const PRODUCT_IMAGE_VERSION='20260814-product-modal-media-v3';
+  const PRODUCT_IMAGE_VERSION='20261017-owner-approved-photo-main-v4';
   const STORAGE_PREFIX='xjw-regeneration:';
   const nativeFetch=window.fetch.bind(window);
   const OFFICIAL=Object.freeze({
-    '龜鹿膏100g':`${SITE}images/customer-display-v20260812/guilu-gao.avif?v=${PRODUCT_IMAGE_VERSION}`,
-    '龜鹿飲30cc玻璃罐':`${SITE}images/customer-display-v20260812/guilu-drink-30cc.avif?v=${PRODUCT_IMAGE_VERSION}`,
-    '龜鹿飲180cc鋁袋':`${SITE}images/customer-display-v20260812/guilu-drink-180cc-product.jpg?v=${PRODUCT_IMAGE_VERSION}`,
-    '鹿茸粉75g':`${SITE}images/customer-display-v20260812/luerong-fen.avif?v=${PRODUCT_IMAGE_VERSION}`
+    '龜鹿膏100g':SITE+'images/catalog-owner-final-v20261017/guilu-gao-main.webp',
+    '龜鹿飲30cc玻璃罐':SITE+'images/catalog-owner-final-v20261017/guilu-drink-30-main.webp',
+    '龜鹿飲180cc鋁袋':SITE+'images/catalog-owner-final-v20261017/guilu-drink-180-main.webp',
+    '鹿茸粉75g':SITE+'images/catalog-owner-final-v20261017/luerong-fen-main.webp',
+    '參仲四物飲':SITE+'images/catalog-owner-final-v20261017/jinan-sisheng-siwuyin-main.webp',
+    '龜鹿活力飲（葡萄糖胺）':SITE+'images/catalog-owner-final-v20261017/guilu-vitality-main.webp',
+    '四珍寶精華膏湯塊':SITE+'images/catalog-owner-final-v20261017/uboss-sizhenbao-main.webp',
+    '二珍寶精華膏湯塊':SITE+'images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp',
+    '臺灣丹參玫瑰果茶':SITE+'images/catalog-owner-final-v20261017/danshen-tea-collection-main.webp',
+    '臺灣丹參懈悠活養生茶':SITE+'images/catalog-owner-final-v20261017/tea-leisure-main.webp',
+    '武大漢丹參茶':SITE+'images/catalog-owner-final-v20261017/tea-wudahan-main.webp',
+    '臺灣丹參纖體茶':SITE+'images/catalog-owner-final-v20261017/tea-fiber-main.webp',
+    '臺灣白茶丹參飲':SITE+'images/catalog-owner-final-v20261017/tea-white-main.webp',
+    '臺灣丹參舒活茶':SITE+'images/catalog-owner-final-v20261017/tea-refresh-main.webp',
   });
-  const PRODUCT_URLS=Object.entries(OFFICIAL).map(([name,url])=>`${name}：${url}`).join('\n');
-  const HARD_RULES=`【仙加味圖片與文案唯一正式規格】\n\n一、視覺總原則\n- 每張只能是一個完整、自然、統一光影與透視的單一場景。\n- 禁止拼貼、拼版、六格、海報疊海報、卡片堆疊、產品裁片硬貼、角色裁片硬貼、黑色補位、不同畫風素材混搭。\n- 不為了塞版面把多個產品強制做成一樣大；沒有可信相對尺寸時改成單品構圖。\n- 圖片與文案的季節、天氣、地點、場合、環境、冷熱、表情、動作必須一致。\n\n二、產品本體\n- AI絕對不得重畫、改造、補畫、變形仙加味產品。\n- 一般產品主題優先使用下列目前核准customer-display正式產品圖，完整等比例呈現，不裁切、不拉寬、不拉高、不改標籤、不改包裝；products-v3只作真實產品身份、包裝與比例校正參考。\n${PRODUCT_URLS}\n- 明確「DM／詳細DM」主題才使用官網目前images/dm-final正式詳細DM；試喝主題固定使用images/trial/trial-poster-small-boss-official-v20260814.jpg。\n- 若文案提到實物產品，必須使用正式原圖自然合成並檢查標籤、比例；做不到就維持草稿等待重製，不得用AI虛構包裝或無產品圖片冒充正式合格圖。\n- 多產品同框若無法維持真實比例，拆成不同貼文，不做拼貼式全系列。\n\n三、目前對外產品只有四項\n1. 龜鹿膏：100g／罐。\n2. 龜鹿飲30cc玻璃罐：30cc／罐（小玻璃罐）。\n3. 龜鹿飲180cc鋁袋：180cc／包（鋁袋）。\n4. 鹿茸粉：75g／罐。\n- 龜鹿湯塊與龜鹿膠已下架，不得加入公開貼文、產品推薦或圖片；ERP歷史資料保留。\n不得新增、猜測或沿用舊規格。\n\n四、產品比例硬規則\n- 30cc：小玻璃裸罐、無貼紙；約Ø42×H51mm；不可叫瓶、不可改罐型或比例、不可放大成100g罐大小。\n- 100g龜鹿膏：約寬51×高78mm；正式罐型與標籤比例固定。\n- 180cc：狹長直立鋁袋，寬高比約0.64，可接受約0.60～0.68；不可拉胖、不可誇張放大。\n- 鹿茸粉75g沒有可信毫米尺寸，不得自行猜；只維持正式原圖盒型／罐型比例。\n\n五、小老闆與角色\n- 使用仙加味官網正式同款Q版小老闆：圓臉、大而圓深棕眼、短黑髮、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章。\n- 頭、頭髮、雙手、雙腳與持物完整，不可裁切，四周保留安全空間。\n- 小鹿與小烏龜需要時才加入，必須分開的獨立角色；不可拿LINE OA裁切素材當社群貼文角色。\n\n六、文案與法規\n- 繁體中文；現代漢方生活品牌語氣，日常飲食、生活節奏、料理搭配為主。\n- 不做療效、治療、改善、治癒、保證等宣稱。\n- 品牌只顯示「仙加味」。\n- 龜鹿膏食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始。不得設定固定早上／下午、一天一次或早晚固定時段。\n- 龜鹿飲30cc目前使用方式為每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排。\n- 龜鹿飲180cc目前使用方式為每日一包；飲用時間可依個人使用習慣與作息時間安排。\n- 文案提到產品、成分、規格、使用方式、價格或活動時必須使用目前正式版本，不可自行補資料。\n\n七、流程\n- 新文案與新圖一律只作 candidate／待審核。\n- 不得因生成完成就自動核准、排程或發布。\n- 生成後回仙加味貼文系統，按同一張卡片的「生成後回填／上傳」，貼上新文案或上傳新圖片；儲存後系統自動送回待審核。\n- 生成後必須重新完成16項圖文審核。`;
+  const PRODUCT_URLS=Object.entries(OFFICIAL).map(([name,url])=>name+'：'+url+'?v='+PRODUCT_IMAGE_VERSION).join('\n');
+  const HARD_RULES=`【仙加味圖片與文案唯一正式規格】\n\n一、視覺總原則\n- 每張只能是一個完整、自然、統一光影與透視的單一場景。\n- 禁止拼貼、拼版、六格、海報疊海報、卡片堆疊、產品裁片硬貼、角色裁片硬貼、黑色補位、不同畫風素材混搭。\n- 不為了塞版面把多個產品強制做成一樣大；沒有可信相對尺寸時改成單品構圖。\n- 圖片與文案的季節、天氣、地點、場合、環境、冷熱、表情、動作必須一致。\n\n二、產品本體\n- AI絕對不得重畫、改造、補畫、變形仙加味產品。\n- 一般產品主題優先使用下列最新核准真實完整產品主圖，完整等比例呈現，不裁切、不拉寬、不拉高、不改標籤、不改包裝；舊products-v3只作歷史參照，不能取代最新正式實拍。\n${PRODUCT_URLS}\n- 明確「DM／詳細DM」主題才使用官網目前images/dm-final正式詳細DM；試喝主題固定使用images/trial/trial-poster-small-boss-official-v20260814.jpg。\n- 若文案提到實物產品，必須使用正式原圖自然合成並檢查標籤、比例；做不到就維持草稿等待重製，不得用AI虛構包裝或無產品圖片冒充正式合格圖。\n- 多產品同框若無法維持真實比例，拆成不同貼文，不做拼貼式全系列。\n\n三、最新正式公開商品與持續擴充\n- 現行公開商品以官網主檔與商品總覽為準：仙加味四款與其他來源五個商品／系列入口，丹參茶六款須各自使用對應的完整原廠盒圖；不把目前公開數量鎖成永久上限。\n- 品名、成分、規格、供貨與正式實物圖片依當期最新確認資料；新增核准商品可加入，舊照片與舊守門員不得阻擋正確新商品。\n- 尚未核准公開的龜鹿膠、龜鹿湯塊、柒玄茶及ERP內部資料不自動公開；商品是否能宣傳或交易仍依適用法規判斷。\n\n四、產品比例硬規則\n- 30cc：小玻璃裸罐、無貼紙；約Ø42×H51mm；不可叫瓶、不可改罐型或比例、不可放大成100g罐大小。\n- 100g龜鹿膏：約寬51×高78mm；正式罐型與標籤比例固定。\n- 180cc：狹長直立鋁袋，寬高比約0.64，可接受約0.60～0.68；不可拉胖、不可誇張放大。\n- 鹿茸粉75g沒有可信毫米尺寸，不得自行猜；只維持正式原圖盒型／罐型比例。\n\n五、小老闆與角色\n- 使用仙加味正式固定2D Q版小老闆（不得過度3D、寫實化或換人）：圓臉、大而圓深棕眼、短黑髮、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章。\n- 頭、頭髮、雙手、雙腳與持物完整，不可裁切，四周保留安全空間。\n- 小鹿與小烏龜需要時才加入，必須分開的獨立角色；不可拿LINE OA裁切素材當社群貼文角色。\n\n六、文案與法規\n- 生活文案需同時有明確生活情境、仙加味品牌或正式產品連結、圖文一致的原創情境圖；空泛心情文字、舊圖換句話重發都不合格。\n- 龜鹿膏成分：鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘；龜鹿飲成分前加「水」，其餘順序相同，不得漏字。\n- 龜鹿飲接單後製作約5～7工作天出貨，僅適用龜鹿飲，不可寫成全部商品交期。\n- 繁體中文；現代漢方生活品牌語氣，日常飲食、生活節奏、料理搭配為主。\n- 不做療效、治療、改善、治癒、保證等宣稱。\n- 品牌只顯示「仙加味」。\n- 龜鹿膏食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始。不得設定固定早上／下午、一天一次或早晚固定時段。\n- 龜鹿飲30cc目前使用方式為每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排。\n- 龜鹿飲180cc目前使用方式為每日一包；飲用時間可依個人使用習慣與作息時間安排。\n- 文案提到產品、成分、規格、使用方式、價格或活動時必須使用目前正式版本，不可自行補資料。\n\n七、流程\n- 新文案與新圖一律只作 candidate／待審核。\n- 不得因生成完成就自動核准、排程或發布。\n- 生成後回仙加味貼文系統，按同一張卡片的「生成後回填／上傳」，貼上新文案或上傳新圖片；儲存後系統自動送回待審核。\n- 生成後必須重新完成16項圖文審核。`;
 
   const escText=(value='')=>String(value||'').trim();
   function cardInfo(card){return{title:escText(card?.querySelector('.xjw-row-head h3')?.textContent)||'仙加味貼文',copy:escText(card?.querySelector('.xjw-copy')?.textContent),image:escText(card?.querySelector('.xjw-image-preview')?.getAttribute('src'))}}
