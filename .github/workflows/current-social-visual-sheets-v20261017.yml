@@ -1,0 +1,46 @@
+name: 仙加味有效貼文全庫圖片視覺比對
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/current-social-visual-sheets-v20261017.yml'
+      - 'tools/build-current-post-visual-sheets-v20261017.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install current D1 CLI and image library
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          python -m pip install --disable-pip-version-check pillow
+      - name: Read current non-archived public social image references (read only)
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_alt FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') ORDER BY CASE status WHEN 'pending_review' THEN 0 WHEN 'approved' THEN 1 WHEN 'scheduled' THEN 2 WHEN 'published' THEN 3 ELSE 4 END, id" > active-post-media.json
+      - name: Build real-image previews without AI-generated replacements
+        run: python tools/build-current-post-visual-sheets-v20261017.py
+      - name: Upload private review evidence ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: xjw-actual-current-post-visual-sheets-20261017
+          path: social-visual-evidence/
+          retention-days: 7
+          if-no-files-found: error
