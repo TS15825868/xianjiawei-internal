@@ -7,7 +7,7 @@ must(/version:['"]current-product-authority-[^'"]+-public-master['"]/.test(sourc
 must(source.includes("source:'public-product-master.json'"),'前端產品權威來源必須是目前 public-product-master.json');
 must(source.includes("sourceAuthority:'user-confirmed-current'"),'前端產品權威必須標示 user-confirmed-current');
 must(/guardPolicy:['"]current-authority-capability-based-no-historical-version-lock['"]/.test(source),'前端守門必須採目前權威／能力式驗收');
-must(source.includes("customerProductImageAuthority:'customer-display-v20260812-current-approved'"),'一般產品顧客主圖必須使用目前customer-display權威');
+must(/customerProductImageAuthority:['\"][^'\"]+-verified-original-full-package['\"]/.test(source),'顧客圖片權威必須採用最新已核准的完整實物商品主圖，而非鎖死舊customer-display版本');
 must(source.includes("detailedDmAuthority:'dm-final-current-approved-high-resolution'"),'詳細DM必須維持獨立dm-final權威');
 must(source.includes("trialAuthority:'trial-poster-small-boss-official-v20260814'"),'試喝必須使用正式海報權威');
 must(source.includes("productIdentityReference:'products-v3-current-original-product-photos'"),'products-v3必須只保留真實產品身份／比例參考角色');
@@ -43,7 +43,12 @@ must(source.includes('已下架，不得出現在公開貼文或推薦中。'),'
 must(source.includes('不得稱瓶'),'前端必須拒絕30cc瓶型退役稱呼');
 must(source.includes('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排。'),'前端必須移除龜鹿膏固定早上／下午時段');
 must(source.includes('龜鹿飲不設定固定白天時段'),'前端必須移除龜鹿飲固定白天時段');
-must(source.includes("image:image('images/customer-display-v20260812/guilu-drink-30cc.avif')"),'30cc一般顧客產品圖必須使用目前customer-display');
+const current=JSON.parse(fs.readFileSync('assets/data/current-product-photo-authority-v20261017.json','utf8'));
+for(const id of ['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen']){
+  const path=new URL(current.mainImages[id]).pathname.split('/xianjiawei/').pop();
+  must(source.includes("image:image('"+path+"')"),'顧客目前正式主圖必須與官網同步：'+id);
+}
+
 must(source.includes("identity:image('images/products-v3/guilu-drink-30.jpg')"),'30cc products-v3只能保留身份參考');
 
 console.log('PASS：前端產品權威已同步四項公開產品，下架品不可公開推薦，歷史資料保留。');

@@ -14,7 +14,7 @@
   const BY_ID=new Map(PRODUCTS.map(item=>[item.id,item]));
   const PRODUCT_NAMES=PRODUCTS.map(item=>item.name);
   window.XJW_PRODUCT_AUTHORITY=Object.freeze({
-    version:'current-product-authority-20261017-pure-product-main-v3',
+    version:'current-product-authority-20261017-pure-product-main-v3-public-master',
     source:'public-product-master.json',
     sourceAuthority:'user-confirmed-current',
     products:PRODUCTS,
