@@ -67,7 +67,8 @@ must(!publishingHtml.includes('<script src="/assets/js/internal-app.js'),'獨立
 must(!publishingHtml.includes('<script src="/assets/js/erp-publishing-separation.js'),'獨立貼文中心不得載入ERP分離控制程式');
 
 // Product/media authorities must stay current and strict.
-for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`前端產品媒體權威缺少：${token}`);
+for(const token of ['customerProductImageAuthority','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`前端產品媒體權威缺少：${token}`);
+must(/customerProductImageAuthority:['\"][^'\"]+-verified-original-full-package['\"]/.test(productGuard),'產品媒體權威須使用新版完整實體包裝照片，不可被舊customer-display圖阻擋');
 for(const token of ['formalProductMedia','user_zip_approved','needs_binary_sync','regenerate_if_missing','reviewItems:16'])must(formalMedia.includes(token),`正式媒體政策缺少：${token}`);
 must(!productGuard.includes('/images/products-v2/'),'產品權威不得引用products-v2');
 
