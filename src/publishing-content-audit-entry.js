@@ -1,7 +1,7 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 
-const VERSION='2026-10-09-content-image-audit-v9-visual-rework';
+const VERSION='2026-10-17-social-brand-scene-and-product-v10';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -14,9 +14,10 @@ const KNOWN_BAD_VISUAL_FILENAMES=Object.freeze(['xjw-conv-chat-30-bare-jar.jpg',
 const LIFESTYLE_CONTEXT_TERMS=Object.freeze([
   '在家','居家','外出','通勤','工作空檔','工作','上班','早上','上午','下午','雨天','下雨','換季','早晚溫差','溫差',
   '悶熱','炎熱','夏天','冬天','春天','秋天','溫熱飲用','溫熱','熱水','家常料理','料理','燉湯','餐桌','保存整理','保存','冷藏','收納',
-  'LINE 諮詢','LINE諮詢','諮詢','試喝前','試喝後','試喝','生活節奏','日常安排','隨身','出門'
+  'LINE 諮詢','LINE諮詢','諮詢','試喝前','試喝後','試喝','隨身','出門','餐前','餐後','週末','傍晚','清晨'
 ]);
 const LIFESTYLE_CATEGORY_TERMS=Object.freeze(['生活情境','生活提醒','氣候','天氣','節氣','換季']);
+const LIFESTYLE_BRAND_PRODUCT_TERMS=Object.freeze(['仙加味','龜鹿膏','龜鹿飲','鹿茸粉','四珍寶','二珍寶','參仲四物飲','丹參','萬華四代']);
 
 function publicText(row){return [row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ')}
 function publicVisibleText(row){return [row?.title,row?.headline,row?.copy,row?.category,row?.image_alt].filter(Boolean).join(' ')}
@@ -33,7 +34,7 @@ function isVisuallyIncompleteSvg(url=''){
 }
 function isKnownBadMascotVisual(row){
   const value=imageText(row).toLowerCase();
-  return /smallboss-v20260815|mascot-collage|wrong-mascot|identity-mismatch|拼湊小老闆|角色錯版/.test(value);
+  return /smallboss-v20260815|mascot-collage|wrong-mascot|identity-mismatch|overly-3d|photoreal-mascot|融合夥伴|拼湊小老闆|角色錯版|寫實小老闆|過度3d/.test(value);
 }
 function hasApprovedMascotIdentityAuthority(row){
   const value=imageText(row).toLowerCase();
@@ -63,6 +64,7 @@ function lifestyleRuleErrors(row){
   if(!isLifestylePost(row))return[];
   const text=publicText(row),errors=[];
   if(!hasAny(text,LIFESTYLE_CONTEXT_TERMS))errors.push('生活情境文缺少明確場景；請補上在家、外出、工作空檔、時段、天氣、料理、保存、諮詢或其他可辨識的實際生活情境');
+  if(!hasAny([row?.title,row?.headline,row?.copy].filter(Boolean).join(' '),LIFESTYLE_BRAND_PRODUCT_TERMS))errors.push('生活情境文缺少仙加味品牌、目前核准產品或萬華四代工藝的實際連結，只有空泛心情內容不合格');
   return errors;
 }
 
@@ -86,7 +88,7 @@ function semanticErrors(row,liveRows=[]){
   if(isVisuallyIncompleteSvg(imageUrl)){
     errors.push('目前圖片屬於已確認在貼文中心實際顯示不完整的SVG合成圖；可能出現空白產品框、加號、只有文字或情境不足，不能進待審核／核准／排程／發布，需改用完整情境圖或正式產品圖');
   }
-  if(isKnownBadMascotVisual(row))errors.push('目前圖片被標記為已知拼湊／錯版小老闆素材；小老闆可使用2D或3D，但必須維持同一位本人辨識，不得變成不同小孩或拼湊角色');
+  if(isKnownBadMascotVisual(row))errors.push('目前圖片被標記為已知拼湊／錯版小老闆素材；小老闆須維持固定2D Q版辨識、不得過度3D、寫實、拼湊或融合小鹿和烏龜，不得變成不同小孩或拼湊角色');
 
   if(imageUrl){
     const duplicated=liveRows.filter(other=>other.id!==row.id&&normalizedImageUrl(other.image_url)===imageUrl);
@@ -161,7 +163,7 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{return json({...await response.clone().json(),contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:false,conversationalKnowledgeAllowed:true,mixedContentPolicy:true,unfinishedQixuanPublicBlocked:true,mascotIdentityConsistencyRequired:true,mascot2DAllowed:true,mascot3DAllowed:true,mascotStyleFlexible:true,realPersonReferencePrivate:true,blockedOldPublicName:true},response.status)}catch{return response}
+      try{return json({...await response.clone().json(),contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:true,conversationalKnowledgeAllowed:true,mixedContentPolicy:true,unfinishedQixuanPublicBlocked:true,mascotIdentityConsistencyRequired:true,mascot2DAllowed:true,mascot3DAllowed:false,mascotStyleFlexible:false,realPersonReferencePrivate:true,blockedOldPublicName:true},response.status)}catch{return response}
     }
     return response;
   },
