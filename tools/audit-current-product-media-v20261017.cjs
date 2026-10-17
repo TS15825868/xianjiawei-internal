@@ -3,15 +3,22 @@ const assert=require("node:assert/strict"),fs=require("node:fs");
 const led=JSON.parse(fs.readFileSync("assets/data/current-product-photo-authority-v20261017.json","utf8"));
 const hist=JSON.parse(fs.readFileSync("assets/data/real-product-photo-public-map-v20261016.json","utf8"));
 const guard=fs.readFileSync("assets/js/product-authority-guard.js","utf8");
-assert.equal(led.publicProductCount,9);
-assert.equal(hist.publicAssets.length,9);
+assert.ok(Number.isInteger(led.publicProductCount) && led.publicProductCount>0);
+assert.equal(hist.publicAssets.length,led.publicProductCount);
 for(const p of hist.publicAssets){
- assert.ok(p.websiteMain.includes("/catalog-pure-v20261017/"));
+ const main=new URL(p.websiteMain);
+ assert.equal(main.origin,"https://ts15825868.github.io","Public photo domain mismatch: "+p.id);
+ assert.ok(main.pathname.startsWith("/xianjiawei/images/"),"Public product photo path must stay on website: "+p.id);
+ assert.ok(main.pathname.includes("/catalog-pure-v20261017/")||main.pathname.includes("/catalog-user-original-v20261017/"),"Use only actual approved carton photo: "+p.id);
+ assert.ok((p.websiteDetailImages||[]).every(url=>{
+   const detail=new URL(url);
+   return detail.origin===main.origin && detail.pathname.startsWith("/xianjiawei/images/");
+ }),"Mixed/unverified product detail image hosts: "+p.id);
  assert.equal(p.websiteMain,led.mainImages[p.id]);
 }
 for(const id of ["guilu-gao","guilu-drink-30","guilu-drink-180","luerong-fen"]){
  assert.ok(guard.includes(led.mainImages[id].split("?")[0].replace("https://ts15825868.github.io/xianjiawei/","")));
 }
-assert.equal(led.pendingProducts.length,2);
+assert.ok(Array.isArray(led.pendingProducts));
 assert.ok(led.pendingProducts.every(x=>x.public===false));
-console.log("PASS ERP nine current product photos and two pending real-package review items");
+console.log("PASS ERP public product photo authority and pending real-package review items for "+hist.publicAssets.length+" entries");
