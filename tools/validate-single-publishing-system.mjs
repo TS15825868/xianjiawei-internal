@@ -39,7 +39,8 @@ for(const token of ["from './production-entry.js'",'blockedApi(path)','publishin
 for(const token of ["from './publishing-review-gate-entry.js'","from './flexible-publish-entry.js'",'runReadiness','platformPublishGate'])must(production.includes(token),`production安全鏈缺少：${token}`);
 for(const token of ['draftToPendingReviewRequired','directDraftApprovalBlocked','regenerationReturnsToPendingReview','copyImageMatchHardGate'])must(reviewEntry.includes(token),`16項貼文審核入口缺少能力：${token}`);
 
-for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`產品媒體角色權威缺少：${token}`);
+for(const token of ['customerProductImageAuthority','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3'])must(productGuard.includes(token),`產品媒體角色權威缺少：${token}`);
+must(/customerProductImageAuthority:['\"][^'\"]+-verified-original-full-package['\"]/.test(productGuard),'正式產品媒體權威必須跟隨新版核准實物照片');
 for(const token of ['100g／罐','30cc／罐（小玻璃罐）','180cc／包（鋁袋）','75g／罐'])must(productGuard.includes(token),`產品權威缺少目前正式值：${token}`);
 for(const token of ['禁止拼貼','AI絕對不得重畫','30cc','180cc','小老闆','16項','待審核','/regeneration-start','/regeneration-ready'])must(policy.includes(token),`重新生成守門缺少硬規格／閉環能力：${token}`);
 for(const token of ['禁止拼湊','AI 重畫產品','30cc','180cc','小老闆','16 項正式審核','禁止回退'])must(standard.includes(token),`生成母規格文件缺少：${token}`);
