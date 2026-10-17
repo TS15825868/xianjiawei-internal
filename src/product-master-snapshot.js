@@ -3,7 +3,7 @@
 // Website public authority follows the latest public product master; ERP may retain additional internal/deferred records elsewhere.
 export const PRODUCT_MASTER_META=Object.freeze({
   authority:"user-confirmed-current",
-  version:"2026-10-08-four-active-public-products-retired-jiao-tangkuai",
+  version:"2026-10-17-public-master-current-and-expandable",
   source:"https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json",
   productCount:4
 });
