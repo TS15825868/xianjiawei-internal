@@ -1,0 +1,17 @@
+name: Current ERP product photos and pending-packaging controls
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/data/real-product-photo-public-map-v20261016.json'
+      - 'assets/data/current-product-photo-authority-v20261017.json'
+      - 'assets/js/product-authority-guard.js'
+      - 'tools/audit-current-product-media-v20261017.cjs'
+      - '.github/workflows/current-product-media-v20261017.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node tools/audit-current-product-media-v20261017.cjs

@@ -101,14 +101,24 @@
     },
     {
       "name": "龍鳳登古飲（藍色男方／粉色女方）",
-      "mainChoice": null,
+      "mainChoice": "原廠真實藍色男方／粉紅色女方完整提繩外盒照片優先；比風景合成圖適合主圖。",
       "candidates": [
         "IMG_0005.JPG",
         "IMG_0006.JPG"
       ],
-      "status": "internal-pending-specification-classification-and-public-photo-claim-review",
+      "status": "internal-only-photo-evaluated-physical-box-preferred-label-and-publicity-review-pending",
       "public": false,
-      "reason": "僅有正面外盒照片且含醫事人員形象；不能由圖片推測正式規格、食品屬性或廣告可否使用。"
+      "reason": "僅有正面外盒照片且含醫事人員形象；不能由圖片推測正式規格、食品屬性或廣告可否使用。",
+      "candidateWebsiteAssets": [
+        "images/partner-products/longfeng-denggu-review-v20261016-v2/male-blue-main-candidate.webp",
+        "images/partner-products/longfeng-denggu-review-v20261016-v2/female-pink-main-candidate.webp"
+      ],
+      "publishApproval": false,
+      "remainingVerification": [
+        "整盒成分、規格、背標與品類",
+        "人物肖像與商品廣告使用權限",
+        "完整正面產品去背邊緣檢查"
+      ]
     }
   ],
   "notCoveredByUserArchive": "龜鹿活力飲及仙加味四項原公開產品的正式主圖不在這份新增商品 ZIP；仍維持已核准圖片，不用錯誤新包裝替換。",
@@ -167,5 +177,6 @@
         "reason": "Original box front clipped at image edges. Complete real jar used for main, original gift box remains accessible."
       }
     ]
-  }
+  },
+  "lastPackagingFollowUp": "2026-10-17"
 }

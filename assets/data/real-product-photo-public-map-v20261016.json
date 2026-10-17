@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-16",
+  "updatedAt": "2026-10-17",
   "scope": "ERP internal product image link ledger; do not overwrite stock/costs or hidden medicine records",
   "brand": "仙加味",
   "websiteRepo": "TS15825868/xianjiawei",
   "lineRepo": "TS15825868/TS-LINE",
   "siteBranch": "main",
   "lineBranch": "main",
-  "version": "20261016-real-pixel-clean-studio-main-and-detail-v5",
+  "version": "20261017-pure-product-main-v3",
   "publicProductCount": 9,
   "publicAssets": [
     {
       "id": "guilu-gao",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-gao-main.webp?v=20261016-real-pixel-clean-studio-main-and-detail-v5",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-gao-main-framed.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-gao-box-jar-detail.webp",
         "https://ts15825868.github.io/xianjiawei/images/product-main/gao-packaging-v20261016/box-jar-original.jpg"
@@ -24,55 +24,55 @@
     },
     {
       "id": "guilu-drink-30",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-30-main.webp?v=20261016-real-pixel-clean-studio-main-and-detail-v5",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-drink-30-main.png?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-30-closed-detail.webp"
       ]
     },
     {
       "id": "guilu-drink-180",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-180-main.webp?v=20261016-real-pixel-clean-studio-main-and-detail-v5",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-drink-180-main.png?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-drink-180-closed-detail.webp"
       ]
     },
     {
       "id": "luerong-fen",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/luerong-fen-main.webp?v=20261016-real-pixel-clean-studio-main-and-detail-v5",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/luerong-fen-main.png?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "fully sealed original jar only",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/luerong-fen-closed-detail.webp"
       ]
     },
     {
       "id": "jinan-sisheng-siwuyin",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/jinan-sisheng-siwuyin-main.webp?v=20261016-latest-genuine-photo-catalog",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/jinan-sisheng-siwuyin-main.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/siwuyin-real-label-detail.webp"
       ]
     },
     {
       "id": "danshen-tea-collection",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/danshen-tea-collection-main.webp?v=20261016-latest-genuine-photo-catalog",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/danshen-tea-collection-main.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-rose-fruit-box-detail.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-leisure-box-detail.webp",
@@ -90,11 +90,11 @@
     },
     {
       "id": "guilu-vitality",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-vitality-main.webp?v=20261016-latest-genuine-photo-catalog",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-vitality-main.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/vitality-real-jar-detail.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/vitality-real-back-detail.webp"
@@ -102,11 +102,11 @@
     },
     {
       "id": "uboss-sizhenbao",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/uboss-sizhenbao-main.webp?v=20261016-latest-genuine-photo-catalog",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/uboss-sizhenbao-main-framed.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/sizhenbao-sealed-tray-detail.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/sizhenbao-tray-back-detail.webp",
@@ -118,11 +118,11 @@
     },
     {
       "id": "royalherb-erzhenbao-64",
-      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-corrections-v20261016-v6/royalherb-erzhenbao-64-main.webp?v=20261016-latest-genuine-photo-catalog",
+      "websiteMain": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/royalherb-erzhenbao-64-main-framed.webp?v=20261017-pure-product-main-v3",
       "imageOrigin": "physical-source photograph (not AI drawing)",
-      "displayRole": "complete-box-first-except-original-bare-container",
+      "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Website main present in newest checked-in authority; visual/device acceptance separate",
+      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/erzhenbao-sealed-tray-detail.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/royalherb-erzhenbao-64-label-1.webp",
@@ -138,7 +138,7 @@
   "internalContentsPhotosPreserved": true,
   "noRetailPriceInPublicImage": true,
   "allowNoOuterCartonFor": "30cc bare glass jar, 180cc foil pouch, 75g deer antler powder sealed jar",
-  "status": "main-and-detail-reference-ledger-synced; deferred-images-remain-unlisted",
+  "status": "approved-live-original-pack-images-synced-from-website-main; source completeness and label facts independently reviewed",
   "deferredPreparedAssets": [
     {
       "id": "guilu-jiao-open",
