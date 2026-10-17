@@ -42,7 +42,8 @@ must(hasAny([/儲存後(?:會)?自動回到[「"]?待審核/,/生成完成後.*�
 must(/不會自動核准.{0,20}發布/.test(normalized)||/不自動核准.{0,20}不自動發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／排程／發布');
 must(/16項/.test(normalized)&&(/重新完成/.test(normalized)||/重跑/.test(normalized)||/審核/.test(normalized)),'貼文系統沒有保留16項重新審核能力說明');
 
-for(const token of ['customerProductImageAuthority','customer-display-v20260812','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3']) must(productGuard.includes(token),`目前產品媒體角色權威缺少：${token}`);
+for(const token of ['customerProductImageAuthority','detailedDmAuthority','dm-final','trial-poster-small-boss-official-v20260814','productIdentityReference','products-v3']) must(productGuard.includes(token),`目前產品媒體角色權威缺少：${token}`);
+must(/customerProductImageAuthority:['\"][^'\"]+-verified-original-full-package['\"]/.test(productGuard),'正式產品圖應跟隨新版已核准原始包裝主圖，不可鎖死20260812顧客圖版本');
 must(!productGuard.includes('/images/products-v2/'),'產品媒體權威不得回退products-v2');
 for(const token of ['formalProductMedia','actualProductReference','products-v3','user_zip_approved','needs_binary_sync','regenerate_if_missing']) must(mediaPolicy.includes(token),`正式媒體政策缺少目前能力：${token}`);
 must(html.includes('products-v3只作產品本體身份、包裝與比例校正')||html.includes('products-v3只作產品身份、包裝與比例校正'),'貼文中心必須把products-v3說明為身份／包裝／比例校正，而不是一般顧客主圖');
