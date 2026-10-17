@@ -10,7 +10,7 @@ const RISKY=Object.freeze(['治療','治癒','療效','改善疾病','預防疾�
 const BLOCKED_OLD_PUBLIC_NAMES=Object.freeze(['台興山產']);
 const BLOCKED_UNFINISHED_PUBLIC_NAMES=Object.freeze(['柒玄茶','龜鹿調飲粉','龜鹿膠','龜鹿湯塊']);
 // Confirmed, image-specific rejects. A genuinely new and correctly reviewed image path can replace any rejected one.
-const KNOWN_BAD_VISUAL_FILENAMES=Object.freeze(['xjw-conv-chat-30-bare-jar.jpg','xjw-conv-chat-30-vs-180.jpg','xjw-conv-chat-drink-made-to-order.jpg','xjw-conv-chat-gao-storage.jpg','xjw-conv-chat-gao-vs-drink.jpg','xjw-conv-chat-glass-vs-pouch-storage.jpg','xjw-conv-chat-luerong-intro.jpg','xjw-conv-chat-photo-size.jpg','xjw-conv-chat-jiao-spec.jpg','xjw-conv-chat-tang-vs-jiao.jpg','xjw-conv-chat-tangkuai-spec.jpg','xjw-conv-cny-family-choice.jpg','xjw-conv-cny-gift-choice.jpg','xjw-conv-cny-pre-clean.jpg']);
+const KNOWN_BAD_VISUAL_FILENAMES=Object.freeze(['xjw-conv-chat-30-bare-jar.jpg','xjw-conv-chat-30-vs-180.jpg','xjw-conv-chat-drink-made-to-order.jpg','xjw-conv-chat-gao-storage.jpg','xjw-conv-chat-gao-vs-drink.jpg','xjw-conv-chat-glass-vs-pouch-storage.jpg','xjw-conv-chat-luerong-intro.jpg','xjw-conv-chat-photo-size.jpg','xjw-conv-chat-jiao-spec.jpg','xjw-conv-chat-tang-vs-jiao.jpg','xjw-conv-chat-tangkuai-spec.jpg','xjw-conv-cny-family-choice.jpg','xjw-conv-cny-gift-choice.jpg','xjw-conv-cny-pre-clean.jpg','xjw-conv-chat-gao-vs-drink-scene-v1.jpg','xjw-conv-chat-trial-first-scene-v1.jpg','xjw-conv-weather-cool-drink-audit-v1.jpg','xjw-conv-chat-receive-package.jpg','xjw-conv-chat-30-bare-jar-scene-v1.jpg','xjw-conv-chat-shop-organizing-scene-v5.jpg']);
 const LIFESTYLE_CONTEXT_TERMS=Object.freeze([
   '在家','居家','外出','通勤','工作空檔','工作','上班','早上','上午','下午','雨天','下雨','換季','早晚溫差','溫差',
   '悶熱','炎熱','夏天','冬天','春天','秋天','溫熱飲用','溫熱','熱水','家常料理','料理','燉湯','餐桌','保存整理','保存','冷藏','收納',
@@ -72,7 +72,7 @@ function semanticErrors(row,liveRows=[]){
   const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=[];
   const imageUrl=normalizedImageUrl(row?.image_url);
   const imageFilename=imageUrl.split('/').pop();
-  if(KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已經實際視覺覆核為產品DM拼貼、非生活情境或多畫框拼湊；必須重新製作完整單一情境圖。');
+  if(KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');
   if(row?.id==='XJW-CONV-chat-brand-not-only-product' && imageUrl.endsWith('/2026-09-22/xjw-active-img-003.png'))errors.push('此圖片與另一篇使用相同Git實體圖片，禁止一圖多文，需重製專屬情境。');
   if(['rejected','needs_regeneration','needs_rework','low','missing'].includes(clean(row?.image_quality_status).toLowerCase()))errors.push('目前圖片尚未通過正式視覺驗收，禁止核准、排程或發布。');
 
