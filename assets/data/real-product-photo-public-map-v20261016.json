@@ -7,7 +7,7 @@
   "lineRepo": "TS15825868/TS-LINE",
   "siteBranch": "main",
   "lineBranch": "main",
-  "version": "20261017-authentic-tea-photo-gallery-v4",
+  "version": "20261017-current-photo-originals-and-final-labels-v5",
   "publicProductCount": 9,
   "publicAssets": [
     {
@@ -63,7 +63,7 @@
       "detailRole": "original item, inner packaging or original label in detail gallery",
       "review": "官網最新正式 main 之實物主圖與實拍內容物對照；內容物、內盤及標示僅使用各自 SKU 原始實拍照片；不可 AI 補畫、不得混用其他品項。",
       "websiteDetailImages": [
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/siwuyin-real-label-detail.webp"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/siwuyin-original-back.webp"
       ]
     },
     {
@@ -79,12 +79,12 @@
         "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/tea-fiber-main.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/tea-white-main.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/tea-refresh-main.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-rose-fruit-label-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-leisure-label-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-wudahan-label-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-fiber-label-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-white-label-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/tea-refresh-label-detail.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-rose-fruit-original-back.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-leisure-original-back.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-wudahan-original-back.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-fiber-original-back.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-white-original-back.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/tea-refresh-original-back.webp",
         "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/rose-fruit-real-teabag.webp"
       ]
     },
@@ -97,7 +97,7 @@
       "review": "官網最新正式 main 之實物主圖與實拍內容物對照；內容物、內盤及標示僅使用各自 SKU 原始實拍照片；不可 AI 補畫、不得混用其他品項。",
       "websiteDetailImages": [
         "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/vitality-real-jar-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/vitality-real-back-detail.webp"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-detail-cutouts-v20261017/vitality-original-label-closeup.webp"
       ]
     },
     {
@@ -108,11 +108,7 @@
       "detailRole": "original item, inner packaging or original label in detail gallery",
       "review": "官網最新正式 main 之實物主圖與實拍內容物對照；內容物、內盤及標示僅使用各自 SKU 原始實拍照片；不可 AI 補畫、不得混用其他品項。",
       "websiteDetailImages": [
-        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/sizhenbao-actual-8-blocks.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/uboss-sizhenbao-label-1.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/uboss-sizhenbao-label-2.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/uboss-sizhenbao-label-3.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/uboss-sizhenbao-label-4.webp"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/sizhenbao-actual-8-blocks.webp"
       ]
     },
     {
@@ -123,11 +119,7 @@
       "detailRole": "original item, inner packaging or original label in detail gallery",
       "review": "官網最新正式 main 之實物主圖與實拍內容物對照；內容物、內盤及標示僅使用各自 SKU 原始實拍照片；不可 AI 補畫、不得混用其他品項。",
       "websiteDetailImages": [
-        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-actual-open-trays.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/royalherb-erzhenbao-64-label-1.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/royalherb-erzhenbao-64-label-2.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/royalherb-erzhenbao-64-label-3.webp",
-        "https://ts15825868.github.io/xianjiawei/images/catalog-labels-v20261016-v7/royalherb-erzhenbao-64-label-4.webp"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-actual-open-trays.webp"
       ]
     }
   ],
