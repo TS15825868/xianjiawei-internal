@@ -2,16 +2,26 @@ import app from './flexible-publish-entry.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
 import {imageHash,recordAiReview} from './ai-quality-review.js';
 
-const VERSION='2026-09-13-publishing-review-gate-v8-contextual-scene-intent';
+const VERSION='2026-10-17-current-product-and-image-v9';
 const REQUIRED_CHECKS=Object.freeze([
   'brand','product','specification','pricing_activity','season','weather','occasion','location',
   'scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'
 ]);
 const PRODUCT_RULES=Object.freeze([
-  {id:'guilu-gao',name:'龜鹿膏',terms:['龜鹿膏'],image:['guilu-gao','龜鹿膏']},
-  {id:'guilu-drink-30',name:'龜鹿飲30cc玻璃罐',terms:['30cc','龜鹿飲30'],image:['guilu-drink-30','30cc','龜鹿飲30']},
-  {id:'guilu-drink-180',name:'龜鹿飲180cc鋁袋',terms:['180cc','龜鹿飲180'],image:['guilu-drink-180','180cc','龜鹿飲180']},
-  {id:'luerong-fen',name:'鹿茸粉',terms:['鹿茸粉'],image:['luerong-fen','鹿茸粉']},
+  {id:"guilu-gao",name:"龜鹿膏",terms:["龜鹿膏"],image:["guilu-gao","龜鹿膏"]},
+  {id:"guilu-drink-30",name:"龜鹿飲30cc玻璃罐",terms:["30cc","龜鹿飲30"],image:["guilu-drink-30","30cc","龜鹿飲30"]},
+  {id:"guilu-drink-180",name:"龜鹿飲180cc鋁袋",terms:["180cc","龜鹿飲180"],image:["guilu-drink-180","180cc","龜鹿飲180"]},
+  {id:"luerong-fen",name:"鹿茸粉",terms:["鹿茸粉"],image:["luerong-fen","鹿茸粉"]},
+  {id:"jinan-sisheng-siwuyin",name:"參仲四物飲",terms:["參仲四物飲"],image:["jinan-sisheng-siwuyin","參仲四物飲"]},
+  {id:"guilu-vitality",name:"龜鹿活力飲",terms:["龜鹿活力飲"],image:["guilu-vitality","龜鹿活力飲"]},
+  {id:"uboss-sizhenbao",name:"四珍寶",terms:["四珍寶"],image:["uboss-sizhenbao","四珍寶"]},
+  {id:"royalherb-erzhenbao-64",name:"二珍寶",terms:["二珍寶"],image:["royalherb-erzhenbao-64","二珍寶"]},
+  {id:"jianfeng-rose-fruit-tea",name:"臺灣丹參玫瑰果茶",terms:["玫瑰果茶"],image:["danshen-tea-collection","rose-fruit","玫瑰果茶"]},
+  {id:"jianfeng-leisure-tea",name:"臺灣丹參懈悠活養生茶",terms:["懈悠活養生茶"],image:["tea-leisure","懈悠活養生茶"]},
+  {id:"jianfeng-wudahan-tea",name:"武大漢丹參茶",terms:["武大漢丹參茶"],image:["tea-wudahan","武大漢丹參茶"]},
+  {id:"jianfeng-fiber-tea",name:"臺灣丹參纖體茶",terms:["纖體茶"],image:["tea-fiber","纖體茶"]},
+  {id:"jianfeng-white-tea",name:"臺灣白茶丹參飲",terms:["白茶丹參飲"],image:["tea-white","白茶丹參飲"]},
+  {id:"jianfeng-refresh-tea",name:"臺灣丹參舒活茶",terms:["丹參舒活茶"],image:["tea-refresh","丹參舒活茶"]},
 ]);
 const RETIRED_PUBLIC_PRODUCT_NAMES=Object.freeze(['龜鹿膠','龜鹿湯塊']);
 const REGENERATION_ROLES=new Set(['owner','admin','content']);
@@ -39,13 +49,13 @@ async function ensureSchema(env){if(!env?.DB)throw new Error('D1 資料庫尚未
 async function postRow(env,id){return env.DB.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first()}
 function postMaterial(row){return{title:clean(row?.title),headline:clean(row?.headline),copy:clean(row?.copy),category:clean(row?.category),image_url:clean(row?.image_url),image_alt:clean(row?.image_alt),image_source:clean(row?.image_source),image_width:Number(row?.image_width||0),image_height:Number(row?.image_height||0),image_quality_status:clean(row?.image_quality_status)}}
 async function fingerprint(row){const bytes=new TextEncoder().encode(JSON.stringify(postMaterial(row)));const digest=await crypto.subtle.digest('SHA-256',bytes);return[...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('')}
-const REVIEW_PRODUCT_NAMES=['龜鹿膏','龜鹿飲30cc','龜鹿飲180cc','鹿茸粉'];
+const REVIEW_PRODUCT_NAMES=['龜鹿膏','龜鹿飲30cc','龜鹿飲180cc','鹿茸粉','參仲四物飲','龜鹿活力飲','四珍寶','二珍寶','玫瑰果茶','懈悠活養生茶','武大漢丹參茶','纖體茶','白茶丹參飲','丹參舒活茶'];
 function reviewProductSegments(value,target){const source=String(value||''),segments=[];let start=0;while(target){const pos=source.indexOf(target,start);if(pos<0)break;let end=source.length,after=pos+target.length;for(const name of REVIEW_PRODUCT_NAMES){const next=source.indexOf(name,after);if(next>=0)end=Math.min(end,next)}segments.push(source.slice(pos,end));start=after}return segments}
 function publicNorm(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/仙加味[｜|]?補養，是一種節奏。?/g,'').replace(/[^\p{L}\p{N}]+/gu,'')}
 function imageNorm(value){try{const u=new URL(String(value||''),'https://xjw.invalid');u.search='';u.hash='';return `${u.origin}${u.pathname}`.toLowerCase()}catch{return String(value||'').split(/[?#]/)[0].trim().toLowerCase()}}
 function diceSimilarity(a,b){if(!a||!b)return 0;if(a===b)return 1;const grams=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);m.set(k,(m.get(k)||0)+1)}return m},A=grams(a),B=grams(b);let ai=0,bi=0,hit=0;for(const n of A.values())ai+=n;for(const n of B.values())bi+=n;for(const [k,n] of A)hit+=Math.min(n,B.get(k)||0);return ai+bi?2*hit/(ai+bi):0}
 function customerCopyErrors(row){const text=[row?.title,row?.headline,row?.copy,row?.image_alt].filter(Boolean).join(' ');const hits=CUSTOMER_INTERNAL_TERMS.filter(term=>text.toLowerCase().includes(term.toLowerCase()));return hits.map(term=>`顧客文案含內部作業用語「${term}」`)}
-function officialProductMedia(row){const image=`${row?.image_url||''} ${row?.image_source||''}`.toLowerCase();return /products-v3|customer-display-v20260812|official[-_ ]?(?:product|v3)|正式產品/.test(image)}
+function officialProductMedia(row){const image=`${row?.image_url||''} ${row?.image_source||''}`.toLowerCase();return /catalog-owner-final-v20261017|catalog-user-original-v20261017|products-v3|customer-display-v20260812|official[-_ ]?(?:product|v3)|正式產品/.test(image)}
 function mentionedProducts(row){const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.terms.some(term=>text.includes(term.toLowerCase())))}
 function visualProducts(row){const image=[row?.image_url,row?.image_alt,row?.image_source].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.image.some(term=>image.includes(term.toLowerCase())))}
 function semanticSceneErrors(row){
