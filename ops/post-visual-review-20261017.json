@@ -1,43 +1,87 @@
 {
-  "date": "2026-10-17",
-  "brand": "仙加味",
-  "source": "D1 read-only snapshot run 39027248927 and manually inspected actual image assets on GitHub main",
-  "policy": "圖片不符合正式2D小老闆或真實產品時，只封鎖重新核准與正式發布，不刪除舊圖、不動已發布紀錄；修復後回待審核且需人工16項複核",
-  "reviewed": [
-    {
-      "filename": "XJW-CONV-chat-gao-vs-drink-scene-v1.jpg",
-      "reason": "龜鹿膏及30cc圖片內的產品包裝不符合最新正式實拍，角色偏3D",
-      "status": "requires_new_original_scene_and_human_review"
-    },
-    {
-      "filename": "XJW-CONV-chat-trial-first-scene-v1.jpg",
-      "reason": "試喝產品與角色偏3D，未通過與正式小老闆、正式裸罐完整實拍比對",
-      "status": "requires_new_original_scene_and_human_review"
-    },
-    {
-      "filename": "XJW-CONV-weather-cool-drink-audit-v1.jpg",
-      "reason": "雖有明確冷天室內熱飲情境，但固定小老闆與夥伴呈過度3D風格",
-      "status": "requires_new_original_scene_and_human_review"
-    },
-    {
-      "filename": "XJW-CONV-chat-receive-package.jpg",
-      "reason": "收貨情境吻合，但小老闆與夥伴明顯偏3D",
-      "status": "requires_new_original_scene_and_human_review"
-    },
-    {
-      "filename": "XJW-CONV-chat-30-bare-jar-scene-v1.jpg",
-      "reason": "30cc玻璃罐疑似重繪，加上過度3D角色，不符合產品真實外觀及固定角色",
-      "status": "requires_new_original_scene_and_human_review"
-    },
-    {
-      "filename": "XJW-CONV-chat-shop-organizing-scene-v5.jpg",
-      "reason": "整理商品情境成立，角色過度3D，與正式固定2D角色規格不符",
-      "status": "requires_new_original_scene_and_human_review"
-    }
+  "version": "2026-10-17-current-live-social-image-audit-v2",
+  "input": "GitHub action 39044772071 - current official D1 images / six human-inspected thumbnail boards",
+  "status": {
+    "inspected": 62,
+    "pending_review": 15,
+    "pseudo_approved_without_human": 47,
+    "published_not_inspected": 3
+  },
+  "findings": {
+    "allReviewedImagesHaveNoncompliant3DCharacter": true,
+    "someProductAssetsAreNotLatestAuthenticPhotos": true,
+    "newImagesMustBeUniqueAndMatchedToCopy": true
+  },
+  "blockedBasenames": [
+    "xjw-drink180-ingredients.png",
+    "xjw-conv-chat-gao-vs-drink-scene-v1.jpg",
+    "xjw-conv-chat-opening-prep-audit-v1.jpg",
+    "xjw-conv-chat-quiet-work-audit-v1.jpg",
+    "xjw-conv-chat-receive-package.jpg",
+    "xjw-conv-chat-small-things-work-scene-v2.jpg",
+    "xjw-active-img-036.png",
+    "xjw-conv-chat-trial-first-scene-v1.jpg",
+    "xjw-conv-cny-childhood-now-scene-v1.jpg",
+    "xjw-conv-cny-family-choice-scene-v1.jpg",
+    "xjw-conv-weather-cool-drink-audit-v1.jpg",
+    "xjw-fest-2027-eve-welcome-home-scene-v1.jpg",
+    "xjw-fest-2027-lantern-riceballs-scene-v1.jpg",
+    "xjw-fest-2027-newyear-breakfast-scene-v1.jpg",
+    "xjw-fest-2027-spring-walk-scene-v1.jpg",
+    "xjw-conv-brand-third-generation-note-scene-v3.jpg",
+    "xjw-conv-care-before-home-message-scene-v3.jpg",
+    "xjw-conv-care-simple-checkin-scene-v3.jpg",
+    "xjw-conv-chat-30-bare-jar-scene-v1.jpg",
+    "xjw-conv-chat-30-vs-180-scene-v1.jpg",
+    "xjw-conv-chat-ask-boss-topic-audit-v1.jpg",
+    "xjw-conv-chat-brand-not-only-product.jpg",
+    "xjw-active-img-004.png",
+    "xjw-conv-chat-craft-years-scene-v3.jpg",
+    "xjw-conv-chat-customer-first-question-audit-v1.jpg",
+    "xjw-conv-chat-dayoff-cook-scene-v2.jpg",
+    "xjw-conv-chat-deer-turtle-soup-choice-scene-v2.jpg",
+    "xjw-conv-chat-drink-made-to-order-scene-v2.jpg",
+    "xjw-conv-chat-elder-kitchen-habit-scene-v4.jpg",
+    "xjw-conv-chat-family-old-object.jpg",
+    "xjw-conv-chat-fixed-storage-audit-v1.jpg",
+    "xjw-conv-chat-glass-vs-pouch-storage-scene-v1.jpg",
+    "xjw-active-img-017.png",
+    "xjw-conv-chat-last-bowl.jpg",
+    "xjw-conv-chat-luerong-intro-audit-v1.jpg",
+    "xjw-conv-chat-no-standard-answer-scene-v1.jpg",
+    "xjw-conv-chat-old-methods-audit-v1.jpg",
+    "xjw-conv-chat-pantry-memory-scene-v1.jpg",
+    "xjw-conv-chat-photo-size-scene-v1.jpg",
+    "xjw-conv-chat-picture-or-text-audit-v1.jpg",
+    "xjw-conv-chat-recipe-or-feel.jpg",
+    "xjw-conv-chat-shop-organizing-scene-v5.jpg",
+    "xjw-conv-chat-simple-soup-scene-v2.jpg",
+    "xjw-conv-chat-soup-day-scene-v1.jpg",
+    "xjw-conv-chat-traditional-image-scene-v1.jpg",
+    "xjw-active-img-039.jpg",
+    "xjw-conv-cny-first-soup-audit-v1.jpg",
+    "xjw-conv-cny-fridge-clean-scene-v1.jpg",
+    "xjw-conv-cny-gift-choice-audit-v1.jpg",
+    "xjw-conv-cny-last-day-reset-audit-v1.jpg",
+    "xjw-conv-cny-must-have-dish-scene-v1.jpg",
+    "xjw-conv-cny-pre-clean-audit-v1.jpg",
+    "xjw-conv-cny-reopen-scene-v1.jpg",
+    "xjw-conv-live-hongludi-outing-20260929-scene-v1.jpg",
+    "xjw-conv-new-year-open-door-audit-v1.jpg",
+    "xjw-conv-new-year-slow-start-audit-v1.jpg",
+    "xjw-conv-new-year-warm-cup-share-scene-v1.jpg",
+    "xjw-active-img-042.jpg",
+    "xjw-conv-weather-rain-chat-audit-v1.jpg",
+    "xjw-conv-year-end-clean-audit-v1.jpg",
+    "xjw-conv-year-end-keep-habit-audit-v1.jpg",
+    "xjw-conv-year-end-small-win-audit-v1.jpg"
   ],
-  "notes": [
-    "此六張確實已被逐張實際查看；不是全庫62張完成視覺驗收",
-    "其餘有效貼文仍須逐張比對小老闆、原廠產品、圖文、冷熱與季節",
-    "47篇舊已核准D1記錄無approved_by，不作可發布的人工核准依據"
+  "scope": "Only 62 checked images; does NOT change post state, published posts, edit history or source assets",
+  "release": "A newly produced correct image with different basename and latest official 2D mascot remains eligible for 16-check human re-review",
+  "pending": [
+    "Rebuild exact scenes with new approved fixed 2D small boss, distinct deer and turtle",
+    "Composite exact original physical products where mentioned",
+    "Never infer 3 published media status from preview errors",
+    "Resubmit new images and copy to pending_review for human approval"
   ]
 }
