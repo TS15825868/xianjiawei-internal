@@ -1,9 +1,5 @@
 name: 仙加味已確認3D不合格圖安全退回待審核
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/hold-reviewed-3d-posts-v20261017.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -51,8 +47,15 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,approved_by,approved_at,image_approved,image_quality_status,scheduled_at,published_at FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') ORDER BY id" > /tmp/xjw-current-posts-after.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,published_at FROM social_posts WHERE status='published' ORDER BY id" > /tmp/xjw-published-after.json
           python3 tools/hold-reviewed-3d-posts-v20261017.py verify
-          cmp /tmp/xjw-published-before.json /tmp/xjw-published-after.json
-          echo 'Published post history and images unchanged.'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          def content(name):
+              obj=json.loads((Path("/tmp")/name).read_text())
+              return (obj[0] if isinstance(obj,list) else obj)["results"]
+          assert content("xjw-published-before.json")==content("xjw-published-after.json"),"Published post records changed"
+          print("PASS: published records unchanged, excluding volatile D1 query metadata")
+          PY
       - name: Preserve nonpublic D1 review before/after evidence for rollback
         if: always()
         uses: actions/upload-artifact@v4
