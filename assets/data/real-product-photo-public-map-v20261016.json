@@ -7,7 +7,7 @@
   "lineRepo": "TS15825868/TS-LINE",
   "siteBranch": "main",
   "lineBranch": "main",
-  "version": "20261017-current-photo-originals-and-final-labels-v5",
+  "version": "20261017-owner-approved-erzhenbao-and-100g-jar-detail-current-main",
   "publicProductCount": 9,
   "publicAssets": [
     {
@@ -16,10 +16,9 @@
       "imageOrigin": "physical-source photograph (not AI drawing)",
       "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "Current public main image verified in the official GitHub main, original photo retained; do not conflate full back labels with cropped close-ups",
+      "review": "使用者指定的100g龜鹿膏外盒加密封罐身詳圖，保留完整外盒作主圖；詳圖核對正式官網main。",
       "websiteDetailImages": [
-        "https://ts15825868.github.io/xianjiawei/images/catalog-clean-studio-v20261016-v5/guilu-gao-box-jar-detail.webp",
-        "https://ts15825868.github.io/xianjiawei/images/product-main/gao-packaging-v20261016/box-jar-original.jpg"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/guilu-gao-box-jar-owner-selected-detail-v20261017.webp"
       ]
     },
     {
@@ -117,9 +116,10 @@
       "imageOrigin": "physical-source photograph (not AI drawing)",
       "displayRole": "single authentic full visible carton or sealed package, on site's native ivory background, no fake product repaint",
       "detailRole": "original item, inner packaging or original label in detail gallery",
-      "review": "官網最新正式 main 之實物主圖與實拍內容物對照；內容物、內盤及標示僅使用各自 SKU 原始實拍照片；不可 AI 補畫、不得混用其他品項。",
+      "review": "使用者指定的二珍寶真實紫盒開盒雙盤，以及八塊膏塊內盤，完整主圖不變，整盒64塊。",
       "websiteDetailImages": [
-        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-actual-open-trays.webp"
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-open-box-2-trays-owner-v20261017.webp",
+        "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-single-tray-8-pieces-owner-v20261017.webp"
       ]
     }
   ],
