@@ -9,6 +9,10 @@ if(!source.includes(staleCache)){
   throw new Error('找不到舊版固定快取版本守門條件；請直接檢查 validate-publishing-review-gate.mjs 後更新本相容層');
 }
 source=source.replace(staleCache,currentCache);
+const oldFixedProducts="must(generation.includes('三、目前對外產品只有四項'),'重新生成必須只使用四項對外產品');";
+const currentProducts="must(generation.includes('三、最新正式公開商品與持續擴充') && generation.includes('catalog-owner-final-v20261017') && generation.includes('四珍寶') && generation.includes('二珍寶') && generation.includes('臺灣丹參玫瑰果茶'),'重新生成須使用目前核准的完整產品實拍及可擴充商品清單');";
+if(!source.includes(oldFixedProducts))throw new Error('找不到需要更新的舊四款圖片限制；請重新核對正式驗收規則');
+source=source.replace(oldFixedProducts,currentProducts);
 
 const staleEntry=`const contentAuditMain=wrangler.includes('"main": "src/publishing-content-audit-entry.js"');
 must(productionMain||publishingOnlyMain||contentAuditMain,'Worker正式入口必須沿用production-entry／publishing-only安全鏈，並可在其外層增加目前內容語意守門能力');`;
