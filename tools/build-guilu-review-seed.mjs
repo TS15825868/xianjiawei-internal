@@ -10,14 +10,14 @@ const BLOCKED = [
   '保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'
 ];
 const SITE = 'https://ts15825868.github.io/xianjiawei';
-const MEDIA_VERSION = '20260815-context-media-v3-svg-render-integrity';
+const MEDIA_VERSION = '20261017-pure-product-main-v3';
 const CURRENT_PRODUCT_MEDIA = Object.freeze({
-  'guilu-gao': `${SITE}/images/customer-display-v20260812/guilu-gao.avif?v=${MEDIA_VERSION}`,
-  'guilu-drink-30': `${SITE}/images/customer-display-v20260812/guilu-drink-30cc.avif?v=${MEDIA_VERSION}`,
-  'guilu-drink-180': `${SITE}/images/customer-display-v20260812/guilu-drink-180cc-product.jpg?v=${MEDIA_VERSION}`,
+  'guilu-gao': `${SITE}/images/catalog-pure-v20261017/guilu-gao-main-framed.webp?v=${MEDIA_VERSION}`,
+  'guilu-drink-30': `${SITE}/images/catalog-pure-v20261017/guilu-drink-30-main.png?v=${MEDIA_VERSION}`,
+  'guilu-drink-180': `${SITE}/images/catalog-pure-v20261017/guilu-drink-180-main.png?v=${MEDIA_VERSION}`,
   'guilu-tangkuai': `${SITE}/images/customer-display-v20260812/guilu-tangkuai.avif?v=${MEDIA_VERSION}`,
   'guilu-jiao': `${SITE}/images/customer-display-v20260812/guilu-jiao.avif?v=${MEDIA_VERSION}`,
-  'luerong-fen': `${SITE}/images/customer-display-v20260812/luerong-fen.avif?v=${MEDIA_VERSION}`,
+  'luerong-fen': `${SITE}/images/catalog-pure-v20261017/luerong-fen-main.png?v=${MEDIA_VERSION}`,
 });
 const CURRENT_TRIAL_MEDIA = `${SITE}/images/trial/trial-poster-small-boss-official-v20260814.jpg?v=${MEDIA_VERSION}`;
 const REQUIRED_IMAGE_PREFIX = `${SITE}/images/`;
@@ -33,7 +33,7 @@ const safeId = value => String(value || '').trim().toLowerCase().replace(/[^a-z0
 const normalizeImage = value => String(value || '').trim().split('#')[0].split('?')[0].toLowerCase();
 const fixedReusable = value => {
   const url=normalizeImage(value);
-  return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url);
+  return /\/images\/trial\//.test(url)||/\/images\/catalog-pure-v20261017\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url);
 };
 const visuallyIncompleteSvg = value => /(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(normalizeImage(value));
 const VISUAL_HOLD_REASON='SVG合成圖在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新製作完整情境圖或改用正式產品圖';

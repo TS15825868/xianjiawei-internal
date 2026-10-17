@@ -19,7 +19,7 @@ const safeId=value=>String(value||'').trim().toLowerCase().replace(/[^a-z0-9-]+/
 const sqlString=value=>`'${String(value??'').replaceAll("'","''")}'`;
 const jsonString=value=>sqlString(JSON.stringify(value??[]));
 const normalizeImage=value=>String(value||'').trim().split('#')[0].split('?')[0].toLowerCase();
-const fixedReusable=value=>{const url=normalizeImage(value);return /\/images\/trial\//.test(url)||/\/images\/customer-display-v20260812\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url)};
+const fixedReusable=value=>{const url=normalizeImage(value);return /\/images\/trial\//.test(url)||/\/images\/catalog-pure-v20261017\//.test(url)||/\/images\/dm-final\//.test(url)||/\/images\/brand\/approved-v405\/product-/.test(url)};
 const visuallyIncompleteSvg=value=>/(?:\/images\/posts\/current-v20260815\/|\/images\/publishing\/generated-v20260815\/)[^/]+\.svg$/.test(normalizeImage(value));
 const VISUAL_HOLD_REASON='SVG合成圖在貼文中心實際顯示不完整，會出現空白產品框、加號、只有文字或缺少完整情境；需重新製作完整情境圖或改用正式產品圖';
 const genericMismatch=(post,imageUrl)=>{
