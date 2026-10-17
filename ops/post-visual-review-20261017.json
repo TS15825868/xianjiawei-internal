@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-17",
+  "brand": "仙加味",
+  "source": "D1 read-only snapshot run 39027248927 and manually inspected actual image assets on GitHub main",
+  "policy": "圖片不符合正式2D小老闆或真實產品時，只封鎖重新核准與正式發布，不刪除舊圖、不動已發布紀錄；修復後回待審核且需人工16項複核",
+  "reviewed": [
+    {
+      "filename": "XJW-CONV-chat-gao-vs-drink-scene-v1.jpg",
+      "reason": "龜鹿膏及30cc圖片內的產品包裝不符合最新正式實拍，角色偏3D",
+      "status": "requires_new_original_scene_and_human_review"
+    },
+    {
+      "filename": "XJW-CONV-chat-trial-first-scene-v1.jpg",
+      "reason": "試喝產品與角色偏3D，未通過與正式小老闆、正式裸罐完整實拍比對",
+      "status": "requires_new_original_scene_and_human_review"
+    },
+    {
+      "filename": "XJW-CONV-weather-cool-drink-audit-v1.jpg",
+      "reason": "雖有明確冷天室內熱飲情境，但固定小老闆與夥伴呈過度3D風格",
+      "status": "requires_new_original_scene_and_human_review"
+    },
+    {
+      "filename": "XJW-CONV-chat-receive-package.jpg",
+      "reason": "收貨情境吻合，但小老闆與夥伴明顯偏3D",
+      "status": "requires_new_original_scene_and_human_review"
+    },
+    {
+      "filename": "XJW-CONV-chat-30-bare-jar-scene-v1.jpg",
+      "reason": "30cc玻璃罐疑似重繪，加上過度3D角色，不符合產品真實外觀及固定角色",
+      "status": "requires_new_original_scene_and_human_review"
+    },
+    {
+      "filename": "XJW-CONV-chat-shop-organizing-scene-v5.jpg",
+      "reason": "整理商品情境成立，角色過度3D，與正式固定2D角色規格不符",
+      "status": "requires_new_original_scene_and_human_review"
+    }
+  ],
+  "notes": [
+    "此六張確實已被逐張實際查看；不是全庫62張完成視覺驗收",
+    "其餘有效貼文仍須逐張比對小老闆、原廠產品、圖文、冷熱與季節",
+    "47篇舊已核准D1記錄無approved_by，不作可發布的人工核准依據"
+  ]
+}
