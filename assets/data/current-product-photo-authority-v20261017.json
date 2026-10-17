@@ -1,19 +1,19 @@
 {
-  "version": "20261017-pure-product-main-v3",
+  "version": "20261017-owner-approved-photo-main-v4",
   "updatedAt": "2026-10-17",
   "source": "TS15825868/xianjiawei/main",
   "brand": "仙加味",
   "publicProductCount": 9,
   "mainImages": {
-    "guilu-gao": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-gao-main-framed.webp?v=20261017-pure-product-main-v3",
-    "guilu-drink-30": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-drink-30-main.png?v=20261017-pure-product-main-v3",
-    "guilu-drink-180": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-drink-180-main.png?v=20261017-pure-product-main-v3",
-    "luerong-fen": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/luerong-fen-main.png?v=20261017-pure-product-main-v3",
-    "jinan-sisheng-siwuyin": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/jinan-sisheng-siwuyin-main.webp",
-    "danshen-tea-collection": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/danshen-tea-collection-main.webp",
-    "guilu-vitality": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/guilu-vitality-main.webp",
-    "uboss-sizhenbao": "https://ts15825868.github.io/xianjiawei/images/catalog-pure-v20261017/uboss-sizhenbao-main-framed.webp",
-    "royalherb-erzhenbao-64": "https://ts15825868.github.io/xianjiawei/images/catalog-user-original-v20261017/erzhenbao-actual-complete-box.webp"
+    "guilu-gao": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/guilu-gao-main.webp?v=20261017-owner-approved-photo-main-v4",
+    "guilu-drink-30": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/guilu-drink-30-main.webp?v=20261017-owner-approved-photo-main-v4",
+    "guilu-drink-180": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/guilu-drink-180-main.webp?v=20261017-owner-approved-photo-main-v4",
+    "luerong-fen": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/luerong-fen-main.webp?v=20261017-owner-approved-photo-main-v4",
+    "jinan-sisheng-siwuyin": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/jinan-sisheng-siwuyin-main.webp",
+    "danshen-tea-collection": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/danshen-tea-collection-main.webp",
+    "guilu-vitality": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/guilu-vitality-main.webp",
+    "uboss-sizhenbao": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/uboss-sizhenbao-main.webp",
+    "royalherb-erzhenbao-64": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp"
   },
   "photoRules": {
     "main": "one actual photographed physical carton or sealed unit per card with background of site",
