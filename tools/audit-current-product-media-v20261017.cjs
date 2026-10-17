@@ -9,7 +9,7 @@ for(const p of hist.publicAssets){
  const main=new URL(p.websiteMain);
  assert.equal(main.origin,"https://ts15825868.github.io","Public photo domain mismatch: "+p.id);
  assert.ok(main.pathname.startsWith("/xianjiawei/images/"),"Public product photo path must stay on website: "+p.id);
- assert.ok(main.pathname.includes("/catalog-pure-v20261017/")||main.pathname.includes("/catalog-user-original-v20261017/"),"Use only actual approved carton photo: "+p.id);
+ assert.ok(main.pathname.includes("/catalog-owner-final-v20261017/"),"Use only actual approved carton photo: "+p.id);
  assert.ok((p.websiteDetailImages||[]).every(url=>{
    const detail=new URL(url);
    return detail.origin===main.origin && detail.pathname.startsWith("/xianjiawei/images/");
