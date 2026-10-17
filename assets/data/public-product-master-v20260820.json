@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "2026-10-08-four-active-public-products-retired-jiao-tangkuai",
-  "updatedAt": "2026-10-08",
+  "version": "2026-10-18-sync-public-master-20261017",
+  "updatedAt": "2026-10-18",
   "role": "ERP／貼文中心使用的仙加味公開產品基礎資料鏡像；同步目前官網已核准公開產品事實，不以目前產品數量作永久上限，也不覆蓋內部價格、成本、庫存、客戶、通路或暫緩產品資料。",
   "source": {
     "repository": "TS15825868/xianjiawei",
@@ -21,10 +21,10 @@
       "漢方飲食文化",
       "以現代、方便、貼近日常的方式呈現"
     ],
-    "productScopeLine": "龜鹿系列與多元日常漢方選擇"
+    "productScopeLine": "漢方飲食文化・多元日常選擇"
   },
   "productCount": 4,
-  "productCountPolicy": "目前公開4項；不是永久上限。龜鹿膠與龜鹿湯塊已下架；ERP舊訂單及歷史資料保留。",
+  "productCountPolicy": "目前公開產品依官網 public-product-master.json 動態核准；不設永久數量上限。暫緩公開產品保留 ERP 內部資料，不自動公開。",
   "products": [
     {
       "id": "guilu-gao",
@@ -67,7 +67,7 @@
     "drinkLeadTimeScope": "5～7個工作天只適用龜鹿飲30cc與180cc",
     "deferredProductRule": "暫緩對外產品只留ERP內部資料；未經使用者日後明確重新上架，不得同步到官網、LINE OA、公開AI/GEO或公開貼文",
     "reviewFlow": "任何新圖、換圖或文案修改後回待審核；未人工審核不得正式發布",
-    "currentAuthority": "官網 public-product-master.json（user-confirmed-current）為公開產品基礎資料最高權威，新版正確資料不得被舊守門員阻擋。"
+    "currentAuthority": "官網 public-product-master.json（2026-10-17 最新已核准版本）為公開產品基礎資料權威；新增商品依核准狀態動態同步。"
   },
   "internalDataPolicy": "ERP可保留庫存、成本、批發價、通路、合作商、客戶、寄賣、素材、歷史營運資料、內部備註與暫緩產品資料；不得因公開母資料沒有這些欄位而刪除。"
 }
