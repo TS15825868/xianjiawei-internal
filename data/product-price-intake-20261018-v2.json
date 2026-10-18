@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 2,
+  "receivedDate": "2026-10-18",
+  "authority": "owner-provided latest historical quote intake",
+  "visibility": "internal-only",
+  "approval": "pending product photo, packaging, formula, price and regulatory review",
+  "noPublicPublishing": true,
+  "noAutoReply": true,
+  "noAutoCheckout": true,
+  "entries": [
+    {
+      "name": "鹿鞭",
+      "variant": "完整一條",
+      "priceTWD": 2500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "鹿鞭酒",
+      "variant": "鹿鞭+酒+甕",
+      "priceTWD": 3800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "降肝丸",
+      "variant": "1兩",
+      "priceTWD": 2200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "健步丸",
+      "variant": "一週",
+      "priceTWD": 1800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "斑龍丸",
+      "variant": "4兩瓶",
+      "priceTWD": 2200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "新班龍丸",
+      "variant": "1罐",
+      "priceTWD": 1450,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "龜鹿二仙膠",
+      "variant": "1斤盒",
+      "priceTWD": 16000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "四珍寶",
+      "variant": "1斤64片盒",
+      "priceTWD": 12000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "海馬",
+      "variant": "1兩",
+      "priceTWD": 3000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "蛤蚧",
+      "variant": "1對",
+      "priceTWD": 800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "雪蛤",
+      "variant": "1兩",
+      "priceTWD": 1000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "海狗鞭酒",
+      "variant": "1兩",
+      "priceTWD": 20000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "海狗鞭酒",
+      "variant": "影片整瓶口述",
+      "priceTWD": 150000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "鹿角",
+      "variant": "1斤",
+      "priceTWD": 1600,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "鹿角粉",
+      "variant": "1斤",
+      "priceTWD": 2000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "紫河車",
+      "variant": "1兩",
+      "priceTWD": 1000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "自有龜鹿二仙丸",
+      "variant": "1斤原罐",
+      "priceTWD": 8000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "自有龜鹿二仙丸",
+      "variant": "4兩分裝",
+      "priceTWD": 2200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "賜珍寶調理包",
+      "variant": "1包",
+      "priceTWD": 200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "勝昌龜鹿二仙丸",
+      "variant": "1瓶",
+      "priceTWD": 1880,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "龜鹿二仙膠酒",
+      "variant": "750ml罐",
+      "priceTWD": 1500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "龜版",
+      "variant": "1兩",
+      "priceTWD": 200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "六味地黃丸",
+      "variant": "4兩",
+      "priceTWD": 500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "六味地黃丸",
+      "variant": "1斤",
+      "priceTWD": 1800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "杞菊地黃丸",
+      "variant": "4兩",
+      "priceTWD": 600,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "杞菊地黃丸",
+      "variant": "1斤",
+      "priceTWD": 2200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "菟絲子",
+      "variant": "1斤",
+      "priceTWD": 520,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "瑪卡乾果",
+      "variant": "1斤",
+      "priceTWD": 6000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "枸杞",
+      "variant": "1斤",
+      "priceTWD": 600,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "綠豆癀",
+      "variant": "1盒",
+      "priceTWD": 900,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "鹿肚草",
+      "variant": "1兩整顆",
+      "priceTWD": 300,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "鹿肚草",
+      "variant": "1斤整顆",
+      "priceTWD": 4500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "黑豆製首烏",
+      "variant": "1斤",
+      "priceTWD": 650,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "回春草",
+      "variant": "1斤",
+      "priceTWD": 1600,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "回春草",
+      "variant": "4兩",
+      "priceTWD": 400,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "回春草酒",
+      "variant": "成品",
+      "priceTWD": 1500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "桑螵蛸散",
+      "variant": "1罐",
+      "priceTWD": 1800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "淫羊藿藥材",
+      "variant": "4兩包",
+      "priceTWD": 300,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "淫羊藿粉",
+      "variant": "100g罐",
+      "priceTWD": 300,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "六神花",
+      "variant": "1兩",
+      "priceTWD": 150,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "複方丹參片",
+      "variant": "500錠罐",
+      "priceTWD": 1500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "給力羊壹號丹蔘膜衣錠",
+      "variant": "1瓶特價",
+      "priceTWD": 1900,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "給力羊壹號丹蔘膜衣錠",
+      "variant": "1瓶原價",
+      "priceTWD": 2000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "八珍茶",
+      "variant": "1盒",
+      "priceTWD": 480,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "回春丸",
+      "variant": "診所價",
+      "priceTWD": 3000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "班龍丸",
+      "variant": "診所價",
+      "priceTWD": 2200,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "龜鹿膏小罐",
+      "variant": "診所歷史價",
+      "priceTWD": 1500,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "二珍寶精華膏湯塊",
+      "variant": "定價",
+      "priceTWD": 13800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "二珍寶精華膏湯塊",
+      "variant": "優惠價",
+      "priceTWD": 12000,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "四珍寶",
+      "variant": "定價",
+      "priceTWD": 14800,
+      "priceStatus": "pending-confirmation"
+    },
+    {
+      "name": "四珍寶",
+      "variant": "優惠價",
+      "priceTWD": 12000,
+      "priceStatus": "pending-confirmation"
+    }
+  ],
+  "conflicts": [
+    {
+      "name": "賜珍寶調理包",
+      "previous": 300,
+      "latest": 200,
+      "decision": "最新200元暫存，舊300元保留為歷史紀錄"
+    },
+    {
+      "name": "龜鹿二仙膠酒",
+      "previous": 1600,
+      "latest": 1500,
+      "decision": "最新1500元暫存"
+    },
+    {
+      "name": "斑龍丸/班龍丸",
+      "decision": "分開版本與診所價，不合併"
+    },
+    {
+      "name": "龜鹿膏",
+      "decision": "仙加味標準售價2000元，診所1500元僅個別歷史優惠，不覆蓋標準價"
+    },
+    {
+      "name": "二珍寶/四珍寶",
+      "decision": "分開產品、定價與優惠價"
+    }
+  ],
+  "contentSafety": "使用者提供的歷史配方、疾病宣稱、服用劑量及酒類交易說明未經驗證，不自動生成公開內容或醫療建議。",
+  "sourceNote": "詳細歷史文字保留於本專案對話，不將未核實療效文案複製至公開系統"
+}
