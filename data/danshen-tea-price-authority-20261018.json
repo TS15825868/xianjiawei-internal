@@ -1,0 +1,56 @@
+{
+  "updatedAt": "2026-10-18",
+  "authority": "owner-confirmed",
+  "brand": "健逢",
+  "series": "丹參茶包系列",
+  "variantCount": 6,
+  "standardRetailTWD": 480,
+  "specification": "3g／包，10包／盒",
+  "discountStatus": "未確認活動價",
+  "visibility": "internal-authoritative-price; public catalog eligibility separate",
+  "products": [
+    {
+      "id": "jianfeng-rose-fruit-tea",
+      "name": "臺灣丹參玫瑰果茶",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    },
+    {
+      "id": "jianfeng-leisure-tea",
+      "name": "臺灣丹參懈悠活養生茶",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    },
+    {
+      "id": "jianfeng-wudahan-tea",
+      "name": "武大漢丹參茶",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    },
+    {
+      "id": "jianfeng-fiber-tea",
+      "name": "臺灣丹參纖體茶",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    },
+    {
+      "id": "jianfeng-white-tea",
+      "name": "臺灣白茶丹參飲",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    },
+    {
+      "id": "jianfeng-refresh-tea",
+      "name": "臺灣丹參舒活茶",
+      "priceTWD": 480,
+      "priceStatus": "confirmed",
+      "promotionPriceTWD": null
+    }
+  ],
+  "note": "系列總覽非獨立商品，原先歷史待核價格由本次使用者確認取代；是否公開獨立商品頁仍依官網現行公開狀態"
+}
