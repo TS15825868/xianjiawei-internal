@@ -1,0 +1,308 @@
+{
+  "version": "2026-10-18",
+  "scope": "internal-only supplementary historical price intake",
+  "note": "與product-price-intake-20261018-v2.json合併使用；同名不同版本不得直接覆蓋；所有pending需逐項核對，已確認龜鹿膏及龜鹿飲例外。丹參茶包其他口味價格未確認，不推定與武大漢同價。",
+  "publishApproved": false,
+  "records": [
+    {
+      "name": "龜鹿膏",
+      "spec": "100g罐標準售價",
+      "priceTWD": 2000,
+      "status": "confirmed"
+    },
+    {
+      "name": "龜鹿飲",
+      "spec": "30cc玻璃罐",
+      "priceTWD": 60,
+      "status": "confirmed"
+    },
+    {
+      "name": "龜鹿飲",
+      "spec": "180cc鋁袋",
+      "priceTWD": 200,
+      "status": "confirmed"
+    },
+    {
+      "name": "挺寶膠囊（馬卡膠囊）",
+      "spec": "10粒盒",
+      "priceTWD": 1200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "真好眠（舒眠膠囊）",
+      "spec": "盒",
+      "priceTWD": 1200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "渼妍寶（美白膠囊）",
+      "spec": "盒",
+      "priceTWD": 1200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "丹參茶包－武大漢",
+      "spec": "10包盒",
+      "priceTWD": 480,
+      "status": "pending-verification"
+    },
+    {
+      "name": "珍珠粉",
+      "spec": "36g小瓶",
+      "priceTWD": 1250,
+      "status": "pending-verification"
+    },
+    {
+      "name": "珍珠粉",
+      "spec": "500g大罐",
+      "priceTWD": 13500,
+      "status": "pending-verification"
+    },
+    {
+      "name": "濟生腎氣丸",
+      "spec": "1斤",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "補腎丸",
+      "spec": "1瓶",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "風濕丸",
+      "spec": "1斤",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "參仲四物湯",
+      "spec": "12玻璃瓶盒",
+      "priceTWD": 1000,
+      "status": "pending-verification"
+    },
+    {
+      "name": "山茱萸粉＋當歸粉",
+      "spec": "兩瓶組",
+      "priceTWD": 1500,
+      "status": "pending-verification"
+    },
+    {
+      "name": "養心湯",
+      "spec": "1帖",
+      "priceTWD": 250,
+      "status": "pending-verification"
+    },
+    {
+      "name": "藥燉排骨方",
+      "spec": "1包",
+      "priceTWD": 180,
+      "status": "pending-verification"
+    },
+    {
+      "name": "雄風再起",
+      "spec": "三罐套組",
+      "priceTWD": 1450,
+      "status": "pending-verification"
+    },
+    {
+      "name": "肉蓯蓉粉",
+      "spec": "100g",
+      "priceTWD": 850,
+      "status": "pending-verification"
+    },
+    {
+      "name": "淫羊藿粉",
+      "spec": "100g",
+      "priceTWD": 300,
+      "status": "pending-verification"
+    },
+    {
+      "name": "馬卡粉",
+      "spec": "100g",
+      "priceTWD": 400,
+      "status": "pending-verification"
+    },
+    {
+      "name": "生血調經丸",
+      "spec": "100錠瓶",
+      "priceTWD": 900,
+      "status": "pending-verification"
+    },
+    {
+      "name": "四神粉",
+      "spec": "20包盒",
+      "priceTWD": 900,
+      "status": "pending-verification"
+    },
+    {
+      "name": "風流果（石頭果）",
+      "spec": "1兩",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "龜鹿二仙飲",
+      "spec": "12入盒",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "七寶美髯丹",
+      "spec": "1份",
+      "priceTWD": 1200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "三鞭酒plus",
+      "spec": "750cc瓶",
+      "priceTWD": 3000,
+      "status": "pending-verification"
+    },
+    {
+      "name": "金鎖固精丸",
+      "spec": "1份",
+      "priceTWD": 1200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "還少丹",
+      "spec": "1斤",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "無忌纖體茶",
+      "spec": "10包",
+      "priceTWD": 200,
+      "status": "pending-verification"
+    },
+    {
+      "name": "彪風再起粉",
+      "spec": "套組",
+      "priceTWD": 1300,
+      "status": "pending-verification"
+    },
+    {
+      "name": "左歸丸",
+      "spec": "1斤",
+      "priceTWD": 2500,
+      "status": "pending-verification"
+    },
+    {
+      "name": "化痰散",
+      "spec": "1份",
+      "priceTWD": 300,
+      "status": "pending-verification"
+    },
+    {
+      "name": "大九寶膠囊",
+      "spec": "10粒",
+      "priceTWD": 1800,
+      "status": "pending-verification"
+    },
+    {
+      "name": "珍珠綠豆癀膠囊",
+      "spec": "盒",
+      "priceTWD": 900,
+      "status": "pending-verification"
+    },
+    {
+      "name": "黑糖仙楂烏梅茶",
+      "spec": "10入",
+      "priceTWD": 250,
+      "status": "pending-verification"
+    },
+    {
+      "name": "冰糖菊花枸杞金盞花茶",
+      "spec": "10入",
+      "priceTWD": 250,
+      "status": "pending-verification"
+    },
+    {
+      "name": "山狗鞭（回春草）酒",
+      "spec": "750cc",
+      "priceTWD": 1500,
+      "status": "pending-verification"
+    },
+    {
+      "name": "大力金鋼酒藥材包",
+      "spec": "1帖",
+      "priceTWD": 900,
+      "status": "pending-verification"
+    },
+    {
+      "name": "美白進階版藥粉",
+      "spec": "約20天份",
+      "priceTWD": 3600,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行何首烏雞",
+      "spec": "1包",
+      "priceTWD": 150,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行北蟲草人蔘雞",
+      "spec": "1包",
+      "priceTWD": 150,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行人蔘雞",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行羊肉爐",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行藥燉排骨",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行燒酒雞（蝦）",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行四物雞湯",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "益興蔘藥行十全大補雞",
+      "spec": "1包",
+      "priceTWD": 100,
+      "status": "pending-verification"
+    },
+    {
+      "name": "丹蔘東洋蔘黃芪茶包",
+      "spec": "夾鏈袋",
+      "priceTWD": 150,
+      "status": "pending-verification"
+    },
+    {
+      "name": "丹參茶包－武大漢",
+      "spec": "10包盒",
+      "priceTWD": 480,
+      "status": "pending-verification"
+    },
+    {
+      "name": "龜鹿二仙丸",
+      "spec": "其他瓶裝歷史報價",
+      "priceTWD": 6000,
+      "status": "pending-verification"
+    }
+  ]
+}
