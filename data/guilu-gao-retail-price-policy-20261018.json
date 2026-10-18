@@ -1,0 +1,13 @@
+{
+  "productId": "guilu-gao",
+  "name": "仙加味龜鹿膏",
+  "specification": "100g／罐",
+  "standardRetailPriceTWD": 2000,
+  "standardPriceConfirmed": true,
+  "channelDiscountPolicy": "診所及其他通路可依各自優惠活動調整實際成交價，不代表標準零售價變更",
+  "historicalClinicPriceTWD": 1500,
+  "historicalClinicPriceStatus": "歷史個別通路報價，非統一診所價，非現行通用優惠",
+  "publicDisplayRule": "標準售價2000元；不得將個別通路優惠誤標為全通路固定價",
+  "source": "使用者於2026-10-18再次確認",
+  "notes": "不得以診所優惠覆蓋龜鹿膏正式標準零售價。"
+}
