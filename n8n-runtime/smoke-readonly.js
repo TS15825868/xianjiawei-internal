@@ -35,8 +35,8 @@ async function fetchResource(url, headers = {}) {
   if (retired.some(id => ids.includes(id))) errors.push('已下架產品回流到公開產品母資料');
   if (ids.includes('qixuan-guilu-drink-powder')) errors.push('柒玄茶被錯誤公開');
   const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
-  if (!Array.isArray(p30?.usage) || !p30.usage.some((x) => String(x).includes('每日 1–2 罐'))) {
-    errors.push('30cc 使用資料不是每日 1–2 罐');
+  if (!Array.isArray(p30?.usage) || !p30.usage.some((x) => /每日\\s*1\\s*[～–-]\\s*2\\s*罐/.test(String(x)))) {
+    errors.push('30cc 使用資料不是每日 1～2 罐');
   }
   if (!(p30?.usage || []).includes('可依個人需求調整')) errors.push('30cc 缺少可依個人需求調整');
 
