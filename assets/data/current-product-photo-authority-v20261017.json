@@ -12,8 +12,8 @@
     "jinan-sisheng-siwuyin": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/jinan-sisheng-siwuyin-main.webp",
     "danshen-tea-collection": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/danshen-tea-collection-main.webp",
     "guilu-vitality": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/guilu-vitality-main.webp",
-    "uboss-sizhenbao": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/uboss-sizhenbao-main.webp",
-    "royalherb-erzhenbao-64": "https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp"
+    "uboss-sizhenbao": "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-front.png",
+    "royalherb-erzhenbao-64": "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-front.png"
   },
   "photoRules": {
     "main": "one actual photographed physical carton or sealed unit per card with background of site",
@@ -36,5 +36,15 @@
       "reason": "Only real front packaging confirmed; full back ingredients and portrait marketing rights remain unverified"
     }
   ],
-  "notes": "ERP historical costs, inventory, partner conditions, pricing and deferred records are not modified"
+  "notes": "ERP historical costs, inventory, partner conditions, pricing and deferred records are not modified",
+  "detailImages": {
+    "royalherb-erzhenbao-64": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-open.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-back.png"
+    ],
+    "uboss-sizhenbao": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-open.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-back.png"
+    ]
+  }
 }
