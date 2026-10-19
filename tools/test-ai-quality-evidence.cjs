@@ -8,6 +8,9 @@ assert.equal(run({...e,risk:{level:'HIGH',uncertainties:['天氣未查證'],flag
 assert.equal(run({...e,image_sha256:'unknown'}),'NEEDS_HUMAN_REVIEW');
 assert.equal(run({...e,content_fingerprint:'edited'}),'NEEDS_HUMAN_REVIEW');
 assert.equal(run({...e,reviewer_type:'HUMAN'}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,publication:{approved:true}}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,publication:{auto_publish:true}}),'NEEDS_HUMAN_REVIEW');
+assert.equal(run({...e,reviewed_at:'invalid-time'}),'NEEDS_HUMAN_REVIEW');
 assert.equal(run({...e,visual:{...e.visual,products_visible:true}}),'NEEDS_HUMAN_REVIEW');
 assert.equal(run({...e,visual:{...e.visual,products_visible:true,product_assets:[{product_id:'guilu-jiao',url:'https://example.com/a.jpg',sha256:'d'.repeat(64),original_photo_verified:true,pixel_preservation_evidence:'不可公開的舊產品'}]}}),'NEEDS_HUMAN_REVIEW');
 console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL rejects; UNKNOWN/higher risk needs human; edited content and unverified/retired packaging blocked; no human impersonation');
