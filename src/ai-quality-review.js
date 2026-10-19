@@ -8,6 +8,9 @@ export async function aiGate(env,row,fp){
   if(!r||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||row.approved_by!==r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
   const result=evidence.assess(e,row.id,fp,row.image_url);
+  const reviewed=Date.parse(r.reviewed_at||'');
+  if(!Number.isFinite(reviewed)||Math.abs(Date.now()-reviewed)>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
+  if(r.content_fingerprint!==fp||r.image_url!==row.image_url||r.image_sha256!==e.image_sha256)return{ok:false,reason:'AI審核紀錄與目前圖文不一致'};
   if(result.decision!=='AI_APPROVED')return{ok:false,reason:result.reasons.join('；')};
   return{ok:true,reviewer_type:'AI',decision:'AI_APPROVED',reviewed_by:`ai:${r.model}`,reviewed_at:r.reviewed_at,fingerprint:fp,image_sha256:r.image_sha256};
 }
