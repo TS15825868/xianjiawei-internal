@@ -13,6 +13,7 @@ function assess(e,postId,fingerprint,imageUrl){
   if(typeof v?.products_visible!=='boolean')reasons.push('產品可見性未確認');
   if(v?.products_visible&&(!Array.isArray(v.product_assets)||!v.product_assets.length||v.product_assets.some(a=>!['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'].includes(a.product_id)||!sha(a.sha256)||!a.original_photo_verified||!a.url?.startsWith('https://')||!String(a.pixel_preservation_evidence||'').trim())))reasons.push('正式產品原圖、像素及比例來源未驗證');
   if(!Number.isFinite(Date.parse(e.reviewed_at||'')))reasons.push('審核時間不明');
+  if(e?.publication?.approved===true||e?.publication?.auto_publish===true)reasons.push('AI品質審核不得自行授權發布');
   return{decision:reasons.length?'NEEDS_HUMAN_REVIEW':'AI_APPROVED',reasons};
 }
 module.exports={CHECKS,assess};
