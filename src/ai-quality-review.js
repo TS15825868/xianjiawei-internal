@@ -6,6 +6,7 @@ export async function aiGate(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
   if(!r||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||row.approved_by!==r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
+  if(!['approved','scheduled'].includes(row.status)||Number(row.image_approved)!==1)return{ok:false,reason:'貼文尚未完成正式核准及圖片確認，不得使用AI證據發布'};
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
   const result=evidence.assess(e,row.id,fp,row.image_url);
   const reviewed=Date.parse(r.reviewed_at||'');
