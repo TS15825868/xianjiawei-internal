@@ -117,6 +117,8 @@ function productMatchErrors(row){
 function checklistFrom(body){const value=body?.review_checklist&&typeof body.review_checklist==='object'&&!Array.isArray(body.review_checklist)?body.review_checklist:{};return{value,missing:REQUIRED_CHECKS.filter(key=>value[key]!==true)}}
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};
+  // Keep AI-reviewed drafts visible for triage without allowing publication.
+  // The actual AI approval pathway remains disabled until end-to-end evidence and scheduling tests pass.
   if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
     return{ok:false,reason:'AI品質檢查僅供參考；必須由使用者完成人工核准後才可排程或發布'};
   }
