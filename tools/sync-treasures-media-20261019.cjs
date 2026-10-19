@@ -2,6 +2,11 @@
 const fs=require('fs'),assert=require('assert/strict');
 const targets=require('../data/treasures-media-targets-20261019.json');
 const read=p=>JSON.parse(fs.readFileSync(p)).flatMap(x=>x.results||[]).map(x=>({...x,data:JSON.parse(x.data_json)}));
+if(process.argv.includes('--apply')){
+ const {execFileSync}=require('child_process');
+ try{execFileSync('npx',['wrangler','d1','execute','xianjiawei-internal-db','--remote','--command',fs.readFileSync('/tmp/treasures-media.sql','utf8')],{stdio:'pipe'});console.log('Media SQL applied through D1 query path');}catch(e){console.error('D1 media query failed; private SQL withheld. Exit code: '+e.status);process.exit(1);}
+ process.exit(0);
+}
 const before=read('/tmp/before.json');
 const q=s=>"'"+String(s).replaceAll("'","''")+"'";
 if(process.argv.includes('--verify')){
