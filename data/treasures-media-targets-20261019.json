@@ -1,0 +1,26 @@
+[
+  {
+    "id": "PRD-PARTNER-ROYALHERB-ERZHENBAO-64",
+    "sku": "royalherb-erzhenbao-64",
+    "name": "二珍寶精華膏湯塊",
+    "specification": "600g±15g／盒｜64塊裝",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-front.png",
+    "gallery": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-front.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-open.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-back.png"
+    ]
+  },
+  {
+    "id": "PRD-PARTNER-UBOSS-SIZHENBAO",
+    "sku": "uboss-sizhenbao",
+    "name": "四珍寶精華膏湯塊",
+    "specification": "600g±15g／盒｜64塊（每盤8塊非整盒規格）",
+    "image_url": "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-front.png",
+    "gallery": [
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-front.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-open.png",
+      "https://ts15825868.github.io/xianjiawei/images/catalog-real-owner-v20261019/uboss-sizhenbao-back.png"
+    ]
+  }
+]
