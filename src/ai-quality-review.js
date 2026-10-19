@@ -21,6 +21,8 @@ export async function recordAiReview(env,row,e,profile,checks){
   // Tiered approval is fail-closed: commercial, new-product, weather and text-only cases need manual review.
   const material=[row.title,row.headline,row.copy,row.category].join(' ');
   const highRisk=/(優惠|折扣|促銷|特價|限時|售價|價格|元整|批發|經銷|加盟|首次上架|新品上市|柒玄茶|龜鹿調飲粉|藥品|許可證|療效)/.test(material);
+  const unsupportedClaims=/(保證|根治|預防疾病|改善疾病|醫治|促進關節|膠原蛋白|鈣質)/.test(material);
+  if(unsupportedClaims){result.decision='REJECTED';result.reasons.push('禁止未經確認的醫療或食品功效宣稱')}
   if(result.decision==='AI_APPROVED'&&(highRisk||!String(row.image_url||'').trim()||checks.isWeatherPost(row))){
     result.decision='NEEDS_HUMAN_REVIEW';
     result.reasons.push(highRisk?'涉及商業／新商品／法規敏感內容':!String(row.image_url||'').trim()?'純文字發布平台尚未完成正式驗證':'天氣時效內容須人工確認');
