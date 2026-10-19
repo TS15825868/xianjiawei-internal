@@ -24,8 +24,8 @@ export async function recordAiReview(env,row,e,profile,checks){
   if(/(治療|改善|關節|卡卡|疲勞|精神不濟|補氣|生津|膠原蛋白|鈣質|台興山產有限公司)/.test([row.title,row.headline,row.copy,row.image_alt].join(' ')))errors.push('療效／不適合公開的品牌用語阻擋');
   if(errors.length){result.decision='REJECTED';result.reasons.push(...errors)}
   // Tiered approval is fail-closed: commercial, new-product, weather and text-only cases need manual review.
-  const material=[row.title,row.headline,row.copy,row.category].join(' ');
-  const highRisk=/(優惠|折扣|促銷|特價|限時|售價|價格|元整|批發|經銷|加盟|首次上架|新品上市|柒玄茶|龜鹿調飲粉|藥品|許可證|療效)/.test(material);
+  const material=[row.title,row.headline,row.copy,row.category,row.image_alt,row.review_note].join(' ');
+  const highRisk=/(優惠|折扣|促銷|特價|限時|售價|價格|元整|批發|經銷|加盟|首次上架|新品上市|新上市|預購|現貨|免運|買一送一|折價|折扣碼|柒玄茶|龜鹿調飲粉|藥品|許可證|療效|醫療|代工|委託製造)/.test(material);
   const unsupportedClaims=/(保證|根治|預防疾病|改善疾病|醫治|促進關節|膠原蛋白|鈣質)/.test(material);
   if(unsupportedClaims){result.decision='REJECTED';result.reasons.push('禁止未經確認的醫療或食品功效宣稱')}
   if(result.decision==='AI_APPROVED'&&(highRisk||!String(row.image_url||'').trim()||checks.isWeatherPost(row))){
