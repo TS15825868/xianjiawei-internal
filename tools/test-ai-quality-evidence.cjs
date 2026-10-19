@@ -39,6 +39,9 @@ console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL reject
     await recordAiReview({DB},post,proof,{role:'owner',email:owner},{fingerprint:async()=>e.content_fingerprint,productMatchErrors:()=>[],duplicatePostErrors:async()=>[],isWeatherPost:()=>false});
     assert.equal(review.policy_version,AI_POLICY_VERSION);
     assert.equal((await aiGate({DB},post,e.content_fingerprint)).ok,false);
+    assert.equal((await aiGate({DB},{...post,status:'approved',image_approved:0,approved_by:owner},e.content_fingerprint)).ok,false,'unconfirmed image must fail');
+    assert.equal((await aiGate({DB},{...post,status:'draft',image_approved:1,approved_by:owner},e.content_fingerprint)).ok,false,'draft must fail');
+    assert.equal((await aiGate({DB},{...post,status:'approved',image_approved:1,approved_by:owner},'changed')).ok,false,'changed content must fail');
     assert.equal((await aiGate({DB},post,'changed')).ok,false);
     assert.equal((await aiGate({DB},{...post,approved_by:'other@example.com'},e.content_fingerprint)).ok,false);
     review.decision='REJECTED';assert.equal((await aiGate({DB},post,e.content_fingerprint)).ok,false);
