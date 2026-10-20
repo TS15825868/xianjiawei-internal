@@ -80,6 +80,8 @@ jobs:
             'Google 商家':['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has)||pair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN')
           };
           console.log('PLATFORM_READINESS '+JSON.stringify(readiness));
+          // Configuration names only; credentials and binding values must never enter logs.
+          console.log('AI_CONFIG_BINDING_NAMES '+JSON.stringify(bindings.filter(b=>/OPENAI|ANTHROPIC|GEMINI|GENERATIVE|AI_PROVIDER|AI_GATEWAY|AI_GENERAT|IMAGE_GENERAT/.test(b.name||'')||b.type==='ai').map(b=>({name:b.name,type:b.type}))));
           console.log('SAFE_BINDING_NAMES '+bindings.filter(b=>/META_|THREADS_|LINE_|GOOGLE_|PUBLISH_WEBHOOK/.test(b.name||'')).map(b=>`${b.name}:${b.type}`).sort().join(','));
           NODE
       - name: Verify live read-only authorization metadata during maintenance
