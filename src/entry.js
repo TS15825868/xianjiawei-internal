@@ -94,7 +94,7 @@ async function safeSettings(request,env,ctx){
     product_authority:PRODUCT_AUTHORITY
   };
   try{
-    const result=await env.DB.prepare('SELECT setting_key,value_json,updated_by,updated_at FROM app_settings ORDER BY setting_key').all();
+    const result=await env.DB.prepare("SELECT setting_key,setting_value AS value_json,'' AS updated_by,updated_at FROM app_settings ORDER BY setting_key").all();
     for(const row of result.results||[]){
       if(/token|secret|password|credential|private.?key|api.?key/i.test(row.setting_key))continue;
       let value=row.value_json;
@@ -122,7 +122,7 @@ async function brandContent(request,env,ctx){
   if(!authorization.ok)return authorization;
   const profile=await authorization.json();
   if(request.method==='GET'){
-    const row=await env.DB.prepare("SELECT value_json,updated_by,updated_at FROM app_settings WHERE setting_key='brand_content_v2' LIMIT 1").first();
+    const row=await env.DB.prepare("SELECT setting_value AS value_json,'' AS updated_by,updated_at FROM app_settings WHERE setting_key='brand_content_v2' LIMIT 1").first();
     if(!row)return json({version:'2.0',brand:'仙加味',tagline:'補養，是一種節奏。',items:[]});
     try{return json({...JSON.parse(row.value_json||'{}'),updatedBy:row.updated_by||'',updatedAt:row.updated_at||''});}catch{return json({version:'2.0',brand:'仙加味',tagline:'補養，是一種節奏。',items:[]});}
   }
@@ -131,7 +131,7 @@ async function brandContent(request,env,ctx){
   try{
     const payload=cleanBrandPayload(await request.json());
     const now=new Date().toISOString();
-    await env.DB.prepare("INSERT INTO app_settings(setting_key,value_json,updated_by,updated_at) VALUES('brand_content_v2',?,?,?) ON CONFLICT(setting_key) DO UPDATE SET value_json=excluded.value_json,updated_by=excluded.updated_by,updated_at=excluded.updated_at").bind(JSON.stringify(payload),profile.email,now).run();
+    await env.DB.prepare("INSERT INTO app_settings(setting_key,setting_value,updated_at) VALUES('brand_content_v2',?,?) ON CONFLICT(setting_key) DO UPDATE SET setting_value=excluded.setting_value,updated_at=excluded.updated_at").bind(JSON.stringify(payload),now).run();
     return json({...payload,updatedBy:profile.email,updatedAt:now});
   }catch(error){return json({error:clean(error?.message||error,'品牌內容格式錯誤')},400);}
 }
