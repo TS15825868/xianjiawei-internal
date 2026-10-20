@@ -78,7 +78,8 @@ jobs:
       - name: Commit formal image files
         run: |
           TARGET_DIR="$(cat /tmp/target-dir.txt)"
-          if git diff --quiet -- "$TARGET_DIR"; then
+          git add -- "$TARGET_DIR"
+          if git diff --cached --quiet -- "$TARGET_DIR"; then
             echo "No image file changes"
           else
             git config user.name 'github-actions[bot]'
@@ -129,7 +130,8 @@ jobs:
             if(Number(r.image_bytes)<250000) throw new Error(r.id+' 圖片檔案過小');
             if(r.image_quality_status!=='ok') throw new Error(r.id+' 品質狀態錯誤');
             if(Number(r.image_approved)!==0) throw new Error(r.id+' 不可自動核准');
-            if(!String(r.image_url||'').includes('/'+m.targetDir+'/')) console.log('INFO already fulfilled by another valid pending_review image:',r.id,r.image_url);
+            const expected='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+m.targetDir+'/'+x.filename;
+            if(r.image_url!==expected) throw new Error(r.id+' 圖片網址與本批不一致，不得將其他圖片視為回填成功');
           }
           console.log('PASS pending_review',rows.length);
           NODE
