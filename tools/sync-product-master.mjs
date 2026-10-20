@@ -51,7 +51,9 @@ function render(master){
 function renderClient(master){
   const products=master.products.map(source=>({
     ...selected(source),spec:source.specification,
-    usagePrimary:[...(source.usage||[]).slice(0,1),source.usageAdjustment||source.usage?.find(x=>x==='可依個人需求調整'),source.usageTiming].filter(Boolean).join('；')
+    usagePrimary:[...(source.usage||[]).slice(0,1),source.usageAdjustment||source.usage?.find(x=>x==='可依個人需求調整'),source.usageTiming]
+      .map(value=>String(value||'').trim()).filter(Boolean)
+      .reduce((parts,value)=>parts.some(part=>part.includes(value))?parts:[...parts,value],[]).join('；')
   }));
   return `// Generated from current public-product-master.json; never removes ERP internal records.\nwindow.XJW_CURRENT_PUBLIC_PRODUCTS=Object.freeze(${JSON.stringify(products)}.map(product=>Object.freeze(product)));\n`;
 }
