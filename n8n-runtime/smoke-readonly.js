@@ -32,7 +32,7 @@ async function fetchResource(url, headers = {}) {
   if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id)) errors.push('產品母資料 productCount／ID 不一致');
   if (!expected.every(id => ids.includes(id))) errors.push('產品母資料缺少核心產品');
   const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
-  if (p30 && (!Array.isArray(p30.usage) || !p30.usage.some(x => /每日\s*1\s*罐/.test(String(x))))) errors.push('30cc 每日 1 罐使用資料不一致');
+  if (p30 && (!Array.isArray(p30.usage) || !p30.usage.some(x => /每日\s*1\s*[～–-]\s*2\s*罐/.test(String(x))))) errors.push('30cc 每日 1～2 罐使用資料不一致');
 
   const ai = await fetchResource('https://ts15825868.github.io/xianjiawei/ai-answers.json');
   if (!ai.ok) errors.push(`AI answers HTTP ${ai.status}`);
