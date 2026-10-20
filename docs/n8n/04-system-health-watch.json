@@ -12,72 +12,168 @@
       "name": "外部排程觸發",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [0, 0],
+      "position": [
+        0,
+        0
+      ],
       "webhookId": "313502b4-feb6-49ce-ac20-9f0203334065"
     },
     {
       "parameters": {
         "url": "https://ts15825868.github.io/xianjiawei/public-product-master.json",
-        "options": {"response": {"response": {"fullResponse": true, "neverError": true}}}
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
       },
       "id": "xjw-health-002",
       "name": "讀官網正式母資料",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 0]
+      "position": [
+        240,
+        0
+      ]
     },
     {
       "parameters": {
         "url": "https://ts-line.onrender.com/healthz",
-        "options": {"response": {"response": {"fullResponse": true, "neverError": true}}}
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
       },
       "id": "xjw-health-003",
       "name": "讀 LINE OA healthz",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [480, 0]
+      "position": [
+        480,
+        0
+      ]
     },
     {
       "parameters": {
         "url": "https://ts15825868.github.io/xianjiawei/sitemap.xml",
-        "options": {"response": {"response": {"fullResponse": true, "neverError": true, "responseFormat": "text"}}}
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          }
+        }
       },
       "id": "xjw-health-004",
       "name": "讀官網 GitHub Pages",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [720, 0]
+      "position": [
+        720,
+        0
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const web=$('讀官網正式母資料').first().json; const line=$('讀 LINE OA healthz').first().json; const pages=$('讀官網 GitHub Pages').first().json; const webBody=web.body??web; const lineBody=line.body??line; const pagesBody=pages.body??pages; const websiteOk=Number(web.statusCode??200)>=200&&Number(web.statusCode??200)<300&&webBody?.authority==='user-confirmed-current'&&Number(webBody?.productCount)===6; const lineStatus=Number(line.statusCode??line.status??0); const lineOk=lineStatus>=200&&lineStatus<300&&lineBody?.ok!==false; const pagesStatus=Number(pages.statusCode??pages.status??0); const pagesText=typeof pagesBody==='string'?pagesBody:JSON.stringify(pagesBody??''); const pagesOk=pagesStatus>=200&&pagesStatus<300&&pagesText.includes('<urlset'); const problems=[]; if(!websiteOk) problems.push('官網正式產品母資料異常'); if(!lineOk) problems.push('LINE OA healthz 異常'); if(!pagesOk) problems.push('官網 GitHub Pages 公開站異常'); if(problems.length) throw new Error(problems.join('；')); return [{json:{ok:true,checkedAt:new Date().toISOString(),website:{ok:websiteOk,status:web.statusCode??null,version:webBody?.version,productCount:webBody?.productCount},line:{ok:lineOk,status:lineStatus,bodyOk:lineBody?.ok},githubPages:{ok:pagesOk,status:pagesStatus,sitemapOk:pagesText.includes('<urlset')},problems}}];"
+        "jsCode": "const web=$('讀官網正式母資料').first().json; const line=$('讀 LINE OA healthz').first().json; const pages=$('讀官網 GitHub Pages').first().json; const webBody=web.body??web; const lineBody=line.body??line; const pagesBody=pages.body??pages; const products=Array.isArray(webBody?.products)?webBody.products:[]; const ids=products.map(p=>p.id); const websiteOk=Number(web.statusCode??200)>=200&&Number(web.statusCode??200)<300&&webBody?.authority==='user-confirmed-current'&&ids.length>0&&Number(webBody?.productCount)===ids.length&&new Set(ids).size===ids.length&&ids.every(Boolean)&&['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'].every(id=>ids.includes(id))&&!ids.some(id=>['guilu-jiao','guilu-tangkuai','qixuan-guilu-drink-powder'].includes(id)); const lineStatus=Number(line.statusCode??line.status??0); const lineOk=lineStatus>=200&&lineStatus<300&&lineBody?.ok!==false; const pagesStatus=Number(pages.statusCode??pages.status??0); const pagesText=typeof pagesBody==='string'?pagesBody:JSON.stringify(pagesBody??''); const pagesOk=pagesStatus>=200&&pagesStatus<300&&pagesText.includes('<urlset'); const problems=[]; if(!websiteOk) problems.push('官網正式產品母資料異常'); if(!lineOk) problems.push('LINE OA healthz 異常'); if(!pagesOk) problems.push('官網 GitHub Pages 公開站異常'); if(problems.length) throw new Error(problems.join('；')); return [{json:{ok:true,checkedAt:new Date().toISOString(),website:{ok:websiteOk,status:web.statusCode??null,version:webBody?.version,productCount:webBody?.productCount},line:{ok:lineOk,status:lineStatus,bodyOk:lineBody?.ok},githubPages:{ok:pagesOk,status:pagesStatus,sitemapOk:pagesText.includes('<urlset')},problems}}];"
       },
       "id": "xjw-health-005",
       "name": "總體判斷",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [960, 0]
+      "position": [
+        960,
+        0
+      ]
     },
     {
-      "parameters": {"jsCode": "return [{json:{...$json,message:'仙加味官網／LINE OA／GitHub Pages 目前正常'}}];"},
+      "parameters": {
+        "jsCode": "return [{json:{...$json,message:'仙加味官網／LINE OA／GitHub Pages 目前正常'}}];"
+      },
       "id": "xjw-health-007",
       "name": "正常結束",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1200, 0]
+      "position": [
+        1200,
+        0
+      ]
     }
   ],
   "connections": {
-    "外部排程觸發": {"main": [[{"node": "讀官網正式母資料", "type": "main", "index": 0}]]},
-    "讀官網正式母資料": {"main": [[{"node": "讀 LINE OA healthz", "type": "main", "index": 0}]]},
-    "讀 LINE OA healthz": {"main": [[{"node": "讀官網 GitHub Pages", "type": "main", "index": 0}]]},
-    "讀官網 GitHub Pages": {"main": [[{"node": "總體判斷", "type": "main", "index": 0}]]},
-    "總體判斷": {"main": [[{"node": "正常結束", "type": "main", "index": 0}]]}
+    "外部排程觸發": {
+      "main": [
+        [
+          {
+            "node": "讀官網正式母資料",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀官網正式母資料": {
+      "main": [
+        [
+          {
+            "node": "讀 LINE OA healthz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀 LINE OA healthz": {
+      "main": [
+        [
+          {
+            "node": "讀官網 GitHub Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀官網 GitHub Pages": {
+      "main": [
+        [
+          {
+            "node": "總體判斷",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "總體判斷": {
+      "main": [
+        [
+          {
+            "node": "正常結束",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
   "pinData": {},
   "active": false,
-  "settings": {"executionOrder": "v1"},
+  "settings": {
+    "executionOrder": "v1"
+  },
   "versionId": "xjw-health-watch-20260826-v4",
-  "meta": {"templateCredsSetupCompleted": false},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
   "tags": []
 }
