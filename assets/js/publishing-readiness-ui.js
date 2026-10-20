@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20261020-publishing-readiness-ui-v10-late-init';
+  const VERSION='20261020-publishing-readiness-ui-v11-retain-platform-probe';
   const MUTATION_SELECTOR='[data-add-post],[data-post-edit],[data-post-status],[data-post-schedule],[data-post-publish-now],[data-submit-post],[data-save-schedule],[data-publish-now-from-modal],[data-manual-package]';
   const PUBLISH_SELECTOR='[data-post-publish-now],[data-publish-now-from-modal]';
   let safeMode=true,publishReady=false,platformChecked=false,report=null,running=null,lastFullProbe=0,platformSummaryObserver=null,renderingPlatformSummary=false;
@@ -88,7 +88,14 @@
       try{
         const core=await timeoutFetch('/healthz/core',4500);if(!core.ok)throw new Error(`Worker HTTP ${core.status}`);
         const readiness=await timeoutFetch(`/healthz/readiness${full?'?probe=1':''}`,full?15000:6500);
-        const parsed=await readJson(readiness);report=parsed.data||{};safeMode=!Boolean(report.ok);
+        const parsed=await readJson(readiness);const previousReport=report;report=parsed.data||{};
+        // A core-only refresh does not recheck platforms; retain the last actual probe.
+        if(!full&&report.ok&&previousReport?.platformProbe){
+          report.platformProbe=previousReport.platformProbe;
+          report.blockingPlatformFailures=previousReport.blockingPlatformFailures||[];
+          if(previousReport.platformProbeError)report.platformProbeError=previousReport.platformProbeError;
+        }
+        safeMode=!Boolean(report.ok);
         if(full){
           lastFullProbe=Date.now();platformChecked=true;
           const blocking=Array.isArray(report.blockingPlatformFailures)?report.blockingPlatformFailures:[];
