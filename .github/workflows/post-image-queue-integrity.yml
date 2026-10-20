@@ -86,7 +86,7 @@ jobs:
             for(const [queueName,id] of Object.entries(assetMap)){
               const product=authorityById.get(id);
               const expected=liveMainByProduct[id];
-              const current=String(q.formalAssets?.[queueName]||'').replace(/^\\//,'').split('?')[0];
+              const current=String(q.formalAssets?.[queueName]||'').replace(/^[/]+/,'').split('?')[0];
               if(!expected||!product)errors.push(`官網正式媒體權威缺 ${id}`);
               else if(product.mediaStatus!=='approved-formal-product-image')errors.push(`官網 ${id} 尚未核准正式主圖`);
               else if(!currentSiteHtml.includes(expected))errors.push(`官網目前商品頁沒有正式主圖 ${expected}，請重新核對權威`);
