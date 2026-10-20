@@ -9,7 +9,7 @@
   "sourceAuthority": {
     "repository": "TS15825868/xianjiawei",
     "branch": "main",
-    "websiteMainCommit": "109f9c5c6d99a063629069efedfaefa7182a7536",
+    "websiteMainCommit": "050569d8819dbfa0a81a5af22e3acd4af546ab16",
     "publicProductMaster": {
       "path": "public-product-master.json",
       "sha": "c8aab4dedef9b7b9c0f0872551e1325e1c606dbd",
@@ -17,7 +17,7 @@
     },
     "partnerCatalog": {
       "path": "partner-catalog.json",
-      "sha": "189f690433c70b23e2f612a379623183cfa7d03c",
+      "sha": "d34b0c30de48bcb45078d13e748720ccf1fe937e",
       "version": "20261017-final-real-packaging-and-detail-photo-v2"
     },
     "publicProductCount": 9
@@ -112,7 +112,8 @@
       "brand": "御采堂",
       "name": "四珍寶精華膏湯塊",
       "specification": "600g±15g／盒｜64塊",
-      "image": "images/catalog-owner-final-v20261017/uboss-sizhenbao-main.webp"
+      "image": "images/catalog-real-owner-v20261019/uboss-sizhenbao-front.png",
+      "imageSourceUpdate": "2026-10-19 最新使用者實拍正式主圖；完整紅盒正面，原始產品像素保真。"
     },
     {
       "group": "合作品牌商品",
@@ -120,7 +121,8 @@
       "brand": "御漢堂",
       "name": "二珍寶精華膏湯塊",
       "specification": "600g±15g／盒｜64塊裝",
-      "image": "images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp"
+      "image": "images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-front.png",
+      "imageSourceUpdate": "2026-10-19 最新使用者實拍正式主圖；完整紫盒正面，原始產品像素保真。"
     }
   ],
   "formalImageRequirements": {
@@ -161,12 +163,12 @@
     "noScheduleCreated": true,
     "noPublicationCreated": true,
     "noPinClaimed": true,
-    "latestMetricoolCheckedAt": "2026-10-19T09:46:37+08:00",
+    "latestMetricoolCheckedAt": "2026-10-20T09:52:25+08:00",
     "latestMetricoolFutureDrafts": 14,
     "latestMetricoolFutureAutoPublish": 0
   },
-  "revision": 2,
-  "updatedAt": "2026-10-19T09:46:37+08:00",
+  "revision": 3,
+  "updatedAt": "2026-10-20T09:52:25+08:00",
   "changeLog": [
     {
       "date": "2026-10-19",
@@ -175,6 +177,26 @@
       "productMembershipChanged": false,
       "packageSpecificationChanged": false,
       "publicationStateChanged": false
+    },
+    {
+      "date": "2026-10-20",
+      "reason": "同步最新 partner-catalog 正式實物主圖",
+      "changes": [
+        {
+          "id": "uboss-sizhenbao",
+          "from": "images/catalog-owner-final-v20261017/uboss-sizhenbao-main.webp",
+          "to": "images/catalog-real-owner-v20261019/uboss-sizhenbao-front.png"
+        },
+        {
+          "id": "royalherb-erzhenbao-64",
+          "from": "images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp",
+          "to": "images/catalog-real-owner-v20261019/royalherb-erzhenbao-64-front.png"
+        }
+      ],
+      "productMembershipChanged": false,
+      "packageSpecificationChanged": false,
+      "publicationStateChanged": false,
+      "finishedOverviewImageRendered": false
     }
   ]
 }
