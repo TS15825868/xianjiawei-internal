@@ -40,9 +40,21 @@
       box.innerHTML=item.ok?'<strong>圖文完整檢查（不會發布）</strong><br>產品、重複圖、季節／天氣與明確情境自動預檢通過；仍須人工完成16項審核。':`<strong>圖文完整檢查未通過（不會發布）</strong><br>${errors.map(esc).join('；')}`;
     }
     card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
-      if(item.ok)return;
-      button.disabled=true;
-      button.title='圖文完整檢查未通過：'+errors.join('；');
+      if(item.ok){
+        if(button.dataset.contentAuditDisabled==='1'){
+          button.disabled=false;
+          button.title=button.dataset.contentAuditOriginalTitle||'';
+          delete button.dataset.contentAuditDisabled;
+          delete button.dataset.contentAuditOriginalTitle;
+        }
+        return;
+      }
+      if(!button.disabled){
+        button.dataset.contentAuditDisabled='1';
+        button.dataset.contentAuditOriginalTitle=button.title||'';
+        button.disabled=true;
+      }
+      if(button.dataset.contentAuditDisabled==='1')button.title='圖文完整檢查未通過：'+errors.join('；');
     });
   }
   async function auditIds(ids){
