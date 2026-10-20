@@ -79,11 +79,16 @@ async function fastPostList(request,env){
   const [rows,totalRow,grouped]=await Promise.all([
     env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all(),
     env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds).first(),
-    env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts WHERE status<>'archived' GROUP BY status").all()
+    env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status").all()
   ]);
   const counts={draft:0,pending_review:0,approved:0,scheduled:0,published:0,manual_required:0,failed:0};
-  for(const row of grouped.results||[])counts[row.status]=Number(row.count||0);
-  return json({items:(rows.results||[]).map(mapFastPost),total:Number(totalRow?.count||0),limit,offset,counts,query:q,status:POST_STATUSES.has(status)?status:'all',fast_api:FAST_API_VERSION});
+  let archivedCount=0;
+  for(const row of grouped.results||[]){
+    if(row.status==='archived')archivedCount=Number(row.count||0);
+    else counts[row.status]=Number(row.count||0);
+  }
+  const totalIncludingArchived=Object.values(counts).reduce((sum,count)=>sum+count,archivedCount);
+  return json({items:(rows.results||[]).map(mapFastPost),total:Number(totalRow?.count||0),limit,offset,counts,archived_count:archivedCount,total_including_archived:totalIncludingArchived,query:q,status:POST_STATUSES.has(status)?status:'all',fast_api:FAST_API_VERSION});
 }
 async function fastMe(request,env){const profile=await verifyFastAccess(request,env);return json({...profile,role_label:roleLabel(profile.role),fast_api:FAST_API_VERSION});}
 async function fastPlatformAuthorization(request,env){await verifyFastAccess(request,env);return json({...publisherConfiguration(env),fast_api:FAST_API_VERSION});}
