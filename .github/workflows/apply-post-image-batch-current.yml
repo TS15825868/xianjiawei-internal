@@ -1,10 +1,6 @@
 name: 仙加味貼文圖片通用批次回填
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'ops/post-image-bindings-current.json'
   workflow_dispatch:
 
 permissions:
@@ -40,6 +36,7 @@ jobs:
           const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
           const lines=[];
           for(const x of data.items){
+            if(!x.path || !fs.existsSync(x.path)) throw new Error('舊版手動回填只接受已存在的圖片 path；ZIP批次請使用正式工作流');
             const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+x.path;
             lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q('ChatGPT正式生成｜GitHub main｜人工待審核')}, image_width=${Number(x.width)}, image_height=${Number(x.height)}, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft';`);
           }
