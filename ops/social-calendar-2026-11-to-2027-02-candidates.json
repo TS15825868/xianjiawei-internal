@@ -1,0 +1,288 @@
+{
+  "version": "2026-10-21-to-2027-02-28-v1",
+  "brand": "仙加味",
+  "purpose": "跨年與農曆春節後社群自動化候選排程",
+  "timezone": "Asia/Taipei",
+  "existingMetricoolLiveScheduleThrough": "2026-11-17",
+  "existingScheduledPostsMustNotDuplicate": true,
+  "platforms": [
+    "Facebook",
+    "Instagram",
+    "Threads"
+  ],
+  "releaseRule": "每篇完成正式文案、對應情境圖片、官網正式產品原圖核對、16項AI審核證據、圖文雜湊與已發布去重後，低風險可AI_APPROVED並交由Metricool建立正式排程；未通過留待審核，不得直接發布。",
+  "pausedTopics": [
+    "龜鹿飲試喝，待使用者另訂日期"
+  ],
+  "constraints": [
+    "禁止覆蓋官網現用正式產品圖",
+    "固定Q版小老闆、小鹿、小烏龜分開",
+    "圖文一致，避免療效宣稱",
+    "不公開售價",
+    "不可把候選日期當成已排程",
+    "節日日期與實際季節須在產出前再核對"
+  ],
+  "slots": [
+    {
+      "date": "2026-11-20",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "萬華四代傳承的日常片段",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-11-24",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "冬季在家準備溫熱飲品",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-11-27",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "仙加味產品標示怎麼看",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-01",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "週末家常湯品的料理搭配",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-04",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "鹿角與傳統熬膠工藝故事",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-08",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "官方LINE商品與合作諮詢",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-11",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "龜鹿膏100g日常使用情境",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-15",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "小老闆與小鹿小烏龜整理店面",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-18",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "不同產品形式的選擇方式",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-22",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "跨年與新年",
+      "topic": "漢方飲食文化與現代生活",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-25",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "跨年與新年",
+      "topic": "年末回顧：仙加味從萬華到現代漢方生活",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2026-12-29",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "跨年與新年",
+      "topic": "年末整理：家中漢方飲食用品的標示與保存",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-01",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "元旦",
+      "topic": "新年第一天：仙加味陪伴新一年的生活節奏",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-05",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "跨年與新年",
+      "topic": "週末家常湯品的料理搭配",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-08",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "鹿角與傳統熬膠工藝故事",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-12",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "官方LINE商品與合作諮詢",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-15",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "日常品牌／產品／生活",
+      "topic": "龜鹿膏100g日常使用情境",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-19",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "小老闆與小鹿小烏龜整理店面",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-22",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "不同產品形式的選擇方式",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-26",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "漢方飲食文化與現代生活",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-01-29",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "萬華四代傳承的日常片段",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-02",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "冬季在家準備溫熱飲品",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-05",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節前",
+      "topic": "除夕前一天：年節家常料理與產品資訊準備",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-09",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節",
+      "topic": "新春生活情境：家人相聚與漢方飲食文化",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-12",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節",
+      "topic": "新春生活情境：家人相聚與漢方飲食文化",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-16",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節後／開工",
+      "topic": "年後重新整理生活節奏與日常飲食",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-19",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節後／開工",
+      "topic": "龜鹿膏100g日常使用情境",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-23",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節後／開工",
+      "topic": "小老闆與小鹿小烏龜整理店面",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-02-26",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "phase": "春節後／開工",
+      "topic": "不同產品形式的選擇方式",
+      "status": "candidate_pending_asset_and_16_checks",
+      "autoPublish": false
+    }
+  ]
+}
