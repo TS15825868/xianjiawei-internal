@@ -27,7 +27,7 @@ jobs:
           set -euo pipefail
           ready=false
           for attempt in 1 2 3 4 5; do
-            if curl -fsS --connect-timeout 15 --max-time 40 'https://xianjiawei-n8n-longterm.onrender.com/healthz' -o /tmp/n8n-health.json; then
+            if curl -fsS --connect-timeout 15 --max-time 40 'https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness' -o /tmp/n8n-health.json; then
               if node -e "if(JSON.parse(require('fs').readFileSync('/tmp/n8n-health.json','utf8')).status!=='ok')process.exit(1)"; then ready=true; break; fi
             fi
             sleep 5
@@ -40,7 +40,7 @@ jobs:
           # These workflows only inspect service/product state. The publisher is excluded.
           for route in xjw-line-health-a7f8c2 xjw-ai-geo-9c3f75 xjw-system-health-d4b6e1; do
             curl -fsS --connect-timeout 15 --max-time 60 "https://xianjiawei-n8n-longterm.onrender.com/webhook/$route" -o /tmp/n8n-trigger.json
-            node -e "const x=JSON.parse(require('fs').readFileSync('/tmp/n8n-trigger.json','utf8'));if(x.message!=='Workflow was started'&&x.ok!==true)throw Error('n8n trigger was not accepted')"
-            echo "Accepted read-only monitor: $route"
+            node -e "const x=JSON.parse(require('fs').readFileSync('/tmp/n8n-trigger.json','utf8'));if(x.ok!==true)throw Error('n8n monitor did not return a completed successful result')"
+            echo "PASS completed read-only monitor: $route"
           done
-          echo 'Triggers accepted; final execution results are recorded in n8n, not inferred from HTTP acceptance.'
+          echo 'All three read-only monitors completed successfully; publication workflow remains excluded.'
