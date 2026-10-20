@@ -29,6 +29,8 @@ jobs:
           import {PRODUCTS} from './src/product-master-snapshot.js';
           const rows=JSON.parse(fs.readFileSync('d1-product-facts.json','utf8')).flatMap(x=>x.results||[]);
           const errors=[];
+          const requiredCoreIds=['PROD-GAO-100','PROD-DRINK-30','PROD-DRINK-180','PROD-ANTLER-75'];
+          for(const id of requiredCoreIds)if(!rows.some(row=>row.id===id))errors.push({id,field:'missing_core_product'});
           for(const row of rows){
             let name=String(row.name||'');
             if(name==='龜鹿飲'&&String(row.specification).startsWith('30cc'))name='龜鹿飲30cc玻璃罐';
@@ -37,7 +39,7 @@ jobs:
             const product=PRODUCTS.find(p=>p.name===name);
             if(!product)continue;
             if(!(product.allowedSpecs||[]).includes(row.specification))errors.push({id:row.id,name,field:'specification',actual:row.specification,expected:product.allowedSpecs});
-            if(product.id==='guilu-drink-30'&&(!String(row.usage).includes('每日 1–2 罐')||!String(row.usage).includes('可依個人需求調整')))errors.push({id:row.id,name,field:'usage',actual:row.usage});
+            if(product.id==='guilu-drink-30'&&(!/每日\s*1\s*[-～–]\s*2\s*罐/.test(String(row.usage))||!String(row.usage).includes('可依個人需求調整')))errors.push({id:row.id,name,field:'usage',actual:row.usage});
           }
           console.log('D1 active product records:',rows.length,'current public authority:',PRODUCTS.length,'internal/deferred records retained');
           if(errors.length){console.error(JSON.stringify(errors));process.exit(1)}
