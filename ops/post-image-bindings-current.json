@@ -1,62 +1,15 @@
 {
-  "version": "2026-09-29-batch-5-in-progress",
-  "sourceZip": "conversation-generated-and-audited",
-  "targetDir": "assets/post-images/2026-09-29/batch5",
-  "statusAfterBind": "pending_review",
+  "version": "2026-10-20-2d-candidate-roundtrip",
+  "sourceZip": "ops/media-batches/20261020-quiet-work-2d.zip",
+  "targetDir": "assets/post-images/2026-10-20/2d-candidates",
   "items": [
     {
-      "postId": "XJW-CONV-chat-receive-package",
-      "filename": "XJW-CONV-chat-receive-package.jpg",
-      "title": "收到產品後，你第一件事會先看哪裡？",
+      "postId": "XJW-CONV-chat-quiet-work",
+      "filename": "XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
       "width": 1254,
       "height": 1254,
-      "bytes": 408363,
-      "alt": "收到包裹的居家情境，小老闆打開紙箱先查看隨附說明卡，小鹿與小烏龜分開陪伴"
-    },
-    {
-      "postId": "XJW-CONV-chat-recipe-or-feel",
-      "filename": "XJW-CONV-chat-recipe-or-feel.jpg",
-      "title": "你煮東西是照食譜，還是憑感覺？",
-      "width": 1254,
-      "height": 1254,
-      "bytes": 483430,
-      "alt": "家常廚房情境，小老闆一邊看料理筆記一邊準備食材，小鹿與小烏龜分開陪伴"
-    },
-    {
-      "postId": "XJW-CONV-chat-shop-organizing",
-      "filename": "XJW-CONV-chat-shop-organizing.jpg",
-      "title": "小老闆今天在整理什麼？",
-      "width": 1254,
-      "height": 1254,
-      "bytes": 506611,
-      "alt": "整潔工作桌情境，小老闆分類整理紙張與日常物件，小鹿與小烏龜分開互動"
-    },
-    {
-      "postId": "XJW-CONV-chat-simple-soup",
-      "filename": "XJW-CONV-chat-simple-soup.jpg",
-      "title": "一鍋湯，其實不用放得很複雜",
-      "width": 1254,
-      "height": 1254,
-      "bytes": 516613,
-      "alt": "家常廚房情境，小老闆守著一鍋熱湯與一般食材，小鹿與小烏龜分開陪伴"
-    },
-    {
-      "postId": "XJW-CONV-chat-traditional-image",
-      "filename": "XJW-CONV-chat-traditional-image.jpg",
-      "title": "看到「傳統」兩個字，你第一個想到什麼？",
-      "width": 1254,
-      "height": 1254,
-      "bytes": 468939,
-      "alt": "溫暖居家工作桌，小老闆翻看舊照片與老物件，小鹿與小烏龜分開陪伴"
-    },
-    {
-      "postId": "XJW-CONV-chat-opening-prep",
-      "filename": "XJW-CONV-chat-opening-prep.jpg",
-      "title": "開店前，小老闆先做哪一件事？",
-      "width": 800,
-      "height": 800,
-      "bytes": 107488,
-      "alt": "秋日開店前情境，小老闆擦拭整理桌面，小鹿與小烏龜分開陪伴，畫面對應開店前的日常準備"
+      "bytes": 423578,
+      "alt": "安靜的午後，仙加味固定小老闆以平面2D插畫呈現，穿米白中式上衣與深橄欖綠圍裙，胸前紅色直式仙加味印章，在萬華工作間專心翻看工作筆記；小鹿在矮凳休息，小烏龜在食材籃旁分開陪伴。此為新情境候選圖，仍待人工審核。"
     }
   ]
 }
