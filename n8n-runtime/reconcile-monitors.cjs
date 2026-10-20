@@ -5,7 +5,7 @@ const { spawnSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
 
 const TARGET_SERVICE = 'srv-da8s2r49v7es73cefob0';
-const MONITORS = ['03-product-ai-geo-audit.json', '04-system-health-watch.json'];
+const MONITORS = ['01-line-health-monitor.json', '03-product-ai-geo-audit.json', '04-system-health-watch.json'];
 function canonical(value) {
   if (Array.isArray(value)) return value.map(canonical);
   if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(k => [k, canonical(value[k])]));
@@ -23,7 +23,7 @@ function reconcile({run,read,write,sourceDir,workDir,log=console.log}) {
     const editor = JSON.parse(read(editorPath))[0];
     if (!editor || editor.id !== source.id || editor.name !== source.name) throw new Error('Existing workflow identity mismatch');
     if (definition(editor) !== definition(source)) {
-      // Import only these two existing read-only monitors. Retain their current ownership/settings.
+      // Import only these three existing read-only monitors. Retain their current ownership/settings.
       const input = path.join(workDir,source.id+'-input.json');
       write(input,JSON.stringify([{id:editor.id,name:editor.name,description:editor.description,nodes:source.nodes,connections:source.connections,settings:editor.settings,versionId:randomUUID(),active:false,pinData:{}}]));
       run(['import:workflow','--input='+input,'--projectId=9EIwpCtu6XzweEmW']);

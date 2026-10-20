@@ -6,7 +6,9 @@
       "parameters": {
         "httpMethod": "GET",
         "path": "xjw-system-health-d4b6e1",
-        "options": {}
+        "options": {},
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson"
       },
       "id": "xjw-health-001-webhook",
       "name": "外部排程觸發",

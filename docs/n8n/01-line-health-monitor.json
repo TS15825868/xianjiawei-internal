@@ -6,13 +6,18 @@
       "parameters": {
         "httpMethod": "GET",
         "path": "xjw-line-health-a7f8c2",
-        "options": {}
+        "options": {},
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson"
       },
       "id": "f2f6ad82-624c-4e7d-a1d3-001-line-webhook",
       "name": "外部排程觸發",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [0, 0],
+      "position": [
+        0,
+        0
+      ],
       "webhookId": "20e34a33-2a97-492f-9a6d-e497b333b6ab"
     },
     {
@@ -31,7 +36,10 @@
       "name": "讀 LINE healthz",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [260, 0]
+      "position": [
+        260,
+        0
+      ]
     },
     {
       "parameters": {
@@ -41,7 +49,10 @@
       "name": "判斷健康狀態",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [520, 0]
+      "position": [
+        520,
+        0
+      ]
     },
     {
       "parameters": {
@@ -51,18 +62,55 @@
       "name": "正常結束",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [780, 0]
+      "position": [
+        780,
+        0
+      ]
     }
   ],
   "connections": {
-    "外部排程觸發": {"main": [[{"node": "讀 LINE healthz", "type": "main", "index": 0}]]},
-    "讀 LINE healthz": {"main": [[{"node": "判斷健康狀態", "type": "main", "index": 0}]]},
-    "判斷健康狀態": {"main": [[{"node": "正常結束", "type": "main", "index": 0}]]}
+    "外部排程觸發": {
+      "main": [
+        [
+          {
+            "node": "讀 LINE healthz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀 LINE healthz": {
+      "main": [
+        [
+          {
+            "node": "判斷健康狀態",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "判斷健康狀態": {
+      "main": [
+        [
+          {
+            "node": "正常結束",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
   "pinData": {},
   "active": false,
-  "settings": {"executionOrder": "v1"},
+  "settings": {
+    "executionOrder": "v1"
+  },
   "versionId": "f2f6ad82-624c-4e7d-a1d3-000000000004",
-  "meta": {"templateCredsSetupCompleted": false},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
   "tags": []
 }

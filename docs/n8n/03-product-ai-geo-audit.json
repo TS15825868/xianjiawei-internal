@@ -6,7 +6,9 @@
       "parameters": {
         "httpMethod": "GET",
         "path": "xjw-ai-geo-9c3f75",
-        "options": {}
+        "options": {},
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson"
       },
       "id": "0f3c29e0-1d4e-45d3-b001-webhook",
       "name": "外部排程觸發",
