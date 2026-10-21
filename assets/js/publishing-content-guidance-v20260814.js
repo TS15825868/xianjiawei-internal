@@ -8,7 +8,7 @@
   const LEGACY_BRAND=['台興山產・仙加味','台興山產有限公司','台興山產'];
   const REJECTED=['不是每個人都一定需要'];
   const BLOCKED_UNFINISHED=['柒玄茶','龜鹿調飲粉'];
-  const RISKY=['治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質'];
+  const RISKY=['治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','瘦身茶','排毒茶','睡眠茶','助眠茶','降血糖茶','降血脂茶','輕盈茶'];
   const SEASON_LABELS={evergreen:'長青',cool_season:'天涼季節',year_end:'年末',new_year:'跨年／新年',pre_lunar_new_year:'農曆年前',lunar_new_year:'農曆年節',post_lunar_new_year:'年後／開工',weather_trigger:'即時天氣'};
   // 2027 農曆初一為 2/6；這裡把除夕前後拆成備稿／年節／年後三個發布窗口。
   const SEASON_WINDOWS={
