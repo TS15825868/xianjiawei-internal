@@ -176,7 +176,7 @@
       if(button.dataset.reviewGateReady)return;button.dataset.reviewGateReady='1';button.textContent='16項審核通過';button.title='必須完成品牌、產品、規格、情境、季節、天氣、冷熱、表情、動作、產品比例、重複圖片、完整非拼湊視覺與圖文一致等檢查後才能核准。';
     });
   }
-  window.addEventListener('xjw-publishing-list-rendered',()=>scheduleAudit(160));
+  document.addEventListener('xjw-publishing-list-rendered',()=>scheduleAudit(160));
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhance();scheduleAudit(300)},{once:true});else{enhance();scheduleAudit(300)}
   window.XJWPublishingReviewGate=Object.freeze({version:VERSION,checks:CHECKS.map(item=>item[0]),draftToPendingReview:true,directDraftApproval:false,semanticAudit:true,duplicateImageAudit:true,fullLibraryAudit:true,strictUniqueImagePerPost:true});
