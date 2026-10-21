@@ -74,6 +74,7 @@
     return result;
   }
   function scheduleAudit(delay=160){clearTimeout(auditTimer);auditTimer=setTimeout(auditVisible,delay)}
+  function rootRemoveAuditError(){document.querySelector('[data-content-audit-error]')?.remove()}
   async function auditVisible(){
     if(maintenanceReadonly())return;
     const run=++auditRun;
@@ -86,9 +87,26 @@
       const [visibleResult,allResult]=await Promise.all([auditIds(ids),fullAudit()]);
       lastAuditSignature=signature;lastAuditAt=Date.now();
       if(run!==auditRun)return;
+      rootRemoveAuditError();
       (visibleResult.items||[]).forEach(applyAudit);
       auditSummary(Number(allResult.problem_count||0),Number(allResult.total||0));
-    }catch(error){console.warn('全庫圖文完整檢查暫時無法載入',error)}
+    }catch(error){
+      if(run!==auditRun)return;
+      console.warn('全庫圖文完整檢查暫時無法載入',error);
+      lastAuditSignature='';lastAuditAt=0;fullAuditCache={at:0,result:null};
+      auditSummary(1,Math.max(cards.length,1));
+      const root=document.getElementById('readinessSummary');
+      let warning=root?.querySelector('[data-content-audit-error]');
+      if(root&&!warning){warning=document.createElement('span');warning.dataset.contentAuditError='1';warning.className='readiness-chip bad';root.appendChild(warning)}
+      if(warning)warning.textContent='圖文檢查暫時無法完成，請重新整理後再審核或發布';
+      cards.forEach(card=>{
+        card.dataset.contentAudit='blocked';
+        card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
+          if(!button.disabled){button.dataset.contentAuditDisabled='1';button.dataset.contentAuditOriginalTitle=button.title||'';button.disabled=true}
+          button.title='圖文檢查尚未完成，請重新整理後重試';
+        });
+      });
+    }
   }
   async function submitForReview(button){
     const id=cardId(button);if(!id){toast('找不到貼文ID，請重新整理',true);return}
