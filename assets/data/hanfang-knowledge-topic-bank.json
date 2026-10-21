@@ -784,6 +784,13 @@
         "第4條：不實、無證據、改變人體功能或外觀等可能涉及誇張或易生誤解",
         "第5條：食品不得宣稱疾病相關或中藥材效能"
       ]
-    }
+    },
+    "officialRegulatoryBasis": {
+      "source": "衛生福利部食品藥物管理署／食品標示諮詢服務平台",
+      "url": "https://foodlabel.fda.gov.tw/FdaFrontEndApp/Law/Edit?SystemId=6f89ebe6-4db4-499a-829d-ab2b6a2e9875&clPublishStatus=1",
+      "rule": "食品廣告依品名、文字、圖像、影音及其他訊息整體表現判斷；不得不實、誇張、易生誤解或宣稱醫療效能；涉及中藥材效能亦列為醫療效能認定情形。",
+      "checkedDate": "2026-10-21"
+    },
+    "ugcAndCompetitorReferences": "網路蒐集資料只作選題、事實查證與風格參考，不複製他人照片、影音、文案或不實功效。引用來源須可追溯，與品牌自有商品資訊分開。"
   }
 }
