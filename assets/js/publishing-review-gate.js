@@ -20,7 +20,24 @@
   ];
   const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function toast(message,error=false){const root=document.getElementById('toastRoot');if(!root){if(error)alert(message);return}const n=document.createElement('div');n.className=`toast ${error?'error':''}`;n.textContent=message;root.appendChild(n);setTimeout(()=>n.remove(),4500)}
-  async function api(path,options={}){const response=await fetch(`/api${path}`,{credentials:'same-origin',cache:'no-store',...options,headers:{...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}});const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{data={message:text}}if(!response.ok){const details=Array.isArray(data.details)&&data.details.length?`：${data.details.join('；')}`:'';throw new Error((data.error||data.detail||data.message||`HTTP ${response.status}`)+details)}return data}
+  async function api(path,options={}){
+    const {timeout=15000,...requestOptions}=options;
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeout);
+    try{
+      const response=await fetch(`/api${path}`,{credentials:'same-origin',cache:'no-store',...requestOptions,signal:controller.signal,headers:{...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}});
+      const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{throw new Error('伺服器未回傳有效資料，請重新檢查')}
+      if(!response.ok){const details=Array.isArray(data.details)&&data.details.length?`：${data.details.join('；')}`:'';throw new Error((data.error||data.detail||data.message||`HTTP ${response.status}`)+details)}
+      return data;
+    }catch(error){if(error.name==='AbortError')throw new Error('圖文檢查連線逾時，請重新檢查');throw error}finally{clearTimeout(timer)}
+  }
+  function validateAudit(result,ids){
+    if(!result||!Array.isArray(result.items)||!Number.isInteger(result.total)||result.total!==result.items.length||!Number.isInteger(result.problem_count))throw new Error('圖文檢查結果不完整，請重新檢查');
+    const found=new Set();
+    for(const item of result.items){if(!item||typeof item.id!=='string'||found.has(item.id)||typeof item.ok!=='boolean'||!Array.isArray(item.errors)||(item.ok&&item.errors.length))throw new Error('圖文檢查結果不完整，請重新檢查');found.add(item.id)}
+    if(result.problem_count!==result.items.filter(item=>!item.ok).length||ids.some(id=>!found.has(id)))throw new Error('圖文檢查結果不完整，請重新檢查');
+    return result;
+  }
   function cardId(button){return button?.dataset?.id||button?.closest('.publish-card,.xjw-row')?.querySelector('[data-post-view]')?.dataset?.postView||''}
   function cardFor(id){return [...document.querySelectorAll('.publish-card,.xjw-row')].find(card=>card.querySelector('[data-post-view]')?.dataset?.postView===id)||null}
   function auditBox(card){return card?.querySelector('.xjw-danger,.xjw-warning,.xjw-ok')||null}
@@ -59,7 +76,7 @@
   }
   async function auditIds(ids){
     const unique=[...new Set(ids.filter(Boolean))];if(!unique.length)return{items:[],problem_count:0,total:0};
-    return api(`/posts/content-audit?ids=${encodeURIComponent(unique.join(','))}`,{timeout:15000});
+    return validateAudit(await api(`/posts/content-audit?ids=${encodeURIComponent(unique.join(','))}`,{timeout:15000}),unique);
   }
   let auditRun=0;
   let auditTimer=null;
@@ -69,7 +86,7 @@
   const maintenanceReadonly=()=>document.documentElement.dataset.maintenanceReadonly==='true';
   async function fullAudit(){
     if(fullAuditCache.result&&Date.now()-fullAuditCache.at<60000)return fullAuditCache.result;
-    const result=await api('/posts/content-audit?all=1',{timeout:12000});
+    const result=validateAudit(await api('/posts/content-audit?all=1',{timeout:12000}),[]);
     fullAuditCache={at:Date.now(),result};
     return result;
   }
