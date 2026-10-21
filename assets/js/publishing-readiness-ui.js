@@ -62,7 +62,8 @@
   }
   function render(){
     const root=$('#readinessSummary');if(!root)return;
-    if(!report){root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>背景檢查中…</small></span>';return}
+    const auditNodes=[...root.querySelectorAll('[data-content-audit-summary],[data-content-audit-error]')];
+    if(!report){root.innerHTML='<span class="readiness-chip checking"><strong>系統診斷</strong><small>背景檢查中…</small></span>';root.append(...auditNodes);return}
     const base=[statusChip('Worker',report.worker),statusChip('D1',report.d1),statusChip('Access',report.access),statusChip('登入',report.login)],issues=[issue('Worker',report.worker),issue('D1',report.d1),issue('Cloudflare Access',report.access),issue('登入',report.login)].filter(Boolean);
     const p=report.platformProbe?.platforms||{};
     if(!Object.keys(p).length)base.push('<span class="readiness-chip checking"><strong>平台 API</strong><small>背景檢查中</small></span>');
@@ -73,12 +74,13 @@
     }
     if(report.platformProbeError)issues.push(`<div class="readiness-issue"><strong>平台 API</strong><span>${esc(report.platformProbeError)}</span></div>`);
     root.innerHTML=`<div class="readiness-chips">${base.join('')}</div>${issues.length?`<div class="readiness-issues">${issues.join('')}</div>`:''}`;
+    root.append(...auditNodes);
     if(report.platformProbe){renderPlatformSummary(report.platformProbe);ensurePlatformSummaryObserver()}
   }
   function applySafeMode(){
     document.documentElement.dataset.publishingSafeMode=safeMode?'true':'false';document.documentElement.dataset.publishingPublishReady=publishReady?'true':'false';
-    document.querySelectorAll(MUTATION_SELECTOR).forEach(button=>{if(safeMode){if(!button.disabled)button.dataset.xjwSafetyDisabled='1';button.disabled=true;if(!button.dataset.xjwOfflineDisabled)button.title='核心服務尚未通過安全診斷，目前僅供查看。'}else if(button.dataset.xjwSafetyDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwSafetyDisabled;button.disabled=false;if(button.title==='核心服務尚未通過安全診斷，目前僅供查看。')button.removeAttribute('title')}});
-    document.querySelectorAll(PUBLISH_SELECTOR).forEach(button=>{if(!safeMode&&!publishReady){if(!button.disabled)button.dataset.xjwPlatformDisabled='1';button.disabled=true;button.title=platformChecked?'已設定的平台目前沒有可用的正式發布路徑，正式發布暫停。':'平台連線正在背景安全檢查，確認後自動開放正式發布。'}else if(button.dataset.xjwPlatformDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwPlatformDisabled;button.disabled=false;if(/平台/.test(button.title||''))button.removeAttribute('title')}});
+    document.querySelectorAll(MUTATION_SELECTOR).forEach(button=>{if(safeMode){button.dataset.xjwSafetyDisabled='1';button.disabled=true;if(!button.dataset.xjwOfflineDisabled)button.title='核心服務尚未通過安全診斷，目前僅供查看。'}else if(button.dataset.xjwSafetyDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwSafetyDisabled;button.disabled=Boolean(button.dataset.contentAuditDisabled||button.dataset.xjwPlatformDisabled);if(button.title==='核心服務尚未通過安全診斷，目前僅供查看。')button.removeAttribute('title')}});
+    document.querySelectorAll(PUBLISH_SELECTOR).forEach(button=>{if(!safeMode&&!publishReady){button.dataset.xjwPlatformDisabled='1';button.disabled=true;button.title=platformChecked?'已設定的平台目前沒有可用的正式發布路徑，正式發布暫停。':'平台連線正在背景安全檢查，確認後自動開放正式發布。'}else if(button.dataset.xjwPlatformDisabled==='1'&&!button.dataset.xjwOfflineDisabled){delete button.dataset.xjwPlatformDisabled;button.disabled=Boolean(button.dataset.contentAuditDisabled||button.dataset.xjwSafetyDisabled);if(/平台/.test(button.title||''))button.removeAttribute('title')}});
     const state=$('#connectionState');if(state&&safeMode&&document.documentElement.dataset.publishingOffline!=='true'){if(!/已連線|讀取貼文|載入更多/.test(state.textContent||''))state.textContent='安全檢查背景執行中｜資料可先載入';state.classList.add('safe-mode')}else if(state&&!safeMode){state.classList.remove('safe-mode');if(platformChecked&&!publishReady&&document.documentElement.dataset.publishingOffline!=='true'&&!/已連線/.test(state.textContent||''))state.textContent='核心正常｜平台發布暫停'}
   }
   async function run({full=false}={}){

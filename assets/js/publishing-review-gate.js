@@ -59,18 +59,18 @@
     card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
       if(item.ok){
         if(button.dataset.contentAuditDisabled==='1'){
-          button.disabled=false;
+          button.disabled=Boolean(button.dataset.xjwSafetyDisabled||button.dataset.xjwPlatformDisabled||button.dataset.xjwOfflineDisabled);
           button.title=button.dataset.contentAuditOriginalTitle||'';
           delete button.dataset.contentAuditDisabled;
           delete button.dataset.contentAuditOriginalTitle;
         }
         return;
       }
-      if(!button.disabled){
+      if(button.dataset.contentAuditDisabled!=='1'){
         button.dataset.contentAuditDisabled='1';
         button.dataset.contentAuditOriginalTitle=button.title||'';
-        button.disabled=true;
       }
+      button.disabled=true;
       if(button.dataset.contentAuditDisabled==='1')button.title='圖文完整檢查未通過：'+errors.join('；');
     });
   }
@@ -119,7 +119,7 @@
       cards.forEach(card=>{
         card.dataset.contentAudit='blocked';
         card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
-          if(!button.disabled){button.dataset.contentAuditDisabled='1';button.dataset.contentAuditOriginalTitle=button.title||'';button.disabled=true}
+          if(button.dataset.contentAuditDisabled!=='1'){button.dataset.contentAuditDisabled='1';button.dataset.contentAuditOriginalTitle=button.title||''}button.disabled=true;
           button.title='圖文檢查尚未完成，請重新整理後重試';
         });
       });
