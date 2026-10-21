@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260814-product-modal-media-v3';
+const VERSION='20261021-current-product-media-v4';
 const SITE='https://ts15825868.github.io/xianjiawei';
 const url=path=>`${SITE}${path}?v=${VERSION}`;
 const product=(id,path,keywords,alt,extra={})=>Object.freeze({id,keywords,public_url:url(path),binary_ready:true,approved:true,source:'current-user-approved-product-display-20260814',role:'official-product-image',alt,...extra});
@@ -28,12 +28,10 @@ const CONFIG=Object.freeze({
     validation:'do-not-regenerate-do-not-use-retired-trial'
   }),
   formalProductMedia:Object.freeze([
-    product('guilu-gao','/images/customer-display-v20260812/guilu-gao.avif',['龜鹿膏'],'仙加味龜鹿膏100g目前正式產品圖'),
-    product('guilu-drink-30','/images/customer-display-v20260812/guilu-drink-30cc.avif',['龜鹿飲30cc','30cc','小玻璃罐'],'仙加味龜鹿飲30cc／罐（小玻璃罐）目前正式產品圖',{validation:'actual-small-glass-jar-no-label-gold-lid-no-shape-or-proportion-change'}),
-    product('guilu-drink-180','/images/customer-display-v20260812/guilu-drink-180cc-product.jpg',['龜鹿飲180cc','180cc','鋁袋'],'仙加味龜鹿飲180cc鋁袋目前正式產品圖',{validation:'actual-foil-pouch-no-shape-or-proportion-change'}),
-    product('guilu-tangkuai','/images/customer-display-v20260812/guilu-tangkuai.avif',['龜鹿湯塊','湯塊75g','湯塊'],'仙加味龜鹿湯塊75g／盒｜8塊裝目前正式產品圖'),
-    product('guilu-jiao','/images/customer-display-v20260812/guilu-jiao.avif',['龜鹿膠','600g','1斤','32塊'],'仙加味龜鹿膠600g （1斤）／盒｜32塊裝目前正式產品圖'),
-    product('luerong-fen','/images/customer-display-v20260812/luerong-fen.avif',['鹿茸粉','鹿茸','75g'],'仙加味鹿茸粉75g目前正式產品圖')
+    product('guilu-gao','/images/catalog-owner-final-v20261017/guilu-gao-main.webp',['龜鹿膏'],'仙加味龜鹿膏100g正式外盒實物圖'),
+    product('guilu-drink-30','/images/catalog-owner-final-v20261017/guilu-drink-30-main.webp',['龜鹿飲30cc','30cc','小玻璃罐'],'仙加味龜鹿飲30cc小玻璃裸罐實物圖'),
+    product('guilu-drink-180','/images/catalog-owner-final-v20261017/guilu-drink-180-main.webp',['龜鹿飲180cc','180cc','鋁袋'],'仙加味龜鹿飲180cc鋁袋實物圖'),
+    product('luerong-fen','/images/catalog-owner-final-v20261017/luerong-fen-main.webp',['鹿茸粉'],'仙加味鹿茸粉75g實物圖')
   ]),
   formalDmMedia:Object.freeze([
     dm('guilu-gao-dm','guilu-gao','/images/dm-final/01_guilu-gao-100g-dm.jpg',['龜鹿膏'],'仙加味龜鹿膏100g詳細DM',{validation:'retired-invalid-webp-must-not-be-used'}),
@@ -61,7 +59,7 @@ const choosePublishable=(copy,candidates)=>rank(copy,candidates).find(x=>publish
 const mediaForProduct=id=>CONFIG.formalProductMedia.find(item=>item.id===String(id||''))||null;
 const dmForProduct=id=>CONFIG.formalDmMedia.find(item=>item.productId===String(id||''))||null;
 const detectRole=copy=>{const text=String(copy||'');if(/試喝|3\s*罐免費|先試喝/.test(text))return'trial';if(/(?:^|[\s｜：:（）()])DM(?:$|[\s｜：:（）()])|詳細DM|產品DM|DM圖|DM海報/i.test(text))return'dm';return'product_or_lifestyle';};
-const resolveMedia=(copy,candidates)=>{const role=detectRole(copy);if(role==='trial'&&semanticScore(copy,CONFIG.trialMedia)>0)return{status:'approved_existing',candidate:CONFIG.trialMedia,action:'use',authority:'trial_media',approvalBatch:CONFIG.approvalBatch,role};if(role==='dm'){const item=choosePublishable(copy,CONFIG.formalDmMedia);if(item)return{status:'approved_existing',candidate:item,action:'use',authority:'formal_dm_media',approvalBatch:CONFIG.approvalBatch,role};}const productItem=choosePublishable(copy,CONFIG.formalProductMedia);if(productItem)return{status:'approved_existing',candidate:productItem,action:'use',authority:'formal_product_media',approvalBatch:CONFIG.approvalBatch,role};const usable=choosePublishable(copy,candidates);if(usable)return{status:'approved_existing',candidate:usable,action:'use',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch,role};const source=chooseSource(copy,candidates);if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch,role};return{status:'regenerate_if_missing',candidate:null,action:'regenerate',authority:'none',approvalBatch:CONFIG.approvalBatch,role,productGenerationRule:'must preserve current customer product display and verify identity/scale against products-v3; never redraw product'};};
+const resolveMedia=(copy,candidates)=>{const role=detectRole(copy);if(role==='trial'&&semanticScore(copy,CONFIG.trialMedia)>0)return{status:'approved_existing',candidate:CONFIG.trialMedia,action:'use',authority:'trial_media',approvalBatch:CONFIG.approvalBatch,role};if(role==='dm'){const item=choosePublishable(copy,CONFIG.formalDmMedia);if(item)return{status:'approved_existing',candidate:item,action:'use',authority:'formal_dm_media',approvalBatch:CONFIG.approvalBatch,role};}const productItem=choosePublishable(copy,CONFIG.formalProductMedia.filter(item=>item.keywords.some(keyword=>normalize(copy).includes(normalize(keyword)))));if(productItem)return{status:'approved_existing',candidate:productItem,action:'use',authority:'formal_product_media',approvalBatch:CONFIG.approvalBatch,role};const usable=choosePublishable(copy,candidates);if(usable)return{status:'approved_existing',candidate:usable,action:'use',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch,role};const source=chooseSource(copy,candidates);if(source)return{status:'needs_binary_sync',candidate:source,action:'sync_source_binary',authority:'user_zip_approved',approvalBatch:CONFIG.approvalBatch,role};return{status:'regenerate_if_missing',candidate:null,action:'regenerate',authority:'none',approvalBatch:CONFIG.approvalBatch,role,productGenerationRule:'must preserve current customer product display and verify identity/scale against products-v3; never redraw product'};};
 const mediaForTopic=topic=>{const item=topic||{};if(item.imageMode==='official_trial')return CONFIG.trialMedia;if(item.imageMode==='official_product'){const ids=Array.isArray(item.productIds)?item.productIds:[];if(ids.length===1)return mediaForProduct(ids[0]);}return null;};
 const loadJson=async sourceUrl=>{const response=await fetch(sourceUrl,{cache:'no-store',credentials:'same-origin'});if(!response.ok)throw new Error(`media catalog ${response.status}`);return response.json();};
 const runtime={...CONFIG,latestCatalog:null,semanticScore,chooseSourceCandidate:chooseSource,chooseBestCandidate:choosePublishable,mediaForProduct,dmForProduct,mediaForTopic,detectRole,resolveMedia,needsBinarySync:(copy,candidates)=>resolveMedia(copy,candidates).status==='needs_binary_sync',needsGeneration:(copy,candidates)=>resolveMedia(copy,candidates).status==='regenerate_if_missing'};
