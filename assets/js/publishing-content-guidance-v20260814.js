@@ -31,6 +31,7 @@
   function topicTiming(topic){
     const season=String(topic?.season||'evergreen');
     if(topic?.triggerOnly===true||season==='weather_trigger')return{kind:'weather',label:'⚡ 依萬華即時天氣插播'};
+    if(topic?.requiresSourceVerification===true)return{kind:'future',label:'知識選題待查證'};
     if(season==='evergreen'||!SEASON_WINDOWS[season])return{kind:'now',label:'現在可用'};
     const today=taipeiToday(),ranges=SEASON_WINDOWS[season]||[];
     if(ranges.some(([start,end])=>inRange(today,start,end)))return{kind:'now',label:`當期可用｜${SEASON_LABELS[season]||season}`};
@@ -96,6 +97,7 @@
     return fallback?{public_url:fallback,alt:topic?.imageAlt||topic?.title||'',source:topic?.imageSource||'題庫既有素材',role:topic?.imageMode||'topic-fallback'}:null;
   }
   function applyTopic(topic){
+    if(topic?.requiresSourceVerification===true){toast('漢方知識題尚待資料查證及正式配圖，不可直接建立貼文。',true);return;}
     document.querySelector('[data-topic-modal]')?.remove();
     document.querySelector('[data-add-post]')?.click();
     waitForForm(form=>{
@@ -136,10 +138,11 @@
     document.querySelector('[data-topic-modal]')?.remove();
     const root=document.createElement('div');root.className='xjw-modal';root.dataset.topicModal='1';
     const ready=topics.filter(topic=>topic.seedToReview===true).length;
+    const knowledge=topics.filter(topic=>topic.requiresSourceVerification===true).length;
     const interactive=topics.filter(topic=>topic.__sourceLabel==='輕鬆互動').length;
     const weather=topics.filter(topic=>topicTiming(topic).kind==='weather').length;
     const ordered=sortedTopics();
-    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>生活、季節、龜鹿與漢方產業知識主題</h2><p class="muted">共 ${topics.length} 題，其中 ${interactive} 題為輕鬆互動／季節母庫、${weather} 題為即時天氣插播題；${ready} 題已有可安全沿用的正式圖片。漢方知識題需先核對來源、法規及專屬圖片，未核對不得發布；天氣題只在萬華實際天氣符合時使用。</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button type="button" class="btn" data-topic-filter="now">現在可用</button><button type="button" class="btn" data-topic-filter="weather">即時天氣</button><button type="button" class="btn" data-topic-filter="future">年底／年節預備</button><button type="button" class="btn" data-topic-filter="all">全部</button></div><input type="search" class="input" data-topic-search placeholder="搜尋主題、分類或內容" style="width:100%;margin-bottom:10px"><div data-topic-list style="display:grid;gap:10px;max-height:55vh;overflow:auto">${ordered.map((topic,index)=>{const timing=topicTiming(topic);return `<button type="button" class="btn" data-topic-index="${index}" data-topic-kind="${esc(timing.kind)}" data-topic-search-text="${esc([topic.title,topic.headline,topic.category,topic.copy].join(' ').toLowerCase())}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${esc(sourceLabel(topic))}｜${esc(seasonLabel(topic))}｜${esc(timing.label)}｜${topic.seedToReview===true?'✓ 已有正式圖，可送審':'○ 需完成專屬情境圖／正式影片'}</small></button>`}).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
+    root.innerHTML=`<div class="xjw-modal-bg" data-topic-close></div><div class="xjw-modal-card"><p class="eyebrow">仙加味・內容題庫</p><h2>生活、季節、龜鹿與漢方產業知識主題</h2><p class="muted">共 ${topics.length} 題，其中 ${interactive} 題為輕鬆互動／季節母庫、${weather} 題為即時天氣插播題；${ready} 題已有可安全沿用的正式圖片；${knowledge} 題漢方知識待查證。漢方知識題需先核對來源、法規及專屬圖片，未核對不得發布；天氣題只在萬華實際天氣符合時使用。</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button type="button" class="btn" data-topic-filter="now">現在可用</button><button type="button" class="btn" data-topic-filter="weather">即時天氣</button><button type="button" class="btn" data-topic-filter="future">年底／年節預備</button><button type="button" class="btn" data-topic-filter="all">全部</button></div><input type="search" class="input" data-topic-search placeholder="搜尋主題、分類或內容" style="width:100%;margin-bottom:10px"><div data-topic-list style="display:grid;gap:10px;max-height:55vh;overflow:auto">${ordered.map((topic,index)=>{const timing=topicTiming(topic);return `<button type="button" class="btn" data-topic-index="${index}" data-topic-kind="${esc(timing.kind)}" data-topic-search-text="${esc([topic.title,topic.headline,topic.category,topic.copy].join(' ').toLowerCase())}" style="white-space:normal;text-align:left;height:auto;padding:12px 14px"><strong>${esc(topic.title)}</strong><br><small>${esc(topic.headline||'')}</small><br><small>${esc(sourceLabel(topic))}｜${esc(seasonLabel(topic))}｜${esc(timing.label)}｜${topic.requiresSourceVerification===true?'○ 待查證，不可直接建立貼文':topic.seedToReview===true?'✓ 已有正式圖，可送審':'○ 需完成專屬情境圖／正式影片'}</small></button>`}).join('')}</div><div class="xjw-modal-footer"><button type="button" class="btn" data-topic-close>關閉</button></div></div>`;
     document.body.appendChild(root);
     const buttons=[...root.querySelectorAll('[data-topic-index]')];
     const applyFilter=kind=>{buttons.forEach(button=>{button.hidden=kind!=='all'&&button.dataset.topicKind!==kind})};
