@@ -25,22 +25,13 @@
       "reviewStatus": "pending_image_and_manual_approval",
       "published": false,
       "pinned": false
-    },
-    {
-      "id": "pinned-knowledge-guide",
-      "platforms": [
-        "facebook",
-        "instagram",
-        "threads"
-      ],
-      "title": "仙加味分享哪些知識？",
-      "copy": "除了龜鹿系列，仙加味也想和你分享更多漢方與生活知識。\n\n從菊花、枸杞、紅棗、桂圓，到茶飲、料理、乾貨保存、原料加工與產業故事，每次認識一個主題。\n\n知識分享不代表仙加味一定有販售或使用該原料；如想詢問特定商品是否能訂購，歡迎到官方 LINE 洽詢，我們會依實際供貨情況回覆。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n\n#仙加味 #漢方知識 #食品文化 #生活知識",
-      "imageRequirements": "製作專屬知識主題封面，素材圖文一致，勿使用不存在的產品包裝。",
-      "imageUrl": "",
-      "reviewStatus": "pending_image_and_manual_approval",
-      "published": false,
-      "pinned": false
     }
   ],
-  "notes": "此檔為待審核置頂貼文候選文案，不代表已發布或已置頂。平台實際置頂需確認各平台支援方式、已發布貼文 ID、管理權限與人工審核。"
+  "notes": "置頂貼文以品牌介紹為主。單一原料知識另作獨立貼文，無產品原圖時不生成虛構茶包、包裝或配方。正式圖片、人工審核、發布及平台置頂均尚未完成。",
+  "contentPolicy": {
+    "format": "一篇一種原料或一個明確知識主題，與正式商品介紹分開",
+    "avoid": "避免未經確認的茶包配方、功效暗示、醫療宣稱及不存在的商品包裝",
+    "knowledgeVisuals": "優先原料實物或對應製程圖片；不把單一原料畫成仙加味自有商品",
+    "commerce": "商品是否販售及供貨需個別確認，不因知識貼文而宣稱可販售"
+  }
 }
