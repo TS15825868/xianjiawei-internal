@@ -24,12 +24,16 @@
           "products": [
             {
               "id": "lian-guilu-erxian-jiao",
-              "name": "龜鹿二仙膠",
+              "name": "立安・龜鹿二仙膠",
               "visibility": "internal-only",
               "specificationStatus": "user-confirmed",
               "pricingStorage": "restricted ERP database only; no prices in repository",
               "specification": "600g／盒（1斤裝）",
-              "productType": "藥品"
+              "productType": "藥品",
+              "manufacturerBrand": "立安",
+              "manufacturer": "立安生物科技製藥股份有限公司",
+              "distributor": "御博生物科技有限公司",
+              "publicationStatus": "藥品相關販售資格及公開宣傳限制待依正式許可資料核實"
             }
           ]
         },
