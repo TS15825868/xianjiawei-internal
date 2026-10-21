@@ -26,8 +26,10 @@
               "id": "lian-guilu-erxian-jiao",
               "name": "龜鹿二仙膠",
               "visibility": "internal-only",
-              "specificationStatus": "pending-original-label-verification",
-              "pricingStorage": "restricted ERP database only; no values in repository"
+              "specificationStatus": "user-confirmed",
+              "pricingStorage": "restricted ERP database only; no prices in repository",
+              "specification": "600g／盒（1斤裝）",
+              "productType": "藥品"
             }
           ]
         },
@@ -43,9 +45,7 @@
               "specificationStatus": "user-confirmed-from-original-package",
               "pricingStorage": "restricted ERP database only; no values in repository",
               "manufacturerBrand": "晉安",
-              "specification": "60ml×12罐／盒",
-              "previousCategory": "external-lian",
-              "previousId": "lian-guilu-vitality-drink"
+              "specification": "60ml×12罐／盒"
             },
             {
               "id": "jinan-iron-herbal-drink",
