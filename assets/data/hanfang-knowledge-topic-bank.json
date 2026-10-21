@@ -14,7 +14,14 @@
       "requiresTaiwanRegulatoryReview": false,
       "imageUrl": "",
       "imageAlt": "",
-      "imageMode": "none"
+      "imageMode": "none",
+      "researchBrief": {
+        "angle": "以商品標示和供應商資訊認識乾燥菊花，不憑外觀斷定產地或品種",
+        "draft": "認識菊花，先從商品標示開始。\n\n選購乾燥菊花時，可以留意包裝上的品名、原產地、內容量與保存資訊；遇到不同名稱，也應核對實際商品資料，而不是只看花朵外觀就判斷品種。\n\n仙加味分享漢方原料與飲食文化知識。這是原料認識文章，不代表目前有販售特定菊花商品；若有商品需求，歡迎向官方 LINE 詢問。\n\n#仙加味 #漢方知識 #菊花",
+        "imageRequirements": "合法授權的真實乾燥菊花照片，不加虛構茶包或功效文字",
+        "reviewStatus": "research_draft_not_approved",
+        "verification": "具體品種、產地、個別商品標示仍待來源核對"
+      }
     },
     {
       "id": "hanfang-knowledge-002",
