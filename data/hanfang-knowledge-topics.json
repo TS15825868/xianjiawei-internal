@@ -1,0 +1,157 @@
+{
+  "schema": "xianjiawei-knowledge-topics-v1",
+  "brand": "仙加味",
+  "purpose": "漢方食品、中藥、製劑、製造與產業教育選題池；不代表品牌販售、使用、製造或推薦",
+  "categories": [
+    {
+      "id": "food",
+      "name": "漢方食品與食材",
+      "examples": [
+        "菊花",
+        "紅棗",
+        "枸杞",
+        "桂圓",
+        "百合",
+        "蓮子",
+        "山楂",
+        "黑芝麻",
+        "薏仁"
+      ]
+    },
+    {
+      "id": "herbs",
+      "name": "中藥材與本草",
+      "examples": [
+        "當歸",
+        "川芎",
+        "熟地",
+        "黃耆",
+        "甘草",
+        "杜仲",
+        "天麻",
+        "人參",
+        "鹿茸"
+      ]
+    },
+    {
+      "id": "varieties",
+      "name": "品種、產地與商業規格",
+      "examples": [
+        "菊花商品分類",
+        "紅棗品種",
+        "枸杞產區",
+        "參類差異"
+      ]
+    },
+    {
+      "id": "quality",
+      "name": "品質辨識與檢驗",
+      "examples": [
+        "乾燥度",
+        "外觀與氣味",
+        "異物與霉變",
+        "農藥殘留",
+        "重金屬",
+        "溯源"
+      ]
+    },
+    {
+      "id": "processing",
+      "name": "炮製、加工與製造",
+      "examples": [
+        "乾燥",
+        "切製",
+        "蒸製",
+        "炙製",
+        "熬膠",
+        "濃縮",
+        "GMP"
+      ]
+    },
+    {
+      "id": "medicine",
+      "name": "中藥製劑與藥品教育",
+      "examples": [
+        "丸散膏丹",
+        "科學中藥",
+        "許可證與標示",
+        "藥品品質管理"
+      ]
+    },
+    {
+      "id": "culture",
+      "name": "漢方飲食與歷史文化",
+      "examples": [
+        "花草茶",
+        "藥膳文化",
+        "傳統器具",
+        "中藥行歷史"
+      ]
+    },
+    {
+      "id": "industry",
+      "name": "漢方產業與供應鏈",
+      "examples": [
+        "產地供應鏈",
+        "原料驗收",
+        "食品廠與藥廠差異",
+        "包裝與追溯"
+      ]
+    }
+  ],
+  "topicAngles": [
+    "品種",
+    "產地",
+    "品質",
+    "加工",
+    "保存",
+    "文化",
+    "標示",
+    "檢驗",
+    "產業"
+  ],
+  "rules": {
+    "notLimitedToSoldProducts": true,
+    "doNotImplyBrandUsesOrSellsTopic": true,
+    "verifySourcesBeforePublishing": true,
+    "verifyTaiwanRegulationsForLegalOrMedicinalClaims": true,
+    "noUnverifiedTherapeuticClaims": true,
+    "noAutomaticPublication": true,
+    "reviewStatus": "待審核",
+    "deduplicateAgainstPublishedContent": true,
+    "accurateImagesRequired": true,
+    "brandName": "仙加味"
+  },
+  "initialTopics": [
+    {
+      "title": "菊花有哪些常見商品分類？",
+      "category": "varieties",
+      "status": "選題待查證"
+    },
+    {
+      "title": "紅棗不同品種與乾燥加工差異",
+      "category": "food",
+      "status": "選題待查證"
+    },
+    {
+      "title": "枸杞選購時如何觀察保存品質？",
+      "category": "quality",
+      "status": "選題待查證"
+    },
+    {
+      "title": "食品與中藥材的用途及管理有何不同？",
+      "category": "industry",
+      "status": "選題待查證"
+    },
+    {
+      "title": "傳統中藥炮製有哪些常見工序？",
+      "category": "processing",
+      "status": "選題待查證"
+    },
+    {
+      "title": "科學中藥與傳統製劑如何區分？",
+      "category": "medicine",
+      "status": "選題待查證"
+    }
+  ]
+}
