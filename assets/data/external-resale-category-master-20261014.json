@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-14",
+  "updatedAt": "2026-10-21",
   "scope": "ERP internal category authority",
   "publicBrand": "仙加味",
   "categories": [
@@ -28,12 +28,30 @@
               "visibility": "internal-only",
               "specificationStatus": "pending-original-label-verification",
               "pricingStorage": "restricted ERP database only; no values in repository"
+            }
+          ]
+        },
+        {
+          "id": "external-jinan",
+          "name": "晉安系列",
+          "manufacturerBrand": "晉安",
+          "products": [
+            {
+              "id": "jinan-guilu-vitality-drink",
+              "name": "晉安・龜鹿活力飲",
+              "visibility": "internal-only",
+              "specificationStatus": "user-confirmed-from-original-package",
+              "pricingStorage": "restricted ERP database only; no values in repository",
+              "manufacturerBrand": "晉安",
+              "specification": "60ml×12罐／盒",
+              "previousCategory": "external-lian",
+              "previousId": "lian-guilu-vitality-drink"
             },
             {
-              "id": "lian-guilu-vitality-drink",
-              "name": "龜鹿活力飲",
+              "id": "jinan-iron-herbal-drink",
+              "name": "晉安・含鐵參仲四物飲",
+              "specification": "60ml×12瓶／盒",
               "visibility": "internal-only",
-              "specificationStatus": "pending-original-label-verification",
               "pricingStorage": "restricted ERP database only; no values in repository"
             }
           ]
@@ -148,7 +166,8 @@
     "publicationGate": "已確認商品均可內部建檔；公開上架需實物正確、正式品名與規格核對、合法商品屬性及使用文案審查。不得將處方藥混入一般商品自由購買流程",
     "publicCardDisplayRule": "仙加味公開商品卡片與商品總覽以分類、正式品名、規格及已確認實物照片呈現；不特別列出供應商或出品公司名稱。原廠名稱、許可證、進貨來源仍保留 ERP 內部資料；依法必須揭露的事項不得刪減或從原廠包裝抹除。",
     "groupedDanshenTeaRule": "丹參茶包六款共用一個公開商品系列入口及完整介紹頁；ERP 保留六個獨立 SKU、成分、原圖、庫存及價目，不合併供應商成本或庫存。",
-    "groupedSeriesCatalogPage": "https://ts15825868.github.io/xianjiawei/product-danshen-tea.html"
+    "groupedSeriesCatalogPage": "https://ts15825868.github.io/xianjiawei/product-danshen-tea.html",
+    "supplierIdentityCorrection": "龜鹿活力飲歸晉安，立安僅龜鹿二仙膠；此為商品歸屬更正，不刪除ERP既有交易與歷史紀錄。"
   },
   "manufacturingModes": [
     "自行製作",
