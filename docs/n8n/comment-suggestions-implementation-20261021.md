@@ -40,3 +40,15 @@ UUID `-3392347560393946949`，原 ID `402249078` 更新為 `402291774`：10/27�
 - Threads：<https://developers.facebook.com/documentation/threads/retrieve-and-manage-replies>。讀取與回覆分別需 threads_read_replies／threads_manage_replies；Metricool 可發布不代表可把它的憑證挪作留言 API。
 
 額外支出：NT$0／US$0。尚未啟用正式無人值守留言回覆。
+
+
+## 2026-10-22 續作查核
+
+- 最新 main 基準 `2180905f482948457f7157655232ce65ca24ac6c`。
+- 直接唯讀查詢正式 n8n 資料庫：仍有四條工作流，LINE OA 健康監控、產品母資料一致性檢查、系統健康總監控啟用；已審核貼文立即發布關閉。本次未改任何 active 狀態或貼文排程。
+- Credentials 數量為 0；尚無留言讀取／回覆正式工作流。沒有讀取秘密欄位。
+- 建議核心新增 replyOwnership（human/meta_away 等非 ai 值時略過）、automationPending（平台回覆待送時轉人工），以及無 replyTo 的後續品牌訊息避讓。這些欄位必須由可信平台 adapter 查詢，不可相信 webhook 自述；未完成 adapter 前不能宣稱已接通 Meta 離線回覆偵測。
+- 無新問題的寒暄、同業交流及補充資訊不強制回覆；高風險仍先轉人工。同步更新離線 QA Code 節點，避免兩份判斷邏輯不同。
+- 本機 21 組測試通過，包含 SQLite 重開持久化、重複 webhook、人工競態與 Meta 避讓。這是本機合成測試，不是平台端到端測試。
+- Work 瀏覽器進入正式 n8n 時 navigation/frame tree 逾時，尚未進入可操作管理介面。未匯入或啟用新工作流，未觸發部署，未發送留言，未呼叫付費服務。
+- 待完成：n8n 登入及平台官方 Credentials、完整分頁與品牌身分 adapter、正式持久化綁定、真實唯讀端到端驗收，之後才可驗收發送及啟用低風險回覆。

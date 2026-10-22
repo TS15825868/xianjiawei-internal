@@ -45,3 +45,11 @@ test('真正SQLite唯一鍵跨store實例去重與持久化',async()=>{
     assert.equal(connection.native.prepare('SELECT count(*) n FROM social_comment_suggestions').get().n,2);
   }finally{connection.native.close();fs.rmSync(dir,{recursive:true,force:true})}
 });
+
+test('寒暄、同業交流與補充資訊不強制回覆',()=>{for(const text of ['早安','我們也是做漢方的，互相交流','補充一下，我用的是龜鹿膏','仙加味很棒'])assert.equal(decide(event,thread(text),catalog).action,'skip')});
+test('Meta離線訊息或人工接手避免第二個回覆者',()=>{
+ for(const replyOwnership of ['human','meta_away'])assert.equal(decide(event,{...thread('龜鹿膏幾克？'),replyOwnership},catalog).reason,'other_responder_owns_conversation');
+ assert.equal(decide(event,{...thread('龜鹿膏幾克？'),automationPending:true},catalog).reason,'platform_automation_pending');
+ const t=thread('龜鹿膏幾克？');t.messages.push(msg('目前不在線上','b2','brand',null,'2026-10-21T02:01:00Z'));
+ assert.equal(decide(event,t,catalog).reason,'unattributed_brand_reply');
+});

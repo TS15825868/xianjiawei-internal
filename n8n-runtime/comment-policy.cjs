@@ -31,6 +31,14 @@ function decide(event, thread, catalog) {
   if(messages.slice(index+1).some(m=>m.role==='brand'&&m.replyTo===latest.id))
     return result('skip','already_answered');
   if(messages.slice(index+1).some(m=>m.role==='customer')) return result('skip','superseded');
+  // An unattributed later brand message may be a human or Meta away reply.
+  // Never infer that it is safe to add a second responder.
+  if(messages.slice(index+1).some(m=>m.role==='brand'&&!m.replyTo))
+    return result('manual','unattributed_brand_reply');
+  if(thread.replyOwnership && thread.replyOwnership!=='ai')
+    return result('skip','other_responder_owns_conversation');
+  if(thread.automationPending===true)
+    return result('manual','platform_automation_pending');
   const text=latest.text.trim();
   if(!text||/^(謝謝[你您]?|感謝|收到|好的?|了解|讚|棒|不客氣|[\p{Emoji_Presentation}\p{Extended_Pictographic}\s\uFE0F\u200D])+[！!。．]*$/u.test(text))
     return result('skip','no_new_question');
@@ -39,6 +47,10 @@ function decide(event, thread, catalog) {
   const customerContext=messages.filter(m=>m.role==='customer').map(m=>m.text).join('\n');
   for(const [category,pattern] of RISK) if(pattern.test(customerContext))
     return result('manual',category,{category});
+  // Statements, greetings, peer exchanges and added information do not
+  // require a reply. Ambiguous requests stay with a human; no forced response.
+  if(!/[？?]|請問|想問|想了解|請教|幾克|幾公克|幾cc|容量|重量|規格|成分|內容物|如何|怎麼|是否|可以|嗎|呢/u.test(text))
+    return result('skip','no_new_question');
   if(!catalog || catalog.verified!==true || !Array.isArray(catalog.products) ||
      !catalog.version || !Number.isFinite(Date.parse(catalog.fetchedAt)) ||
      Math.abs(Date.now()-Date.parse(catalog.fetchedAt))>3600000)
