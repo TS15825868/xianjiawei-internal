@@ -1,6 +1,10 @@
 name: 仙加味備援 D1 資料表安全遷移
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/migrate-cloudflare-receipt-d1-manual.yml'
 permissions:
   contents: read
 concurrency:
