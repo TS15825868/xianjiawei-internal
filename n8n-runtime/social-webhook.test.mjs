@@ -23,3 +23,15 @@ test('TLS refuses admin, absent CA and arbitrary hosts',()=>{
  const c=socialTlsOptions({user:'xjw_social_worker',host:'db.iphexhvjhsmelbgwzhhr.supabase.co',port:5432,password:'test-only',ca:'-----BEGIN CERTIFICATE-----\ntest'});
  assert.equal(c.ssl.rejectUnauthorized,true);assert.equal(c.max,1);assert.equal(c.connectionString,undefined);
 });
+
+test('string allowlist cannot authorize an account using substring inclusion',async()=>{
+ const malformed={...config,allowedAccounts:{facebook:'000411869648852531999'}};
+ await assert.rejects(receiveWebhook(signed(),malformed,{query:()=>assert.fail('unexpected database access')}),/configuration_missing/);
+});
+test('account allowlist requires a numeric-string array and exact ID match',async()=>{
+ for(const allowed of [411869648852531,['411869648852531',411869648852531],{id:'411869648852531'}]){
+  const malformed={...config,allowedAccounts:{facebook:allowed}};
+  await assert.rejects(receiveWebhook(signed(),malformed,{query:()=>assert.fail('unexpected database access')}),/configuration_missing/);
+ }
+ await assert.rejects(receiveWebhook(signed(),{...config,allowedAccounts:{facebook:['000411869648852531999']}},{query:()=>assert.fail('unexpected database access')}),/account_rejected/);
+});
