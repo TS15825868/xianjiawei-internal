@@ -1,0 +1,238 @@
+{
+  "name": "仙加味｜Instagram 留言唯讀驗收（不發送）",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ig-preflight-manual",
+      "name": "手動唯讀驗收",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://graph.instagram.com/v25.0/me",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "user_id,username"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "ig-preflight-identity",
+      "name": "官方帳號身分唯讀查詢",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body=$input.first().json; if(body.username!=='xianjiawei.tw'||String(body.user_id)!=='17841478328163000') throw new Error('Official Instagram account identity not verified'); return [{json:{platform:'instagram',accountId:String(body.user_id),username:body.username,identityVerified:true,mode:'read_only',sent:false,commentPermissionVerified:false,e2eVerified:false}}];"
+      },
+      "id": "ig-preflight-result",
+      "name": "確認正式帳號與不發送狀態",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "id": "ig-media",
+      "name": "讀取正式帳號貼文",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://graph.instagram.com/v25.0/me/media",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id,comments_count"
+            },
+            {
+              "name": "limit",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "ig-select",
+      "name": "選取有留言貼文",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const b=$input.first().json; if(!Array.isArray(b.data)) throw new Error('Invalid media response'); const posts=b.data.filter(p=>Number(p.comments_count)>0).slice(0,3); if(!posts.length) throw new Error('No commented media in sampled page; comment permission not verified'); return posts.map(p=>({json:{mediaId:String(p.id),commentsCount:Number(p.comments_count),mediaPaginationRemaining:!!b.paging?.next}}));"
+      }
+    },
+    {
+      "id": "ig-comments",
+      "name": "讀取留言與品牌回覆",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://graph.instagram.com/v25.0/' + $json.mediaId + '/comments' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id,text,username,timestamp,replies.limit(100){id,text,username,timestamp}"
+            },
+            {
+              "name": "limit",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "ig-result",
+      "name": "輸出唯讀驗收摘要",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        0
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map((item)=>{ const b=item.json; if(!Array.isArray(b.data)) throw new Error('Invalid comments response'); const replies=b.data.flatMap(c=>c.replies?.data||[]); const remaining=!!b.paging?.next||b.data.some(c=>!!c.replies?.paging?.next); return {json:{platform:'instagram',mode:'read_only',commentReadVerified:true,commentsRead:b.data.length,repliesRead:replies.length,brandRepliesRead:replies.filter(r=>r.username==='xianjiawei.tw').length,paginationRemaining:remaining,completeHistoryVerified:false,humanAttributionVerified:false,replyPermissionVerified:false,sent:false,e2eVerified:false}}; });"
+      }
+    }
+  ],
+  "connections": {
+    "手動唯讀驗收": {
+      "main": [
+        [
+          {
+            "node": "官方帳號身分唯讀查詢",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "官方帳號身分唯讀查詢": {
+      "main": [
+        [
+          {
+            "node": "確認正式帳號與不發送狀態",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "確認正式帳號與不發送狀態": {
+      "main": [
+        [
+          {
+            "node": "讀取正式帳號貼文",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀取正式帳號貼文": {
+      "main": [
+        [
+          {
+            "node": "選取有留言貼文",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "選取有留言貼文": {
+      "main": [
+        [
+          {
+            "node": "讀取留言與品牌回覆",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀取留言與品牌回覆": {
+      "main": [
+        [
+          {
+            "node": "輸出唯讀驗收摘要",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none"
+  },
+  "pinData": {},
+  "tags": []
+}
