@@ -30,6 +30,8 @@ jobs:
         run: |
           node --test src/social-webhook-cloudflare-fallback.test.mjs
           grep -q '"XJW_CF_RECEIPT_ENABLED": "false"' wrangler.social-receipt-fallback.jsonc
+          grep -q '"XJW_META_E2E_VERIFIED": "false"' wrangler.social-receipt-fallback.jsonc
+          grep -q '"XJW_PRIMARY_OVERLAP_VERIFIED": "false"' wrangler.social-receipt-fallback.jsonc
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Deploy isolated fallback disabled
