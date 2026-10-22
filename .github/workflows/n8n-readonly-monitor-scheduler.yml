@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: xianjiawei-n8n-readonly-monitors
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   monitor:
