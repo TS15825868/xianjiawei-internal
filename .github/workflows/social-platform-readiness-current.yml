@@ -130,6 +130,14 @@ jobs:
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           if [ "$maintenance" != 'true' ]; then
             echo 'LIVE_PROVIDER_UNVERIFIED: Access protection prevents unauthenticated probing; success here is NOT an API connectivity pass.'
+            {
+              echo '### 平台連線驗收：尚未完成'
+              echo ''
+              echo '- 靜態程式與憑證名稱檢查已執行。'
+              echo '- Cloudflare Access 保護啟用，缺少專用 Service Token；未執行正式平台 API 探測。'
+              echo '- 本次工作成功僅代表安全檢查正常，**不代表 Facebook／Instagram／LINE OA 官方 API 已連線**。'
+              echo '- 不得因此開啟 AI 自動回覆或發布。'
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           curl -fsS --max-time 35 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json
