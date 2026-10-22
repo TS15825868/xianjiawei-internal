@@ -8,21 +8,7 @@ on:
       - '.github/workflows/full-internal-verification-current.yml'
       - 'package.json'
       - 'src/**'
-      - 'n8n-runtime/smoke-readonly.js'
-      - 'n8n-runtime/social-receipt-handler*'
-      - 'n8n-runtime/social-webhook*'
-      - 'n8n-runtime/social-tls.mjs'
-      - 'n8n-runtime/comment-pg-store.cjs'
-      - 'n8n-runtime/comment-pg-store.test.cjs'
-      - 'n8n-runtime/comment-policy.cjs'
-      - 'n8n-runtime/comment-policy.test.cjs'
-      - 'n8n-runtime/comment-sender.cjs'
-      - 'n8n-runtime/comment-sender.test.cjs'
-      - 'n8n-runtime/comment-erp-view.cjs'
-      - 'n8n-runtime/comment-erp-view.test.cjs'
-      - 'n8n-runtime/account-allowlist.cjs'
-      - 'n8n-runtime/account-allowlist.test.cjs'
-      - 'n8n-runtime/instagram-readonly-workflow.test.cjs'
+      - 'n8n-runtime/**'
       - 'docs/n8n/06-instagram-api-preflight-readonly.json'
       - 'docs/n8n/07-instagram-comments-readonly.json'
       - 'tools/**'
@@ -64,7 +50,7 @@ jobs:
       - name: Verify Cloudflare receipt-only fallback safety
         run: node --test src/social-webhook-cloudflare-fallback.test.mjs
 
-      - name: Verify disabled social receipt and PostgreSQL TLS fail-closed behavior
+      - name: Verify private social receiver, history, authorization and crash-recovery safety
         run: |
           node --test n8n-runtime/social-receipt-handler.test.mjs
           node --test n8n-runtime/social-webhook.test.mjs
@@ -74,6 +60,9 @@ jobs:
           node --test n8n-runtime/comment-sender.test.cjs
           node --test n8n-runtime/comment-erp-view.test.cjs
           node --test n8n-runtime/instagram-readonly-workflow.test.cjs
+          node --test n8n-runtime/comment-meta-history.test.cjs
+          node --test n8n-runtime/comment-meta-pages.test.cjs
+          node --test n8n-runtime/comment-workflow.test.cjs
 
       - name: Static syntax and current-authority guards
         shell: bash
