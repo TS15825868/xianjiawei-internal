@@ -14,3 +14,17 @@ test('invalid signature rejected before storage',async()=>{const f=fixture();con
 test('unknown account rejected before storage',async()=>{const f=fixture();const value=JSON.stringify({object:'page',entry:[{id:'99999',changes:[]}]});const r=await worker.fetch(request(value),env(f));assert.equal(r.status,400);assert.equal(f.calls,0)});
 test('database failure is not acknowledged',async()=>{const f=fixture();f.db.batch=async()=>{throw Error('offline')};const r=await worker.fetch(request(),env(f));assert.equal(r.status,503);assert.equal((await r.json()).sent,false)});
 test('verification challenge is signed by configured verify token',async()=>{const f=fixture();const e=env(f);const good=await worker.fetch(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=verify-test&hub.challenge=123'),e);assert.equal(await good.text(),'123');const bad=await worker.fetch(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=123'),e);assert.equal(bad.status,400)});
+
+test('two permitted accounts persist in one atomic batch',async()=>{
+ const f=fixture();const e=env(f);e.XJW_SOCIAL_ALLOWED_ACCOUNTS=JSON.stringify({facebook:['12345','67890']});
+ const value=JSON.stringify({object:'page',entry:[{id:'12345',changes:[]},{id:'67890',changes:[]}]});
+ const r=await worker.fetch(request(value),e);
+ assert.equal(r.status,200);assert.equal(f.calls,1);assert.equal(f.saved.size,2);
+});
+test('multi-account batch failure never acknowledges success',async()=>{
+ const f=fixture();const e=env(f);e.XJW_SOCIAL_ALLOWED_ACCOUNTS=JSON.stringify({facebook:['12345','67890']});
+ const value=JSON.stringify({object:'page',entry:[{id:'12345',changes:[]},{id:'67890',changes:[]}]});
+ f.db.batch=async()=>{throw Error('transaction rolled back')};
+ const r=await worker.fetch(request(value),e);
+ assert.equal(r.status,503);assert.equal((await r.json()).sent,false);assert.equal(f.saved.size,0);
+});
