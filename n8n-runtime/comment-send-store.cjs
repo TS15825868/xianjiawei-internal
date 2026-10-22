@@ -42,7 +42,8 @@ function createSendStore(db){
     remote_reply_id=$7,sent_at=CASE WHEN $6='sent' THEN now() ELSE NULL END,
     error_code=CASE WHEN $6='unknown' THEN 'send_outcome_unknown' WHEN $6='manual' THEN 'final_check_stopped' ELSE NULL END,
     retry_state='never',updated_at=now() WHERE platform=$1 AND account_id=$2 AND post_id=$3
-    AND comment_id=$4 AND claim_id=$5 AND state IN ('reserved','sending') RETURNING claim_id`,
+    AND comment_id=$4 AND claim_id=$5 AND state IN ('reserved','sending')
+    AND ($6<>'sent' OR state='sending') RETURNING claim_id`,
     [...scope(e),claim,state,id]);
    if(r.rowCount!==1)throw Error('Send receipt not persisted');
   },
