@@ -1,0 +1,94 @@
+{
+  "name": "仙加味｜Instagram API 帳號唯讀驗收（不發送）",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ig-preflight-manual",
+      "name": "手動唯讀驗收",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://graph.instagram.com/v25.0/me",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "user_id,username"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "ig-preflight-identity",
+      "name": "官方帳號身分唯讀查詢",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body=$input.first().json; if(body.username!=='xianjiawei.tw'||String(body.user_id)!=='17841478328163000') throw new Error('Official Instagram account identity not verified'); return [{json:{platform:'instagram',accountId:String(body.user_id),username:body.username,identityVerified:true,mode:'read_only',sent:false,commentPermissionVerified:false,e2eVerified:false}}];"
+      },
+      "id": "ig-preflight-result",
+      "name": "確認正式帳號與不發送狀態",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "手動唯讀驗收": {
+      "main": [
+        [
+          {
+            "node": "官方帳號身分唯讀查詢",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "官方帳號身分唯讀查詢": {
+      "main": [
+        [
+          {
+            "node": "確認正式帳號與不發送狀態",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none"
+  },
+  "pinData": {},
+  "tags": []
+}
