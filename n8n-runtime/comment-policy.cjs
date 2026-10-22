@@ -104,7 +104,7 @@ async function processComment(event,{adapter,store,catalog,allowedAccounts}) {
       : decide(event,fresh,catalog);
   } catch(e) {decision=apiFailure(e);}
   // This module deliberately has no adapter.send call or auto-mode switch.
-  await store.finish(key,decision);
+  await store.finish(key,decision,event,version);
   return {...decision,idempotencyKey:key,conversationVersion:version};
 }
 module.exports={POLICY,decide,scoped,apiFailure,processComment};
