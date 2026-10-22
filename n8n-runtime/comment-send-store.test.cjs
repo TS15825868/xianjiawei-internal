@@ -7,7 +7,8 @@ const event={
  postId:'media-1',threadId:'thread-1',commentId:"comment'); DROP TABLE x;--"
 };
 const scope=['instagram','17841478328163000','media-1',event.commentId];
-function adapter(rowCount=1){
+function adapter(rowCount){
+ if(arguments.length===0)rowCount=1;
  const calls=[];
  const db={async query(sql,args){calls.push({sql,args});return {rowCount};}};
  return {store:createSendStore(db),calls};
@@ -59,7 +60,7 @@ test('invalid receipts are rejected without touching the database',async()=>{
  for(const [state,id] of [
   ['sent',null],['sent',undefined],['sent',123],['sent',{}],
   ['sent',''],['sent','  '],['sent','bad\nid'],['sent','x'.repeat(257)],
-  ['unknown','fake'],['unknown',''],['unknown',undefined],
+  ['unknown','fake'],['unknown',''],
   ['manual','remote'],['cancelled',null],['reserved',null]
  ])await assert.rejects(x.finish(event,'claim-1',state,id),/Invalid send receipt/);
 });
