@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "xianjiawei-social-receipt-fallback",
+  "main": "src/social-webhook-cloudflare-fallback.mjs",
+  "compatibility_date": "2026-07-24",
+  "workers_dev": true,
+  "vars": {
+    "XJW_CF_RECEIPT_ENABLED": "false"
+  },
+  "d1_databases": [
+    {
+      "binding": "XJW_RECEIPT_D1",
+      "database_name": "xianjiawei-internal-db",
+      "database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe"
+    }
+  ]
+}
