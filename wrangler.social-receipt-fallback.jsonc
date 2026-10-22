@@ -5,7 +5,9 @@
   "compatibility_date": "2026-07-24",
   "workers_dev": true,
   "vars": {
-    "XJW_CF_RECEIPT_ENABLED": "false"
+    "XJW_CF_RECEIPT_ENABLED": "false",
+    "XJW_META_E2E_VERIFIED": "false",
+    "XJW_PRIMARY_OVERLAP_VERIFIED": "false"
   },
   "d1_databases": [
     {
