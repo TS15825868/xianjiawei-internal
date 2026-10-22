@@ -5,6 +5,18 @@ function createPgCommentStore(db){
  if(typeof db?.query!=='function')throw Error('Durable PostgreSQL query binding required');
  const scope=e=>[e.platform,e.accountId,e.postId,e.commentId];
  return {
+  async conversationControl(e){
+   const r=await db.query(`SELECT
+    EXISTS(SELECT 1 FROM xjw_social.comment_ledger WHERE platform=$1 AND account_id=$2
+     AND post_id=$3 AND thread_id=$4 AND human_takeover=true) AS human_takeover,
+    EXISTS(SELECT 1 FROM xjw_social.reply_ledger WHERE platform=$1 AND account_id=$2
+     AND post_id=$3 AND comment_id=$5 AND state IN ('reserved','sending','sent','unknown','manual')) AS reply_reserved`,
+    [e.platform,e.accountId,e.postId,e.threadId,e.commentId]);
+   const row=r.rows?.[0];
+   if(typeof row?.human_takeover!=='boolean'||typeof row?.reply_reserved!=='boolean')
+    throw Error('Conversation ownership not confirmed');
+   return {humanTakeover:row.human_takeover,replyReserved:row.reply_reserved};
+  },
   async recoverStaleProcessing({olderThanSeconds=900,limit=100}={}){
    if(!Number.isInteger(olderThanSeconds)||olderThanSeconds<300||olderThanSeconds>86400||
       !Number.isInteger(limit)||limit<1||limit>1000)throw Error('Invalid recovery bounds');
