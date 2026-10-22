@@ -5,6 +5,8 @@ import {verifiedEnvelope} from '../n8n-runtime/social-webhook.mjs';
 export default {
  async fetch(request,env){
   if(env.XJW_CF_RECEIPT_ENABLED!=='true')return Response.json({accepted:false,code:'disabled',sent:false},{status:503});
+  // Fail closed until operators explicitly verify the Meta subscription and cross-provider overlap.
+  if(env.XJW_META_E2E_VERIFIED!=='true'||env.XJW_PRIMARY_OVERLAP_VERIFIED!=='true')return Response.json({accepted:false,code:'verification_required',sent:false},{status:503});
   if(!env.XJW_RECEIPT_D1 || !env.XJW_META_APP_SECRET || !env.XJW_META_VERIFY_TOKEN)return Response.json({accepted:false,code:'unconfigured',sent:false},{status:503});
   try{
    const accounts=JSON.parse(env.XJW_SOCIAL_ALLOWED_ACCOUNTS||'null');
