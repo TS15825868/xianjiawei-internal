@@ -39,7 +39,7 @@ test('operator probe authenticates through strict TLS and SELECT-only transactio
  assert.ok(x.queries[1].includes('FROM pg_stat_ssl'));
  assert.ok(x.queries[1].includes('pg_roles'));
  assert.ok(x.queries[1].includes('platform_control'));
- assert.ok(x.queries.every(q=>!/\b(?:INSERT|UPDATE|DELETE|TRUNCATE|CREATE|DROP|ALTER)\b/i.test(q)));
+ assert.ok(x.queries.every(q=>q==='BEGIN READ ONLY'||q==='ROLLBACK'||q.startsWith('SELECT current_user AS effective_role,')));
  assert.equal(x.closed,1);
 });
 test('no trust in TLS version, wrong role, RLS bypass, disabled RLS or release flags',async()=>{
