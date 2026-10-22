@@ -15,6 +15,9 @@ on:
       - 'n8n-runtime/comment-pg-store.cjs'
       - 'n8n-runtime/comment-pg-store.test.cjs'
       - 'n8n-runtime/comment-policy.cjs'
+      - 'n8n-runtime/instagram-readonly-workflow.test.cjs'
+      - 'docs/n8n/06-instagram-api-preflight-readonly.json'
+      - 'docs/n8n/07-instagram-comments-readonly.json'
       - 'tools/**'
       - 'config/**'
       - 'assets/js/**'
@@ -59,6 +62,7 @@ jobs:
           node --test n8n-runtime/social-receipt-handler.test.mjs
           node --test n8n-runtime/social-webhook.test.mjs
           node --test n8n-runtime/comment-pg-store.test.cjs
+          node --test n8n-runtime/instagram-readonly-workflow.test.cjs
 
       - name: Static syntax and current-authority guards
         shell: bash
