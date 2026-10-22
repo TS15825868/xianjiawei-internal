@@ -5,6 +5,26 @@ function createPgCommentStore(db){
  if(typeof db?.query!=='function')throw Error('Durable PostgreSQL query binding required');
  const scope=e=>[e.platform,e.accountId,e.postId,e.commentId];
  return {
+  async recoverStaleProcessing({olderThanSeconds=900,limit=100}={}){
+   if(!Number.isInteger(olderThanSeconds)||olderThanSeconds<300||olderThanSeconds>86400||
+      !Number.isInteger(limit)||limit<1||limit>1000)throw Error('Invalid recovery bounds');
+   // An interrupted claim is uncertain. Never replay or send automatically.
+   // Skip locked rows so simultaneous recovery workers cannot claim each other.
+   const r=await db.query(`WITH stale AS (
+    SELECT platform,account_id,post_id,comment_id,conversation_version
+    FROM xjw_social.comment_ledger
+    WHERE status='processing' AND updated_at < now()-($1 * interval '1 second')
+    ORDER BY updated_at LIMIT $2 FOR UPDATE SKIP LOCKED
+   ) UPDATE xjw_social.comment_ledger AS c SET status='manual',
+    error_code='interrupted_processing',retry_state='never',
+    decision='{"action":"manual","reason":"interrupted_processing","sent":false}'::jsonb,
+    updated_at=now() FROM stale s
+    WHERE c.platform=s.platform AND c.account_id=s.account_id AND c.post_id=s.post_id
+    AND c.comment_id=s.comment_id AND c.conversation_version=s.conversation_version
+    AND c.status='processing' RETURNING c.comment_id`,[olderThanSeconds,limit]);
+   if(!Number.isInteger(r.rowCount)||r.rowCount<0)throw Error('Recovery not confirmed');
+   return {recovered:r.rowCount,action:'manual',sent:false};
+  },
   async claim(key,e,version){
    const r=await db.query(`INSERT INTO xjw_social.comment_ledger
     (platform,account_id,post_id,comment_id,conversation_version,thread_id,parent_comment_id)
@@ -34,3 +54,4 @@ function createPgCommentStore(db){
  };
 }
 module.exports={createPgCommentStore};
+
