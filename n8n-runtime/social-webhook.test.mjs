@@ -35,3 +35,37 @@ test('account allowlist requires a numeric-string array and exact ID match',asyn
  }
  await assert.rejects(receiveWebhook(signed(),{...config,allowedAccounts:{facebook:['000411869648852531999']}},{query:()=>assert.fail('unexpected database access')}),/account_rejected/);
 });
+
+test('shared IPv4 session pooler is permitted only with the dedicated project-scoped worker role',()=>{
+ const host='aws-0-ap-southeast-1.pooler.supabase.com';
+ const connection={host,port:5432,user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',
+  password:'test-only',ca:'-----BEGIN CERTIFICATE-----\\ntest'};
+ const valid=socialTlsOptions(connection);
+ assert.equal(valid.host,host);assert.equal(valid.port,5432);
+ assert.equal(valid.user,'xjw_social_worker.iphexhvjhsmelbgwzhhr');
+ assert.equal(valid.ssl.rejectUnauthorized,true);assert.equal(valid.max,1);
+ for(const invalid of [
+  {...connection,user:'postgres.iphexhvjhsmelbgwzhhr'},
+  {...connection,user:'xjw_social_worker.otherproject'},
+  {...connection,user:'xjw_social_worker'},
+  {...connection,port:6543},
+  {...connection,host:'db.otherproject.supabase.co'},
+  {...connection,host:'aws-0-ap-southeast-1.pooler.supabase.com.attacker.example'},
+  {...connection,ca:undefined},
+ ])assert.throws(()=>socialTlsOptions(invalid),/Dedicated verified TLS/);
+});
+test('Render IPv4-only egress rejects direct Supabase DB while accepting shared pooler',()=>{
+ const prev=process.env.RENDER_SERVICE_ID;
+ process.env.RENDER_SERVICE_ID='srv-test-only';
+ const common={port:5432,password:'test-only',ca:'-----BEGIN CERTIFICATE-----\\ntest'};
+ try{
+  assert.throws(()=>socialTlsOptions({...common,
+   host:'db.iphexhvjhsmelbgwzhhr.supabase.co',user:'xjw_social_worker'}),/Dedicated verified TLS/);
+  assert.equal(socialTlsOptions({...common,
+   host:'aws-0-ap-southeast-1.pooler.supabase.com',
+   user:'xjw_social_worker.iphexhvjhsmelbgwzhhr'}).ssl.rejectUnauthorized,true);
+ }finally{
+  if(prev===undefined)delete process.env.RENDER_SERVICE_ID;
+  else process.env.RENDER_SERVICE_ID=prev;
+ }
+});
