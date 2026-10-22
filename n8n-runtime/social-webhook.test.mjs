@@ -37,7 +37,7 @@ test('account allowlist requires a numeric-string array and exact ID match',asyn
 });
 
 test('shared IPv4 session pooler is permitted only with the dedicated project-scoped worker role',()=>{
- const host='aws-0-ap-southeast-1.pooler.supabase.com';
+ const host='aws-0-ap-northeast-1.pooler.supabase.com';
  const connection={host,port:5432,user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',
   password:'test-only',ca:'-----BEGIN CERTIFICATE-----\\ntest'};
  const valid=socialTlsOptions(connection);
@@ -50,7 +50,8 @@ test('shared IPv4 session pooler is permitted only with the dedicated project-sc
   {...connection,user:'xjw_social_worker'},
   {...connection,port:6543},
   {...connection,host:'db.otherproject.supabase.co'},
-  {...connection,host:'aws-0-ap-southeast-1.pooler.supabase.com.attacker.example'},
+  {...connection,host:'aws-0-ap-southeast-1.pooler.supabase.com'}, // wrong project region
+  {...connection,host:'aws-0-ap-northeast-1.pooler.supabase.com.attacker.example'},
   {...connection,ca:undefined},
  ])assert.throws(()=>socialTlsOptions(invalid),/Dedicated verified TLS/);
 });
@@ -62,7 +63,7 @@ test('Render IPv4-only egress rejects direct Supabase DB while accepting shared 
   assert.throws(()=>socialTlsOptions({...common,
    host:'db.iphexhvjhsmelbgwzhhr.supabase.co',user:'xjw_social_worker'}),/Dedicated verified TLS/);
   assert.equal(socialTlsOptions({...common,
-   host:'aws-0-ap-southeast-1.pooler.supabase.com',
+   host:'aws-0-ap-northeast-1.pooler.supabase.com',
    user:'xjw_social_worker.iphexhvjhsmelbgwzhhr'}).ssl.rejectUnauthorized,true);
  }finally{
   if(prev===undefined)delete process.env.RENDER_SERVICE_ID;
