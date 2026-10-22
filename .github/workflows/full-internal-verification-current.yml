@@ -48,6 +48,11 @@ jobs:
       - name: Verify Cloudflare receipt-only fallback safety
         run: node --test src/social-webhook-cloudflare-fallback.test.mjs
 
+      - name: Verify disabled social receipt and PostgreSQL TLS fail-closed behavior
+        run: |
+          node --test n8n-runtime/social-receipt-handler.test.mjs
+          node --test n8n-runtime/social-webhook.test.mjs
+
       - name: Static syntax and current-authority guards
         shell: bash
         run: |
