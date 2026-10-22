@@ -156,7 +156,7 @@
         0
       ],
       "parameters": {
-        "jsCode": "return $input.all().map((item)=>{ const b=item.json; if(!Array.isArray(b.data)) throw new Error('Invalid comments response'); const replies=b.data.flatMap(c=>c.replies?.data||[]); const remaining=!!b.paging?.next||b.data.some(c=>!!c.replies?.paging?.next); return {json:{platform:'instagram',mode:'read_only',commentReadVerified:true,commentsRead:b.data.length,repliesRead:replies.length,brandRepliesRead:replies.filter(r=>r.username==='xianjiawei.tw').length,paginationRemaining:remaining,completeHistoryVerified:false,humanAttributionVerified:false,replyPermissionVerified:false,sent:false,e2eVerified:false}}; });"
+        "jsCode": "return $input.all().map((item)=>{ const b=item.json; if(!Array.isArray(b.data)) throw new Error('Invalid comments response'); const replies=b.data.flatMap(c=>c.replies?.data||[]); const remaining=!!b.paging?.next||b.data.some(c=>!!c.replies?.paging?.next); return {json:{platform:'instagram',mode:'read_only',commentsEndpointResponded:true,commentReadVerified:b.data.some(c=>typeof c.text==='string'&&!!c.id),commentsRead:b.data.length,repliesRead:replies.length,brandRepliesRead:replies.filter(r=>r.username==='xianjiawei.tw').length,paginationRemaining:remaining,completeHistoryVerified:false,humanAttributionVerified:false,replyPermissionVerified:false,sent:false,e2eVerified:false}}; });"
       }
     }
   ],
