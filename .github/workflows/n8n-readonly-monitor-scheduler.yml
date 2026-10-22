@@ -52,3 +52,28 @@ jobs:
             echo "PASS completed read-only monitor: $route"
           done
           echo 'All three read-only monitors completed successfully; publication workflow remains excluded.'
+
+  # Independent, cost-free public GET checks when n8n cannot wake.
+  # Also run on changes to this scheduler as a harmless failover drill.
+  # A successful fallback never conceals the main monitor job's failure.
+  fallback-readonly:
+    needs: monitor
+    if: ${{ always() && (needs.monitor.result == 'failure' || github.event_name == 'push') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Execute independent GET-only public health fallback
+        run: |
+          set -euo pipefail
+          node n8n-runtime/smoke-readonly.js
+          {
+            echo '### 唯讀備援檢查完成'
+            echo '直接檢查 LINE OA 健康、正式產品母資料、AI / GEO 以及官網 Pages。'
+            echo '此結果不代表 n8n 已恢復，也沒有呼叫社群發送或排程發布。'
+          } >> "$GITHUB_STEP_SUMMARY"
