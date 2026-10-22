@@ -52,7 +52,7 @@ jobs:
           fi
           grep -q 'publishes_content:false' src/platform-connection-probe.js
           grep -q 'blocking_platforms' src/platform-connection-probe.js
-          echo 'PASS current social publisher capabilities and safe connection probe present; Threads authority is Metricool xianjiawei.tw.'
+          echo 'PASS static publisher capability contract only; live API connectivity is checked separately.'
       - name: Require Cloudflare audit credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
@@ -79,7 +79,7 @@ jobs:
             'LINE VOOM':'manual_required',
             'Google 商家':['GOOGLE_OAUTH_CLIENT_ID','GOOGLE_OAUTH_CLIENT_SECRET','GOOGLE_OAUTH_REFRESH_TOKEN','GOOGLE_BUSINESS_ACCOUNT_ID','GOOGLE_BUSINESS_LOCATION_ID'].every(has)||pair('GOOGLE_BUSINESS_PUBLISH_WEBHOOK_URL','GOOGLE_BUSINESS_PUBLISH_WEBHOOK_TOKEN')
           };
-          console.log('PLATFORM_READINESS '+JSON.stringify(readiness));
+          console.log('PLATFORM_BINDINGS_PRESENT_NOT_API_VERIFIED '+JSON.stringify(readiness));
           // Configuration names only; credentials and binding values must never enter logs.
           console.log('AI_CONFIG_BINDING_NAMES '+JSON.stringify(bindings.filter(b=>/OPENAI|ANTHROPIC|GEMINI|GENERATIVE|AI_PROVIDER|AI_GATEWAY|AI_GENERAT|IMAGE_GENERAT/.test(b.name||'')||b.type==='ai').map(b=>({name:b.name,type:b.type}))));
           console.log('SAFE_BINDING_NAMES '+bindings.filter(b=>/META_|THREADS_|LINE_|GOOGLE_|PUBLISH_WEBHOOK/.test(b.name||'')).map(b=>`${b.name}:${b.type}`).sort().join(','));
@@ -105,7 +105,7 @@ jobs:
           set -euo pipefail
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           if [ "$maintenance" != 'true' ]; then
-            echo 'Access已恢復；沒有設定自動化 Service Token 前，不繞過 Access 執行公開探測。'
+            echo 'LIVE_PROBE_SKIPPED: Cloudflare Access is enabled and no service token is configured; connectivity remains unverified.'
             exit 0
           fi
           expected="$(node -e "const fs=require('fs');const s=fs.readFileSync('src/full-system-entry.js','utf8');console.log((s.match(/const VERSION='([^']+)'/)||[])[1]||'')")"
@@ -129,7 +129,7 @@ jobs:
           set -euo pipefail
           maintenance="$(node -e "const fs=require('fs');const s=fs.readFileSync('wrangler.jsonc','utf8');console.log(/\"TEMP_DISABLE_ACCESS\"\s*:\s*\"true\"/.test(s)?'true':'false')")"
           if [ "$maintenance" != 'true' ]; then
-            echo 'Access已恢復；略過無 Service Token 的公開探測。'
+            echo 'LIVE_PROVIDER_UNVERIFIED: Access protection prevents unauthenticated probing; success here is NOT an API connectivity pass.'
             exit 0
           fi
           curl -fsS --max-time 35 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json
