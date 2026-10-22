@@ -8,6 +8,7 @@
     "postinstall": "node reconcile-monitors.cjs"
   },
   "dependencies": {
-    "n8n": "2.35.7"
+    "n8n": "2.35.7",
+    "pg": "8.16.3"
   }
 }
