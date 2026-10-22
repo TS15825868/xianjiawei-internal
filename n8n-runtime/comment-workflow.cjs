@@ -3,6 +3,7 @@
 // No send operation, customer payload trust flag or credential is accepted here.
 const {createPgCommentStore}=require('./comment-pg-store.cjs');
 const {processComment}=require('./comment-policy.cjs');
+const {createCommentErpView}=require('./comment-erp-view.cjs');
 function createCommentWorkflow({db,adapter,catalog,allowedAccounts}){
  if(typeof adapter?.loadThread!=='function')throw Error('Official thread adapter required');
  const store=createPgCommentStore(db);
@@ -17,6 +18,8 @@ function createCommentWorkflow({db,adapter,catalog,allowedAccounts}){
  }};
  return Object.freeze({
   execute:event=>processComment(event,{adapter:guardedAdapter,store,catalog,allowedAccounts}),
+  // Server-side ERP binding only; do not expose without existing ERP auth.
+  erp:createCommentErpView({db,allowedAccounts}),
   recover:options=>store.recoverStaleProcessing(options)
  });
 }

@@ -36,6 +36,7 @@ function createSendStore(db){
       (state==='sent'?!id:!!id))throw Error('Invalid send receipt');
    const r=await db.query(`UPDATE xjw_social.reply_ledger SET state=$6,
     remote_reply_id=$7,sent_at=CASE WHEN $6='sent' THEN now() ELSE NULL END,
+    error_code=CASE WHEN $6='unknown' THEN 'send_outcome_unknown' WHEN $6='manual' THEN 'final_check_stopped' ELSE NULL END,
     retry_state='never',updated_at=now() WHERE platform=$1 AND account_id=$2 AND post_id=$3
     AND comment_id=$4 AND claim_id=$5 AND state IN ('reserved','sending') RETURNING claim_id`,
     [...scope(e),claim,state,id]);
@@ -46,7 +47,7 @@ function createSendStore(db){
    const r=await db.query(`WITH stale AS (SELECT platform,account_id,post_id,comment_id
     FROM xjw_social.reply_ledger WHERE state IN ('reserved','sending')
     AND updated_at<now()-interval '15 minutes' ORDER BY updated_at LIMIT 100 FOR UPDATE SKIP LOCKED)
-    UPDATE xjw_social.reply_ledger r SET state='unknown',retry_state='never',updated_at=now()
+    UPDATE xjw_social.reply_ledger r SET state='unknown',error_code='interrupted_send',retry_state='never',updated_at=now()
     FROM stale s WHERE r.platform=s.platform AND r.account_id=s.account_id
     AND r.post_id=s.post_id AND r.comment_id=s.comment_id RETURNING r.claim_id`);
    if(!Number.isInteger(r.rowCount))throw Error('Recovery unconfirmed');
