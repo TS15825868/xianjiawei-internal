@@ -21,7 +21,11 @@ export async function verifiedEnvelope(request,config){
  let body;try{body=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes))}catch{throw Error('format_rejected')}
  const platform={page:'facebook',instagram:'instagram',threads:'threads'}[body?.object];
  if(!platform||!Array.isArray(body.entry)||!body.entry.length||body.entry.length>100)throw Error('format_rejected');
- if(body.entry.some(e=>!/^\d+$/.test(e?.id||'')||!config.allowedAccounts?.[platform]?.includes(e.id)))throw Error('account_rejected');
+ const allowed=config.allowedAccounts?.[platform];
+ // Reject malformed allowlists rather than allowing substring matches on strings.
+ // A missing or invalid account configuration is a 503, never an accepted receipt.
+ if(!Array.isArray(allowed)||!allowed.every(id=>typeof id==='string'&&/^\d+$/.test(id)))throw Error('configuration_missing');
+ if(body.entry.some(e=>typeof e?.id!=='string'||!/^\d+$/.test(e.id)||!allowed.includes(e.id)))throw Error('account_rejected');
  // Signed payload is private queue input, never proof of current thread state.
  // Official API history must be fetched before the policy makes a suggestion.
  const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
