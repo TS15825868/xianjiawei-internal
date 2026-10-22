@@ -12,6 +12,9 @@ on:
       - 'n8n-runtime/social-receipt-handler*'
       - 'n8n-runtime/social-webhook*'
       - 'n8n-runtime/social-tls.mjs'
+      - 'n8n-runtime/comment-pg-store.cjs'
+      - 'n8n-runtime/comment-pg-store.test.cjs'
+      - 'n8n-runtime/comment-policy.cjs'
       - 'tools/**'
       - 'config/**'
       - 'assets/js/**'
@@ -55,6 +58,7 @@ jobs:
         run: |
           node --test n8n-runtime/social-receipt-handler.test.mjs
           node --test n8n-runtime/social-webhook.test.mjs
+          node --test n8n-runtime/comment-pg-store.test.cjs
 
       - name: Static syntax and current-authority guards
         shell: bash
