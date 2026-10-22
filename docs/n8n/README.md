@@ -1,12 +1,12 @@
 # 仙加味 n8n 長期版自動化
 
-更新：2026-09-02
+更新：2026-10-23（保留 2026-09 的建置歷程）
 
 ## 原則
 
 n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作的 LINE OA Webhook、Cloudflare Worker、D1、GitHub main 或 Render 既有正式服務。
 
-目前維持四條工作流：
+目前保留四條原始正式工作流（三條健康／母資料監控啟用，發布工作流關閉），另有三條停用的 QA／唯讀工作流；資料庫合計七條：
 
 1. LINE OA 健康監控
 2. 已人工審核貼文的發布串接
@@ -22,7 +22,9 @@ n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作�
 - Runtime：Node
 - n8n：2.35.7
 - 程式來源：`xianjiawei-internal/main/n8n-runtime/`
-- Start：單純 `n8n start`，正式啟動時不再重複匯入 workflow。
+- 線上版本：Render 仍為 `fb77b8c1`（2026-10-20）；近期新建置受免費 pipeline minutes 額度限制，不能宣稱新版已部署。
+- 最新 main 啟動入口：`n8n-runtime/start-low-memory.sh`，保留單工作流程並行及 JS Runner 128 MB 預設堆積限制；**尚未生效於上述 Render 線上版本**。
+- 正式啟動不會重新匯入 workflow。
 - 長期 PostgreSQL：Supabase 專案 `xianjiawei`
 - Workflow JSON 可重建來源：GitHub `docs/n8n/`
 
@@ -80,20 +82,22 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
 - GitHub Actions Run `33512408829`：longterm 三條只讀監控全部成功。
 - GitHub Actions Run `33533228168`：`/healthz` 喚醒後，三條 longterm 正式 webhook 全部成功。
 
-## 正式外部排程
+## 正式外部排程（2026-10-23 已核對 main）
 
-官網 Repo `xianjiawei`：
+- 官網 Repo `TS15825868/xianjiawei`：`.github/workflows/n8n-monitor-scheduler.yml` 每小時 UTC 第 8 分檢查官網、LINE OA、ERP Access 邊界及 n8n readiness；非客戶回覆或貼文發布。
+- 內部 Repo `TS15825868/xianjiawei-internal`：`.github/workflows/n8n-readonly-monitor-scheduler.yml` 每小時 UTC 第 23 分（及核對該檔的 push）執行三條唯讀 n8n 監控。
+- n8n 監控失敗時，內部 GitHub Action 執行獨立 `n8n-runtime/smoke-readonly.js` 作公開 GET 備援；備援結果不會掩蓋主流程失敗。排程檔 push 會另作無害備援演練。
+- 2026-10-23 的 GitHub Actions #39852516440：三條 n8n 唯讀監控與獨立 GET 備援均成功；這不是 Meta 回覆或 ERP 端對端驗收。
+- 早期文件提及的官網 n8n 15 分鐘／30 分鐘／6 小時排程與晚間每 10 分鐘預熱，不代表目前 main 設定；以最新工作流程檔為準。
 
-- `.github/workflows/n8n-monitor-scheduler.yml`
-  - LINE OA 健康監控：每 15 分鐘
-  - 系統健康總監控：每 30 分鐘
-  - 產品母資料 AI GEO：每 6 小時
-  - 正式 Webhook 全部指向 `xianjiawei-n8n-longterm.onrender.com`
-  - 正式版只保留 cron＋`workflow_dispatch`，不保留測試用 push 觸發。
-- `.github/workflows/n8n-evening-warm.yml`
-  - 台灣時間 19:00～00:50 每 10 分鐘呼叫 `/healthz`
-  - 用途為 Render Free instance 晚間預熱，降低使用時冷啟動等待
-  - 正式版只保留 cron＋`workflow_dispatch`，不保留測試用 push 觸發。
+## 社群專用 PostgreSQL TLS 真實驗收（2026-10-23）
+
+- Supabase 專案 `iphexhvjhsmelbgwzhhr` 的專用角色 `xjw_social_worker` 已可登入、已有保護的密碼，角色連線上限 3，不能修改三平台啟用旗標。
+- Render IPv4 環境應使用 Supabase Connect 顯示的 **Session Pooler，port 5432**。專案在東京 `ap-northeast-1`，但 Pooler 主機的叢集編號不能自行猜測；自訂角色池化使用者為 `xjw_social_worker.<project-ref>`。
+- `n8n-runtime/social-tls-preflight.mjs` 是**操作員在受保護執行環境手動執行**的唯讀連線測試（`node n8n-runtime/social-tls-preflight.mjs`）；透過環境變數 `XJW_SOCIAL_DB_CONFIG` 提供既有機密設定。不得在 GitHub、聊天、命令列參數或公開 URL 填入密碼／CA 私密內容。
+- 驗收執行 `BEGIN READ ONLY`，檢查實際 PostgreSQL TLS、worker 身分、RLS、平台開關，關閉連線；絕不新增留言或發送回覆。CI 的模擬測試成功**不等於**生產環境 TLS 實連通過。
+- n8n 已儲存一組 `postgres` 類型憑證，但尚未有儲存的工作流程引用。最新查詢未見 worker 的活動連線；密碼存在不代表已成功通過 TLS 實連。
+- 三平台 `enabled/e2e_verified/overlap_verified` 維持 `false`；真實 Meta API／完整留言歷史、n8n 部署與受保護 ERP 遠端回寫尚未驗收，禁止自行啟用。
 
 ## 發布流程安全規則
 
