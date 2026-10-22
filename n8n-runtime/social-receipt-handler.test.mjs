@@ -14,3 +14,13 @@ test('database errors are redacted and release admission slot',async()=>{let cal
 
 test('missing database configuration fails closed without exposing secrets',async()=>{const h=handler(()=>assert.fail('pool must not be created'),{XJW_SOCIAL_DB_CONFIG:undefined});const r=await h(request());assert.equal(r.status,503);assert.equal((await r.json()).code,'receipt_unavailable');assert.equal(r.headers.get('retry-after'),'5');});
 test('invalid allowlist configuration fails closed without touching database',async()=>{const h=handler(()=>assert.fail('pool must not be created'),{XJW_SOCIAL_ALLOWED_ACCOUNTS:'{invalid'});const r=await h(request());assert.equal(r.status,503);assert.equal((await r.json()).code,'receipt_unavailable');});
+
+test('misconfigured account allowlist fails 503 without opening PostgreSQL',async()=>{
+ for(const value of ['{"facebook":"000411869648852531999"}','{"facebook":[411869648852531]}']){
+  const h=handler(()=>assert.fail('pool must not be created'),{XJW_SOCIAL_ALLOWED_ACCOUNTS:value});
+  const response=await h(request());
+  assert.equal(response.status,503);
+  assert.equal((await response.json()).code,'receipt_unavailable');
+  assert.equal(response.headers.get('retry-after'),'5');
+ }
+});
