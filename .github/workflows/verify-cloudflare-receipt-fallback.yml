@@ -1,0 +1,35 @@
+name: 仙加味 Cloudflare 免費備援獨立驗收
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/social-webhook-cloudflare-fallback.mjs'
+      - 'src/social-webhook-cloudflare-fallback.test.mjs'
+      - 'n8n-runtime/social-webhook.mjs'
+      - 'docs/cloudflare-social-receipt-schema.sql'
+      - '.github/workflows/verify-cloudflare-receipt-fallback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-cloudflare-receipt-fallback-verification
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify safe fallback syntax and tests
+        run: |
+          node --check src/social-webhook-cloudflare-fallback.mjs
+          node --check src/social-webhook-cloudflare-fallback.test.mjs
+          node --test src/social-webhook-cloudflare-fallback.test.mjs
+      - name: Verify D1 schema is receipt-only
+        run: |
+          grep -q 'CREATE TABLE IF NOT EXISTS xjw_webhook_receipts' docs/cloudflare-social-receipt-schema.sql
+          grep -q 'PRIMARY KEY (event_hash, platform, account_id)' docs/cloudflare-social-receipt-schema.sql
+          ! grep -Eiq 'DROP TABLE|DELETE FROM|UPDATE social_posts' docs/cloudflare-social-receipt-schema.sql
