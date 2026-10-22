@@ -6,8 +6,8 @@ const DIRECT_HOST=`db.${PROJECT}.supabase.co`;
 // Supabase project metadata currently reports ap-northeast-1 (Tokyo).
 // The pooler cluster index is NOT derivable from the region: copy the exact
 // hostname from Supabase Connect > Session pooler; never guess aws-0/1.
-const PROJECT_REGION='ap-northeast-1';
-const SHARED_POOLER=new RegExp('^aws-[0-9]+-'+PROJECT_REGION+'\\.pooler\\.supabase\\.com
+// Match this project's Supabase region; pooler INDEX remains supplied by Connect.
+const SHARED_POOLER=/^aws-[0-9]+-ap-northeast-1\.pooler\.supabase\.com$/;
 export function socialTlsOptions(config){
  const direct=config?.host===DIRECT_HOST;
  const sessionPooler=typeof config?.host==='string'&&SHARED_POOLER.test(config.host);
