@@ -7,7 +7,7 @@ const secret='test-only-secret';
 const body=JSON.stringify({object:'page',entry:[{id:'12345',changes:[]}]});
 function request(value=body,key=secret){return new Request('https://example.test/webhook',{method:'POST',headers:{'content-type':'application/json','x-hub-signature-256':'sha256='+createHmac('sha256',key).update(value).digest('hex')},body:value});}
 function fixture(){const saved=new Set();let calls=0;const db={prepare(sql){assert.match(sql,/INSERT OR IGNORE/);return {bind(...args){return {args}}}},async batch(statements){calls++;for(const s of statements)saved.add(s.args.slice(0,3).join(':'));return statements.map(()=>({success:true}))}};return {db,saved,get calls(){return calls}};}
-function env(f){return {XJW_CF_RECEIPT_ENABLED:'true',XJW_RECEIPT_D1:f.db,XJW_META_APP_SECRET:secret,XJW_META_VERIFY_TOKEN:'verify-test',XJW_SOCIAL_ALLOWED_ACCOUNTS:JSON.stringify({facebook:['12345']})};}
+function env(f){return {XJW_CF_RECEIPT_ENABLED:'true',XJW_META_E2E_VERIFIED:'true',XJW_PRIMARY_OVERLAP_VERIFIED:'true',XJW_RECEIPT_D1:f.db,XJW_META_APP_SECRET:secret,XJW_META_VERIFY_TOKEN:'verify-test',XJW_SOCIAL_ALLOWED_ACCOUNTS:JSON.stringify({facebook:['12345']})};}
 test('disabled by default; never stores or sends',async()=>{const r=await worker.fetch(request(),{});assert.equal(r.status,503);assert.equal((await r.json()).sent,false)});
 test('valid signed receipt stores one unique event key',async()=>{const f=fixture();const e=env(f);const a=await worker.fetch(request(),e);assert.equal(a.status,200);assert.equal((await a.json()).sent,false);await worker.fetch(request(),e);assert.equal(f.saved.size,1)});
 test('invalid signature rejected before storage',async()=>{const f=fixture();const r=await worker.fetch(request(body,'wrong'),env(f));assert.equal(r.status,400);assert.equal(f.calls,0)});
@@ -27,4 +27,15 @@ test('multi-account batch failure never acknowledges success',async()=>{
  f.db.batch=async()=>{throw Error('transaction rolled back')};
  const r=await worker.fetch(request(value),e);
  assert.equal(r.status,503);assert.equal((await r.json()).sent,false);assert.equal(f.saved.size,0);
+});
+
+test('enabled flag alone cannot receive without Meta E2E verification',async()=>{
+ const f=fixture();const e=env(f);delete e.XJW_META_E2E_VERIFIED;
+ const r=await worker.fetch(request(),e);
+ assert.equal(r.status,503);assert.equal((await r.json()).code,'verification_required');assert.equal(f.calls,0);
+});
+test('enabled flag and Meta E2E alone cannot receive without overlap verification',async()=>{
+ const f=fixture();const e=env(f);delete e.XJW_PRIMARY_OVERLAP_VERIFIED;
+ const r=await worker.fetch(request(),e);
+ assert.equal(r.status,503);assert.equal((await r.json()).code,'verification_required');assert.equal(f.calls,0);
 });
