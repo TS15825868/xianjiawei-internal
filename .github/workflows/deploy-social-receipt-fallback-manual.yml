@@ -36,5 +36,11 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Deploy isolated fallback disabled
         run: npx --yes wrangler@4 deploy --config wrangler.social-receipt-fallback.jsonc
-      - name: Confirm deployment remains disabled
-        run: echo 'Deployed receipt-only Worker with XJW_CF_RECEIPT_ENABLED=false. No live Meta webhook switch or customer replies.'
+      - name: Confirm deployed endpoint is disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(curl -sS --max-time 20 -o /tmp/fallback-response.json -w '%{http_code}' https://xianjiawei-social-receipt-fallback.tung314069.workers.dev/)
+          test "$status" = 503
+          node -e 'const x=require("/tmp/fallback-response.json"); if(x.accepted!==false || x.sent!==false || x.code!=="disabled")process.exit(1)'
+
