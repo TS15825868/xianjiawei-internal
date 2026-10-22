@@ -1,6 +1,11 @@
-name: 仙加味免費備援手動安全部署
+name: 仙加味免費備援安全部署
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-social-receipt-fallback-manual.yml'
+      - 'wrangler.social-receipt-fallback.jsonc'
 permissions:
   contents: read
 concurrency:
