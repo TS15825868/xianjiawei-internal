@@ -1,0 +1,31 @@
+name: 仙加味備援 D1 資料表安全遷移
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-receipt-d1-migration
+  cancel-in-progress: false
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Require safe isolated schema
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          grep -q 'CREATE TABLE IF NOT EXISTS xjw_webhook_receipts' docs/cloudflare-social-receipt-schema.sql
+          grep -q 'PRIMARY KEY (event_hash, platform, account_id)' docs/cloudflare-social-receipt-schema.sql
+          ! grep -Eiq 'DROP TABLE|DELETE FROM|UPDATE social_posts|ALTER TABLE' docs/cloudflare-social-receipt-schema.sql
+      - name: Apply idempotent receipt-only schema to remote D1
+        run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --file docs/cloudflare-social-receipt-schema.sql
+      - name: Read back receipt-only table
+        run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_webhook_receipts'"
