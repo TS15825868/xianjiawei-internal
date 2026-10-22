@@ -54,6 +54,7 @@ jobs:
         run: |
           node --test n8n-runtime/social-receipt-handler.test.mjs
           node --test n8n-runtime/social-webhook.test.mjs
+          node --test n8n-runtime/social-tls-preflight.test.mjs
           node --test n8n-runtime/comment-pg-store.test.cjs
           node --test n8n-runtime/account-allowlist.test.cjs
           node --test n8n-runtime/comment-policy.test.cjs
