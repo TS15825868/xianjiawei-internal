@@ -6,6 +6,9 @@ on:
     paths:
       - '.github/workflows/deploy-social-receipt-fallback-manual.yml'
       - 'wrangler.social-receipt-fallback.jsonc'
+      - 'src/social-webhook-cloudflare-fallback.mjs'
+      - 'src/social-webhook-cloudflare-fallback.test.mjs'
+      - 'n8n-runtime/social-webhook.mjs'
 permissions:
   contents: read
 concurrency:
