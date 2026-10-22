@@ -2,6 +2,8 @@
 // This verifies actual login to the existing private xjw_social schema, rather
 // than mistaking a mocked CA/configuration unit test for production TLS success.
 import {socialTlsOptions} from './social-tls.mjs';
+import {pathToFileURL} from 'node:url';
+import {resolve} from 'node:path';
 
 const CHECK=String.raw`SELECT current_user AS effective_role,
  s.ssl AS tls_enabled, s.version AS tls_version,
@@ -53,13 +55,14 @@ async function main(){
  // The config must be supplied through a protected runtime environment, not
  // the repository, shell history, command-line flags or a public URL.
  const config=JSON.parse(process.env.XJW_SOCIAL_DB_CONFIG||'null');
- const {Client}=await import('pg');
+ const pg=await import('pg');
+ const Client=pg.default?.Client||pg.Client;
  return await verifySocialWorkerTls({config,connect:async options=>{
   const client=new Client(options);await client.connect();return client;
  }});
 }
 
-if(process.argv[1] && import.meta.url===new URL('file://'+process.argv[1]).href){
+if(process.argv[1] && import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
  main().then(()=>console.log(JSON.stringify({ok:true,tls:true,role:'worker',mode:'read_only'})))
  .catch(()=>{console.error(JSON.stringify({ok:false,code:'worker_tls_not_verified'}));process.exitCode=1;});
 }
