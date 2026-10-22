@@ -1,8 +1,9 @@
+const {exactAllowedAccount}=require('./account-allowlist.cjs');
 // Private ERP read model over the existing ledgers. No public route, new table,
 // customer text, token or raw API error is exposed. Bind only behind ERP auth.
 function createCommentErpView({db,allowedAccounts}){
  if(typeof db?.query!=='function')throw Error('Private database binding required');
- const authorized=(platform,accountId)=>['facebook','instagram','threads'].includes(platform)&&allowedAccounts?.[platform]?.includes(accountId);
+ const authorized=(platform,accountId)=>['facebook','instagram','threads'].includes(platform)&&exactAllowedAccount(allowedAccounts,platform,accountId);
  return Object.freeze({async takeover({platform,accountId,postId,threadId}){
   if(!authorized(platform,accountId)||![postId,threadId].every(v=>typeof v==='string'&&v))throw Error('Invalid ERP scope');
   const r=await db.query(`UPDATE xjw_social.comment_ledger SET human_takeover=true,
@@ -11,7 +12,7 @@ function createCommentErpView({db,allowedAccounts}){
   if(!Number.isInteger(r.rowCount)||r.rowCount<1)throw Error('Human takeover not persisted');
   return {humanTakeover:true,updated:r.rowCount,sent:false};
  },async list({platform,accountId,limit=50}){
-  if(!['facebook','instagram','threads'].includes(platform)||!allowedAccounts?.[platform]?.includes(accountId)||
+  if(!['facebook','instagram','threads'].includes(platform)||!exactAllowedAccount(allowedAccounts,platform,accountId)||
      !Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid ERP scope');
   const result=await db.query(`SELECT c.platform,c.account_id,c.post_id,c.thread_id,c.comment_id,
    c.conversation_version,c.status,c.human_takeover,c.decision->>'reply' AS suggestion,
