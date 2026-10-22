@@ -1,3 +1,4 @@
+const {exactAllowedAccount}=require('./account-allowlist.cjs');
 // Trusted server-side bindings only. Never pass webhook-supplied decisions,
 // credentials, approval flags or adapter implementations into this factory.
 const {createHash}=require('node:crypto');
@@ -8,7 +9,7 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
  const manual=reason=>({action:'manual',reason,sent:false,retryAutomatically:false});
  return Object.freeze({async execute(event,{dryRun=true}={}){
   if(!['facebook','instagram','threads'].includes(event?.platform)||
-     !allowedAccounts?.[event.platform]?.includes(event.accountId))return manual('unverified_account');
+     !exactAllowedAccount(allowedAccounts,event.platform,event.accountId))return manual('unverified_account');
   let suggestion;
   try{suggestion=await workflow.execute(event);}catch{return manual('suggestion_unavailable');}
   if(suggestion.action!=='suggest'||dryRun)return {...suggestion,sent:false};
