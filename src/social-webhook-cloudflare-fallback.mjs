@@ -12,7 +12,9 @@ export default {
    if(e.challenge)return new Response(e.challenge,{headers:{'cache-control':'no-store'}});
    // Store only verified events. No processing, publishing, or customer replies.
    const stmt=env.XJW_RECEIPT_D1.prepare('INSERT OR IGNORE INTO xjw_webhook_receipts(event_hash,platform,account_id,payload_json,received_at) VALUES(?,?,?,?,?)');
-   for(const id of e.accounts)await stmt.bind(e.digest,e.platform,id,JSON.stringify(e.payload),new Date().toISOString()).run();
+   // D1 batch is transactional: never acknowledge a partially persisted multi-account event.
+   const receivedAt=new Date().toISOString();
+   await env.XJW_RECEIPT_D1.batch(e.accounts.map(id=>stmt.bind(e.digest,e.platform,id,JSON.stringify(e.payload),receivedAt)));
    return Response.json({accepted:true,mode:'manual_receipt_only',sent:false},{headers:{'cache-control':'no-store'}});
   }catch(error){
    const rejected=['signature_rejected','account_rejected','verification_rejected','format_rejected','payload_too_large','method_rejected'].includes(error?.message);
