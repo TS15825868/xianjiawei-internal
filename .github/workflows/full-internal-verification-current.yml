@@ -15,6 +15,13 @@ on:
       - 'n8n-runtime/comment-pg-store.cjs'
       - 'n8n-runtime/comment-pg-store.test.cjs'
       - 'n8n-runtime/comment-policy.cjs'
+      - 'n8n-runtime/comment-policy.test.cjs'
+      - 'n8n-runtime/comment-sender.cjs'
+      - 'n8n-runtime/comment-sender.test.cjs'
+      - 'n8n-runtime/comment-erp-view.cjs'
+      - 'n8n-runtime/comment-erp-view.test.cjs'
+      - 'n8n-runtime/account-allowlist.cjs'
+      - 'n8n-runtime/account-allowlist.test.cjs'
       - 'n8n-runtime/instagram-readonly-workflow.test.cjs'
       - 'docs/n8n/06-instagram-api-preflight-readonly.json'
       - 'docs/n8n/07-instagram-comments-readonly.json'
@@ -62,6 +69,10 @@ jobs:
           node --test n8n-runtime/social-receipt-handler.test.mjs
           node --test n8n-runtime/social-webhook.test.mjs
           node --test n8n-runtime/comment-pg-store.test.cjs
+          node --test n8n-runtime/account-allowlist.test.cjs
+          node --test n8n-runtime/comment-policy.test.cjs
+          node --test n8n-runtime/comment-sender.test.cjs
+          node --test n8n-runtime/comment-erp-view.test.cjs
           node --test n8n-runtime/instagram-readonly-workflow.test.cjs
 
       - name: Static syntax and current-authority guards
