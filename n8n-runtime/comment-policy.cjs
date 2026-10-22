@@ -1,3 +1,4 @@
+const {exactAllowedAccount}=require('./account-allowlist.cjs');
 // Suggestion-only implementation of docs/social-ai-comment-reply-policy-20261021.md.
 // No API key, model call or send operation is included. Platform adapters must
 // provide a complete, scoped thread; an unverified payload is never trusted.
@@ -85,7 +86,7 @@ async function digest(value) {
 }
 async function processComment(event,{adapter,store,catalog,allowedAccounts}) {
   if(!['facebook','instagram','threads','line'].includes(event.platform)||
-     !allowedAccounts?.[event.platform]?.includes(event.accountId)||
+     !exactAllowedAccount(allowedAccounts,event.platform,event.accountId)||
      !['accountId','postId','threadId','commentId'].every(k=>typeof event[k]==='string'&&event[k]))
     return {action:'manual',reason:'unverified_account',sent:false};
   let thread;
