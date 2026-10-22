@@ -72,6 +72,7 @@ test('verified sent receipt uses a parameter, never embeds its identifier in SQL
  assert.match(sql,/sent_at=CASE WHEN \$6='sent' THEN now\(\) ELSE NULL END/);
  assert.match(sql,/retry_state='never'/);
  assert.match(sql,/state IN \('reserved','sending'\)/);
+ assert.match(sql,/\(\$6<>'sent' OR state='sending'\)/);
  assert.equal(args[5],'sent');
  assert.equal(args[6],'remote_reply_0123');
  assert.ok(!sql.includes('remote_reply_0123'));
