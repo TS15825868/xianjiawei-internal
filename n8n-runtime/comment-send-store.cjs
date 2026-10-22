@@ -32,8 +32,12 @@ function createSendStore(db){
    return r.rowCount===1;
   },
   async finish(e,claim,state,id=null){
+   // A sent status requires a genuine, nonblank platform receipt identifier.
+   // Any non-sent state must carry no remote ID; NEVER fabricate success.
+   const validRemoteId=typeof id==='string'&&id.trim().length>0&&id.length<=256&&
+     !/[\u0000-\u001f\u007f]/u.test(id);
    if(!['sent','unknown','manual'].includes(state)||
-      (state==='sent'?!id:!!id))throw Error('Invalid send receipt');
+      (state==='sent'?!validRemoteId:id!==null))throw Error('Invalid send receipt');
    const r=await db.query(`UPDATE xjw_social.reply_ledger SET state=$6,
     remote_reply_id=$7,sent_at=CASE WHEN $6='sent' THEN now() ELSE NULL END,
     error_code=CASE WHEN $6='unknown' THEN 'send_outcome_unknown' WHEN $6='manual' THEN 'final_check_stopped' ELSE NULL END,
@@ -50,7 +54,7 @@ function createSendStore(db){
     UPDATE xjw_social.reply_ledger r SET state='unknown',error_code='interrupted_send',retry_state='never',updated_at=now()
     FROM stale s WHERE r.platform=s.platform AND r.account_id=s.account_id
     AND r.post_id=s.post_id AND r.comment_id=s.comment_id RETURNING r.claim_id`);
-   if(!Number.isInteger(r.rowCount))throw Error('Recovery unconfirmed');
+   if(!Number.isInteger(r.rowCount)||r.rowCount<0)throw Error('Recovery unconfirmed');
    return {quarantined:r.rowCount,sent:false};
   }
  });
