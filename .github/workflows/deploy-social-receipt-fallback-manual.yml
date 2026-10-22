@@ -1,0 +1,30 @@
+name: 仙加味免費備援手動安全部署
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-receipt-fallback-manual-deploy
+  cancel-in-progress: false
+jobs:
+  deploy-disabled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify receipt-only safety
+        run: |
+          node --test src/social-webhook-cloudflare-fallback.test.mjs
+          grep -q '"XJW_CF_RECEIPT_ENABLED": "false"' wrangler.social-receipt-fallback.jsonc
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Deploy isolated fallback disabled
+        run: npx --yes wrangler@4 deploy --config wrangler.social-receipt-fallback.jsonc
+      - name: Confirm deployment remains disabled
+        run: echo 'Deployed receipt-only Worker with XJW_CF_RECEIPT_ENABLED=false. No live Meta webhook switch or customer replies.'
