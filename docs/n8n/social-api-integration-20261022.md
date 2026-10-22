@@ -23,10 +23,10 @@
 | 平台 | 實際畫面 |
 |---|---|
 | Facebook | pages_show_list、pages_read_engagement、pages_read_user_content、pages_manage_metadata、pages_manage_engagement 顯示可供測試；權限列表不是 Token 有效性或端到端回執證據。 |
-| Instagram | instagram_business_basic、instagram_business_manage_messages 可供測試；instagram_business_manage_comments 顯示新增。IG Login API 頁沒有完成 Webhook callback，提示接收 Webhook 需要 App 發佈。 |
-| Threads | threads_basic 可供測試；threads_read_replies、threads_manage_replies 顯示新增。 |
+| Instagram | instagram_business_basic、instagram_business_manage_messages 可供測試；instagram_business_manage_comments 已依使用者確認新增，回讀為可供測試。IG Login API 頁沒有完成 Webhook callback，提示接收 Webhook 需要 App 發佈。 |
+| Threads | threads_basic 可供測試；threads_read_replies、threads_manage_replies 已依使用者確認新增，回讀均為可供測試。 |
 
-尚未新增權限、產生或讀取 Token、顯示 App secret、變更 Meta 自動回覆或發送客戶訊息。新／擴大 API 資料存取權限需在實際操作前確認。新增 manage_replies 也包含隱藏／取消隱藏及回覆控制範圍；manage_comments 也涵蓋留言管理，不能將其描述為只讀。
+三項必要權限已新增；尚未確認產生有效 Token，未讀取 Token、顯示 App secret、變更 Meta 自動回覆或發送客戶訊息。新／擴大 API 資料存取權限需在實際操作前確認。新增 manage_replies 也包含隱藏／取消隱藏及回覆控制範圍；manage_comments 也涵蓋留言管理，不能將其描述為只讀。
 
 ## 下一個阻礙與啟用守門
 
@@ -35,3 +35,10 @@
 仍待：官方完整分頁 adapter、簽章驗證入口、n8n 正式資料庫綁定、重啟後去重、受控回覆回執及逐平台發送驗收。目前自動發送保持關閉。
 
 原有四條 n8n 工作流、離線 QA 流程、LINE OA、ERP、貼文中心及 Metricool 排程本次均未更動。額外支出 NT$0。
+
+
+## 使用者同意後的正式操作
+
+使用者明確同意前三項新增權限後，已在既有 App 點選新增並逐項回讀確認為可供測試：instagram_business_manage_comments、threads_read_replies、threads_manage_replies。沒有新增其他權限或發佈 App。
+
+Instagram API 帳號清單已顯示 xianjiawei.tw（17841478328163000）；Webhook 訂閱關閉。點選產生權杖後，頁面及分頁清單未出現授權視窗，未確認 Token 已產生。需要官方帳號授權操作，不要求聊天提供密碼或 Token。三平台自動回覆仍保持關閉；本次額外支出 NT$0。
