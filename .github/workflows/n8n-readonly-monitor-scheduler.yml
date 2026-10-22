@@ -39,6 +39,7 @@ jobs:
           set -euo pipefail
           # These workflows only inspect service/product state. The publisher is excluded.
           for route in xjw-line-health-a7f8c2 xjw-ai-geo-9c3f75 xjw-system-health-d4b6e1; do
+            echo "Checking read-only monitor: $route"
             curl -fsS --retry 2 --retry-all-errors --retry-delay 10 --retry-max-time 100 --connect-timeout 15 --max-time 60 "https://xianjiawei-n8n-longterm.onrender.com/webhook/$route" -o /tmp/n8n-trigger.json
             node -e "const x=JSON.parse(require('fs').readFileSync('/tmp/n8n-trigger.json','utf8'));if(x.ok!==true)throw Error('n8n monitor did not return a completed successful result')"
             echo "PASS completed read-only monitor: $route"
