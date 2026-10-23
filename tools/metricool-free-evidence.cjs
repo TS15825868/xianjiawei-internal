@@ -14,6 +14,11 @@ function wallClockEpoch(dateTime,timeZone){
 function validate(p,gate,link,e,aiReview=null){
   if(!p||!e)throw Error('Missing post or evidence');
   const r=e.remote;if(!r||Number(r.id)===394674560)throw Error('Protected published post');
+  // Bind every receipt to one real remote post before generating D1 SQL.
+  // UUID equality alone must not allow the numeric ID to be overwritten.
+  if(!Number.isSafeInteger(r.id)||r.id<1||typeof r.uuid!=='string'||!r.uuid.trim())
+    throw Error('Invalid remote post identity');
+  if(link?.metricool_id&&r.id!==Number(link.metricool_id))throw Error('Existing remote ID changed');
   if(e.sourceFingerprint!==fingerprint(p)||e.imageSource!==p.image_url)throw Error('Source version changed');
   if(link?.metricool_id&&String(r.uuid)!==String(link.uuid))throw Error('Existing UUID changed; never create again');
   if(r.text!==p.copy)throw Error(`Copy mismatch; D1=${JSON.stringify(String(p.copy||''))}; Metricool=${JSON.stringify(String(r.text||''))}`);
@@ -44,6 +49,8 @@ function validate(p,gate,link,e,aiReview=null){
     return'scheduled';
   }
   if(e.result!=='result')throw Error('Unknown evidence type');
+  if(wallClockEpoch(r.publicationDate.dateTime,r.publicationDate.timezone)!==Date.parse(e.publicationAt))
+    throw Error('Publication result time mismatch');
   if(r.draft===true)throw Error('Remote still draft; no verified publication outcome');
   if(!r.providers.every(x=>['PENDING','PUBLISHED','ERROR'].includes(x.status)))
     throw Error('Unknown remote provider publication state');

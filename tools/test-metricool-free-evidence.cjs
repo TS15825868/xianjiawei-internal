@@ -9,6 +9,12 @@ assert.throws(()=>validate(p,{...g,reviewed_by:'chatgpt:owner-delegated-reviewed
 assert.throws(()=>validate(p,g,l,{...e,remote:{...e.remote,uuid:'duplicate'}}));
 assert.throws(()=>validate(p,g,l,{...e,remote:{...e.remote,id:394674560}}));
 assert.equal(validate(p,g,l,{...e,result:'result'}),'awaiting_verification');
+for(const id of [undefined,0,-1,1.5,Number.MAX_SAFE_INTEGER+1,'1']){
+  assert.throws(()=>validate(p,g,null,{...e,remote:{...e.remote,id}}),/Invalid remote post identity/);
+}
+assert.throws(()=>validate(p,g,l,{...e,remote:{...e.remote,id:2}}),/Existing remote ID changed/);
+assert.throws(()=>validate(p,g,null,{...e,remote:{...e.remote,uuid:''}}),/Invalid remote post identity/);
+assert.throws(()=>validate(p,g,l,{...e,result:'result',publicationAt:'2026-10-17T10:00:00+08:00'}),/Publication result time mismatch/);
 const published=structuredClone(e);published.result='result';published.remote.providers.forEach(x=>{x.status='PUBLISHED';x.id='actual-id';x.publicUrl='https://www.'+{facebook:'facebook.com',instagram:'instagram.com',threads:'threads.com'}[x.network]+'/actual-post'});
 assert.equal(validate(p,g,l,published),'published');delete published.remote.providers[2].publicUrl;assert.throws(()=>validate(p,g,l,published));
 assert.equal(validate({...p,status:'pending_review'},null,l,{...e,result:'draft',remote:{...e.remote,draft:true,autoPublish:false}}),'pending_review');
