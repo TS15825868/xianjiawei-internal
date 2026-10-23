@@ -106,3 +106,16 @@ test('invalid live suggestion reply or version never reaches protected APIs',asy
   assert.equal(contacted,false);
  }
 });
+
+test('invalid Meta receipt identifiers are quarantined as unknown without automatic replay',async()=>{
+ for(const id of ['','  ','bad\nid','x'.repeat(257)]){
+  const h=harness({send:async()=>({id})});
+  const result=await h.sender.execute(e,{dryRun:false});
+  assert.equal(result.action,'manual');
+  assert.equal(result.reason,'send_outcome_unknown');
+  assert.equal(result.sent,false);
+  assert.deepEqual(h.states,['unknown']);
+  await h.sender.execute(e,{dryRun:false});
+  assert.equal(h.sends(),1);
+ }
+});
