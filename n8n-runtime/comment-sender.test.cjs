@@ -82,3 +82,27 @@ test('null and malformed workflow suggestions fail closed without contacting tra
   assert.equal(called,false);
  }
 });
+
+test('invalid live suggestion reply or version never reaches protected APIs',async()=>{
+ for(const malformed of [
+  {...suggestion,reply:null},
+  {...suggestion,reply:'  '},
+  {...suggestion,conversationVersion:null},
+  {...suggestion,conversationVersion:'not-a-digest'},
+ ]){
+  let contacted=false;
+  const sender=createCommentSender({
+   workflow:{execute:async()=>malformed},
+   adapter:{authorize:async()=>{contacted=true;throw Error('unexpected auth')},
+    loadThread:async()=>{contacted=true;throw Error('unexpected read')},
+    sendReply:async()=>{contacted=true;throw Error('unexpected send')}},
+   store:{reserve:async()=>{contacted=true;throw Error('unexpected reserve')}},
+   catalog,allowedAccounts:{facebook:['123']},releaseApproved:true
+  });
+  const result=await sender.execute(e,{dryRun:false});
+  assert.equal(result.action,'manual');
+  assert.equal(result.reason,'suggestion_unavailable');
+  assert.equal(result.sent,false);
+  assert.equal(contacted,false);
+ }
+});
