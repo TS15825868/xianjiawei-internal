@@ -19,6 +19,50 @@ test('rejects embedded tokens before any credential-bearing request',async()=>{
   await assert.rejects(r.collect(origin+'/v25.0/a'+suffix));assert.equal(calls,1);
  }
 });
+test('Meta tokenized next is reduced to official cursor without forwarding any access token',async()=>{
+ const requests=[];
+ const reader=createPageCollector({origin,request:async q=>{
+  requests.push(q.url);
+  return requests.length===1?{data:[{id:'1'}],paging:{
+   cursors:{after:'cursor-xyz'},
+   next:origin+'/v25.0/post/comments?limit=100&access_token=private-test-token&after=cursor-xyz'
+  }}:{data:[{id:'2'}]};
+ }});
+ const result=await reader.collect(origin+'/v25.0/post/comments?fields=id&limit=100');
+ assert.deepEqual(result.items.map(i=>i.id),['1','2']);
+ assert.ok(requests.every(u=>!u.includes('access_token')&&!u.includes('private-test-token')));
+ assert.match(requests[1],/after=cursor-xyz/);
+ assert.match(requests[1],/fields=id/);
+});
+test('token-bearing opaque next can only continue from official cursor, never its own token',async()=>{
+ const requests=[];
+ const reader=createPageCollector({origin,request:async q=>{
+  requests.push(q.url);
+  return requests.length===1?{data:[{id:'1'}],paging:{
+   cursors:{after:'officialCursor_2'},
+   next:origin+'/v25.0/a?__paging_token=opaque&access_token=private-test-token'
+  }}:{data:[{id:'2'}]};
+ }});
+ const r=await reader.collect(origin+'/v25.0/a?fields=id&limit=100');
+ assert.equal(r.pages,2);assert.ok(requests[1].includes('after=officialCursor_2'));
+ assert.ok(!requests[1].includes('__paging_token'));
+ assert.ok(requests.every(u=>!u.includes('access_token')));
+});
+test('tokenized paging with missing or mismatched cursor is rejected before follow-up request',async()=>{
+ for(const paging of [
+  {next:origin+'/v25.0/a?access_token=secret'},
+  {next:origin+'/v25.0/a?access_token=secret&after=evil',cursors:{after:'safe'}},
+  {next:'https://example.org/v25.0/a?access_token=secret',cursors:{after:'safe'}},
+  {next:origin+'/v25.0/b?access_token=secret',cursors:{after:'safe'}},
+  {next:origin+'/v25.0/a?access_token=secret',cursors:{after:'x'.repeat(4097)}}
+ ]){
+  let calls=0;
+  const reader=createPageCollector({origin,request:async()=>{calls++;return {data:[],paging}}});
+  await assert.rejects(reader.collect(origin+'/v25.0/a'));
+  assert.equal(calls,1);
+ }
+});
+
 test('rejects unsafe URL variants and changed endpoint',async()=>{
  for(const next of ['http://graph.facebook.com/v25.0/a','//graph.facebook.com/v25.0/a','https://u:p@graph.facebook.com/v25.0/a',origin+'/v25.0/b',origin+'/v25.0/a#x']){
   const r=createPageCollector({origin,request:async()=>({data:[],paging:{next}})});await assert.rejects(r.collect(origin+'/v25.0/a'));
