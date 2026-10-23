@@ -12,6 +12,8 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
      !exactAllowedAccount(allowedAccounts,event.platform,event.accountId))return manual('unverified_account');
   let suggestion;
   try{suggestion=await workflow.execute(event);}catch{return manual('suggestion_unavailable');}
+  // A malformed workflow result must never become a public send or throw.
+  if(!suggestion||typeof suggestion!=='object'||Array.isArray(suggestion))return manual('suggestion_unavailable');
   if(suggestion.action!=='suggest'||dryRun)return {...suggestion,sent:false};
   if(releaseApproved!==true)return manual('release_not_approved');
   let claim,attempted=false;
