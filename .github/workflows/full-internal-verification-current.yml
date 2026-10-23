@@ -66,6 +66,7 @@ jobs:
           node --test n8n-runtime/comment-meta-pages.test.cjs
           node --test n8n-runtime/comment-workflow.test.cjs
           node --test n8n-runtime/start-low-memory.test.cjs
+          node --test n8n-runtime/smoke-readonly.test.cjs
 
       - name: Static syntax and current-authority guards
         shell: bash
