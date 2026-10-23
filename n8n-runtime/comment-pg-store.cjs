@@ -44,6 +44,8 @@ function createPgCommentStore(db){
     [...scope(e),version,e.threadId,e.parentCommentId||null]);
    // Opaque policy idempotency key is resolved by the caller's durable scope;
    // finish requires the same event/version, never a process-local map.
+   if(!Number.isSafeInteger(r?.rowCount)||r.rowCount<0||r.rowCount>1)
+    throw Error('PostgreSQL claim not confirmed');
    return r.rowCount===1;
   },
   async finish(key,decision,e,version){
@@ -59,9 +61,10 @@ function createPgCommentStore(db){
   async recordError(e,decision){
    // No raw API error body or token. A fresh error scope does not retry sends.
    const v='error-'+randomUUID();
-   await db.query(`INSERT INTO xjw_social.comment_ledger
+   const r=await db.query(`INSERT INTO xjw_social.comment_ledger
     (platform,account_id,post_id,comment_id,conversation_version,thread_id,status,error_code)
     VALUES($1,$2,$3,$4,$5,$6,'manual',$7)`,[...scope(e),v,e.threadId,decision.reason]);
+   if(r?.rowCount!==1)throw Error('PostgreSQL error audit not persisted');
   }
  };
 }

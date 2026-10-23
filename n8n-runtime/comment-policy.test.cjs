@@ -67,3 +67,16 @@ test('D1 adapter refuses absent, duplicate or unconfirmed suggestion finalizatio
     await assert.rejects(()=>finish(result),/Suggestion finish not persisted/);
   await assert.doesNotReject(()=>finish({meta:{changes:1}}));
 });
+
+
+test('D1 suggestion claim and error audit reject malformed or unconfirmed changes',async()=>{
+ const {createCommentStore}=require('./comment-store.cjs');
+ const make=result=>createCommentStore({prepare:()=>({bind:()=>({run:async()=>result})})});
+ for(const result of [null,{}, {meta:{changes:null}},{meta:{changes:'1'}},{meta:{changes:-1}},{meta:{changes:2}}]){
+  await assert.rejects(make(result).claim('key',event,'v1'),/atomic claim/);
+  await assert.rejects(make(result).recordError(event,{action:'manual',reason:'api_unavailable',sent:false}),/error audit not persisted/);
+ }
+ assert.equal(await make({meta:{changes:0}}).claim('key',event,'v1'),false);
+ assert.equal(await make({meta:{changes:1}}).claim('key',event,'v1'),true);
+ await assert.doesNotReject(make({meta:{changes:1}}).recordError(event,{action:'manual',reason:'api_unavailable',sent:false}));
+});

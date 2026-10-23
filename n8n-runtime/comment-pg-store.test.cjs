@@ -42,3 +42,24 @@ test('policy passes durable event and version to Pg finish',async()=>{
  assert.equal(r.action,'skip');assert.equal(calls.length,2);assert.equal(calls[1].args[3],e.commentId);assert.match(calls[1].args[4],/^[a-f0-9]{64}$/);
 });
 
+
+
+test('Postgres claim never disguises an unconfirmed write as an ordinary duplicate',async()=>{
+ for(const rowCount of [undefined,null,-1,2,NaN,'1']){
+  const store=createPgCommentStore({query:async()=>({rowCount})});
+  await assert.rejects(store.claim('k',e,'v'),/PostgreSQL claim not confirmed/);
+ }
+ assert.equal(await createPgCommentStore({query:async()=>({rowCount:0})}).claim('k',e,'v'),false);
+});
+test('Postgres error audit must persist exactly one sanitized manual record',async()=>{
+ for(const rowCount of [undefined,null,0,2]){
+  const store=createPgCommentStore({query:async()=>({rowCount})});
+  await assert.rejects(store.recordError(e,{reason:'api_unavailable'}),/PostgreSQL error audit not persisted/);
+ }
+ const seen=[];
+ const store=createPgCommentStore({query:async(sql,args)=>{seen.push({sql,args});return {rowCount:1}}});
+ await assert.doesNotReject(store.recordError(e,{reason:'api_unavailable'}));
+ assert.match(seen[0].sql,/INSERT INTO xjw_social.comment_ledger/);
+ assert.equal(seen[0].args.at(-1),'api_unavailable');
+ assert.ok(!seen[0].sql.includes(e.commentId));
+});

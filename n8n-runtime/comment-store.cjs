@@ -8,8 +8,9 @@ function createCommentStore(db) {
       const r=await db.prepare(`INSERT OR IGNORE INTO social_comment_suggestions
         (idempotency_key,platform,account_id,post_id,thread_id,comment_id,conversation_version)
         VALUES(?,?,?,?,?,?,?)`).bind(key,e.platform,e.accountId,e.postId,e.threadId,e.commentId,version).run();
-      const changes=Number(r?.meta?.changes??r?.changes);
-      if(!Number.isFinite(changes))throw Error('Database did not confirm atomic claim');
+      const changes=r?.meta?.changes??r?.changes;
+      if(!Number.isSafeInteger(changes)||changes<0||changes>1)
+        throw Error('Database did not confirm atomic claim');
       return changes===1;
     },
     async finish(key,decision) {
@@ -27,9 +28,11 @@ function createCommentStore(db) {
     async recordError(e,decision) {
       // A sanitized failure is retained; no raw API body, credential or customer
       // message is copied into the error log. This entry does not claim success.
-      await db.prepare(`INSERT INTO social_comment_suggestions
+      const result=await db.prepare(`INSERT INTO social_comment_suggestions
         (idempotency_key,platform,account_id,post_id,thread_id,comment_id,conversation_version,status,decision_json)
         VALUES(?,?,?,?,?,?,?,'manual',?)`).bind('error-'+randomUUID(),e.platform,e.accountId,e.postId,e.threadId,e.commentId,'unavailable',JSON.stringify(decision)).run();
+      const changes=result?.meta?.changes??result?.changes;
+      if(changes!==1)throw Error('Suggestion error audit not persisted');
     }
   };
 }
