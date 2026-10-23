@@ -43,8 +43,8 @@ test('Instagram Login username-only comment history works with no from.id',async
  assert.ok(h.calls.every(q=>decodeURIComponent(q.url).includes('username')));
 });
 test('Instagram missing or contradictory author never fabricates a safe conversation',async()=>{
- const noAuthor=harness('instagram',{response:()=>({data:[{id:'789',text:'hi',timestamp:'2026-10-22T01:00:00Z'}]})});
+ const noAuthor=harness('instagram',{response:r=>({data:r.url.includes('/456/')?[{id:'789',text:'hi',timestamp:'2026-10-22T01:00:00Z'}]:[]})});
  await assert.rejects(noAuthor.reader.loadThread(noAuthor.e),/Incomplete official comment/);
- const conflict=harness('instagram',{response:()=>({data:[{id:'789',text:'hi',username:'someoneelse',from:{id:'123'},timestamp:'2026-10-22T01:00:00Z'}]})});
+ const conflict=harness('instagram',{response:r=>({data:r.url.includes('/456/')?[{id:'789',text:'hi',username:'someoneelse',from:{id:'123'},timestamp:'2026-10-22T01:00:00Z'}]:[]})});
  await assert.rejects(conflict.reader.loadThread(conflict.e),/Conflicting Instagram author/);
 });
