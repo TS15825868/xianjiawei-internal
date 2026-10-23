@@ -123,3 +123,12 @@ test('recovery requires confirmed nonnegative row count',async()=>{
   await assert.rejects(x.store.recover(),/Recovery unconfirmed/);
  }
 });
+
+test('recovery only updates the selected conversation version and pending states',async()=>{
+ const x=adapter(1);
+ await x.store.recover();
+ const sql=x.calls[0].sql;
+ assert.match(sql,/SELECT platform,account_id,post_id,comment_id,conversation_version/);
+ assert.match(sql,/r\.conversation_version=s\.conversation_version/);
+ assert.match(sql,/r\.state IN \('reserved','sending'\)/);
+});
