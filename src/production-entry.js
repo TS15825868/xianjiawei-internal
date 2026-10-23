@@ -199,7 +199,10 @@ export default{
         const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
         if(guarded.quarantined)console.warn('仙加味排程圖文守門已退回草稿',JSON.stringify(guarded));
       }catch(error){
-        console.warn('貼文排程守門檢查失敗，但LINE keep-warm不受影響',clean(error?.message||error));
+        // Fail closed: if the due-post review gate cannot finish, no platform
+        // probe or publisher may run. LINE keep-warm remains independent.
+        console.error('貼文排程守門檢查未完成，本輪停止發布；LINE keep-warm不受影響',clean(error?.message||error));
+        return;
       }
       try{
         const probe=await currentPlatformProbe(env,{force:true});
