@@ -24,7 +24,7 @@ function createSendStore(db){
     throw Error('Reply reservation not confirmed');
    return r.rowCount===1?claim:null;
   },
-  async begin(e,claim){
+  async begin(e,claim,reply){
    const r=await db.query(`UPDATE xjw_social.reply_ledger r SET state='sending',updated_at=now()
     FROM xjw_social.platform_control p WHERE r.platform=$1 AND r.account_id=$2
     AND r.post_id=$3 AND r.comment_id=$4 AND r.claim_id=$5 AND r.state='reserved'
@@ -32,11 +32,11 @@ function createSendStore(db){
     AND EXISTS(SELECT 1 FROM xjw_social.comment_ledger c
      WHERE c.platform=r.platform AND c.account_id=r.account_id AND c.post_id=r.post_id
      AND c.comment_id=r.comment_id AND c.conversation_version=r.conversation_version
-     AND c.status='suggest' AND NOT c.human_takeover
+     AND c.status='suggest' AND c.decision->>'reply'=$6 AND NOT c.human_takeover
      AND NOT EXISTS(SELECT 1 FROM xjw_social.comment_ledger h
       WHERE h.platform=c.platform AND h.account_id=c.account_id AND h.post_id=c.post_id
       AND h.thread_id=c.thread_id AND h.human_takeover))
-    RETURNING r.claim_id`,[...scope(e),claim]);
+    RETURNING r.claim_id`,[...scope(e),claim,reply]);
    if(!Number.isSafeInteger(r?.rowCount)||r.rowCount<0||r.rowCount>1)
     throw Error('Reply send transition not confirmed');
    return r.rowCount===1;
