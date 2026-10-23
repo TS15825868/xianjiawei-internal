@@ -21,17 +21,32 @@ function validate(p,gate,link,e,aiReview=null){
   if(r.media?.length!==1)throw Error(`Media count mismatch (${Array.isArray(r.media)?r.media.length:'missing'})`);
   if(!/^[0-9a-f]{64}$/.test(e.imageSHA256||''))throw Error('Missing verified image hash');
   const names=['facebook','instagram','threads'];if(!names.every(n=>r.providers?.some(x=>x.network===n))||r.providers.length!==3)throw Error('Three platforms required');
-  if(e.result==='draft'){if(p.status!=='pending_review'||r.draft!==true||r.autoPublish!==false)throw Error('Unreviewed content must remain draft');return'pending_review'}
+  if(e.result==='draft'){
+    // Metricool reports PENDING on drafts too. Remote status alone is NOT
+    // evidence of a scheduled, approved publication.
+    if(p.status!=='pending_review'||r.draft!==true||r.autoPublish!==false||
+       !r.providers.every(x=>x.status==='PENDING'))
+      throw Error('Unreviewed content must remain draft');
+    return 'pending_review';
+  }
   const checks=JSON.parse(gate?.checklist_json||'{}');
   const human=gate&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.reviewed_by)&&gate.reviewed_by===p.approved_by&&gate.content_fingerprint===e.sourceFingerprint&&gate.copy_image_match===1&&keys.every(k=>checks[k]===true);
   if(!human||String(p.review_note||'').startsWith('AI審核：AI_APPROVED；'))throw Error('Verified human approval required; AI assessment is evidence only');
   if(!['approved','scheduled','manual_required'].includes(p.status))throw Error('Post not approved or already published');
   if(e.result==='scheduled'){
     const remoteAt=wallClockEpoch(r.publicationDate.dateTime,r.publicationDate.timezone);
-    if(remoteAt!==Date.parse(e.publicationAt)||Date.parse(e.publicationAt)<=Date.parse(e.verifiedAt)||r.draft!==false||r.autoPublish!==true||r.instagramData?.autoPublish!==true)throw Error('Saved schedule settings invalid');
+    const verifiedAt=Date.parse(e.verifiedAt);
+    if(!Number.isFinite(verifiedAt)||remoteAt!==Date.parse(e.publicationAt)||
+       Date.parse(e.publicationAt)<=verifiedAt||
+       r.draft!==false||r.autoPublish!==true||r.instagramData?.autoPublish!==true||
+       !r.providers.every(x=>x.status==='PENDING'))
+      throw Error('Saved schedule settings invalid');
     return'scheduled';
   }
   if(e.result!=='result')throw Error('Unknown evidence type');
+  if(r.draft===true)throw Error('Remote still draft; no verified publication outcome');
+  if(!r.providers.every(x=>['PENDING','PUBLISHED','ERROR'].includes(x.status)))
+    throw Error('Unknown remote provider publication state');
   for(const x of r.providers){if(x.status==='PUBLISHED'){const u=new URL(x.publicUrl||'');const allowed={facebook:['facebook.com','www.facebook.com','fb.com'],instagram:['instagram.com','www.instagram.com'],threads:['threads.com','www.threads.com','threads.net','www.threads.net']};if(u.protocol!=='https:'||!allowed[x.network].includes(u.hostname)||!x.id)throw Error('Published platform requires its actual URL and remote ID')}}
   return r.providers.every(x=>x.status==='PUBLISHED')?'published':r.providers.some(x=>x.status==='ERROR')?'failed':'awaiting_verification';
 }

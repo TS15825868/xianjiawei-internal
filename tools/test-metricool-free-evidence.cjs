@@ -12,6 +12,23 @@ assert.equal(validate(p,g,l,{...e,result:'result'}),'awaiting_verification');
 const published=structuredClone(e);published.result='result';published.remote.providers.forEach(x=>{x.status='PUBLISHED';x.id='actual-id';x.publicUrl='https://www.'+{facebook:'facebook.com',instagram:'instagram.com',threads:'threads.com'}[x.network]+'/actual-post'});
 assert.equal(validate(p,g,l,published),'published');delete published.remote.providers[2].publicUrl;assert.throws(()=>validate(p,g,l,published));
 assert.equal(validate({...p,status:'pending_review'},null,l,{...e,result:'draft',remote:{...e.remote,draft:true,autoPublish:false}}),'pending_review');
+
+assert.throws(()=>validate(p,g,l,{...e,verifiedAt:'invalid'}),/Saved schedule settings invalid/);
+const prepublished=structuredClone(e);
+prepublished.remote.providers[0].status='PUBLISHED';
+prepublished.remote.providers[0].id='actual-id';
+prepublished.remote.providers[0].publicUrl='https://www.facebook.com/published';
+assert.throws(()=>validate(p,g,l,prepublished),/Saved schedule settings invalid/);
+const liveDraft={...e,result:'draft',remote:{...e.remote,draft:true,autoPublish:false}};
+const pendingRow={...p,status:'pending_review'};
+assert.equal(validate(pendingRow,null,l,liveDraft),'pending_review');
+const contradictoryDraft=structuredClone(liveDraft);
+contradictoryDraft.remote.providers[1].status='PUBLISHED';
+assert.throws(()=>validate(pendingRow,null,l,contradictoryDraft),/Unreviewed content must remain draft/);
+assert.throws(()=>validate(p,g,l,{...liveDraft,result:'result'}),/Remote still draft/);
+assert.throws(()=>validate(p,g,l,{...e,result:'result',remote:{...e.remote,providers:e.remote.providers.map((x,i)=>i?x:{...x,status:'UNRECOGNIZED'})}}),/Unknown remote provider/);
+console.log('PASS remote PENDING drafts are not scheduled; already-published status cannot be recycled as a new schedule; invalid verification timestamps rejected');
+
 console.log('PASS evidence: source version and UUID lease; no AI approval; no protected post; pending is not published; three actual URLs required; drafts stay pending');
 const ap={...p,review_note:'AI審核：AI_APPROVED；'};
 const proof={reviewer_type:'AI',model:'test-model',post_id:p.id,content_fingerprint:fp,image_url:p.image_url,image_sha256:e.imageSHA256,reviewed_at:e.verifiedAt,checks:Object.fromEntries(keys.map(k=>[k,{result:'PASS',evidence:'測試：逐項檢查目前完整圖文與正式參考，確認符合本項。'}])),risk:{level:'LOW',uncertainties:[],flags:[]},visual:{image_sha256:e.imageSHA256,scene_summary:'測試：小老闆在完整生活情境整理工作桌，小鹿與小烏龜分開，圖文動作光影與情境一致且沒有產品。',mascot_reference:{url:'https://raw.githubusercontent.com/test/reference.png',sha256:'b'.repeat(64)},products_visible:false,product_assets:[]}};
