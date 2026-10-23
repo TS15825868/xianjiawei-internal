@@ -25,6 +25,7 @@
 ## 待完成
 
 - Render 免費建置額度恢復後部署最新低記憶體版本並驗證 OOM。
+- PostgreSQL TLS 若發生憑證鏈錯誤：先核對 Supabase Connect 正式 Session pooler host、5432、專用 role。Pooler 與直接資料庫可能使用不同憑證鏈；`socialTlsOptions` 提供明確指定 `trustStore: "system"` 的備選模式，只接受此專案已知區域的 Session pooler，使用 Node 系統信任根憑證與完整 hostname 驗證（`rejectUnauthorized:true`），不能改為 `false`、不能自動回退到明文。無法通過真實 `social-tls-preflight.mjs` 即不可啟用收件及回覆。正式密碼／憑證只能存受保護的執行環境，不可寫入 GitHub。
 - Supabase 收件函式的 Meta 官方端對端驗證。
 - Cloudflare 第二收件入口實作及主備防重驗證。
 - Meta／Threads 原生排程及故障通知權限驗證。

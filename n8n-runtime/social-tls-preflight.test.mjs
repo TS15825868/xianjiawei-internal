@@ -78,3 +78,26 @@ test('connection errors close the private connection and never log or send',asyn
  await assert.rejects(verifySocialWorkerTls({config,connect}),/simulated protected/);
  assert.equal(ended,1);
 });
+
+test('explicit system-root TLS verifies the official shared session pooler hostname without using a mismatched project CA',async()=>{
+ const safe={...config,ca:undefined,trustStore:'system'};
+ const x=mockProbe();
+ assert.deepEqual(await verifySocialWorkerTls({config:safe,connect:x.connect}),
+  {ok:true,tlsVerified:true,roleVerified:true,sendFlagsOff:true});
+ assert.equal(x.options[0].ssl.rejectUnauthorized,true);
+ assert.equal(x.options[0].ssl.servername,config.host);
+ assert.equal(x.options[0].ssl.minVersion,'TLSv1.2');
+ assert.equal(Object.hasOwn(x.options[0].ssl,'ca'),false);
+ assert.equal(x.closed,1);
+});
+test('system-root mode is never a TLS bypass, wrong host shortcut, or direct-DB override',async()=>{
+ for(const bad of [
+  {...config,ca:undefined,trustStore:'system',host:'evil.example'},
+  {...config,ca:undefined,trustStore:'system',host:'db.iphexhvjhsmelbgwzhhr.supabase.co'},
+  {...config,ca:undefined,trustStore:'system',port:6543},
+  {...config,ca:undefined,trustStore:'system',user:'postgres.iphexhvjhsmelbgwzhhr'},
+  {...config,ca:'fake',trustStore:'system'},
+  {...config,ca:undefined,trustStore:'none'},
+ ])await assert.rejects(verifySocialWorkerTls({config:bad,
+  connect:()=>assert.fail('Unsafe configuration opened a socket')}),/Dedicated verified TLS/);
+});
