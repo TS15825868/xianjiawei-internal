@@ -180,8 +180,9 @@ test('DB failure response redacts protected transport details and does not autom
  }}));
  const reply=await h(request());
  assert.equal(reply.status,503);
- assert.equal((await reply.json()).code,'receipt_unavailable');
+ const payload=await reply.text();
+ assert.equal(JSON.parse(payload).code,'receipt_unavailable');
  assert.equal(queries,1);
  assert.equal(closed,1);
- assert.doesNotMatch(await reply.clone().text().catch(()=>''),/protected-host=password&token/);
+ assert.doesNotMatch(payload,/protected-host=password&token/);
 });
