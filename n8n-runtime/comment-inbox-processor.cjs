@@ -26,6 +26,9 @@ function normalizeInbox(row,allowedAccounts){
  if(!scoped.length||body.entry.some(entry=>!cleanId(entry?.id)||
     !exactAllowedAccount(allowedAccounts,row.platform,entry.id)))
   return fail('unverified_inbox_scope');
+ // Threads callback layouts are not yet confirmed against this App's
+ // official webhook subscription. Never auto-classify even an empty batch.
+ if(row.platform==='threads')return fail('threads_mapping_not_officially_verified');
  const events=[],seen=new Set();let ignored=0;
  for(const entry of scoped){
   if(!Array.isArray(entry.changes)||entry.changes.length>MAX_EVENTS)
@@ -34,7 +37,6 @@ function normalizeInbox(row,allowedAccounts){
    if(!change||typeof change!=='object'||Array.isArray(change))
     return fail('unverified_inbox_changes');
    const value=change.value;
-   if(row.platform==='threads')return fail('threads_mapping_not_officially_verified');
    if(row.platform==='facebook' && (change.field!=='feed'||value?.item!=='comment'||value?.verb!=='add')){
     ignored++;continue;
    }
