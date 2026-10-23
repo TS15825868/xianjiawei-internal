@@ -41,7 +41,10 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
    }
    attempted=true;
    const receipt=await adapter.sendReply(event,decision.reply,suggestion.conversationVersion);
-   if(typeof receipt?.id!=='string'||!receipt.id)throw Error('Unconfirmed receipt');
+   // Only a usable official receipt can be persisted as sent. Match the
+   // durable ledger's receipt rules before making the success transition.
+   if(typeof receipt?.id!=='string'||!receipt.id.trim()||receipt.id.length>256||
+      /[\u0000-\u001f\u007f]/u.test(receipt.id))throw Error('Unconfirmed receipt');
    await store.finish(event,claim,'sent',receipt.id);
    return {action:'sent',sent:true,remoteReplyId:receipt.id,retryAutomatically:false};
   }catch{
