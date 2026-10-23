@@ -27,3 +27,14 @@ This record contains no credentials or customer comment text.
 ## Preservation
 
 No original workflow, Meta automation, Metricool schedule, posting system, subscription or paid resource was modified. All automatic customer sends remain disabled. No customer test reply was sent. Extra spend: NT$0 / US$0.
+
+## 2026-10-23｜唯讀留言驗收的新測試對象與安全限制
+
+此段是新查核結果，不改寫 2026-10-22 的歷史驗收結論。
+
+- Metricool 已連線品牌 `6889683` 的 Instagram Feed 統計：2026-08-01 至 2026-10-23 共返回 17 篇；2026-09-19 這篇 `https://www.instagram.com/p/Dddia2NFGXr/` 記錄 1 則留言，其餘 16 篇記錄 0。這屬於 **Metricool 歷史彙總**，並非 Meta 官方 API 已讀到留言，也不代表該留言目前仍存在。
+- 已更新 GitHub `docs/n8n/07-instagram-comments-readonly.json`：媒體 GET 多讀取 `permalink,timestamp`，只從 Meta 回傳的正整數留言數及 8～32 位數字媒體 ID 中選取貼文；若已知貼文仍在當前 API 頁面並符合條件，優先選取該篇，否則退回其他符合條件的貼文。
+- 如果 Meta 對該已知貼文回傳 `comments_count=0`，**不能**使用 Metricool 的歷史 1 則留言補造合格結果。沒有可驗證貼文時直接失敗，不將空清單判定為留言讀取通過。
+- GET `/<IG_MEDIA_ID>/comments` 成功且實際取得 `id`、`text` 才可將 `commentReadVerified` 判為 `true`。其餘 `replyPermissionVerified`、`completeHistoryVerified`、`humanAttributionVerified`、`e2eVerified` 一律保留 `false`。
+- Meta 官方 Instagram Login 使用 `instagram_business_basic`、`instagram_business_manage_comments` 等權限；Facebook Login 使用不同主機與 scope。**不可混用，也不可從單次空留言結果推測權限一定過期。** 需經受保護 n8n 憑證端點實測及 App 模式／授權核對。官方參考：[Meta Instagram API with Instagram Login](https://www.postman.com/meta/instagram/folder/6raa77c/instagram-api-with-instagram-login)。
+- GitHub Actions #39898810971：全部 147 項測試通過，0 失敗。這是 **GitHub 版本的自動測試，不是 n8n 線上流程版本已更新**。目前 Render 還運行舊版 `fb77b8c1`，未重跑執行 139、未修改 n8n 加密憑證、未發送任何留言。
