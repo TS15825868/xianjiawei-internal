@@ -104,11 +104,15 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
     }
     // On duplicates confirm that the prior claim actually reached a final
     // durable state, rather than being abandoned in 'processing'.
+    // A completed row for this version is not proof of the SAME decision.
+    // Only duplicate_event may reuse a previously finalized different action.
+    const expectedStatuses=decision.action==='skip'&&decision.reason==='duplicate_event'
+      ? ['suggest','skip','manual']:[decision.action];
     const proof=await db.query(`SELECT EXISTS(
       SELECT 1 FROM xjw_social.comment_ledger WHERE platform=$1 AND account_id=$2
       AND post_id=$3 AND comment_id=$4 AND conversation_version=$5
-      AND status IN ('suggest','skip','manual')
-     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion]);
+      AND status=ANY($6::text[])
+     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion,expectedStatuses]);
     if(proof?.rows?.length!==1||proof.rows[0]?.finished!==true){durable=false;break;}
     staged[decision.action==='suggest'?'suggestions':decision.action==='manual'?'manual':'skipped']++;
    }
