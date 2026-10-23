@@ -8,6 +8,26 @@ import {resolve} from 'node:path';
 const CHECK=String.raw`SELECT current_user AS effective_role,
  s.ssl AS tls_enabled, s.version AS tls_version,
  p.rolsuper AS superuser, p.rolbypassrls AS bypass_rls,
+ has_table_privilege(current_user,'xjw_social.webhook_inbox','INSERT') AND
+ has_column_privilege(current_user,'xjw_social.webhook_inbox','status','UPDATE') AS inbox_write_ready,
+ has_table_privilege(current_user,'xjw_social.comment_ledger','INSERT') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','status','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','decision','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','human_takeover','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','error_code','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','retry_state','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.comment_ledger','updated_at','UPDATE') AS comment_write_ready,
+ has_table_privilege(current_user,'xjw_social.reply_ledger','INSERT') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','state','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','remote_reply_id','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','sent_at','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','error_code','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','retry_state','UPDATE') AND
+ has_column_privilege(current_user,'xjw_social.reply_ledger','updated_at','UPDATE') AS reply_write_ready,
+ NOT (has_table_privilege(current_user,'xjw_social.webhook_inbox','DELETE') OR
+ has_table_privilege(current_user,'xjw_social.comment_ledger','DELETE') OR
+ has_table_privilege(current_user,'xjw_social.reply_ledger','DELETE') OR
+ has_table_privilege(current_user,'xjw_social.platform_control','DELETE')) AS no_delete_privilege,
  has_table_privilege(current_user,'xjw_social.platform_control','SELECT') AS can_read_control,
  has_table_privilege(current_user,'xjw_social.platform_control','UPDATE') AS can_enable_platform,
  has_table_privilege(current_user,'xjw_social.comment_ledger','DELETE') AS can_delete_comment,
@@ -46,6 +66,8 @@ export async function verifySocialWorkerTls({config,connect}){
   if(result?.rows?.length!==1 || row?.effective_role!=='xjw_social_worker' ||
      row.tls_enabled!==true || !/^TLSv1\.[23]$/.test(row.tls_version||'') ||
      row.superuser!==false || row.bypass_rls!==false ||
+     row.inbox_write_ready!==true || row.comment_write_ready!==true ||
+     row.reply_write_ready!==true || row.no_delete_privilege!==true ||
      row.can_read_control!==true || row.can_enable_platform!==false ||
      row.can_delete_comment!==false || row.platform_rows_expected!==true ||
      row.all_send_flags_off!==true || row.all_tables_rls_enabled!==true)
