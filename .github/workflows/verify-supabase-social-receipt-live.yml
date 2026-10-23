@@ -1,6 +1,8 @@
 name: 仙加味 Supabase Meta 安全收件線上驗收
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '41 */6 * * *'
   push:
     branches: [main]
     paths:
