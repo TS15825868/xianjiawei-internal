@@ -4,7 +4,7 @@ import {PRODUCTS,PRODUCT_MASTER_META} from './product-master-snapshot.js';
 const HEADERS={'cache-control':'no-store','content-type':'application/json; charset=utf-8','x-content-type-options':'nosniff'};
 const respond=(data,status=200)=>Response.json(data,{status,headers:HEADERS});
 const blocked=(code,status=403)=>respond({ok:false,code,sent:false,aiUsed:false,humanReviewRequired:true},status);
-const unsafe=/(?:治療|療效|疾病|改善|預防|關節|疲勞|卡卡|膠原蛋白|鈣質|補氣|生津|副作用|懷孕|醫師|藥物|多少錢|售價|報價|價格|成本|批發|折扣|促銷|訂購|運費|付款|退款|帳號|密碼|token|key|忽略|無視|指令|私訊|聯絡方式|電話|地址|手機|電子郵件|email|http|https|信用卡|身分證)/iu;
+const unsafe=/(?:合作|經銷|代理|代工|客訴|爭議|訂單|退貨|價錢|多少元|優惠|醫療|醫師|功效|過敏|孕婦|哺乳|手術|治癒|保證|治療|療效|疾病|改善|預防|關節|疲勞|卡卡|膠原蛋白|鈣質|補氣|生津|副作用|懷孕|醫師|藥物|多少錢|售價|報價|價格|成本|批發|折扣|促銷|訂購|運費|付款|退款|帳號|密碼|token|key|忽略|無視|指令|私訊|聯絡方式|電話|地址|手機|電子郵件|email|http|https|信用卡|身分證)/iu;
 const pii=/(?:09\d{8}|[A-Z][12]\d{8}|\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b)/iu;
 const LINE='如果需要其他資料或合作諮詢，歡迎透過仙加味官方 LINE 聯繫。';
 export async function socialFactSuggestion(request,env,{authenticate}={}){
