@@ -19,8 +19,15 @@ async function fetchResource(url, headers = {}) {
   const lineUrl = process.env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz';
 
   const line = await fetchResource(lineUrl);
-  if (!(line.status >= 200 && line.status < 300) || line.body?.ok === false) {
-    errors.push(`LINE healthz 異常：HTTP ${line.status}`);
+  // A 200 HTML/login page or missing ok flag is NOT a healthy LINE API.
+  if (!(line.status >= 200 && line.status < 300) || line.body?.ok !== true) {
+    errors.push(`LINE healthz 異常：HTTP ${line.status}，ok 未明確為 true`);
+  }
+  if (line.body?.credentialsConfigured !== true) {
+    errors.push('LINE OA 已配置憑證狀態未通過');
+  }
+  if (line.body?.orderOpen !== true) {
+    errors.push('LINE OA 接單功能未開啟');
   }
 
   const master = await fetchResource('https://ts15825868.github.io/xianjiawei/public-product-master.json');
@@ -28,9 +35,11 @@ async function fetchResource(url, headers = {}) {
   const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'];
   const ids = Array.isArray(m.products) ? m.products.map((p) => p.id) : [];
   if (!master.ok) errors.push(`產品母資料 HTTP ${master.status}`);
+  if (m.brand?.name !== '仙加味') errors.push('公開產品母資料品牌錯誤');
   if (m.authority !== 'user-confirmed-current') errors.push('產品母資料 authority 錯誤');
   if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id)) errors.push('產品母資料 productCount／ID 不一致');
   if (!expected.every(id => ids.includes(id))) errors.push('產品母資料缺少核心產品');
+  if (Number(line.body?.productCount) !== ids.length) errors.push('LINE 產品筆數與公開母資料不一致');
   const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
   if (p30 && (!Array.isArray(p30.usage) || !p30.usage.some(x => /每日\s*1\s*[～–-]\s*2\s*罐/.test(String(x))))) errors.push('30cc 每日 1～2 罐使用資料不一致');
 
