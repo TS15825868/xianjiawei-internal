@@ -145,3 +145,18 @@ test('signed Meta receipts require an exact JSON media type, not a prefix',async
   }),/format_rejected/);
  }
 });
+
+test('oversized signed account IDs are rejected before durable inbox storage',async()=>{
+ const oversized='9'.repeat(65);
+ const payload=JSON.stringify({object:'page',entry:[{id:oversized,changes:[]}]});
+ const never={query:()=>assert.fail('Oversized account ID must not reach PostgreSQL')};
+ await assert.rejects(receiveWebhook(signed(payload),config,never),/account_rejected/);
+ await assert.rejects(receiveWebhook(signed(payload),{
+  ...config,allowedAccounts:{facebook:[oversized]}
+ },never),/configuration_missing/);
+});
+test('an empty account allowlist cannot acknowledge a signed webhook',async()=>{
+ await assert.rejects(receiveWebhook(signed(),{
+  ...config,allowedAccounts:{facebook:[]}
+ },{query:()=>assert.fail('Empty allowlist must not reach PostgreSQL')}),/configuration_missing/);
+});
