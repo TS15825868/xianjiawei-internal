@@ -70,8 +70,8 @@ test('media selection never treats missing or un-commented media as verified', (
   assert.throws(() => executeReview('選取有留言貼文', [{}]),
     /Invalid media response/);
   const result = executeReview('選取有留言貼文', [{
-    data: [{ id: 'fixture-1', comments_count: 3 },
-      { id: 'fixture-2', comments_count: 0 }],
+    data: [{ id: '17841400000000001', comments_count: 3 },
+      { id: '17841400000000002', comments_count: 0 }],
   }]);
   assert.equal(result.length, 1);
   assert.equal(result[0].json.commentsCount, 3);
@@ -86,13 +86,13 @@ test('IG media GET includes permalink for known commented post cross-check', () 
 
 test('known commented permalink is prioritized before unrelated media without manufacturing permissions', () => {
   const data=[
-    {id:'recent-unrelated',permalink:'https://www.instagram.com/p/RecentTest/',comments_count:2},
-    {id:'known-20260919',permalink:'https://www.instagram.com/p/Dddia2NFGXr/?igsh=read_only',comments_count:1},
-    {id:'other-unrelated',permalink:'https://www.instagram.com/p/Another/',comments_count:1},
+    {id:'17841400000000003',permalink:'https://www.instagram.com/p/RecentTest/',comments_count:2},
+    {id:'17841400000000004',permalink:'https://www.instagram.com/p/Dddia2NFGXr/?igsh=read_only',comments_count:1},
+    {id:'17841400000000005',permalink:'https://www.instagram.com/p/Another/',comments_count:1},
   ];
   const result=executeReview('選取有留言貼文',[{data,paging:{next:'another-page'}}]);
   assert.equal(result.length,3);
-  assert.equal(result[0].json.mediaId,'known-20260919');
+  assert.equal(result[0].json.mediaId,'17841400000000004');
   assert.equal(result[0].json.targetPostFromMetricool,true);
   assert.equal(result[0].json.commentsCount,1);
   assert.equal(result[0].json.mediaPaginationRemaining,true);
@@ -101,11 +101,11 @@ test('known commented permalink is prioritized before unrelated media without ma
 });
 
 test('known post with zero actual Meta comments does not get selected merely from external statistics', () => {
-  const data=[{id:'known-20260919',permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:0},
-    {id:'unrelated',permalink:'https://www.instagram.com/p/Other/',comments_count:2}];
+  const data=[{id:'17841400000000004',permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:0},
+    {id:'17841400000000006',permalink:'https://www.instagram.com/p/Other/',comments_count:2}];
   const result=executeReview('選取有留言貼文',[{data}]);
   assert.equal(result.length,1);
-  assert.equal(result[0].json.mediaId,'unrelated');
+  assert.equal(result[0].json.mediaId,'17841400000000006');
   assert.equal(result[0].json.targetPostFromMetricool,false);
   assert.throws(()=>executeReview('選取有留言貼文',[{data:data.slice(0,1)}]),/No commented media/);
 });
@@ -113,11 +113,17 @@ test('known post with zero actual Meta comments does not get selected merely fro
 test('malformed or untrusted media cannot force Graph URL selection', () => {
   const result=executeReview('選取有留言貼文',[{data:[
     {id:123,permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:3},
-    {id:'safe-id',permalink:'https://www.instagram.com/p/Safe/',comments_count:1},
-    {id:'bad-negative',permalink:'https://www.instagram.com/p/Invalid/',comments_count:-1},
+    {id:'17841400000000007',permalink:'https://www.instagram.com/p/Safe/',comments_count:1},
+    {id:'17841400000000008',permalink:'https://www.instagram.com/p/Invalid/',comments_count:-1},
   ]}]);
   assert.equal(result.length,1);
-  assert.equal(result[0].json.mediaId,'safe-id');
+  assert.equal(result[0].json.mediaId,'17841400000000007');
+  const malicious=executeReview('選取有留言貼文',[{data:[
+    {id:'17841400000000001/../../evil',permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:3},
+    {id:'17841400000000009',permalink:'https://www.instagram.com/p/Legitimate/',comments_count:1}
+  ]}]);
+  assert.equal(malicious.length,1);
+  assert.equal(malicious[0].json.mediaId,'17841400000000009');
 });
 
 test('empty comment response is not a successful comment-read verification', () => {
