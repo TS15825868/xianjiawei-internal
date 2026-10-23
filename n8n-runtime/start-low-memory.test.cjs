@@ -42,5 +42,5 @@ test('empty configured limits receive safe defaults',()=>{
   N8N_RUNNERS_MAX_CONCURRENCY:'',
   N8N_RUNNERS_MAX_OLD_SPACE_SIZE:'',
   NODE_OPTIONS:'',
- }),'1|1|128|start');
+ }),'1|1|128|--max-old-space-size=256|start');
 });
