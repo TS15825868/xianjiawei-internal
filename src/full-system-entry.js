@@ -1,6 +1,7 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
+import {socialFactSuggestion} from './social-fact-suggestion.js';
 import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
 import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
@@ -211,6 +212,7 @@ export default{
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
     if(path==='/api/social-ai/draft')return socialAiDraft(request,env,{authenticate:verifyFastAccess});
+    if(path==='/api/social-facts/suggest')return socialFactSuggestion(request,env,{authenticate:verifyFastAccess});
     if(request.method==='GET'&&path==='/api/ai-quality-reviews'){
       const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
       await ensureAiSchema(env);const reviews=await env.DB.prepare('SELECT id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,model,policy_version,reviewed_at,old_status,new_status FROM social_post_quality_reviews ORDER BY reviewed_at DESC LIMIT 100').all();return json({reviews:reviews.results||[],approvalDoesNotImpersonateHuman:true});

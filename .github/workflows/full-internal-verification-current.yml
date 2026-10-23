@@ -73,6 +73,9 @@ jobs:
       - name: Verify protected and disabled-by-default Cloudflare free AI reply drafts
         run: node --test tools/test-social-ai-draft.mjs
 
+      - name: Verify free official-fact reply fallback (zero inference)
+        run: node --test tools/test-social-fact-suggestion.mjs
+
       - name: Static syntax and current-authority guards
         shell: bash
         run: |

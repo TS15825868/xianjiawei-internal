@@ -5,7 +5,7 @@ const base={accountId:'123',postId:'456',threadId:'789',commentId:'789'};
 function harness(platform,change={}){
  const e={...base,platform};const calls=[];
  const record=(id,text,author,parent)=>platform==='facebook'?{id,message:text,from:{id:author},created_time:'2026-10-22T01:00:00Z',...(parent?{parent:{id:parent}}:{})}:
- platform==='instagram'?{id,text,from:{id:author},timestamp:'2026-10-22T01:00:00Z',...(parent?{parent_id:parent}:{})}:
+ platform==='instagram'?{id,text,username:author==='123'?'xianjiawei.tw':author,timestamp:'2026-10-22T01:00:00Z',...(parent?{parent_id:parent}:{})}:
  {id,text,username:author==='123'?'xianjiawei.tw':author,timestamp:'2026-10-22T01:00:00Z',replied_to:{id:parent||'456'}};
  const root=record('789','龜鹿膏成分？','999');
  const request=async r=>{calls.push(r);return change.response?change.response(r,record):{data:r.url.includes('/456/')?[root]:[]};};
@@ -30,3 +30,21 @@ test('Threads missing parent and cycles fail closed',async()=>{
  }
 });
 test('wrong target comment never silently substitutes another message',async()=>{const h=harness('facebook');await assert.rejects(h.reader.loadThread({...h.e,commentId:'888'}));});
+
+
+test('Instagram Login username-only comment history works with no from.id',async()=>{
+ const h=harness('instagram',{response:(r,m)=>({data:r.url.includes('/456/')?[m('789','龜鹿膏成分？','999')]:[m('790','品牌回覆','123','789')]})});
+ const result=await h.reader.loadThread(h.e);
+ assert.equal(result.messages.length,2);
+ assert.equal(result.messages[0].role,'customer');
+ assert.equal(result.messages[1].role,'brand');
+ assert.equal(result.replyOwnership,'human');
+ assert.ok(h.calls.every(q=>!decodeURIComponent(q.url).includes(',from,')));
+ assert.ok(h.calls.every(q=>decodeURIComponent(q.url).includes('username')));
+});
+test('Instagram missing or contradictory author never fabricates a safe conversation',async()=>{
+ const noAuthor=harness('instagram',{response:()=>({data:[{id:'789',text:'hi',timestamp:'2026-10-22T01:00:00Z'}]})});
+ await assert.rejects(noAuthor.reader.loadThread(noAuthor.e),/Incomplete official comment/);
+ const conflict=harness('instagram',{response:()=>({data:[{id:'789',text:'hi',username:'someoneelse',from:{id:'123'},timestamp:'2026-10-22T01:00:00Z'}]})});
+ await assert.rejects(conflict.reader.loadThread(conflict.e),/Conflicting Instagram author/);
+});

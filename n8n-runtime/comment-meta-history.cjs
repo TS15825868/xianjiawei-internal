@@ -2,7 +2,7 @@
 // or attribute a brand message to AI: unknown responders stop the policy.
 const {createPageCollector}=require('./comment-meta-pages.cjs');
 const CONFIG={facebook:['https://graph.facebook.com','v25.0','comments','id,message,from,created_time,parent'],
- instagram:['https://graph.instagram.com','v25.0','comments','id,text,from,username,timestamp,parent_id'],
+ instagram:['https://graph.instagram.com','v25.0','comments','id,text,username,timestamp,parent_id'],
  threads:['https://graph.threads.net','v1.0','conversation','id,text,username,timestamp,replied_to']};
 function createMetaHistoryReader({platform,accountId,username,request,verifyPost,maxPages=40,maxItems=2000}){
  const cfg=CONFIG[platform];
@@ -44,11 +44,15 @@ function createMetaHistoryReader({platform,accountId,username,request,verifyPost
   }
   if(records.length>maxItems||new Set(records.map(x=>x.id)).size!==records.length)throw Error('Duplicate or oversized thread');
   const messages=records.map(x=>{
-   const author=platform==='threads'?x.username:x.from?.id;
+   // Instagram Login exposes a username without a guaranteed 'from.id'.
+   // Missing authors or conflicting verified brand identity stop the send.
+   const author=platform==='facebook'?x.from?.id:(typeof x.username==='string'?x.username:x.from?.username);
+   if(platform==='instagram'&&x.from?.id===accountId&&author!==username)
+    throw Error('Conflicting Instagram author identity');
    const text=platform==='facebook'?x.message:x.text;
    const at=platform==='facebook'?x.created_time:x.timestamp;
    if(typeof author!=='string'||!author||typeof text!=='string'||!Number.isFinite(Date.parse(at)))throw Error('Incomplete official comment');
-   const role=(platform==='threads'?author===username:author===accountId)?'brand':'customer';
+   const role=(platform==='facebook'?author===accountId:author===username)?'brand':'customer';
    const parent=platform==='threads'?x.replied_to?.id:platform==='facebook'?x.parent?.id:x.parent_id;
    if(x.id!==e.threadId&&parent&&(platform==='threads'?!records.some(r=>r.id===parent):parent!==e.threadId))throw Error('Unexpected reply relationship');
    return {id:x.id,text,authorId:author,role,at,...(x.id!==e.threadId?{replyTo:parent||e.threadId}:{})};
