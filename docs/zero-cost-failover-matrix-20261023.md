@@ -48,7 +48,7 @@
 ## 最終版主備故障切換的驗收條件
 
 1. 主路徑：Meta 官方簽章 Webhook → 完整官方 API 留言歷史 → Supabase PostgreSQL 原子去重與人工接手 → 嚴格產品事實判斷 → 官方平台回覆 ID → ERP 寫回。
-2. 備援收件：Supabase Edge Function 第 7 版與 Cloudflare Worker/D1 已建立但均處於安全關閉。Meta 每個 App Webhook 回呼指向哪個單一入口，須由正式 App 設定證據確認；不要把兩個不同網址描述為自動 DNS 故障切換。
+2. 備援收件：Supabase Edge Function 第 8 版與 Cloudflare Worker/D1 已建立但均處於安全關閉。Meta 每個 App Webhook 回呼指向哪個單一入口，須由正式 App 設定證據確認；不要把兩個不同網址描述為自動 DNS 故障切換。
 3. 備援 AI：免費 AI 額度確實可用時，只產生已驗證事實的短答草稿；不可用則使用 0 推論產品母資料，仍須維持人工審核/發送守門。
 4. 共用安全事實：若兩個入口無法同時原子查詢同一個遠端發送回執與人工接手狀態，備援只收件/排隊，不得對客發送。任何回覆結果不明一律停止重試，等待人工查核。
 5. 狀態切換：必須實際測試主服務故障、備援收件、恢復時事件對帳、同事件重複 Webhook、並行 Worker、人工作業衝突及中斷恢復，且正式 ERP 看到唯一回執才可啟用。
@@ -65,3 +65,9 @@
 3. Meta App 驗證 GET 200 純文字 challenge 的同時，POST（包含合法簽名）必須仍回 503 且沒有 DB 寫入；無 token GET 必須回拒絕，不可因看見 200 就認為已完成留言收發。
 4. 訂閱欄位、Meta App 發布及官方帳號、專用 TLS、資料庫持久化、跨收件入口一致去重仍分別做端對端驗收。完成後才可考慮啟用收件；自動對客回覆必須再取得獨立授權與真實平台回執。
 5. 此功能不會自行替使用者變更 Meta App 設定，亦不會建立新的付費服務。
+
+## 主收件與備援收件一致的開啟門檻
+
+2026-10-23 修正：Supabase 主收件曾只檢查 `XJW_RECEIPT_ENABLED=true`，Cloudflare 備援卻另外檢查 `XJW_META_E2E_VERIFIED=true`、`XJW_PRIMARY_OVERLAP_VERIFIED=true`。現在兩邊都使用相同兩個獨立驗證條件，缺一不可。即使 Meta POST 簽章有效，尚未核准主備重疊驗證也只能回 503 `verification_required`，不得接收或寫入資料庫。
+
+此調整不會自動開啟任何旗標；GET-only Callback URL 驗證功能仍可在收件停用時獨立使用，且不能繞過 POST 限制。正式切換時必須由既有安全設定操作頁核對三個開關，不能透過 GitHub Commit 視作已完成 Meta 官方驗收。

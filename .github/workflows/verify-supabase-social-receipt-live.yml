@@ -35,7 +35,7 @@ jobs:
           catch{throw Error('Edge function did not return JSON');}
           if(result.sent!==false||result.accepted===true)
             throw Error('Unauthenticated GET must never be accepted or sent');
-          const permitted=(status===503&&result.code==='receipt_disabled')||
+          const permitted=(status===503&&['receipt_disabled','verification_required'].includes(result.code))||
             (status===400&&result.code==='verification_rejected');
           if(!permitted)throw Error('Edge receipt live acceptance state is not verified');
           console.log('PASS signed-only Meta receipt endpoint rejects unauthenticated GET, sent=false; code='+result.code);
@@ -57,7 +57,7 @@ jobs:
           catch{throw Error('Unauthenticated Meta verification must not return a challenge or HTML');}
           if(result.sent!==false||result.accepted===true)
             throw Error('Verification challenge without token must never be accepted or sent');
-          if(!((status===503&&result.code==='receipt_disabled')||
+          if(!((status===503&&['receipt_disabled','verification_required'].includes(result.code))||
                (status===400&&result.code==='verification_rejected')))
             throw Error('Unexpected response to Meta challenge without a verify token');
           console.log('PASS no-token Meta challenge rejected; automatic customer replies remain disabled.');

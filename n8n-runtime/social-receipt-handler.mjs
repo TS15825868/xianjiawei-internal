@@ -32,6 +32,12 @@ export function createReceiptHandler({readEnv,createPool}){
     }
     return response({accepted:false,ready:false,code:'receipt_disabled',sent:false},503);
    }
+   // Enabling a receipt flag alone must never bypass independent Meta
+   // authorization and primary/fallback overlap verification. These gates
+   // apply to durable receipt-only POSTs, not only to customer reply sending.
+   if(readEnv('XJW_META_E2E_VERIFIED')!=='true'||
+      readEnv('XJW_PRIMARY_OVERLAP_VERIFIED')!=='true')
+    return response({accepted:false,code:'verification_required',sent:false},503);
    const allowedAccounts=JSON.parse(readEnv('XJW_SOCIAL_ALLOWED_ACCOUNTS')||'null');
    if(!allowedAccounts)throw Error('configuration_missing');
    return await receiveWebhook(request,{allowedAccounts,appSecret:readEnv('XJW_META_APP_SECRET'),verifyToken:readEnv('XJW_META_VERIFY_TOKEN')},db);

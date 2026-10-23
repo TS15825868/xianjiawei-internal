@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHmac} from 'node:crypto';
 import {createReceiptHandler} from './social-receipt-handler.mjs';
-const env={XJW_RECEIPT_ENABLED:'true',XJW_META_APP_SECRET:'test-only',XJW_META_VERIFY_TOKEN:'test-verify',XJW_SOCIAL_ALLOWED_ACCOUNTS:'{"facebook":["411869648852531"]}',XJW_SOCIAL_DB_CONFIG:JSON.stringify({user:'xjw_social_worker',host:'db.iphexhvjhsmelbgwzhhr.supabase.co',port:5432,password:'test-only',ca:'-----BEGIN CERTIFICATE-----\ntest'})};
+const env={XJW_RECEIPT_ENABLED:'true',XJW_META_E2E_VERIFIED:'true',XJW_PRIMARY_OVERLAP_VERIFIED:'true',XJW_META_APP_SECRET:'test-only',XJW_META_VERIFY_TOKEN:'test-verify',XJW_SOCIAL_ALLOWED_ACCOUNTS:'{"facebook":["411869648852531"]}',XJW_SOCIAL_DB_CONFIG:JSON.stringify({user:'xjw_social_worker',host:'db.iphexhvjhsmelbgwzhhr.supabase.co',port:5432,password:'test-only',ca:'-----BEGIN CERTIFICATE-----\ntest'})};
 function request(secret=env.XJW_META_APP_SECRET){const body=JSON.stringify({object:'page',entry:[{id:'411869648852531',changes:[]}]});return new Request('https://example.test/webhook',{method:'POST',headers:{'content-type':'application/json','x-hub-signature-256':'sha256='+createHmac('sha256',secret).update(body).digest('hex')},body});}
 const handler=(createPool,overrides={})=>createReceiptHandler({readEnv:k=>({...env,...overrides})[k],createPool});
 test('disabled receiver never constructs pool or reads payload',async()=>{const h=handler(()=>assert.fail(),{XJW_RECEIPT_ENABLED:'false'});const r=await h(request());assert.equal(r.status,503);assert.equal((await r.json()).code,'receipt_disabled');});
@@ -79,4 +79,37 @@ test('without explicit verification-only gate even correct Meta GET cannot hands
  const r=await h(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=123'));
  assert.equal(r.status,503);
  assert.equal((await r.json()).code,'receipt_disabled');
+});
+
+test('turning receipt on without BOTH independent Meta E2E and overlap gates rejects even correctly signed POST before PostgreSQL',async()=>{
+ const cases=[
+  {XJW_META_E2E_VERIFIED:'false'},
+  {XJW_PRIMARY_OVERLAP_VERIFIED:'false'},
+  {XJW_META_E2E_VERIFIED:undefined},
+  {XJW_PRIMARY_OVERLAP_VERIFIED:undefined},
+  {XJW_META_E2E_VERIFIED:'TRUE'},
+  {XJW_PRIMARY_OVERLAP_VERIFIED:'1'}
+ ];
+ for(const overrides of cases){
+  let pools=0;
+  const h=handler(()=>{pools++;throw Error('must not touch PostgreSQL')},overrides);
+  const result=await h(request());
+  assert.equal(result.status,503);
+  assert.deepEqual(await result.json(),{accepted:false,code:'verification_required',sent:false});
+  assert.equal(pools,0);
+ }
+});
+test('verified-only GET challenge does not bypass receipt activation gates',async()=>{
+ let pools=0;
+ const h=handler(()=>{pools++;throw Error('must not touch PostgreSQL')},{
+  XJW_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true',
+  XJW_META_E2E_VERIFIED:undefined,XJW_PRIMARY_OVERLAP_VERIFIED:undefined
+ });
+ const get=await h(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=1234'));
+ assert.equal(get.status,200);
+ assert.equal(await get.text(),'1234');
+ const post=await h(request());
+ assert.equal(post.status,503);
+ assert.equal((await post.json()).code,'receipt_disabled');
+ assert.equal(pools,0);
 });

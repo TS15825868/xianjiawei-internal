@@ -28,7 +28,8 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   const receiptEndpoints = [
     { key: 'supabase', label: 'Supabase Meta 收件備援',
       url: 'https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt',
-      allowed: [{ status: 503, code: 'receipt_disabled' }, { status: 400, code: 'verification_rejected' }] },
+      allowed: [{ status: 503, code: 'receipt_disabled' }, { status: 503, code: 'verification_required' },
+        { status: 400, code: 'verification_rejected' }] },
     { key: 'cloudflare', label: 'Cloudflare Meta 收件備援',
       url: 'https://xianjiawei-social-receipt-fallback.tung314069.workers.dev/',
       allowed: [{ status: 503, code: 'disabled' }, { status: 503, code: 'verification_required' },

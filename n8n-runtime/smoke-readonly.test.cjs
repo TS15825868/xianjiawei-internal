@@ -175,3 +175,21 @@ test('both failed providers still produce a complete nonpassing safety report',a
  assert.equal(x.requests.length,7);
  assert.ok(x.report.errors.some(e=>e.includes('Cloudflare Meta 收件備援')));
 });
+
+test('enabled receipt without independent Meta E2E/overlap gate is still safely blocked',async()=>{
+ const x=await exercise(r=>{r[supabaseUrl]={status:503,body:{accepted:false,code:'verification_required',sent:false}};});
+ assert.equal(x.report.ok,true);
+ assert.equal(x.report.metaReceipts.supabase.safelyBlocked,true);
+ assert.equal(x.report.metaReceipts.supabase.liveSendingVerified,false);
+});
+test('wrong code or misleading send state cannot masquerade as independently gated receipt',async()=>{
+ for(const body of [
+  {accepted:true,code:'verification_required',sent:false},
+  {accepted:false,code:'verification_required',sent:true},
+  {accepted:false,code:'verification_required'},
+ ]){
+  const x=await exercise(r=>{r[supabaseUrl]={status:503,body};});
+  assert.equal(x.report.ok,false);
+  assert.equal(x.report.metaReceipts.supabase.safelyBlocked,false);
+ }
+});
