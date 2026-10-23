@@ -5,7 +5,7 @@ import {receiveWebhook,verifiedSubscriptionChallenge} from './social-webhook.mjs
 import {socialTlsOptions} from './social-tls.mjs';
 const config={appSecret:'test-only-secret',verifyToken:'test-verification',allowedAccounts:{facebook:['411869648852531']}};
 const body=JSON.stringify({object:'page',entry:[{id:'411869648852531',changes:[]}]});
-const signed=(value=body,secret=config.appSecret)=>new Request('https://example.com/webhook',{method:'POST',headers:{'content-type':'application/json','x-hub-signature-256':'sha256='+createHmac('sha256',secret).update(value).digest('hex')},body:value});
+const signed=(value=body,secret=config.appSecret,mime='application/json')=>new Request('https://example.com/webhook',{method:'POST',headers:{'content-type':mime,'x-hub-signature-256':'sha256='+createHmac('sha256',secret).update(value).digest('hex')},body:value});
 test('acknowledges only after awaited durable statement',async()=>{
  let persisted=false;const db={async query(sql,values){assert.match(sql,/ON CONFLICT DO NOTHING/);assert.equal(values[1],'facebook');await Promise.resolve();persisted=true;return {rowCount:1}}};
  const r=await receiveWebhook(signed(),config,db);assert.equal(persisted,true);assert.equal((await r.json()).sent,false);
@@ -131,5 +131,17 @@ test('Render cannot accidentally select the Edge-only transaction pooler',()=>{
  }finally{
   if(before===undefined)delete process.env.RENDER_SERVICE_ID;
   else process.env.RENDER_SERVICE_ID=before;
+ }
+});
+
+test('signed Meta receipts require an exact JSON media type, not a prefix',async()=>{
+ for(const mime of ['application/json','application/json; charset=utf-8','Application/JSON; charset=UTF-8']){
+  const r=await receiveWebhook(signed(body,config.appSecret,mime),config,{query:async()=>({rowCount:1})});
+  assert.equal(r.status,200);
+ }
+ for(const mime of ['application/json-malicious','application/jsonfoo','application/jsonp','text/plain']){
+  await assert.rejects(receiveWebhook(signed(body,config.appSecret,mime),config,{
+   query:()=>assert.fail('Malformed content type must not touch database')
+  }),/format_rejected/);
  }
 });
