@@ -224,3 +224,37 @@ test('concurrent inbox review does not count suggestions without a durable statu
  assert.equal(result.suggestions,0);
  assert.equal(result.sent,false);
 });
+
+test('durable completion proof matches the exact action except for a genuine duplicate',async()=>{
+ const cases=[
+  {action:'suggest',reason:'verified_product_fact',ledger:'suggest',reviewed:1},
+  {action:'suggest',reason:'verified_product_fact',ledger:'manual',reviewed:0},
+  {action:'skip',reason:'no_new_question',ledger:'suggest',reviewed:0},
+  {action:'skip',reason:'no_new_question',ledger:'skip',reviewed:1},
+  {action:'skip',reason:'duplicate_event',ledger:'suggest',reviewed:1},
+  {action:'skip',reason:'duplicate_event',ledger:'processing',reviewed:0}
+ ];
+ for(const c of cases){
+  let updates=0,proof;
+  const db={async query(sql,args){
+   if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[row('facebook',page)]};
+   if(sql.includes('AS finished')){
+    proof={sql,args};
+    return {rows:[{finished:args[5].includes(c.ledger)}]};
+   }
+   if(sql.includes('UPDATE xjw_social.webhook_inbox')){updates++;return {rowCount:1};}
+   throw Error('Unexpected SQL');
+  }};
+  const decision={action:c.action,reason:c.reason,sent:false,
+   idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+  const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
+   resolveAutomation:()=>({suggest:async()=>decision})});
+  const result=await processor.process();
+  assert.match(proof.sql,/status=ANY\\(\\$6::text\\[\\]\\)/);
+  assert.deepEqual(proof.args[5],c.reason==='duplicate_event'
+   ? ['suggest','skip','manual']:[c.action]);
+  assert.equal(result.reviewed,c.reviewed);
+  assert.equal(result.held,1-c.reviewed);
+  assert.equal(updates,c.reviewed);
+ }
+});
