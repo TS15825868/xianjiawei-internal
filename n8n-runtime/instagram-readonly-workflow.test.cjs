@@ -66,7 +66,7 @@ test('account identity cannot be substituted or silently accepted', () => {
 
 test('media selection never treats missing or un-commented media as verified', () => {
   assert.throws(() => executeReview('選取有留言貼文', [{ data: [] }]),
-    /No commented media/);
+    /No eligible media/);
   assert.throws(() => executeReview('選取有留言貼文', [{}]),
     /Invalid media response/);
   const result = executeReview('選取有留言貼文', [{
@@ -100,14 +100,26 @@ test('known commented permalink is prioritized before unrelated media without ma
   assert.ok(result.every(x=>!x.json.sent&&!x.json.e2eVerified));
 });
 
-test('known post with zero actual Meta comments does not get selected merely from external statistics', () => {
-  const data=[{id:'17841400000000004',permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:0},
+test('known post is queried even with zero aggregate comments, without claiming comment access', () => {
+  const data=[{id:'17841400000000004',permalink:'https://www.instagram.com/p/Dddia2NFGXr/?utm_source=check',comments_count:0},
     {id:'17841400000000006',permalink:'https://www.instagram.com/p/Other/',comments_count:2}];
   const result=executeReview('選取有留言貼文',[{data}]);
-  assert.equal(result.length,1);
-  assert.equal(result[0].json.mediaId,'17841400000000006');
-  assert.equal(result[0].json.targetPostFromMetricool,false);
-  assert.throws(()=>executeReview('選取有留言貼文',[{data:data.slice(0,1)}]),/No commented media/);
+  assert.equal(result.length,2);
+  assert.equal(result[0].json.mediaId,'17841400000000004');
+  assert.equal(result[0].json.targetPostFromMetricool,true);
+  assert.equal(result[0].json.commentsCount,0);
+  assert.equal(result[0].json.commentReadVerified,false);
+  assert.equal(result[0].json.sent,false);
+  assert.equal(result[1].json.mediaId,'17841400000000006');
+  const onlyKnown=executeReview('選取有留言貼文',[{data:data.slice(0,1)}]);
+  assert.equal(onlyKnown.length,1);
+  assert.equal(onlyKnown[0].json.commentReadVerified,false);
+});
+test('invalid aggregate counts cannot manufacture a second test candidate', () => {
+  const data=[{id:'17841400000000007',permalink:'https://www.instagram.com/p/A/',comments_count:'NaN'},
+    {id:'17841400000000008',permalink:'https://www.instagram.com/p/B/',comments_count:-1},
+    {id:'17841400000000009',permalink:'https://www.instagram.com/p/C/',comments_count:'not-real'}];
+  assert.throws(()=>executeReview('選取有留言貼文',[{data}]),/No eligible media/);
 });
 
 test('malformed or untrusted media cannot force Graph URL selection', () => {
