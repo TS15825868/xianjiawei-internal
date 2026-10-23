@@ -9,6 +9,7 @@ const config={
 const verified={
  effective_role:'xjw_social_worker',tls_enabled:true,tls_version:'TLSv1.3',
  superuser:false,bypass_rls:false,can_read_control:true,
+ inbox_write_ready:true,comment_write_ready:true,reply_write_ready:true,no_delete_privilege:true,
  can_enable_platform:false,can_delete_comment:false,
  platform_rows_expected:true,all_send_flags_off:true,all_tables_rls_enabled:true
 };
@@ -39,6 +40,8 @@ test('operator probe authenticates through strict TLS and SELECT-only transactio
  assert.ok(x.queries[1].includes('FROM pg_stat_ssl'));
  assert.ok(x.queries[1].includes('pg_roles'));
  assert.ok(x.queries[1].includes('platform_control'));
+ for(const field of ['inbox_write_ready','comment_write_ready','reply_write_ready','no_delete_privilege'])
+  assert.ok(x.queries[1].includes(field));
  assert.ok(x.queries.every(q=>q==='BEGIN READ ONLY'||q==='ROLLBACK'||q.startsWith('SELECT current_user AS effective_role,')));
  assert.equal(x.closed,1);
 });
@@ -46,6 +49,8 @@ test('no trust in TLS version, wrong role, RLS bypass, disabled RLS or release f
  for(const change of [
   {tls_enabled:false},{tls_version:'TLSv1.1'},{effective_role:'postgres'},
   {superuser:true},{bypass_rls:true},{can_read_control:false},
+  {inbox_write_ready:false},{comment_write_ready:false},
+  {reply_write_ready:false},{no_delete_privilege:false},
   {can_enable_platform:true},{can_delete_comment:true},
   {platform_rows_expected:false},{all_send_flags_off:false},
   {all_tables_rls_enabled:false},
