@@ -86,6 +86,7 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
    const parsed=normalizeInbox(row,allowedAccounts);
    if(!parsed.ok){summary.held++;continue;}
    let durable=true;
+   const staged={suggestions:0,manual:0,skipped:0};
    for(const event of parsed.events){
     let decision;
     try{
@@ -109,7 +110,7 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
       AND status IN ('suggest','skip','manual')
      ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion]);
     if(proof?.rows?.length!==1||proof.rows[0]?.finished!==true){durable=false;break;}
-    summary[decision.action==='suggest'?'suggestions':decision.action==='manual'?'manual':'skipped']++;
+    staged[decision.action==='suggest'?'suggestions':decision.action==='manual'?'manual':'skipped']++;
    }
    if(!durable){summary.held++;continue;}
    // Column-level UPDATE and RLS permit manual -> reviewed only.
@@ -117,9 +118,13 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
    const changed=await db.query(`UPDATE xjw_social.webhook_inbox SET status='reviewed'
     WHERE event_hash=$1 AND platform=$2 AND account_id=$3 AND status='manual'
     RETURNING event_hash`,[row.event_hash,row.platform,row.account_id]);
-   if(changed?.rowCount===1)summary.reviewed++;
-   else if(changed?.rowCount!==0)throw Error('Inbox review update unconfirmed');
-   summary.ignored+=parsed.ignored;
+   if(changed?.rowCount===1){
+    summary.reviewed++;
+    summary.suggestions+=staged.suggestions;
+    summary.manual+=staged.manual;
+    summary.skipped+=staged.skipped;
+    summary.ignored+=parsed.ignored;
+   }else if(changed?.rowCount!==0)throw Error('Inbox review update unconfirmed');
   }
   return Object.freeze(summary);
  }});
