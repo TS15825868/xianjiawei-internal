@@ -51,7 +51,7 @@ test('bad method, JSON and oversized requests fail without inference',async()=>{
 
 test('medical, pricing, disputes and cooperation mixed with a fact always require a human',async()=>{
  const env={AI:{run:()=>assert.fail('No model call')},DB:{prepare:()=>assert.fail('No database access')}};
- for(const detail of ['想談合作','想成為經銷','有客訴要處理','這筆訂單有爭議','吃了過敏怎麼辦','孕婦可以吃嗎','哺乳能吃嗎','有什麼醫療功效','價錢多少元','有優惠嗎','想代工','我要退貨']){
+ for(const detail of ['糖尿病能吃嗎','高血壓能吃嗎','癌症能吃嗎','感冒能吃嗎','正在吃西藥能吃嗎','正在服藥能吃嗎','想談合作','想成為經銷','有客訴要處理','這筆訂單有爭議','吃了過敏怎麼辦','孕婦可以吃嗎','哺乳能吃嗎','有什麼醫療功效','價錢多少元','有優惠嗎','想代工','我要退貨']){
   const r=await socialFactSuggestion(req({...body,question:'請問龜鹿膏的成分？'+detail}),env,{authenticate:staff});
   assert.equal(r.status,422,detail);
   const j=await r.json();assert.equal(j.code,'manual_review_required',detail);assert.equal(j.sent,false);assert.equal(j.reply,undefined);
