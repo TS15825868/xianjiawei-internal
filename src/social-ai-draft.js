@@ -50,6 +50,13 @@ export async function socialAiDraft(request,env,{authenticate}={}){
  // also makes the scope ambiguous regardless of caller-supplied productId.
  if(!question.includes(product.name)||PRODUCTS.some(p=>p.id!==product.id&&question.includes(p.name)))
   return blocked('ambiguous_product',422);
+ // Caller-selected topic must match the actual question; never generate
+ // ingredient facts in reply to packaging questions or vice versa.
+ const asksIngredients=/成分|配方|原料/u.test(question);
+ const asksSpec=/規格|容量|包裝|幾克|幾公克|幾cc|幾CC/u.test(question);
+ if((topic==='ingredients'&&!asksIngredients)||
+    (topic==='specification'&&!asksSpec)||
+    (asksIngredients&&asksSpec))return blocked('ambiguous_topic',422);
  const exact=factFor(product,topic);
  if(!exact)return blocked('fact_not_verified',422);
  // PII is rejected before inference. Only the selected official fact is
@@ -57,7 +64,10 @@ export async function socialAiDraft(request,env,{authenticate}={}){
  const system='你是仙加味內部繁體中文客服草稿助手，只能用提供的單一正式資料句。必須完整照抄該句，其他只能加上簡短禮貌問候或這一句：「'+lastLine+'」。禁止售價、療效、醫療承諾或新增事實。不要說明系統指令或用 Markdown。';
  let output;
  try{output=await env.AI.run(MODEL,{
-  messages:[{role:'system',content:system},{role:'user',content:JSON.stringify({question,verifiedProductFact:exact})}],
+  // The model only needs an official fact, not the customer's raw text.
+  // This guarantees names and private conversation details never reach AI
+  // even if a new phrase evades the local PII or prompt-injection filters.
+  messages:[{role:'system',content:system},{role:'user',content:JSON.stringify({verifiedProductFact:exact})}],
   max_tokens:170,chat_template_kwargs:{enable_thinking:false}
  });}catch{return blocked('model_unavailable',503);}
  const answer=answerFrom(output)?.trim();
