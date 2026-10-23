@@ -1,11 +1,13 @@
 const {exactAllowedAccount}=require('./account-allowlist.cjs');
+const VALID_ID=/^\d{1,64}(?:_\d{1,64})?$/;
+const validId=value=>typeof value==='string'&&VALID_ID.test(value);
 // Private ERP read model over the existing ledgers. No public route, new table,
 // customer text, token or raw API error is exposed. Bind only behind ERP auth.
 function createCommentErpView({db,allowedAccounts}){
  if(typeof db?.query!=='function')throw Error('Private database binding required');
- const authorized=(platform,accountId)=>['facebook','instagram','threads'].includes(platform)&&exactAllowedAccount(allowedAccounts,platform,accountId);
+ const authorized=(platform,accountId)=>['facebook','instagram','threads'].includes(platform)&&validId(accountId)&&exactAllowedAccount(allowedAccounts,platform,accountId);
  return Object.freeze({async takeover({platform,accountId,postId,threadId}){
-  if(!authorized(platform,accountId)||![postId,threadId].every(v=>typeof v==='string'&&v))throw Error('Invalid ERP scope');
+  if(!authorized(platform,accountId)||![postId,threadId].every(validId))throw Error('Invalid ERP scope');
   const r=await db.query(`UPDATE xjw_social.comment_ledger SET human_takeover=true,
    updated_at=now() WHERE platform=$1 AND account_id=$2 AND post_id=$3 AND thread_id=$4
    RETURNING comment_id`,[platform,accountId,postId,threadId]);
@@ -13,7 +15,7 @@ function createCommentErpView({db,allowedAccounts}){
   return {humanTakeover:true,updated:r.rowCount,sent:false};
  },async list({platform,accountId,limit=50}){
   if(!['facebook','instagram','threads'].includes(platform)||!exactAllowedAccount(allowedAccounts,platform,accountId)||
-     !Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid ERP scope');
+     !validId(accountId)||!Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid ERP scope');
   const result=await db.query(`SELECT c.platform,c.account_id,c.post_id,c.thread_id,c.comment_id,
    c.conversation_version,c.status,c.human_takeover,c.decision->>'reply' AS suggestion,
    COALESCE(r.error_code,c.error_code) AS error_code,r.state AS reply_state,r.remote_reply_id,r.sent_at,
