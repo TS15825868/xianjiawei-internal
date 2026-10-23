@@ -40,3 +40,25 @@ jobs:
           if(!permitted)throw Error('Edge receipt live acceptance state is not verified');
           console.log('PASS signed-only Meta receipt endpoint rejects unauthenticated GET, sent=false; code='+result.code);
           NODE
+      - name: 缺少 Meta verify token 的 GET 挑戰仍須拒絕（不含任何正式憑證）
+        shell: bash
+        run: |
+          set -euo pipefail
+          # No secret, no POST and no customer data. An opt-in GET handshake
+          # may return 200 only for the exact secret known to Meta/operators.
+          url='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt?hub.mode=subscribe&hub.challenge=123456789'
+          status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
+            --output /tmp/xjw-edge-wrong-token.json --write-out '%{http_code}' "$url")
+          node - "$status" <<'NODE'
+          const fs=require('node:fs');
+          const status=Number(process.argv[2]);
+          let result;
+          try{result=JSON.parse(fs.readFileSync('/tmp/xjw-edge-wrong-token.json','utf8'))}
+          catch{throw Error('Unauthenticated Meta verification must not return a challenge or HTML');}
+          if(result.sent!==false||result.accepted===true)
+            throw Error('Verification challenge without token must never be accepted or sent');
+          if(!((status===503&&result.code==='receipt_disabled')||
+               (status===400&&result.code==='verification_rejected')))
+            throw Error('Unexpected response to Meta challenge without a verify token');
+          console.log('PASS no-token Meta challenge rejected; automatic customer replies remain disabled.');
+          NODE
