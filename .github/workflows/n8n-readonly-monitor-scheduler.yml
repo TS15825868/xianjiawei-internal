@@ -53,12 +53,11 @@ jobs:
           done
           echo 'All three read-only monitors completed successfully; publication workflow remains excluded.'
 
-  # Independent, cost-free public GET checks when n8n cannot wake.
-  # Also run on changes to this scheduler as a harmless failover drill.
-  # A successful fallback never conceals the main monitor job's failure.
+  # Independent public GET backup starts in PARALLEL with the n8n wakeup,
+  # so the site's safety coverage is not delayed by Render's cold start / OOM.
+  # A successful backup never hides monitor's separate failed job status.
+  # Public repo standard GitHub-hosted runners carry no additional minute charge.
   fallback-readonly:
-    needs: monitor
-    if: ${{ always() && (needs.monitor.result == 'failure' || github.event_name == 'push') }}
     runs-on: ubuntu-latest
     timeout-minutes: 9
     permissions:
