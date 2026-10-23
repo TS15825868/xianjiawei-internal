@@ -36,7 +36,11 @@ export async function receiveWebhook(request,config,db){
  if(envelope.challenge)return new Response(envelope.challenge,{headers:{'cache-control':'no-store'}});
  if(typeof db?.query!=='function')throw Error('storage_unavailable');
  // A single SQL statement makes all references durable before acknowledging.
- await db.query(`INSERT INTO xjw_social.webhook_inbox(event_hash,platform,account_id,payload)
+ const written=await db.query(`INSERT INTO xjw_social.webhook_inbox(event_hash,platform,account_id,payload)
   SELECT $1,$2,unnest($3::text[]),$4::jsonb ON CONFLICT DO NOTHING`,[envelope.digest,envelope.platform,envelope.accounts,JSON.stringify(envelope.payload)]);
+ // A duplicate receipt legitimately inserts zero rows, but an incomplete or
+ // malformed PostgreSQL result must never be acknowledged as durable.
+ if(!Number.isSafeInteger(written?.rowCount)||written.rowCount<0||written.rowCount>envelope.accounts.length)
+  throw Error('storage_unavailable');
  return Response.json({accepted:true,mode:'manual_receipt_only',sent:false},{headers:{'cache-control':'no-store'}});
 }
