@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/n8n-readonly-monitor-scheduler.yml'
+      - 'n8n-runtime/smoke-readonly.js'
+      - 'n8n-runtime/smoke-readonly.test.cjs'
   workflow_dispatch:
 
 permissions:
@@ -73,6 +75,6 @@ jobs:
           node n8n-runtime/smoke-readonly.js
           {
             echo '### 唯讀備援檢查完成'
-            echo '直接檢查 LINE OA 健康、正式產品母資料、AI / GEO 以及官網 Pages。'
-            echo '此結果不代表 n8n 已恢復，也沒有呼叫社群發送或排程發布。'
+            echo '直接檢查 LINE OA、官網產品母資料與 AI/GEO，並驗證 Supabase/Cloudflare Meta 收件服務拒絕未授權 GET。'
+            echo '此結果僅為唯讀安全驗收，不代表 n8n、Meta 實際收件或自動回覆已可用；沒有呼叫發布。'
           } >> "$GITHUB_STEP_SUMMARY"

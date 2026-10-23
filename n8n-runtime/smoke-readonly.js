@@ -1,8 +1,8 @@
 const TIMEOUT_MS = 90000;
 
-async function fetchResource(url, headers = {}) {
+async function fetchResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, { headers, signal: controller.signal });
     const text = await res.text();
@@ -61,6 +61,31 @@ async function fetchResource(url, headers = {}) {
     errors.push(`官網 GitHub Pages sitemap 異常：HTTP ${pages.status}`);
   }
 
+  // A disabled Meta receiver is intentionally NOT customer-response-ready.
+  // The safety check only proves uncredentialed GET cannot be accepted or sent.
+  // Both endpoints are public; this probe never carries tokens, user payloads
+  // or invokes any POST, and does not depend on Render's wake-up cycle.
+  const receiptEndpoints = [
+    { key: 'supabase', label: 'Supabase Meta 收件備援',
+      url: 'https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt',
+      allowed: [{ status: 503, code: 'receipt_disabled' }, { status: 400, code: 'verification_rejected' }] },
+    { key: 'cloudflare', label: 'Cloudflare Meta 收件備援',
+      url: 'https://xianjiawei-social-receipt-fallback.tung314069.workers.dev/',
+      allowed: [{ status: 503, code: 'disabled' }, { status: 503, code: 'verification_required' },
+        { status: 400, code: 'invalid_event' }] }
+  ];
+  const receipts = {};
+  for (const item of receiptEndpoints) {
+    const observation = await fetchResource(item.url, {}, 25000);
+    const safe = observation.body?.sent === false && observation.body?.accepted !== true &&
+      item.allowed.some(expected => observation.status === expected.status && observation.body?.code === expected.code);
+    receipts[item.key] = {
+      status: observation.status, code: typeof observation.body?.code === 'string' ? observation.body.code : null,
+      safelyBlocked: safe, liveSendingVerified: false
+    };
+    if (!safe) errors.push(`${item.label} 未通過無憑證唯讀拒絕驗證：HTTP ${observation.status}`);
+  }
+
   const result = {
     ok: errors.length === 0,
     checkedAt: new Date().toISOString(),
@@ -69,6 +94,7 @@ async function fetchResource(url, headers = {}) {
     ai: { status: ai.status, version: ai.body?.version },
     geo: { status: geo.status, dateModified: graph.find((x) => x?.['@type'] === 'Dataset')?.dateModified || null },
     githubPages: { status: pages.status, sitemapOk: pages.ok && typeof pages.body === 'string' && pages.body.includes('<urlset') },
+    metaReceipts: receipts,
     errors,
   };
 

@@ -7,6 +7,8 @@ const vm=require('node:vm');
 const script=readFileSync(join(__dirname,'smoke-readonly.js'),'utf8');
 const base='https://ts15825868.github.io/xianjiawei/';
 const lineUrl='https://ts-line.onrender.com/healthz';
+const supabaseUrl='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt';
+const cloudflareUrl='https://xianjiawei-social-receipt-fallback.tung314069.workers.dev/';
 function fixtures(){
  const products=[
   {id:'guilu-gao'},{id:'guilu-drink-30',usage:['每日 1～2 罐']},
@@ -22,7 +24,9 @@ function fixtures(){
    {'@type':'ItemList',numberOfItems:4},
    {'@type':'Dataset',dateModified:'2026-10-23'}
   ]}},
-  [base+'sitemap.xml']:{status:200,body:'<?xml version="1.0"?><urlset></urlset>'}
+  [base+'sitemap.xml']:{status:200,body:'<?xml version="1.0"?><urlset></urlset>'},
+  [supabaseUrl]:{status:503,body:{accepted:false,code:'receipt_disabled',sent:false}},
+  [cloudflareUrl]:{status:503,body:{accepted:false,code:'disabled',sent:false}}
  };
 }
 async function exercise(mutate){
@@ -45,7 +49,8 @@ async function exercise(mutate){
  const record=output.find(line=>line.startsWith('[readonly-smoke] '));
  assert.ok(record,'Expected a structured read-only health report');
  const report=JSON.parse(record.slice('[readonly-smoke] '.length));
- assert.equal(requests.length,5,'Only the five known public GET destinations are allowed');
+ assert.equal(requests.length,7,'Only the seven known public GET destinations are allowed');
+ assert.ok(requests.includes(supabaseUrl)&&requests.includes(cloudflareUrl));
  return {report,exits,errors,requests};
 }
 test('normal public endpoints pass with exact LINE credential, order and product evidence',async()=>{
@@ -102,4 +107,38 @@ test('LINE 503 and sitemap downtime both fail the backup checks',async()=>{
  assert.equal(x.report.ok,false);
  assert.ok(x.report.errors.some(t=>t.includes('LINE healthz')));
  assert.ok(x.report.errors.some(t=>t.includes('sitemap')));
+});
+
+
+test('Meta receivers both reject unsigned public GET without accepting or sending a customer event',async()=>{
+ const {report,requests}=await exercise();
+ assert.equal(report.ok,true);
+ assert.equal(report.metaReceipts.supabase.safelyBlocked,true);
+ assert.equal(report.metaReceipts.cloudflare.safelyBlocked,true);
+ assert.equal(report.metaReceipts.supabase.liveSendingVerified,false);
+ assert.equal(report.metaReceipts.cloudflare.liveSendingVerified,false);
+ assert.deepEqual(requests.slice(-2),[supabaseUrl,cloudflareUrl]);
+});
+test('a public receiver that accepts a request or loses fail-closed status fails the entire backup',async()=>{
+ for(const url of [supabaseUrl,cloudflareUrl]){
+  for(const mutation of [
+   {status:200,body:{accepted:true,sent:false,code:'ok'}},
+   {status:503,body:{accepted:false,sent:true,code:'disabled'}},
+   {status:200,body:'<html>Login</html>'},
+   {status:503,body:{accepted:false,code:'unconfigured',sent:false}}
+  ]){
+   const x=await exercise(r=>{r[url]=mutation});
+   assert.equal(x.report.ok,false);
+   assert.equal(x.report.metaReceipts[url===supabaseUrl?'supabase':'cloudflare'].safelyBlocked,false);
+   assert.ok(x.report.errors.some(t=>t.includes('收件備援')));
+   assert.deepEqual(x.exits,[1,1]);
+  }
+ }
+});
+test('verified-enabled receivers still reject unauthenticated GET without claiming auto-reply',async()=>{
+ const r=await exercise(routes=>{
+  routes[supabaseUrl]={status:400,body:{accepted:false,sent:false,code:'verification_rejected'}};
+  routes[cloudflareUrl]={status:400,body:{accepted:false,sent:false,code:'invalid_event'}};
+ });
+ assert.equal(r.report.ok,true);assert.equal(r.report.metaReceipts.supabase.liveSendingVerified,false);
 });
