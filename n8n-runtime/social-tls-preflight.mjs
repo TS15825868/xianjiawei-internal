@@ -33,8 +33,14 @@ export async function verifySocialWorkerTls({config,connect}){
   client=await connect(options);
   if(typeof client?.query!=='function'||typeof client?.end!=='function')
     throw Error('Trusted PostgreSQL session required');
-  await client.query('BEGIN READ ONLY');
-  transactionStarted=true;
+  // Shared transaction pooler does not retain session state across queries.
+  // The CHECK below is a single read-only SELECT, and TLS/hostname is
+  // verified by the connection options before the query. Do not issue BEGIN
+  // or session SET commands through port 6543.
+  if(options.port===5432){
+   await client.query('BEGIN READ ONLY');
+   transactionStarted=true;
+  }
   const result=await client.query(CHECK);
   const row=result?.rows?.[0];
   if(result?.rows?.length!==1 || row?.effective_role!=='xjw_social_worker' ||

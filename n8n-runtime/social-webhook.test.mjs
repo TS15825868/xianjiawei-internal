@@ -97,3 +97,39 @@ test('standalone Meta handshake requires configured verify token and GET',()=>{
  assert.throws(()=>verifiedSubscriptionChallenge(verified,'other-token'),/verification_rejected/);
  assert.throws(()=>verifiedSubscriptionChallenge(signed(),'test-verification'),/method_rejected/);
 });
+
+
+test('transaction pooler requires Edge-only opted-in scope, correct project and strict verified TLS',()=>{
+ const base={host:'aws-0-ap-northeast-1.pooler.supabase.com',port:6543,
+  user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',password:'test-only',
+  runtime:'edge',poolMode:'transaction',trustStore:'system'};
+ const opt=socialTlsOptions(base);
+ assert.equal(opt.port,6543);
+ assert.equal(opt.database,'postgres');
+ assert.equal(opt.ssl.rejectUnauthorized,true);
+ assert.equal(opt.ssl.servername,base.host);
+ assert.equal(opt.max,1);
+ assert.equal(opt.application_name,'xjw-social-edge-receipt');
+ assert.equal(Object.hasOwn(opt.ssl,'ca'),false);
+ for(const invalid of [
+  {...base,user:'postgres.iphexhvjhsmelbgwzhhr'},
+  {...base,host:'aws-0-ap-southeast-1.pooler.supabase.com'},
+  {...base,port:5432},
+  {...base,runtime:'n8n'},
+  {...base,poolMode:'session'},
+  {...base,trustStore:'disabled'},
+  {...base,host:'aws-0-ap-northeast-1.pooler.supabase.com.evil.example'}
+ ])assert.throws(()=>socialTlsOptions(invalid),/Dedicated verified TLS/);
+});
+test('Render cannot accidentally select the Edge-only transaction pooler',()=>{
+ const before=process.env.RENDER_SERVICE_ID;
+ process.env.RENDER_SERVICE_ID='srv-test-only';
+ try{
+  assert.throws(()=>socialTlsOptions({host:'aws-0-ap-northeast-1.pooler.supabase.com',port:6543,
+   user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',password:'test-only',
+   runtime:'edge',poolMode:'transaction',trustStore:'system'}),/Dedicated verified TLS/);
+ }finally{
+  if(before===undefined)delete process.env.RENDER_SERVICE_ID;
+  else process.env.RENDER_SERVICE_ID=before;
+ }
+});

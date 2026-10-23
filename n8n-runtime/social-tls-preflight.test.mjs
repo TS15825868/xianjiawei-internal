@@ -101,3 +101,32 @@ test('system-root mode is never a TLS bypass, wrong host shortcut, or direct-DB 
  ])await assert.rejects(verifySocialWorkerTls({config:bad,
   connect:()=>assert.fail('Unsafe configuration opened a socket')}),/Dedicated verified TLS/);
 });
+
+
+test('explicit Edge transaction pooler preflight uses one SELECT without unsafe session commands',async()=>{
+ const x=mockProbe();
+ const transaction={...config,port:6543,runtime:'edge',poolMode:'transaction',ca:undefined,trustStore:'system'};
+ assert.deepEqual(await verifySocialWorkerTls({config:transaction,connect:x.connect}),
+  {ok:true,tlsVerified:true,roleVerified:true,sendFlagsOff:true});
+ assert.equal(x.options[0].port,6543);
+ assert.equal(x.options[0].ssl.rejectUnauthorized,true);
+ assert.equal(x.options[0].ssl.servername,config.host);
+ assert.equal(Object.hasOwn(x.options[0].ssl,'ca'),false);
+ assert.equal(x.queries.length,1);
+ assert.ok(x.queries[0].startsWith('SELECT current_user AS effective_role,'));
+ assert.equal(x.closed,1);
+});
+test('transaction pooler requires Edge-only explicit scope and fails before network',async()=>{
+ for(const invalid of [
+  {...config,port:6543},
+  {...config,port:6543,poolMode:'transaction'},
+  {...config,port:6543,runtime:'edge'},
+  {...config,port:6543,runtime:'n8n',poolMode:'transaction'},
+  {...config,port:6543,runtime:'edge',poolMode:'session'},
+  {...config,port:5432,runtime:'edge',poolMode:'transaction'},
+  {...config,port:6543,runtime:'edge',poolMode:'transaction',host:'aws-0-ap-southeast-1.pooler.supabase.com'},
+  {...config,port:6543,runtime:'edge',poolMode:'transaction',user:'postgres.iphexhvjhsmelbgwzhhr'},
+ ]){
+  await assert.rejects(verifySocialWorkerTls({config:invalid,connect:()=>assert.fail('must not dial')}),/Dedicated verified TLS/);
+ }
+});

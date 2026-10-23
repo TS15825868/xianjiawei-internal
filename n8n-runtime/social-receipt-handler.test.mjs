@@ -113,3 +113,30 @@ test('verified-only GET challenge does not bypass receipt activation gates',asyn
  assert.equal((await post.json()).code,'receipt_disabled');
  assert.equal(pools,0);
 });
+
+
+test('receipt-only Edge can use opt-in free transaction pooler without changing send gates',async()=>{
+ let observed;
+ const edgeConfig={
+  host:'aws-0-ap-northeast-1.pooler.supabase.com',port:6543,
+  user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',password:'test-only',
+  runtime:'edge',poolMode:'transaction',trustStore:'system'
+ };
+ const h=handler(opts=>{
+  observed=opts;
+  return {on(){},async query(sql,params){
+    assert.match(sql,/ON CONFLICT DO NOTHING/);
+    assert.equal(params[1],'facebook');
+    return {rowCount:1};
+  }};
+ },{XJW_SOCIAL_DB_CONFIG:JSON.stringify(edgeConfig)});
+ const response=await h(request());
+ assert.equal(response.status,200);
+ const result=await response.json();
+ assert.equal(result.accepted,true);
+ assert.equal(result.mode,'manual_receipt_only');
+ assert.equal(result.sent,false);
+ assert.equal(observed.port,6543);
+ assert.equal(observed.ssl.rejectUnauthorized,true);
+ assert.equal(observed.ssl.servername,edgeConfig.host);
+});

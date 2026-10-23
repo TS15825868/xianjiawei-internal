@@ -81,3 +81,13 @@
 - PostgreSQL 即時唯讀狀態：三平台 `enabled=false,e2e_verified=false,overlap_verified=false`；`webhook_inbox`、`comment_ledger`、`reply_ledger` 均為 0 筆；`xjw_social_worker` 0 活動連線。
 - 專用帳號 `rolcanlogin=true`、無 `BYPASSRLS`、具 inbox 的 INSERT/SELECT 與 RLS Policy；Supabase 管理連線的 `pg_has_role(...,'SET')=false`，所以未能以 `SET ROLE` 驗證 worker 的真實寫入，嘗試遭拒且**沒有留下任何測試資料**。必須於受保護 n8n／Supabase 執行環境使用該專用帳號實際 TLS 登入，才能驗證其 DB 寫入與最終收件。
 - Render 最新 n8n 部署仍因免費 pipeline minutes 耗盡失敗；LINE 新版尚未部署。仍不能宣稱 Meta App 已完成正式回呼訂閱、主備自動接管或全自動 AI 對客回覆已運作。
+
+## Render 無法建置時的 Edge 免費資料庫備援路徑
+
+Supabase 官方 2026 文件建議：持續連線的 IPv4 後端使用 **shared Session pooler:5432**；Serverless／Edge 使用 **shared Transaction pooler:6543**。同一專案的交易連線池支援無狀態 SQL，但不支援跨多個 SQL 要求的 Session 設定和具名 prepared statements。
+
+本次新增 **僅 Edge 手動選擇** 的連線選項：在既有私密 `XJW_SOCIAL_DB_CONFIG` JSON 內使用官方 Connect 視窗顯示的 pooler host、`port:6543`、`user:"xjw_social_worker.iphexhvjhsmelbgwzhhr"`，並明確指定 `"runtime":"edge"`、`"poolMode":"transaction"`、`"trustStore":"system"`；**必須仍使用原本受保護的專用帳號密碼**。若 Supabase Connect 面板要求自有 CA，改用同樣嚴格驗證的 `ca` 憑證，不能設 `rejectUnauthorized:false`。此功能只擴充既有連線選項，不會變更私密設定值、不建立新資源、不打開對客收件。
+
+程式會拒絕 Render 使用 6543、其他專案／區域 host、管理員帳號、不明的 TLS 信任設定。交易模式的 `social-tls-preflight.mjs` 用**單次唯讀 SELECT**取代 `BEGIN READ ONLY`＋`ROLLBACK`，防止跨交易 Session 假設；結果必須仍證明專用身份、TLS、RLS 及發送門檻全部關閉。
+
+**仍未完成的外部驗收：** 在 Supabase 私密執行環境設定後實際連線成功、Meta Webhook 由官方 Callback URL 驗證、收件事件原子落庫與 ERP 回寫、主備跨服務去重、官方回覆權限及回執。完成前全平台不啟用自動發送。官方文件：<https://supabase.com/docs/guides/database/connecting-to-postgres>。
