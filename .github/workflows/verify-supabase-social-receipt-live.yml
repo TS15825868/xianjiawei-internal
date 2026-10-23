@@ -62,3 +62,24 @@ jobs:
             throw Error('Unexpected response to Meta challenge without a verify token');
           console.log('PASS no-token Meta challenge rejected; automatic customer replies remain disabled.');
           NODE
+      - name: 錯誤 Meta verify token 不得取得任何驗證回傳
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A known-invalid, nonsecret literal; never use official verify tokens in CI.
+          url='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt?hub.mode=subscribe&hub.verify_token=xjw-not-a-valid-token-test-only&hub.challenge=123456789'
+          status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
+            --output /tmp/xjw-edge-invalid-verification.json --write-out '%{http_code}' "$url")
+          node - "$status" <<'NODE'
+          const fs=require('node:fs');
+          const status=Number(process.argv[2]);
+          let data;
+          try{data=JSON.parse(fs.readFileSync('/tmp/xjw-edge-invalid-verification.json','utf8'))}
+          catch{throw Error('A known-wrong Meta challenge returned non-JSON or was echoed');}
+          if(data.accepted===true||data.sent!==false)
+            throw Error('Known-wrong challenge must never authorize receipt or sending');
+          if(!((status===503&&['receipt_disabled','verification_required'].includes(data.code))||
+               (status===400&&data.code==='verification_rejected')))
+            throw Error('Known-wrong token must fail closed');
+          console.log('PASS v9 Meta GET with wrong verification token rejected, no durable event and no send.');
+          NODE
