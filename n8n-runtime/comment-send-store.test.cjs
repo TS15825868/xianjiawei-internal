@@ -37,10 +37,24 @@ test('reserve binds all identifiers and suggestion text; checks every release fl
  assert.equal(args[6],event.threadId);
  assert.equal(args[7],'Safe suggested text');
 });
-test('duplicate or disabled reservation never claims reply',async()=>{
- for(const rows of [0,undefined,NaN,-1]){
-  const x=adapter(rows);assert.equal(await x.store.reserve(event,'v','suggestion'),null);
+test('confirmed duplicate or disabled reservation never claims a reply',async()=>{
+ const x=adapter(0);
+ assert.equal(await x.store.reserve(event,'v','suggestion'),null);
+});
+test('incomplete or impossible reservation receipts require manual recovery, not duplicate skips',async()=>{
+ for(const rows of [undefined,null,NaN,-1,1.5,2,'0','1']){
+  const x=adapter(rows);
+  await assert.rejects(x.store.reserve(event,'v','suggestion'),/Reply reservation not confirmed/);
  }
+ await assert.rejects(createSendStore({query:async()=>undefined}).reserve(event,'v','suggestion'),/Reply reservation not confirmed/);
+});
+test('send-start database receipts must confirm exactly one transitioned row',async()=>{
+ for(const rows of [undefined,null,NaN,-1,1.5,2,'0','1']){
+  const x=adapter(rows);
+  await assert.rejects(x.store.begin(event,'claim-1'),/Reply send transition not confirmed/);
+ }
+ assert.equal(await adapter(0).store.begin(event,'claim-1'),false);
+ await assert.rejects(createSendStore({query:async()=>undefined}).begin(event,'claim-1'),/Reply send transition not confirmed/);
 });
 test('begin requires a fresh durable reservation and all three active switches',async()=>{
  const x=adapter();

@@ -17,6 +17,11 @@ function createSendStore(db){
     AND NOT EXISTS(SELECT 1 FROM xjw_social.comment_ledger h WHERE h.platform=c.platform
      AND h.account_id=c.account_id AND h.post_id=c.post_id AND h.thread_id=c.thread_id AND h.human_takeover)
     ON CONFLICT DO NOTHING RETURNING claim_id`,[...scope(e),version,claim,e.threadId,reply]);
+   // 0 = platform disabled, duplicate or an existing reservation; only that
+   // confirmed result is a normal skip. Malformed database acknowledgments
+   // must not be disguised as 'disabled_or_reserved'.
+   if(!Number.isSafeInteger(r?.rowCount)||r.rowCount<0||r.rowCount>1)
+    throw Error('Reply reservation not confirmed');
    return r.rowCount===1?claim:null;
   },
   async begin(e,claim){
@@ -29,6 +34,8 @@ function createSendStore(db){
      WHERE c.platform=r.platform AND c.account_id=r.account_id AND c.post_id=r.post_id
      AND c.comment_id=r.comment_id AND c.conversation_version=r.conversation_version AND h.human_takeover)
     RETURNING r.claim_id`,[...scope(e),claim]);
+   if(!Number.isSafeInteger(r?.rowCount)||r.rowCount<0||r.rowCount>1)
+    throw Error('Reply send transition not confirmed');
    return r.rowCount===1;
   },
   async finish(e,claim,state,id=null){

@@ -47,3 +47,19 @@ test('Facebook and Instagram use official comment reply paths with zero retry',a
 test('official identity and grant evidence are required',async()=>{const a=createMetaReplyAdapter({platform:'facebook',accountId:'123',request:async()=>({id:'456'}),loadThread:async()=>thread,permissionEvidence:()=>assert.fail('wrong identity'),catalog});assert.equal(await a.authorize(e),false);});
 test('Threads container is not published if conversation changed',async()=>{const calls=[];const a=createMetaReplyAdapter({platform:'threads',accountId:'123',request:async r=>{calls.push(r);return {id:'321'};},loadThread:async()=>({...thread,messages:[]}),permissionEvidence:async()=>({}),catalog});await assert.rejects(a.sendReply({...e,platform:'threads'},'仙加味',version));assert.equal(calls.length,1);assert.equal(calls[0].body.reply_to_id,'101');});
 test('Threads publishes container and returns only final receipt',async()=>{const calls=[];const t={...thread,platform:'threads'};const a=createMetaReplyAdapter({platform:'threads',accountId:'123',request:async r=>{calls.push(r);return {id:calls.length===1?'321':'654'};},loadThread:async()=>t,permissionEvidence:async()=>({}),catalog});assert.equal((await a.sendReply({...e,platform:'threads'},suggestion.reply,version)).id,'654');assert.equal(calls.length,2);assert.deepEqual(calls[1].body,{creation_id:'321'});});
+
+test('malformed durable reply reservation is a manual preflight failure and never sends',async()=>{
+ const h=harness();
+ const original=h.sender;
+ // The real PostgreSQL adapter is covered separately; sender must treat a
+ // throwing durable store as a hard stop, not a successful or duplicate send.
+ const store=createSendStore({query:async()=>({rowCount:undefined})});
+ const sender=createCommentSender({workflow:{execute:async()=>suggestion},adapter:{
+  authorize:async()=>true,loadThread:async()=>thread,
+  sendReply:async()=>{assert.fail('must not POST after unconfirmed reservation')}
+ },store,catalog,allowedAccounts:{facebook:['123']},releaseApproved:true});
+ const result=await sender.execute(e,{dryRun:false});
+ assert.equal(result.action,'manual');
+ assert.equal(result.reason,'preflight_unavailable');
+ assert.equal(result.sent,false);
+});
