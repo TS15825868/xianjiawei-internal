@@ -182,3 +182,45 @@ test('completion proof is scoped to the exact conversation version, including du
  assert.equal((await missing.processor.process()).reviewed,0);
  assert.equal(missing.calls.some(c=>c.sql.includes('AS finished')),false);
 });
+
+test('partial batch never reports a suggestion as committed when a later event fails',async()=>{
+ const payload=JSON.parse(JSON.stringify(instagram));
+ payload.entry[0].changes.push({field:'comments',value:{
+  id:'179999999998',media:{id:'180000000000'}
+ }});
+ const inbox=row('instagram',payload);
+ const good={action:'suggest',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+ let seen=0,updates=0;
+ const db={async query(sql){
+  if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[inbox]};
+  if(sql.includes('AS finished'))return {rows:[{finished:true}]};
+  if(sql.includes('UPDATE xjw_social.webhook_inbox')){updates++;return {rowCount:1};}
+  throw Error('Unexpected SQL');
+ }};
+ const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
+  resolveAutomation:()=>({suggest:async()=>++seen===1?good:{action:'manual',sent:false}})});
+ const result=await processor.process();
+ assert.equal(result.checked,1);
+ assert.equal(result.held,1);
+ assert.equal(result.reviewed,0);
+ assert.equal(result.suggestions,0);
+ assert.equal(result.manual,0);
+ assert.equal(result.sent,false);
+ assert.equal(updates,0);
+});
+test('concurrent inbox review does not count suggestions without a durable status transition',async()=>{
+ const inbox=row('instagram',instagram);
+ const good={action:'suggest',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+ const db={async query(sql){
+  if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[inbox]};
+  if(sql.includes('AS finished'))return {rows:[{finished:true}]};
+  if(sql.includes('UPDATE xjw_social.webhook_inbox'))return {rowCount:0};
+  throw Error('Unexpected SQL');
+ }};
+ const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
+  resolveAutomation:()=>({suggest:async()=>good})});
+ const result=await processor.process();
+ assert.equal(result.reviewed,0);
+ assert.equal(result.suggestions,0);
+ assert.equal(result.sent,false);
+});
