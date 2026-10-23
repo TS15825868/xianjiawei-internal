@@ -58,7 +58,7 @@ test('send-start database receipts must confirm exactly one transitioned row',as
 });
 test('begin requires a fresh durable reservation and all three active switches',async()=>{
  const x=adapter();
- assert.equal(await x.store.begin(event,'claim-1'),true);
+ assert.equal(await x.store.begin(event,'claim-1','approved reply'),true);
  const {sql,args}=x.calls[0];
  assert.match(sql,/state='reserved'/);
  assert.match(sql,/SET state='sending'/);
@@ -70,7 +70,7 @@ test('begin requires a fresh durable reservation and all three active switches',
  assert.match(sql,/c\.conversation_version=r\.conversation_version/);
  assert.match(sql,/NOT c\.human_takeover/);
  assert.match(sql,/RETURNING r\.claim_id/);
- assert.deepEqual(args,[...scope,'claim-1',undefined]);
+ assert.deepEqual(args,[...scope,'claim-1','approved reply']);
  const rejected=adapter(0);
  assert.equal(await rejected.store.begin(event,'claim-1'),false);
 });
