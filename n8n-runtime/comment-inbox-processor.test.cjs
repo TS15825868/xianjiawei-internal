@@ -153,7 +153,7 @@ test('isolated signed inbox -> official GET -> atomic comment ledger -> ERP-read
  const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
   resolveAutomation:()=>automation});
  const result=await processor.process();
- assert.equal(result.reviewed,1);
+ assert.equal(result.reviewed,1,JSON.stringify({result,counts,sql: calls.map(s=>s.slice(0,75))}));
  assert.equal(result.suggestions,1);
  assert.equal(counts.writes,1);
  assert.ok(counts.reads>=2);
