@@ -14,7 +14,8 @@ export async function verifiedEnvelope(request,config){
  if(!config?.appSecret||!config?.verifyToken)throw Error('configuration_missing');
  if(request.method==='GET')return {challenge:verifiedSubscriptionChallenge(request,config.verifyToken)};
  if(request.method!=='POST')throw Error('method_rejected');
- if(!request.headers.get('content-type')?.startsWith('application/json'))throw Error('format_rejected');
+ const mime=request.headers.get('content-type')?.split(';',1)[0]?.trim().toLowerCase();
+ if(mime!=='application/json')throw Error('format_rejected');
  const reader=request.body?.getReader();if(!reader)throw Error('format_rejected');
  const chunks=[];let size=0;
  while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>65536){await reader.cancel();throw Error('payload_too_large')}chunks.push(value)}
