@@ -32,8 +32,11 @@ function createCommentAutomation({
   const sender=createCommentSender({
     workflow,adapter:transport,store:sendStore,catalog,allowedAccounts,releaseApproved
   });
+  // Signed inbound envelopes still need strict bounded IDs: avoid saving
+  // malformed or oversized webhook identifiers to the durable ledger.
+  const validId=id=>typeof id==='string'&&/^\\d{1,64}(?:_\\d{1,64})?$/.test(id);
   const validEvent=event=>event?.platform===platform&&event.accountId===accountId&&
-    ['postId','threadId','commentId'].every(k=>typeof event[k]==='string'&&event[k]);
+    ['postId','threadId','commentId'].every(k=>validId(event[k]));
   const invalid=()=>({action:'manual',reason:'unverified_account',sent:false,retryAutomatically:false});
   return Object.freeze({
     // Eligible exact-fact questions are processed end-to-end only when the

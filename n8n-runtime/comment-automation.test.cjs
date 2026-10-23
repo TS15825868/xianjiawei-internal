@@ -70,9 +70,15 @@ test('even on released server explicit suggest() never sends',async()=>{
 });
 test('untrusted account events fail before database and official API calls',async()=>{
  const x=scenario({releaseApproved:true});
- const r=await x.automation.handle({...event,accountId:'111'});
- assert.equal(r.reason,'unverified_account');assert.equal(x.sends(),0);
- assert.equal(x.reads(),0);assert.equal(x.events.length,0);
+ for(const invalid of [
+  {...event,accountId:'111'}, {...event,platform:'instagram'},
+  {...event,commentId:'789/../bad'}, {...event,postId:'0'.repeat(200)},
+  {...event,threadId:'789?access_token=secret'}, {...event,postId:'other-text'}
+ ]){
+  const r=await x.automation.handle(invalid);
+  assert.equal(r.reason,'unverified_account');
+ }
+ assert.equal(x.sends(),0);assert.equal(x.reads(),0);assert.equal(x.events.length,0);
 });
 test('unapproved platform bindings and release values are refused before initialization',()=>{
  assert.throws(()=>createCommentAutomation(),/Protected social automation/);
