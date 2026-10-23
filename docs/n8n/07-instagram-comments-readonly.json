@@ -78,7 +78,7 @@
           "parameters": [
             {
               "name": "fields",
-              "value": "id,comments_count"
+              "value": "id,permalink,timestamp,comments_count"
             },
             {
               "name": "limit",
@@ -106,7 +106,7 @@
         0
       ],
       "parameters": {
-        "jsCode": "const b=$input.first().json; if(!Array.isArray(b.data)) throw new Error('Invalid media response'); const posts=b.data.filter(p=>Number(p.comments_count)>0).slice(0,3); if(!posts.length) throw new Error('No commented media in sampled page; comment permission not verified'); return posts.map(p=>({json:{mediaId:String(p.id),commentsCount:Number(p.comments_count),mediaPaginationRemaining:!!b.paging?.next}}));"
+        "jsCode": "const b=$input.first().json; if(!Array.isArray(b.data)) throw new Error('Invalid media response'); // Metricool's read-only feed metric (2026-09-19) reported one comment at this permalink. // That aggregate is NOT proof the official Meta API grants comment text access. const target='https://www.instagram.com/p/Dddia2NFGXr/'; const norm=p=>String(p||'').split('?')[0].replace(/\\/$/,'')+'/'; const candidates=b.data.filter(p=>typeof p.id==='string'&&p.id&&Number.isFinite(Number(p.comments_count))&&Number(p.comments_count)>0); const known=candidates.filter(p=>norm(p.permalink)===target); const others=candidates.filter(p=>norm(p.permalink)!==target); const posts=[...known,...others].slice(0,3); if(!posts.length) throw new Error('No commented media in sampled page; comment permission not verified'); return posts.map(p=>({json:{mediaId:String(p.id),commentsCount:Number(p.comments_count),   targetPostFromMetricool:norm(p.permalink)===target,mediaPaginationRemaining:!!b.paging?.next}}));"
       }
     },
     {
