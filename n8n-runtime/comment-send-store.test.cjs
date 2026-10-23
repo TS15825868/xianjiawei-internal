@@ -64,6 +64,10 @@ test('begin requires a fresh durable reservation and all three active switches',
  assert.match(sql,/SET state='sending'/);
  assert.match(sql,/p\.enabled AND p\.e2e_verified AND p\.overlap_verified/);
  assert.match(sql,/h\.human_takeover/);
+ assert.match(sql,/AND EXISTS\(SELECT 1 FROM xjw_social\.comment_ledger c/);
+ assert.match(sql,/c\.status='suggest'/);
+ assert.match(sql,/c\.conversation_version=r\.conversation_version/);
+ assert.match(sql,/NOT c\.human_takeover/);
  assert.match(sql,/RETURNING r\.claim_id/);
  assert.deepEqual(args,[...scope,'claim-1']);
  const rejected=adapter(0);
