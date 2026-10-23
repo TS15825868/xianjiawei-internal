@@ -103,7 +103,9 @@ export async function metricoolImmediate(env,row,checks){
   if(!['approved','scheduled'].includes(row?.status))return{ok:false,error:'已發布、未核准或異常的貼文不可重複立即發布'};
   const gate=await checks.gateState(env,row);if(!gate.ok)return{ok:false,error:gate.reason};
   const queued=await enqueueMetricool(env,row,checks,new Date(),{immediate:true});if(!queued.ok)return queued;
-  const at=queued.scheduledAt;
+  // Existing external UUID returns alreadyScheduled without scheduledAt.
+  // Immediate release must keep a valid new target and update THAT UUID.
+  const at=Date.parse(queued.scheduledAt)>Date.now()?queued.scheduledAt:new Date(Date.now()+60000).toISOString();
   await env.DB.prepare("UPDATE social_metricool_sync SET publication_at=?,state='awaiting_work',attempts=0,last_error='' WHERE post_id=? AND state IN ('scheduled','awaiting_work')").bind(at,row.id).run();
   return{ok:true,immediateRequested:true,queued:true,externalScheduled:false,scheduledAt:at,message:'已加入立即發布待Work佇列，不受固定時段限制；Work須更新原UUID並查證保存，尚未實際發布。'};
 }

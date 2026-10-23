@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
-import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity} from '../src/metricool-sync.js';
+import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate} from '../src/metricool-sync.js';
 const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
@@ -103,3 +103,19 @@ const quotaBlocked=await enqueueMetricool({DB:quotaDB},
 assert.equal(quotaBlocked.ok,false);assert.equal(quotaBlocked.code,'local_free_quota_exceeded');
 assert.equal(quotaTests.filter(q=>q.includes('INSERT INTO social_metricool_sync')).length,0);
 console.log('PASS Metricool: 20 published platform slots maximum, multi-network slots counted, same-day collisions detectable and fail closed; external counter must be verified');
+
+const immediateWrites=[];
+const existingScheduled={id:'already-scheduled',status:'scheduled',scheduled_at:'2026-10-26T10:00:00+08:00'};
+const alreadyScheduledDB={prepare(sql){return{
+ bind(...args){this.args=args;return this},
+ async first(){if(sql==='SELECT * FROM social_metricool_sync WHERE post_id=?')return{state:'scheduled',content_fingerprint:'same',metricool_id:9,uuid:'stable-existing'};throw Error('Unexpected lookup '+sql)},
+ async run(){immediateWrites.push({sql,args:this.args});return{meta:{changes:1}}}
+}}};
+const immediate=await metricoolImmediate({DB:alreadyScheduledDB},existingScheduled,
+ {gateState:async()=>({ok:true}),fingerprint:async()=> 'same'});
+assert.equal(immediate.ok,true);
+assert.ok(Number.isFinite(Date.parse(immediate.scheduledAt)));
+assert.equal(immediate.externalScheduled,false);
+assert.equal(immediateWrites.at(-1).args[1],'already-scheduled');
+assert.ok(Number.isFinite(Date.parse(immediateWrites.at(-1).args[0])));
+console.log('PASS immediate updates the original externally scheduled UUID with a valid future timestamp, never claims publishing');
