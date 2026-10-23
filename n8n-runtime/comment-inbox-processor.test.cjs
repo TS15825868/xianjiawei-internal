@@ -122,13 +122,16 @@ test('isolated signed inbox -> official GET -> atomic comment ledger -> ERP-read
   if(sql.includes('UPDATE xjw_social.webhook_inbox'))return{rowCount:1};
   throw Error('Unreviewed query '+sql);
  }};
+ // A consistent official timestamp is essential for the conversation
+ // fingerprint; changing official history between reads must block replies.
+ const officialCreatedAt='2026-10-23T12:00:00.000Z';
  const request=async({method,url,retries,followRedirects})=>{
   assert.equal(retries,0);assert.equal(followRedirects,false);
   if(method!=='GET'){counts.sends++;throw Error('No send permitted');}
   counts.reads++;
   if(url.includes('/411869648852531_456/comments?'))return{data:[{
    id:'456_789',message:'請問龜鹿膏成分？',from:{id:'900'},
-   created_time:new Date().toISOString()
+   created_time:officialCreatedAt
   }]};
   if(url.includes('/456_789/comments?'))return{data:[]};
   throw Error('Unexpected API '+url);
