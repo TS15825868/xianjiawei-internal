@@ -45,7 +45,10 @@ export async function socialAiDraft(request,env,{authenticate}={}){
   return blocked('unverified_fact_scope',422);
  if(privateData.test(question)||risky.test(question)||/[<>\\]/.test(question))
   return blocked('human_review_required',422);
- if(!question.includes(product.name)&&!question.includes(product.name.replace(/30cc玻璃罐|180cc鋁袋/,'').trim()))
+ // Never let a generic 龜鹿飲 query silently select 30cc or 180cc.
+ // One explicit formal product must match; mentioning another current product
+ // also makes the scope ambiguous regardless of caller-supplied productId.
+ if(!question.includes(product.name)||PRODUCTS.some(p=>p.id!==product.id&&question.includes(p.name)))
   return blocked('ambiguous_product',422);
  const exact=factFor(product,topic);
  if(!exact)return blocked('fact_not_verified',422);
