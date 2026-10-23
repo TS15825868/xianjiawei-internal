@@ -59,6 +59,7 @@ jobs:
           node --test n8n-runtime/account-allowlist.test.cjs
           node --test n8n-runtime/comment-policy.test.cjs
           node --test n8n-runtime/comment-sender.test.cjs
+          node --test n8n-runtime/comment-automation.test.cjs
           node --test n8n-runtime/comment-send-store.test.cjs
           node --test n8n-runtime/comment-erp-view.test.cjs
           node --test n8n-runtime/instagram-readonly-workflow.test.cjs
