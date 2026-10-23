@@ -54,7 +54,7 @@ test('batch from multiple signed accounts never leaks the other account into thi
  assert.equal(normalizeInbox(row('facebook',body),extra).ok,true);
 });
 function processorScenario({payload=page,platform='facebook',decision={
- action:'suggest',reason:'verified_product_fact',sent:false,idempotencyKey:'b'.repeat(64)
+ action:'suggest',reason:'verified_product_fact',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)
  },finished=true,failWrite=false}={}){
  const calls=[],inbox=row(platform,payload);let resolved=0;
  const db={async query(sql,args){
@@ -82,8 +82,8 @@ test('durable verified suggestions are marked reviewed, never sent',async()=>{
 test('unverified official API outcomes and unpersisted claims remain for human review',async()=>{
  for(const opts of [
   {decision:{action:'manual',reason:'permission_expired',sent:false}},
-  {decision:{action:'sent',sent:true,idempotencyKey:'b'.repeat(64)}},
-  {decision:{action:'suggest',sent:false,idempotencyKey:'b'.repeat(64)},finished:false},
+  {decision:{action:'sent',sent:true,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)}},
+  {decision:{action:'suggest',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)},finished:false},
   {platform:'threads',payload:{object:'threads',entry:[{id:'123456789',changes:[]}]}}
  ]){
   const x=processorScenario(opts),r=await x.processor.process();
@@ -92,7 +92,7 @@ test('unverified official API outcomes and unpersisted claims remain for human r
  }
 });
 test('duplicate events require a completed durable ledger, never an in-progress claim',async()=>{
- const duplicate={action:'skip',reason:'duplicate_event',sent:false};
+ const duplicate={action:'skip',reason:'duplicate_event',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
  for(const finished of [true,false]){
   const x=processorScenario({decision:duplicate,finished});
   const r=await x.processor.process();
@@ -164,4 +164,21 @@ test('isolated signed inbox -> official GET -> atomic comment ledger -> ERP-read
  assert.equal(counts.sends,0,'Even a release-capable automation must be forced into suggest-only mode');
  assert.ok(calls.some(s=>s.includes('ON CONFLICT DO NOTHING')));
  assert.ok(calls.some(s=>s.includes("status='reviewed'")));
+});
+
+// An older completed conversation must not acknowledge a newly interrupted one.
+test('completion proof is scoped to the exact conversation version, including duplicates',async()=>{
+ for(const action of ['suggest','skip']){
+  const x=processorScenario({decision:{action,reason:action==='skip'?'duplicate_event':'verified_product_fact',
+   sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'d'.repeat(64)},finished:false});
+  const result=await x.processor.process();
+  const proof=x.calls.find(c=>c.sql.includes('AS finished'));
+  assert.match(proof.sql,/conversation_version=\$5/);
+  assert.equal(proof.args[4],'d'.repeat(64));
+  assert.equal(result.reviewed,0);
+  assert.equal(result.held,1);
+ }
+ const missing=processorScenario({decision:{action:'skip',reason:'duplicate_event',sent:false},finished:true});
+ assert.equal((await missing.processor.process()).reviewed,0);
+ assert.equal(missing.calls.some(c=>c.sql.includes('AS finished')),false);
 });

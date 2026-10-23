@@ -96,7 +96,7 @@ async function processComment(event,{adapter,store,catalog,allowedAccounts}) {
   const key=await digest([event.platform,event.accountId,event.postId,event.threadId,event.commentId,version]);
   // store.claim MUST atomically persist the unique key in durable storage.
   // No in-memory or n8n workflow-static-data lock is suitable for production.
-  if(!await store.claim(key,event,version))return {action:'skip',reason:'duplicate_event',sent:false};
+  if(!await store.claim(key,event,version))return {action:'skip',reason:'duplicate_event',sent:false,idempotencyKey:key,conversationVersion:version};
   let decision;
   try {
     const fresh=await adapter.loadThread(event);

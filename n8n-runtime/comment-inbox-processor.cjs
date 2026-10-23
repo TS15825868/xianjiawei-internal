@@ -97,16 +97,17 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
     // existing atomic comment ledger. Ambiguous API failures remain queued.
     if(!decision||decision.sent!==false||
        !['suggest','manual','skip'].includes(decision.action)){durable=false;break;}
-    if(decision.reason!=='duplicate_event'&&
-       !(typeof decision.idempotencyKey==='string'&&/^[a-f0-9]{64}$/.test(decision.idempotencyKey))){
+    if(!(typeof decision.idempotencyKey==='string'&&/^[a-f0-9]{64}$/.test(decision.idempotencyKey))||
+       !(typeof decision.conversationVersion==='string'&&/^[a-f0-9]{64}$/.test(decision.conversationVersion))){
       durable=false;break;
     }
     // On duplicates confirm that the prior claim actually reached a final
     // durable state, rather than being abandoned in 'processing'.
     const proof=await db.query(`SELECT EXISTS(
       SELECT 1 FROM xjw_social.comment_ledger WHERE platform=$1 AND account_id=$2
-      AND post_id=$3 AND comment_id=$4 AND status IN ('suggest','skip','manual')
-     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId]);
+      AND post_id=$3 AND comment_id=$4 AND conversation_version=$5
+      AND status IN ('suggest','skip','manual')
+     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion]);
     if(proof?.rows?.length!==1||proof.rows[0]?.finished!==true){durable=false;break;}
     summary[decision.action==='suggest'?'suggestions':decision.action==='manual'?'manual':'skipped']++;
    }
