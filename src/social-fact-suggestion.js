@@ -31,8 +31,15 @@ export async function socialFactSuggestion(request,env,{authenticate}={}){
   return blocked('unsupported_fact',422);
  if(unsafe.test(question)||pii.test(question)||/[<>\\]/.test(question))
   return blocked('manual_review_required',422);
- // An explicitly named formal product prevents the two 龜鹿飲 sizes mixing.
- if(!question.includes(product.name))return blocked('ambiguous_product',422);
+ // An explicitly named formal product prevents either 龜鹿飲 size or a
+ // second product from silently changing the intended answer.
+ if(!question.includes(product.name)||PRODUCTS.some(p=>p.id!==product.id&&question.includes(p.name)))
+  return blocked('ambiguous_product',422);
+ const mentionsIngredients=/成分|配方|原料/u.test(question);
+ const mentionsSpecs=/規格|容量|包裝|幾克|幾公克|幾cc|幾CC/u.test(question);
+ if((topic==='ingredients'&&!mentionsIngredients)||
+    (topic==='specification'&&!mentionsSpecs)||
+    (mentionsIngredients&&mentionsSpecs))return blocked('ambiguous_topic',422);
  const facts=topic==='ingredients'?product.ingredients:product.allowedSpecs;
  if(!Array.isArray(facts)||facts.length<1||facts.some(x=>typeof x!=='string'||!x))
   return blocked('unverified_fact',422);
