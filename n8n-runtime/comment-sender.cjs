@@ -16,6 +16,10 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
   if(!suggestion||typeof suggestion!=='object'||Array.isArray(suggestion))return manual('suggestion_unavailable');
   if(suggestion.action!=='suggest'||dryRun)return {...suggestion,sent:false};
   if(releaseApproved!==true)return manual('release_not_approved');
+  // Validate the generated payload before any official API or database I/O.
+  if(typeof suggestion.reply!=='string'||!suggestion.reply.trim()||
+     typeof suggestion.conversationVersion!=='string'||
+     !/^[0-9a-f]{64}$/.test(suggestion.conversationVersion))return manual('suggestion_unavailable');
   let claim,attempted=false;
   try{
    // authorize MUST perform official identity/scope/expiry checks on each run.
