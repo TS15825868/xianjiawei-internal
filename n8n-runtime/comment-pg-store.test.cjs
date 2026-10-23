@@ -63,3 +63,29 @@ test('Postgres error audit must persist exactly one sanitized manual record',asy
  assert.equal(seen[0].args.at(-1),'api_unavailable');
  assert.ok(!seen[0].sql.includes(e.commentId));
 });
+
+
+test('repeated official API failures share one durable audit scope and never expand storage',async()=>{
+ const events=[];const seen=new Set();
+ const store=createPgCommentStore({query:async(sql,args)=>{
+  events.push({sql,args});
+  assert.match(sql,/ON CONFLICT \(platform,account_id,post_id,comment_id,conversation_version\)/);
+  assert.match(sql,/DO UPDATE SET updated_at=now\(\),error_code=EXCLUDED.error_code/);
+  assert.doesNotMatch(sql,/human_takeover\s*=|status\s*=\s*'processing'/);
+  seen.add(args[4]);
+  return {rowCount:1};
+ }});
+ await store.recordError(e,{reason:'api_unavailable'});
+ await store.recordError(e,{reason:'api_unavailable'});
+ assert.equal(events.length,2);
+ assert.equal(events[0].args[4],events[1].args[4]);
+ assert.match(events[0].args[4],/^error-[a-f0-9]{64}$/);
+ assert.equal(seen.size,1);
+ await store.recordError(e,{reason:'permission_expired'});
+ assert.equal(seen.size,2);
+});
+test('unsafe or customer-controlled audit reasons are rejected without database calls',async()=>{
+ const store=createPgCommentStore({query:async()=>assert.fail('audit must not use SQL')});
+ for(const reason of ['Invalid password=secret','api-unavailable','api_unavailable\nDROP',undefined,'x'.repeat(65)])
+  await assert.rejects(store.recordError(e,{reason}),/Invalid error audit scope/);
+});

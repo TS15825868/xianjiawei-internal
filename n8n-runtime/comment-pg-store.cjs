@@ -1,6 +1,6 @@
 // Parameterized PostgreSQL adapter; inject a trusted server-side pool/query.
 // Never pass a credential or raw customer content into logs.
-const {randomUUID}=require('node:crypto');
+const {createHash}=require('node:crypto');
 function createPgCommentStore(db){
  if(typeof db?.query!=='function')throw Error('Durable PostgreSQL query binding required');
  const scope=e=>[e.platform,e.accountId,e.postId,e.commentId];
@@ -59,11 +59,22 @@ function createPgCommentStore(db){
    if(r.rowCount!==1)throw Error('Ledger state changed');
   },
   async recordError(e,decision){
-   // No raw API error body or token. A fresh error scope does not retry sends.
-   const v='error-'+randomUUID();
+   // API outages and cold-start failures can be reported repeatedly for
+   // the SAME comment. Use a stable error scope and UPSERT rather than a new
+   // random conversation_version on every failed poll: bounded storage and
+   // repeat-safe audit, with no raw error body, token or customer text.
+   const reason=decision?.reason;
+   if(typeof reason!=='string'||!/^[a-z_]{1,64}$/.test(reason)||
+      typeof e?.threadId!=='string'||!e.threadId)throw Error('Invalid error audit scope');
+   const v='error-'+createHash('sha256').update(JSON.stringify([...scope(e),e.threadId,reason])).digest('hex');
    const r=await db.query(`INSERT INTO xjw_social.comment_ledger
     (platform,account_id,post_id,comment_id,conversation_version,thread_id,status,error_code)
-    VALUES($1,$2,$3,$4,$5,$6,'manual',$7)`,[...scope(e),v,e.threadId,decision.reason]);
+    VALUES($1,$2,$3,$4,$5,$6,'manual',$7)
+    ON CONFLICT (platform,account_id,post_id,comment_id,conversation_version)
+    DO UPDATE SET updated_at=now(),error_code=EXCLUDED.error_code
+    RETURNING comment_id`,[...scope(e),v,e.threadId,reason]);
+   // The worker has only limited UPDATE columns. This query intentionally
+   // never resets human_takeover, decision, reply ownership or send state.
    if(r?.rowCount!==1)throw Error('PostgreSQL error audit not persisted');
   }
  };
