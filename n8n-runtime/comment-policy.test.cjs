@@ -40,6 +40,10 @@ test('真正SQLite唯一鍵跨store實例去重與持久化',async()=>{
     assert.equal(await connection.store.claim('unique',event,'v1'),false);
     await connection.store.finish('unique',{action:'suggest',reply:'100g',sent:false,remoteReplyId:null});
     assert.equal(connection.native.prepare('SELECT status FROM social_comment_suggestions').get().status,'suggest');
+    // Finishing an already-finished or absent claim must never silently pass.
+    await assert.rejects(()=>connection.store.finish('unique',{action:'skip',sent:false}),/not persisted/);
+    await assert.rejects(()=>connection.store.finish('missing',{action:'skip',sent:false}),/not persisted/);
+    assert.equal(connection.native.prepare('SELECT status FROM social_comment_suggestions WHERE idempotency_key=?').get('unique').status,'suggest');
     await assert.rejects(()=>connection.store.finish('unique',{action:'suggest',sent:true}));
     await connection.store.recordError(event,apiFailure({status:403}));
     assert.equal(connection.native.prepare('SELECT count(*) n FROM social_comment_suggestions').get().n,2);
@@ -52,4 +56,14 @@ test('Meta離線訊息或人工接手避免第二個回覆者',()=>{
  assert.equal(decide(event,{...thread('龜鹿膏幾克？'),automationPending:true},catalog).reason,'platform_automation_pending');
  const t=thread('龜鹿膏幾克？');t.messages.push(msg('目前不在線上','b2','brand',null,'2026-10-21T02:01:00Z'));
  assert.equal(decide(event,t,catalog).reason,'unattributed_brand_reply');
+});
+
+
+test('D1 adapter refuses absent, duplicate or unconfirmed suggestion finalization',async()=>{
+  const {createCommentStore}=require('./comment-store.cjs');
+  const finish=metadata=>createCommentStore({prepare:()=>({bind:()=>({run:async()=>metadata})})})
+    .finish('fixture',{action:'manual',sent:false});
+  for(const result of [{meta:{changes:0}},{meta:{changes:2}},{},null])
+    await assert.rejects(()=>finish(result),/Suggestion finish not persisted/);
+  await assert.doesNotReject(()=>finish({meta:{changes:1}}));
 });

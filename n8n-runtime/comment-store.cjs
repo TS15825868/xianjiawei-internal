@@ -15,9 +15,14 @@ function createCommentStore(db) {
     async finish(key,decision) {
       if(!['suggest','skip','manual'].includes(decision.action)||decision.sent===true||decision.remoteReplyId)
         throw Error('Suggestion ledger cannot record a sent reply');
-      await db.prepare(`UPDATE social_comment_suggestions SET status=?,decision_json=?,
+      const result=await db.prepare(`UPDATE social_comment_suggestions SET status=?,decision_json=?,
         updated_at=CURRENT_TIMESTAMP WHERE idempotency_key=? AND status='processing'`)
         .bind(decision.action,JSON.stringify(decision),key).run();
+      // D1 and SQLite must confirm exactly one processing claim transitioned.
+      // A missing, already-finished or recovered claim must not appear persisted.
+      const changes=Number(result?.meta?.changes??result?.changes);
+      if(!Number.isSafeInteger(changes)||changes!==1)
+        throw Error('Suggestion finish not persisted');
     },
     async recordError(e,decision) {
       // A sanitized failure is retained; no raw API body, credential or customer
