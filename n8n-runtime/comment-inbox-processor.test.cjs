@@ -105,3 +105,59 @@ test('database failures cannot be acknowledged and limits cannot be bypassed',as
  await assert.rejects(x.processor.process({limit:101}),/Invalid inbox limit/);
  await assert.rejects(x.processor.process({limit:0}),/Invalid inbox limit/);
 });
+
+test('isolated signed inbox -> official GET -> atomic comment ledger -> ERP-ready suggestion, without POST',async()=>{
+ const {createCommentAutomation}=require('./comment-automation.cjs');
+ const calls=[],counts={reads:0,writes:0,sends:0},claims=new Set();
+ const db={async query(sql,args){
+  calls.push(sql);
+  if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return{rows:[row('facebook',page)]};
+  if(sql.includes('AS human_takeover'))return{rows:[{human_takeover:false,reply_reserved:false}]};
+  if(sql.includes('INSERT INTO xjw_social.comment_ledger')){
+   const key=args.slice(0,5).join(':');if(claims.has(key))return{rowCount:0};
+   claims.add(key);counts.writes++;return{rowCount:1};
+  }
+  if(sql.includes('UPDATE xjw_social.comment_ledger'))return{rowCount:1};
+  if(sql.includes('AS finished'))return{rows:[{finished:claims.size>0}]};
+  if(sql.includes('UPDATE xjw_social.webhook_inbox'))return{rowCount:1};
+  throw Error('Unreviewed query '+sql);
+ }};
+ const request=async({method,url,retries,followRedirects})=>{
+  assert.equal(retries,0);assert.equal(followRedirects,false);
+  if(method!=='GET'){counts.sends++;throw Error('No send permitted');}
+  counts.reads++;
+  if(url.includes('/411869648852531_456/comments?'))return{data:[{
+   id:'456_789',message:'請問龜鹿膏成分？',from:{id:'900'},
+   created_time:new Date().toISOString()
+  }]};
+  if(url.includes('/456_789/comments?'))return{data:[]};
+  throw Error('Unexpected API '+url);
+ };
+ const automation=createCommentAutomation({
+  db,platform:'facebook',accountId:'411869648852531',username:'仙加味',
+  request,verifyPost:async()=>({
+   verified:true,platform:'facebook',accountId:'411869648852531',
+   postId:'411869648852531_456',username:'仙加味',
+   readPermissionVerified:true,checkedAt:Date.now()
+  }),
+  permissionEvidence:async()=>({
+   verified:true,platform:'facebook',accountId:'411869648852531',
+   checkedAt:Date.now(),expiresAt:Date.now()+3600000,
+   scopes:['pages_read_engagement','pages_read_user_content','pages_manage_engagement']
+  }),
+  catalog:{verified:true,version:'test-only',source:'fixture',
+   fetchedAt:new Date().toISOString(),
+   products:[{id:'gao',name:'龜鹿膏',ingredients:['鹿角萃取物','龜板萃取物']}]},
+  allowedAccounts:allowed,releaseApproved:true
+ });
+ const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
+  resolveAutomation:()=>automation});
+ const result=await processor.process();
+ assert.equal(result.reviewed,1);
+ assert.equal(result.suggestions,1);
+ assert.equal(counts.writes,1);
+ assert.ok(counts.reads>=2);
+ assert.equal(counts.sends,0,'Even a release-capable automation must be forced into suggest-only mode');
+ assert.ok(calls.some(s=>s.includes('ON CONFLICT DO NOTHING')));
+ assert.ok(calls.some(s=>s.includes("status='reviewed'")));
+});
