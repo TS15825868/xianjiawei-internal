@@ -63,3 +63,22 @@ test('malformed durable reply reservation is a manual preflight failure and neve
  assert.equal(result.reason,'preflight_unavailable');
  assert.equal(result.sent,false);
 });
+
+test('null and malformed workflow suggestions fail closed without contacting transport',async()=>{
+ for(const malformed of [null,undefined,0,'bad',[]]){
+  let called=false;
+  const sender=createCommentSender({
+   workflow:{execute:async()=>malformed},
+   adapter:{loadThread:async()=>{called=true;throw Error('unexpected read')},
+    authorize:async()=>{called=true;throw Error('unexpected auth')},
+    sendReply:async()=>{called=true;throw Error('unexpected send')}},
+   store:{reserve:async()=>{called=true;throw Error('unexpected reserve')}},
+   catalog,allowedAccounts:{facebook:['123']},releaseApproved:true
+  });
+  const result=await sender.execute(e,{dryRun:false});
+  assert.equal(result.action,'manual');
+  assert.equal(result.reason,'suggestion_unavailable');
+  assert.equal(result.sent,false);
+  assert.equal(called,false);
+ }
+});
