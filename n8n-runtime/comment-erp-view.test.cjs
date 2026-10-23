@@ -10,3 +10,8 @@ test('unapproved accounts and excessive limits never access DB',async()=>{const 
 test('ERP projection omits raw payloads, credentials and unsanitized errors',async()=>{const view=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async()=>({rows:[{platform:'facebook',account_id:'123',raw:'customer private',token:'secret',error_code:'token=secret'}]})}});const r=await view.list({platform:'facebook',accountId:'123'});assert.ok(!JSON.stringify(r).includes('secret'));assert.ok(!JSON.stringify(r).includes('customer private'));});
 test('ERP human takeover persists only in the requested platform/account/thread',async()=>{let args;const v=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async(sql,a)=>{args=a;assert.match(sql,/human_takeover=true/);return {rowCount:2};}}});assert.deepEqual(await v.takeover({platform:'facebook',accountId:'123',postId:'456',threadId:'789'}),{humanTakeover:true,updated:2,sent:false});assert.deepEqual(args,['facebook','123','456','789']);});
 test('missing durable conversation is not reported as successful takeover',async()=>{const v=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async()=>({rowCount:0})}});await assert.rejects(v.takeover({platform:'facebook',accountId:'123',postId:'456',threadId:'789'}));});
+
+test('ERP refuses unexpected cross-account ledger rows',async()=>{
+ const view=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async()=>({rows:[{platform:'facebook',account_id:'999',comment_id:'456'}]})}});
+ await assert.rejects(view.list({platform:'facebook',accountId:'123'}),/ERP scope mismatch/);
+});
