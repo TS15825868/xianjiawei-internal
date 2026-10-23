@@ -66,10 +66,11 @@ test('begin requires a fresh durable reservation and all three active switches',
  assert.match(sql,/h\.human_takeover/);
  assert.match(sql,/AND EXISTS\(SELECT 1 FROM xjw_social\.comment_ledger c/);
  assert.match(sql,/c\.status='suggest'/);
+ assert.match(sql,/c\.decision->>'reply'=\$6/);
  assert.match(sql,/c\.conversation_version=r\.conversation_version/);
  assert.match(sql,/NOT c\.human_takeover/);
  assert.match(sql,/RETURNING r\.claim_id/);
- assert.deepEqual(args,[...scope,'claim-1']);
+ assert.deepEqual(args,[...scope,'claim-1',undefined]);
  const rejected=adapter(0);
  assert.equal(await rejected.store.begin(event,'claim-1'),false);
 });
