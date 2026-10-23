@@ -30,7 +30,10 @@ test('existing send reservation prevents suggestions across versions',async()=>{
 test('ownership uncertainty fails closed without claim',async()=>{
  const {workflow,calls}=harness(()=>({}));
  const r=await workflow.execute(event);assert.equal(r.action,'manual');assert.equal(r.sent,false);
- assert.ok(!calls.some(sql=>sql.includes('ON CONFLICT')));
+ // The idempotent API-error UPSERT is allowed; the normal suggestion claim
+ // (ON CONFLICT DO NOTHING) must still never run when ownership is uncertain.
+ assert.ok(!calls.some(sql=>sql.includes('ON CONFLICT DO NOTHING')));
+ assert.ok(calls.some(sql=>sql.includes('ON CONFLICT (platform,account_id,post_id,comment_id,conversation_version)')));
 });
 test('unapproved account never accesses database',async()=>{
  const {workflow,calls}=harness(()=>assert.fail('no read'));
