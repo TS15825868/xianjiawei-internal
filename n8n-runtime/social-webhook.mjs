@@ -1,12 +1,18 @@
 // Portable WebCrypto receiver. No customer reply or model call exists here.
+// Meta verifies a Callback URL with a GET challenge before posting events.
+// Verification alone must be possible without enabling customer-event storage.
+export function verifiedSubscriptionChallenge(request,verifyToken){
+ if(request?.method!=='GET')throw Error('method_rejected');
+ if(typeof verifyToken!=='string'||!verifyToken)throw Error('configuration_missing');
+ const params=new URL(request.url).searchParams;
+ const challenge=params.get('hub.challenge');
+ if(params.get('hub.mode')!=='subscribe'||params.get('hub.verify_token')!==verifyToken||
+    !/^\d{1,100}$/.test(challenge||''))throw Error('verification_rejected');
+ return challenge;
+}
 export async function verifiedEnvelope(request,config){
- const url=new URL(request.url);
  if(!config?.appSecret||!config?.verifyToken)throw Error('configuration_missing');
- if(request.method==='GET'){
-  const challenge=url.searchParams.get('hub.challenge');
-  if(url.searchParams.get('hub.mode')!=='subscribe'||url.searchParams.get('hub.verify_token')!==config.verifyToken||!/^\d{1,100}$/.test(challenge||''))throw Error('verification_rejected');
-  return {challenge};
- }
+ if(request.method==='GET')return {challenge:verifiedSubscriptionChallenge(request,config.verifyToken)};
  if(request.method!=='POST')throw Error('method_rejected');
  if(!request.headers.get('content-type')?.startsWith('application/json'))throw Error('format_rejected');
  const reader=request.body?.getReader();if(!reader)throw Error('format_rejected');

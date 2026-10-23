@@ -1,5 +1,5 @@
 import {socialTlsOptions} from './social-tls.mjs';
-import {receiveWebhook} from './social-webhook.mjs';
+import {receiveWebhook,verifiedSubscriptionChallenge} from './social-webhook.mjs';
 
 // One pool and one in-flight database statement per isolate. The database role's
 // connection limit remains the cross-isolate bound; overload is never ACKed.
@@ -22,7 +22,16 @@ export function createReceiptHandler({readEnv,createPool}){
  }};
  return async request=>{
   try{
-   if(readEnv('XJW_RECEIPT_ENABLED')!=='true')return response({ready:false,code:'receipt_disabled',sent:false},503);
+   if(readEnv('XJW_RECEIPT_ENABLED')!=='true'){
+    // Explicitly permit Meta's GET-only Callback URL handshake before live
+    // account/PG E2E. POST stays disabled even if correctly HMAC-signed.
+    // This opt-in never constructs a DB pool and never opens a send path.
+    if(request.method==='GET'&&readEnv('XJW_META_VERIFY_ONLY_ENABLED')==='true'){
+     const challenge=verifiedSubscriptionChallenge(request,readEnv('XJW_META_VERIFY_TOKEN'));
+     return new Response(challenge,{headers:{'cache-control':'no-store','content-type':'text/plain; charset=utf-8'}});
+    }
+    return response({accepted:false,ready:false,code:'receipt_disabled',sent:false},503);
+   }
    const allowedAccounts=JSON.parse(readEnv('XJW_SOCIAL_ALLOWED_ACCOUNTS')||'null');
    if(!allowedAccounts)throw Error('configuration_missing');
    return await receiveWebhook(request,{allowedAccounts,appSecret:readEnv('XJW_META_APP_SECRET'),verifyToken:readEnv('XJW_META_VERIFY_TOKEN')},db);

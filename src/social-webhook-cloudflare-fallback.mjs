@@ -1,10 +1,24 @@
 // Optional Cloudflare Worker fallback: receipt-only, never sends messages.
 // Deploy only after configuring D1 binding and completing overlap verification.
-import {verifiedEnvelope} from '../n8n-runtime/social-webhook.mjs';
+import {verifiedEnvelope,verifiedSubscriptionChallenge} from '../n8n-runtime/social-webhook.mjs';
 
 export default {
  async fetch(request,env){
-  if(env.XJW_CF_RECEIPT_ENABLED!=='true')return Response.json({accepted:false,code:'disabled',sent:false},{status:503});
+  if(env.XJW_CF_RECEIPT_ENABLED!=='true'){
+   // Optional verification-only role for the chosen SINGLE Meta callback.
+   // Keep POST disabled, including valid signed payloads, until overlap/E2E.
+   if(request.method==='GET'&&env.XJW_META_VERIFY_ONLY_ENABLED==='true'){
+    try{
+     const challenge=verifiedSubscriptionChallenge(request,env.XJW_META_VERIFY_TOKEN);
+     return new Response(challenge,{headers:{'cache-control':'no-store','content-type':'text/plain; charset=utf-8'}});
+    }catch(error){
+     const invalid=error?.message==='verification_rejected';
+     return Response.json({accepted:false,code:invalid?'invalid_event':'unconfigured',sent:false},
+       {status:invalid?400:503,headers:{'cache-control':'no-store'}});
+    }
+   }
+   return Response.json({accepted:false,code:'disabled',sent:false},{status:503});
+  }
   // Fail closed until operators explicitly verify the Meta subscription and cross-provider overlap.
   if(env.XJW_META_E2E_VERIFIED!=='true'||env.XJW_PRIMARY_OVERLAP_VERIFIED!=='true')return Response.json({accepted:false,code:'verification_required',sent:false},{status:503});
   if(!env.XJW_RECEIPT_D1 || !env.XJW_META_APP_SECRET || !env.XJW_META_VERIFY_TOKEN)return Response.json({accepted:false,code:'unconfigured',sent:false},{status:503});

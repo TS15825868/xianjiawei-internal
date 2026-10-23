@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHmac} from 'node:crypto';
-import {receiveWebhook} from './social-webhook.mjs';
+import {receiveWebhook,verifiedSubscriptionChallenge} from './social-webhook.mjs';
 import {socialTlsOptions} from './social-tls.mjs';
 const config={appSecret:'test-only-secret',verifyToken:'test-verification',allowedAccounts:{facebook:['411869648852531']}};
 const body=JSON.stringify({object:'page',entry:[{id:'411869648852531',changes:[]}]});
@@ -87,4 +87,13 @@ test('Render IPv4-only egress rejects direct Supabase DB while accepting shared 
   if(prev===undefined)delete process.env.RENDER_SERVICE_ID;
   else process.env.RENDER_SERVICE_ID=prev;
  }
+});
+
+
+test('standalone Meta handshake requires configured verify token and GET',()=>{
+ const verified=new Request('https://example.com/?hub.mode=subscribe&hub.verify_token=test-verification&hub.challenge=123');
+ assert.equal(verifiedSubscriptionChallenge(verified,'test-verification'),'123');
+ assert.throws(()=>verifiedSubscriptionChallenge(verified,''),/configuration_missing/);
+ assert.throws(()=>verifiedSubscriptionChallenge(verified,'other-token'),/verification_rejected/);
+ assert.throws(()=>verifiedSubscriptionChallenge(signed(),'test-verification'),/method_rejected/);
 });

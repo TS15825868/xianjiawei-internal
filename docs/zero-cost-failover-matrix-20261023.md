@@ -55,3 +55,13 @@
 6. Render 免費建置額度耗盡、n8n TLS 驗證失敗、Meta App/Token 未經官方端對端證實時，繼續預設關閉對客自動回覆；不可因程式測試通過就宣稱「已全自動上線」。
 7. 新增費用 NT$0／US$0；所有公開文案、產品與圖片遵守最新仙加味正式資料及人工 16 項審核。
 
+
+## Meta Callback URL 安全驗證預備程序（僅 GET，不收件）
+
+既有收件備援停用時，原程式連 Meta 訂閱驗證用的 `GET hub.mode=subscribe&hub.verify_token=...&hub.challenge=...` 都拒絕，造成 Callback URL 設定流程卡住。新版提供**明確選擇單一入口**的 `XJW_META_VERIFY_ONLY_ENABLED=true`，並使用既有 `XJW_META_VERIFY_TOKEN` 精確核對後僅回傳純文字 challenge。若未設旗標則沿用 503 拒絕，啟用旗標不建立 PostgreSQL 連線、**不接受任何 POST 或顧客訊息**。
+
+1. Meta App 僅對單一選定的正式 Callback URL 設定 verify token；請使用受保護服務設定頁儲存 token，禁止放入聊天、GitHub、URL 或 GitHub Actions 日誌。
+2. 僅在選定入口設定 `XJW_META_VERIFY_ONLY_ENABLED=true`，保留 `XJW_RECEIPT_ENABLED=false`（Supabase）或 `XJW_CF_RECEIPT_ENABLED=false`（Cloudflare）。其他入口維持完全停用。
+3. Meta App 驗證 GET 200 純文字 challenge 的同時，POST（包含合法簽名）必須仍回 503 且沒有 DB 寫入；無 token GET 必須回拒絕，不可因看見 200 就認為已完成留言收發。
+4. 訂閱欄位、Meta App 發布及官方帳號、專用 TLS、資料庫持久化、跨收件入口一致去重仍分別做端對端驗收。完成後才可考慮啟用收件；自動對客回覆必須再取得獨立授權與真實平台回執。
+5. 此功能不會自行替使用者變更 Meta App 設定，亦不會建立新的付費服務。

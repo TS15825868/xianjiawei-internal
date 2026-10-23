@@ -33,3 +33,50 @@ test('misconfigured account allowlist fails 503 without opening PostgreSQL',asyn
   assert.equal(response.headers.get('retry-after'),'5');
  }
 });
+
+
+test('verification-only Meta GET handshake succeeds while all POST receipt/storage paths remain disabled',async()=>{
+ let pools=0;
+ const h=handler(()=>{pools++;throw Error('must not connect')},{
+  XJW_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true',
+  XJW_SOCIAL_DB_CONFIG:undefined,XJW_META_APP_SECRET:undefined,
+  XJW_SOCIAL_ALLOWED_ACCOUNTS:undefined
+ });
+ const url='https://example.test/?hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=123456789';
+ const verified=await h(new Request(url));
+ assert.equal(verified.status,200);
+ assert.match(verified.headers.get('content-type')||'',/^text\/plain/);
+ assert.equal(await verified.text(),'123456789');
+ const response=await h(request());
+ assert.equal(response.status,503);
+ assert.equal((await response.json()).code,'receipt_disabled');
+ assert.equal(pools,0);
+});
+test('verification-only opt-in refuses incorrect, absent or malformed Meta GET challenges',async()=>{
+ let pools=0;
+ const h=handler(()=>{pools++;throw Error('pool unavailable')},{XJW_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true'});
+ const bad=[
+  'hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=123',
+  'hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=not-a-number',
+  'hub.mode=unsubscribe&hub.verify_token=test-verify&hub.challenge=123',
+  'hub.mode=subscribe&hub.verify_token=test-verify'
+ ];
+ for(const params of bad){
+  const r=await h(new Request('https://example.test/?'+params));
+  assert.equal(r.status,400);
+  assert.equal((await r.json()).code,'verification_rejected');
+ }
+ assert.equal(pools,0);
+ const unconfigured=handler(()=>assert.fail('must not connect'),{
+  XJW_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true',XJW_META_VERIFY_TOKEN:undefined
+ });
+ const r=await unconfigured(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=123'));
+ assert.equal(r.status,503);
+ assert.equal((await r.json()).code,'receipt_unavailable');
+});
+test('without explicit verification-only gate even correct Meta GET cannot handshake',async()=>{
+ const h=handler(()=>assert.fail(),{XJW_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'false'});
+ const r=await h(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=test-verify&hub.challenge=123'));
+ assert.equal(r.status,503);
+ assert.equal((await r.json()).code,'receipt_disabled');
+});

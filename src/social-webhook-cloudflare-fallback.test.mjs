@@ -75,3 +75,33 @@ test('enabled flag and Meta E2E alone cannot receive without overlap verificatio
  const r=await worker.fetch(request(),e);
  assert.equal(r.status,503);assert.equal((await r.json()).code,'verification_required');assert.equal(f.calls,0);
 });
+
+
+test('Cloudflare can opt into GET verification only without opening POST/D1',async()=>{
+ const f=fixture(),e={
+  XJW_CF_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true',
+  XJW_META_VERIFY_TOKEN:'verify-test'
+ };
+ const url='https://example.test/?hub.mode=subscribe&hub.verify_token=verify-test&hub.challenge=7821';
+ const r=await worker.fetch(new Request(url),e);
+ assert.equal(r.status,200);
+ assert.match(r.headers.get('content-type'),/^text\/plain/);
+ assert.equal(await r.text(),'7821');
+ const post=await worker.fetch(request(),{...e,XJW_RECEIPT_D1:f.db});
+ assert.equal(post.status,503);
+ assert.equal((await post.json()).code,'disabled');
+ assert.equal(f.calls,0);
+});
+test('Cloudflare verification-only refuses invalid GET without touching D1',async()=>{
+ const f=fixture(),e={
+  XJW_CF_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true',
+  XJW_META_VERIFY_TOKEN:'verify-test',XJW_RECEIPT_D1:f.db
+ };
+ const invalid=await worker.fetch(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=123'),e);
+ assert.equal(invalid.status,400);
+ assert.equal((await invalid.json()).code,'invalid_event');
+ const unset=await worker.fetch(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=verify-test&hub.challenge=123'),{...e,XJW_META_VERIFY_TOKEN:undefined});
+ assert.equal(unset.status,503);
+ assert.equal((await unset.json()).code,'unconfigured');
+ assert.equal(f.calls,0);
+});
