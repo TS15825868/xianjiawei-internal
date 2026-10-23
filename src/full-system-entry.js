@@ -13,6 +13,7 @@ const VERSION='2026-09-14-full-system-entry-v6-platform-connection-health';
 const HOME_PATH='/index.html';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
+const SUPPORT_PATH='/social-support.html';
 const SOCIAL_SCHEDULE_POLICY='週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；短影片若有合格成品只取代當週其中一篇，不另外增加篇數';
 const SOCIAL_FIXED_FREQUENCY='每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）';
 const SOCIAL_FIRST_PUBLISH_AT='2026-09-04T09:00:00+08:00';
@@ -26,6 +27,7 @@ function int(value,fallback=0){const n=Number(value);return Number.isFinite(n)?M
 function isHomeUi(path){return path==='/'||path===HOME_PATH}
 function isErpUi(path){return path==='/erp'||path==='/erp/'||path===ERP_PATH}
 function isPublishingUi(path){return path==='/publishing'||path==='/publishing/'||path===PUBLISHING_PATH}
+function isSupportUi(path){return path==='/social-support'||path==='/social-support/'||path===SUPPORT_PATH}
 function isFullErpApi(path){
   return path==='/api/overview'||path==='/api/settings'||path==='/api/brand-content'||
     path==='/api/assets'||path.startsWith('/api/modules/')||path.startsWith('/media/');
@@ -228,6 +230,7 @@ export default{
     if(request.method==='GET'&&isHomeUi(path))return serveAsset(request,env,HOME_PATH);
     if(request.method==='GET'&&isErpUi(path))return serveAsset(request,env,ERP_PATH);
     if(request.method==='GET'&&isPublishingUi(path))return serveAsset(request,env,PUBLISHING_PATH);
+    if(request.method==='GET'&&isSupportUi(path))return serveAsset(request,env,SUPPORT_PATH);
 
     if(maintenance&&request.method==='GET'){
       if(path==='/api/me')return json(maintenanceProfile());

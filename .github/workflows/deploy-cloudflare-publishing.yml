@@ -10,6 +10,7 @@ on:
       - 'index.html'
       - 'erp.html'
       - 'publishing.html'
+      - 'social-support.html'
       - 'manifest.webmanifest'
       - 'package.json'
       - 'package-lock.json'
@@ -53,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           for f in \
-            dist/index.html dist/erp.html dist/publishing.html \
+            dist/index.html dist/erp.html dist/publishing.html dist/social-support.html \
             dist/assets/css/internal-app.css dist/assets/js/internal-app.js dist/assets/js/erp-publishing-separation.js \
             dist/assets/css/publishing-base.css dist/assets/css/publishing-app.css dist/assets/css/publishing-performance.css dist/assets/css/publishing-readiness.css \
             dist/assets/js/publishing-resilience.js dist/assets/js/publishing-readiness-ui.js dist/assets/js/publishing-app-v2.js dist/assets/js/publishing-review-gate.js dist/assets/js/device-image-upload.js; do
@@ -63,6 +64,7 @@ jobs:
           grep -q 'ERP／營運中控' dist/index.html
           grep -q '貼文中心' dist/index.html
           grep -q '仙加味營運中控' dist/erp.html
+          grep -q '客服免費備援' dist/social-support.html
           grep -q '貼文中心系統 App' dist/publishing.html
           grep -Eq 'xianjiawei-publishing-runtime" content="publishing-center-app-[^"]+' dist/publishing.html
           grep -Eq "window\.__XJW_BOOT_VERSION__='[^']+'" dist/publishing.html

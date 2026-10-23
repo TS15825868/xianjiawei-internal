@@ -1,0 +1,24 @@
+import {readFileSync} from 'node:fs';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import app from '../src/full-system-entry.js';
+const html=readFileSync(new URL('../social-support.html',import.meta.url),'utf8');
+test('free internal help UI is genuine HTML, no customer data input or outbound send',()=>{
+ assert.match(html,/<html lang="zh-Hant-TW">/);
+ assert.match(html,/<meta name="robots" content="noindex,nofollow,noarchive">/);
+ assert.match(html,/\/api\/social-facts\/suggest/);
+ assert.match(html,/credentials:'same-origin'/);
+ assert.match(html,/data\?\.sent!==false/);
+ assert.match(html,/data\?\.humanReviewRequired!==true/);
+ assert.doesNotMatch(html,/api\/social-ai\/draft|api\.openai|https:\/\/graph\.|\/messages\/reply|threads_publish|<input.*name="(?:phone|customer|message)"/i);
+});
+test('Cloudflare Worker delivers staff page through unchanged protected asset pipeline',async()=>{
+ let path='';
+ const request=new Request('https://internal.example/social-support.html');
+ const env={ASSETS:{fetch:async url=>{path=new URL(url.url).pathname;return new Response('<html>仙加味備援</html>',{headers:{'content-type':'text/html'}})}}};
+ const r=await app.fetch(request,env,{});
+ assert.equal(r.status,200);
+ assert.equal(path,'/social-support.html');
+ assert.match(await r.text(),/仙加味備援/);
+ assert.equal(r.headers.get('cache-control'),'no-store');
+});

@@ -18,6 +18,7 @@ on:
       - 'index.html'
       - 'erp.html'
       - 'publishing.html'
+      - 'social-support.html'
       - 'wrangler.jsonc'
   workflow_dispatch:
   schedule:
@@ -75,6 +76,9 @@ jobs:
 
       - name: Verify free official-fact reply fallback (zero inference)
         run: node --test tools/test-social-fact-suggestion.mjs
+
+      - name: Verify actual free customer-support page and protected routing
+        run: node --test tools/test-social-support-ui.mjs
 
       - name: Static syntax and current-authority guards
         shell: bash
