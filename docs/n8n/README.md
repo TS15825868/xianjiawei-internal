@@ -90,7 +90,7 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
 - 2026-10-23 的 GitHub Actions #39852516440：三條 n8n 唯讀監控與獨立 GET 備援均成功；這不是 Meta 回覆或 ERP 端對端驗收。
 - 2026-10-23 上午約 08:02～08:11（台灣）：GitHub Actions #39875578542 的 n8n readiness 連續未通過；Render 記錄在啟動後取得 migration lock，記憶體約 510～512 MiB／512 MiB。主監控失敗，獨立 GET 備援成功。Supabase n8n 表最大約 2.3 MB、查核當下無 n8n 連線或等待鎖，不能據此刪除歷史資料。
 - 2026-10-23 GitHub Actions #39894514015：新增核心 Node.js 堆積限制後的 **131 項自動測試全部通過**，沒有線上 n8n 記憶體驗收／新版 Render 部署，不能宣稱 OOM 已修復。
-- 2026-10-23 GitHub Actions #39895420109：加強備援 LINE OA `ok:true`、憑證、接單、商品數與品牌驗證，**139 項測試通過**。GitHub Actions #39895709580：並行備援保護測試，共 **143 項通過**；排程執行 #39895607445 的 `fallback-readonly` job 已完成 SUCCESS，n8n 主要監控仍須獨立驗收。
+- 2026-10-23 GitHub Actions #39895420109：加強備援 LINE OA `ok:true`、憑證、接單、商品數與品牌驗證，**139 項測試通過**。GitHub Actions #39895709580：並行備援保護測試，共 **143 項通過**；排程執行 #39895607445 的 `fallback-readonly` job 已完成 SUCCESS，該次 n8n 主要監控亦已完成 SUCCESS；Supabase n8n execution `153`、`154`、`155` 三條監控皆為 `success`。Render 03:40 UTC 記憶體約 **508 MiB／512 MiB（99.2%）**，高風險仍在，**不代表 OOM 根治**。
 - 早期文件提及的官網 n8n 15 分鐘／30 分鐘／6 小時排程與晚間每 10 分鐘預熱，不代表目前 main 設定；以最新工作流程檔為準。
 
 ## 社群專用 PostgreSQL TLS 真實驗收（2026-10-23）
