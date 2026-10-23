@@ -36,7 +36,7 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
    const lastDecision=scoped(last,event)&&digest(last.messages)===suggestion.conversationVersion
      ? decide(event,last,catalog):null;
    if(lastDecision?.action!=='suggest'||lastDecision.reply!==decision.reply||
-      lastDecision.reply!==suggestion.reply||!await store.begin(event,claim)){
+      lastDecision.reply!==suggestion.reply||!await store.begin(event,claim,decision.reply)){
     await store.finish(event,claim,'manual');return manual('final_ownership_changed');
    }
    attempted=true;
