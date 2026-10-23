@@ -11,10 +11,10 @@ function inspectStart(overrides={}){
  try{
   const stub=path.join(stubDir,'n8n');
   // Do not launch n8n, touch PostgreSQL or read any real credential.
-  writeFileSync(stub,'#!/bin/sh\nprintf "%s|%s|%s|%s|%s" "$N8N_CONCURRENCY_PRODUCTION_LIMIT" "$N8N_RUNNERS_MAX_CONCURRENCY" "$N8N_RUNNERS_MAX_OLD_SPACE_SIZE" "$NODE_OPTIONS" "$1"\n');
+  writeFileSync(stub,'#!/bin/sh\nprintf "%s|%s|%s|%s|%s|%s" "$N8N_CONCURRENCY_PRODUCTION_LIMIT" "$N8N_RUNNERS_MAX_CONCURRENCY" "$N8N_RUNNERS_MAX_OLD_SPACE_SIZE" "$NODE_OPTIONS" "$N8N_RUNNERS_GRANT_TOKEN_TTL" "$1"\n');
   chmodSync(stub,0o700);
   const env={...process.env,PATH:stubDir+path.delimiter+(process.env.PATH||'')};
-  for(const key of ['N8N_CONCURRENCY_PRODUCTION_LIMIT','N8N_RUNNERS_MAX_CONCURRENCY','N8N_RUNNERS_MAX_OLD_SPACE_SIZE','NODE_OPTIONS'])delete env[key];
+  for(const key of ['N8N_CONCURRENCY_PRODUCTION_LIMIT','N8N_RUNNERS_MAX_CONCURRENCY','N8N_RUNNERS_MAX_OLD_SPACE_SIZE','NODE_OPTIONS','N8N_RUNNERS_GRANT_TOKEN_TTL'])delete env[key];
   Object.assign(env,overrides);
   const result=spawnSync('sh',['start-low-memory.sh'],{
    cwd:__dirname,env,encoding:'utf8',timeout:3000
@@ -26,7 +26,7 @@ function inspectStart(overrides={}){
 }
 
 test('low-memory startup provides single-worker and bounded runner-heap defaults',()=>{
- assert.equal(inspectStart(),'1|1|128|--max-old-space-size=256|start');
+ assert.equal(inspectStart(),'1|1|128|--max-old-space-size=256|300|start');
 });
 test('operator-provided limits remain intact without replacing protected settings',()=>{
  assert.equal(inspectStart({
@@ -34,7 +34,8 @@ test('operator-provided limits remain intact without replacing protected setting
   N8N_RUNNERS_MAX_CONCURRENCY:'3',
   N8N_RUNNERS_MAX_OLD_SPACE_SIZE:'160',
   NODE_OPTIONS:'--max-old-space-size=224 --trace-warnings',
- }),'2|3|160|--max-old-space-size=224 --trace-warnings|start');
+  N8N_RUNNERS_GRANT_TOKEN_TTL:'420',
+ }),'2|3|160|--max-old-space-size=224 --trace-warnings|420|start');
 });
 test('empty configured limits receive safe defaults',()=>{
  assert.equal(inspectStart({
@@ -42,5 +43,6 @@ test('empty configured limits receive safe defaults',()=>{
   N8N_RUNNERS_MAX_CONCURRENCY:'',
   N8N_RUNNERS_MAX_OLD_SPACE_SIZE:'',
   NODE_OPTIONS:'',
- }),'1|1|128|--max-old-space-size=256|start');
+  N8N_RUNNERS_GRANT_TOKEN_TTL:'',
+ }),'1|1|128|--max-old-space-size=256|300|start');
 });
