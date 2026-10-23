@@ -48,7 +48,7 @@
 ## 最終版主備故障切換的驗收條件
 
 1. 主路徑：Meta 官方簽章 Webhook → 完整官方 API 留言歷史 → Supabase PostgreSQL 原子去重與人工接手 → 嚴格產品事實判斷 → 官方平台回覆 ID → ERP 寫回。
-2. 備援收件：Supabase Edge Function 第 8 版與 Cloudflare Worker/D1 已建立但均處於安全關閉。Meta 每個 App Webhook 回呼指向哪個單一入口，須由正式 App 設定證據確認；不要把兩個不同網址描述為自動 DNS 故障切換。
+2. 備援收件：Supabase Edge Function 第 9 版與 Cloudflare Worker/D1 已建立但均處於安全關閉。Meta 每個 App Webhook 回呼指向哪個單一入口，須由正式 App 設定證據確認；不要把兩個不同網址描述為自動 DNS 故障切換。
 3. 備援 AI：免費 AI 額度確實可用時，只產生已驗證事實的短答草稿；不可用則使用 0 推論產品母資料，仍須維持人工審核/發送守門。
 4. 共用安全事實：若兩個入口無法同時原子查詢同一個遠端發送回執與人工接手狀態，備援只收件/排隊，不得對客發送。任何回覆結果不明一律停止重試，等待人工查核。
 5. 狀態切換：必須實際測試主服務故障、備援收件、恢復時事件對帳、同事件重複 Webhook、並行 Worker、人工作業衝突及中斷恢復，且正式 ERP 看到唯一回執才可啟用。
@@ -71,3 +71,13 @@
 2026-10-23 修正：Supabase 主收件曾只檢查 `XJW_RECEIPT_ENABLED=true`，Cloudflare 備援卻另外檢查 `XJW_META_E2E_VERIFIED=true`、`XJW_PRIMARY_OVERLAP_VERIFIED=true`。現在兩邊都使用相同兩個獨立驗證條件，缺一不可。即使 Meta POST 簽章有效，尚未核准主備重疊驗證也只能回 503 `verification_required`，不得接收或寫入資料庫。
 
 此調整不會自動開啟任何旗標；GET-only Callback URL 驗證功能仍可在收件停用時獨立使用，且不能繞過 POST 限制。正式切換時必須由既有安全設定操作頁核對三個開關，不能透過 GitHub Commit 視作已完成 Meta 官方驗收。
+
+## 2026-10-23 主備收件安全補強的正式驗收回讀
+
+- ERP GitHub `2d5ed7a`：主收件 POST 與 Cloudflare 備援相同，都要求獨立 `XJW_META_E2E_VERIFIED=true`、`XJW_PRIMARY_OVERLAP_VERIFIED=true`；啟用單一 `XJW_RECEIPT_ENABLED` 不足以接收資料。完整測試 **208／208** 通過、D1 正式資料完整性巡檢通過（137 筆既有貼文未變更）。<https://github.com/TS15825868/xianjiawei-internal/actions/runs/39952089938>
+- 既有 Supabase `xjw-social-receipt` **第 9 版 ACTIVE** 已直接部署，`verify_jwt=false` 沿用 Meta 外部 Webhook 由官方 HMAC 自驗證的既有模式；未打開任何正式收件／發送旗標。
+- 正式 GET 唯讀驗收 `5c1b9ae`：GET 無 token、缺 token 的 Meta challenge、已知無效 token 的 Meta challenge 都被拒絕；GitHub Actions 成功，未發送 POST／顧客訊息。<https://github.com/TS15825868/xianjiawei-internal/actions/runs/39952672414>
+- n8n 唯讀監控與獨立備援同時通過：三條唯讀工作完成，主備無憑證 GET 分別 503 `receipt_disabled` 與 503 `disabled`，不是對客收件成功。<https://github.com/TS15825868/xianjiawei-internal/actions/runs/39952090035>
+- PostgreSQL 即時唯讀狀態：三平台 `enabled=false,e2e_verified=false,overlap_verified=false`；`webhook_inbox`、`comment_ledger`、`reply_ledger` 均為 0 筆；`xjw_social_worker` 0 活動連線。
+- 專用帳號 `rolcanlogin=true`、無 `BYPASSRLS`、具 inbox 的 INSERT/SELECT 與 RLS Policy；Supabase 管理連線的 `pg_has_role(...,'SET')=false`，所以未能以 `SET ROLE` 驗證 worker 的真實寫入，嘗試遭拒且**沒有留下任何測試資料**。必須於受保護 n8n／Supabase 執行環境使用該專用帳號實際 TLS 登入，才能驗證其 DB 寫入與最終收件。
+- Render 最新 n8n 部署仍因免費 pipeline minutes 耗盡失敗；LINE 新版尚未部署。仍不能宣稱 Meta App 已完成正式回呼訂閱、主備自動接管或全自動 AI 對客回覆已運作。
