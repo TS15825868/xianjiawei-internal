@@ -37,6 +37,15 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
   if(link?.state==='scheduled'&&link.content_fingerprint===fp)return{ok:true,alreadyScheduled:true,metricoolId:link.metricool_id};
   if(link?.state==='scheduled')return{ok:false,error:'既有外部排程版本已變更；請先透過Work取消／更新原UUID'};
   if(requiresDatedSchedule(row)&&!hasExplicitFutureDate(row,now))return{ok:false,error:'節慶內容需先指定符合節日的日期，禁止自動套用一般週間時段'};
+  // Existing human approval cannot authorize a second identical post created
+  // after the original review. Recheck before creating a new remote UUID.
+  const norm=value=>String(value||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'');
+  const copy=norm(row.copy),image=clean(row.image_url).split(/[?#]/)[0];
+  const siblings=await env.DB.prepare("SELECT id,copy,image_url FROM social_posts WHERE id<>? AND status IN ('approved','scheduled','published')").bind(row.id).all();
+  const duplicate=(siblings.results||[]).find(other=>
+    (copy.length>=20&&copy===norm(other.copy))||
+    (image&&image===clean(other.image_url).split(/[?#]/)[0]));
+  if(duplicate)return{ok:false,error:'文案或主圖與現有已核准、已排程、已發布貼文重複；不得建立另一筆外部排程'};
   const reserved=await env.DB.prepare("SELECT publication_at FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','scheduled','blocked_config','awaiting_verification') AND post_id<>?").bind(row.id).all();
   const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
   const at=Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,(reserved.results||[]).map(x=>x.publication_at));

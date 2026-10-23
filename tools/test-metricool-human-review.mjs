@@ -46,3 +46,34 @@ assert.equal(metricoolConfiguration().humanReviewRequired,true);
 assert.deepEqual(metricoolConfiguration().approvalModes,['HUMAN_APPROVED']);
 assert.equal((await gateState(env,{...row,approved_by:'ai:model',review_note:'AI審核：AI_APPROVED；'})).ok,false);
 assert.equal((await gateState(env,{...row,review_note:'AI審核：AI_APPROVED；'})).ok,false);
+
+
+const duplicatedPost={...row,id:'fresh-approved',status:'approved',
+ copy:'仙加味萬華的漢方飲食文化，以每天準備溫熱飲品的生活情境傳達給大家。'};
+const archivedSibling={id:'older',copy:duplicatedPost.copy+'  ',image_url:'https://example.com/unrelated.jpg'};
+const peers=[archivedSibling],writes=[];
+const duplicateDb={prepare(sql){return{
+ bind(){return this},
+ async first(){return null},
+ async all(){
+  if(sql.includes('FROM social_posts WHERE id<>?'))return{results:peers};
+  if(sql.includes('SELECT publication_at FROM social_metricool_sync'))return{results:[]};
+  throw Error('Unexpected query '+sql);
+ },
+ async run(){writes.push(sql);return{meta:{changes:1}}}
+}}};
+const duplicateChecks={gateState:async()=>({ok:true}),fingerprint:async()=> 'new-fingerprint'};
+const blockedCopy=await enqueueMetricool({DB:duplicateDb},duplicatedPost,duplicateChecks,new Date('2026-10-14T00:00:00Z'));
+assert.equal(blockedCopy.ok,false);assert.match(blockedCopy.error,/重複/);
+assert.equal(writes.filter(sql=>sql.includes('INSERT INTO social_metricool_sync')).length,0);
+peers[0].copy='內容完全不同的先前貼文';
+peers[0].image_url=duplicatedPost.image_url+'?v=earlier';
+const blockedImage=await enqueueMetricool({DB:duplicateDb},duplicatedPost,duplicateChecks,new Date('2026-10-14T00:00:00Z'));
+assert.equal(blockedImage.ok,false);assert.match(blockedImage.error,/重複/);
+assert.equal(writes.filter(sql=>sql.includes('INSERT INTO social_metricool_sync')).length,0);
+peers[0].image_url='https://example.com/unrelated.jpg';
+const unique=await enqueueMetricool({DB:duplicateDb},duplicatedPost,duplicateChecks,new Date('2026-10-14T00:00:00Z'));
+assert.equal(unique.ok,true);assert.equal(unique.queued,true);
+assert.equal(unique.externalScheduled,false);
+assert.equal(writes.filter(sql=>sql.includes('INSERT INTO social_metricool_sync')).length,1);
+console.log('PASS changed post-approval sibling copy or image blocks duplicate enqueue; unique still awaits Work');
