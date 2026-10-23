@@ -77,6 +77,49 @@ test('media selection never treats missing or un-commented media as verified', (
   assert.equal(result[0].json.commentsCount, 3);
 });
 
+test('IG media GET includes permalink for known commented post cross-check', () => {
+  const params=node('讀取正式帳號貼文').parameters.queryParameters.parameters;
+  const fields=params.find(p=>p.name==='fields')?.value.split(',');
+  for(const field of ['id','permalink','comments_count','timestamp'])
+    assert.ok(fields.includes(field),field+' is required');
+});
+
+test('known commented permalink is prioritized before unrelated media without manufacturing permissions', () => {
+  const data=[
+    {id:'recent-unrelated',permalink:'https://www.instagram.com/p/RecentTest/',comments_count:2},
+    {id:'known-20260919',permalink:'https://www.instagram.com/p/Dddia2NFGXr/?igsh=read_only',comments_count:1},
+    {id:'other-unrelated',permalink:'https://www.instagram.com/p/Another/',comments_count:1},
+  ];
+  const result=executeReview('選取有留言貼文',[{data,paging:{next:'another-page'}}]);
+  assert.equal(result.length,3);
+  assert.equal(result[0].json.mediaId,'known-20260919');
+  assert.equal(result[0].json.targetPostFromMetricool,true);
+  assert.equal(result[0].json.commentsCount,1);
+  assert.equal(result[0].json.mediaPaginationRemaining,true);
+  assert.equal(result[1].json.targetPostFromMetricool,false);
+  assert.ok(result.every(x=>!x.json.sent&&!x.json.e2eVerified));
+});
+
+test('known post with zero actual Meta comments does not get selected merely from external statistics', () => {
+  const data=[{id:'known-20260919',permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:0},
+    {id:'unrelated',permalink:'https://www.instagram.com/p/Other/',comments_count:2}];
+  const result=executeReview('選取有留言貼文',[{data}]);
+  assert.equal(result.length,1);
+  assert.equal(result[0].json.mediaId,'unrelated');
+  assert.equal(result[0].json.targetPostFromMetricool,false);
+  assert.throws(()=>executeReview('選取有留言貼文',[{data:data.slice(0,1)}]),/No commented media/);
+});
+
+test('malformed or untrusted media cannot force Graph URL selection', () => {
+  const result=executeReview('選取有留言貼文',[{data:[
+    {id:123,permalink:'https://www.instagram.com/p/Dddia2NFGXr/',comments_count:3},
+    {id:'safe-id',permalink:'https://www.instagram.com/p/Safe/',comments_count:1},
+    {id:'bad-negative',permalink:'https://www.instagram.com/p/Invalid/',comments_count:-1},
+  ]}]);
+  assert.equal(result.length,1);
+  assert.equal(result[0].json.mediaId,'safe-id');
+});
+
 test('empty comment response is not a successful comment-read verification', () => {
   const result = executeReview('輸出唯讀驗收摘要', [{ data: [] }])[0].json;
   assert.equal(result.commentsEndpointResponded, true);
