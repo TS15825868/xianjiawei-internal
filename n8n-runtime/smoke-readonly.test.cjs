@@ -37,6 +37,7 @@ async function exercise(mutate){
   requests.push(String(url));
   const entry=routes[String(url)];
   if(!entry)throw Error('Unexpected destination (network forbidden): '+url);
+  if(entry.transportFailure)throw Error('simulated transport error: never expose details');
   return {status:entry.status,ok:entry.status>=200&&entry.status<300,
    text:async()=>typeof entry.body==='string'?entry.body:JSON.stringify(entry.body)};
  };
@@ -141,4 +142,36 @@ test('verified-enabled receivers still reject unauthenticated GET without claimi
   routes[cloudflareUrl]={status:400,body:{accepted:false,sent:false,code:'invalid_event'}};
  });
  assert.equal(r.report.ok,true);assert.equal(r.report.metaReceipts.supabase.liveSendingVerified,false);
+});
+
+test('LINE transport outage cannot hide successful independent Supabase/Cloudflare safety probes',async()=>{
+ const x=await exercise(r=>{r[lineUrl].transportFailure=true;});
+ assert.equal(x.report.ok,false);
+ assert.equal(x.report.line.status,0);
+ assert.equal(x.report.line.transportFailure,true);
+ assert.equal(x.report.metaReceipts.supabase.safelyBlocked,true);
+ assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,true);
+ assert.ok(x.report.errors.some(e=>e.includes('LINE healthz')));
+ assert.equal(x.requests.length,7);
+ assert.doesNotMatch(JSON.stringify(x.report),/simulated transport error|secret|token/i);
+});
+test('independent receiver outage is reported while remaining health checks still complete',async()=>{
+ const x=await exercise(r=>{r[supabaseUrl].transportFailure=true;});
+ assert.equal(x.report.ok,false);
+ assert.equal(x.report.metaReceipts.supabase.status,0);
+ assert.equal(x.report.metaReceipts.supabase.transportFailure,true);
+ assert.equal(x.report.metaReceipts.supabase.safelyBlocked,false);
+ assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,true);
+ assert.equal(x.report.line.bodyOk,true);
+ assert.ok(x.report.errors.some(e=>e.includes('Supabase Meta 收件備援')));
+ assert.equal(x.requests.length,7);
+});
+test('both failed providers still produce a complete nonpassing safety report',async()=>{
+ const x=await exercise(r=>{r[lineUrl].transportFailure=true;r[cloudflareUrl].transportFailure=true;});
+ assert.equal(x.report.ok,false);
+ assert.equal(x.report.metaReceipts.supabase.safelyBlocked,true);
+ assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,false);
+ assert.equal(x.report.metaReceipts.cloudflare.transportFailure,true);
+ assert.equal(x.requests.length,7);
+ assert.ok(x.report.errors.some(e=>e.includes('Cloudflare Meta 收件備援')));
 });
