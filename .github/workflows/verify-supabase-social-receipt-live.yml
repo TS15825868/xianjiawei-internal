@@ -1,0 +1,40 @@
+name: 仙加味 Supabase Meta 安全收件線上驗收
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-supabase-social-receipt-live.yml'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-supabase-receipt-live-readonly
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: 唯讀 GET 驗證既有 Edge 收件服務拒絕未授權請求
+        shell: bash
+        run: |
+          set -euo pipefail
+          # No signature, token, customer data or POST: must not persist an event.
+          url='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt'
+          status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
+            --retry 1 --retry-delay 3 --output /tmp/xjw-edge-readonly.json \
+            --write-out '%{http_code}' "$url")
+          echo "Received safe GET status $status"
+          node - "$status" <<'NODE'
+          const fs=require('node:fs');
+          const status=Number(process.argv[2]);
+          let result;
+          try{result=JSON.parse(fs.readFileSync('/tmp/xjw-edge-readonly.json','utf8'))}
+          catch{throw Error('Edge function did not return JSON');}
+          if(result.sent!==false||result.accepted===true)
+            throw Error('Unauthenticated GET must never be accepted or sent');
+          const permitted=(status===503&&result.code==='receipt_disabled')||
+            (status===400&&result.code==='verification_rejected');
+          if(!permitted)throw Error('Edge receipt live acceptance state is not verified');
+          console.log('PASS signed-only Meta receipt endpoint rejects unauthenticated GET, sent=false; code='+result.code);
+          NODE
