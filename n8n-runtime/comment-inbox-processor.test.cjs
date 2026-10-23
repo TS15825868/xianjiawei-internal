@@ -150,11 +150,12 @@ test('isolated signed inbox -> official GET -> atomic comment ledger -> ERP-read
    products:[{id:'gao',name:'龜鹿膏',ingredients:['鹿角萃取物','龜板萃取物']}]},
   allowedAccounts:allowed,releaseApproved:true
  });
+ const decisions=[];
  const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
-  resolveAutomation:()=>automation});
+  resolveAutomation:()=>({suggest:async event=>{const decision=await automation.suggest(event);decisions.push(decision);return decision;}})});
  const result=await processor.process();
  assert.equal(result.reviewed,1,JSON.stringify({result,counts,sql: calls.map(s=>s.slice(0,75))}));
- assert.equal(result.suggestions,1);
+ assert.equal(result.suggestions,1,JSON.stringify({result,decisions}));
  assert.equal(counts.writes,1);
  assert.ok(counts.reads>=2);
  assert.equal(counts.sends,0,'Even a release-capable automation must be forced into suggest-only mode');
