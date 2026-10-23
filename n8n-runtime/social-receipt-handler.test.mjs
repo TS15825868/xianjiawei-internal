@@ -140,3 +140,48 @@ test('receipt-only Edge can use opt-in free transaction pooler without changing 
  assert.equal(observed.ssl.rejectUnauthorized,true);
  assert.equal(observed.ssl.servername,edgeConfig.host);
 });
+
+
+test('failed DB pool is retired; next independent Meta delivery reconnects with current secrets without replaying the first delivery',async()=>{
+ let secret='secret-v1',created=0,closed=0,queries=0;
+ const readEnv=k=>{
+  if(k==='XJW_SOCIAL_DB_CONFIG')return JSON.stringify({
+   user:'xjw_social_worker',host:'db.iphexhvjhsmelbgwzhhr.supabase.co',
+   port:5432,password:secret,ca:'-----BEGIN CERTIFICATE-----\nfixture'
+  });
+  return env[k];
+ };
+ const h=createReceiptHandler({
+  readEnv,
+  createPool:options=>{
+   created++;
+   const poolVersion=options.password;
+   return {on(){},async end(){closed++},async query(){
+    queries++;
+    if(poolVersion==='secret-v1')throw Error('PG expired login: do not echo password');
+    return {rowCount:1};
+   }};
+  }
+ });
+ const before=await h(request());
+ assert.equal(before.status,503);
+ assert.deepEqual(await before.json(),{accepted:false,code:'receipt_unavailable',sent:false});
+ assert.equal(created,1);assert.equal(queries,1);assert.equal(closed,1);
+ secret='secret-v2';
+ const after=await h(request());
+ assert.equal(after.status,200);
+ assert.equal((await after.json()).sent,false);
+ assert.equal(created,2);assert.equal(queries,2);
+});
+test('DB failure response redacts protected transport details and does not automatically retry a signed POST',async()=>{
+ let queries=0,closed=0;
+ const h=handler(()=>({on(){},async end(){closed++},async query(){
+  queries++;throw Error('protected-host=password&token');
+ }}));
+ const reply=await h(request());
+ assert.equal(reply.status,503);
+ assert.equal((await reply.json()).code,'receipt_unavailable');
+ assert.equal(queries,1);
+ assert.equal(closed,1);
+ assert.doesNotMatch(await reply.clone().text().catch(()=>''),/protected-host=password&token/);
+});

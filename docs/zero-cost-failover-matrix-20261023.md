@@ -91,3 +91,9 @@ Supabase 官方 2026 文件建議：持續連線的 IPv4 後端使用 **shared S
 程式會拒絕 Render 使用 6543、其他專案／區域 host、管理員帳號、不明的 TLS 信任設定。交易模式的 `social-tls-preflight.mjs` 用**單次唯讀 SELECT**取代 `BEGIN READ ONLY`＋`ROLLBACK`，防止跨交易 Session 假設；結果必須仍證明專用身份、TLS、RLS 及發送門檻全部關閉。
 
 **仍未完成的外部驗收：** 在 Supabase 私密執行環境設定後實際連線成功、Meta Webhook 由官方 Callback URL 驗證、收件事件原子落庫與 ERP 回寫、主備跨服務去重、官方回覆權限及回執。完成前全平台不啟用自動發送。官方文件：<https://supabase.com/docs/guides/database/connecting-to-postgres>。
+
+## Edge 連線中斷及憑證輪替安全恢復
+
+收件僅執行 `INSERT ... ON CONFLICT DO NOTHING` 的原子持久化，不會在主機端自動發送。遇到 PostgreSQL 執行失敗時，Edge **不會重送當次未知結果的 INSERT**；會關閉並淘汰有問題的 `pg.Pool`，回傳 HTTP 503、`sent:false`。Meta 若對同一原始事件重送，才從受保護環境重新取得目前的資料庫設定，建立新的專用帳號連線；若第一次實際已寫入，主鍵可防止重複收件。這不是已完成真實主備 E2E 的證明。
+
+此機制同時適用 TLS 斷線與服務端安全輪替專用密碼，不新增付款資源；現場仍須使用官方 Meta Webhook 及正式專用帳號驗證外部重送語意。

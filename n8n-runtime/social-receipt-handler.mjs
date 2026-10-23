@@ -17,7 +17,18 @@ export function createReceiptHandler({readEnv,createPool}){
     // errors or turn transient disconnects into an isolate-wide uncaught error.
     pool.on('error',()=>{});
    }
-   return await pool.query(sql,values);
+   const current=pool;
+   try{
+    return await current.query(sql,values);
+   }catch{
+    // A stale connection or rotated worker credential must not poison this
+    // Edge isolate forever. Never re-run an uncertain durable INSERT here:
+    // return 503, let Meta redeliver the SAME signed event, then construct a
+    // fresh pool using current protected environment configuration.
+    if(pool===current)pool=undefined;
+    try{await current.end?.()}catch{/* Retiring the pool is best effort. */}
+    throw Error('receipt_database_unavailable');
+   }
   }finally{busy=false;}
  }};
  return async request=>{
