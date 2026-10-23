@@ -56,12 +56,14 @@ function createSendStore(db){
   },
   async recover(){
    // Uncertain reservations block all future versions. Recovery never sends.
-   const r=await db.query(`WITH stale AS (SELECT platform,account_id,post_id,comment_id
+   const r=await db.query(`WITH stale AS (SELECT platform,account_id,post_id,comment_id,conversation_version
     FROM xjw_social.reply_ledger WHERE state IN ('reserved','sending')
     AND updated_at<now()-interval '15 minutes' ORDER BY updated_at LIMIT 100 FOR UPDATE SKIP LOCKED)
     UPDATE xjw_social.reply_ledger r SET state='unknown',error_code='interrupted_send',retry_state='never',updated_at=now()
     FROM stale s WHERE r.platform=s.platform AND r.account_id=s.account_id
-    AND r.post_id=s.post_id AND r.comment_id=s.comment_id RETURNING r.claim_id`);
+    AND r.post_id=s.post_id AND r.comment_id=s.comment_id
+    AND r.conversation_version=s.conversation_version AND r.state IN ('reserved','sending')
+    RETURNING r.claim_id`);
    if(!Number.isInteger(r.rowCount)||r.rowCount<0)throw Error('Recovery unconfirmed');
    return {quarantined:r.rowCount,sent:false};
   }
