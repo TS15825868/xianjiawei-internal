@@ -71,6 +71,9 @@ jobs:
           node --test n8n-runtime/smoke-readonly.test.cjs
           node --test n8n-runtime/monitor-parallel-fallback.test.cjs
 
+      - name: Verify scheduled publication fails closed when review or D1 storage fails
+        run: node tools/test-production-schedule-fail-closed.mjs
+
       - name: Verify protected and disabled-by-default Cloudflare free AI reply drafts
         run: node --test tools/test-social-ai-draft.mjs
 
