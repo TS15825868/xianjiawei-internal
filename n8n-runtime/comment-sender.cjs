@@ -24,10 +24,13 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
    if(decision.action!=='suggest'||decision.reply!==suggestion.reply)return manual('final_policy_rejected');
    claim=await store.reserve(event,suggestion.conversationVersion,decision.reply);
    if(!claim)return {action:'skip',reason:'disabled_or_reserved',sent:false};
-   // Last official read after reservation catches human/platform replies.
+   // Last official read must revalidate the EXACT reply, not merely its
+   // eligibility. Product facts may change after the reservation was made.
    const last=await adapter.loadThread(event);
-   if(!scoped(last,event)||digest(last.messages)!==suggestion.conversationVersion||
-      decide(event,last,catalog).action!=='suggest'||!await store.begin(event,claim)){
+   const lastDecision=scoped(last,event)&&digest(last.messages)===suggestion.conversationVersion
+     ? decide(event,last,catalog):null;
+   if(lastDecision?.action!=='suggest'||lastDecision.reply!==decision.reply||
+      lastDecision.reply!==suggestion.reply||!await store.begin(event,claim)){
     await store.finish(event,claim,'manual');return manual('final_ownership_changed');
    }
    attempted=true;
