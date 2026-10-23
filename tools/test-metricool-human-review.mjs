@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
-import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool} from '../src/metricool-sync.js';
+import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity} from '../src/metricool-sync.js';
 const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
@@ -57,7 +57,7 @@ const duplicateDb={prepare(sql){return{
  async first(){return null},
  async all(){
   if(sql.includes('FROM social_posts WHERE id<>?'))return{results:peers};
-  if(sql.includes('SELECT publication_at FROM social_metricool_sync'))return{results:[]};
+  if(sql.includes('SELECT publication_at,state FROM social_metricool_sync'))return{results:[]};
   throw Error('Unexpected query '+sql);
  },
  async run(){writes.push(sql);return{meta:{changes:1}}}
@@ -77,3 +77,29 @@ assert.equal(unique.ok,true);assert.equal(unique.queued,true);
 assert.equal(unique.externalScheduled,false);
 assert.equal(writes.filter(sql=>sql.includes('INSERT INTO social_metricool_sync')).length,1);
 console.log('PASS changed post-approval sibling copy or image blocks duplicate enqueue; unique still awaits Work');
+
+const quotaLinks=Array.from({length:6},(_,i)=>({publication_at:`2026-11-${String(2+i*3).padStart(2,'0')}T10:00:00+08:00`,state:'scheduled'}));
+const enough=metricoolScheduleCapacity(quotaLinks.slice(0,5),'2026-11-22T10:00:00+08:00');
+assert.equal(enough.ok,true);assert.equal(enough.withCandidate,18);
+const full=metricoolScheduleCapacity(quotaLinks,'2026-11-22T10:00:00+08:00');
+assert.equal(full.ok,false);assert.equal(full.reason,'local_free_quota_exceeded');assert.equal(full.withCandidate,21);
+assert.equal(metricoolScheduleCapacity(quotaLinks,'2026-12-02T10:00:00+08:00').ok,true);
+const collision=metricoolScheduleCapacity([{publication_at:'2026-10-26T09:00:00+08:00',state:'scheduled'}],'2026-10-26T10:00:00+08:00');
+assert.equal(collision.slotConflict,true);
+assert.equal(metricoolScheduleCapacity([{publication_at:'not-a-date',state:'unknown'}],'2026-10-26T10:00:00+08:00').ok,false);
+const quotaTests=[];
+const quotaDB={prepare(sql){return{
+  bind(){return this},first:async()=>null,
+  async all(){
+   if(sql.includes('FROM social_posts WHERE id<>?'))return{results:[]};
+   if(sql.includes('SELECT publication_at,state FROM social_metricool_sync'))return{results:quotaLinks};
+   throw Error('Unexpected local quota SQL '+sql);
+  },async run(){quotaTests.push(sql);return{meta:{changes:1}}}
+}}};
+const quotaBlocked=await enqueueMetricool({DB:quotaDB},
+ {...row,id:'quota-verified',status:'approved',scheduled_at:'2026-11-22T10:00:00+08:00'},
+ {gateState:async()=>({ok:true}),fingerprint:async()=> 'safe-fp'},
+ new Date('2026-10-23T00:00:00Z'));
+assert.equal(quotaBlocked.ok,false);assert.equal(quotaBlocked.code,'local_free_quota_exceeded');
+assert.equal(quotaTests.filter(q=>q.includes('INSERT INTO social_metricool_sync')).length,0);
+console.log('PASS Metricool: 20 published platform slots maximum, multi-network slots counted, same-day collisions detectable and fail closed; external counter must be verified');

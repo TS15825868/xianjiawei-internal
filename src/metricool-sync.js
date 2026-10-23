@@ -22,12 +22,34 @@ export function nextMetricoolSlot(now=new Date(),reserved=[]){
   }
   throw new Error('找不到可用正式時段');
 }
+// Metricool Free counts one publication PER connected network; 3-network posts
+// cost three slots, and uncertain states reserve quota until verified.
+// This checks the local linked records only: Work must still read the actual
+// external planner/counter before creating or updating any remote UUID.
+const localDay=value=>{const t=Date.parse(value);return Number.isFinite(t)?new Date(t+8*3600000).toISOString().slice(0,10):null};
+export function metricoolScheduleCapacity(links,at,{monthlyLimit=20,postCost=3}={}){
+ const target=localDay(at);
+ if(!target)return {ok:false,reason:'invalid_schedule_time',localEvidenceOnly:true};
+ if(!Array.isArray(links)||!Number.isSafeInteger(monthlyLimit)||monthlyLimit<1||
+    !Number.isSafeInteger(postCost)||postCost<1)return{ok:false,reason:'invalid_quota_evidence',localEvidenceOnly:true};
+ const active=new Set(['awaiting_work','queued','scheduled','blocked_config','awaiting_verification','published','unknown','cancel_required']);
+ let count=0,slotConflict=false;
+ for(const item of links){
+  if(item?.state&&!active.has(item.state))continue;
+  const day=localDay(typeof item==='string'?item:item?.publication_at);
+  if(!day)return{ok:false,reason:'invalid_existing_schedule',localEvidenceOnly:true};
+  if(day.slice(0,7)===target.slice(0,7))count+=postCost;
+  if(day===target)slotConflict=true;
+ }
+ return {ok:count+postCost<=monthlyLimit,reason:count+postCost<=monthlyLimit?'local_capacity_available':'local_free_quota_exceeded',
+  usedKnown:count,withCandidate:count+postCost,monthlyLimit,slotConflict,localEvidenceOnly:true};
+}
 export function metricoolBody(row,link,at){
   const prior=JSON.parse(link.template_json||'{}');delete prior.twitterData;
   const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
   return{...prior,id:link.metricool_id||undefined,uuid:link.uuid||undefined,publicationDate:{dateTime,timezone:'Asia/Taipei'},text:row.copy,providers:['facebook','instagram','threads'].map(network=>({network})),media:[row.image_url],mediaAltText:[row.image_alt],saveExternalMediaFiles:true,draft:false,autoPublish:true,facebookData:{...(prior.facebookData||{}),type:'POST'},instagramData:{...(prior.instagramData||{}),type:'POST',autoPublish:true},threadsData:{...(prior.threadsData||{}),type:'POST'}};
 }
-export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new Date()){
+export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new Date(),{immediate=false}={}){
   if(!row||!['approved','scheduled'].includes(row.status))return{ok:false,error:'只有已人工核准、尚未發布的貼文能排程'};
   const gate=await gateState(env,row);if(!gate.ok)return{ok:false,error:gate.reason};
   await ensureMetricoolSchema(env);
@@ -46,9 +68,15 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
     (copy.length>=20&&copy===norm(other.copy))||
     (image&&image===clean(other.image_url).split(/[?#]/)[0]));
   if(duplicate)return{ok:false,error:'文案或主圖與現有已核准、已排程、已發布貼文重複；不得建立另一筆外部排程'};
-  const reserved=await env.DB.prepare("SELECT publication_at FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','scheduled','blocked_config','awaiting_verification') AND post_id<>?").bind(row.id).all();
+  const reserved=await env.DB.prepare("SELECT publication_at,state FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','scheduled','blocked_config','awaiting_verification','published','unknown','cancel_required') AND post_id<>?").bind(row.id).all();
+  const linked=reserved.results||[];
   const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
-  const at=Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,(reserved.results||[]).map(x=>x.publication_at));
+  const at=immediate?new Date(now.getTime()+60000).toISOString():
+    Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at));
+  const capacity=metricoolScheduleCapacity(linked,at);
+  if(!capacity.ok)return{ok:false,code:capacity.reason,error:'Metricool 免費額度已滿或本地排程狀態無法確認；必須先由Work核對正式計數器與既有UUID',quota:capacity};
+  if(!immediate&&Date.parse(preferred)>now.getTime()&&capacity.slotConflict)
+    return{ok:false,code:'local_schedule_collision',error:'同一天已有排程；請先核對Metricool現有UUID與安排，避免一日多篇',quota:capacity};
   await env.DB.prepare(`INSERT INTO social_metricool_sync(post_id,uuid,publication_at,content_fingerprint,state) VALUES(?,?,?,?,?) ON CONFLICT(post_id) DO UPDATE SET publication_at=excluded.publication_at,content_fingerprint=excluded.content_fingerprint,state=excluded.state,attempts=0,last_error='',updated_at=datetime('now')`).bind(row.id,link?.uuid||crypto.randomUUID(),at,fp,'awaiting_work').run();
   return{ok:true,queued:true,state:'awaiting_work',scheduledAt:at,externalScheduled:false,message:'已人工核准並加入待Work排程；尚未送入Metricool，不代表已正式排程。'};
 }
@@ -74,8 +102,8 @@ export async function syncMetricool(env,checks,now=new Date()){
 export async function metricoolImmediate(env,row,checks){
   if(!['approved','scheduled'].includes(row?.status))return{ok:false,error:'已發布、未核准或異常的貼文不可重複立即發布'};
   const gate=await checks.gateState(env,row);if(!gate.ok)return{ok:false,error:gate.reason};
-  const queued=await enqueueMetricool(env,row,checks);if(!queued.ok)return queued;
-  const at=new Date(Date.now()+60000).toISOString();
+  const queued=await enqueueMetricool(env,row,checks,new Date(),{immediate:true});if(!queued.ok)return queued;
+  const at=queued.scheduledAt;
   await env.DB.prepare("UPDATE social_metricool_sync SET publication_at=?,state='awaiting_work',attempts=0,last_error='' WHERE post_id=? AND state IN ('scheduled','awaiting_work')").bind(at,row.id).run();
   return{ok:true,immediateRequested:true,queued:true,externalScheduled:false,scheduledAt:at,message:'已加入立即發布待Work佇列，不受固定時段限制；Work須更新原UUID並查證保存，尚未實際發布。'};
 }
