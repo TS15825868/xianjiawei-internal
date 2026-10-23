@@ -250,7 +250,7 @@ test('durable completion proof matches the exact action except for a genuine dup
   const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
    resolveAutomation:()=>({suggest:async()=>decision})});
   const result=await processor.process();
-  assert.match(proof.sql,/status=ANY\\(\\$6::text\\[\\]\\)/);
+  assert.match(proof.sql,/status=ANY\(\$6::text\[\]\)/);
   assert.deepEqual(proof.args[5],c.reason==='duplicate_event'
    ? ['suggest','skip','manual']:[c.action]);
   assert.equal(result.reviewed,c.reviewed);
