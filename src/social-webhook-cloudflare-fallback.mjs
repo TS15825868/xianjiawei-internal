@@ -16,7 +16,14 @@ export default {
    const stmt=env.XJW_RECEIPT_D1.prepare('INSERT OR IGNORE INTO xjw_webhook_receipts(event_hash,platform,account_id,payload_json,received_at) VALUES(?,?,?,?,?)');
    // D1 batch is transactional: never acknowledge a partially persisted multi-account event.
    const receivedAt=new Date().toISOString();
-   await env.XJW_RECEIPT_D1.batch(e.accounts.map(id=>stmt.bind(e.digest,e.platform,id,JSON.stringify(e.payload),receivedAt)));
+   const written=await env.XJW_RECEIPT_D1.batch(e.accounts.map(id=>stmt.bind(e.digest,e.platform,id,JSON.stringify(e.payload),receivedAt)));
+   // D1 INSERT OR IGNORE: 0 changes means an already received event, 1
+   // confirms a new receipt. A malformed, partial or failed batch must not
+   // become an accepted webhook, even if the Promise itself resolved.
+   if(!Array.isArray(written)||written.length!==e.accounts.length||
+      !written.every(r=>r?.success===true&&
+        Number.isSafeInteger(r?.meta?.changes)&&r.meta.changes>=0&&r.meta.changes<=1))
+     throw Error('storage_unavailable');
    return Response.json({accepted:true,mode:'manual_receipt_only',sent:false},{headers:{'cache-control':'no-store'}});
   }catch(error){
    const rejected=['signature_rejected','account_rejected','verification_rejected','format_rejected','payload_too_large','method_rejected'].includes(error?.message);
