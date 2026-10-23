@@ -70,6 +70,9 @@ jobs:
           node --test n8n-runtime/smoke-readonly.test.cjs
           node --test n8n-runtime/monitor-parallel-fallback.test.cjs
 
+      - name: Verify protected and disabled-by-default Cloudflare free AI reply drafts
+        run: node --test tools/test-social-ai-draft.mjs
+
       - name: Static syntax and current-authority guards
         shell: bash
         run: |

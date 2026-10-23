@@ -8,8 +8,11 @@
   "vars": {
     "POLICY_AUD": "201dea08ea9611989cd8ad4ccac88f99974fd9b1309e4af74bf11a397ee6522f",
     "TEAM_DOMAIN": "https://tung314069.cloudflareaccess.com",
-    "TEMP_DISABLE_ACCESS": "false"
+    "TEMP_DISABLE_ACCESS": "false",
+    "XJW_SOCIAL_AI_DRAFT_ENABLED": "false",
+    "XJW_AI_FREE_ACCOUNT_CONFIRMED": "false"
   },
+  "ai": {"binding": "AI"},
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
