@@ -86,3 +86,32 @@ jobs:
             throw Error('Known-wrong token must fail closed');
           console.log('PASS live Meta GET with wrong verification token rejected, no durable event and no send.');
           NODE
+
+      - name: 未簽章 POST 必須拒絕（無客戶資料、無有效簽章）
+        shell: bash
+        run: |
+          set -euo pipefail
+          # This deliberately unsigned, empty JSON cannot pass HMAC validation.
+          # It cannot create a durable customer event, even if receipt gates
+          # become enabled. Never include real event data or a signing secret.
+          url='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt'
+          status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
+            --request POST --header 'content-type: application/json' \
+            --data-binary '{}' --dump-header /tmp/xjw-unsigned-post.headers \
+            --output /tmp/xjw-unsigned-post.json --write-out '%{http_code}' "$url")
+          node - "$status" <<'NODE'
+          const fs=require('node:fs');
+          const status=Number(process.argv[2]);
+          let result;
+          try{result=JSON.parse(fs.readFileSync('/tmp/xjw-unsigned-post.json','utf8'))}
+          catch{throw Error('Unsigned POST did not return a JSON rejection');}
+          const headers=fs.readFileSync('/tmp/xjw-unsigned-post.headers','utf8');
+          if(!/^cache-control:\s*[^\r\n]*no-store/im.test(headers))
+            throw Error('Unsigned receipt rejection must not be cached');
+          if(result.accepted!==false||result.sent!==false)
+            throw Error('Unsigned POST must never be accepted or sent');
+          const safe=(status===503&&['receipt_disabled','verification_required'].includes(result.code))||
+            (status===400&&result.code==='signature_rejected');
+          if(!safe)throw Error('Unexpected unsigned POST result; signature gate is not verified');
+          console.log('PASS unsigned POST rejected without persistence or sending; code='+result.code);
+          NODE
