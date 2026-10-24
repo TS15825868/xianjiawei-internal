@@ -48,7 +48,14 @@ function createPageCollector({request,origin,maxPages=40,maxItems=2000}){
     request({method:'GET',url:url.href,retries:0,followRedirects:false,timeoutMs:15000,signal:controller.signal}),
     new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error('Official page timeout'));},15000);})
    ]);}catch{throw Error('Official page unavailable');}finally{clearTimeout(timer);}
-   if(page?.error||!Array.isArray(page?.data))throw Error('Incomplete official page');
+   // An HTTP failure carrying a forged or cached `data` array is NOT a
+   // verified official page. Protected bindings may return parsed JSON along
+   // with a numeric status or a fetch-style ok flag, so require success.
+   if(!page||typeof page!=='object'||Array.isArray(page)||page.error||
+      page.ok===false||
+      [page.status,page.statusCode].some(status=>status!==undefined&&
+       (!Number.isInteger(status)||status<200||status>=300))||
+      !Array.isArray(page.data))throw Error('Incomplete official page');
    if(Object.hasOwn(page,'paging')){
     const p=page.paging;
     if(!p||typeof p!=='object'||Array.isArray(p))throw Error('Invalid paging');

@@ -106,3 +106,36 @@ test('fails closed on duplicate IDs, bounds, and API errors',async()=>{
  await assert.rejects(createPageCollector({origin,request:async()=>({error:{message:'secret'}})}).collect(url));
 });
 
+
+test('unsuccessful official HTTP pages are rejected even with valid-looking data',async()=>{
+ const url=origin+'/v25.0/post/comments?fields=id&limit=100';
+ for(const response of [
+  {status:401,data:[{id:'1'}]},
+  {statusCode:403,data:[{id:'1'}]},
+  {status:429,data:[{id:'1'}]},
+  {status:500,data:[{id:'1'}]},
+  {status:302,data:[{id:'1'}]},
+  {ok:false,data:[{id:'1'}]},
+  {status:'200',data:[{id:'1'}]},
+  {statusCode:NaN,data:[{id:'1'}]}
+ ]){
+  let calls=0;
+  const reader=createPageCollector({origin,request:async()=>{calls++;return response;}});
+  await assert.rejects(reader.collect(url),/Incomplete official page/);
+  assert.equal(calls,1);
+ }
+});
+test('valid official HTTP status with complete pagination remains accepted',async()=>{
+ const url=origin+'/v25.0/post/comments';
+ const requests=[];
+ const reader=createPageCollector({origin,request:async request=>{
+  requests.push(request.url);
+  return requests.length===1
+   ?{ok:true,status:200,data:[{id:'1'}],paging:{next:url+'?after=page2'}}
+   :{ok:true,statusCode:200,data:[{id:'2'}]};
+ }});
+ const result=await reader.collect(url);
+ assert.equal(result.complete,true);
+ assert.deepEqual(result.items.map(row=>row.id),['1','2']);
+ assert.equal(requests.length,2);
+});
