@@ -24,7 +24,7 @@ jobs:
           # No signature, token, customer data or POST: must not persist an event.
           url='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt'
           status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
-            --retry 1 --retry-delay 3 --output /tmp/xjw-edge-readonly.json \
+            --retry 1 --retry-delay 3 --dump-header /tmp/xjw-edge-readonly.headers --output /tmp/xjw-edge-readonly.json \
             --write-out '%{http_code}' "$url")
           echo "Received safe GET status $status"
           node - "$status" <<'NODE'
@@ -38,7 +38,10 @@ jobs:
           const permitted=(status===503&&['receipt_disabled','verification_required'].includes(result.code))||
             (status===400&&result.code==='verification_rejected');
           if(!permitted)throw Error('Edge receipt live acceptance state is not verified');
-          console.log('PASS signed-only Meta receipt endpoint rejects unauthenticated GET, sent=false; code='+result.code);
+          const headers=fs.readFileSync('/tmp/xjw-edge-readonly.headers','utf8');
+          if(!/^cache-control:\s*[^\r\n]*no-store/im.test(headers))
+            throw Error('Sensitive receipt endpoint must be non-cacheable');
+          console.log('PASS signed-only Meta receipt endpoint rejects unauthenticated GET, sent=false, no-store; code='+result.code);
           NODE
       - name: 缺少 Meta verify token 的 GET 挑戰仍須拒絕（不含任何正式憑證）
         shell: bash
@@ -81,5 +84,5 @@ jobs:
           if(!((status===503&&['receipt_disabled','verification_required'].includes(data.code))||
                (status===400&&data.code==='verification_rejected')))
             throw Error('Known-wrong token must fail closed');
-          console.log('PASS v9 Meta GET with wrong verification token rejected, no durable event and no send.');
+          console.log('PASS live Meta GET with wrong verification token rejected, no durable event and no send.');
           NODE
