@@ -104,10 +104,11 @@ jobs:
           console.log('PASS existing D1 human review and matching external schedule');
           NODE
 
+      # The validated Metricool host must remain the actual download origin; no redirects to untrusted HTTPS hosts.
       - name: Download and validate approved image
         run: |
           set -euo pipefail
-          curl --proto '=https' --proto-redir '=https' -fL --retry 2 --max-time 60 "$(cat /tmp/xjw-image-url.txt)" -o /tmp/xjw-approved-media
+          curl --proto '=https' --max-redirs 0 -f --retry 2 --max-time 60 --max-filesize 12582912 "$(cat /tmp/xjw-image-url.txt)" -o /tmp/xjw-approved-media
           node - <<'NODE'
           const fs=require('node:fs');
           const {inspectImage}=require('./tools/metricool-image-format.cjs');

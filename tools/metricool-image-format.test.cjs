@@ -29,3 +29,13 @@ test('formal workflow retains human approval and never re-encodes approved media
  for(const old of ["filename=safe+'.png'","/tmp/xjw-approved.png","status IN ('draft','pending_review','approved','scheduled')"])
   assert.ok(!s.includes(old),'unsafe '+old);
 });
+
+test('approved media download stays on the verified Metricool origin and is size-bounded',()=>{
+ const s=readFileSync(resolve(__dirname,'../.github/workflows/apply-metricool-approved-post-current.yml'),'utf8');
+ const line=s.split('\n').find(x=>x.includes('curl --proto'));
+ assert.ok(line,'approved media download command missing');
+ assert.match(line,/--max-redirs 0/);
+ assert.match(line,/--max-filesize 12582912/);
+ assert.doesNotMatch(line,/(?:^|\s)(?:-L|--location)(?:\s|$)/);
+ assert.match(s,/image\.hostname!=='static\.metricool\.com'/);
+});
