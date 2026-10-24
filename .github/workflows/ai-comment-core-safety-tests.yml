@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/ai-comment-core-safety-tests.yml'
+      - 'n8n-runtime/**'
   workflow_dispatch:
 permissions:
   contents: read
