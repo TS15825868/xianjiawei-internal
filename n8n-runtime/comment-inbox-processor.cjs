@@ -4,6 +4,7 @@
 // Never handle HTTP requests directly, send replies, or trust webhook text.
 // A caller must supply a protected worker DB query and official API bindings.
 const {exactAllowedAccount}=require('./account-allowlist.cjs');
+const {createHash}=require('node:crypto');
 
 const IDENTIFIER=/^\d{1,64}(?:_\d{1,64})?$/;
 const PLATFORM_OBJECT=Object.freeze({facebook:'page',instagram:'instagram',threads:'threads'});
@@ -106,6 +107,13 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
     // durable state, rather than being abandoned in 'processing'.
     // A completed row for this version is not proof of the SAME decision.
     // Only duplicate_event may reuse a previously finalized different action.
+    // The claim fingerprint must bind the exact signed event scope and the
+    // verified conversation version; an unrelated durable claim is not proof.
+    const expectedKey=createHash('sha256').update(JSON.stringify([
+      event.platform,event.accountId,event.postId,event.threadId,event.commentId,
+      decision.conversationVersion
+    ])).digest('hex');
+    if(decision.idempotencyKey!==expectedKey){durable=false;break;}
     const expectedStatuses=decision.action==='skip'&&decision.reason==='duplicate_event'
       ? ['suggest','skip','manual']:[decision.action];
     const proof=await db.query(`SELECT EXISTS(
