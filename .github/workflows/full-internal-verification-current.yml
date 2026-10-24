@@ -8,9 +8,8 @@ on:
       - '.github/workflows/full-internal-verification-current.yml'
       - 'package.json'
       - 'src/**'
-      - 'n8n-runtime/**'
-      - 'docs/n8n/06-instagram-api-preflight-readonly.json'
-      - 'docs/n8n/07-instagram-comments-readonly.json'
+      # n8n-only changes run the dependency-free safety suite instead.
+      # This full check remains for ERP/site changes and its weekly schedule.
       - 'tools/**'
       - 'config/**'
       - 'assets/js/**'

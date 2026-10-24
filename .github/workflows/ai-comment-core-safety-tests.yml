@@ -5,6 +5,9 @@ on:
     paths:
       - '.github/workflows/ai-comment-core-safety-tests.yml'
       - 'n8n-runtime/**'
+      - 'docs/n8n/06-instagram-api-preflight-readonly.json'
+      - 'docs/n8n/07-instagram-comments-readonly.json'
+      - '.github/workflows/n8n-readonly-monitor-scheduler.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -37,6 +40,10 @@ jobs:
             n8n-runtime/comment-meta-replies.test.cjs \
             n8n-runtime/comment-meta-pages.test.cjs \
             n8n-runtime/comment-workflow.test.cjs \
+            n8n-runtime/instagram-readonly-workflow.test.cjs \
+            n8n-runtime/social-receipt-handler.test.mjs \
+            n8n-runtime/monitor-parallel-fallback.test.cjs \
+            n8n-runtime/smoke-readonly.test.cjs \
             n8n-runtime/social-tls-preflight.test.mjs \
             n8n-runtime/social-webhook.test.mjs \
             n8n-runtime/start-low-memory.test.cjs
