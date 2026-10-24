@@ -29,6 +29,9 @@ const CHECK=String.raw`SELECT current_user AS effective_role,
  has_table_privilege(current_user,'xjw_social.reply_ledger','DELETE') OR
  has_table_privilege(current_user,'xjw_social.platform_control','DELETE')) AS no_delete_privilege,
  has_table_privilege(current_user,'xjw_social.platform_control','SELECT') AS can_read_control,
+ has_table_privilege(current_user,'xjw_social.webhook_inbox','SELECT') AND
+ has_table_privilege(current_user,'xjw_social.comment_ledger','SELECT') AND
+ has_table_privilege(current_user,'xjw_social.reply_ledger','SELECT') AS can_read_work_queues,
  has_table_privilege(current_user,'xjw_social.platform_control','UPDATE') AS can_enable_platform,
  has_table_privilege(current_user,'xjw_social.comment_ledger','DELETE') AS can_delete_comment,
  (SELECT count(*) FROM xjw_social.platform_control)=3 AS platform_rows_expected,
@@ -68,7 +71,8 @@ export async function verifySocialWorkerTls({config,connect}){
      row.superuser!==false || row.bypass_rls!==false ||
      row.inbox_write_ready!==true || row.comment_write_ready!==true ||
      row.reply_write_ready!==true || row.no_delete_privilege!==true ||
-     row.can_read_control!==true || row.can_enable_platform!==false ||
+     row.can_read_control!==true || row.can_read_work_queues!==true ||
+     row.can_enable_platform!==false ||
      row.can_delete_comment!==false || row.platform_rows_expected!==true ||
      row.all_send_flags_off!==true || row.all_tables_rls_enabled!==true)
     throw Error('Actual role, TLS, RLS or fail-closed configuration unverified');
