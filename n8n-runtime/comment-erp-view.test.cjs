@@ -15,3 +15,12 @@ test('ERP refuses unexpected cross-account ledger rows',async()=>{
  const view=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async()=>({rows:[{platform:'facebook',account_id:'999',comment_id:'456'}]})}});
  await assert.rejects(view.list({platform:'facebook',accountId:'123'}),/ERP scope mismatch/);
 });
+
+// An unexpected adapter result must never bypass the SQL LIMIT or be treated as a successful private ERP read.
+test('ERP rejects oversized or missing database read results',async()=>{
+ const account={platform:'facebook',account_id:'123'};
+ for(const result of [undefined,null,{}, {rows:null},{rows:[account,account]}]){
+  const view=createCommentErpView({allowedAccounts:{facebook:['123']},db:{query:async()=>result}});
+  await assert.rejects(view.list({platform:'facebook',accountId:'123',limit:1}),/ERP read unconfirmed/);
+ }
+});
