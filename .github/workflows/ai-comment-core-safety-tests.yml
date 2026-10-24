@@ -34,6 +34,7 @@ jobs:
             n8n-runtime/comment-inbox-processor.test.cjs \
             n8n-runtime/comment-erp-view.test.cjs \
             n8n-runtime/comment-meta-history.test.cjs \
+            n8n-runtime/comment-meta-replies.test.cjs \
             n8n-runtime/comment-meta-pages.test.cjs \
             n8n-runtime/comment-workflow.test.cjs \
             n8n-runtime/social-tls-preflight.test.mjs \

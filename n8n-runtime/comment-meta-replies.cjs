@@ -20,7 +20,13 @@ function createMetaReplyAdapter({platform,accountId,request,loadThread,permissio
     timeoutMs:15000,retries:0,followRedirects:false,signal:controller.signal}),
    new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error('API timeout'));},15000);})
   ]);}finally{clearTimeout(timer);}
-  if(result?.error)throw Error('Official API rejected request');
+  // Protected HTTP bindings can return parsed JSON alongside a numeric HTTP
+  // status or fetch-style ok flag. An error response carrying an `id` must
+  // never become a successful identity check or public reply receipt.
+  if(!result||typeof result!=='object'||result.error||result.ok===false||
+     [result.status,result.statusCode].some(status=>status!==undefined&&
+       (!Number.isInteger(status)||status<200||status>=300)))
+   throw Error('Official API rejected request');
   return result;
  };
  const match=e=>e?.platform===platform&&e.accountId===accountId&&/^\d+(?:_\d+)?$/.test(e.commentId);
