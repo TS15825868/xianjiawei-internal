@@ -49,13 +49,14 @@ function createPgCommentStore(db){
    return r.rowCount===1;
   },
   async finish(key,decision,e,version){
-   if(!e||!version)throw Error('Durable scope required');
+   if(!e||!version||typeof e.threadId!=='string'||!e.threadId)
+    throw Error('Durable scope required');
    if(!['suggest','skip','manual'].includes(decision.action)||decision.sent||decision.remoteReplyId)
     throw Error('Suggestion finish cannot mark a sent reply');
    const r=await db.query(`UPDATE xjw_social.comment_ledger SET status=$6,decision=$7::jsonb,
     updated_at=now() WHERE platform=$1 AND account_id=$2 AND post_id=$3 AND comment_id=$4
-    AND conversation_version=$5 AND status='processing' RETURNING comment_id`,
-    [...scope(e),version,decision.action,JSON.stringify(decision)]);
+    AND conversation_version=$5 AND thread_id=$8 AND status='processing' RETURNING comment_id`,
+    [...scope(e),version,decision.action,JSON.stringify(decision),e.threadId]);
    if(r.rowCount!==1)throw Error('Ledger state changed');
   },
   async recordError(e,decision){
