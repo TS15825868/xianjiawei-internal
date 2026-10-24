@@ -89,3 +89,29 @@ test('unsafe or customer-controlled audit reasons are rejected without database 
  for(const reason of ['Invalid password=secret','api-unavailable','api_unavailable\nDROP',undefined,'x'.repeat(65)])
   await assert.rejects(store.recordError(e,{reason}),/Invalid error audit scope/);
 });
+
+
+// A reused comment/version fingerprint from another thread must never
+// complete this thread's processing claim, even if the other fields match.
+test('finish binds the exact thread, not just a comment/version fingerprint',async()=>{
+ const calls=[];
+ const store=createPgCommentStore({query:async(sql,args)=>{
+  calls.push({sql,args});
+  assert.match(sql,/thread_id=\$8/);
+  assert.equal(args[7],e.threadId);
+  return {rowCount:args[7]==='thread'?1:0};
+ }});
+ await assert.doesNotReject(store.finish('key',{action:'suggest',sent:false},e,'v1'));
+ assert.equal(calls.length,1);
+ const mismatched=createPgCommentStore({query:async(sql,args)=>{
+  assert.match(sql,/thread_id=\$8/);
+  assert.equal(args[7],'other_thread');
+  // A real PostgreSQL WHERE thread_id=$8 would match no row here.
+  return {rowCount:0};
+ }});
+ await assert.rejects(mismatched.finish('key',{action:'suggest',sent:false},
+  {...e,threadId:'other_thread'},'v1'),/Ledger state changed/);
+ const invalid=createPgCommentStore({query:async()=>assert.fail('must not write')});
+ await assert.rejects(invalid.finish('key',{action:'suggest',sent:false},
+  {...e,threadId:''},'v1'),/Durable scope required/);
+});
