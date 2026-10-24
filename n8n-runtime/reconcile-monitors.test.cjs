@@ -122,3 +122,13 @@ test('monitor Code nodes cannot access n8n variables, secrets or network helpers
   'return new WebSocket("wss://example.com");'
  ])validateMutated(f,s=>{s.nodes.find(n=>n.type.endsWith('code')).parameters.jsCode=payload});
 });
+
+test('npm postinstall only validates monitor sources; operational reconciliation stays explicit',()=>{
+  const pkg=JSON.parse(readFileSync(join(__dirname,'package.json'),'utf8'));
+  assert.equal(pkg.scripts.postinstall,'node verify-monitor-sources.cjs');
+  assert.equal(pkg.scripts['reconcile:monitors'],'node reconcile-monitors.cjs');
+  const script=readFileSync(join(__dirname,'verify-monitor-sources.cjs'),'utf8');
+  assert.match(script,/validateMonitorSource\(file,json\)/);
+  assert.doesNotMatch(script,/spawnSync|execSync|import:workflow|publish:workflow|\.query\(|connect\(/);
+  assert.equal(require('./verify-monitor-sources.cjs').verify(),3);
+});

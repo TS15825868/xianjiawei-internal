@@ -5,7 +5,8 @@
   "description": "仙加味 n8n 第一階段測試執行環境；正式營運資料不存放於此。",
   "scripts": {
     "start": "sh start-low-memory.sh",
-    "postinstall": "node reconcile-monitors.cjs"
+    "postinstall": "node verify-monitor-sources.cjs",
+    "reconcile:monitors": "node reconcile-monitors.cjs"
   },
   "dependencies": {
     "n8n": "2.35.7",
