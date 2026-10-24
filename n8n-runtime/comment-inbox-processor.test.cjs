@@ -287,7 +287,7 @@ test('durable completion proof cannot borrow a matching comment/version from ano
    if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[row('facebook',page)]};
    if(sql.includes('AS finished')){
     proofs++;
-    assert.match(sql,/thread_id=\\$7/);
+    assert.match(sql,/thread_id=\$7/);
     assert.deepEqual(args.slice(0,5),[event.platform,event.accountId,event.postId,event.commentId,version]);
     assert.equal(args[6],event.threadId);
     return {rows:[{finished:args[6]===ledgerThread}]};
