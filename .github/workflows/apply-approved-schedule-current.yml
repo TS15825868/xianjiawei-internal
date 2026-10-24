@@ -94,7 +94,9 @@ jobs:
               AND COALESCE(image_quality_status,'')=${q(p.image_quality_status)}
               AND EXISTS(SELECT 1 FROM social_post_review_gates g WHERE g.post_id=social_posts.id
                 AND g.content_fingerprint=${q(verified.fingerprint)}
-                AND g.reviewed_by=${q(p.approved_by)} AND g.copy_image_match=1);`);
+                AND g.reviewed_by=${q(p.approved_by)} AND g.copy_image_match=1
+                AND g.checklist_json=${q(p.gate_checklist)}
+                AND g.reviewed_at=${q(p.gate_reviewed_at)});`);
             proof.push({id:p.id,scheduledAt:item.scheduled_at,
               approvedBy:p.approved_by,approvedAt:p.approved_at});
           }
