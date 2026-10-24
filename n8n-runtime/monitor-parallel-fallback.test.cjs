@@ -41,3 +41,16 @@ test('independent success cannot silently replace the real monitor failure',()=>
  assert.match(parts[0],/exit 1/);
  assert.match(parts[1],/不代表 n8n/);
 });
+
+test('broken Render readiness is bounded and never masks primary failure',()=>{
+ const primary=parts[0];
+ assert.match(primary,/timeout-minutes: 9/);
+ assert.match(primary,/for attempt in 1 2 3 4; do/);
+ assert.match(primary,/--connect-timeout 7 --max-time 20/);
+ assert.match(primary,/if \[ "\$attempt" -lt 4 \]; then sleep 5; fi/);
+ assert.doesNotMatch(primary,/for attempt in 1 2 3 4 5 6 7 8 9 10 11 12 13 14/);
+ assert.match(primary,/n8n readiness unavailable; no monitor webhooks were invoked/);
+ assert.match(primary,/exit 1/);
+ assert.match(primary,/for route in xjw-line-health-a7f8c2 xjw-ai-geo-9c3f75 xjw-system-health-d4b6e1;/);
+ assert.match(parts[1],/node n8n-runtime\/smoke-readonly\.js/);
+});
