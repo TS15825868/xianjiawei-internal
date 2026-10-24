@@ -12,9 +12,17 @@ function createCommentSender({workflow,adapter,store,catalog,allowedAccounts,rel
      !exactAllowedAccount(allowedAccounts,event.platform,event.accountId))return manual('unverified_account');
   let suggestion;
   try{suggestion=await workflow.execute(event);}catch{return manual('suggestion_unavailable');}
-  // A malformed workflow result must never become a public send or throw.
-  if(!suggestion||typeof suggestion!=='object'||Array.isArray(suggestion))return manual('suggestion_unavailable');
-  if(suggestion.action!=='suggest'||dryRun)return {...suggestion,sent:false};
+  // A suggestion-only workflow is NEVER an authority to report a send.
+  // Reject fabricated sent states and receipt IDs even in dry-run/skip
+  // branches. Rewriting sent:false alone can leave action:'sent' or a stale
+  // remoteReplyId in the ERP-facing response, misleading downstream clients.
+  if(!suggestion||typeof suggestion!=='object'||Array.isArray(suggestion)||
+     !['suggest','manual','skip'].includes(suggestion.action)||
+     suggestion.sent!==false||
+     (suggestion.remoteReplyId!==null&&suggestion.remoteReplyId!==undefined))
+    return manual('suggestion_unavailable');
+  if(suggestion.action!=='suggest'||dryRun)
+    return {...suggestion,sent:false,remoteReplyId:null};
   if(releaseApproved!==true)return manual('release_not_approved');
   // Validate the generated payload before any official API or database I/O.
   if(typeof suggestion.reply!=='string'||!suggestion.reply.trim()||

@@ -119,3 +119,51 @@ test('invalid Meta receipt identifiers are quarantined as unknown without automa
   assert.equal(h.sends(),1);
  }
 });
+
+test('fabricated sender status or receipt in suggestion-only result is rejected without touching live APIs',async()=>{
+ for(const invalid of [
+  {...suggestion,action:'sent'},
+  {...suggestion,action:'publish'},
+  {...suggestion,sent:true},
+  {...suggestion,remoteReplyId:'fabricated-id'},
+  {...suggestion,sent:undefined},
+  {...suggestion,action:'skip',remoteReplyId:'old-remote-id'}
+ ]){
+  for(const dryRun of [true,false]){
+   let contacted=false;
+   const sender=createCommentSender({
+    workflow:{execute:async()=>invalid},
+    adapter:{
+     loadThread:async()=>{contacted=true;throw Error('unexpected read')},
+     authorize:async()=>{contacted=true;throw Error('unexpected auth')},
+     sendReply:async()=>{contacted=true;throw Error('unexpected send')}
+    },
+    store:{reserve:async()=>{contacted=true;throw Error('unexpected reservation')}},
+    catalog,allowedAccounts:{facebook:['123']},releaseApproved:true
+   });
+   const result=await sender.execute(e,{dryRun});
+   assert.equal(result.action,'manual');
+   assert.equal(result.reason,'suggestion_unavailable');
+   assert.equal(result.sent,false);
+   assert.equal(result.remoteReplyId,undefined);
+   assert.equal(contacted,false);
+  }
+ }
+});
+test('safe manual and skip decisions never inherit a stale reply receipt',async()=>{
+ for(const action of ['manual','skip']){
+  const sender=createCommentSender({
+   workflow:{execute:async()=>({action,reason:'approved_fixture',sent:false})},
+   adapter:{loadThread:async()=>assert.fail('no read'),authorize:async()=>assert.fail('no auth'),
+    sendReply:async()=>assert.fail('no POST')},
+   store:{reserve:async()=>assert.fail('no reservation')},
+   catalog,allowedAccounts:{facebook:['123']},releaseApproved:true
+  });
+  for(const dryRun of [true,false]){
+   const result=await sender.execute(e,{dryRun});
+   assert.equal(result.action,action);
+   assert.equal(result.sent,false);
+   assert.equal(result.remoteReplyId,null);
+  }
+ }
+});
