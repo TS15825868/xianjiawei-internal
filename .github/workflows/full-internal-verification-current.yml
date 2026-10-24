@@ -13,6 +13,9 @@ on:
       # n8n-only changes run the dependency-free safety suite instead.
       # This full check remains for ERP/site changes and its weekly schedule.
       - 'tools/**'
+      # Metricool image archive format checks run in their isolated no-install suite.
+      - '!tools/metricool-image-format.cjs'
+      - '!tools/metricool-image-format.test.cjs'
       - 'config/**'
       - 'assets/js/**'
       - 'assets/css/**'
