@@ -95,6 +95,7 @@ jobs:
           if(!review.ok)throw Error('正式16項人工審核失效：'+review.reason);
           fs.writeFileSync('/tmp/xjw-approval-proof.json',JSON.stringify({
             id:p.id,approvedAt:p.approved_at,approvedBy:p.approved_by,
+            gateChecklist:p.gate_checklist,gateReviewedAt:p.gate_reviewed_at,
             imageUrl:p.image_url,fingerprint:review.fingerprint,
             headline:p.headline||'',imageSource:p.image_source||'',
             imageWidth:Number(p.image_width||0),imageHeight:Number(p.image_height||0),
@@ -170,7 +171,9 @@ jobs:
             AND COALESCE(image_quality_status,'')=${q(proof.imageQuality)}
             AND EXISTS(SELECT 1 FROM social_post_review_gates g WHERE g.post_id=social_posts.id
               AND g.content_fingerprint=${q(proof.fingerprint)}
-              AND g.reviewed_by=${q(proof.approvedBy)} AND g.copy_image_match=1)
+              AND g.reviewed_by=${q(proof.approvedBy)} AND g.copy_image_match=1
+              AND g.checklist_json=${q(proof.gateChecklist)}
+              AND g.reviewed_at=${q(proof.gateReviewedAt)})
             AND EXISTS(SELECT 1 FROM social_metricool_sync m WHERE m.post_id=social_posts.id
               AND CAST(m.metricool_id AS TEXT)=${q(proof.metricoolId)}
               AND m.uuid=${q(proof.uuid)} AND m.state='scheduled'
