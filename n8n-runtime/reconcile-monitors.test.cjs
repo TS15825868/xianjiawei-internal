@@ -132,3 +132,21 @@ test('npm postinstall only validates monitor sources; operational reconciliation
   assert.doesNotMatch(script,/spawnSync|execSync|import:workflow|publish:workflow|\.query\(|connect\(/);
   assert.equal(require('./verify-monitor-sources.cjs').verify(),3);
 });
+
+test('approved Code-node source is pinned by SHA-256 against computed-property escapes',()=>{
+ const f=MONITORS[1];
+ // These evade the earlier word-based denylist, but must never be imported
+ // or published by a build-only reconciler.
+ validateMutated(f,s=>{s.nodes.find(n=>n.type.endsWith('code')).parameters.jsCode=
+  "return ({})['con'+'structor']['con'+'structor']('return pro'+'cess')();"});
+ validateMutated(f,s=>{s.nodes.find(n=>n.type.endsWith('code')).parameters.jsCode=
+  'return [{json:{ok:true}}];'});
+});
+test('swapping approved Code programs between monitor nodes is not allowed',()=>{
+ const f=MONITORS[0];
+ validateMutated(f,s=>{
+  const nodes=s.nodes.filter(n=>n.type.endsWith('code'));
+  [nodes[0].parameters.jsCode,nodes[1].parameters.jsCode]=
+   [nodes[1].parameters.jsCode,nodes[0].parameters.jsCode];
+ });
+});

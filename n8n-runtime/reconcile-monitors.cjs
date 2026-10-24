@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { randomUUID } = require('node:crypto');
+const { randomUUID, createHash } = require('node:crypto');
 
 const TARGET_SERVICE = 'srv-da8s2r49v7es73cefob0';
 const MONITORS = ['01-line-health-monitor.json', '03-product-ai-geo-audit.json', '04-system-health-watch.json'];
@@ -27,6 +27,23 @@ const READ_URLS=new Set([
   'https://ts15825868.github.io/xianjiawei/geo-data.json',
   'https://ts15825868.github.io/xianjiawei/sitemap.xml'
 ]);
+// Exact reviewed Code-node programs. A regex denylist alone can be evaded via
+// computed property names or dynamically constructed globals. A change to any
+// monitor script must be reviewed and its SHA-256 explicitly updated here.
+// Digests are of the exact UTF-8 jsCode string, not the workflow JSON.
+const APPROVED_CODE_SHA256=Object.freeze({
+  '01-line-health-monitor.json':Object.freeze({
+    '判斷健康狀態':'17c0e515cf0b86b07b8d62450209bbbf8efacadda2f6eaea28b04bf090eb611a',
+    '正常結束':'065c15124070252a1b80bcb59a8b88289d3d3db391b5ef91d669634da34017f3'
+  }),
+  '03-product-ai-geo-audit.json':Object.freeze({
+    '一致性驗收':'978193917d71b445cae8e278422ee9a5ecdba2d726481f332475080b0c9431d2'
+  }),
+  '04-system-health-watch.json':Object.freeze({
+    '總體判斷':'2ab5343b5b512d2a3527c5d873b55bdadfbfd5850ed6bd5e86acc4d1225431cf',
+    '正常結束':'f66996b8ce5d8602a8dc9699a880a4096b055673cc9b2fa96e553b42bd69c0b6'
+  })
+});
 // The postinstall reconciler can republish production n8n workflows.
 // Fail closed on unapproved write nodes or new destinations BEFORE launching
 // any n8n CLI subprocess. This validates scope, not a frozen product version.
@@ -37,6 +54,8 @@ function validateMonitorSource(file,source){
      !Array.isArray(source.nodes)||source.nodes.length<2||source.nodes.length>32||
      !source.connections||typeof source.connections!=='object'||Array.isArray(source.connections))bad();
   let triggers=0,reads=0;
+  const approvedCode=APPROVED_CODE_SHA256[file];
+  const seenCode=new Set();
   const names=new Set(),ids=new Set();
   for(const n of source.nodes){
     if(!n||typeof n.id!=='string'||!n.id||typeof n.name!=='string'||!n.name||
@@ -61,9 +80,12 @@ function validateMonitorSource(file,source){
       if(typeof p.jsCode!=='string'||!p.jsCode.trim()||
          Object.keys(p).some(k=>k!=='jsCode')||
          /(?:\brequire\s*\(|\bimport\s*\(|\beval\s*\(|\bFunction\s*\(|\bfetch\s*\(|\bprocess\b|\bglobalThis\b|\$env\b|\$credentials\b|\$vars\b|\$secrets\b|\$helpers\b|\$http\b|\$getWorkflowStaticData\b|\bWebSocket\b|\bXMLHttpRequest\b|\bthis\b|helpers\.httpRequest)/i.test(p.jsCode))bad();
+      const digest=createHash('sha256').update(p.jsCode,'utf8').digest('hex');
+      if(!Object.hasOwn(approvedCode,n.name)||approvedCode[n.name]!==digest)bad();
+      seenCode.add(n.name);
     }else bad();
   }
-  if(triggers!==1||reads<1)return bad();
+  if(triggers!==1||reads<1||seenCode.size!==Object.keys(approvedCode).length)return bad();
   for(const [node,links] of Object.entries(source.connections)){
     if(!names.has(node)||!links||typeof links!=='object'||Object.keys(links).some(k=>k!=='main'))bad();
     for(const lane of links.main||[]){
