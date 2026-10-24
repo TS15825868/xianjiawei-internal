@@ -17,11 +17,11 @@ export default {
        {status:invalid?400:503,headers:{'cache-control':'no-store'}});
     }
    }
-   return Response.json({accepted:false,code:'disabled',sent:false},{status:503});
+   return Response.json({accepted:false,code:'disabled',sent:false},{status:503,headers:{'cache-control':'no-store'}});
   }
   // Fail closed until operators explicitly verify the Meta subscription and cross-provider overlap.
-  if(env.XJW_META_E2E_VERIFIED!=='true'||env.XJW_PRIMARY_OVERLAP_VERIFIED!=='true')return Response.json({accepted:false,code:'verification_required',sent:false},{status:503});
-  if(!env.XJW_RECEIPT_D1 || !env.XJW_META_APP_SECRET || !env.XJW_META_VERIFY_TOKEN)return Response.json({accepted:false,code:'unconfigured',sent:false},{status:503});
+  if(env.XJW_META_E2E_VERIFIED!=='true'||env.XJW_PRIMARY_OVERLAP_VERIFIED!=='true')return Response.json({accepted:false,code:'verification_required',sent:false},{status:503,headers:{'cache-control':'no-store'}});
+  if(!env.XJW_RECEIPT_D1 || !env.XJW_META_APP_SECRET || !env.XJW_META_VERIFY_TOKEN)return Response.json({accepted:false,code:'unconfigured',sent:false},{status:503,headers:{'cache-control':'no-store'}});
   try{
    const accounts=JSON.parse(env.XJW_SOCIAL_ALLOWED_ACCOUNTS||'null');
    const e=await verifiedEnvelope(request,{allowedAccounts:accounts,appSecret:env.XJW_META_APP_SECRET,verifyToken:env.XJW_META_VERIFY_TOKEN});

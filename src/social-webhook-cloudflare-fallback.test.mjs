@@ -105,3 +105,28 @@ test('Cloudflare verification-only refuses invalid GET without touching D1',asyn
  assert.equal((await unset.json()).code,'unconfigured');
  assert.equal(f.calls,0);
 });
+
+test('fallback refuses caching for every safe rejection and GET-only challenge',async()=>{
+ const f=fixture(),base=env(f);
+ const checks=[
+  [request(),{},503,'disabled'],
+  [request(),{...base,XJW_META_E2E_VERIFIED:'false'},503,'verification_required'],
+  [request(),{...base,XJW_RECEIPT_D1:null},503,'unconfigured'],
+  [request(body,'wrong'),base,400,'invalid_event']
+ ];
+ for(const [req,config,status,code] of checks){
+  const result=await worker.fetch(req,config);
+  assert.equal(result.status,status,code);
+  assert.equal(result.headers.get('cache-control'),'no-store',code);
+  const json=await result.json();
+  assert.equal(json.code,code);
+  assert.equal(json.sent,false);
+ }
+ const verified=await worker.fetch(new Request('https://example.test/?hub.mode=subscribe&hub.verify_token=verify-test&hub.challenge=123'),{
+  ...base,XJW_CF_RECEIPT_ENABLED:'false',XJW_META_VERIFY_ONLY_ENABLED:'true'
+ });
+ assert.equal(verified.status,200);
+ assert.equal(verified.headers.get('cache-control'),'no-store');
+ assert.equal(await verified.text(),'123');
+ assert.equal(f.calls,0,'GET and rejected POST must never reach D1');
+});
