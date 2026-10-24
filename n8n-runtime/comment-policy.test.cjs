@@ -111,3 +111,14 @@ test('D1 suggestion claim and error audit reject malformed or unconfirmed change
  assert.equal(await make({meta:{changes:1}}).claim('key',event,'v1'),true);
  await assert.doesNotReject(make({meta:{changes:1}}).recordError(event,{action:'manual',reason:'api_unavailable',sent:false}));
 });
+
+// A human replying to an earlier comment after the current question is still
+// active brand ownership; the AI must not suggest a competing answer.
+test('later brand reply to a different comment forces human review',()=>{
+ const t=thread('請問龜鹿膏幾克？',[msg('龜鹿膏幾克？','c1','customer',null,'2026-10-21T01:00:00Z')]);
+ t.messages.push(msg('已回覆先前問題','b1','brand','c1','2026-10-21T02:01:00Z'));
+ const r=decide(event,t,catalog);
+ assert.equal(r.action,'manual');
+ assert.equal(r.reason,'other_responder_owns_conversation');
+ assert.equal(r.sent,false);
+});

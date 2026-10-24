@@ -36,6 +36,10 @@ function decide(event, thread, catalog) {
   // Never infer that it is safe to add a second responder.
   if(messages.slice(index+1).some(m=>m.role==='brand'&&!m.replyTo))
     return result('manual','unattributed_brand_reply');
+  // A later brand reply to a different comment still indicates another responder.
+  // Keep this thread with a human instead of suggesting a second reply.
+  if(messages.slice(index+1).some(m=>m.role==='brand'&&m.replyTo))
+    return result('manual','other_responder_owns_conversation');
   if(thread.replyOwnership && thread.replyOwnership!=='ai')
     return result('skip','other_responder_owns_conversation');
   if(thread.automationPending===true)
