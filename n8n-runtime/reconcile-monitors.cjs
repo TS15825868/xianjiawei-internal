@@ -14,9 +14,71 @@ function canonical(value) {
 function definition(workflow) {
   return JSON.stringify(canonical({nodes:workflow.nodes.map(n => ({id:n.id,name:n.name,type:n.type,typeVersion:n.typeVersion,parameters:n.parameters,disabled:Boolean(n.disabled),credentials:n.credentials||{}})).sort((a,b)=>a.id.localeCompare(b.id)),connections:workflow.connections}));
 }
+
+const MONITOR_SCOPE=Object.freeze({
+  '01-line-health-monitor.json':{id:'RQwMvN9bhfBa1LJf',name:'仙加味｜LINE OA 健康監控',path:'xjw-line-health-a7f8c2'},
+  '03-product-ai-geo-audit.json':{id:'mC4ySWDhUzFW4SS6',name:'仙加味｜產品母資料 AI GEO 一致性檢查',path:'xjw-ai-geo-9c3f75'},
+  '04-system-health-watch.json':{id:'XthcauaEkTO29XSf',name:'仙加味｜系統健康總監控',path:'xjw-system-health-d4b6e1'}
+});
+const READ_URLS=new Set([
+  'https://ts-line.onrender.com/healthz',
+  'https://ts15825868.github.io/xianjiawei/public-product-master.json',
+  'https://ts15825868.github.io/xianjiawei/ai-answers.json',
+  'https://ts15825868.github.io/xianjiawei/geo-data.json',
+  'https://ts15825868.github.io/xianjiawei/sitemap.xml'
+]);
+// The postinstall reconciler can republish production n8n workflows.
+// Fail closed on unapproved write nodes or new destinations BEFORE launching
+// any n8n CLI subprocess. This validates scope, not a frozen product version.
+function validateMonitorSource(file,source){
+  const expected=MONITOR_SCOPE[file];
+  const bad=()=>{throw new Error('Read-only monitor source verification failed: '+file)};
+  if(!expected||!source||source.id!==expected.id||source.name!==expected.name||
+     !Array.isArray(source.nodes)||source.nodes.length<2||source.nodes.length>32||
+     !source.connections||typeof source.connections!=='object'||Array.isArray(source.connections))bad();
+  let triggers=0,reads=0;
+  const names=new Set(),ids=new Set();
+  for(const n of source.nodes){
+    if(!n||typeof n.id!=='string'||!n.id||typeof n.name!=='string'||!n.name||
+       names.has(n.name)||ids.has(n.id)||n.disabled===true||
+       n.credentials&&Object.keys(n.credentials).length!==0)bad();
+    names.add(n.name);ids.add(n.id);
+    const p=n.parameters||{};
+    if(n.type==='n8n-nodes-base.webhook'){
+      triggers++;
+      if(p.httpMethod!=='GET'||p.path!==expected.path||p.responseMode!=='lastNode'||
+         p.responseData!=='firstEntryJson'||!p.options||Object.keys(p.options).length!==0||
+         Object.keys(p).some(k=>!['httpMethod','path','options','responseMode','responseData'].includes(k)))bad();
+    }else if(n.type==='n8n-nodes-base.httpRequest'){
+      reads++;
+      if(!READ_URLS.has(p.url)||Object.keys(p).some(k=>!['url','options'].includes(k)))bad();
+      // Only response parsing options are needed for these five safe public GET endpoints.
+      const options=p.options||{};
+      if(Object.keys(options).some(k=>k!=='response')||
+         Object.keys(options.response||{}).some(k=>k!=='response')||
+         Object.keys(options.response?.response||{}).some(k=>!['fullResponse','neverError','responseFormat'].includes(k)))bad();
+    }else if(n.type==='n8n-nodes-base.code'){
+      if(typeof p.jsCode!=='string'||!p.jsCode.trim()||
+         Object.keys(p).some(k=>k!=='jsCode')||
+         /(?:\brequire\s*\(|\bimport\s*\(|\beval\s*\(|\bFunction\s*\(|\bfetch\s*\(|\bprocess\b|\bglobalThis\b|\$env\b|\$credentials\b|helpers\.httpRequest)/i.test(p.jsCode))bad();
+    }else bad();
+  }
+  if(triggers!==1||reads<1)return bad();
+  for(const [node,links] of Object.entries(source.connections)){
+    if(!names.has(node)||!links||typeof links!=='object'||Object.keys(links).some(k=>k!=='main'))bad();
+    for(const lane of links.main||[]){
+      if(!Array.isArray(lane))bad();
+      for(const edge of lane)if(!edge||!names.has(edge.node))bad();
+    }
+  }
+  return true;
+}
+
 function reconcile({run,read,write,sourceDir,workDir,log=console.log}) {
-  for (const file of MONITORS) {
-    const source = JSON.parse(read(path.join(sourceDir,file)));
+  // Validate ALL definitions before touching even one live monitor.
+  const sources=MONITORS.map(file=>({file,source:JSON.parse(read(path.join(sourceDir,file)))}));
+  for(const {file,source} of sources)validateMonitorSource(file,source);
+  for (const {file,source} of sources) {
     if (!source.id || source.nodes.some(n => /publish-now|deliveries/.test(JSON.stringify(n)))) throw new Error('Monitor-only scope check failed');
     const editorPath = path.join(workDir,source.id+'-editor.json');
     run(['export:workflow','--id='+source.id,'--output='+editorPath]);
@@ -50,4 +112,4 @@ function main() {
   finally { fs.rmSync(workDir,{recursive:true,force:true}); }
 }
 if (require.main===module) { try {main()} catch(error){console.error(error.message);process.exitCode=1;} }
-module.exports={canonical,definition,reconcile,MONITORS,TARGET_SERVICE};
+module.exports={canonical,definition,reconcile,validateMonitorSource,MONITORS,TARGET_SERVICE};

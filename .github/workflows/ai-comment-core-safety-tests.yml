@@ -43,6 +43,7 @@ jobs:
             n8n-runtime/instagram-readonly-workflow.test.cjs \
             n8n-runtime/social-receipt-handler.test.mjs \
             n8n-runtime/monitor-parallel-fallback.test.cjs \
+            n8n-runtime/reconcile-monitors.test.cjs \
             n8n-runtime/smoke-readonly.test.cjs \
             n8n-runtime/social-tls-preflight.test.mjs \
             n8n-runtime/social-webhook.test.mjs \
