@@ -33,3 +33,31 @@ test('confirmed successful Meta JSON response is still usable',async()=>{
  assert.equal(await a.authorize(event),true);
  assert.deepEqual(await a.sendReply(event,'hello','version'),{status:201,id:'remote-123'});
 });
+
+test('Threads missing or malformed conversation version never creates a container',async()=>{
+ for(const version of [undefined,null,'','previous-version','A'.repeat(64),'0'.repeat(63),'x'.repeat(64),123]){
+  let contacted=0;
+  const a=createMetaReplyAdapter({
+   platform:'threads',accountId:'123',
+   request:async()=>{contacted++;throw Error('must not create container')},
+   loadThread:async()=>{contacted++;throw Error('must not load history')},
+   permissionEvidence:async()=>{contacted++;throw Error('must not request permissions')}
+  });
+  await assert.rejects(a.sendReply({...event,platform:'threads'},'仙加味',version),
+   /Unverified conversation version/);
+  assert.equal(contacted,0);
+ }
+});
+test('blank reply never posts to any official platform',async()=>{
+ for(const platform of ['facebook','instagram','threads']){
+  let contacted=0;
+  const a=createMetaReplyAdapter({
+   platform,accountId:'123',
+   request:async()=>{contacted++;throw Error('must not POST')},
+   loadThread:async()=>{contacted++;throw Error('must not load')},
+   permissionEvidence:async()=>{contacted++;throw Error('must not authorize')}
+  });
+  await assert.rejects(a.sendReply({...event,platform},'  ','0'.repeat(64)),/Invalid reply scope/);
+  assert.equal(contacted,0);
+ }
+});

@@ -42,8 +42,13 @@ function createMetaReplyAdapter({platform,accountId,request,loadThread,permissio
     Array.isArray(evidence.scopes)&&config.scopes.every(s=>evidence.scopes.includes(s));
   },
   async sendReply(e,reply,version){
-   if(!match(e)||typeof reply!=='string'||!reply||reply.length>500)throw Error('Invalid reply scope');
+   if(!match(e)||typeof reply!=='string'||!reply.trim()||reply.length>500)throw Error('Invalid reply scope');
    if(platform!=='threads')return call('POST',`${e.commentId}/${platform==='instagram'?'replies':'comments'}`,{message:reply});
+   // An invalid or missing conversation fingerprint must not create even an
+   // unpublished Threads reply container. The final official history read
+   // still runs immediately before publishing any valid container.
+   if(typeof version!=='string'||!/^[0-9a-f]{64}$/.test(version))
+    throw Error('Unverified conversation version');
    const container=await call('POST',`${accountId}/threads`,{media_type:'TEXT',text:reply,reply_to_id:e.commentId});
    if(typeof container?.id!=='string'||!/^\d+$/.test(container.id))throw Error('Container unconfirmed');
    // A container ID is never a published reply receipt. Recheck before publish.
