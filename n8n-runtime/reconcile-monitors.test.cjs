@@ -103,3 +103,22 @@ test('invalid later monitor definition blocks all subprocesses and all partial w
   }),/Read-only monitor source verification failed/);
   assert.equal(called,0);
 });
+
+test('monitor topology cannot bypass public GETs, disconnect checks, fork or cycle',()=>{
+ const f=MONITORS[2];
+ validateMutated(f,s=>{delete s.connections['外部排程觸發']});
+ validateMutated(f,s=>{s.connections['外部排程觸發'].main[0][0].node='總體判斷'});
+ validateMutated(f,s=>{s.connections['讀 LINE OA healthz'].main[0][0].node='讀 LINE OA healthz'});
+ validateMutated(f,s=>{s.connections['外部排程觸發'].main[0][0].index=1});
+ validateMutated(f,s=>{s.connections['外部排程觸發'].main[0].push({node:'正常結束',type:'main',index:0})});
+});
+test('monitor Code nodes cannot access n8n variables, secrets or network helpers',()=>{
+ const f=MONITORS[1];
+ for(const payload of [
+  'return $vars.SECRET;', 'return $secrets.apiKey;',
+  'return $getWorkflowStaticData("global");',
+  'return $helpers.httpRequest({url:"https://example.com"});',
+  'return this.helpers.httpRequest({url:"https://example.com"});',
+  'return new WebSocket("wss://example.com");'
+ ])validateMutated(f,s=>{s.nodes.find(n=>n.type.endsWith('code')).parameters.jsCode=payload});
+});

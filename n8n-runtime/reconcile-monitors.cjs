@@ -60,7 +60,7 @@ function validateMonitorSource(file,source){
     }else if(n.type==='n8n-nodes-base.code'){
       if(typeof p.jsCode!=='string'||!p.jsCode.trim()||
          Object.keys(p).some(k=>k!=='jsCode')||
-         /(?:\brequire\s*\(|\bimport\s*\(|\beval\s*\(|\bFunction\s*\(|\bfetch\s*\(|\bprocess\b|\bglobalThis\b|\$env\b|\$credentials\b|helpers\.httpRequest)/i.test(p.jsCode))bad();
+         /(?:\brequire\s*\(|\bimport\s*\(|\beval\s*\(|\bFunction\s*\(|\bfetch\s*\(|\bprocess\b|\bglobalThis\b|\$env\b|\$credentials\b|\$vars\b|\$secrets\b|\$helpers\b|\$http\b|\$getWorkflowStaticData\b|\bWebSocket\b|\bXMLHttpRequest\b|\bthis\b|helpers\.httpRequest)/i.test(p.jsCode))bad();
     }else bad();
   }
   if(triggers!==1||reads<1)return bad();
@@ -71,6 +71,30 @@ function validateMonitorSource(file,source){
       for(const edge of lane)if(!edge||!names.has(edge.node))bad();
     }
   }
+  // Merely including a GET node is not proof that a monitor executes it.
+  // Require one complete, acyclic trigger -> public GET(s) -> Code path,
+  // with no disconnected nodes, bypass branches or non-main output edges.
+  const byName=new Map(source.nodes.map(n=>[n.name,n]));
+  let cursor=source.nodes.find(n=>n.type==='n8n-nodes-base.webhook');
+  const visited=new Set();
+  let sawRead=false,sawCode=false;
+  while(cursor){
+    if(visited.has(cursor.name))bad();
+    visited.add(cursor.name);
+    if(cursor.type==='n8n-nodes-base.code')sawCode=true;
+    else if(sawCode)bad();
+    if(cursor.type==='n8n-nodes-base.httpRequest')sawRead=true;
+    const outgoing=source.connections[cursor.name];
+    if(!outgoing){cursor=null;break;}
+    const lanes=outgoing.main;
+    if(Object.keys(outgoing).length!==1||!Array.isArray(lanes)||lanes.length!==1||
+       !Array.isArray(lanes[0])||lanes[0].length!==1)bad();
+    const edge=lanes[0][0];
+    if(edge?.type!=='main'||edge.index!==0||!byName.has(edge.node))bad();
+    cursor=byName.get(edge.node);
+  }
+  if(!sawRead||!sawCode||visited.size!==source.nodes.length||
+     Object.keys(source.connections).length!==source.nodes.length-1)bad();
   return true;
 }
 
