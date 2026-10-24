@@ -25,7 +25,7 @@ function createCommentErpView({db,allowedAccounts}){
    AND r.comment_id=c.comment_id AND r.conversation_version=c.conversation_version
    WHERE c.platform=$1 AND c.account_id=$2 ORDER BY updated_at DESC,
    c.post_id,c.comment_id,c.conversation_version LIMIT $3`,[platform,accountId,limit]);
-  if(!Array.isArray(result.rows))throw Error('ERP read unconfirmed');
+  if(!Array.isArray(result?.rows)||result.rows.length>limit)throw Error('ERP read unconfirmed');
   // Fail closed if an unexpected DB view, join or mocked adapter returns rows
   // outside the authenticated ERP account scope.
   if(result.rows.some(r=>r.platform!==platform||r.account_id!==accountId))throw Error('ERP scope mismatch');
