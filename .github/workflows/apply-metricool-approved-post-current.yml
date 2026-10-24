@@ -38,9 +38,14 @@ jobs:
           for(const k of ['postId','title','copy','category','imageUrl','imageAlt','scheduledAt','metricoolPostId','metricoolUuid','plannerUrl']){
             if(!String(x[k]??'').trim()) throw new Error('缺少 '+k);
           }
-          if(!String(x.imageUrl).startsWith('https://static.metricool.com/')) throw new Error('imageUrl 必須來自目前已排程的 Metricool 媒體');
-          if(!Number.isFinite(Date.parse(x.scheduledAt))) throw new Error('scheduledAt 格式錯誤');
-          if(x.userApproved!==true) throw new Error('本流程只接受使用者已明確核准的貼文');
+          if(!/^[A-Za-z0-9_-]{1,128}$/.test(String(x.postId))) throw new Error('無效貼文 ID');
+          let image;try{image=new URL(x.imageUrl)}catch{throw new Error('圖片網址無效')}
+          if(image.protocol!=='https:'||image.hostname!=='static.metricool.com') throw new Error('圖片必須來自正式 Metricool 媒體');
+          if(!/^\d+$/.test(String(x.metricoolPostId))) throw new Error('Metricool ID 格式錯誤');
+          if(!Number.isFinite(Date.parse(x.scheduledAt))||Date.parse(x.scheduledAt)<=Date.now()) throw new Error('scheduledAt 必須是未來時間');
+          if(x.userApproved!==true) throw new Error('請求尚未標示人工確認');
+          // A JSON flag is never human approval evidence; the live D1 review gate
+          // and exact pre-existing Metricool schedule must pass before any write.
           const safe=String(x.postId).replace(/[^A-Za-z0-9_-]+/g,'-');
           const date=String(x.scheduledAt).slice(0,10);
           const targetDir='assets/post-images/'+date;
@@ -48,6 +53,56 @@ jobs:
           fs.writeFileSync('/tmp/xjw-target-dir.txt',targetDir);
           fs.writeFileSync('/tmp/xjw-filename.txt',filename);
           fs.writeFileSync('/tmp/xjw-image-url.txt',x.imageUrl);
+          NODE
+
+      - name: Require protected Cloudflare credentials
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+
+      - name: Install dependencies for the formal review gate
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+
+      - name: Preflight actual D1 human review and original Metricool schedule
+        shell: bash
+        run: |
+          set -euo pipefail
+          ID="$(node -p "require('./ops/metricool-approved-post-current.json').postId")"
+          # The validated postId permits ASCII letters, numbers, underscore and dash only.
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,g.content_fingerprint AS gate_fingerprint,g.checklist_json AS gate_checklist,g.copy_image_match AS gate_image_match,g.reviewed_by AS gate_reviewer,g.reviewed_at AS gate_reviewed_at,m.metricool_id AS live_metricool_id,m.uuid AS live_uuid,m.state AS live_state,m.publication_at AS live_publication_at FROM social_posts p LEFT JOIN social_post_review_gates g ON g.post_id=p.id LEFT JOIN social_metricool_sync m ON m.post_id=p.id WHERE p.id='$ID' LIMIT 1" > /tmp/xjw-existing-approval.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {gateState} from './src/publishing-review-gate-entry.js';
+          const x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
+          const data=JSON.parse(fs.readFileSync('/tmp/xjw-existing-approval.json','utf8'));
+          const rows=(Array.isArray(data)?data[0]?.results:data?.results)||[];
+          if(rows.length!==1)throw Error('D1找不到唯一的已核准貼文');
+          const p=rows[0];
+          if(p.status!=='approved'||Number(p.image_approved)!==1||!p.approved_at||!p.approved_by)
+            throw Error('草稿、待審核及未取得人工核准的貼文不得進入排程');
+          for(const [key,value] of Object.entries({title:x.title,copy:x.copy,category:x.category,image_url:x.imageUrl,image_alt:x.imageAlt}))
+            if(p[key]!==value)throw Error('請求圖文與正式人工核准版本不同：'+key);
+          if(String(p.live_metricool_id)!==String(x.metricoolPostId)||p.live_uuid!==x.metricoolUuid||
+             p.live_state!=='scheduled'||Date.parse(p.live_publication_at)!==Date.parse(x.scheduledAt))
+            throw Error('D1尚無相同 ID、UUID 及時段的外部排程證據，禁止冒稱已排程');
+          const gate={post_id:p.id,content_fingerprint:p.gate_fingerprint,
+            checklist_json:p.gate_checklist,copy_image_match:p.gate_image_match,
+            reviewed_by:p.gate_reviewer,reviewed_at:p.gate_reviewed_at};
+          // Reuse production fingerprint, sixteen checks, identity, image match,
+          // and weather freshness rules without writing any D1 schema or row.
+          const env={DB:{exec:async()=>{},prepare:()=>({bind:()=>({first:async()=>gate})})}};
+          const review=await gateState(env,p);
+          if(!review.ok)throw Error('正式16項人工審核失效：'+review.reason);
+          fs.writeFileSync('/tmp/xjw-approval-proof.json',JSON.stringify({
+            id:p.id,approvedAt:p.approved_at,approvedBy:p.approved_by,
+            imageUrl:p.image_url,fingerprint:review.fingerprint,
+            headline:p.headline||'',imageSource:p.image_source||'',
+            imageWidth:Number(p.image_width||0),imageHeight:Number(p.image_height||0),
+            imageQuality:p.image_quality_status||'',
+            metricoolId:String(p.live_metricool_id),uuid:p.live_uuid,
+            publicationAt:p.live_publication_at
+          }));
+          console.log('PASS existing D1 human review and matching external schedule');
           NODE
 
       - name: Download and validate approved image
@@ -88,40 +143,38 @@ jobs:
             sleep 2
           done
 
-      - name: Install dependencies
-        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-
-      - name: Sync approved schedule to formal D1
+      - name: Sync already-reviewed existing schedule to D1 without changing media or approval
         run: |
           set -euo pipefail
           node - <<'NODE'
           const fs=require('fs');
           const x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
-          const meta=JSON.parse(fs.readFileSync('/tmp/xjw-image-meta.json','utf8'));
-          const target=fs.readFileSync('/tmp/xjw-target-dir.txt','utf8').trim();
-          const filename=fs.readFileSync('/tmp/xjw-filename.txt','utf8').trim();
-          const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
-          const formalUrl='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+target+'/'+filename;
-          const source='ChatGPT正式單張圖｜Metricool已建立排程｜GitHub main封存｜使用者人工核准';
+          const q=v=>"'"+String(v??'').replaceAll("'","''")+"'";
+          const proof=JSON.parse(fs.readFileSync('/tmp/xjw-approval-proof.json','utf8'));
+          // The PNG is archived for recovery only. Changing copy/image/metadata
+          // here would invalidate the human content fingerprint: never do that.
           const sql=`UPDATE social_posts SET
-            title=${q(x.title)}, copy=${q(x.copy)}, category=${q(x.category)},
-            platforms_json='["Facebook","Instagram","Threads"]',
             status='scheduled',
             scheduled_at=${q(x.scheduledAt)},
             proposed_scheduled_at=${q(x.scheduledAt)},
-            image_url=${q(formalUrl)},
-            image_alt=${q(x.imageAlt)},
-            image_source=${q(source)},
-            image_approved=1,
-            image_width=${Number(meta.width)},
-            image_height=${Number(meta.height)},
-            image_bytes=${Number(meta.bytes)},
-            image_quality_status='ok',
-            approved_by=${q(x.approvedBy||'user')},
-            approved_at=COALESCE(approved_at,datetime('now')),
-            published_at=NULL,
             updated_at=datetime('now')
-          WHERE id=${q(x.postId)} AND status IN ('draft','pending_review','approved','scheduled');`;
+          WHERE id=${q(x.postId)} AND status='approved' AND image_approved=1
+            AND approved_at=${q(proof.approvedAt)} AND approved_by=${q(proof.approvedBy)}
+            AND image_url=${q(proof.imageUrl)}
+            AND title=${q(x.title)} AND copy=${q(x.copy)}
+            AND category=${q(x.category)} AND image_alt=${q(x.imageAlt)}
+            AND COALESCE(headline,'')=${q(proof.headline)}
+            AND COALESCE(image_source,'')=${q(proof.imageSource)}
+            AND COALESCE(image_width,0)=${Number(proof.imageWidth)}
+            AND COALESCE(image_height,0)=${Number(proof.imageHeight)}
+            AND COALESCE(image_quality_status,'')=${q(proof.imageQuality)}
+            AND EXISTS(SELECT 1 FROM social_post_review_gates g WHERE g.post_id=social_posts.id
+              AND g.content_fingerprint=${q(proof.fingerprint)}
+              AND g.reviewed_by=${q(proof.approvedBy)} AND g.copy_image_match=1)
+            AND EXISTS(SELECT 1 FROM social_metricool_sync m WHERE m.post_id=social_posts.id
+              AND CAST(m.metricool_id AS TEXT)=${q(proof.metricoolId)}
+              AND m.uuid=${q(proof.uuid)} AND m.state='scheduled'
+              AND m.publication_at=${q(proof.publicationAt)});`;
           fs.writeFileSync('/tmp/xjw-apply.sql',sql+'\n');
           fs.writeFileSync('/tmp/xjw-post-id.txt',x.postId);
           NODE
@@ -130,17 +183,23 @@ jobs:
       - name: Verify formal D1 schedule
         run: |
           set -euo pipefail
+          set -euo pipefail
           ID="$(cat /tmp/xjw-post-id.txt)"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,scheduled_at,image_url,image_approved,approved_by,approved_at FROM social_posts WHERE id='${ID}'" > /tmp/xjw-verify.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,status,scheduled_at,image_url,image_alt,image_approved,approved_by,approved_at FROM social_posts WHERE id='$ID'" > /tmp/xjw-verify.json
           node - <<'NODE'
           const fs=require('fs');
           const raw=JSON.parse(fs.readFileSync('/tmp/xjw-verify.json','utf8'));
           const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
-          if(rows.length!==1) throw new Error('找不到正式貼文');
-          const r=rows[0];
-          if(r.status!=='scheduled'||Number(r.image_approved)!==1||!r.scheduled_at) throw new Error('D1尚未正式排程');
-          if(!String(r.image_url||'').includes('/assets/post-images/')) throw new Error('D1正式圖未封存GitHub');
-          console.log('PASS scheduled',JSON.stringify(r));
+          if(rows.length!==1)throw Error('找不到正式貼文');
+          const r=rows[0],x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
+          const proof=JSON.parse(fs.readFileSync('/tmp/xjw-approval-proof.json','utf8'));
+          if(r.status!=='scheduled'||Number(r.image_approved)!==1||
+             Date.parse(r.scheduled_at)!==Date.parse(x.scheduledAt)||
+             r.approved_at!==proof.approvedAt||r.approved_by!==proof.approvedBy)
+            throw Error('正式排程或人工核准持續性驗證失敗');
+          for(const [key,value] of Object.entries({title:x.title,copy:x.copy,category:x.category,image_url:proof.imageUrl,image_alt:x.imageAlt}))
+            if(r[key]!==value)throw Error('已核准圖文被意外更改：'+key);
+          console.log('PASS existing manually reviewed schedule; copy, image and approval unchanged');
           NODE
 
       - name: Clean consumed request
