@@ -49,9 +49,7 @@ jobs:
           const safe=String(x.postId).replace(/[^A-Za-z0-9_-]+/g,'-');
           const date=String(x.scheduledAt).slice(0,10);
           const targetDir='assets/post-images/'+date;
-          const filename=safe+'.png';
           fs.writeFileSync('/tmp/xjw-target-dir.txt',targetDir);
-          fs.writeFileSync('/tmp/xjw-filename.txt',filename);
           fs.writeFileSync('/tmp/xjw-image-url.txt',x.imageUrl);
           NODE
 
@@ -109,16 +107,16 @@ jobs:
       - name: Download and validate approved image
         run: |
           set -euo pipefail
-          curl -fL --retry 3 --max-time 60 "$(cat /tmp/xjw-image-url.txt)" -o /tmp/xjw-approved.png
+          curl --proto '=https' --proto-redir '=https' -fL --retry 2 --max-time 60 "$(cat /tmp/xjw-image-url.txt)" -o /tmp/xjw-approved-media
           node - <<'NODE'
-          const fs=require('fs');
-          const b=fs.readFileSync('/tmp/xjw-approved.png');
-          if(b.length<250000) throw new Error('圖片檔案過小');
-          if(b.subarray(0,8).toString('hex')!=='89504e470d0a1a0a') throw new Error('不是PNG');
-          const width=b.readUInt32BE(16),height=b.readUInt32BE(20);
-          if(width<1080||height<1080) throw new Error('圖片解析度不足 '+width+'x'+height);
-          fs.writeFileSync('/tmp/xjw-image-meta.json',JSON.stringify({width,height,bytes:b.length}));
-          console.log('PASS image',width,height,b.length);
+          const fs=require('node:fs');
+          const {inspectImage}=require('./tools/metricool-image-format.cjs');
+          const info=inspectImage(fs.readFileSync('/tmp/xjw-approved-media'));
+          const x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
+          const filename=x.postId+'.'+info.format;
+          fs.writeFileSync('/tmp/xjw-filename.txt',filename);
+          fs.writeFileSync('/tmp/xjw-image-meta.json',JSON.stringify(info));
+          console.log('PASS approved original',info.format,info.width,info.height,info.bytes);
           NODE
 
       - name: Commit formal image to main
@@ -127,15 +125,15 @@ jobs:
           TARGET="$(cat /tmp/xjw-target-dir.txt)"
           FILE="$(cat /tmp/xjw-filename.txt)"
           mkdir -p "$TARGET"
-          cp /tmp/xjw-approved.png "$TARGET/$FILE"
-          cp "$TARGET/$FILE" /tmp/xjw-formal-image.png
+          cp /tmp/xjw-approved-media "$TARGET/$FILE"
+          cp "$TARGET/$FILE" /tmp/xjw-formal-image
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
             mkdir -p "$TARGET"
-            cp /tmp/xjw-formal-image.png "$TARGET/$FILE"
+            cp /tmp/xjw-formal-image "$TARGET/$FILE"
             git add "$TARGET/$FILE"
             if git diff --cached --quiet; then break; fi
             git commit -m 'content: archive approved Metricool post image'
@@ -152,7 +150,7 @@ jobs:
           const x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
           const q=v=>"'"+String(v??'').replaceAll("'","''")+"'";
           const proof=JSON.parse(fs.readFileSync('/tmp/xjw-approval-proof.json','utf8'));
-          // The PNG is archived for recovery only. Changing copy/image/metadata
+          // The unchanged original image is archived for recovery only. Changing copy/image/metadata
           // here would invalidate the human content fingerprint: never do that.
           const sql=`UPDATE social_posts SET
             status='scheduled',
@@ -185,7 +183,6 @@ jobs:
 
       - name: Verify formal D1 schedule
         run: |
-          set -euo pipefail
           set -euo pipefail
           ID="$(cat /tmp/xjw-post-id.txt)"
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,status,scheduled_at,image_url,image_alt,image_approved,approved_by,approved_at FROM social_posts WHERE id='$ID'" > /tmp/xjw-verify.json
