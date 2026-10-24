@@ -10,6 +10,7 @@ const verified={
  effective_role:'xjw_social_worker',tls_enabled:true,tls_version:'TLSv1.3',
  superuser:false,bypass_rls:false,can_read_control:true,can_read_work_queues:true,
  inbox_write_ready:true,comment_write_ready:true,reply_write_ready:true,no_delete_privilege:true,
+ no_truncate_privilege:true,no_platform_control_admin:true,
  can_enable_platform:false,no_platform_control_update:true,can_delete_comment:false,
  platform_rows_expected:true,all_send_flags_off:true,all_tables_rls_enabled:true
 };
@@ -40,7 +41,7 @@ test('operator probe authenticates through strict TLS and SELECT-only transactio
  assert.ok(x.queries[1].includes('FROM pg_stat_ssl'));
  assert.ok(x.queries[1].includes('pg_roles'));
  assert.ok(x.queries[1].includes('platform_control'));
- for(const field of ['inbox_write_ready','comment_write_ready','reply_write_ready','no_delete_privilege','can_read_work_queues','no_platform_control_update'])
+ for(const field of ['inbox_write_ready','comment_write_ready','reply_write_ready','no_delete_privilege','no_truncate_privilege','no_platform_control_admin','can_read_work_queues','no_platform_control_update'])
   assert.ok(x.queries[1].includes(field));
  assert.ok(x.queries.every(q=>q==='BEGIN READ ONLY'||q==='ROLLBACK'||q.startsWith('SELECT current_user AS effective_role,')));
  assert.equal(x.closed,1);
@@ -52,6 +53,8 @@ test('no trust in TLS version, wrong role, RLS bypass, disabled RLS or release f
   {can_read_work_queues:false},{can_read_work_queues:null},
   {inbox_write_ready:false},{comment_write_ready:false},
   {reply_write_ready:false},{no_delete_privilege:false},
+  {no_truncate_privilege:false},{no_truncate_privilege:null},
+  {no_platform_control_admin:false},{no_platform_control_admin:null},
   {can_enable_platform:true},{no_platform_control_update:false},{no_platform_control_update:null},{can_delete_comment:true},
   {platform_rows_expected:false},{all_send_flags_off:false},
   {all_tables_rls_enabled:false},
@@ -160,4 +163,14 @@ test('successful protected driver connect remains open for the caller to verify 
  assert.equal(closed,0);
  await client.end();
  assert.equal(closed,1);
+});
+
+test('worker preflight rejects TRUNCATE on every private ledger and INSERT/REFERENCES/TRIGGER on platform control',async()=>{
+ const x=mockProbe();
+ await verifySocialWorkerTls({config,connect:x.connect});
+ const sql=x.queries.find(q=>q.startsWith('SELECT current_user AS effective_role,'));
+ for(const table of ['webhook_inbox','comment_ledger','reply_ledger','platform_control'])
+  assert.ok(sql.includes(`has_table_privilege(current_user,'xjw_social.${table}','TRUNCATE')`));
+ for(const privilege of ['INSERT','REFERENCES','TRIGGER'])
+  assert.ok(sql.includes(`has_table_privilege(current_user,'xjw_social.platform_control','${privilege}')`));
 });

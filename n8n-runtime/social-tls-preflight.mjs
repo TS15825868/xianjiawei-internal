@@ -28,6 +28,13 @@ const CHECK=String.raw`SELECT current_user AS effective_role,
  has_table_privilege(current_user,'xjw_social.comment_ledger','DELETE') OR
  has_table_privilege(current_user,'xjw_social.reply_ledger','DELETE') OR
  has_table_privilege(current_user,'xjw_social.platform_control','DELETE')) AS no_delete_privilege,
+ NOT (has_table_privilege(current_user,'xjw_social.webhook_inbox','TRUNCATE') OR
+ has_table_privilege(current_user,'xjw_social.comment_ledger','TRUNCATE') OR
+ has_table_privilege(current_user,'xjw_social.reply_ledger','TRUNCATE') OR
+ has_table_privilege(current_user,'xjw_social.platform_control','TRUNCATE')) AS no_truncate_privilege,
+ NOT (has_table_privilege(current_user,'xjw_social.platform_control','INSERT') OR
+ has_table_privilege(current_user,'xjw_social.platform_control','REFERENCES') OR
+ has_table_privilege(current_user,'xjw_social.platform_control','TRIGGER')) AS no_platform_control_admin,
  has_table_privilege(current_user,'xjw_social.platform_control','SELECT') AS can_read_control,
  has_table_privilege(current_user,'xjw_social.webhook_inbox','SELECT') AND
  has_table_privilege(current_user,'xjw_social.comment_ledger','SELECT') AND
@@ -72,6 +79,7 @@ export async function verifySocialWorkerTls({config,connect}){
      row.superuser!==false || row.bypass_rls!==false ||
      row.inbox_write_ready!==true || row.comment_write_ready!==true ||
      row.reply_write_ready!==true || row.no_delete_privilege!==true ||
+     row.no_truncate_privilege!==true || row.no_platform_control_admin!==true ||
      row.can_read_control!==true || row.can_read_work_queues!==true ||
      row.can_enable_platform!==false || row.no_platform_control_update!==true ||
      row.can_delete_comment!==false || row.platform_rows_expected!==true ||
