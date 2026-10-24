@@ -26,7 +26,7 @@ function inspectStart(overrides={}){
 }
 
 test('low-memory startup provides single-worker and bounded runner-heap defaults',()=>{
- assert.equal(inspectStart(),'1|1|128|--max-old-space-size=256|300|start');
+ assert.equal(inspectStart(),'1|1|128|--max-old-space-size=256|480|start');
 });
 test('operator-provided limits remain intact without replacing protected settings',()=>{
  assert.equal(inspectStart({
@@ -44,5 +44,5 @@ test('empty configured limits receive safe defaults',()=>{
   N8N_RUNNERS_MAX_OLD_SPACE_SIZE:'',
   NODE_OPTIONS:'',
   N8N_RUNNERS_GRANT_TOKEN_TTL:'',
- }),'1|1|128|--max-old-space-size=256|300|start');
+ }),'1|1|128|--max-old-space-size=256|480|start');
 });

@@ -8,12 +8,13 @@ set -eu
 # This does not cap total RSS or prove the service will avoid OOM.
 # Keep task runners enabled for Code node isolation; do not disable TLS.
 : "${N8N_RUNNERS_MAX_OLD_SPACE_SIZE:=128}"
-# Observed Render Free starts sometimes exceed the default 180s broker grant
-# lifetime: expired grant tokens return a WebSocket 403 to the JS runner.
-# n8n 2.35.x supports the broker TTL setting. This bounded fallback only
-# addresses slow startup; it cannot repair PostgreSQL/TLS or memory exhaustion.
+# Observed 2026-10-24 Render cold start: task broker appeared at 07:28:22 UTC,
+# JS runner did not register until 07:34:02 UTC (> 300s). The previous 300s
+# grant expired with WebSocket 403 during that same slow database startup.
+# Allow 480s for one bounded bootstrap, rather than repeated auth failures.
+# This does not cure PostgreSQL timeout, memory exhaustion or Render builds.
 # Allow the existing operator configuration to take precedence.
-: "${N8N_RUNNERS_GRANT_TOKEN_TTL:=300}"
+: "${N8N_RUNNERS_GRANT_TOKEN_TTL:=480}"
 # n8n itself is a separate Node.js process. On a 512 MiB free instance,
 # constrain its old-space heap independently of task-runner limits. This cannot
 # bound native/child-process RSS and is NOT proof of OOM recovery.
