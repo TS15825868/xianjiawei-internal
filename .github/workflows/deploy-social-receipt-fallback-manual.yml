@@ -1,14 +1,8 @@
 name: 仙加味免費備援安全部署
 on:
+  # Controlled release only: code changes receive zero-send verification,
+  # but cannot deploy an unverified receipt endpoint implicitly.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-social-receipt-fallback-manual.yml'
-      - 'wrangler.social-receipt-fallback.jsonc'
-      - 'src/social-webhook-cloudflare-fallback.mjs'
-      - 'src/social-webhook-cloudflare-fallback.test.mjs'
-      - 'n8n-runtime/social-webhook.mjs'
 permissions:
   contents: read
 concurrency:

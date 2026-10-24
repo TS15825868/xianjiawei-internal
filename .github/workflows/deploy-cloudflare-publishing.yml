@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      # The receipt-only backup is a separate Worker, not part of ERP deployment.
+      - '!src/social-webhook-cloudflare-fallback.mjs'
+      - '!src/social-webhook-cloudflare-fallback.test.mjs'
       - 'assets/**'
       - 'tools/**'
       - 'index.html'
@@ -15,7 +18,6 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'wrangler.jsonc'
-      - '.github/workflows/deploy-cloudflare-publishing.yml'
       - '.github/workflows/current-product-d1-audit.yml'
   workflow_dispatch:
 

@@ -5,9 +5,11 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/full-internal-verification-current.yml'
       - 'package.json'
       - 'src/**'
+      # Independent fallback safety checks run in verify-cloudflare-receipt-fallback.yml.
+      - '!src/social-webhook-cloudflare-fallback.mjs'
+      - '!src/social-webhook-cloudflare-fallback.test.mjs'
       # n8n-only changes run the dependency-free safety suite instead.
       # This full check remains for ERP/site changes and its weekly schedule.
       - 'tools/**'
