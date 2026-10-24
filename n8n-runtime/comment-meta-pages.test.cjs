@@ -139,3 +139,55 @@ test('valid official HTTP status with complete pagination remains accepted',asyn
  assert.deepEqual(result.items.map(row=>row.id),['1','2']);
  assert.equal(requests.length,2);
 });
+
+test('same-origin next link cannot change selected fields, limit, or private filters',async()=>{
+ const requests=[];
+ const start=origin+'/v25.0/post/comments?fields=id%2Cmessage%2Cfrom&limit=100&filter=stream';
+ const reader=createPageCollector({origin,request:async request=>{
+  requests.push(new URL(request.url));
+  return requests.length===1
+   ?{data:[{id:'1'}],paging:{cursors:{after:'good_cursor'},
+      next:origin+'/v25.0/post/comments?fields=id&limit=1&filter=changed&after=good_cursor&__paging_token=opaque'}}
+   :{data:[{id:'2'}]};
+ }});
+ const result=await reader.collect(start);
+ assert.deepEqual(result.items.map(x=>x.id),['1','2']);
+ assert.equal(requests.length,2);
+ const next=requests[1].searchParams;
+ assert.equal(next.get('after'),'good_cursor');
+ assert.equal(next.get('fields'),'id,message,from');
+ assert.equal(next.get('limit'),'100');
+ assert.equal(next.get('filter'),'stream');
+ assert.equal(next.has('__paging_token'),false);
+});
+test('tokenless same-origin pagination also retains the original query shape',async()=>{
+ const requests=[];
+ const start=origin+'/v25.0/post/comments?fields=id%2Cfrom&limit=100';
+ const reader=createPageCollector({origin,request:async request=>{
+  requests.push(new URL(request.url));
+  return requests.length===1
+   ?{data:[{id:'1'}],paging:{next:origin+'/v25.0/post/comments?fields=id&limit=1&after=cursor2'}}
+   :{data:[{id:'2'}]};
+ }});
+ const result=await reader.collect(start);
+ assert.equal(result.complete,true);
+ assert.equal(requests[1].searchParams.get('fields'),'id,from');
+ assert.equal(requests[1].searchParams.get('limit'),'100');
+ assert.equal(requests[1].searchParams.get('after'),'cursor2');
+});
+test('next links without a safe cursor or with conflicting cursors fail closed',async()=>{
+ for(const paging of [
+  {next:origin+'/v25.0/a?fields=id'},
+  {next:origin+'/v25.0/a?__paging_token=opaque'},
+  {next:origin+'/v25.0/a?after=a&after=b'},
+  {next:origin+'/v25.0/a?after=bad',cursors:{after:'good'}},
+  {next:origin+'/v25.0/a?after='},
+  {next:origin+'/v25.0/a?after=%0A'},
+  {next:origin+'/v25.0/a?after='+('a'.repeat(4097))}
+ ]){
+  let requests=0;
+  const reader=createPageCollector({origin,request:async()=>{requests++;return {data:[],paging};}});
+  await assert.rejects(reader.collect(origin+'/v25.0/a?fields=id&limit=100'));
+  assert.equal(requests,1);
+ }
+});

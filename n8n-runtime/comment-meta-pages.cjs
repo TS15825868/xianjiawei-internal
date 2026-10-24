@@ -24,14 +24,20 @@ function createPageCollector({request,origin,maxPages=40,maxItems=2000}){
    let u;try{u=new URL(value);}catch{throw Error('Invalid page URL');}
    if(u.origin!==origin||u.pathname!==start.pathname||u.protocol!=='https:'||
       u.username||u.password||u.hash)throw Error('Unsafe page URL');
-   const embedded=[...u.searchParams.keys()].some(k=>/^(access_token|token|appsecret_proof)$/i.test(k));
-   if(!embedded)return safeUrl(value).href;
-   const after=cursors?.after;
-   if(typeof after!=='string'||!after||after.length>4096||/[\s\u0000-\u001f]/u.test(after))
-    throw Error('Tokenized pagination lacks a safe official cursor');
-   if(u.searchParams.has('after')&&u.searchParams.get('after')!==after)
+   // An otherwise same-origin next URL can change fields/limit/filters
+   // without changing the path. Never trust any of its query options:
+   // advance only by a verified Graph cursor, retaining the original request.
+   // This also strips embedded access_token and opaque paging parameters.
+   const linkCursors=u.searchParams.getAll('after');
+   if(linkCursors.length>1)throw Error('Ambiguous pagination cursor');
+   const linkAfter=linkCursors[0],officialAfter=cursors?.after;
+   if(officialAfter!==undefined&&linkAfter!==undefined&&linkAfter!==officialAfter)
     throw Error('Pagination cursor mismatch');
+   const after=officialAfter??linkAfter;
+   if(typeof after!=='string'||!after||after.length>4096||/[\s\u0000-\u001f]/u.test(after))
+    throw Error('Pagination lacks a safe official cursor');
    const sanitized=new URL(start.href);
+   sanitized.searchParams.delete('before');
    sanitized.searchParams.set('after',after);
    return safeUrl(sanitized.href).href;
   }
