@@ -70,9 +70,18 @@ test('begin requires a fresh durable reservation and all three active switches',
  assert.match(sql,/c\.conversation_version=r\.conversation_version/);
  assert.match(sql,/NOT c\.human_takeover/);
  assert.match(sql,/RETURNING r\.claim_id/);
- assert.deepEqual(args,[...scope,'claim-1','approved reply']);
+ assert.match(sql,/c\.thread_id=\$7/);
+ assert.deepEqual(args,[...scope,'claim-1','approved reply',event.threadId]);
  const rejected=adapter(0);
  assert.equal(await rejected.store.begin(event,'claim-1'),false);
+});
+test('send transition cannot reuse a matching comment from a different thread',async()=>{
+ const x=adapter();
+ const moved={...event,threadId:'reassigned-thread'};
+ await x.store.begin(moved,'claim-1','approved reply');
+ assert.match(x.calls[0].sql,/c\.thread_id=\$7/);
+ assert.deepEqual(x.calls[0].args,[...scope,'claim-1','approved reply',moved.threadId]);
+ assert.ok(!x.calls[0].sql.includes(moved.threadId));
 });
 test('invalid receipts are rejected without touching the database',async()=>{
  const x=createSendStore({query:()=>assert.fail('unexpected DB write')});
