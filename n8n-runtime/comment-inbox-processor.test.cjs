@@ -277,3 +277,33 @@ test('inbox refuses a forged or cross-event idempotency key',async()=>{
   assert.equal(x.calls.some(c=>c.sql.includes('UPDATE xjw_social.webhook_inbox')),false);
  }
 });
+
+test('durable completion proof cannot borrow a matching comment/version from another thread',async()=>{
+ const event=normalizeInbox(row('facebook',page),allowed).events[0];
+ const version='c'.repeat(64);
+ for(const ledgerThread of [event.threadId,'999_999']){
+  let updates=0,proofs=0;
+  const db={async query(sql,args){
+   if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[row('facebook',page)]};
+   if(sql.includes('AS finished')){
+    proofs++;
+    assert.match(sql,/thread_id=\\$7/);
+    assert.deepEqual(args.slice(0,5),[event.platform,event.accountId,event.postId,event.commentId,version]);
+    assert.equal(args[6],event.threadId);
+    return {rows:[{finished:args[6]===ledgerThread}]};
+   }
+   if(sql.includes('UPDATE xjw_social.webhook_inbox')){updates++;return {rowCount:1};}
+   throw Error('Unexpected SQL');
+  }};
+  const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
+   resolveAutomation:()=>({suggest:async e=>({action:'suggest',sent:false,
+    idempotencyKey:keyFor(e,version),conversationVersion:version})})});
+  const result=await processor.process();
+  const matching=ledgerThread===event.threadId;
+  assert.equal(proofs,1);
+  assert.equal(result.reviewed,matching?1:0);
+  assert.equal(result.held,matching?0:1);
+  assert.equal(updates,matching?1:0);
+  assert.equal(result.sent,false);
+ }
+});
