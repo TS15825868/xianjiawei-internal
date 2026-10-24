@@ -1,9 +1,13 @@
 'use strict';
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
+const {createHash}=require('node:crypto');
 const {normalizeInbox,createInboxSuggestionProcessor}=require('./comment-inbox-processor.cjs');
 const allowed={facebook:['411869648852531'],instagram:['17841478328163000'],threads:['123456789']};
 const digest='a'.repeat(64);
+const keyFor=(e,v)=>createHash('sha256').update(JSON.stringify([
+ e.platform,e.accountId,e.postId,e.threadId,e.commentId,v
+])).digest('hex');
 const page={object:'page',entry:[{id:'411869648852531',changes:[{field:'feed',
  value:{item:'comment',verb:'add',post_id:'411869648852531_456',parent_id:'411869648852531_456',
  comment_id:'456_789',message:'private must not leave inbox'}}]}]};
@@ -67,7 +71,9 @@ function processorScenario({payload=page,platform='facebook',decision={
   }
   throw Error('Unexpected SQL '+sql);
  }};
- const api={suggest:async e=>{resolved++;assert.ok(e.postId);return decision},
+ const api={suggest:async e=>{resolved++;assert.ok(e.postId);
+  return decision?.idempotencyKey==='b'.repeat(64)
+   ? {...decision,idempotencyKey:keyFor(e,decision.conversationVersion)}:decision;},
   handle:()=>assert.fail('Never invoke send-capable handle()')};
  return {processor:createInboxSuggestionProcessor({db,allowedAccounts:allowed,
   resolveAutomation:()=>api}),calls,resolved:()=>resolved};
@@ -189,7 +195,7 @@ test('partial batch never reports a suggestion as committed when a later event f
   id:'179999999998',media:{id:'180000000000'}
  }});
  const inbox=row('instagram',payload);
- const good={action:'suggest',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+ const good={action:'suggest',sent:false,idempotencyKey:keyFor(normalizeInbox(inbox,allowed).events[0],'c'.repeat(64)),conversationVersion:'c'.repeat(64)};
  let seen=0,updates=0;
  const db={async query(sql){
   if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[inbox]};
@@ -210,7 +216,7 @@ test('partial batch never reports a suggestion as committed when a later event f
 });
 test('concurrent inbox review does not count suggestions without a durable status transition',async()=>{
  const inbox=row('instagram',instagram);
- const good={action:'suggest',sent:false,idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+ const good={action:'suggest',sent:false,idempotencyKey:keyFor(normalizeInbox(inbox,allowed).events[0],'c'.repeat(64)),conversationVersion:'c'.repeat(64)};
  const db={async query(sql){
   if(sql.includes('FROM xjw_social.webhook_inbox WHERE'))return {rows:[inbox]};
   if(sql.includes('AS finished'))return {rows:[{finished:true}]};
@@ -246,7 +252,7 @@ test('durable completion proof matches the exact action except for a genuine dup
    throw Error('Unexpected SQL');
   }};
   const decision={action:c.action,reason:c.reason,sent:false,
-   idempotencyKey:'b'.repeat(64),conversationVersion:'c'.repeat(64)};
+   idempotencyKey:keyFor(normalizeInbox(row('facebook',page),allowed).events[0],'c'.repeat(64)),conversationVersion:'c'.repeat(64)};
   const processor=createInboxSuggestionProcessor({db,allowedAccounts:allowed,
    resolveAutomation:()=>({suggest:async()=>decision})});
   const result=await processor.process();
@@ -256,5 +262,18 @@ test('durable completion proof matches the exact action except for a genuine dup
   assert.equal(result.reviewed,c.reviewed);
   assert.equal(result.held,1-c.reviewed);
   assert.equal(updates,c.reviewed);
+ }
+});
+
+// A matching ledger status alone must not acknowledge an unrelated claim.
+test('inbox refuses a forged or cross-event idempotency key',async()=>{
+ const version='c'.repeat(64);
+ for(const badKey of ['d'.repeat(64),keyFor({...normalizeInbox(row('facebook',page),allowed).events[0],commentId:'999'},version)]){
+  const x=processorScenario({decision:{action:'suggest',reason:'verified_product_fact',sent:false,
+   idempotencyKey:badKey,conversationVersion:version},finished:true});
+  const r=await x.processor.process();
+  assert.equal(r.reviewed,0);assert.equal(r.held,1);assert.equal(r.sent,false);
+  assert.equal(x.calls.some(c=>c.sql.includes('AS finished')),false);
+  assert.equal(x.calls.some(c=>c.sql.includes('UPDATE xjw_social.webhook_inbox')),false);
  }
 });
