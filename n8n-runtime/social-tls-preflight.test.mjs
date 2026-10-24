@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {verifySocialWorkerTls} from './social-tls-preflight.mjs';
+import {verifySocialWorkerTls,connectPgTlsClient} from './social-tls-preflight.mjs';
 const config={
  host:'aws-0-ap-northeast-1.pooler.supabase.com',port:5432,
  user:'xjw_social_worker.iphexhvjhsmelbgwzhhr',password:'fixture-only',
@@ -135,4 +135,29 @@ test('transaction pooler requires Edge-only explicit scope and fails before netw
  ]){
   await assert.rejects(verifySocialWorkerTls({config:invalid,connect:()=>assert.fail('must not dial')}),/Dedicated verified TLS/);
  }
+});
+
+test('failed TLS or auth handshake retires the attempted pg client and keeps original failure',async()=>{
+ for(const failClose of [false,true]){
+  let closed=0;
+  class FakeClient{
+   constructor(options){assert.equal(options.ssl.rejectUnauthorized,true);}
+   async connect(){throw Error('protected tls handshake failed');}
+   async end(){closed++;if(failClose)throw Error('retire error');}
+  }
+  await assert.rejects(connectPgTlsClient(FakeClient,{ssl:{rejectUnauthorized:true}}),/protected tls handshake failed/);
+  assert.equal(closed,1);
+ }
+});
+test('successful protected driver connect remains open for the caller to verify and close',async()=>{
+ let connected=0,closed=0;
+ class FakeClient{
+  async connect(){connected++;}
+  async end(){closed++;}
+ }
+ const client=await connectPgTlsClient(FakeClient,{ssl:{rejectUnauthorized:true}});
+ assert.equal(connected,1);
+ assert.equal(closed,0);
+ await client.end();
+ assert.equal(closed,1);
 });

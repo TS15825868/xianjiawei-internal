@@ -84,6 +84,17 @@ export async function verifySocialWorkerTls({config,connect}){
  }
 }
 
+// Driver connection failures occur before verifySocialWorkerTls receives a
+// client. Retire the attempted socket even when PostgreSQL TLS/auth fails.
+export async function connectPgTlsClient(Client,options){
+ const client=new Client(options);
+ try{await client.connect();return client;}
+ catch(error){
+  try{await client.end();}catch{/* Preserve the original connection failure. */}
+  throw error;
+ }
+}
+
 async function main(){
  // The config must be supplied through a protected runtime environment, not
  // the repository, shell history, command-line flags or a public URL.
@@ -91,7 +102,7 @@ async function main(){
  const pg=await import('pg');
  const Client=pg.default?.Client||pg.Client;
  return await verifySocialWorkerTls({config,connect:async options=>{
-  const client=new Client(options);await client.connect();return client;
+  return connectPgTlsClient(Client,options);
  }});
 }
 
