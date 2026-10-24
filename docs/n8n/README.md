@@ -1,6 +1,6 @@
 # 仙加味 n8n 長期版自動化
 
-更新：2026-10-23（保留 2026-09 的建置歷程）
+更新：2026-10-24（保留 2026-09～10 的建置歷程）
 
 ## 原則
 
@@ -23,7 +23,7 @@ n8n 作為仙加味的旁路自動化與協調層，不取代目前正式運作�
 - n8n：2.35.7
 - 程式來源：`xianjiawei-internal/main/n8n-runtime/`
 - 線上版本：Render 仍為 `fb77b8c1`（2026-10-20）；近期新建置受免費 pipeline minutes 額度限制，不能宣稱新版已部署。
-- 最新 main 啟動入口：`n8n-runtime/start-low-memory.sh`，單工作流程並行上限 1、JS Runner 預設堆積上限 128 MB、n8n 主 Node.js `NODE_OPTIONS=--max-old-space-size=256`（僅在未另設 NODE_OPTIONS 時生效）。以上皆是**堆積上限而非整機 RSS 上限**；**尚未生效於上述 Render 線上版本**。
+- 最新 main 啟動入口：`n8n-runtime/start-low-memory.sh`，單工作流程並行上限 1、JS Runner 預設堆積上限 128 MB、n8n 主 Node.js `NODE_OPTIONS=--max-old-space-size=256`、Runner 授權等待預設 480 秒（只有未另設變數時生效）。以上皆**尚未生效於舊版 Render 線上版本**，並非整機 RSS 或 OOM 已修復的證據。
 - 正式啟動不會重新匯入 workflow。
 - 長期 PostgreSQL：Supabase 專案 `xianjiawei`
 - Workflow JSON 可重建來源：GitHub `docs/n8n/`
@@ -81,17 +81,26 @@ Cloudflare Access 使用 Service Token，HTTP Request Header：
 
 - GitHub Actions Run `33512408829`：longterm 三條只讀監控全部成功。
 - GitHub Actions Run `33533228168`：`/healthz` 喚醒後，三條 longterm 正式 webhook 全部成功。
+- 2026-10-24 已唯讀核對 Supabase `n8n.workflow_entity` 編輯定義及 `n8n.workflow_history` 已發布定義，三條工作流程與 GitHub 來源均為 **3／3 一致**；無須重複匯入。
 
 ## 正式外部排程（2026-10-23 已核對 main）
 
-- 官網 Repo `TS15825868/xianjiawei`：`.github/workflows/n8n-monitor-scheduler.yml` 每小時 UTC 第 8 分檢查官網、LINE OA、ERP Access 邊界及 n8n readiness；非客戶回覆或貼文發布。
-- 內部 Repo `TS15825868/xianjiawei-internal`：`.github/workflows/n8n-readonly-monitor-scheduler.yml` 每小時 UTC 第 23 分（及核對該檔的 push）執行三條唯讀 n8n 監控。
-- **2026-10-23 已改為並行備援**：內部 GitHub Action 的 `fallback-readonly` 不再依賴 `monitor` job；每次排程開始便同步執行獨立 `n8n-runtime/smoke-readonly.js` 公開 GET 檢查，避免 Render readiness 長時間 503 導致其他健康檢查延遲。n8n 主監控失敗依然保留獨立失敗結果，不因備援通過而被誤判成功。
+- 官網 Repo `TS15825868/xianjiawei`：`.github/workflows/n8n-monitor-scheduler.yml` 每小時 UTC 第 8 分檢查官網、LINE OA、ERP Access 邊界；因 Render 舊版健康檢查反覆失敗，n8n liveness／readiness 僅在 `workflow_dispatch` 手動驗收時檢查。定時巡檢通過**不代表 n8n 健康**。
+- 內部 Repo `TS15825868/xianjiawei-internal`：`.github/workflows/n8n-readonly-monitor-scheduler.yml` 每小時 UTC 第 23 分執行獨立公開 GET 唯讀備援；對 n8n 的三條 Webhook 與 readiness 僅在 `workflow_dispatch` 手動驗收時執行，以免反覆喚醒已知 OOM／逾時服務。
+- **2026-10-24 已停止定時喚醒故障服務**：內部 GitHub Action 的 `fallback-readonly` 仍每小時獨立執行 `n8n-runtime/smoke-readonly.js`，不依賴主監控；手動觸發的 `monitor` 若未通過，仍會失敗，不被備援成功掩蓋。自動略過 `monitor` 不能視為測試通過。
 - 2026-10-23 的 GitHub Actions #39852516440：三條 n8n 唯讀監控與獨立 GET 備援均成功；這不是 Meta 回覆或 ERP 端對端驗收。
 - 2026-10-23 上午約 08:02～08:11（台灣）：GitHub Actions #39875578542 的 n8n readiness 連續未通過；Render 記錄在啟動後取得 migration lock，記憶體約 510～512 MiB／512 MiB。主監控失敗，獨立 GET 備援成功。Supabase n8n 表最大約 2.3 MB、查核當下無 n8n 連線或等待鎖，不能據此刪除歷史資料。
 - 2026-10-23 GitHub Actions #39894514015：新增核心 Node.js 堆積限制後的 **131 項自動測試全部通過**，沒有線上 n8n 記憶體驗收／新版 Render 部署，不能宣稱 OOM 已修復。
 - 2026-10-23 GitHub Actions #39895420109：加強備援 LINE OA `ok:true`、憑證、接單、商品數與品牌驗證，**139 項測試通過**。GitHub Actions #39895709580：並行備援保護測試，共 **143 項通過**；排程執行 #39895607445 的 `fallback-readonly` job 已完成 SUCCESS，該次 n8n 主要監控亦已完成 SUCCESS；Supabase n8n execution `153`、`154`、`155` 三條監控皆為 `success`。Render 03:40 UTC 記憶體約 **508 MiB／512 MiB（99.2%）**，高風險仍在，**不代表 OOM 根治**。
 - 早期文件提及的官網 n8n 15 分鐘／30 分鐘／6 小時排程與晚間每 10 分鐘預熱，不代表目前 main 設定；以最新工作流程檔為準。
+
+## Render 免費建置與監控同步規則（2026-10-24）
+
+- **每次 `npm install` 不再對正式資料庫呼叫 n8n CLI**。Render Build Command 仍為 `cd n8n-runtime && npm install --no-audit --no-fund --no-package-lock`；最新版 `postinstall` 僅執行 `node verify-monitor-sources.cjs`，離線驗證三份唯讀監控定義，未連線 PostgreSQL，也不匯入或發布工作流程。
+- 如在正式環境有經確認的監控定義變更，須由有權限的操作員明確執行 `npm run reconcile:monitors`（工作目錄：`n8n-runtime`）。此指令可能讀寫正式工作流程，**不得當作每次冷啟動或建置的預設步驟**。
+- 核心測試已通過 **234／234**（GitHub Actions `40086959541`），但不是 n8n 線上部署成功證據。
+- Render Free 近期回報 `pipeline_minutes_exhausted`；最新 GitHub 程式不能假定已部署。暫不重複建置或付費升級；保持現有監控狀態與資料，等免費額度恢復再核對 live commit、readiness、記憶體及 TLS。
+- LINE OA 亦有已修補的 GitHub 相依套件版本尚待 Render 部署；官網或獨立備援健康檢查通過不等於 LINE OA 取得最新安全程式碼。
 
 ## 社群專用 PostgreSQL TLS 真實驗收（2026-10-23）
 
