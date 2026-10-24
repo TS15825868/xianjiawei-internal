@@ -1,0 +1,40 @@
+name: 仙加味 AI 客服核心安全測試（免建置）
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ai-comment-core-safety-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-ai-comment-core-safety
+  cancel-in-progress: true
+jobs:
+  safety-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Verify zero-network comment, ledger, TLS and webhook logic
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test \
+            n8n-runtime/account-allowlist.test.cjs \
+            n8n-runtime/comment-policy.test.cjs \
+            n8n-runtime/comment-pg-store.test.cjs \
+            n8n-runtime/comment-send-store.test.cjs \
+            n8n-runtime/comment-sender.test.cjs \
+            n8n-runtime/comment-automation.test.cjs \
+            n8n-runtime/comment-inbox-processor.test.cjs \
+            n8n-runtime/comment-erp-view.test.cjs \
+            n8n-runtime/comment-meta-history.test.cjs \
+            n8n-runtime/comment-meta-pages.test.cjs \
+            n8n-runtime/comment-workflow.test.cjs \
+            n8n-runtime/social-tls-preflight.test.mjs \
+            n8n-runtime/social-webhook.test.mjs \
+            n8n-runtime/start-low-memory.test.cjs
