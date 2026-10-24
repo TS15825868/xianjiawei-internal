@@ -19,7 +19,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Render latest live version is stale and its 512 MiB n8n repeatedly fails
+  # readiness/OOM after waking. Do not probe/wake it hourly while unchanged.
+  # Operators may use workflow_dispatch after a confirmed new LIVE deploy.
+  # The independent public GET fallback continues hourly without n8n.
   monitor:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -61,7 +66,7 @@ jobs:
 
   # Independent public GET backup starts in PARALLEL with the n8n wakeup,
   # so the site's safety coverage is not delayed by Render's cold start / OOM.
-  # A successful backup never hides monitor's separate failed job status.
+  # Backup success never certifies n8n readiness: the paused primary is UNVERIFIED.
   # Public repo standard GitHub-hosted runners carry no additional minute charge.
   fallback-readonly:
     runs-on: ubuntu-latest

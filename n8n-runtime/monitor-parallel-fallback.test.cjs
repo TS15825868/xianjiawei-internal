@@ -54,3 +54,13 @@ test('broken Render readiness is bounded and never masks primary failure',()=>{
  assert.match(primary,/for route in xjw-line-health-a7f8c2 xjw-ai-geo-9c3f75 xjw-system-health-d4b6e1;/);
  assert.match(parts[1],/node n8n-runtime\/smoke-readonly\.js/);
 });
+
+test('known-stale Render n8n is never auto-woken by schedules or pushes while public fallback continues',()=>{
+ const [primary,backup]=parts;
+ assert.match(primary,/\n  monitor:\n    if: github\.event_name == 'workflow_dispatch'\n/);
+ assert.match(primary,/cron:\s*'23 \* \* \* \*'/);
+ assert.doesNotMatch(backup,/^\s{4}if:/m);
+ assert.doesNotMatch(backup,/^\s{4}needs:/m);
+ assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
+ assert.match(primary,/no monitor webhooks were invoked/);
+});
