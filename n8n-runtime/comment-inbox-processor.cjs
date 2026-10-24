@@ -118,9 +118,9 @@ function createInboxSuggestionProcessor({db,allowedAccounts,resolveAutomation}={
       ? ['suggest','skip','manual']:[decision.action];
     const proof=await db.query(`SELECT EXISTS(
       SELECT 1 FROM xjw_social.comment_ledger WHERE platform=$1 AND account_id=$2
-      AND post_id=$3 AND comment_id=$4 AND conversation_version=$5
+      AND post_id=$3 AND comment_id=$4 AND thread_id=$7 AND conversation_version=$5
       AND status=ANY($6::text[])
-     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion,expectedStatuses]);
+     ) AS finished`,[event.platform,event.accountId,event.postId,event.commentId,decision.conversationVersion,expectedStatuses,event.threadId]);
     if(proof?.rows?.length!==1||proof.rows[0]?.finished!==true){durable=false;break;}
     staged[decision.action==='suggest'?'suggestions':decision.action==='manual'?'manual':'skipped']++;
    }
