@@ -33,57 +33,98 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Validate request and build SQL
+      - name: Validate schedule request
         run: |
           node - <<'NODE'
           const fs=require('fs');
           const c=JSON.parse(fs.readFileSync('ops/approved-schedule-current.json','utf8'));
           if(!Array.isArray(c.items)||!c.items.length) throw new Error('沒有排程項目');
           const q=v=>"'" + String(v??'').replaceAll("'","''") + "'";
-          const lines=[];
           for(const x of c.items){
-            if(!x.postId||!x.scheduled_at) throw new Error('缺少postId或scheduled_at');
-            if(!Number.isFinite(Date.parse(x.scheduled_at)) || Date.parse(x.scheduled_at)<=Date.now()) throw new Error('scheduled_at必須是未來日期時間');
-            lines.push(`UPDATE social_posts SET status='scheduled', scheduled_at=${q(x.scheduled_at)}, proposed_scheduled_at=${q(x.scheduled_at)}, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='approved' AND approved_at IS NOT NULL AND TRIM(COALESCE(approved_by,''))<>'' AND image_approved=1 AND TRIM(COALESCE(image_url,''))<>'';`);
+            if(typeof x.postId!=='string'||!x.postId||!x.scheduled_at)throw new Error('缺少postId或scheduled_at');
+            if(!Number.isFinite(Date.parse(x.scheduled_at))||Date.parse(x.scheduled_at)<=Date.now())
+              throw new Error('scheduled_at必須是未來日期時間');
           }
           const ids=c.items.map(x=>x.postId);
           if(new Set(ids).size!==ids.length) throw new Error('排程包含重複 postId');
-          fs.writeFileSync('/tmp/apply-approved-schedule.sql',lines.join('\n')+'\n');
           fs.writeFileSync('/tmp/ids.txt',c.items.map(x=>q(x.postId)).join(','));
           fs.writeFileSync('/tmp/count.txt',String(c.items.length));
           NODE
-      - name: Preflight human approval and image eligibility without modifying D1
+      - name: Require exact existing human 16-item review evidence before scheduling
+        shell: bash
         run: |
+          set -euo pipefail
           IDS="$(cat /tmp/ids.txt)"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,approved_by,approved_at,image_approved,image_url FROM social_posts WHERE id IN ($IDS)" > /tmp/approved-preflight.json
-          node - <<'NODE'
-          const fs=require('fs');
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,g.content_fingerprint AS gate_fingerprint,g.checklist_json AS gate_checklist,g.copy_image_match AS gate_image_match,g.reviewed_by AS gate_reviewer,g.reviewed_at AS gate_reviewed_at FROM social_posts p LEFT JOIN social_post_review_gates g ON g.post_id=p.id WHERE p.id IN ($IDS)" > /tmp/approved-preflight.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {gateState} from './src/publishing-review-gate-entry.js';
+          const plan=JSON.parse(fs.readFileSync('ops/approved-schedule-current.json','utf8'));
           const raw=JSON.parse(fs.readFileSync('/tmp/approved-preflight.json','utf8'));
           const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
-          const n=Number(fs.readFileSync('/tmp/count.txt','utf8'));
-          if(rows.length!==n) throw new Error('待排程貼文數與 D1 不一致');
-          for(const x of rows){
-            if(x.status!=='approved'||!x.approved_at||!String(x.approved_by||'').trim()||Number(x.image_approved)!==1||!String(x.image_url||'').trim())
-              throw new Error('尚未符合人工審核／正式圖片條件：'+x.id);
+          if(rows.length!==plan.items.length)throw Error('D1篇數與排程請求不一致');
+          const byId=new Map(rows.map(p=>[p.id,p]));
+          if(byId.size!==rows.length)throw Error('D1存在重複貼文');
+          const q=value=>"'"+String(value??'').replaceAll("'","''")+"'";
+          const lines=[],proof=[];
+          for(const item of plan.items){
+            const p=byId.get(item.postId);
+            if(!p||p.status!=='approved'||Number(p.image_approved)!==1||
+               !p.approved_at||!p.approved_by||!p.image_url||p.scheduled_at)
+              throw Error('尚未經人工核准，或貼文已被排程：'+item.postId);
+            const gate={post_id:p.id,content_fingerprint:p.gate_fingerprint,
+              checklist_json:p.gate_checklist,copy_image_match:p.gate_image_match,
+              reviewed_by:p.gate_reviewer,reviewed_at:p.gate_reviewed_at};
+            const env={DB:{exec:async()=>{},prepare:()=>({bind:()=>({first:async()=>gate})})}};
+            const verified=await gateState(env,p);
+            if(!verified.ok)throw Error('16項正式審核無效：'+item.postId+' '+verified.reason);
+            // All fingerprinted fields are held by compare-and-swap after
+            // preflight; a concurrent image or copy edit cannot reuse approval.
+            lines.push(`UPDATE social_posts SET status='scheduled',
+              scheduled_at=${q(item.scheduled_at)},proposed_scheduled_at=${q(item.scheduled_at)},
+              updated_at=datetime('now') WHERE id=${q(p.id)}
+              AND status='approved' AND scheduled_at IS NULL AND image_approved=1
+              AND approved_by=${q(p.approved_by)} AND approved_at=${q(p.approved_at)}
+              AND COALESCE(title,'')=${q(p.title)} AND COALESCE(headline,'')=${q(p.headline)}
+              AND COALESCE(copy,'')=${q(p.copy)} AND COALESCE(category,'')=${q(p.category)}
+              AND COALESCE(image_url,'')=${q(p.image_url)} AND COALESCE(image_alt,'')=${q(p.image_alt)}
+              AND COALESCE(image_source,'')=${q(p.image_source)}
+              AND COALESCE(image_width,0)=${Number(p.image_width||0)}
+              AND COALESCE(image_height,0)=${Number(p.image_height||0)}
+              AND COALESCE(image_quality_status,'')=${q(p.image_quality_status)}
+              AND EXISTS(SELECT 1 FROM social_post_review_gates g WHERE g.post_id=social_posts.id
+                AND g.content_fingerprint=${q(verified.fingerprint)}
+                AND g.reviewed_by=${q(p.approved_by)} AND g.copy_image_match=1);`);
+            proof.push({id:p.id,scheduledAt:item.scheduled_at,
+              approvedBy:p.approved_by,approvedAt:p.approved_at});
           }
-          console.log('PASS preflight reviewed posts:',rows.length);
+          fs.writeFileSync('/tmp/apply-approved-schedule.sql',lines.join('\n')+'\n');
+          fs.writeFileSync('/tmp/approved-proof.json',JSON.stringify(proof));
+          console.log('PASS formal human review',proof.length,'posts; read-only preflight');
           NODE
       - name: Apply approved schedule to D1
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/apply-approved-schedule.sql
-      - name: Verify
+      - name: Verify exact times and retained human approval
+        shell: bash
         run: |
+          set -euo pipefail
           IDS="$(cat /tmp/ids.txt)"
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,scheduled_at,image_approved,approved_by,approved_at FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify.json
           node - <<'NODE'
           const fs=require('fs');
-          const raw=JSON.parse(fs.readFileSync('/tmp/verify.json','utf8'));
-          const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
-          const n=Number(fs.readFileSync('/tmp/count.txt','utf8'));
-          if(rows.length!==n) throw new Error('D1篇數不一致');
-          for(const r of rows){
-            if(r.status!=='scheduled'||Number(r.image_approved)!==1||!r.scheduled_at) throw new Error(r.id+' 尚未正式排程');
+          const data=JSON.parse(fs.readFileSync('/tmp/verify.json','utf8'));
+          const rows=(Array.isArray(data)?data[0]?.results:data?.results)||[];
+          const proof=JSON.parse(fs.readFileSync('/tmp/approved-proof.json','utf8'));
+          if(rows.length!==proof.length)throw Error('D1篇數不一致');
+          const byId=new Map(rows.map(p=>[p.id,p]));
+          for(const expected of proof){
+            const actual=byId.get(expected.id);
+            if(!actual||actual.status!=='scheduled'||Number(actual.image_approved)!==1||
+               Date.parse(actual.scheduled_at)!==Date.parse(expected.scheduledAt)||
+               actual.approved_by!==expected.approvedBy||actual.approved_at!==expected.approvedAt)
+              throw Error('排程或人工核准證據異常：'+expected.id);
           }
-          console.log('PASS scheduled',rows.length);
+          console.log('PASS existing human-approved schedules',proof.length);
           NODE
       - name: Clean request file
         run: |
