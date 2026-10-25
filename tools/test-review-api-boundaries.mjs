@@ -61,6 +61,36 @@ assert.equal((await post('regeneration-start',{mode:'image'})).status,200);asser
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,200);assert.equal(state.row.status,'pending_review');assert.equal(state.row.image_approved,0);
 state.row.status='scheduled';
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,409);
+
+async function editPost(method='PUT'){return gate.fetch(new Request('https://isolated.invalid/api/posts/ISOLATED',{method,headers:{'content-type':'application/json'},body:JSON.stringify({copy:'isolated safe edit'})}),env,{})}
+for(const historicalStatus of ['published','archived','manual_required']){
+ state.row={...state.row,status:historicalStatus,published_at:historicalStatus==='published'?'2026-10-20T08:00:00Z':null};
+ const count=state.writes.length,forwarded=state.forwarded;
+ for(const method of ['PUT','PATCH'])assert.equal((await editPost(method)).status,409);
+ assert.equal(state.writes.length,count);
+ assert.equal(state.forwarded,forwarded);
+}
+state.row={...state.row,status:'draft',published_at:'2026-10-20T08:00:00Z'};
+const historicWrites=state.writes.length;
+assert.equal((await post('status',{status:'pending_review'})).status,409);
+assert.equal((await post('status',{status:'draft'})).status,409);
+assert.equal((await editPost()).status,409);
+assert.equal(state.writes.length,historicWrites);
+state.row={...state.row,status:'pending_review',published_at:'2026-10-20T08:00:00Z'};
+assert.equal((await post('status',{status:'approved',review_checklist:Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true])),copy_image_match:true})).status,409);
+assert.equal(state.writes.length,historicWrites);
+state.row={...state.row,status:'draft',published_at:null};
+state.externalLink={metricool_id:99,state:'scheduled'};
+assert.equal((await post('status',{status:'pending_review'})).status,409);
+state.externalLink=null;
+state.casFail=true;
+assert.equal((await post('status',{status:'pending_review'})).status,409);
+assert.equal(state.row.status,'draft');
+state.casFail=false;
+assert.equal((await post('status',{status:'pending_review'})).status,200);
+assert.equal(state.row.status,'pending_review');
+console.log('PASS historical publish guard rejects status/edit/reapproval; live draft submission is CAS-verified');
+
 delete globalThis.__reviewTest;
 console.log('PASS production API gate in isolation: direct draft approval, missing human checklist, unreviewed scheduling/publishing and stale fingerprints blocked; reviewed immediate publish bypasses future schedule; regeneration returns pending; no production/network writes');
 
