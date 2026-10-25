@@ -35,7 +35,7 @@ export default{
   const path=new URL(request.url).pathname;
   if(path==='/healthz'&&request.method==='GET')
    return json({ok:true,service:'仙加味 LINE 安全收件備援',receiptEnabled:env.XJW_LINE_RECEIPT_ENABLED==='true',
-    customerReplies:false,handlesOrders:false,productionWebhookUnchanged:true});
+    customerReplies:false,handlesOrders:false,officialCallback:'not_verified_by_this_worker'});
   if(path!=='/webhook')return deny('not_found',404);
   if(request.method!=='POST')return deny('method_not_allowed',405);
   const enabled=env.XJW_LINE_RECEIPT_ENABLED==='true';

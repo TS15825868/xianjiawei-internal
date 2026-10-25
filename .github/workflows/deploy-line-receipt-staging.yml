@@ -55,7 +55,7 @@ jobs:
             status=$(curl -sS --max-time 10 "$base/healthz" -o /tmp/xjw-line-standby-health.json -w '%{http_code}' || true)
             if [[ "$status" == "200" ]] && node - <<'NODE'
           const h=require('/tmp/xjw-line-standby-health.json');
-          if(h.ok!==true||h.receiptEnabled!==false||h.customerReplies!==false||h.handlesOrders!==false)process.exit(1);
+          if(h.ok!==true||h.receiptEnabled!==false||h.customerReplies!==false||h.handlesOrders!==false||h.officialCallback!=='not_verified_by_this_worker')process.exit(1);
           NODE
             then
               ready=1

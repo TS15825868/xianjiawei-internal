@@ -43,3 +43,7 @@ GitHub Actions 中新流程在獨立 Node 測試（簽章、空事件、重送�
 - 人員必須親自到 LINE OA Manager 確認該對話已處理後，再在內部客服中心按「已在官方 LINE 處理完成」並確認。請求必須同時包含 `confirmManual:true` 與 `confirmHandledInOfficialLine:true`。
 - 寫入 `handling_status='handled'` 與 `handled_at`，保留原接手人及收件事件歷史；不發送 LINE 訊息、不宣稱取得官方發送回執。結案後事件會退出「待接手」清單。
 - 如果沒有實際回覆、事件缺少受理者、認領者不符或資料庫狀態不一致，均不可標示完成。
+
+## 服務健康頁精確狀態
+
+備援 `/healthz` 只回報本 Worker 的功能是否啟用，不能連線查詢 LINE Developers Console 的正式 Callback URL。因此使用 `officialCallback:not_verified_by_this_worker`，不再回傳未查證的 `productionWebhookUnchanged:true`。對外客服切換的事實必須由 LINE 官方設定與實際回執共同驗證。

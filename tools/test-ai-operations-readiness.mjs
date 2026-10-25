@@ -16,7 +16,7 @@ test('public requests, wrong methods and non-staff roles are denied before D1',a
  const noDb={DB:{prepare:()=>assert.fail('D1 must not be queried')}};
  assert.equal((await aiOperationsReadiness(request,noDb,{})).status,503);
  assert.equal((await aiOperationsReadiness(request,noDb,{authenticate:async()=>{throw Error('denied')}})).status,401);
- for(const role of ['viewer','sales','warehouse'])
+ for(const role of ['viewer','warehouse','accounting'])
    assert.equal((await aiOperationsReadiness(request,noDb,{authenticate:async()=>({role,active:1})})).status,403);
  assert.equal((await aiOperationsReadiness(new Request(request.url,{method:'POST'}),noDb,{authenticate:owner})).status,405);
 });
@@ -142,4 +142,20 @@ test('claim-table failure is marked unverified instead of reporting zero',async(
  assert.equal(d.data.lineHandoff.activeClaims,null);
  assert.equal(d.data.lineHandoff.unassigned,null);
  assert.equal(JSON.stringify(d).includes('private D1 reason'),false);
+});
+
+test('sales support role can view aggregate ops status without raw LINE or Meta customer data',async()=>{
+ const DB=fakeDB([{status:'pending_review',total:2}],[
+  {handling_status:'unhandled',total:3}
+ ],[{platform:'facebook',total:1}]);
+ const r=await aiOperationsReadiness(request,{DB},{authenticate:async()=>({role:'sales',active:1,email:'sales@example.test'})});
+ assert.equal(r.status,200);
+ const data=await r.json();
+ assert.equal(data.customerSend,false);
+ assert.equal(data.modelCalls,0);
+ assert.equal(data.data.lineReceiptInbox.unhandled,3);
+ assert.equal(data.data.metaReceiptInbox.platformCounts.facebook,1);
+ assert.ok(!JSON.stringify(data).includes('event_json'));
+ assert.ok(!JSON.stringify(data).includes('replyToken'));
+ assert.equal(data.capabilities.metaCommentAutoReply,'external_e2e_and_platform_control_unverified');
 });

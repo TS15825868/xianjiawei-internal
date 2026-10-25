@@ -39,7 +39,8 @@ test('health says staging does not reply, handle orders, or replace official web
  const r=await worker.fetch(new Request('https://example.test/healthz'),{});
  assert.equal(r.status,200);const j=await r.json();
  assert.equal(j.receiptEnabled,false);assert.equal(j.customerReplies,false);
- assert.equal(j.handlesOrders,false);assert.equal(j.productionWebhookUnchanged,true);
+ assert.equal(j.handlesOrders,false);assert.equal(j.officialCallback,'not_verified_by_this_worker');
+ assert.equal(j.productionWebhookUnchanged,undefined);
  assert.equal(r.headers.get('cache-control'),'no-store');
 });
 test('verify-only accepts signed empty LINE probe but refuses all customer events',async()=>{

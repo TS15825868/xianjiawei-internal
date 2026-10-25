@@ -2,7 +2,7 @@
 const HEADERS = {'cache-control':'no-store','content-type':'application/json; charset=utf-8','x-content-type-options':'nosniff'};
 const respond = (value,status=200) => Response.json(value,{status,headers:HEADERS});
 const denied = (code,status) => respond({ok:false,code,readOnly:true,customerSend:false},status);
-const ROLES = new Set(['owner','admin','content']);
+const ROLES = new Set(['owner','admin','content','sales']);
 const POST_STATUS = new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
 
 export async function aiOperationsReadiness(request,env,{authenticate}={}) {
