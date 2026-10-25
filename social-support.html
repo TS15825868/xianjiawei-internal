@@ -24,6 +24,8 @@ button.primary{background:var(--navy);color:#fff}button.secondary{background:#f0
 .result{white-space:pre-wrap;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--cream);font-size:17px}
 #status{font-weight:700;min-height:28px;margin:12px 0}#status.error{color:#9e2828}
 .caption{font-size:13px;color:var(--muted)}
+.handoff-item{border-bottom:1px solid var(--line);padding:12px 0}.handoff-item:last-child{border-bottom:0}
+.handoff-item button{margin-top:8px}.handoff-item p{font-size:14px;margin-bottom:3px;overflow-wrap:anywhere}
 @media(max-width:430px){main{padding-left:12px;padding-right:12px}button{flex:1}nav{gap:10px}}
 </style>
 </head>
@@ -53,6 +55,14 @@ button.primary{background:var(--navy);color:#fff}button.secondary{background:#f0
 <p id="ai-ops-status" role="status" aria-live="polite" class="muted">尚未檢查。需使用仙加味內部帳號登入。</p>
 <div id="ai-ops-summary" class="result" aria-live="polite">點擊按鈕後，顯示目前待審核數量、AI 草稿狀態及尚未驗收的外部串接。</div>
 <p class="caption">這是系統設定與 D1 唯讀檢查，不等於 LINE OA、Meta 或 AI 模型已通過端對端驗收。</p>
+</section>
+<section class="panel" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading">LINE 人工接手紀錄</h2>
+<p>僅顯示經 D1 收件的事件編號、類型、時間及人員接手狀態。正式 LINE OA 目前仍由原服務處理；備援未切換前可能沒有任何事件。</p>
+<p class="caption">不在這裡查看顧客私訊、不顯示 LINE 回覆 Token，也不會發送訊息。請在 LINE Official Account Manager 依既有流程人工查核與回覆。</p>
+<div class="actions"><button id="load-line-handoffs" type="button" class="secondary">查看待接手事件</button></div>
+<p id="line-handoff-status" role="status" aria-live="polite" class="muted">只有具備客服／管理權限的內部人員可使用。</p>
+<div id="line-handoff-list" class="result" aria-live="polite">按「查看待接手事件」才會讀取 D1；不會自動背景輪詢。</div>
 </section>
 </main>
 <script>
@@ -121,6 +131,59 @@ aiOpsButton.addEventListener('click',async()=>{
   aiOpsStatus.className='error';aiOpsStatus.textContent=error.message||'讀取失敗';
  }finally{aiOpsButton.disabled=false;}
 });
+
+const handoffLoad=document.getElementById('load-line-handoffs');
+const handoffStatus=document.getElementById('line-handoff-status');
+const handoffList=document.getElementById('line-handoff-list');
+const lineHandoffBase='/api/line-handoff';
+async function loadLineHandoffs(){
+ if(handoffLoad.disabled)return;
+ handoffLoad.disabled=true;handoffStatus.className='muted';handoffStatus.textContent='正在讀取僅限內部的待接手事件…';
+ try{
+  const resp=await fetch(lineHandoffBase+'?limit=20',{method:'GET',credentials:'same-origin',cache:'no-store'});
+  const data=await resp.json().catch(()=>null);
+  if(!resp.ok||data?.ok!==true||data?.sent!==false||data?.containsCustomerMessage!==false)
+   throw Error(resp.status===401||resp.status===403?'需登入有權限的客服／管理帳號。':'目前無法讀取 D1 接手紀錄。');
+  handoffList.replaceChildren();
+  if(!Array.isArray(data.items)||!data.items.length){
+   handoffList.textContent='目前沒有待接手的備援收件事件。正式 LINE OA 仍依原服務及 LINE OA Manager 處理。';
+  }else for(const entry of data.items){
+   if(typeof entry.eventId!=='string'||typeof entry.eventType!=='string')continue;
+   const item=document.createElement('div');item.className='handoff-item';
+   const line=document.createElement('p');line.textContent='事件 '+entry.eventId.slice(0,16)+'…｜'+entry.eventType+'｜'+(entry.receivedAt||'時間未確認');
+   item.appendChild(line);
+   const status=document.createElement('p');
+   status.textContent=entry.assigned?'已由 '+(entry.claimOwner||'內部同仁')+' 接手；不代表已向顧客回覆。':'尚未接手；請先在官方 LINE 後台確認對話。';
+   item.appendChild(status);
+   const act=document.createElement('button');act.type='button';act.className='secondary';
+   const action=entry.assigned?'release':'claim';
+   act.textContent=entry.assigned?'釋放接手':'人工接手';
+   act.addEventListener('click',async()=>{
+    if(act.disabled)return;
+    if(!confirm('僅更動內部接手紀錄，不會向顧客發送任何訊息。確定'+(action==='claim'?'接手':'釋放')+'？'))return;
+    act.disabled=true;
+    try{
+     const response=await fetch(lineHandoffBase+'/'+encodeURIComponent(entry.eventId)+'/'+action,{
+      method:'POST',credentials:'same-origin',cache:'no-store',
+      headers:{'content-type':'application/json'},body:JSON.stringify({confirmManual:true})
+     });
+     const result=await response.json().catch(()=>null);
+     if(!response.ok||result?.ok!==true||result?.sent!==false)
+      throw Error(response.status===409?'事件已由其他人接手或狀態更新，請重新整理。':'接手操作未成功，請管理員檢查 D1。');
+     handoffStatus.textContent='已更新內部接手狀態；顧客訊息仍需在官方 LINE 後台人工處理。';
+     await loadLineHandoffs();
+    }catch(error){handoffStatus.className='error';handoffStatus.textContent=error.message||'更新失敗'}
+    finally{act.disabled=false}
+   });
+   item.appendChild(act);handoffList.appendChild(item);
+  }
+  handoffStatus.textContent='已讀取接手列表；沒有調用 AI、LINE 發送 API 或客戶資料。';
+ }catch(error){
+  handoffList.textContent='目前無法顯示待接手紀錄。';
+  handoffStatus.className='error';handoffStatus.textContent=error.message||'讀取失敗';
+ }finally{handoffLoad.disabled=false}
+}
+handoffLoad.addEventListener('click',loadLineHandoffs);
 </script>
 </body>
 </html>

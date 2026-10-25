@@ -28,3 +28,11 @@ GitHub Actions 中新流程在獨立 Node 測試（簽章、空事件、重送�
 ## 內部唯讀監控
 
 `/social-support.html` 的「檢查 AI 營運狀態」在完成 Cloudflare Access 授權後，同步查詢 D1 收件表的 **分組總數與待處理數**。不回傳事件本體、LINE replyToken、顧客名字、訊息、手機號碼；這個統計永遠顯示 `liveWebhookVerified:false`，並不等於 LINE 正式串接驗收通過。
+
+## LINE 人工接手（2026-10-26）
+
+既有 Cloudflare ERP `GET /api/line-handoff?limit=20` 僅供 `owner/admin/sales` 通過正式 Access JWT＋profiles 權限檢查的人員，顯示 webhookEventId、事件類型、收件時間、認領人及認領時間；絕不查詢原始 event_json／私訊、LINE replyToken、帳戶來源、手機或訂單資料。
+
+內部客服中心 `social-support.html` 的「查看待接手事件」只在人工點擊時查詢，沒有自動背景輪詢。「人工接手」／「釋放接手」必須同源 POST、JSON 的 `confirmManual:true`、有效 Access、角色授權及 D1 條件式寫入。獨立 `xjw_line_handoff_claims` 以部分唯一索引防止同筆重複接手，釋放不刪除歷史；主管可釋放認領，但一般客服只可釋放自己的接手。
+
+這些動作**不向 LINE 回覆、不代表已完成對客處理**；正式 Webhook 仍在 Render。請在 LINE Official Account Manager 查核真正的顧客內容並人工回覆。未驗證的正式回覆與訂單搬遷繼續維持未啟用。

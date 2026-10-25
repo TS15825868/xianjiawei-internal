@@ -1,5 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {lineHandoffApi} from '../src/line-handoff.js';
 const base='https://internal.example/api/line-handoff';
 const eventId='01JABCDEFGH123456789ABCDEF';
@@ -77,24 +78,23 @@ test('staff get only event metadata; never source, content or reply token',async
 });
 test('manual claim is atomic, second operator cannot steal claim',async()=>{
  const f=fixture(),env={DB:f.db};
- const req=request(base+'/'+eventId+'/claim','POST');
- const first=await lineHandoffApi(req,env,{authenticate:sales});
+ const first=await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,{authenticate:sales});
  assert.equal(first.status,200);assert.equal((await first.json()).customerReplySent,false);
- const repeat=await lineHandoffApi(req,env,{authenticate:owner});
+ const repeat=await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,{authenticate:owner});
  assert.equal(repeat.status,409);
  assert.equal(f.claims.filter(x=>x.status==='claimed').length,1);
  assert.equal(f.claims[0].actor_email,'sales@example.test');
 });
 test('release restricted to assignee or owner/admin and preserves history',async()=>{
  const f=fixture(),env={DB:f.db};
- const claim=request(base+'/'+eventId+'/claim','POST');
- const release=request(base+'/'+eventId+'/release','POST');
- assert.equal((await lineHandoffApi(claim,env,{authenticate:sales})).status,200);
+ const claim=()=>request(base+'/'+eventId+'/claim','POST');
+ const release=()=>request(base+'/'+eventId+'/release','POST');
+ assert.equal((await lineHandoffApi(claim(),env,{authenticate:sales})).status,200);
  const other={email:'other@example.test',role:'sales',active:1};
- assert.equal((await lineHandoffApi(release,env,{authenticate:async()=>other})).status,409);
- assert.equal((await lineHandoffApi(release,env,{authenticate:owner})).status,200);
+ assert.equal((await lineHandoffApi(release(),env,{authenticate:async()=>other})).status,409);
+ assert.equal((await lineHandoffApi(release(),env,{authenticate:owner})).status,200);
  assert.equal(f.claims[0].status,'released');
- assert.equal((await lineHandoffApi(claim,env,{authenticate:sales})).status,200);
+ assert.equal((await lineHandoffApi(claim(),env,{authenticate:sales})).status,200);
  assert.equal(f.claims.length,2,'Historical claim attempt retained');
 });
 test('POST cannot be used as a cross-origin request or silently via automation',async()=>{
@@ -112,11 +112,15 @@ test('invalid route and unsupported method do not call D1',async()=>{
  assert.equal(f.reads,0);assert.equal(f.writes,0);
 });
 test('database missing or failed writes cannot be reported as claimed',async()=>{
- const f=fixture(),env={DB:{prepare(sql){const x=f.db.prepare(sql);return{bind(...values){
-    const inner=x.bind(...values);return{run:async()=>{throw Error('private DB error')}}
- }}}}};
+ const env={DB:{prepare(){return {bind(){return{run:async()=>{throw Error('private DB error')}}}}}}};
  const r=await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,{authenticate:owner});
  assert.equal(r.status,503);const t=await r.text();
  assert.ok(!t.includes('private DB error'));assert.equal(JSON.parse(t).sent,false);
  assert.equal((await lineHandoffApi(request(),{}, {authenticate:owner})).status,503);
+});
+
+test('full internal production route preserves Cloudflare Access instead of public bypass',()=>{
+ const source=readFileSync(new URL('../src/full-system-entry.js',import.meta.url),'utf8');
+ assert.match(source,/lineHandoffApi\(request,env,\{authenticate:verifyFastAccess\}\)/);
+ assert.match(source,/if\(maintenance&&\['POST','PUT','PATCH','DELETE'\]/);
 });
