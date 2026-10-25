@@ -13,10 +13,11 @@ const CHECK=String.raw`SELECT current_user AS effective_role,
  has_table_privilege(current_user,'xjw_social.comment_ledger','INSERT') AND
  has_column_privilege(current_user,'xjw_social.comment_ledger','status','UPDATE') AND
  has_column_privilege(current_user,'xjw_social.comment_ledger','decision','UPDATE') AND
- has_column_privilege(current_user,'xjw_social.comment_ledger','human_takeover','UPDATE') AND
- has_column_privilege(current_user,'xjw_social.comment_ledger','error_code','UPDATE') AND
+  has_column_privilege(current_user,'xjw_social.comment_ledger','error_code','UPDATE') AND
  has_column_privilege(current_user,'xjw_social.comment_ledger','retry_state','UPDATE') AND
  has_column_privilege(current_user,'xjw_social.comment_ledger','updated_at','UPDATE') AS comment_write_ready,
+ has_function_privilege(current_user,'xjw_social.mark_human_takeover(text,text,text,text)','EXECUTE') AS human_takeover_rpc_ready,
+ NOT has_column_privilege(current_user,'xjw_social.comment_ledger','human_takeover','UPDATE') AS no_direct_human_override,
  has_table_privilege(current_user,'xjw_social.reply_ledger','INSERT') AND
  has_column_privilege(current_user,'xjw_social.reply_ledger','state','UPDATE') AND
  has_column_privilege(current_user,'xjw_social.reply_ledger','remote_reply_id','UPDATE') AND
@@ -78,6 +79,7 @@ export async function verifySocialWorkerTls({config,connect}){
      row.tls_enabled!==true || !/^TLSv1\.[23]$/.test(row.tls_version||'') ||
      row.superuser!==false || row.bypass_rls!==false ||
      row.inbox_write_ready!==true || row.comment_write_ready!==true ||
+     row.human_takeover_rpc_ready!==true || row.no_direct_human_override!==true ||
      row.reply_write_ready!==true || row.no_delete_privilege!==true ||
      row.no_truncate_privilege!==true || row.no_platform_control_admin!==true ||
      row.can_read_control!==true || row.can_read_work_queues!==true ||

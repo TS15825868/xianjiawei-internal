@@ -9,7 +9,8 @@ const config={
 const verified={
  effective_role:'xjw_social_worker',tls_enabled:true,tls_version:'TLSv1.3',
  superuser:false,bypass_rls:false,can_read_control:true,can_read_work_queues:true,
- inbox_write_ready:true,comment_write_ready:true,reply_write_ready:true,no_delete_privilege:true,
+ inbox_write_ready:true,comment_write_ready:true,reply_write_ready:true,
+ human_takeover_rpc_ready:true,no_direct_human_override:true,no_delete_privilege:true,
  no_truncate_privilege:true,no_platform_control_admin:true,
  can_enable_platform:false,no_platform_control_update:true,can_delete_comment:false,
  platform_rows_expected:true,all_send_flags_off:true,all_tables_rls_enabled:true
@@ -52,6 +53,7 @@ test('no trust in TLS version, wrong role, RLS bypass, disabled RLS or release f
   {superuser:true},{bypass_rls:true},{can_read_control:false},
   {can_read_work_queues:false},{can_read_work_queues:null},
   {inbox_write_ready:false},{comment_write_ready:false},
+  {human_takeover_rpc_ready:false},{no_direct_human_override:false},
   {reply_write_ready:false},{no_delete_privilege:false},
   {no_truncate_privilege:false},{no_truncate_privilege:null},
   {no_platform_control_admin:false},{no_platform_control_admin:null},
@@ -173,4 +175,18 @@ test('worker preflight rejects TRUNCATE on every private ledger and INSERT/REFER
   assert.ok(sql.includes(`has_table_privilege(current_user,'xjw_social.${table}','TRUNCATE')`));
  for(const privilege of ['INSERT','REFERENCES','TRIGGER'])
   assert.ok(sql.includes(`has_table_privilege(current_user,'xjw_social.platform_control','${privilege}')`));
+});
+
+test('human takeover uses an execute-only scoped RPC, never direct ledger update',async()=>{
+ const x=mockProbe();
+ await verifySocialWorkerTls({config,connect:x.connect});
+ const sql=x.queries.find(q=>q.includes('AS human_takeover_rpc_ready'));
+ assert.ok(sql);
+ assert.match(sql,/has_function_privilege\(current_user,'xjw_social\.mark_human_takeover\(text,text,text,text\)','EXECUTE'\)/);
+ assert.match(sql,/NOT has_column_privilege\(current_user,'xjw_social\.comment_ledger','human_takeover','UPDATE'\)/);
+ const {readFileSync}=await import('node:fs');
+ const migration=readFileSync(new URL('../docs/n8n/revoke-direct-human-takeover-20261025.sql',import.meta.url),'utf8');
+ assert.match(migration,/REVOKE UPDATE \(human_takeover\) ON xjw_social\.comment_ledger FROM xjw_social_worker/);
+ assert.match(migration,/has_function_privilege/);
+ assert.doesNotMatch(migration,/GRANT UPDATE|DISABLE ROW LEVEL SECURITY|DROP TABLE|DELETE FROM/i);
 });
