@@ -88,7 +88,8 @@ function platformReady(configuration,platform){
 }
 async function setManualRequired(env,id){
   const now=new Date().toISOString();
-  await env.DB.prepare("UPDATE social_posts SET status='manual_required',scheduled_at=NULL,published_at=NULL,updated_at=? WHERE id=?").bind(now,id).run();
+  // Preserve any platform already published before an unresolved manual handoff.
+  await env.DB.prepare("UPDATE social_posts SET status='manual_required',scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,id).run();
 }
 
 async function changeManualRequiredStatus(request,env,ctx,id){
@@ -107,7 +108,21 @@ async function changeManualRequiredStatus(request,env,ctx,id){
     manualDeliveriesCompleted=await completeManualDeliveries(env,id);
     await env.DB.prepare("UPDATE social_posts SET status='published',published_at=?,scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,now,id).run();
   }else{
-    await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,published_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(now,id).run();
+    // A partially published post cannot become a fresh draft. A prior
+    // platform receipt may exist even if the top-level published_at was null.
+    const deliveries=await deliveryRows(env,id);
+    if(before.published_at||deliveries.some(d=>d.status==='published'||d.published_at||clean(d.remote_id)))
+      return json({error:'已有平台發布紀錄；不能退回草稿造成重複發布。請保留紀錄並人工處理未完成平台。'},409);
+    const changed=await env.DB.prepare(`UPDATE social_posts SET
+      status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,
+      image_approved=0,updated_at=? WHERE id=? AND status='manual_required'
+      AND published_at IS NULL AND NOT EXISTS (
+        SELECT 1 FROM social_publish_deliveries d WHERE d.post_id=social_posts.id
+        AND (d.status='published' OR d.published_at IS NOT NULL
+          OR (d.remote_id IS NOT NULL AND TRIM(d.remote_id)<>'')))`)
+      .bind(now,id).run();
+    if(Number(changed?.meta?.changes)!==1)
+      return json({error:'貼文或平台發布結果已變更；未退回草稿，請重新確認'},409);
   }
   const after=await getPostRow(env,id);
   const deliveries=await deliveryRows(env,id);
