@@ -159,27 +159,39 @@ async function loadLineHandoffs(){
    const status=document.createElement('p');
    status.textContent=entry.assigned?'已由 '+(entry.claimOwner||'內部同仁')+' 接手；不代表已向顧客回覆。':'尚未接手；請先在官方 LINE 後台確認對話。';
    item.appendChild(status);
-   const act=document.createElement('button');act.type='button';act.className='secondary';
-   const action=entry.assigned?'release':'claim';
-   act.textContent=entry.assigned?'釋放接手':'人工接手';
-   act.addEventListener('click',async()=>{
-    if(act.disabled)return;
-    if(!confirm('僅更動內部接手紀錄，不會向顧客發送任何訊息。確定'+(action==='claim'?'接手':'釋放')+'？'))return;
-    act.disabled=true;
-    try{
-     const response=await fetch(lineHandoffBase+'/'+encodeURIComponent(entry.eventId)+'/'+action,{
-      method:'POST',credentials:'same-origin',cache:'no-store',
-      headers:{'content-type':'application/json'},body:JSON.stringify({confirmManual:true})
-     });
-     const result=await response.json().catch(()=>null);
-     if(!response.ok||result?.ok!==true||result?.sent!==false)
-      throw Error(response.status===409?'事件已由其他人接手或狀態更新，請重新整理。':'接手操作未成功，請管理員檢查 D1。');
-     handoffStatus.textContent='已更新內部接手狀態；顧客訊息仍需在官方 LINE 後台人工處理。';
-     await loadLineHandoffs();
-    }catch(error){handoffStatus.className='error';handoffStatus.textContent=error.message||'更新失敗'}
-    finally{act.disabled=false}
-   });
-   item.appendChild(act);handoffList.appendChild(item);
+   function addAction(action,label){
+    const act=document.createElement('button');act.type='button';act.className='secondary';
+    act.textContent=label;
+    act.addEventListener('click',async()=>{
+     if(act.disabled)return;
+     const message=action==='resolve'
+      ? '請先到 LINE 官方後台確認已實際處理這筆顧客對話。本操作只記錄「人工已確認完成」，不會替您回覆。確定標記完成？'
+      : '僅更動內部接手紀錄，不會向顧客發送任何訊息。確定'+(action==='claim'?'接手':'釋放')+'？';
+     if(!confirm(message))return;
+     act.disabled=true;
+     try{
+      const payload=action==='resolve'?{confirmManual:true,confirmHandledInOfficialLine:true}:{confirmManual:true};
+      const response=await fetch(lineHandoffBase+'/'+encodeURIComponent(entry.eventId)+'/'+action,{
+       method:'POST',credentials:'same-origin',cache:'no-store',
+       headers:{'content-type':'application/json'},body:JSON.stringify(payload)
+      });
+      const result=await response.json().catch(()=>null);
+      if(!response.ok||result?.ok!==true||result?.sent!==false)
+       throw Error(response.status===409?'事件已由其他人接手或狀態更新，請重新整理。':'操作未成功，請管理員檢查 D1。');
+      handoffStatus.textContent=action==='resolve'
+       ? '已依人員確認記錄為處理完成；這不是 LINE 官方發送回執。'
+       : '已更新內部接手狀態；顧客訊息仍需在官方 LINE 後台人工處理。';
+      await loadLineHandoffs();
+     }catch(error){handoffStatus.className='error';handoffStatus.textContent=error.message||'更新失敗'}
+     finally{act.disabled=false}
+    });
+    item.appendChild(act);
+   }
+   if(entry.assigned){
+    addAction('release','釋放接手');
+    addAction('resolve','已在官方 LINE 處理完成');
+   }else addAction('claim','人工接手');
+   handoffList.appendChild(item);
   }
   handoffStatus.textContent='已讀取接手列表；沒有調用 AI、LINE 發送 API 或客戶資料。';
  }catch(error){

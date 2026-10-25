@@ -9,7 +9,7 @@ const denied=(code,status)=>out({ok:false,code,sent:false,customerMessagesExpose
 function numeric(value,fallback,max){
  const parsed=Number(value);return Number.isSafeInteger(parsed)&&parsed>=0?Math.min(parsed,max):fallback;
 }
-async function boundedConfirmation(request){
+async function boundedConfirmation(request,action){
  if(!/^application\/json(?:;|$)/i.test(request.headers.get('content-type')||''))return null;
  const header=Number(request.headers.get('content-length'));
  if(Number.isFinite(header)&&header>256)return null;
@@ -28,13 +28,15 @@ async function boundedConfirmation(request){
  for(const part of parts){raw.set(part,offset);offset+=part.byteLength;}
  try{
   const obj=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
-  return obj&&typeof obj==='object'&&!Array.isArray(obj)&&obj.confirmManual===true&&
-   Object.keys(obj).length===1?obj:null;
+  if(!obj||typeof obj!=='object'||Array.isArray(obj)||obj.confirmManual!==true)return null;
+  if(action==='resolve')return obj.confirmHandledInOfficialLine===true&&
+    Object.keys(obj).length===2?obj:null;
+  return Object.keys(obj).length===1?obj:null;
  }catch{return null;}
 }
 export async function lineHandoffApi(request,env,{authenticate}={}){
  const u=new URL(request.url),pathname=u.pathname;
- const match=pathname.match(/^\/api\/line-handoff\/([A-Za-z0-9_-]{8,128})\/(claim|release)$/);
+ const match=pathname.match(/^\/api\/line-handoff\/([A-Za-z0-9_-]{8,128})\/(claim|release|resolve)$/);
  if(pathname!=='/api/line-handoff'&&!match)return denied('route_not_found',404);
  if(typeof authenticate!=='function')return denied('authentication_unavailable',503);
  let profile;
@@ -67,9 +69,12 @@ export async function lineHandoffApi(request,env,{authenticate}={}){
  }
  if(request.method!=='POST')return denied('method_not_allowed',405);
  if(request.headers.get('origin')!==u.origin)return denied('same_origin_required',403);
- const confirmed=await boundedConfirmation(request);
- if(!confirmed)return denied('manual_confirmation_required',400);
- const [,eventId,action]=match,now=new Date().toISOString();
+ const [,eventId,action]=match;
+ const confirmed=await boundedConfirmation(request,action);
+ if(!confirmed)return denied(action==='resolve'?'official_line_manual_confirmation_required':'manual_confirmation_required',400);
+ const actor=String(profile.email||'').trim().toLowerCase();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(actor))return denied('operator_identity_unavailable',403);
+ const now=new Date().toISOString();
  try{
   let query;
   if(action==='claim'){
@@ -79,18 +84,30 @@ export async function lineHandoffApi(request,env,{authenticate}={}){
     "SELECT ?,r.event_id,?,?,'claimed' FROM xjw_line_receipt_inbox r "+
     "WHERE r.event_id=? AND r.handling_status='unhandled' "+
     "AND NOT EXISTS(SELECT 1 FROM xjw_line_handoff_claims c WHERE c.event_id=r.event_id AND c.status='claimed')"
-   ).bind(claimId,String(profile.email||''),now,eventId);
-  }else{
+   ).bind(claimId,actor,now,eventId);
+  }else if(action==='release'){
    query=env.DB.prepare(
     "UPDATE xjw_line_handoff_claims SET status='released',released_at=? "+
-    "WHERE event_id=? AND status='claimed' AND (actor_email=? OR ? IN ('owner','admin'))"
-   ).bind(now,eventId,String(profile.email||''),profile.role);
+    "WHERE event_id=? AND status='claimed' AND (actor_email=? OR ? IN ('owner','admin')) "+
+    "AND EXISTS(SELECT 1 FROM xjw_line_receipt_inbox r WHERE r.event_id=xjw_line_handoff_claims.event_id AND r.handling_status='unhandled')"
+   ).bind(now,eventId,actor,profile.role);
+  }else{
+   // This records a human attestation, NOT proof of an outgoing LINE API reply.
+   // One conditional UPDATE prevents duplicate resolutions or reassignment races.
+   query=env.DB.prepare(
+    "UPDATE xjw_line_receipt_inbox SET handling_status='handled',handled_at=? "+
+    "WHERE event_id=? AND handling_status='unhandled' "+
+    "AND EXISTS(SELECT 1 FROM xjw_line_handoff_claims c "+
+    "WHERE c.event_id=xjw_line_receipt_inbox.event_id AND c.status='claimed' "+
+    "AND (c.actor_email=? OR ? IN ('owner','admin')))"
+   ).bind(now,eventId,actor,profile.role);
   }
   const result=await query.run();
   if(result?.success===false)return denied('handoff_storage_unavailable',503);
   if(result?.meta?.changes!==1)return denied('event_already_claimed_or_not_found',409);
   return out({ok:true,eventId,action,operatorReviewRequired:true,
    customerReplySent:false,customerMessageViewed:false,sent:false,
-   state:action==='claim'?'claimed':'unassigned'});
+   manuallyAttested:action==='resolve',externalReplyVerified:false,
+   state:action==='claim'?'claimed':action==='release'?'unassigned':'manually_handled'});
  }catch{return denied('handoff_storage_unavailable',503)}
 }

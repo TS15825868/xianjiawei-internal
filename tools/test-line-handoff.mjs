@@ -6,11 +6,11 @@ const base='https://internal.example/api/line-handoff';
 const eventId='01JABCDEFGH123456789ABCDEF';
 const owner=async()=>({email:'owner@example.test',role:'owner',active:1});
 const sales=async()=>({email:'sales@example.test',role:'sales',active:1});
-function request(url=base,method='GET',{origin=true,confirm=true,contentType='application/json'}={}){
+function request(url=base,method='GET',{origin=true,confirm=true,handled=false,contentType='application/json'}={}){
  return new Request(url,{method,headers:{
   ...(origin?{'origin':'https://internal.example'}:{}),
   ...(method==='POST'?{'content-type':contentType}:{})
- },...(method==='POST'?{body:JSON.stringify({confirmManual:confirm})}:{})});
+ },...(method==='POST'?{body:JSON.stringify(handled?{confirmManual:confirm,confirmHandledInOfficialLine:true}:{confirmManual:confirm})}:{})});
 }
 function fixture(){
  const receipt=new Map([[eventId,{event_id:eventId,event_type:'message',
@@ -44,8 +44,15 @@ function fixture(){
     if(sql.startsWith('UPDATE xjw_line_handoff_claims')){
      const [at,id,email,role]=params;
      const match=claims.find(c=>c.event_id===id&&c.status==='claimed'&&(c.actor_email===email||['owner','admin'].includes(role)));
-     if(!match)return{success:true,meta:{changes:0}};
+     if(!match||receipt.get(id)?.handling_status!=='unhandled')return{success:true,meta:{changes:0}};
      match.status='released';match.released_at=at;
+     return{success:true,meta:{changes:1}};
+    }
+    if(sql.startsWith("UPDATE xjw_line_receipt_inbox SET handling_status='handled'")){
+     const [at,id,email,role]=params,row=receipt.get(id);
+     const claim=claims.find(c=>c.event_id===id&&c.status==='claimed'&&(c.actor_email===email||['owner','admin'].includes(role)));
+     if(!row||row.handling_status!=='unhandled'||!claim)return{success:true,meta:{changes:0}};
+     row.handling_status='handled';row.handled_at=at;
      return{success:true,meta:{changes:1}};
     }
     throw Error('unexpected mutation');
@@ -123,4 +130,44 @@ test('full internal production route preserves Cloudflare Access instead of publ
  const source=readFileSync(new URL('../src/full-system-entry.js',import.meta.url),'utf8');
  assert.match(source,/lineHandoffApi\(request,env,\{authenticate:verifyFastAccess\}\)/);
  assert.match(source,/if\(maintenance&&\['POST','PUT','PATCH','DELETE'\]/);
+});
+
+test('resolution requires a real staff claim and explicit official LINE human confirmation',async()=>{
+ const f=fixture(),env={DB:f.db};
+ const complete=()=>request(base+'/'+eventId+'/resolve','POST',{handled:true});
+ assert.equal((await lineHandoffApi(complete(),env,{authenticate:sales})).status,409,
+  'Without a claimant, no event may be marked complete');
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,{authenticate:sales})).status,200);
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/resolve','POST'),env,{authenticate:sales})).status,400,
+  'Ordinary confirmManual is insufficient');
+ const wrongOperator=async()=>({email:'other@example.test',role:'sales',active:1});
+ assert.equal((await lineHandoffApi(complete(),env,{authenticate:wrongOperator})).status,409);
+ assert.equal(f.receipt.get(eventId).handling_status,'unhandled');
+ const valid=await lineHandoffApi(complete(),env,{authenticate:sales});
+ assert.equal(valid.status,200);
+ const result=await valid.json();
+ assert.equal(result.state,'manually_handled');
+ assert.equal(result.manuallyAttested,true);
+ assert.equal(result.externalReplyVerified,false);
+ assert.equal(result.customerReplySent,false);
+ assert.equal(f.receipt.get(eventId).handling_status,'handled');
+ assert.equal((await lineHandoffApi(complete(),env,{authenticate:sales})).status,409);
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/release','POST'),env,{authenticate:sales})).status,409);
+ const queue=await lineHandoffApi(request(),env,{authenticate:sales});
+ assert.equal((await queue.json()).items.length,0);
+ assert.equal(f.claims.length,1);
+});
+test('owner may resolve another claim but never pretend a LINE API receipt exists',async()=>{
+ const f=fixture(),env={DB:f.db};
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,{authenticate:sales})).status,200);
+ const result=await lineHandoffApi(request(base+'/'+eventId+'/resolve','POST',{handled:true}),env,{authenticate:owner});
+ assert.equal(result.status,200);
+ assert.equal((await result.json()).externalReplyVerified,false);
+});
+test('bad operator identity or absent same-origin indication blocks completion',async()=>{
+ const f=fixture(),env={DB:f.db};
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/resolve','POST',{handled:true,origin:false}),env,{authenticate:owner})).status,403);
+ assert.equal((await lineHandoffApi(request(base+'/'+eventId+'/claim','POST'),env,
+  {authenticate:async()=>({role:'owner',active:1,email:''})})).status,403);
+ assert.equal(f.writes,0);
 });

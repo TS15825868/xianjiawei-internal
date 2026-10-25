@@ -11,6 +11,8 @@ test('free internal help UI is genuine HTML, no customer data input or outbound 
  assert.match(html,/\/api\/line-handoff/);
  assert.match(html,/id="load-line-handoffs"/);
  assert.match(html,/confirmManual:true/);
+ assert.match(html,/confirmHandledInOfficialLine:true/);
+ assert.match(html,/已在官方 LINE 處理完成/);
  assert.match(html,/id="check-ai-ops"/);
  assert.match(html,/data\?\.readOnly!==true/);
  assert.match(html,/data\?\.customerSend!==false/);

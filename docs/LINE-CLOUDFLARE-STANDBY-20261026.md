@@ -36,3 +36,10 @@ GitHub Actions 中新流程在獨立 Node 測試（簽章、空事件、重送�
 內部客服中心 `social-support.html` 的「查看待接手事件」只在人工點擊時查詢，沒有自動背景輪詢。「人工接手」／「釋放接手」必須同源 POST、JSON 的 `confirmManual:true`、有效 Access、角色授權及 D1 條件式寫入。獨立 `xjw_line_handoff_claims` 以部分唯一索引防止同筆重複接手，釋放不刪除歷史；主管可釋放認領，但一般客服只可釋放自己的接手。
 
 這些動作**不向 LINE 回覆、不代表已完成對客處理**；正式 Webhook 仍在 Render。請在 LINE Official Account Manager 查核真正的顧客內容並人工回覆。未驗證的正式回覆與訂單搬遷繼續維持未啟用。
+
+## 已人工處理完成的結案操作（2026-10-26）
+
+- 僅有已認領事件的原受理者、管理員與 owner，可將備援事件標示為 `handled`；使用資料庫同一筆條件式 UPDATE 防止重複結案。
+- 人員必須親自到 LINE OA Manager 確認該對話已處理後，再在內部客服中心按「已在官方 LINE 處理完成」並確認。請求必須同時包含 `confirmManual:true` 與 `confirmHandledInOfficialLine:true`。
+- 寫入 `handling_status='handled'` 與 `handled_at`，保留原接手人及收件事件歷史；不發送 LINE 訊息、不宣稱取得官方發送回執。結案後事件會退出「待接手」清單。
+- 如果沒有實際回覆、事件缺少受理者、認領者不符或資料庫狀態不一致，均不可標示完成。
