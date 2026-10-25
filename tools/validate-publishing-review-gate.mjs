@@ -34,7 +34,7 @@ must(gate.includes("body?.status==='pending_review'"),'草稿必須有明確送�
 must(gate.includes('submitForReview'),'草稿送待審核必須由正式review gate處理');
 must(gate.includes("status='pending_review'"),'送待審核必須實際寫入pending_review');
 must(gate.includes("clean(row.status)!=='pending_review'"),'16項核准必須只允許從pending_review進入');
-must(gate.includes('請先將草稿送待審核'),'直接從草稿核准必須被明確拒絕');
+must(gate.includes("clean(row.status)!=='pending_review'||row.scheduled_at||row.published_at")&&gate.includes('已有Metricool外部排程，不可重新核准'),'只有未發布待審核貼文可人工核准；不得透過狀態或外部排程回流');
 must(gate.includes('draftToPendingReviewRequired:true'),'健康狀態必須公開draft→pending_review正式流程能力');
 must(gate.includes('directDraftApprovalBlocked:true'),'健康狀態必須公開禁止草稿直核准能力');
 must(gate.includes("body?.status==='approved'"),'審核通過必須經過review gate');
