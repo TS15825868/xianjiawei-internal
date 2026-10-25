@@ -7,8 +7,8 @@ function createSendStore(db){
   async reserve(e,version,reply){
    const claim=randomUUID();
    const r=await db.query(`INSERT INTO xjw_social.reply_ledger
-    (platform,account_id,post_id,comment_id,conversation_version,claim_id,state)
-    SELECT c.platform,c.account_id,c.post_id,c.comment_id,c.conversation_version,$6,'reserved'
+    (platform,account_id,post_id,comment_id,conversation_version,claim_id,state,thread_id)
+    SELECT c.platform,c.account_id,c.post_id,c.comment_id,c.conversation_version,$6,'reserved',c.thread_id
     FROM xjw_social.comment_ledger c JOIN xjw_social.platform_control p USING(platform)
     WHERE c.platform=$1 AND c.account_id=$2 AND c.post_id=$3 AND c.comment_id=$4
     AND c.conversation_version=$5 AND c.status='suggest' AND c.thread_id=$7
@@ -16,8 +16,8 @@ function createSendStore(db){
     AND p.enabled AND p.e2e_verified AND p.overlap_verified
     AND NOT EXISTS(SELECT 1 FROM xjw_social.comment_ledger h WHERE h.platform=c.platform
      AND h.account_id=c.account_id AND h.post_id=c.post_id AND h.thread_id=c.thread_id AND h.human_takeover)
-    -- A separate comment from the same thread might already own the reply.
-    -- The unique comment claim alone cannot detect that cross-comment state.
+    -- This read is a defense in depth. The unique ACTIVE thread index on
+    -- reply_ledger.thread_id closes the concurrent cross-comment race.
     AND NOT EXISTS(SELECT 1 FROM xjw_social.reply_ledger other
      JOIN xjw_social.comment_ledger owner ON owner.platform=other.platform
       AND owner.account_id=other.account_id AND owner.post_id=other.post_id

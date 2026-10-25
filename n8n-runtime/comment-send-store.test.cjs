@@ -166,3 +166,25 @@ test('send start disallows other claims in thread but retains own reservation',a
  assert.match(sql,/other\.claim_id<>r\.claim_id/);
  assert.match(sql,/other\.state IN \('reserved','sending','sent','unknown','manual'\)/);
 });
+
+test('atomic thread claim copies exact ledger thread_id, not a caller-controlled shortcut',async()=>{
+ const {store,calls}=adapter();
+ assert.ok(await store.reserve(event,'v','Safe text'));
+ const {sql,args}=calls[0];
+ assert.match(sql,/claim_id,state,thread_id\\)/);
+ assert.match(sql,/SELECT c\\.platform,c\\.account_id,c\\.post_id,c\\.comment_id,c\\.conversation_version,\\$6,'reserved',c\\.thread_id/);
+ assert.match(sql,/c\\.thread_id=\\$7/);
+ assert.match(sql,/ON CONFLICT DO NOTHING RETURNING claim_id/);
+ assert.deepEqual(args.slice(0,5),[...scope,'v']);
+});
+test('live schema migration enforces one active reply per conversation atomically',()=>{
+ const {readFileSync}=require('node:fs');
+ const {resolve}=require('node:path');
+ const sql=readFileSync(resolve(__dirname,'../docs/n8n/social-reply-thread-unique-20261025.sql'),'utf8');
+ assert.match(sql,/ALTER TABLE xjw_social\\.reply_ledger ADD COLUMN IF NOT EXISTS thread_id text/);
+ assert.match(sql,/ALTER TABLE xjw_social\\.reply_ledger ALTER COLUMN thread_id SET NOT NULL/);
+ assert.match(sql,/CREATE UNIQUE INDEX IF NOT EXISTS reply_ledger_one_active_per_thread_uq/);
+ assert.match(sql,/ON xjw_social\\.reply_ledger\\s*\\(platform,account_id,post_id,thread_id\\)/);
+ assert.match(sql,/WHERE state IN \\('reserved','sending','sent','unknown','manual'\\)/);
+ assert.doesNotMatch(sql,/DROP TABLE|DELETE FROM|TRUNCATE|DISABLE TRIGGER|SET enabled=true/i);
+});
