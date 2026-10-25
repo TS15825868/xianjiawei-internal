@@ -73,3 +73,19 @@ test('historical eight-UUID recovery never autowrites D1 or replays published te
  assert.equal(new Set(m.posts.map(x=>x.uuid)).size,8);
  assert.equal(m.batch,'20261013-eight-recovery');
 });
+
+test('both manually approved scheduling paths refuse previously published posts',()=>{
+ const paths=[
+  '.github/workflows/apply-approved-schedule-current.yml',
+  '.github/workflows/apply-metricool-approved-post-current.yml'
+ ];
+ for(const filename of paths){
+  const workflow=fs.readFileSync(path.join(root,filename),'utf8');
+  assert.match(workflow,/published_at IS NULL AND image_approved=1/);
+  assert.match(workflow,/p\.published_at\)/);
+  assert.match(workflow,/scheduled_at,published_at,/);
+  if(filename.includes('metricool'))assert.match(workflow,/r\.published_at!==null/);
+  else assert.match(workflow,/actual\.published_at!==null/);
+  assert.match(workflow,/gateState\(env,p\)/);
+ }
+});

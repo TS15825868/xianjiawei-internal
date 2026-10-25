@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/owner-delegated-ai-review-20261011.yml'
       - '.github/workflows/final-reviewed-batches-20261013.yml'
+      - '.github/workflows/apply-approved-schedule-current.yml'
+      - '.github/workflows/apply-metricool-approved-post-current.yml'
       - '.github/workflows/metricool-eight-recovery.yml'
       - '.github/workflows/apply-post-copy-correction.yml'
       - 'tools/apply-post-copy-correction.cjs'

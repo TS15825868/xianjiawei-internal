@@ -76,7 +76,7 @@ jobs:
           const rows=(Array.isArray(data)?data[0]?.results:data?.results)||[];
           if(rows.length!==1)throw Error('D1找不到唯一的已核准貼文');
           const p=rows[0];
-          if(p.status!=='approved'||Number(p.image_approved)!==1||!p.approved_at||!p.approved_by)
+          if(p.status!=='approved'||Number(p.image_approved)!==1||!p.approved_at||!p.approved_by||p.published_at)
             throw Error('草稿、待審核及未取得人工核准的貼文不得進入排程');
           for(const [key,value] of Object.entries({title:x.title,copy:x.copy,category:x.category,image_url:x.imageUrl,image_alt:x.imageAlt}))
             if(p[key]!==value)throw Error('請求圖文與正式人工核准版本不同：'+key);
@@ -158,7 +158,7 @@ jobs:
             scheduled_at=${q(x.scheduledAt)},
             proposed_scheduled_at=${q(x.scheduledAt)},
             updated_at=datetime('now')
-          WHERE id=${q(x.postId)} AND status='approved' AND image_approved=1
+          WHERE id=${q(x.postId)} AND status='approved' AND published_at IS NULL AND image_approved=1
             AND approved_at=${q(proof.approvedAt)} AND approved_by=${q(proof.approvedBy)}
             AND image_url=${q(proof.imageUrl)}
             AND title=${q(x.title)} AND copy=${q(x.copy)}
@@ -186,7 +186,7 @@ jobs:
         run: |
           set -euo pipefail
           ID="$(cat /tmp/xjw-post-id.txt)"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,status,scheduled_at,image_url,image_alt,image_approved,approved_by,approved_at FROM social_posts WHERE id='$ID'" > /tmp/xjw-verify.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,category,status,scheduled_at,published_at,image_url,image_alt,image_approved,approved_by,approved_at FROM social_posts WHERE id='$ID'" > /tmp/xjw-verify.json
           node - <<'NODE'
           const fs=require('fs');
           const raw=JSON.parse(fs.readFileSync('/tmp/xjw-verify.json','utf8'));
@@ -194,7 +194,7 @@ jobs:
           if(rows.length!==1)throw Error('找不到正式貼文');
           const r=rows[0],x=JSON.parse(fs.readFileSync('ops/metricool-approved-post-current.json','utf8'));
           const proof=JSON.parse(fs.readFileSync('/tmp/xjw-approval-proof.json','utf8'));
-          if(r.status!=='scheduled'||Number(r.image_approved)!==1||
+          if(r.status!=='scheduled'||r.published_at!==null||Number(r.image_approved)!==1||
              Date.parse(r.scheduled_at)!==Date.parse(x.scheduledAt)||
              r.approved_at!==proof.approvedAt||r.approved_by!==proof.approvedBy)
             throw Error('正式排程或人工核准持續性驗證失敗');
