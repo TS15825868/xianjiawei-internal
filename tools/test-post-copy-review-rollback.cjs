@@ -63,3 +63,13 @@ test('historic batch-29 AI review cannot write approval or auto-trigger',()=>{
  assert.match(oldBatch29,/AI_ASSISTANT_NOT_HUMAN/);
  assert.ok(!oldBatch29.includes('npx wrangler d1 execute'));
 });
+
+const archivedMetricool8=fs.readFileSync(path.join(root,'.github/workflows/metricool-eight-recovery.yml'),'utf8');
+test('historical eight-UUID recovery never autowrites D1 or replays published templates',()=>{
+ assert.match(archivedMetricool8,/workflow_dispatch:/);
+ assert.doesNotMatch(archivedMetricool8,/^\s*(?:push:|CLOUDFLARE_API_TOKEN:|npx wrangler\b|node tools\/apply-metricool-eight-recovery\.cjs\b)/m);
+ const m=JSON.parse(fs.readFileSync(path.join(root,'ops/metricool-eight-recovery-20261013.json'),'utf8'));
+ assert.equal(m.posts.length,8);
+ assert.equal(new Set(m.posts.map(x=>x.uuid)).size,8);
+ assert.equal(m.batch,'20261013-eight-recovery');
+});
