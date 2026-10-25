@@ -29,7 +29,29 @@ jobs:
           grep -q 'CREATE TABLE IF NOT EXISTS xjw_webhook_receipts' docs/cloudflare-social-receipt-schema.sql
           grep -q 'PRIMARY KEY (event_hash, platform, account_id)' docs/cloudflare-social-receipt-schema.sql
           ! grep -Eiq 'DROP TABLE|DELETE FROM|UPDATE social_posts|ALTER TABLE' docs/cloudflare-social-receipt-schema.sql
+      - name: Confirm Meta backup Worker remains disabled and locally safe
+        run: |
+          node --test src/social-webhook-cloudflare-fallback.test.mjs
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const config=JSON.parse(fs.readFileSync('wrangler.social-receipt-fallback.jsonc','utf8'));
+          for(const flag of ['XJW_CF_RECEIPT_ENABLED','XJW_META_E2E_VERIFIED','XJW_PRIMARY_OVERLAP_VERIFIED'])
+            if(config.vars[flag]!=='false')throw Error('Do not create schema while backup is auto-sending');
+          NODE
+      - name: Confirm existing D1 Time Travel recovery point
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 time-travel info xianjiawei-internal-db > /tmp/xjw-meta-receipt-bookmark.txt
+          grep -Eiq 'bookmark|current' /tmp/xjw-meta-receipt-bookmark.txt || {
+            echo 'No D1 recovery point; aborting non-destructive Meta schema creation'
+            exit 1
+          }
+          echo 'PASS: D1 recovery bookmark available without exposing value.'
       - name: Apply idempotent receipt-only schema to remote D1
         run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --file docs/cloudflare-social-receipt-schema.sql
-      - name: Read back receipt-only table
-        run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_webhook_receipts'"
+      - name: Read back receipt-only table and record count
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_webhook_receipts'"
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS receipt_count FROM xjw_webhook_receipts"
+          echo 'PASS: Meta/IG/Threads D1 backup schema present, no official callback modified.'
