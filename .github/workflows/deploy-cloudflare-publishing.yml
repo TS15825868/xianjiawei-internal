@@ -10,6 +10,9 @@ on:
       - '!src/social-webhook-cloudflare-fallback.test.mjs'
       - 'assets/**'
       - 'tools/**'
+      # Pure approval rollback tooling runs the dedicated zero-network gate.
+      - '!tools/apply-post-copy-correction.cjs'
+      - '!tools/test-post-copy-review-rollback.cjs'
       # Metricool image archive format checks run in their isolated no-install suite.
       - '!tools/metricool-image-format.cjs'
       - '!tools/metricool-image-format.test.cjs'

@@ -47,7 +47,10 @@ jobs:
           const result=JSON.parse(fs.readFileSync('/tmp/post-copy-result.json')),req=JSON.parse(fs.readFileSync(process.env.CORRECTION_FILE)).items[0];
           assert.equal(a.length,b.length); assert.equal(al.length,bl.length);
           const p=a.find(x=>x.id===result.post_id),m=al.find(x=>x.post_id===result.post_id);
-          assert(p&&m); assert.equal(p.status,'pending_review'); assert.equal(p.copy,req.new_copy); assert.equal(p.approved_by,null); assert.equal(p.scheduled_at,null);
+          assert(p&&m); assert.equal(p.status,'pending_review'); assert.equal(p.copy,req.new_copy);
+          assert.equal(p.approved_by,null); assert.equal(p.approved_at,null);
+          assert.equal(Number(p.image_approved),0); assert.equal(p.scheduled_at,null);
+          assert.equal(p.proposed_scheduled_at,null); assert.equal(p.published_at,null);
           assert.equal(m.uuid,result.uuid); assert.equal(String(m.metricool_id),String(result.metricool_id)); assert.equal(m.state,'pending_review'); assert.equal(m.content_fingerprint,result.new_fingerprint);
           for(const old of b.filter(x=>x.id!==result.post_id))assert.deepEqual(a.find(x=>x.id===old.id),old);
           for(const old of bl.filter(x=>x.post_id!==result.post_id))assert.deepEqual(al.find(x=>x.post_id===old.post_id),old);

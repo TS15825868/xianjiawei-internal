@@ -1,0 +1,22 @@
+name: 仙加味人工核准失效與文案退回安全測試
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/owner-delegated-ai-review-20261011.yml'
+      - '.github/workflows/apply-post-copy-correction.yml'
+      - 'tools/apply-post-copy-correction.cjs'
+      - 'tools/test-post-copy-review-rollback.cjs'
+      - '.github/workflows/verify-human-review-rollback.yml'
+permissions:
+  contents: read
+jobs:
+  fail-closed-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Offline synthetic approval rollback checks (no Cloudflare credentials)
+        run: node --test tools/test-post-copy-review-rollback.cjs
