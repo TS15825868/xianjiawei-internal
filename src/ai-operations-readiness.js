@@ -24,19 +24,41 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     if(POST_STATUS.has(row?.status)&&Number.isSafeInteger(Number(row.total))&&Number(row.total)>=0)
       posts[row.status]=Number(row.total);
   }
+  // The LINE standby inbox is not an active LINE webhook. Query aggregate
+  // counts only; never read event_json, replyToken, userId or message bodies.
+  let lineInbox={schema:'unavailable',receiptOnly:true,liveWebhookVerified:false,
+    canReply:false,total:0,unhandled:0};
+  try{
+    const query=await env.DB.prepare(
+      'SELECT handling_status,COUNT(*) AS total FROM xjw_line_receipt_inbox GROUP BY handling_status').all();
+    if(!Array.isArray(query?.results))throw Error('invalid_line_inbox_status');
+    let total=0,unhandled=0;
+    for(const row of query.results){
+      const n=Number(row?.total);
+      if(!Number.isSafeInteger(n)||n<0)throw Error('invalid_inbox_count');
+      total+=n;
+      if(!Number.isSafeInteger(total))throw Error('overflow_inbox_count');
+      if(row?.handling_status==='unhandled')unhandled+=n;
+    }
+    lineInbox={schema:'available',receiptOnly:true,liveWebhookVerified:false,
+      canReply:false,total,unhandled};
+  }catch{
+    // A missing table or read failure is not proof that LINE is operating.
+  }
   const configured=env?.XJW_SOCIAL_AI_DRAFT_ENABLED==='true' &&
     env?.XJW_AI_FREE_ACCOUNT_CONFIRMED==='true' && typeof env?.AI?.run==='function';
   return respond({
     ok:true,readOnly:true,customerSend:false,writes:0,modelCalls:0,
     checkedAt:new Date().toISOString(),
     mode:'human_supervised_ai',allAutonomous:false,
-    data:{d1:'query_succeeded',postStatusCounts:posts},
+    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox},
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',
       postReview:'human_approval_required',pendingPostAutoApproval:false,
       metaCommentAutoReply:'external_e2e_and_platform_control_unverified',
       lineOa:'external_service_requires_live_verification',
+      lineReceiptStandby:'table_schema_only_not_live_webhook_verified',
       metricool:'external_queue_requires_live_review',
       n8n:'not_required_for_public_health_fallback'
     },
@@ -47,6 +69,6 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
       publishedPostsImmutable:true,actualCustomerSendNotVerified:true
     },
     limits:{modelBudgetEnforcedByThisEndpoint:false,freePlanVerifiedByThisEndpoint:false},
-    note:'D1 status read succeeded. Model/Meta/LINE/Metricool connectivity and free AI balance are NOT tested here.'
+    note:'D1 post counts and optional LINE inbox metadata only. Model/Meta/LINE/Metricool live API, customer replies and AI free balance are NOT tested.'
   });
 }

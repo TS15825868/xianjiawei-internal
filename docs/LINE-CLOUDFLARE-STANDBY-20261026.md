@@ -24,3 +24,7 @@
 ## 驗收方式
 
 GitHub Actions 中新流程在獨立 Node 測試（簽章、空事件、重送、資料庫失敗、資料上限、無對客發送）通過後，才部署獨立 Worker 的停用設定；部署後用公開唯讀健康端點與 503 收件測試驗證。這不等於 LINE 官方 E2E 已通過。
+
+## 內部唯讀監控
+
+`/social-support.html` 的「檢查 AI 營運狀態」在完成 Cloudflare Access 授權後，同步查詢 D1 收件表的 **分組總數與待處理數**。不回傳事件本體、LINE replyToken、顧客名字、訊息、手機號碼；這個統計永遠顯示 `liveWebhookVerified:false`，並不等於 LINE 正式串接驗收通過。

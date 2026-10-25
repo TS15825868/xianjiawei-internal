@@ -3,9 +3,12 @@ import assert from 'node:assert/strict';
 import {aiOperationsReadiness} from '../src/ai-operations-readiness.js';
 const request=new Request('https://internal.example/api/ai-ops/readiness');
 const owner=async()=>({role:'owner',active:1});
-const fakeDB=(data=[{status:'pending_review',total:7},{status:'published',total:9}])=>({prepare(sql){
- assert.equal(sql,'SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status');
- return {all:async()=>({results:data})};
+const fakeDB=(data=[{status:'pending_review',total:7},{status:'published',total:9}],line=[])=>({prepare(sql){
+ if(sql==='SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status')
+  return {all:async()=>({results:data})};
+ if(sql==='SELECT handling_status,COUNT(*) AS total FROM xjw_line_receipt_inbox GROUP BY handling_status')
+  return {all:async()=>({results:line})};
+ throw Error('unexpected query');
 }});
 test('public requests, wrong methods and non-staff roles are denied before D1',async()=>{
  const noDb={DB:{prepare:()=>assert.fail('D1 must not be queried')}};
@@ -45,4 +48,35 @@ test('unknown post states ignored; no customer text or DB fields leak',async()=>
  assert.equal(d.data.postStatusCounts.draft,2);
  assert.equal(d.data.postStatusCounts.unknown_state,undefined);
  assert.ok(!JSON.stringify(d).includes('private'));
+});
+
+test('staff-only LINE standby data exposes counts, never raw customer messages',async()=>{
+ const DB=fakeDB([],[{handling_status:'unhandled',total:3,customer:'private line token'},
+  {handling_status:'handled',total:2}]);
+ const r=await aiOperationsReadiness(request,{DB},{authenticate:owner}),d=await r.json();
+ assert.equal(r.status,200);
+ assert.equal(d.data.lineReceiptInbox.schema,'available');
+ assert.equal(d.data.lineReceiptInbox.total,5);
+ assert.equal(d.data.lineReceiptInbox.unhandled,3);
+ assert.equal(d.data.lineReceiptInbox.liveWebhookVerified,false);
+ assert.equal(d.data.lineReceiptInbox.canReply,false);
+ assert.ok(!JSON.stringify(d).includes('private line token'));
+ assert.equal(d.customerSend,false);
+});
+test('LINE inbox missing or read error is an unavailable table, never falsely live',async()=>{
+ const db={prepare(sql){
+  if(sql.includes('FROM social_posts '))return{all:async()=>({results:[]})};
+  return {all:async()=>{throw Error('no such table: xjw_line_receipt_inbox')}};
+ }};
+ const d=await (await aiOperationsReadiness(request,{DB:db},{authenticate:owner})).json();
+ assert.equal(d.ok,true);
+ assert.equal(d.data.lineReceiptInbox.schema,'unavailable');
+ assert.equal(d.data.lineReceiptInbox.liveWebhookVerified,false);
+ assert.equal(d.data.lineReceiptInbox.total,0);
+});
+test('invalid LINE counts fail closed and do not leak foreign content',async()=>{
+ const db=fakeDB([],[{handling_status:'unhandled',total:'NaN',event_json:'private msg'}]);
+ const d=await (await aiOperationsReadiness(request,{DB:db},{authenticate:owner})).json();
+ assert.equal(d.data.lineReceiptInbox.schema,'unavailable');
+ assert.ok(!JSON.stringify(d).includes('private msg'));
 });
