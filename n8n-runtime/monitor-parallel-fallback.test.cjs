@@ -57,10 +57,20 @@ test('broken Render readiness is bounded and never masks primary failure',()=>{
 
 test('known-stale Render n8n is never auto-woken by schedules or pushes while public fallback continues',()=>{
  const [primary,backup]=parts;
- assert.match(primary,/\n  monitor:\n    if: github\.event_name == 'workflow_dispatch'\n/);
+ assert.match(primary,/\n  monitor:\n    if: github\.event_name == 'workflow_dispatch' && inputs\.probe_n8n == true\n/);
  assert.match(primary,/cron:\s*'23 \* \* \* \*'/);
  assert.doesNotMatch(backup,/^\s{4}if:/m);
  assert.doesNotMatch(backup,/^\s{4}needs:/m);
  assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
  assert.match(primary,/no monitor webhooks were invoked/);
+});
+
+// One accidentally clicked manual Run must not trigger a 512 MiB Render n8n cold start.
+test('manual run stays independent by default and requires explicit n8n opt-in',()=>{
+ const [primary,backup]=parts;
+ assert.match(primary,/workflow_dispatch:\\n    inputs:\\n      probe_n8n:/);
+ assert.match(primary,/probe_n8n:[\\s\\S]*?default: false/);
+ assert.match(primary,/if: github\\.event_name == 'workflow_dispatch' && inputs\\.probe_n8n == true/);
+ assert.doesNotMatch(backup,/^\\s{4}if:/m);
+ assert.match(backup,/node n8n-runtime\\/smoke-readonly\\.js/);
 });

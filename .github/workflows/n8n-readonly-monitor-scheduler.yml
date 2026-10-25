@@ -10,6 +10,11 @@ on:
       - 'n8n-runtime/smoke-readonly.js'
       - 'n8n-runtime/smoke-readonly.test.cjs'
   workflow_dispatch:
+    inputs:
+      probe_n8n:
+        description: '僅在新版部署完成後，明確勾選才喚醒 n8n；不勾選僅執行獨立唯讀備援'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -21,10 +26,10 @@ concurrency:
 jobs:
   # Render latest live version is stale and its 512 MiB n8n repeatedly fails
   # readiness/OOM after waking. Do not probe/wake it hourly while unchanged.
-  # Operators may use workflow_dispatch after a confirmed new LIVE deploy.
+  # Manual dispatch defaults to the independent backup; opt in to a probe only after confirmed new LIVE deploy.
   # The independent public GET fallback continues hourly without n8n.
   monitor:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
