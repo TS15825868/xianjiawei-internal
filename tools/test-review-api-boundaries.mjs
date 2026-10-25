@@ -7,7 +7,7 @@ let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',impo
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
 source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({ok:true}),metricoolOwns=async()=>Boolean(globalThis.__reviewTest.externalLink),metricoolImmediate=async()=>{throw Error("unexpected publish")};');
 source=source.replace("import {imageHash,recordAiReview} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")};');
-const {default:gate,REQUIRED_CHECKS,fingerprint}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const {default:gate,REQUIRED_CHECKS,fingerprint,invalidateEditedPost}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 const state={forwarded:0,writes:[],externalLink:null,casFail:false,row:{id:'ISOLATED',title:'萬華日常',headline:'店裡的一天',copy:'分享今天的生活',category:'品牌',status:'draft',image_url:'https://example.invalid/unique.png',image_alt:'萬華店裡的一天',image_width:1200,image_height:1200,image_quality_status:'ok'},review:null};
 globalThis.__reviewTest=state;
 const env={DB:{
@@ -19,7 +19,7 @@ const env={DB:{
     async run(){
       state.writes.push(sql);
       if(state.casFail&&sql.startsWith('UPDATE social_posts'))return {meta:{changes:0}};
-      if(sql.includes("status='draft'"))state.row={...state.row,status:'draft',approved_by:null,scheduled_at:null,image_approved:0};
+      if(sql.startsWith('UPDATE social_posts')&&sql.includes("status='draft'"))state.row={...state.row,status:'draft',approved_by:null,scheduled_at:null,image_approved:0};
       if(sql.includes("status='pending_review'"))state.row={...state.row,status:'pending_review',approved_by:null,scheduled_at:null,image_approved:0};
       return{meta:{changes:1}};
     }
@@ -91,6 +91,21 @@ assert.equal((await post('status',{status:'pending_review'})).status,200);
 assert.equal(state.row.status,'pending_review');
 console.log('PASS historical publish guard rejects status/edit/reapproval; live draft submission is CAS-verified');
 
+// The post-edit handler must only delete a matching old review gate, never
+// reset a post that may have been approved or published after the edit.
+const preceding={...state.row,status:'approved',approved_by:'reviewer@example.com',copy:'Earlier approved copy'};
+state.row={...state.row,status:'published',published_at:'2026-10-24T09:00:00Z',copy:'Published concurrently'};
+const writesBeforeInvalidation=state.writes.length;
+await invalidateEditedPost(env,state.row.id,preceding);
+assert.equal(state.writes.length,writesBeforeInvalidation+1);
+const invalidateSql=state.writes.at(-1);
+assert.match(invalidateSql,/^DELETE FROM social_post_review_gates/);
+assert.match(invalidateSql,/content_fingerprint=\\?/);
+assert.match(invalidateSql,/status='draft' AND approved_by IS NULL AND published_at IS NULL/);
+assert.equal(state.row.status,'published');
+const blockedInvalidation=state.writes.length;
+await invalidateEditedPost(env,state.row.id,state.row);
+assert.equal(state.writes.length,blockedInvalidation);
 delete globalThis.__reviewTest;
 console.log('PASS production API gate in isolation: direct draft approval, missing human checklist, unreviewed scheduling/publishing and stale fingerprints blocked; reviewed immediate publish bypasses future schedule; regeneration returns pending; no production/network writes');
 

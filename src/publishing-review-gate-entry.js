@@ -141,7 +141,18 @@ async function gateState(env,row){
 }
 async function saveGate(env,row,body,profile){const checklist=checklistFrom(body);if(checklist.missing.length)throw new Error(`16項圖文審核尚未完成：${checklist.missing.join('、')}`);if(body?.copy_image_match!==true)throw new Error('必須確認「文案與圖片一致」才能核准');const errors=productMatchErrors(row);errors.push(...await duplicatePostErrors(env,row));if(errors.length)throw new Error([...new Set(errors)].join('；'));const fp=await fingerprint(row),now=new Date().toISOString();await ensureSchema(env);await env.DB.prepare(`INSERT INTO social_post_review_gates(post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at) VALUES(?,?,?,?,?,?) ON CONFLICT(post_id) DO UPDATE SET content_fingerprint=excluded.content_fingerprint,checklist_json=excluded.checklist_json,copy_image_match=excluded.copy_image_match,reviewed_by=excluded.reviewed_by,reviewed_at=excluded.reviewed_at`).bind(row.id,fp,JSON.stringify(checklist.value),1,clean(profile?.email),now).run()}
 async function clearGate(env,id){try{await ensureSchema(env);await env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=?').bind(id).run()}catch{}}
-async function invalidateEditedPost(env,id,before){await clearGate(env,id);if(!before||before.status==='published'||before.status==='archived')return;await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run()}
+async function invalidateEditedPost(env,id,before){
+  // The underlying worker already resets approval in an atomic, history-guarded
+  // edit. Never issue another status UPDATE after the edit: a newer approval or
+  // publication may have happened while the response was in flight.
+  if(!before||before.published_at||['published','archived','manual_required'].includes(clean(before.status)))return;
+  const oldFingerprint=await fingerprint(before);
+  try{
+    await ensureSchema(env);
+    await env.DB.prepare("DELETE FROM social_post_review_gates WHERE post_id=? AND content_fingerprint=? AND EXISTS (SELECT 1 FROM social_posts WHERE id=? AND status='draft' AND approved_by IS NULL AND published_at IS NULL)")
+      .bind(id,oldFingerprint,id).run();
+  }catch(error){console.warn('Old review-gate invalidation deferred',clean(error?.message||error))}
+}
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
 async function activeExternalSchedule(env,id){if(!await metricoolOwns(env,id))return false;const link=await env.DB.prepare('SELECT metricool_id,state FROM social_metricool_sync WHERE post_id=?').bind(id).first();return Boolean(link?.metricool_id&&['scheduled','awaiting_work','queued','blocked_config','awaiting_verification','cancel_required','unknown','published'].includes(link.state))}
 function canRegenerate(profile){return REGENERATION_ROLES.has(clean(profile?.role))}
