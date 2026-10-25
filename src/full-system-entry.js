@@ -5,7 +5,7 @@ import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
 import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
-import {ensureFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
+import {readFormalFirstPost,FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL} from './social-first-post-bootstrap.js';
 import {syncMetricool,metricoolConfiguration} from './metricool-sync.js';
 import {ensureAiSchema} from './ai-quality-review.js';
 import {gateState,fingerprint} from './publishing-review-gate-entry.js';
@@ -138,13 +138,15 @@ function publicFirstPost(result){
   return{
     ok:Boolean(result?.ok),
     error:result?.ok?'':String(result?.error||''),
-    removedInvalidCount:Array.isArray(result?.removed)?result.removed.length:0,
-    id:post.id||FIRST_POST_ID,
+    removedInvalidCount:0,
+    historicalSnapshotOnly:true,
+    exists:result?.exists===true,
+    id:post.id||'',
     title:post.title||'',
     headline:post.headline||'',
     copy:post.copy||'',
     status:post.status||'',
-    scheduled_at:post.scheduled_at||FIRST_POST_SCHEDULED_AT,
+    scheduled_at:post.scheduled_at||'',
     platforms_json:post.platforms_json||'[]',
     image_url:post.image_url||FIRST_POST_IMAGE_URL,
     image_alt:post.image_alt||'',
@@ -188,7 +190,7 @@ async function firstPostHealth(request,env,ctx){
     const response=await publishingApp.fetch(new Request(url,{method:'GET',headers:request.headers}),env,ctx);
     upstream=await response.json().catch(()=>({}));
   }catch{}
-  const result=await ensureFormalFirstPost(env);
+  const result=await readFormalFirstPost(env);
   return json({
     ok:Boolean(result?.ok),
     fullSystemVersion:VERSION,
@@ -257,7 +259,7 @@ export default{
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
       try{
         const body=await response.clone().json();
-        const firstPost=await ensureFormalFirstPost(env);
+        const firstPost=await readFormalFirstPost(env);
         return json({...body,
           fullSystem:true,
           fullSystemVersion:VERSION,
@@ -286,10 +288,17 @@ export default{
     return response;
   },
   async scheduled(controller,env,ctx){
-    await ensureAiSchema(env);
-    try{await syncMetricool(env,{gateState,fingerprint},new Date(controller?.scheduledTime||Date.now()))}catch(error){console.error('Metricool排程同步錯誤',String(error?.message||error))}
-    const firstPost=await ensureFormalFirstPost(env);
-    if(!firstPost?.ok)console.warn('first post bootstrap failed',String(firstPost?.error||'unknown'));
+    // Metricool Free uses manual Work transfer, not a background publishing API.
+    // Reconcile local evidence at most once per 15-minute slot. Due posts
+    // still enter the normal minute-level safety/publisher chain below.
+    const time=Number(controller?.scheduledTime||Date.now());
+    if(Number.isFinite(time)&&new Date(time).getUTCMinutes()%15===0){
+      try{
+        await ensureAiSchema(env);
+        await syncMetricool(env,{gateState,fingerprint},new Date(time));
+      }catch(error){console.error('Metricool排程同步錯誤',String(error?.message||error))}
+    }
+    // Never resurrect the September historical first post on every tick.
     if(typeof publishingApp.scheduled==='function')return publishingApp.scheduled(controller,env,ctx);
     if(typeof productionApp.scheduled==='function')return productionApp.scheduled(controller,env,ctx);
   }

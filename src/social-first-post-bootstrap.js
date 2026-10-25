@@ -143,4 +143,31 @@ export async function ensureFormalFirstPost(env){
   }catch(error){return{ok:false,error:String(error?.message||error)};}
 }
 
+// Historical first-post health is observation only. Never reapprove or
+// recreate the 2026-09-04 post from a cron or a public GET health request.
+export async function readFormalFirstPost(env){
+  if(!env?.DB)return {ok:false,error:'D1 資料庫尚未綁定'};
+  try{
+    const post=await env.DB.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(FIRST_POST_ID).first();
+    if(!post)return {ok:true,exists:false,historicalOnly:true,removed:[],post:null,
+      gate:{ready:false,reviewed_by:'',reviewed_at:'',content_fingerprint:''}};
+    let gate=null;
+    try{gate=await env.DB.prepare('SELECT content_fingerprint,copy_image_match,reviewed_by,reviewed_at FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(FIRST_POST_ID).first();}
+    catch(error){if(!/no such table/i.test(String(error?.message||error)))throw error;}
+    return {ok:true,exists:true,historicalOnly:true,removed:[],post:{
+      id:post.id,title:post.title||'',headline:post.headline||'',copy:post.copy||'',
+      status:post.status||'',scheduled_at:post.scheduled_at||'',platforms_json:post.platforms_json||'[]',
+      image_url:post.image_url||'',image_alt:post.image_alt||'',image_source:post.image_source||'',
+      image_approved:Number(post.image_approved||0),image_width:Number(post.image_width||0),
+      image_height:Number(post.image_height||0),image_bytes:Number(post.image_bytes||0),
+      image_quality_status:post.image_quality_status||'',approved_at:post.approved_at||'',
+      updated_at:post.updated_at||''
+    },gate:{
+      ready:Boolean(gate&&Number(gate.copy_image_match)===1),
+      reviewed_by:gate?.reviewed_by||'',reviewed_at:gate?.reviewed_at||'',
+      content_fingerprint:gate?.content_fingerprint||''
+    }};
+  }catch{return {ok:false,error:'無法讀取歷史首篇紀錄'};}
+}
+
 export {FIRST_POST_ID,FIRST_POST_SCHEDULED_AT,FIRST_POST_IMAGE_URL,INVALID_UNPUBLISHED_IDS};

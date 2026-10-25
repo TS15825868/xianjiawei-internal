@@ -277,7 +277,8 @@ export default{
     return app.fetch(request,env,ctx);
   },
   async scheduled(controller,env,ctx){
-    ctx.waitUntil(keepLineWarm());
+    // Production-entry owns the one LINE keep-warm for this call chain.
+    // This wrapper must not issue a duplicate outbound request each minute.
     if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);
   }
 };

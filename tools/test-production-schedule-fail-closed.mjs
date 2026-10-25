@@ -63,6 +63,17 @@ async function exercise(options){
  assert.equal(a.probes,0,'Unhealthy D1 must not probe publishing');
 }
 {
+ const a=await exercise({due:[]});
+ assert.equal(a.forwarded,0,'An idle cron must not enter publishing');
+ assert.equal(a.probes,0,'An idle cron must not probe Meta, LINE or Google');
+ assert.equal(a.lineWarmed,1,'The production wrapper keeps one LINE heartbeat');
+}
+{
+ const a=await exercise({due:[{id:'invalid',status:'scheduled'}],review:{ok:false,reason:'missing review'}});
+ assert.equal(a.forwarded,0,'Quarantined-only due posts must not reach the publisher');
+ assert.equal(a.probes,0,'Quarantined-only due posts must not probe providers');
+}
+{
  const a=await exercise({due:[{id:'approved',status:'scheduled'}],review:{ok:true}});
  assert.equal(a.forwarded,1,'Healthy, reviewed schedule retains normal behavior');
  assert.equal(a.probes,1,'Valid schedules still check current provider health');

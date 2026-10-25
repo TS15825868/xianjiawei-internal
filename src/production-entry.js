@@ -196,13 +196,21 @@ export default{
     ctx.waitUntil((async()=>{
       const d1=await checkD1(env);
       if(!d1.ok){console.error('貼文排程安全模式：D1未就緒，本輪不發布，但LINE keep-warm不受影響',d1.error||'D1 unavailable');return;}
+      let guarded;
       try{
-        const guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
+        guarded=await quarantineUngatedDuePosts(env,controller?.scheduledTime||Date.now());
         if(guarded.quarantined)console.warn('仙加味排程圖文守門已退回草稿',JSON.stringify(guarded));
       }catch(error){
         // Fail closed: if the due-post review gate cannot finish, no platform
         // probe or publisher may run. LINE keep-warm remains independent.
         console.error('貼文排程守門檢查未完成，本輪停止發布；LINE keep-warm不受影響',clean(error?.message||error));
+        return;
+      }
+      // No eligible scheduled work: avoid Graph/LINE/Google API probes, and
+      // avoid entering the publisher. Cron remains every minute so immediate
+      // and due-post publishing are not delayed.
+      if(guarded.checked===guarded.quarantined){
+        console.log('仙加味排程空閒：沒有可發布的到期貼文，略過外部平台探測');
         return;
       }
       try{
