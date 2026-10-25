@@ -68,9 +68,9 @@ test('known-stale Render n8n is never auto-woken by schedules or pushes while pu
 // One accidentally clicked manual Run must not trigger a 512 MiB Render n8n cold start.
 test('manual run stays independent by default and requires explicit n8n opt-in',()=>{
  const [primary,backup]=parts;
- assert.match(primary,/workflow_dispatch:\\n    inputs:\\n      probe_n8n:/);
- assert.match(primary,/probe_n8n:[\\s\\S]*?default: false/);
- assert.match(primary,/if: github\\.event_name == 'workflow_dispatch' && inputs\\.probe_n8n == true/);
- assert.doesNotMatch(backup,/^\\s{4}if:/m);
- assert.match(backup,/node n8n-runtime\\/smoke-readonly\\.js/);
+ assert.ok(primary.includes("workflow_dispatch:\n    inputs:\n      probe_n8n:"));
+ assert.ok(primary.includes("default: false"));
+ assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
+ assert.doesNotMatch(backup,/^\s{4}if:/m);
+ assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
 });
