@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20261021-media-candidates-not-review-verdict';
+const VERSION='20261025-protect-published-media';
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const postId=card=>card?.querySelector('[data-post-view]')?.getAttribute('data-post-view')||'';
 const copyOf=card=>[card?.querySelector('h3')?.textContent||'',card?.querySelector('h4')?.textContent||'',card?.querySelector('.xjw-copy')?.textContent||'',card?.querySelector('.eyebrow')?.textContent||''].join(' ');
@@ -18,7 +18,11 @@ function label(result){
   if(result.status==='regenerate_if_missing')return{kind:'danger',text:'素材庫未找到可自動配對的替代圖；此結果不代表現有配圖不合格，請先檢查現圖與文案，確有缺圖或不符時才重新生成。',button:''};
   return{kind:'danger',text:'配圖狀態無法判定｜保持待審核，不自動核准、不自動發布。',button:''};
 }
+function mediaLocked(card){
+  return !card||card.dataset.locked==='true'||['published','archived','manual_required'].includes(card.dataset.status)||document.documentElement.dataset.maintenanceReadonly==='true';
+}
 async function apply(id,result,button){
+  if(mediaLocked(button?.closest('.publish-card')))return;
   const candidate=result?.candidate;
   if(!id||!candidate?.public_url)return;
   button.disabled=true;const old=button.textContent;button.textContent='套用中…';
@@ -39,7 +43,7 @@ function renderCard(card){
   node.dataset.mediaDecision=result?.status||'loading';
   node.className=`xjw-${meta.kind==='neutral'?'warning':meta.kind}`;
   node.innerHTML=`<strong>正式配圖判斷：</strong>${esc(meta.text)}`;
-  if(meta.button&&result?.candidate?.public_url&&id){
+  if(!mediaLocked(card)&&meta.button&&result?.candidate?.public_url&&id){
     const button=document.createElement('button');
     button.type='button';button.className='btn small green';button.textContent=meta.button;
     button.addEventListener('click',()=>apply(id,result,button));
