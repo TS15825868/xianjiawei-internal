@@ -73,4 +73,14 @@ jobs:
           const x=require('/tmp/xjw-line-standby-disabled.json');
           if(x.accepted!==false||x.sent!==false||x.code!=='standby_disabled')process.exit(1);
           NODE
-          echo 'PASS: LINE staging is disabled; existing Render LINE OA webhook unaffected.'
+          # Validate the real deployed D1 binding, without exposing customer
+          # data or performing any insert, release or send.
+          curl -fsS --max-time 20 "$base/readyz" -o /tmp/xjw-line-readiness.json
+          node - <<'NODE'
+          const x=require('/tmp/xjw-line-readiness.json');
+          if(x.ok!==true||x.receiptDatabaseReady!==true||
+             x.staffHandoffDatabaseReady!==true||
+             x.customerReplies!==false||x.sent!==false||
+             x.officialCallback!=='not_verified_by_this_worker')process.exit(1);
+          NODE
+          echo 'PASS: LINE disabled standby and live read-only D1 handoff tables verified; official callback unchanged by this workflow.'

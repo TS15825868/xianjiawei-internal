@@ -36,6 +36,25 @@ export default{
   if(path==='/healthz'&&request.method==='GET')
    return json({ok:true,service:'仙加味 LINE 安全收件備援',receiptEnabled:env.XJW_LINE_RECEIPT_ENABLED==='true',
     customerReplies:false,handlesOrders:false,officialCallback:'not_verified_by_this_worker'});
+  if(path==='/readyz'){
+   if(request.method!=='GET')return deny('method_not_allowed',405);
+   const result={ok:false,service:'仙加味 LINE 收件備援',
+    receiptDatabaseReady:false,staffHandoffDatabaseReady:false,
+    officialCallback:'not_verified_by_this_worker',customerReplies:false,sent:false};
+   if(typeof env?.XJW_LINE_RECEIPT_D1?.prepare!=='function')return json(result,503);
+   try{
+    // Public status reveals only database schema availability; never access
+    // rows, message text, customer identities, tokens, or record counts.
+    const sql="SELECT name FROM sqlite_master WHERE type='table' AND name IN ('xjw_line_receipt_inbox','xjw_line_handoff_claims')";
+    const query=await env.XJW_LINE_RECEIPT_D1.prepare(sql).all();
+    if(!Array.isArray(query?.results))throw Error('invalid_result');
+    const names=new Set(query.results.map(x=>x?.name));
+    result.receiptDatabaseReady=names.has('xjw_line_receipt_inbox');
+    result.staffHandoffDatabaseReady=names.has('xjw_line_handoff_claims');
+    result.ok=result.receiptDatabaseReady&&result.staffHandoffDatabaseReady;
+    return json(result,result.ok?200:503);
+   }catch{return json(result,503)}
+  }
   if(path!=='/webhook')return deny('not_found',404);
   if(request.method!=='POST')return deny('method_not_allowed',405);
   const enabled=env.XJW_LINE_RECEIPT_ENABLED==='true';

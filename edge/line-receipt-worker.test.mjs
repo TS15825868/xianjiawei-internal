@@ -117,3 +117,38 @@ test('methods/paths other than real LINE webhook cannot access D1',async()=>{
  assert.equal((await worker.fetch(new Request('https://example.test/webhook'),env)).status,405);
  assert.equal(f.writes,0);
 });
+
+test('public read-only readiness confirms both existing D1 tables without reading any customer data',async()=>{
+ let queries=0;
+ const env={XJW_LINE_RECEIPT_D1:{prepare(sql){
+  queries++;assert.equal(sql,"SELECT name FROM sqlite_master WHERE type='table' AND name IN ('xjw_line_receipt_inbox','xjw_line_handoff_claims')");
+  return{all:async()=>({results:[{name:'xjw_line_receipt_inbox'}, {name:'xjw_line_handoff_claims'}]})};
+ }}};
+ const resp=await worker.fetch(new Request('https://example.test/readyz'),env);
+ assert.equal(resp.status,200);
+ const data=await resp.json();
+ assert.equal(data.ok,true);
+ assert.equal(data.receiptDatabaseReady,true);
+ assert.equal(data.staffHandoffDatabaseReady,true);
+ assert.equal(data.customerReplies,false);
+ assert.equal(data.sent,false);
+ assert.equal(data.officialCallback,'not_verified_by_this_worker');
+ assert.equal(queries,1);
+ assert.ok(!JSON.stringify(data).includes('event_json'));
+ assert.ok(!JSON.stringify(data).includes('replyToken'));
+});
+test('missing schema, D1 exception and wrong HTTP method fail readiness closed',async()=>{
+ const req=new Request('https://example.test/readyz');
+ assert.equal((await worker.fetch(req,{})).status,503);
+ assert.equal((await worker.fetch(new Request(req.url,{method:'POST'}),{})).status,405);
+ for(const rows of [[{name:'xjw_line_receipt_inbox'}],null]){
+  const env={XJW_LINE_RECEIPT_D1:{prepare(){return {all:async()=>({results:rows})}}}};
+  const reply=await worker.fetch(req,env);
+  assert.equal(reply.status,503);
+  assert.equal((await reply.json()).ok,false);
+ }
+ const env={XJW_LINE_RECEIPT_D1:{prepare(){throw Error('private D1 error')}}};
+ const reply=await worker.fetch(req,env);
+ assert.equal(reply.status,503);
+ assert.ok(!(await reply.text()).includes('private D1 error'));
+});

@@ -47,3 +47,7 @@ GitHub Actions 中新流程在獨立 Node 測試（簽章、空事件、重送�
 ## 服務健康頁精確狀態
 
 備援 `/healthz` 只回報本 Worker 的功能是否啟用，不能連線查詢 LINE Developers Console 的正式 Callback URL。因此使用 `officialCallback:not_verified_by_this_worker`，不再回傳未查證的 `productionWebhookUnchanged:true`。對外客服切換的事實必須由 LINE 官方設定與實際回執共同驗證。
+
+## 真正的 D1 綁定驗收（2026-10-26）
+
+`GET /readyz` 是輕量、免模型、唯讀的備援 readiness。它只查詢 `sqlite_master`，確認正式綁定的 D1 同時存在 `xjw_line_receipt_inbox`、`xjw_line_handoff_claims`；不查客戶事件、筆數、姓名、訊息、電話或 LINE replyToken。缺少表格或資料庫故障時回 503，不假裝備援已可用。即使回 200 仍標示 `officialCallback:not_verified_by_this_worker` 與 `customerReplies:false`，不能當作已啟用自動客服的證據。獨立 GitHub Actions 將驗證實際部署結果。
