@@ -122,7 +122,7 @@ test('thread ownership joins every reply claim to its exact comment and version'
   assert.match(sql,/c\.conversation_version=r\.conversation_version/);
   assert.match(sql,/c\.thread_id=\$4/);
   assert.doesNotMatch(sql,/AND comment_id=\$5 AND state IN/);
-  assert.deepEqual(args,[e.platform,e.accountId,e.postId,e.threadId,e.commentId]);
+  assert.deepEqual(args,[e.platform,e.accountId,e.postId,e.threadId]);
   return {rows:[{human_takeover:false,reply_reserved:true}]};
  }});
  assert.deepEqual(await store.conversationControl(e),{humanTakeover:false,replyReserved:true});
@@ -130,4 +130,25 @@ test('thread ownership joins every reply claim to its exact comment and version'
 test('uncertain ownership query cannot be interpreted as a safe empty thread',async()=>{
  const store=createPgCommentStore({query:async()=>({rows:[]})});
  await assert.rejects(store.conversationControl(e),/ownership not confirmed/);
+});
+
+test('every PostgreSQL comment adapter SQL statement binds exactly its placeholders',async()=>{
+ const queries=[];
+ const store=createPgCommentStore({query:async(sql,args)=>{
+  const ids=[...sql.matchAll(/\\$(\\d+)\\b/g)].map(m=>Number(m[1]));
+  const max=Math.max(0,...ids);
+  const unique=[...new Set(ids)].sort((a,b)=>a-b);
+  assert.deepEqual(unique,Array.from({length:max},(_,i)=>i+1));
+  assert.equal(args.length,max,'Postgres rejects mismatched bind parameter counts');
+  queries.push({sql,args});
+  if(sql.includes('AS reply_reserved'))return {rows:[{human_takeover:false,reply_reserved:false}]};
+  return {rowCount:1};
+ }});
+ assert.deepEqual(await store.conversationControl(e),{humanTakeover:false,replyReserved:false});
+ assert.equal(await store.claim('k',e,'v'),true);
+ await store.finish('k',{action:'skip',sent:false},e,'v');
+ await store.recordError(e,{reason:'api_unavailable'});
+ assert.deepEqual(await store.recoverStaleProcessing(),{recovered:1,action:'manual',sent:false});
+ assert.equal(queries.length,5);
+ assert.equal(queries[0].args.length,4,'thread ownership must use exactly four bound values');
 });

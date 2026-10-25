@@ -19,7 +19,7 @@ function createPgCommentStore(db){
       AND c.conversation_version=r.conversation_version
      WHERE r.platform=$1 AND r.account_id=$2 AND r.post_id=$3
       AND c.thread_id=$4 AND r.state IN ('reserved','sending','sent','unknown','manual')) AS reply_reserved`,
-    [e.platform,e.accountId,e.postId,e.threadId,e.commentId]);
+    [e.platform,e.accountId,e.postId,e.threadId]);
    const row=r.rows?.[0];
    if(typeof row?.human_takeover!=='boolean'||typeof row?.reply_reserved!=='boolean')
     throw Error('Conversation ownership not confirmed');
