@@ -39,7 +39,7 @@ jobs:
           const lines=[];
           for(const x of data.items){
             const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+x.path;
-            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q(x.source||'ChatGPT正式生成｜GitHub main｜人工待審核')}, image_width=${Number(x.width||1254)}, image_height=${Number(x.height||1254)}, image_bytes=${Number(x.bytes||0)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft';`);
+            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q(x.source||'ChatGPT正式生成｜GitHub main｜人工待審核')}, image_width=${Number(x.width||1254)}, image_height=${Number(x.height||1254)}, image_bytes=${Number(x.bytes||0)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft' AND published_at IS NULL AND scheduled_at IS NULL;`);
           }
           fs.writeFileSync('/tmp/apply-post-images.sql',lines.join('\n')+'\n');
           NODE
@@ -51,7 +51,7 @@ jobs:
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
           const ids=data.items.map(x=>"'" + String(x.postId).replaceAll("'","''") + "'").join(',');
-          process.stdout.write(`SELECT id,status,image_url,image_width,image_height,image_quality_status FROM social_posts WHERE id IN (${ids}) ORDER BY id`);
+          process.stdout.write(`SELECT id,status,published_at,image_url,image_width,image_height,image_quality_status FROM social_posts WHERE id IN (${ids}) ORDER BY id`);
           NODE
           QUERY="$(cat /tmp/verify-query.txt)"
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "$QUERY" > /tmp/verify.json
@@ -62,6 +62,7 @@ jobs:
           const rows=(Array.isArray(raw)?raw[0]?.results:raw?.results)||[];
           if(rows.length!==data.items.length)throw new Error('綁定後貼文數量不一致');
           for(const r of rows){
+            if(r.published_at!==null)throw new Error(r.id+' 有已發布歷史，不得重綁圖片');
             if(r.status!=='pending_review')throw new Error(r.id+' 未進入 pending_review');
             if(!String(r.image_url||'').includes('/assets/post-images/'))throw new Error(r.id+' 圖片路徑不正確');
             if(Number(r.image_width)!==1254||Number(r.image_height)!==1254)throw new Error(r.id+' 圖片尺寸不正確');

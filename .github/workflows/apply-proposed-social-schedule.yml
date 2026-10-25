@@ -50,7 +50,7 @@ jobs:
             if(ms<=Date.parse(p.verifiedMetricoolThrough))throw new Error('新時段必須接在Metricool既有排程之後');
             if(ms<=prev)throw new Error('時段必須遞增');
             prev=ms;
-            lines.push(`UPDATE social_posts SET proposed_scheduled_at=${q(x.proposed_scheduled_at)}, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='pending_review';`);
+            lines.push(`UPDATE social_posts SET proposed_scheduled_at=${q(x.proposed_scheduled_at)}, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='pending_review' AND published_at IS NULL AND scheduled_at IS NULL;`);
           }
           fs.writeFileSync('/tmp/proposed-schedule.sql',lines.join('\n')+'\n');
           fs.writeFileSync('/tmp/proposed-ids.txt',[...seen].map(q).join(','));

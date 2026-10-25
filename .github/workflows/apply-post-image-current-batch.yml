@@ -101,7 +101,7 @@ jobs:
           const lines=[];
           for(const x of m.items){
             const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+m.targetDir+'/'+x.filename;
-            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q('ChatGPT正式單張圖｜GitHub main｜人工待審核')}, image_width=${Number(x.width)}, image_height=${Number(x.height)}, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft';`);
+            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt)}, image_source=${q('ChatGPT正式單張圖｜GitHub main｜人工待審核')}, image_width=${Number(x.width)}, image_height=${Number(x.height)}, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='draft' AND published_at IS NULL AND scheduled_at IS NULL;`);
             // Metadata-only retry: same unapproved pending image; never change approval, schedule or image binding.
             lines.push(`UPDATE social_posts SET image_alt=${q(x.alt)}, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status='pending_review' AND image_url=${q(url)} AND image_approved=0 AND approved_by IS NULL AND approved_at IS NULL AND scheduled_at IS NULL AND published_at IS NULL AND image_alt<>${q(x.alt)};`);
           }
@@ -116,7 +116,7 @@ jobs:
       - name: Verify current batch pending review
         run: |
           IDS="$(cat /tmp/verify-ids.txt)"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_alt,image_width,image_height,image_bytes,image_quality_status,image_approved FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,published_at,image_url,image_alt,image_width,image_height,image_bytes,image_quality_status,image_approved FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/verify.json
           node - <<'NODE'
           const fs=require('fs');
           const m=JSON.parse(fs.readFileSync('ops/post-image-bindings-current.json','utf8'));
@@ -127,7 +127,7 @@ jobs:
             const r=rows.find(v=>v.id===x.postId);
             if(!r) throw new Error('找不到 '+x.postId);
             if(r.image_alt!==x.alt) throw new Error(r.id+' 圖片說明與本批不一致');
-            if(r.status!=='pending_review') throw new Error(r.id+' 未進入 pending_review');
+            if(r.status!=='pending_review'||r.published_at!==null) throw new Error(r.id+' 未進入乾淨的 pending_review');
             if(!String(r.image_url||'')) throw new Error(r.id+' 缺少正式圖片');
             if(Number(r.image_width)<1080 || Number(r.image_height)<1080) throw new Error(r.id+' 圖片解析度不足');
             if(Number(r.image_bytes)<250000) throw new Error(r.id+' 圖片檔案過小');

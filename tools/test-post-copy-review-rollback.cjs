@@ -89,3 +89,22 @@ test('both manually approved scheduling paths refuse previously published posts'
   assert.match(workflow,/gateState\(env,p\)/);
  }
 });
+
+test('post-image binding and proposal workflows never rewrite published history',()=>{
+ for(const filename of [
+  'apply-post-image-current-batch.yml','apply-post-image-external-batch.yml',
+  'apply-post-image-bindings-current.yml','apply-proposed-social-schedule.yml'
+ ]){
+  const source=fs.readFileSync(path.join(root,'.github/workflows',filename),'utf8');
+  assert.match(source,/published_at IS NULL AND scheduled_at IS NULL/);
+  assert.match(source,/WHERE id=\$\{q\(x\.postId\)\}/);
+  assert.match(source,/status='pending_review'|status='draft'/);
+ }
+ for(const filename of [
+  'apply-post-image-current-batch.yml','apply-post-image-external-batch.yml','apply-post-image-bindings-current.yml'
+ ]){
+  const source=fs.readFileSync(path.join(root,'.github/workflows',filename),'utf8');
+  assert.match(source,/SELECT id,status,published_at,image_url/);
+  assert.match(source,/r\.published_at!==null/);
+ }
+});

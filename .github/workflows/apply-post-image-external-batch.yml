@@ -109,7 +109,7 @@ jobs:
           const lines=[],bindings=[];
           for(const x of m.items){
             const url='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+target+'/'+x.filename;
-            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt||x.title||x.postId)}, image_source=${q('ChatGPT正式單張圖｜GitHub main｜人工待審核')}, image_width=1254, image_height=1254, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status IN ('draft','pending_review');`);
+            lines.push(`UPDATE social_posts SET image_url=${q(url)}, image_alt=${q(x.alt||x.title||x.postId)}, image_source=${q('ChatGPT正式單張圖｜GitHub main｜人工待審核')}, image_width=1254, image_height=1254, image_bytes=${Number(x.bytes)}, image_quality_status='ok', image_approved=0, status='pending_review', approved_by=NULL, approved_at=NULL, scheduled_at=NULL, published_at=NULL, updated_at=datetime('now') WHERE id=${q(x.postId)} AND status IN ('draft','pending_review') AND published_at IS NULL AND scheduled_at IS NULL;`);
             bindings.push({...x,path:target+'/'+x.filename,source:'ChatGPT正式單張圖｜GitHub main｜人工待審核',statusAfterBind:'pending_review'});
           }
           fs.writeFileSync('/tmp/xjw-apply.sql',lines.join('\n')+'\n');
@@ -123,7 +123,7 @@ jobs:
       - name: Verify batch is pending review
         run: |
           IDS="$(cat /tmp/xjw-ids.txt)"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url,image_width,image_height,image_bytes,image_quality_status,image_approved FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/xjw-verify.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,published_at,image_url,image_width,image_height,image_bytes,image_quality_status,image_approved FROM social_posts WHERE id IN ($IDS) ORDER BY id" > /tmp/xjw-verify.json
           node - <<'NODE'
           const fs=require('fs');
           const b=JSON.parse(fs.readFileSync('/tmp/xjw-bindings.json','utf8'));
@@ -132,7 +132,7 @@ jobs:
           if(rows.length!==b.items.length)throw new Error('D1篇數不完整 '+rows.length+'/'+b.items.length);
           for(const x of b.items){
             const r=rows.find(v=>v.id===x.postId);
-            if(!r||r.status!=='pending_review')throw new Error(x.postId+' 未進pending_review');
+            if(!r||r.status!=='pending_review'||r.published_at!==null)throw new Error(x.postId+' 未進乾淨的pending_review');
             if(!String(r.image_url||'').includes('/'+b.targetDir+'/'))throw new Error(x.postId+' 圖片URL錯誤');
             if(Number(r.image_width)!==1254||Number(r.image_height)!==1254)throw new Error(x.postId+' 尺寸錯誤');
             if(Number(r.image_bytes)<250000||r.image_quality_status!=='ok'||Number(r.image_approved)!==0)throw new Error(x.postId+' 品質或審核狀態錯誤');
