@@ -45,6 +45,23 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   }catch{
     // A missing table or read failure is not proof that LINE is operating.
   }
+  // Staff-claim metadata is separate from LINE message payloads. Active
+  // claims are not customer replies, and the inbox still needs manual work.
+  let handoff={schema:'unavailable',activeClaims:null,unassigned:null};
+  if(lineInbox.schema==='available'){
+    try{
+      const row=await env.DB.prepare(
+        "SELECT COUNT(*) AS total FROM xjw_line_handoff_claims c JOIN xjw_line_receipt_inbox r ON c.event_id=r.event_id WHERE c.status='claimed' AND r.handling_status='unhandled'"
+      ).first();
+      const active=Number(row?.total);
+      if(!Number.isSafeInteger(active)||active<0||active>lineInbox.unhandled)
+        throw Error('invalid handoff count');
+      handoff={schema:'available',activeClaims:active,unassigned:lineInbox.unhandled-active};
+    }catch{
+      // Missing or inconsistent claim history is never silently represented
+      // as zero outstanding customer conversations.
+    }
+  }
   // Facebook/Instagram/Threads: aggregate only, never expose signed
   // event payloads or private message text outside the encrypted D1 store.
   let metaInbox={schema:'unavailable',receiptOnly:true,liveWebhookVerified:false,
@@ -74,7 +91,7 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     ok:true,readOnly:true,customerSend:false,writes:0,modelCalls:0,
     checkedAt:new Date().toISOString(),
     mode:'human_supervised_ai',allAutonomous:false,
-    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox,metaReceiptInbox:metaInbox},
+    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox,lineHandoff:handoff,metaReceiptInbox:metaInbox},
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',

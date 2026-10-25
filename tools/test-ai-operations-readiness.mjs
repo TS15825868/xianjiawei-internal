@@ -112,3 +112,34 @@ test('Meta D1 table failure is reported as unavailable, not as successful E2E',a
  assert.equal(data.data.metaReceiptInbox.liveWebhookVerified,false);
  assert.ok(!JSON.stringify(data).includes('access denied'));
 });
+
+test('handoff metrics count only active claims and distinguish unassigned work',async()=>{
+ const DB={prepare(sql){
+  if(sql.includes('FROM social_posts'))return {all:async()=>({results:[]})};
+  if(sql.includes('GROUP BY handling_status'))return {all:async()=>({results:[{handling_status:'unhandled',total:5}]})};
+  if(sql.includes('FROM xjw_line_handoff_claims'))return {first:async()=>({total:2})};
+  if(sql.includes('FROM xjw_webhook_receipts'))return {all:async()=>({results:[]})};
+  throw Error('unexpected query');
+ }};
+ const response=await aiOperationsReadiness(request,{DB},{authenticate:owner});
+ const data=await response.json();
+ assert.equal(response.status,200);
+ assert.equal(data.data.lineHandoff.schema,'available');
+ assert.equal(data.data.lineHandoff.activeClaims,2);
+ assert.equal(data.data.lineHandoff.unassigned,3);
+ assert.equal(data.customerSend,false);
+});
+test('claim-table failure is marked unverified instead of reporting zero',async()=>{
+ const DB={prepare(sql){
+  if(sql.includes('FROM social_posts'))return {all:async()=>({results:[]})};
+  if(sql.includes('GROUP BY handling_status'))return {all:async()=>({results:[{handling_status:'unhandled',total:5}]})};
+  if(sql.includes('FROM xjw_line_handoff_claims'))return {first:async()=>{throw Error('private D1 reason')}};
+  if(sql.includes('FROM xjw_webhook_receipts'))return {all:async()=>({results:[]})};
+  throw Error('unexpected query');
+ }};
+ const d=await (await aiOperationsReadiness(request,{DB},{authenticate:owner})).json();
+ assert.equal(d.data.lineHandoff.schema,'unavailable');
+ assert.equal(d.data.lineHandoff.activeClaims,null);
+ assert.equal(d.data.lineHandoff.unassigned,null);
+ assert.equal(JSON.stringify(d).includes('private D1 reason'),false);
+});

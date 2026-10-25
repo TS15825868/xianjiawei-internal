@@ -120,7 +120,11 @@ aiOpsButton.addEventListener('click',async()=>{
     : 'Meta 備援收件箱：狀態尚未確認，維持原有安全收件設定',
    '社群自動回覆：尚未驗證，不可直接啟用',
    data?.data?.lineReceiptInbox?.schema==='available'
-    ? 'LINE 備援收件箱：已建立，總數 '+(data.data.lineReceiptInbox.total??0)+'、待處理 '+(data.data.lineReceiptInbox.unhandled??0)+'（備援尚未切換正式 Webhook）'
+    ? 'LINE 備援收件箱：已建立，總數 '+(data.data.lineReceiptInbox.total??0)+'、待處理 '+(data.data.lineReceiptInbox.unhandled??0)+(
+       data?.data?.lineHandoff?.schema==='available'
+        ? '（已接手 '+data.data.lineHandoff.activeClaims+'、尚未接手 '+data.data.lineHandoff.unassigned+'）'
+        : '（接手細項尚無可採信的資料）'
+      )+'；正式 Webhook 尚未切換'
     : 'LINE 備援收件箱：尚無可採信的資料庫狀態（正式客服仍由原服務運作）',
    'LINE OA／Metricool：需要獨立正式環境驗收',
    '資料來源：ERP D1 即時唯讀統計；未執行模型或發送'
