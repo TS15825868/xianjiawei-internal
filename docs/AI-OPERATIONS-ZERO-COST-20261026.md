@@ -41,3 +41,7 @@
 ## 內部操作入口
 
 使用已登入 Cloudflare Access 的仙加味帳號開啟 `/social-support.html`，頁面下方的「檢查 AI 營運狀態」只讀取 `/api/ai-ops/readiness`，不呼叫模型或發送訊息。登入未通過／D1 異常時顯示錯誤，不可推論為正式運作。
+
+## Meta／LINE 備援收件統一唯讀狀態
+
+內部 `social-support.html` 使用受 Cloudflare Access 保護的 `/api/ai-ops/readiness`，分別查詢 D1 `xjw_line_receipt_inbox` 與 `xjw_webhook_receipts` 的統計。僅回傳事件數量與平台分類，沒有原始訊息、簽章、Webhook reply token 或任何外部發送行為。表格存在不代表正式 API 簽章或回覆已通過真實 E2E；狀態明確標示 `liveWebhookVerified:false` 和 `canReply:false`。

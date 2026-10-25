@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {aiOperationsReadiness} from '../src/ai-operations-readiness.js';
 const request=new Request('https://internal.example/api/ai-ops/readiness');
 const owner=async()=>({role:'owner',active:1});
-const fakeDB=(data=[{status:'pending_review',total:7},{status:'published',total:9}],line=[])=>({prepare(sql){
+const fakeDB=(data=[{status:'pending_review',total:7},{status:'published',total:9}],line=[],meta=[])=>({prepare(sql){
  if(sql==='SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status')
   return {all:async()=>({results:data})};
  if(sql==='SELECT handling_status,COUNT(*) AS total FROM xjw_line_receipt_inbox GROUP BY handling_status')
   return {all:async()=>({results:line})};
+ if(sql==='SELECT platform,COUNT(*) AS total FROM xjw_webhook_receipts GROUP BY platform')
+  return {all:async()=>({results:meta})};
  throw Error('unexpected query');
 }});
 test('public requests, wrong methods and non-staff roles are denied before D1',async()=>{
@@ -79,4 +81,34 @@ test('invalid LINE counts fail closed and do not leak foreign content',async()=>
  const d=await (await aiOperationsReadiness(request,{DB:db},{authenticate:owner})).json();
  assert.equal(d.data.lineReceiptInbox.schema,'unavailable');
  assert.ok(!JSON.stringify(d).includes('private msg'));
+});
+
+test('staff-only Meta receipt summary never exposes private payload content',async()=>{
+ const DB=fakeDB([],[],[
+  {platform:'facebook',total:2,payload_json:'private message'},
+  {platform:'instagram',total:3},
+  {platform:'threads',total:1}
+ ]);
+ const response=await aiOperationsReadiness(request,{DB},{authenticate:owner});
+ assert.equal(response.status,200);
+ const data=await response.json(),meta=data.data.metaReceiptInbox;
+ assert.equal(meta.schema,'available');
+ assert.equal(meta.total,6);
+ assert.deepEqual(meta.platformCounts,{facebook:2,instagram:3,threads:1});
+ assert.equal(meta.liveWebhookVerified,false);
+ assert.equal(meta.canReply,false);
+ assert.equal(data.customerSend,false);
+ assert.ok(!JSON.stringify(data).includes('private message'));
+});
+test('Meta D1 table failure is reported as unavailable, not as successful E2E',async()=>{
+ const DB={prepare(sql){
+  if(sql.includes('FROM social_posts'))return{all:async()=>({results:[]})};
+  if(sql.includes('FROM xjw_line_receipt_inbox'))return{all:async()=>({results:[]})};
+  throw Error('no such meta table or access denied');
+ }};
+ const data=await (await aiOperationsReadiness(request,{DB},{authenticate:owner})).json();
+ assert.equal(data.ok,true);
+ assert.equal(data.data.metaReceiptInbox.schema,'unavailable');
+ assert.equal(data.data.metaReceiptInbox.liveWebhookVerified,false);
+ assert.ok(!JSON.stringify(data).includes('access denied'));
 });

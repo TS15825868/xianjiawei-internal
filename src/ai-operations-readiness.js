@@ -45,18 +45,42 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   }catch{
     // A missing table or read failure is not proof that LINE is operating.
   }
+  // Facebook/Instagram/Threads: aggregate only, never expose signed
+  // event payloads or private message text outside the encrypted D1 store.
+  let metaInbox={schema:'unavailable',receiptOnly:true,liveWebhookVerified:false,
+    canReply:false,total:0,platformCounts:{facebook:0,instagram:0,threads:0}};
+  try{
+    const query=await env.DB.prepare(
+      'SELECT platform,COUNT(*) AS total FROM xjw_webhook_receipts GROUP BY platform').all();
+    if(!Array.isArray(query?.results))throw Error('invalid_meta_status');
+    const platforms={facebook:0,instagram:0,threads:0};
+    let total=0;
+    for(const row of query.results){
+      const n=Number(row?.total);
+      if(!Object.hasOwn(platforms,row?.platform)||!Number.isSafeInteger(n)||n<0)
+        throw Error('invalid_meta_count');
+      platforms[row.platform]+=n;
+      total+=n;
+      if(!Number.isSafeInteger(total))throw Error('invalid_meta_total');
+    }
+    metaInbox={schema:'available',receiptOnly:true,liveWebhookVerified:false,
+      canReply:false,total,platformCounts:platforms};
+  }catch{
+    // Existing production services remain independent; never infer a live callback.
+  }
   const configured=env?.XJW_SOCIAL_AI_DRAFT_ENABLED==='true' &&
     env?.XJW_AI_FREE_ACCOUNT_CONFIRMED==='true' && typeof env?.AI?.run==='function';
   return respond({
     ok:true,readOnly:true,customerSend:false,writes:0,modelCalls:0,
     checkedAt:new Date().toISOString(),
     mode:'human_supervised_ai',allAutonomous:false,
-    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox},
+    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox,metaReceiptInbox:metaInbox},
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',
       postReview:'human_approval_required',pendingPostAutoApproval:false,
       metaCommentAutoReply:'external_e2e_and_platform_control_unverified',
+      metaReceiptStandby:'d1_schema_not_official_callback_verified',
       lineOa:'external_service_requires_live_verification',
       lineReceiptStandby:'table_schema_only_not_live_webhook_verified',
       metricool:'external_queue_requires_live_review',

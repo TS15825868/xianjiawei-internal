@@ -105,6 +105,9 @@ aiOpsButton.addEventListener('click',async()=>{
    '已發布：'+(count.published??0)+' 篇',
    '',
    aiState,
+   data?.data?.metaReceiptInbox?.schema==='available'
+    ? 'Meta 備援收件箱：已建立，FB '+(data.data.metaReceiptInbox.platformCounts?.facebook??0)+'、IG '+(data.data.metaReceiptInbox.platformCounts?.instagram??0)+'、Threads '+(data.data.metaReceiptInbox.platformCounts?.threads??0)+'（正式自動收件／回覆仍未放行）'
+    : 'Meta 備援收件箱：狀態尚未確認，維持原有安全收件設定',
    '社群自動回覆：尚未驗證，不可直接啟用',
    data?.data?.lineReceiptInbox?.schema==='available'
     ? 'LINE 備援收件箱：已建立，總數 '+(data.data.lineReceiptInbox.total??0)+'、待處理 '+(data.data.lineReceiptInbox.unhandled??0)+'（備援尚未切換正式 Webhook）'
