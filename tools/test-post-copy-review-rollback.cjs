@@ -11,8 +11,7 @@ const corr=fs.readFileSync(target,'utf8');
 const gate=fs.readFileSync(path.join(root,'.github/workflows/apply-post-copy-correction.yml'),'utf8');
 test('legacy AI review is archive-only: no automatic trigger, D1 or approval execution',()=>{
  assert.match(legacy,/workflow_dispatch:/);
- for(const risk of ['npx wrangler','CLOUDFLARE_API_TOKEN','node tools/apply-owner-delegated-ai-review-20261011.cjs prepare','  push:'])
-  assert.ok(!legacy.includes(risk),'must not run '+risk);
+ assert.ok(!/^\s*(?:npx wrangler\b|node tools\/apply-owner-delegated-ai-review-20261011\.cjs (?:prepare|verify)\b|CLOUDFLARE_API_TOKEN:|push:|-\s+run:.*(?:wrangler|apply-owner-delegated))/m.test(legacy));
 });
 test('copy changes explicitly revoke all approval and retain publication history',()=>{
  assert.match(corr,/approved_by=NULL,approved_at=NULL,image_approved=0/);

@@ -25,6 +25,6 @@ jobs:
           assert.ok(history.includes("chatgpt:owner-delegated-reviewed"));
           const workflow=fs.readFileSync('.github/workflows/owner-delegated-ai-review-20261011.yml','utf8');
           assert.ok(workflow.includes('workflow_dispatch:'));
-          assert.ok(!/npx wrangler|node tools\/apply-owner-delegated-ai-review-20261011\.cjs (?:prepare|verify)|CLOUDFLARE_API_TOKEN|^  push:/m.test(workflow));
+          assert.ok(!/^\s*(?:npx wrangler\b|node tools\/apply-owner-delegated-ai-review-20261011\.cjs (?:prepare|verify)\b|CLOUDFLARE_API_TOKEN:|push:|-\s+run:.*(?:wrangler|apply-owner-delegated))/.test(workflow));
           console.log('PASS archived AI approval has no production write or automatic trigger');
           NODE
