@@ -63,3 +63,59 @@ state.row.status='scheduled';
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,409);
 delete globalThis.__reviewTest;
 console.log('PASS production API gate in isolation: direct draft approval, missing human checklist, unreviewed scheduling/publishing and stale fingerprints blocked; reviewed immediate publish bypasses future schedule; regeneration returns pending; no production/network writes');
+
+// Partial platform publication is irreversible history, not an editable draft.
+let flexibleSource=fs.readFileSync(new URL('../src/flexible-publish-entry.js',import.meta.url),'utf8');
+flexibleSource=flexibleSource.replace("import app from './authority-entry.js';",
+  "const app={fetch:async()=>Response.json({email:'reviewer@example.com',role:'owner'})};");
+flexibleSource=flexibleSource.replace("import { publishPostById, publisherConfiguration } from './social-publisher.js';",
+  "const publishPostById=async()=>{throw Error('No external sends in test')};const publisherConfiguration=()=>({platforms:{}});");
+flexibleSource=flexibleSource.replace("import { validatePostPayload } from './product-authority.js';",
+  "const validatePostPayload=()=>[];");
+const manualStart=flexibleSource.indexOf('async function setManualRequired(');
+const manualEnd=flexibleSource.indexOf('async function changeManualRequiredStatus(',manualStart);
+assert.ok(manualStart>=0&&manualEnd>manualStart);
+assert.doesNotMatch(flexibleSource.slice(manualStart,manualEnd),/published_at=NULL/,
+  'A partial handoff must preserve previously published_at');
+const {changeManualRequiredStatus}=await import('data:text/javascript;base64,'+Buffer.from(flexibleSource).toString('base64'));
+
+async function manualDraftScenario({publishedAt=null,receiptStatus='manual_required',receiptAt=null,remoteId=''}={}){
+ let row={id:'TEST-PARTIAL',status:'manual_required',published_at:publishedAt,approved_by:'reviewer@example.com',image_approved:1};
+ const deliveries=[{platform:'facebook',status:receiptStatus,published_at:receiptAt,remote_id:remoteId}];
+ const writes=[],db={prepare(sql){
+  return {bind(){return this},async first(){return row},async all(){return{results:deliveries}},
+    async run(){
+      writes.push(sql);
+      if(sql.includes("UPDATE social_posts SET")){
+        assert.match(sql,/AND status='manual_required'/);
+        assert.match(sql,/published_at IS NULL AND NOT EXISTS/);
+        assert.match(sql,/d.status='published'/);
+        if(row.published_at||deliveries.some(d=>d.status==='published'||d.published_at||d.remote_id))
+          return{meta:{changes:0}};
+        row={...row,status:'draft',approved_by:null,image_approved:0};
+      }
+      return{meta:{changes:1}};
+    }
+  };
+ }};
+ const request=new Request('https://isolated.invalid/api/posts/TEST-PARTIAL/status',
+   {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({status:'draft'})});
+ const response=await changeManualRequiredStatus(request,{DB:db},{},row.id);
+ return {response,row,writes};
+}
+for(const fixture of [
+ {receiptStatus:'published',remoteId:'existing-remote'},
+ {receiptStatus:'manual_required',receiptAt:'2026-10-23T09:00:00Z'},
+ {receiptStatus:'manual_required',remoteId:'existing-remote'},
+ {publishedAt:'2026-10-23T09:00:00Z'}
+]){
+ const outcome=await manualDraftScenario(fixture);
+ assert.equal(outcome.response.status,409);
+ assert.equal(outcome.row.status,'manual_required');
+ assert.equal(outcome.writes.length,0,'Failed duplicate-replay guard must not mutate records');
+}
+const safeManual=await manualDraftScenario();
+assert.equal(safeManual.response.status,200);
+assert.equal(safeManual.row.status,'draft');
+assert.ok(safeManual.writes.some(sql=>sql.includes('NOT EXISTS')));
+console.log('PASS partial platform publication remains immutable; only an unposted manual handoff can return to draft');
