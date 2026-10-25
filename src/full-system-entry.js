@@ -1,6 +1,7 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
+import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
 import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
@@ -213,6 +214,7 @@ export default{
     const maintenance=maintenanceNoLogin(env);
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+    if(path==='/api/ai-ops/readiness')return aiOperationsReadiness(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-ai/draft')return socialAiDraft(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-facts/suggest')return socialFactSuggestion(request,env,{authenticate:verifyFastAccess});
     if(request.method==='GET'&&path==='/api/ai-quality-reviews'){
