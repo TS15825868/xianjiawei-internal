@@ -190,3 +190,10 @@ test('human takeover uses an execute-only scoped RPC, never direct ledger update
  assert.match(migration,/has_function_privilege/);
  assert.doesNotMatch(migration,/GRANT UPDATE|DISABLE ROW LEVEL SECURITY|DROP TABLE|DELETE FROM/i);
 });
+
+test('clean bootstrap never re-grants obsolete direct human takeover writes',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const roleSql=readFileSync(new URL('../docs/n8n/comment-ledger-worker-role.sql',import.meta.url),'utf8');
+ assert.ok(!roleSql.split('\n').some(line=>line.trim().startsWith('GRANT UPDATE')&&line.includes('human_takeover')));
+ assert.ok(roleSql.includes('mark_human_takeover RPC'));
+});
