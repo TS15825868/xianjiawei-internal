@@ -55,3 +55,11 @@ test('synthetic approved correction produces a guarded pending_review SQL withou
   for(const p of [file,beforeFile,linkFile,'/tmp/post-copy-correction.sql','/tmp/post-copy-result.json'])try{fs.unlinkSync(p)}catch{}
  }
 });
+
+const oldBatch29=fs.readFileSync(path.join(root,'.github/workflows/final-reviewed-batches-20261013.yml'),'utf8');
+test('historic batch-29 AI review cannot write approval or auto-trigger',()=>{
+ assert.match(oldBatch29,/workflow_dispatch:/);
+ assert.doesNotMatch(oldBatch29,/^\s*(?:push:|CLOUDFLARE_API_TOKEN:|npx wrangler\b|node tools\/apply-final-reviewed-batches-20261013\.cjs (?:prepare|verify)\b)/m);
+ assert.match(oldBatch29,/AI_ASSISTANT_NOT_HUMAN/);
+ assert.ok(!oldBatch29.includes('npx wrangler d1 execute'));
+});

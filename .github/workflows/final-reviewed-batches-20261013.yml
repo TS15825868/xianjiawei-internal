@@ -1,49 +1,35 @@
-name: 仙加味最後29篇委託圖文審核｜逐項證據與正式D1驗證
+name: 仙加味歷史29篇AI委託審核｜保留唯讀驗證
+# 2026-10-25: The old push job set status=approved without a human approver.
+# Preserve legacy manifests and helper for historical audit; never auto-approve.
 on:
-  push:
-    branches: [main]
-    paths: ['ops/final-reviewed-batch-1-20261013.json','ops/final-reviewed-batch-2-20261013.json']
+  workflow_dispatch:
 permissions:
   contents: read
-concurrency:
-  group: xianjiawei-post-image-queue-write
-  cancel-in-progress: false
 jobs:
-  review:
+  archived-evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
-        with: {node-version: 22}
-      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-      - name: Execute two explicit visually reviewed batches without scheduling or publishing
+        with:
+          node-version: 22
+      - name: Verify legacy manifests and helper syntax only (no D1, no writes)
         shell: bash
         run: |
           set -euo pipefail
           node --check tools/apply-final-reviewed-batches-20261013.cjs
-          for batch in 1 2; do
-            npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-owner-auto-before.json
-            node tools/apply-final-reviewed-batches-20261013.cjs prepare "$batch"
-            npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/xjw-owner-auto-apply.sql
-            npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts ORDER BY id" > /tmp/xjw-owner-auto-after.json
-            npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates ORDER BY post_id" > /tmp/xjw-owner-auto-gates.json
-            node tools/apply-final-reviewed-batches-20261013.cjs verify "$batch"
-            cp /tmp/xjw-owner-auto-result.json "/tmp/final-review-result-$batch.json"
-          done
-      - name: Export only the two existing published brand images for visual inspection
-        run: npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,mime_type,data_base64 FROM media_assets WHERE id IN ('IMG-OFFICIAL-13-BRAND-STORY','IMG-OFFICIAL-12-TRIAL')" > /tmp/published-brand-media.json
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: final-reviewed-evidence-${{ github.run_id }}
-          path: |
-            /tmp/final-review-result-*.json
-            /tmp/xjw-owner-auto-before.json
-            /tmp/xjw-owner-auto-after.json
-            /tmp/xjw-owner-auto-gates.json
-            /tmp/published-brand-media.json
-          retention-days: 7
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const assert=require('node:assert/strict');
+          for(const n of [1,2]){
+            const p=JSON.parse(fs.readFileSync('ops/final-reviewed-batch-'+n+'-20261013.json','utf8'));
+            assert.equal(p.actorType,'AI_ASSISTANT_NOT_HUMAN');
+            assert.equal(p.actor,'chatgpt:owner-delegated-reviewed');
+            assert.ok(Array.isArray(p.items));
+          }
+          const y=fs.readFileSync('.github/workflows/final-reviewed-batches-20261013.yml','utf8');
+          assert.ok(y.includes('workflow_dispatch:'));
+          assert.ok(!/^\s*(?:push:|CLOUDFLARE_API_TOKEN:|npx wrangler\b|node tools\/apply-final-reviewed-batches-20261013\.cjs (?:prepare|verify)\b)/m.test(y));
+          console.log('PASS old AI review cannot promote pending_review to approved');
+          NODE
