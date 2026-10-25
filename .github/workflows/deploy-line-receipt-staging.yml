@@ -1,0 +1,61 @@
+name: 仙加味 LINE Cloudflare 免費備援安全待命部署
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'edge/line-receipt-worker.mjs'
+      - 'edge/line-receipt-worker.test.mjs'
+      - 'wrangler.line-receipt-staging.jsonc'
+      - '.github/workflows/deploy-line-receipt-staging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-line-receipt-disabled-staging
+  cancel-in-progress: true
+jobs:
+  verify-and-deploy-disabled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Test HMAC signature, replay-safe durable receipt and fail-closed mode
+        run: |
+          node --check edge/line-receipt-worker.mjs
+          node --test edge/line-receipt-worker.test.mjs
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const cfg=JSON.parse(fs.readFileSync('wrangler.line-receipt-staging.jsonc','utf8'));
+          const flags=['XJW_LINE_RECEIPT_ENABLED','XJW_LINE_VERIFY_ONLY_ENABLED','XJW_LINE_E2E_VERIFIED','XJW_LINE_EXCLUSIVE_CALLBACK_CONFIRMED'];
+          if(cfg.name!=='xianjiawei-line-receipt-staging'||flags.some(k=>cfg.vars[k]!=='false'))throw Error('Staging must default to disabled');
+          if(cfg.triggers?.crons?.length)throw Error('Backup must not run paid/background cron');
+          NODE
+      - name: Require existing Cloudflare secrets; never purchase or upgrade
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+      - name: Deploy separate disabled Worker only; never switch official LINE callback
+        run: npx --yes wrangler@4 deploy --config wrangler.line-receipt-staging.jsonc
+      - name: Verify independent Worker is disabled and cannot send
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://xianjiawei-line-receipt-staging.tung314069.workers.dev"
+          curl -fsS --max-time 20 "$base/healthz" -o /tmp/xjw-line-standby-health.json
+          node - <<'NODE'
+          const h=require('/tmp/xjw-line-standby-health.json');
+          if(h.ok!==true||h.receiptEnabled!==false||h.customerReplies!==false||h.handlesOrders!==false)process.exit(1);
+          NODE
+          status=$(curl -sS --max-time 20 -X POST "$base/webhook" -o /tmp/xjw-line-standby-disabled.json -w '%{http_code}')
+          test "$status" = "503"
+          node - <<'NODE'
+          const x=require('/tmp/xjw-line-standby-disabled.json');
+          if(x.accepted!==false||x.sent!==false||x.code!=='standby_disabled')process.exit(1);
+          NODE
+          echo 'PASS: LINE staging is disabled; existing Render LINE OA webhook unaffected.'
