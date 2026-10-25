@@ -135,7 +135,7 @@ test('uncertain ownership query cannot be interpreted as a safe empty thread',as
 test('every PostgreSQL comment adapter SQL statement binds exactly its placeholders',async()=>{
  const queries=[];
  const store=createPgCommentStore({query:async(sql,args)=>{
-  const ids=[...sql.matchAll(/\\$(\\d+)\\b/g)].map(m=>Number(m[1]));
+  const ids=[...sql.matchAll(/\$(\d+)\b/g)].map(m=>Number(m[1]));
   const max=Math.max(0,...ids);
   const unique=[...new Set(ids)].sort((a,b)=>a-b);
   assert.deepEqual(unique,Array.from({length:max},(_,i)=>i+1));
