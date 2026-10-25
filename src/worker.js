@@ -166,10 +166,12 @@ async function createPost(request,env,profile){
 async function updatePost(request,env,profile,id){
   if(!canWrite(profile,'posts'))return json({error:'沒有修改貼文權限'},403);
   const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
+  if(before.published_at||['published','archived','manual_required'].includes(before.status))return json({error:'已發布、封存或人工接手中的貼文不可覆寫'},409);
   const body=await readJson(request),now=new Date().toISOString();
   const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=body.platforms===undefined?before.platforms:safePlatforms(body.platforms),imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=clean(body.image_quality_status,quality.status);
   if(!title)return json({error:'貼文標題不可空白'},400);if(!platforms.length)return json({error:'請至少選擇一個發布平台'},400);
-  await env.DB.prepare("UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,published_at=NULL,updated_at=? WHERE id=?").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,now,id).run();
+  const applied=await env.DB.prepare("UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=? AND status=? AND published_at IS NULL AND COALESCE(updated_at,'')=?").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,now,id,before.status,before.updated_at||'').run();
+  if(Number(applied?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，未覆寫既有內容'},409);
   const after=await getPost(env,id);await audit(env,request,profile,'修改並退回草稿','貼文',id,before,after);return json(after);
 }
 async function changePostStatus(request,env,profile,id){
@@ -177,6 +179,7 @@ async function changePostStatus(request,env,profile,id){
   const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
   const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['pending_review'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};
   if(!(allowed[before.status]||[]).includes(next))return json({error:`不允許由「${before.status}」變更為「${next}」`},400);
+  if(before.published_at&&next!=='archived')return json({error:'已有發布紀錄，禁止重新排程或變回草稿'},409);
   if(next==='pending_review'){
     if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能送待審核'},400);
     if(!before.image_url)return json({error:'貼文沒有圖片，不能送待審核'},400);
@@ -193,7 +196,8 @@ async function changePostStatus(request,env,profile,id){
     const date=new Date(scheduledAt);if(Number.isNaN(date.getTime())||date.getTime()<=Date.now())return json({error:'排程時間必須晚於目前時間'},400);
   }
   const now=new Date().toISOString(),approvedBy=next==='approved'?profile.email:next==='draft'?null:before.approved_by||null,approvedAt=next==='approved'?now:next==='draft'?null:before.approved_at||null,scheduledAt=next==='scheduled'?clean(body.scheduled_at):next==='draft'?null:before.scheduled_at||null,publishedAt=next==='published'?now:next==='draft'?null:before.published_at||null,imageApproved=next==='approved'?1:next==='draft'?0:before.image_approved?1:0;
-  await env.DB.prepare('UPDATE social_posts SET status=?,scheduled_at=?,approved_by=?,approved_at=?,published_at=?,image_approved=?,updated_at=? WHERE id=?').bind(next,scheduledAt,approvedBy,approvedAt,publishedAt,imageApproved,now,id).run();
+  const applied=await env.DB.prepare("UPDATE social_posts SET status=?,scheduled_at=?,approved_by=?,approved_at=?,published_at=?,image_approved=?,updated_at=? WHERE id=? AND status=? AND (published_at IS NULL OR ?='archived')").bind(next,scheduledAt,approvedBy,approvedAt,publishedAt,imageApproved,now,id,before.status,next).run();
+  if(Number(applied?.meta?.changes)!==1)return json({error:'貼文狀態已被其他操作變更，未更新'},409);
   const after=await getPost(env,id);await audit(env,request,profile,`狀態改為${next}`,'貼文',id,before,after);return json(after);
 }
 async function publishNow(request,env,profile,id){
@@ -206,7 +210,8 @@ async function publishNow(request,env,profile,id){
   const missing=automatic.filter((platform)=>!configuration.platforms?.[platform]?.ready);
   if(missing.length)return json({error:`尚未完成自動發布授權：${missing.join('、')}`,missing_platforms:missing,publisher:configuration},503);
   const now=new Date().toISOString();
-  await env.DB.prepare("UPDATE social_posts SET status='scheduled',scheduled_at=?,updated_at=? WHERE id=?").bind(now,now,id).run();
+  const reserved=await env.DB.prepare("UPDATE social_posts SET status='scheduled',scheduled_at=?,updated_at=? WHERE id=? AND status=? AND published_at IS NULL").bind(now,now,id,post.status).run();
+  if(Number(reserved?.meta?.changes)!==1)return json({error:'貼文已發布或狀態已被其他操作變更，不能重複發布'},409);
   const result=await publishPostById(env,id,new Date());
   const after=await getPost(env,id);await audit(env,request,profile,'立即發布','貼文',id,post,{post:after,result});
   if(!result.ok)return json({error:'立即發布未全部完成，系統會依重試規則繼續處理',...result},502);

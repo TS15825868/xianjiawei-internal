@@ -120,7 +120,8 @@ async function quarantineUngatedDuePosts(env,scheduledTime){
     let gate={ok:false,reason:'正式圖文審核不存在'};
     try{gate=await gateState(env,row)}catch(error){gate={ok:false,reason:String(error?.message||error)}}
     if(gate.ok)continue;
-    await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(new Date().toISOString(),row.id).run();
+    const changed=await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=? AND status='scheduled' AND published_at IS NULL AND scheduled_at=?").bind(new Date().toISOString(),row.id,row.scheduled_at).run();
+    if(Number(changed?.meta?.changes)!==1)continue;
     quarantined+=1;
     try{await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)').bind(`AUD-${crypto.randomUUID()}`,'system','排程發布前圖文守門退回草稿','貼文',row.id,JSON.stringify({status:'scheduled',scheduled_at:row.scheduled_at}),JSON.stringify({status:'draft',reason:gate.reason}),'').run()}catch{}
   }

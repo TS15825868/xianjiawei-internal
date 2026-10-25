@@ -17,6 +17,9 @@ on:
       - 'tools/test-post-copy-review-rollback.cjs'
       - 'tools/test-review-api-boundaries.mjs'
       - 'src/publishing-review-gate-entry.js'
+      - 'src/worker.js'
+      - 'src/production-entry.js'
+      - 'tools/test-post-storage-cas.cjs'
       - '.github/workflows/verify-human-review-rollback.yml'
 permissions:
   contents: read
@@ -32,3 +35,4 @@ jobs:
         run: |
           node --test tools/test-post-copy-review-rollback.cjs
           node tools/test-review-api-boundaries.mjs
+          node --test tools/test-post-storage-cas.cjs
