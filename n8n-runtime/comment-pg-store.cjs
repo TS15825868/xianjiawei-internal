@@ -9,8 +9,16 @@ function createPgCommentStore(db){
    const r=await db.query(`SELECT
     EXISTS(SELECT 1 FROM xjw_social.comment_ledger WHERE platform=$1 AND account_id=$2
      AND post_id=$3 AND thread_id=$4 AND human_takeover=true) AS human_takeover,
-    EXISTS(SELECT 1 FROM xjw_social.reply_ledger WHERE platform=$1 AND account_id=$2
-     AND post_id=$3 AND comment_id=$5 AND state IN ('reserved','sending','sent','unknown','manual')) AS reply_reserved`,
+    -- Reply ownership is a THREAD fact, not just the triggering comment.
+    -- A prior reservation or unknown result on any other comment in this
+    -- thread must block new suggestions, including across versions/restarts.
+    EXISTS(SELECT 1 FROM xjw_social.reply_ledger r
+     JOIN xjw_social.comment_ledger c
+      ON c.platform=r.platform AND c.account_id=r.account_id
+      AND c.post_id=r.post_id AND c.comment_id=r.comment_id
+      AND c.conversation_version=r.conversation_version
+     WHERE r.platform=$1 AND r.account_id=$2 AND r.post_id=$3
+      AND c.thread_id=$4 AND r.state IN ('reserved','sending','sent','unknown','manual')) AS reply_reserved`,
     [e.platform,e.accountId,e.postId,e.threadId,e.commentId]);
    const row=r.rows?.[0];
    if(typeof row?.human_takeover!=='boolean'||typeof row?.reply_reserved!=='boolean')

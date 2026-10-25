@@ -115,3 +115,19 @@ test('finish binds the exact thread, not just a comment/version fingerprint',asy
  await assert.rejects(invalid.finish('key',{action:'suggest',sent:false},
   {...e,threadId:''},'v1'),/Durable scope required/);
 });
+
+test('thread ownership joins every reply claim to its exact comment and version',async()=>{
+ const store=createPgCommentStore({query:async(sql,args)=>{
+  assert.match(sql,/JOIN xjw_social\\.comment_ledger c/);
+  assert.match(sql,/c\\.conversation_version=r\\.conversation_version/);
+  assert.match(sql,/c\\.thread_id=\\$4/);
+  assert.doesNotMatch(sql,/AND comment_id=\\$5 AND state IN/);
+  assert.deepEqual(args,[e.platform,e.accountId,e.postId,e.threadId,e.commentId]);
+  return {rows:[{human_takeover:false,reply_reserved:true}]};
+ }});
+ assert.deepEqual(await store.conversationControl(e),{humanTakeover:false,replyReserved:true});
+});
+test('uncertain ownership query cannot be interpreted as a safe empty thread',async()=>{
+ const store=createPgCommentStore({query:async()=>({rows:[]})});
+ await assert.rejects(store.conversationControl(e),/ownership not confirmed/);
+});

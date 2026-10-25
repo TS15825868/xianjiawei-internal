@@ -146,3 +146,23 @@ test('recovery only updates the selected conversation version and pending states
  assert.match(sql,/r\.conversation_version=s\.conversation_version/);
  assert.match(sql,/r\.state IN \('reserved','sending'\)/);
 });
+
+test('send reservation blocks ownership by another comment in the same thread',async()=>{
+ const a=adapter(),claim=await a.store.reserve(event,'v1','safe text');
+ assert.ok(claim);
+ const sql=a.calls[0].sql;
+ assert.match(sql,/AND NOT EXISTS\\(SELECT 1 FROM xjw_social\\.reply_ledger other/);
+ assert.match(sql,/JOIN xjw_social\\.comment_ledger owner/);
+ assert.match(sql,/owner\\.conversation_version=other\\.conversation_version/);
+ assert.match(sql,/owner\\.thread_id=c\\.thread_id/);
+ assert.match(sql,/other\\.state IN \\('reserved','sending','sent','unknown','manual'\\)/);
+ assert.deepEqual(a.calls[0].args.slice(0,5),[...scope,'v1']);
+});
+test('send start disallows other claims in thread but retains own reservation',async()=>{
+ const a=adapter();assert.equal(await a.store.begin(event,'claim-1','safe text'),true);
+ const sql=a.calls[0].sql;
+ assert.match(sql,/JOIN xjw_social\\.comment_ledger owner/);
+ assert.match(sql,/owner\\.thread_id=c\\.thread_id/);
+ assert.match(sql,/other\\.claim_id<>r\\.claim_id/);
+ assert.match(sql,/other\\.state IN \\('reserved','sending','sent','unknown','manual'\\)/);
+});

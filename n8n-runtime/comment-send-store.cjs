@@ -16,6 +16,15 @@ function createSendStore(db){
     AND p.enabled AND p.e2e_verified AND p.overlap_verified
     AND NOT EXISTS(SELECT 1 FROM xjw_social.comment_ledger h WHERE h.platform=c.platform
      AND h.account_id=c.account_id AND h.post_id=c.post_id AND h.thread_id=c.thread_id AND h.human_takeover)
+    -- A separate comment from the same thread might already own the reply.
+    -- The unique comment claim alone cannot detect that cross-comment state.
+    AND NOT EXISTS(SELECT 1 FROM xjw_social.reply_ledger other
+     JOIN xjw_social.comment_ledger owner ON owner.platform=other.platform
+      AND owner.account_id=other.account_id AND owner.post_id=other.post_id
+      AND owner.comment_id=other.comment_id AND owner.conversation_version=other.conversation_version
+     WHERE other.platform=c.platform AND other.account_id=c.account_id
+      AND other.post_id=c.post_id AND owner.thread_id=c.thread_id
+      AND other.state IN ('reserved','sending','sent','unknown','manual'))
     ON CONFLICT DO NOTHING RETURNING claim_id`,[...scope(e),version,claim,e.threadId,reply]);
    // 0 = platform disabled, duplicate or an existing reservation; only that
    // confirmed result is a normal skip. Malformed database acknowledgments
@@ -36,7 +45,15 @@ function createSendStore(db){
      AND c.thread_id=$7 AND NOT c.human_takeover
      AND NOT EXISTS(SELECT 1 FROM xjw_social.comment_ledger h
       WHERE h.platform=c.platform AND h.account_id=c.account_id AND h.post_id=c.post_id
-      AND h.thread_id=c.thread_id AND h.human_takeover))
+      AND h.thread_id=c.thread_id AND h.human_takeover)
+     AND NOT EXISTS(SELECT 1 FROM xjw_social.reply_ledger other
+      JOIN xjw_social.comment_ledger owner ON owner.platform=other.platform
+       AND owner.account_id=other.account_id AND owner.post_id=other.post_id
+       AND owner.comment_id=other.comment_id AND owner.conversation_version=other.conversation_version
+      WHERE other.platform=c.platform AND other.account_id=c.account_id
+       AND other.post_id=c.post_id AND owner.thread_id=c.thread_id
+       AND other.claim_id<>r.claim_id
+       AND other.state IN ('reserved','sending','sent','unknown','manual')))
     RETURNING r.claim_id`,[...scope(e),claim,reply,e.threadId]);
    if(!Number.isSafeInteger(r?.rowCount)||r.rowCount<0||r.rowCount>1)
     throw Error('Reply send transition not confirmed');
