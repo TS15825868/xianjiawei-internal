@@ -15,6 +15,8 @@ on:
       - '.github/workflows/apply-post-copy-correction.yml'
       - 'tools/apply-post-copy-correction.cjs'
       - 'tools/test-post-copy-review-rollback.cjs'
+      - 'tools/test-review-api-boundaries.mjs'
+      - 'src/publishing-review-gate-entry.js'
       - '.github/workflows/verify-human-review-rollback.yml'
 permissions:
   contents: read
@@ -27,4 +29,6 @@ jobs:
       - uses: actions/setup-node@v5
         with: {node-version: 22}
       - name: Offline synthetic approval rollback checks (no Cloudflare credentials)
-        run: node --test tools/test-post-copy-review-rollback.cjs
+        run: |
+          node --test tools/test-post-copy-review-rollback.cjs
+          node tools/test-review-api-boundaries.mjs
