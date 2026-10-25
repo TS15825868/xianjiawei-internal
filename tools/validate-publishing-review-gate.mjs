@@ -57,7 +57,7 @@ must(gate.includes('/regeneration-ready'),'缺少重新生成完成回待審核�
 must(gate.includes("status='pending_review'"),'重新生成完成後必須進入待審核，不得直接核准');
 must(gate.includes("approved_by=NULL,approved_at=NULL,image_approved=0"),'重新生成流程必須持續清除舊核准與圖片核准');
 must(gate.includes('REGENERATION_ROLES'),'重新生成端點缺少角色權限限制');
-must(gate.includes('已發布／封存內容已鎖定'),'重新生成不得修改已發布／封存內容');
+must(gate.includes('before.published_at||')&&gate.includes('AND status=? AND published_at IS NULL')&&gate.includes('await activeExternalSchedule(env,id)'), '重新生成須防止改寫已發布歷史、阻擋外部排程並使用資料庫條件更新');
 must(gate.includes('重新生成完成送回待審核'),'重新生成完成缺少稽核紀錄');
 
 must(generation.includes('/regeneration-start'),'前端重生成按鈕沒有先撤銷舊核准');
