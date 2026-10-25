@@ -7,6 +7,10 @@ test('free internal help UI is genuine HTML, no customer data input or outbound 
  assert.match(html,/<html lang="zh-Hant-TW">/);
  assert.match(html,/<meta name="robots" content="noindex,nofollow,noarchive">/);
  assert.match(html,/\/api\/social-facts\/suggest/);
+ assert.match(html,/\/api\/ai-ops\/readiness/);
+ assert.match(html,/id="check-ai-ops"/);
+ assert.match(html,/data\?\.readOnly!==true/);
+ assert.match(html,/data\?\.customerSend!==false/);
  assert.match(html,/credentials:'same-origin'/);
  assert.match(html,/data\?\.sent!==false/);
  assert.match(html,/data\?\.humanReviewRequired!==true/);

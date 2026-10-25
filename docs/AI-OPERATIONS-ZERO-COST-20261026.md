@@ -37,3 +37,7 @@
 - Metricool 2026-10-26～11-25 有 12 筆 `draft:true, autoPublish:false` 的草稿；10/28 有兩篇同日候選；**不是已核准排程**。
 - Render n8n 多次 OOM、部署因建置分鐘數耗盡；LINE OA 目前 Live 版本落後 GitHub 最新版。
 - 官網及 ERP 的 n8n 監控已改為手動明確 opt-in 才喚醒；本次不建立新 Render 服務。
+
+## 內部操作入口
+
+使用已登入 Cloudflare Access 的仙加味帳號開啟 `/social-support.html`，頁面下方的「檢查 AI 營運狀態」只讀取 `/api/ai-ops/readiness`，不呼叫模型或發送訊息。登入未通過／D1 異常時顯示錯誤，不可推論為正式運作。

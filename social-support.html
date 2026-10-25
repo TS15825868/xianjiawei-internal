@@ -46,6 +46,14 @@ button.primary{background:var(--navy);color:#fff}button.secondary{background:#f0
 <div id="result" class="result" aria-live="polite">請選擇產品及問題類型，再按「取得正式資料草稿」。</div>
 <p class="caption">不儲存顧客個資、不執行自動發送。資訊來源為仙加味官網最新公開產品母資料，錯誤或未確認問題請轉官方 LINE 人工處理。</p>
 </section>
+<section class="panel" aria-labelledby="ai-ops-heading">
+<h2 id="ai-ops-heading">AI 營運狀態</h2>
+<p>查詢目前 ERP／貼文中心的貼文狀態，以及 AI 草稿是否具備啟用條件。這項檢查不呼叫 AI 模型、不讀取客戶內容、不發送任何訊息。</p>
+<div class="actions"><button id="check-ai-ops" type="button" class="secondary">檢查 AI 營運狀態</button></div>
+<p id="ai-ops-status" role="status" aria-live="polite" class="muted">尚未檢查。需使用仙加味內部帳號登入。</p>
+<div id="ai-ops-summary" class="result" aria-live="polite">點擊按鈕後，顯示目前待審核數量、AI 草稿狀態及尚未驗收的外部串接。</div>
+<p class="caption">這是系統設定與 D1 唯讀檢查，不等於 LINE OA、Meta 或 AI 模型已通過端對端驗收。</p>
+</section>
 </main>
 <script>
 'use strict';
@@ -73,6 +81,39 @@ copy.addEventListener('click',async()=>{
  if(!safeReply)return;
  try{await navigator.clipboard.writeText(safeReply);status.className='';status.textContent='已複製草稿，請人工確認後使用。'}
  catch{status.className='error';status.textContent='無法直接複製，請手動選取文字。'}
+});
+const aiOpsButton=document.getElementById('check-ai-ops');
+const aiOpsStatus=document.getElementById('ai-ops-status');
+const aiOpsSummary=document.getElementById('ai-ops-summary');
+aiOpsButton.addEventListener('click',async()=>{
+ if(aiOpsButton.disabled)return;
+ aiOpsButton.disabled=true;aiOpsStatus.className='muted';aiOpsStatus.textContent='正在讀取 ERP 營運狀態…';
+ try{
+  const res=await fetch('/api/ai-ops/readiness',{method:'GET',credentials:'same-origin',cache:'no-store'});
+  const data=await res.json().catch(()=>null);
+  if(!res.ok||data?.ok!==true||data?.readOnly!==true||data?.customerSend!==false)
+   throw Error(res.status===401||res.status===403?'請先完成內部登入，並確認客服或內容管理權限。':'目前無法驗證正式 D1 狀態，請稍後由管理者檢查。');
+  const count=data?.data?.postStatusCounts||{};
+  const aiState=data?.capabilities?.generativeDraft==='configured_not_live_inference_verified'
+   ? 'AI 模型草稿已設定（實際模型與免費用量仍未驗證）'
+   : 'AI 模型草稿尚未開啟，正式產品事實草稿可使用';
+  aiOpsSummary.textContent=[
+   '草稿：'+(count.draft??0)+' 篇',
+   '待審核：'+(count.pending_review??0)+' 篇',
+   '已核准：'+(count.approved??0)+' 篇',
+   '已排程：'+(count.scheduled??0)+' 篇',
+   '已發布：'+(count.published??0)+' 篇',
+   '',
+   aiState,
+   '社群自動回覆：尚未驗證，不可直接啟用',
+   'LINE OA／Metricool：需要獨立正式環境驗收',
+   '資料來源：ERP D1 即時唯讀統計；未執行模型或發送'
+  ].join('\n');
+  aiOpsStatus.textContent='D1 讀取成功；請依未完成項目進行人工及官方 API 驗收。';
+ }catch(error){
+  aiOpsSummary.textContent='尚未取得可採信的 AI 營運狀態。';
+  aiOpsStatus.className='error';aiOpsStatus.textContent=error.message||'讀取失敗';
+ }finally{aiOpsButton.disabled=false;}
 });
 </script>
 </body>
