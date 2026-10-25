@@ -8,11 +8,14 @@ function createCommentErpView({db,allowedAccounts}){
  const authorized=(platform,accountId)=>['facebook','instagram','threads'].includes(platform)&&validId(accountId)&&exactAllowedAccount(allowedAccounts,platform,accountId);
  return Object.freeze({async takeover({platform,accountId,postId,threadId}){
   if(!authorized(platform,accountId)||![postId,threadId].every(validId))throw Error('Invalid ERP scope');
-  const r=await db.query(`UPDATE xjw_social.comment_ledger SET human_takeover=true,
-   updated_at=now() WHERE platform=$1 AND account_id=$2 AND post_id=$3 AND thread_id=$4
-   RETURNING comment_id`,[platform,accountId,postId,threadId]);
-  if(!Number.isInteger(r.rowCount)||r.rowCount<1)throw Error('Human takeover not persisted');
-  return {humanTakeover:true,updated:r.rowCount,sent:false};
+  // Dedicated worker has no table UPDATE privilege. Use the narrowly scoped,
+  // SECURITY DEFINER function instead of weakening RLS or granting UPDATE.
+  const r=await db.query(`SELECT xjw_social.mark_human_takeover($1,$2,$3,$4) AS updated`,
+   [platform,accountId,postId,threadId]);
+  const updated=r?.rows?.[0]?.updated;
+  if(r?.rows?.length!==1||!Number.isSafeInteger(updated)||updated<1)
+   throw Error('Human takeover not persisted');
+  return {humanTakeover:true,updated,sent:false};
  },async list({platform,accountId,limit=50}){
   if(!['facebook','instagram','threads'].includes(platform)||!exactAllowedAccount(allowedAccounts,platform,accountId)||
      !validId(accountId)||!Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid ERP scope');
