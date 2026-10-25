@@ -1,0 +1,59 @@
+name: 仙加味 LINE 人工接手 D1 安全擴充
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prepare-line-handoff-d1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-line-handoff-d1-once
+  cancel-in-progress: false
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify non-destructive schema and existing Cloudflare config
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const s=fs.readFileSync('docs/cloudflare-line-handoff-schema.sql','utf8');
+          const c=JSON.parse(fs.readFileSync('wrangler.line-receipt-staging.jsonc','utf8'));
+          if(!s.includes('CREATE TABLE IF NOT EXISTS xjw_line_handoff_claims') ||
+             !s.includes("WHERE status='claimed'") ||
+             /DROP\s+|DELETE\s+FROM|UPDATE\s+|ALTER\s+TABLE|REPLACE\s+INTO/i.test(s))throw Error('Unsafe D1 migration');
+          for(const name of ['XJW_LINE_RECEIPT_ENABLED','XJW_LINE_VERIFY_ONLY_ENABLED','XJW_LINE_E2E_VERIFIED','XJW_LINE_EXCLUSIVE_CALLBACK_CONFIRMED'])
+            if(c.vars[name]!=='false')throw Error('LINE standby must be disabled');
+          NODE
+      - name: Confirm D1 recovery bookmark before creating new table
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 time-travel info xianjiawei-internal-db > /tmp/xjw-line-handoff-recovery.txt
+          grep -Eiq 'bookmark|current' /tmp/xjw-line-handoff-recovery.txt
+          echo 'PASS D1 restore capability; bookmark withheld'
+      - name: Check existing LINE inbox schema before linking claims
+        run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_line_receipt_inbox'"
+      - name: Create idempotent human-handoff table and unique active-claim index
+        run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --file docs/cloudflare-line-handoff-schema.sql
+      - name: Verify handoff table and unique active-index without reading customer messages
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_line_handoff_claims'"
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_xjw_line_handoff_one_active'"
+          npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT COUNT(*) AS claim_count FROM xjw_line_handoff_claims"
+          echo 'PASS: LINE staff-claim state ready; no official Webhook changes and no customer sends'
