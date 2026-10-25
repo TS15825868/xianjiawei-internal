@@ -47,11 +47,26 @@ jobs:
         run: |
           set -euo pipefail
           base="https://xianjiawei-line-receipt-staging.tung314069.workers.dev"
-          curl -fsS --max-time 20 "$base/healthz" -o /tmp/xjw-line-standby-health.json
-          node - <<'NODE'
+          # A brand-new workers.dev hostname can briefly return 404 after a
+          # successful first deployment. Retry only the harmless read-only
+          # health GET, never the deploy or customer webhook.
+          ready=0
+          for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            status=$(curl -sS --max-time 10 "$base/healthz" -o /tmp/xjw-line-standby-health.json -w '%{http_code}' || true)
+            if [[ "$status" == "200" ]] && node - <<'NODE'
           const h=require('/tmp/xjw-line-standby-health.json');
           if(h.ok!==true||h.receiptEnabled!==false||h.customerReplies!==false||h.handlesOrders!==false)process.exit(1);
           NODE
+            then
+              ready=1
+              break
+            fi
+            echo "staging propagation check $i/12 HTTP=$status"
+            sleep 5
+          done
+          test "$ready" = "1" || { echo "::error::workers.dev staging health route did not become ready"; exit 1; }
+          # Safe negative assertion: no message payload and no valid LINE
+          # signature; the staging callback must refuse it.
           status=$(curl -sS --max-time 20 -X POST "$base/webhook" -o /tmp/xjw-line-standby-disabled.json -w '%{http_code}')
           test "$status" = "503"
           node - <<'NODE'
