@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "xianjiawei-line-receipt-staging",
+  "main": "edge/line-receipt-worker.mjs",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "vars": {
+    "XJW_LINE_RECEIPT_ENABLED": "false",
+    "XJW_LINE_VERIFY_ONLY_ENABLED": "false",
+    "XJW_LINE_E2E_VERIFIED": "false",
+    "XJW_LINE_EXCLUSIVE_CALLBACK_CONFIRMED": "false"
+  },
+  "d1_databases": [
+    {
+      "binding": "XJW_LINE_RECEIPT_D1",
+      "database_name": "xianjiawei-internal-db",
+      "database_id": "5e85d589-9c4f-412e-9ccd-585a5b6ecabe"
+    }
+  ]
+}
