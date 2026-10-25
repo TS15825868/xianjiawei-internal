@@ -307,3 +307,19 @@ test('durable completion proof cannot borrow a matching comment/version from ano
   assert.equal(result.sent,false);
  }
 });
+
+
+test('inbox restore DDL grants only verified review transitions to the private worker',()=>{
+ const fs=require('node:fs');
+ const path=require('node:path');
+ const ddl=fs.readFileSync(path.join(__dirname,'../docs/n8n/webhook-inbox.sql'),'utf8');
+ assert.ok(ddl.includes('GRANT UPDATE (status) ON xjw_social.webhook_inbox TO xjw_social_worker;'));
+ assert.ok(ddl.includes('FOR UPDATE TO xjw_social_worker'));
+ assert.ok(ddl.includes("USING(status='manual') WITH CHECK(status='reviewed')"));
+ assert.ok(!ddl.includes('GRANT UPDATE ON xjw_social.webhook_inbox'));
+ assert.ok(!ddl.includes('FOR UPDATE TO PUBLIC'));
+ assert.ok(ddl.includes('REVOKE ALL ON xjw_social.webhook_inbox FROM PUBLIC,anon,authenticated'));
+ const src=fs.readFileSync(path.join(__dirname,'comment-inbox-processor.cjs'),'utf8');
+ assert.ok(src.includes("SET status='reviewed'"));
+ assert.ok(src.includes("AND status='manual'"));
+});

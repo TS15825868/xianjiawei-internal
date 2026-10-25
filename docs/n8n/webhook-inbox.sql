@@ -12,5 +12,11 @@ CREATE TABLE xjw_social.webhook_inbox (
 ALTER TABLE xjw_social.webhook_inbox ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON xjw_social.webhook_inbox FROM PUBLIC,anon,authenticated;
 GRANT SELECT,INSERT ON xjw_social.webhook_inbox TO xjw_social_worker;
+-- Only allow acknowledged manual -> reviewed transitions (no other row edits).
+GRANT UPDATE (status) ON xjw_social.webhook_inbox TO xjw_social_worker;
 CREATE POLICY worker_read_inbox ON xjw_social.webhook_inbox FOR SELECT TO xjw_social_worker USING(true);
 CREATE POLICY worker_insert_inbox ON xjw_social.webhook_inbox FOR INSERT TO xjw_social_worker WITH CHECK(true);
+
+-- Require SELECT policy for UPDATE visibility, and constrain both old/new status.
+CREATE POLICY worker_mark_verified_inbox_reviewed ON xjw_social.webhook_inbox
+ FOR UPDATE TO xjw_social_worker USING(status='manual') WITH CHECK(status='reviewed');
