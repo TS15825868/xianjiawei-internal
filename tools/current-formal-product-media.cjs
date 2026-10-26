@@ -3,7 +3,7 @@ function currentFormalProducts(master,siteHtml){
   const products=master?.products;
   if(!Array.isArray(products)||!products.length||Number(master.productCount)!==products.length)
     throw Error('網站最新商品母資料缺失或筆數不一致');
-  if(String(master.brand||'')!=='仙加味')throw Error('官網正式品牌異常');
+  if(String(typeof master.brand==='object'?master.brand?.name:master.brand)!=='仙加味')throw Error('官網正式品牌異常');
   const mediaById=new Map(),seen=new Set();
   for(const m of String(siteHtml||'').matchAll(/<article\b[^>]*\bdata-fallback-product="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)){
     if(seen.has(m[1]))throw Error('網站主圖商品ID重複 '+m[1]);

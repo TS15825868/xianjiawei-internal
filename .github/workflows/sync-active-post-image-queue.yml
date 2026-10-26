@@ -1,5 +1,5 @@
 name: 仙加味有效貼文圖片佇列同步
-# Refresh live D1 queue after current authority maintenance; never alter post approval.
+# Refresh live D1 queue from current approved website main images; never alter post approval.
 
 on:
   workflow_dispatch:

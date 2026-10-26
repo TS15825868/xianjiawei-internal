@@ -10,7 +10,8 @@ const page=[
 '<article class="product-card" data-fallback-product="luerong-fen"><img src="images/new/luerong.webp?v=2"></article>'
 ].join('\n');
 test('Reads approved original photos from current website rather than stale paths',()=>{
- const a=currentFormalProducts(master,page);
+ const official={...master,brand:{name:'仙加味',positioning:'現代漢方生活品牌'}};
+ const a=currentFormalProducts(official,page);
  assert.equal(a.assets['30cc'],'images/new/30-main.webp');
  assert.equal(a.assets['180cc'],'images/new/180-main.webp');
  assert.deepEqual(a.productsFor('30cc跟180cc怎麼選'),['30cc','180cc']);
