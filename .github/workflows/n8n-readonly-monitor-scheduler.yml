@@ -90,5 +90,5 @@ jobs:
           {
             echo '### 唯讀備援檢查完成'
             echo '直接檢查 LINE OA 健康檢查耗時（超過8秒視為異常）、官網產品母資料與 AI/GEO，並驗證 Supabase/Cloudflare Meta 收件備援拒絕未授權 GET。'
-            echo '此結果僅為唯讀網路健康與異常預警，並非 LINE 真實對話回覆延遲、n8n、Meta 端對端驗收；沒有發送客服訊息或發布。'
+            echo '此結果僅為唯讀網路健康與異常預警，不代表 n8n、Meta 端對端驗收成功，也不代表 LINE 真實對話回覆延遲已達標；沒有發送客服訊息或發布。'
           } >> "$GITHUB_STEP_SUMMARY"
