@@ -13,6 +13,13 @@ test('real remote receipts hold two pre-published D1 drafts without modifying an
  }
  assert.equal(publishedPlatformReceiptHold({id:rows[0].id,status:'published'}),null);
  assert.equal(publishedPlatformReceiptHold({id:'unrelated',status:'draft'}),null);
+ // Public Metricool receipts (same copy posted twice 10 minutes apart) must
+ // also hold a newly-created D1 ID, but not unrelated weather reminders.
+ const already='🌧️ 風雨來了，平安最重要。\n\n仙加味想提醒大家：\n\n記得關好門窗、收好陽台物品，準備好飲水、食物與必要用品。\n\n風雨期間盡量避免外出，也別忘了關心家中的長輩，以及獨自居住的親友。\n\n希望大家都能平平安安地待在家裡。\n\n願風雨平息，大家一切安好。❤️\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #颱風天注意安全 #平安最重要';
+ const duplicate=publishedPlatformReceiptHold({id:'future-new-id',copy:already,status:'pending_review'});
+ assert.ok(duplicate);assert.match(duplicate.reason,/403318046/);
+ assert.ok(publishedPlatformReceiptHold({id:'future-new-id',copy:already.replace(/\s+/g,''),status:'draft'}));
+ assert.equal(publishedPlatformReceiptHold({id:'future-new-id',copy:'雨天記得帶傘',status:'draft'}),null);
  const plan=buildPlan([...rows,{id:'unrelated',status:'pending_review',title:'在家使用',image_quality_status:'needs_rework',image_url:'https://example.invalid/d.jpg'}]);
  assert.equal(plan.total,3);assert.equal(plan.externalReceiptReconciliationCount,2);
  assert.equal(plan.eligibleForImageReworkCount,1);
@@ -36,5 +43,7 @@ test('backend approval, regeneration and immediate publish all apply hold indepe
   const a=gate.indexOf('async function '+fn+'('),b=gate.indexOf('async function ',a+20);
   assert.ok(a>=0);assert.match(gate.slice(a,b>0?b:undefined),/publishedPlatformReceiptHold\(before\)/);
  }
+ assert.match(gate,/const priorPublic=publishedPlatformReceiptHold\(row\);if\(priorPublic\)return/);
+ assert.match(gate,/async function saveGate\(env,row,body,profile\)\{const priorPublic=publishedPlatformReceiptHold\(row\)/);
  assert.match(content,/if\(publishMatch&&request\.method==='POST'\)/);
 });
