@@ -94,7 +94,22 @@ assert.equal(state.writes.length,beforeCas+1);
 assert.match(state.writes.at(-1),/published_at IS NULL/);
 state.casFail=false;
 assert.equal((await post('regeneration-start',{mode:'image'})).status,200);assert.equal(state.row.status,'draft');assert.equal(state.row.approved_by,null);assert.equal(state.row.scheduled_at,null);
+// A new image has not been uploaded yet: the old URL is still present,
+// but an explicit rework flag means regeneration is NOT finished.
+for(const quality of ['needs_rework','needs_regeneration','rejected','low','missing']){
+  state.row.image_quality_status=quality;
+  const writesBefore=state.writes.length, forwardedBefore=state.forwarded;
+  for(const mode of ['image','all']){
+    const denied=await post('regeneration-ready',{mode});
+    assert.equal(denied.status,409,'Must not mark '+quality+' image completed for '+mode);
+    assert.equal(state.row.status,'draft','Keep rework in draft');
+    assert.equal(state.writes.length,writesBefore,'No D1 write after failed rework readiness');
+    assert.equal(state.forwarded,forwardedBefore,'No platform publishing after failed rework');
+  }
+}
+state.row.image_quality_status='clear'; // Mock a replacement upload and fresh quality check.
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,200);assert.equal(state.row.status,'pending_review');assert.equal(state.row.image_approved,0);
+console.log('PASS regeneration-ready refuses unchanged rejected images; new quality checked image returns to human review');
 state.row.status='scheduled';
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,409);
 
