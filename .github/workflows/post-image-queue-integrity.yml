@@ -45,6 +45,9 @@ jobs:
           node -e "const x=require('./website-formal-media-authority.json');if(!Array.isArray(x.products)||x.products.length<1)process.exit(1)"
           curl -fsS --retry 3 --max-time 30 'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/products.html' -o website-current-products.html
 
+      - name: Verify dynamic owner-approved product media extraction
+        run: node --test tools/current-formal-product-media.test.cjs
+
       - name: Verify active one-to-one image production queue
         shell: bash
         run: |
@@ -57,15 +60,8 @@ jobs:
           const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
           const items=Array.isArray(q.items)?q.items:[];
           const errors=[];
-          const allowedProducts=new Set(['30cc','180cc','龜鹿膏','鹿茸粉']);
-          if(!Array.isArray(media.products)||media.productCount!==4||media.products.length!==4)errors.push('目前官網正式產品權威必須是四品');
-          const authorityById=new Map((media.products||[]).map(p=>[p.id,p]));
-          const assetMap={
-            '30cc':'guilu-drink-30',
-            '180cc':'guilu-drink-180',
-            '龜鹿膏':'guilu-gao',
-            '鹿茸粉':'luerong-fen'
-          };
+          const authority=require('./tools/current-formal-product-media.cjs').currentFormalProducts(media,fs.readFileSync('website-current-products.html','utf8'));
+          const allowedProducts=new Set(Object.keys(authority.aliases));
 
           if(q.brand!=='仙加味')errors.push('圖片清單品牌不是仙加味');
           if(q.status!=='production-queue')errors.push(`queue status異常 ${q.status}`);
@@ -73,24 +69,15 @@ jobs:
           if(items.length!==posts.length)errors.push(`圖片清單 ${items.length} != live draft ${posts.length}`);
           if(!String(q.characterLock||'').includes('不得成熟化'))errors.push('queue缺少小老闆年齡／同一人硬鎖');
 
-          // 空佇列不需要比對產品圖片；不得因舊路徑阻擋新版正式素材。
-          // 只有實際有待製作項目時，才核對產品來源與官網目前使用的正式主圖。
-          if(items.length > 0){
-            const currentSiteHtml=fs.readFileSync('website-current-products.html','utf8');
-            const liveMainByProduct={
-              'guilu-drink-30':'images/catalog-owner-final-v20261017/guilu-drink-30-main.webp',
-              'guilu-drink-180':'images/catalog-owner-final-v20261017/guilu-drink-180-main.webp',
-              'guilu-gao':'images/catalog-owner-final-v20261017/guilu-gao-main.webp',
-              'luerong-fen':'images/catalog-owner-final-v20261017/luerong-fen-main.webp'
-            };
-            for(const [queueName,id] of Object.entries(assetMap)){
-              const product=authorityById.get(id);
-              const expected=liveMainByProduct[id];
-              const current=String(q.formalAssets?.[queueName]||'').replace(/^[/]+/,'').split('?')[0];
-              if(!expected||!product)errors.push(`官網正式媒體權威缺 ${id}`);
-              else if(product.mediaStatus!=='approved-formal-product-image')errors.push(`官網 ${id} 尚未核准正式主圖`);
-              else if(!currentSiteHtml.includes(expected))errors.push(`官網目前商品頁沒有正式主圖 ${expected}，請重新核對權威`);
-              else if(current!==expected)errors.push(`${queueName}: queue產品主圖 ${current||'(空)'} 與官網現用正式主圖 ${expected} 不一致`);
+          // An empty queue is legitimate. For actual candidates, compare only
+          // the product images they require to the latest approved site media.
+          if(items.length>0){
+            const requested=new Set(items.flatMap(item=>Array.isArray(item.products)?item.products:[]));
+            for(const key of requested){
+              const expected=authority.assets[key];
+              const current=String(q.formalAssets?.[key]||'').replace(/^[/]+/,'').split('?')[0];
+              if(!allowedProducts.has(key)||!expected)errors.push(key+': 官網正式主圖未核准或不存在');
+              else if(current!==expected)errors.push(key+': 清單使用過期主圖 '+(current||'(空)')+'；應為 '+expected);
             }
           }
 
@@ -110,7 +97,7 @@ jobs:
             const t=String(x.title||'');
             if(/180cc/i.test(t)&&!/30cc/i.test(t)&&products.includes('30cc'))errors.push(`${x.postId}: 單一180cc情境混入30cc`);
             if(/30cc/i.test(t)&&!/180cc/i.test(t)&&products.includes('180cc'))errors.push(`${x.postId}: 單一30cc情境混入180cc`);
-            if(/龜鹿膠|龜鹿湯塊/.test([x.title,x.scene].join(' ')))errors.push(`${x.postId}: 出現退場產品，不可恢復對外製圖`);
+            for(const name of ['龜鹿膠','龜鹿湯塊','柒玄茶']) if([x.title,x.scene].join(' ').includes(name)&&!authority.approved.some(p=>p.name.includes(name)))errors.push(`${x.postId}: 官網正式母資料未核准 ${name}，不得製圖`);
             if(/試喝/.test(t)){
               if(!products.includes('30cc'))errors.push(`${x.postId}: 試喝情境缺正式30cc小玻璃裸罐`);
               if(products.includes('180cc'))errors.push(`${x.postId}: 試喝情境不得混入180cc`);
@@ -128,7 +115,7 @@ jobs:
 
           for(const x of items)if(!posts.some(p=>p.id===x.postId))errors.push(`${x.postId}: 清單項目已不在live draft，需移出queue`);
           if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-          console.log(`PASS ${posts.length}篇live draft：唯一imageId、文案雜湊、角色年齡鎖、情境產品對應與現行四項正式產品主圖一致`);
+          console.log(`PASS ${posts.length}篇live draft：唯一imageId、文案雜湊、角色年齡鎖、情境產品對應與現行已核准正式產品主圖一致`);
           NODE
 
       - uses: actions/upload-artifact@v4
