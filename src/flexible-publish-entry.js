@@ -2,7 +2,7 @@ import app from './authority-entry.js';
 import { publishPostById, publisherConfiguration } from './social-publisher.js';
 import { validatePostPayload } from './product-authority.js';
 
-const FLEX_VERSION='2026-08-08-v6-line-free-keepwarm';
+const FLEX_VERSION='2026-10-26-v7-line-5minute-keepwarm';
 const LINE_HEALTH_URL='https://ts-line.onrender.com/healthz';
 const HEADERS={
   'content-type':'application/json; charset=utf-8',
@@ -173,14 +173,19 @@ async function flexiblePublishNow(request,env,ctx,id){
 }
 
 async function keepLineWarm(){
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),15000);
   try{
-    const response=await fetch(LINE_HEALTH_URL,{headers:{'user-agent':'xianjiawei-publishing-keepwarm/1.0','cache-control':'no-cache'},cf:{cacheTtl:0}});
-    console.log('仙加味 LINE keep-warm',response.status,response.ok?'ok':'not-ok');
+    const response=await fetch(LINE_HEALTH_URL,{
+      signal:ctl.signal,
+      headers:{'user-agent':'xianjiawei-publishing-keepwarm/2.0','cache-control':'no-cache'},
+      cf:{cacheTtl:0}
+    });
+    if(!response.ok)console.warn('仙加味 LINE 健康檢查未通過',response.status);
     return response.ok;
-  }catch(error){
-    console.warn('仙加味 LINE keep-warm failed',clean(error?.message||error));
+  }catch{
+    console.warn('仙加味 LINE 健康檢查無法連線或已逾時');
     return false;
-  }
+  }finally{clearTimeout(timer)}
 }
 
 async function currentHealth(request,env,ctx){
@@ -200,6 +205,8 @@ async function currentHealth(request,env,ctx){
     oldStatusOnlyManualCompletionDisabled:true,
     blindRetryAfterImmediateFailure:false,
     lineRenderFreeKeepWarm:true,
+    lineKeepWarmIntervalMinutes:5,
+    freeRenderSharedHoursStillCount:true,
     lineHealthUrl:LINE_HEALTH_URL,
     uiRuntime:'20260808-canonical-facts-12'
   },response.status);

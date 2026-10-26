@@ -57,3 +57,9 @@
 登入 Cloudflare Access 的客服／管理帳號後，點「檢查 AI 營運狀態」，會新增既有 D1 `social_publish_deliveries` 的唯讀聚合：總筆數、待重試、人工核對、發送中超過 15 分鐘、舊版已標記發布卻缺少遠端 ID 的筆數。不查詢貼文本文、顧客資料、金流、Token，不呼叫模型、不建立定時排程與付費服務。
 
 此狀態是 D1 紀錄而非平台遠端 API 實測；資料庫缺失、計數異常時回報 unavailable，絕不推定 0 筆就是正常。
+
+## 2026-10-26｜既有 LINE OA 免費存活檢查改為每五分鐘
+
+Cloudflare Worker 原本每分鐘在執行正式貼文排程時，同步送出 Render LINE 健康探測。已改為**每五分鐘一次，15 秒逾時**；正式貼文 Cron 仍每分鐘執行，獨立於 LINE 請求，n8n 不會被喚醒。相較原本每小時 60 次 LINE 健康請求，現在為每小時 12 次，減少 80% 監控流量。
+
+Render 官方 Free 說明是 15 分鐘沒有 HTTP/WebSocket 入站流量才休眠，因此保留 10 分鐘緩衝。**重要：節省 ping 不等於減少 Render 共用 750 免費執行小時**；必須在安全完成官方 Webhook 搬遷後，才能真正脫離 Render 全天常駐限制。參考 https://render.com/docs/free 。

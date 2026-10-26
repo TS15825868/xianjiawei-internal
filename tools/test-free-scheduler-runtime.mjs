@@ -2,15 +2,19 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {readFormalFirstPost,FIRST_POST_ID} from '../src/social-first-post-bootstrap.js';
+import {shouldKeepLineWarmAt} from '../src/production-entry.js';
 
 const root=new URL('../',import.meta.url);
 const source=path=>readFileSync(new URL(path,root),'utf8');
 
-test('scheduler sends only one Render LINE keep-warm per minute-level chain',()=>{
+test('scheduler uses just one LINE warm path, every 5 minutes, alongside minute-level reviewed posts',()=>{
  const production=source('src/production-entry.js');
  const flexible=source('src/flexible-publish-entry.js');
  const full=source('src/full-system-entry.js');
  assert.equal((production.match(/ctx\.waitUntil\(keepLineWarm\(\)\)/g)||[]).length,1);
+ assert.match(production,/if\(shouldKeepLineWarmAt\(scheduledAt\)\)ctx\.waitUntil\(keepLineWarm\(\)\)/);
+ assert.match(flexible,/const ctl=new AbortController\(\),timer=setTimeout\(\(\)=>ctl\.abort\(\),15000\)/);
+ assert.match(flexible,/finally\{clearTimeout\(timer\)\}/);
  assert.equal((flexible.match(/ctx\.waitUntil\(keepLineWarm\(\)\)/g)||[]).length,0);
  assert.match(production,/guarded\.checked===guarded\.quarantined/);
  assert.match(full,/getUTCMinutes\(\)%15===0/);
@@ -46,4 +50,12 @@ test('D1 missing or failing never fabricates historical success',async()=>{
  const r=await readFormalFirstPost(env);
  assert.equal(r.ok,false);
  assert.ok(!JSON.stringify(r).includes('private connection'));
+});
+
+test('every five minutes yields 12 heartbeat attempts hourly without switching off the publishing cron',()=>{
+ const epoch=Date.parse('2026-10-26T00:00:00Z');
+ const ticks=[];
+ for(let minute=0;minute<60;minute++)if(shouldKeepLineWarmAt(epoch+minute*60000))ticks.push(minute);
+ assert.deepEqual(ticks,[0,5,10,15,20,25,30,35,40,45,50,55]);
+ for(const invalid of [NaN,undefined,0,Infinity])assert.equal(shouldKeepLineWarmAt(invalid),false);
 });

@@ -165,6 +165,10 @@ async function productionHealth(request,env,ctx){
   }),{status:response.status,headers:HEADERS});
 }
 
+export function shouldKeepLineWarmAt(timestamp){
+  const value=Number(timestamp);
+  return Number.isFinite(value)&&value>0&&new Date(value).getUTCMinutes()%5===0;
+}
 export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url),path=url.pathname;
@@ -192,7 +196,11 @@ export default{
     return app.fetch(request,env,ctx)
   },
   async scheduled(controller,env,ctx){
-    ctx.waitUntil(keepLineWarm());
+    // Preserve one-minute reviewed-post scheduling; use a five-minute
+    // bounded health GET for existing Render LINE OA while the official
+    // Callback still points there. Do not wake n8n.
+    const scheduledAt=controller?.scheduledTime||Date.now();
+    if(shouldKeepLineWarmAt(scheduledAt))ctx.waitUntil(keepLineWarm());
     ctx.waitUntil((async()=>{
       const d1=await checkD1(env);
       if(!d1.ok){console.error('貼文排程安全模式：D1未就緒，本輪不發布，但LINE keep-warm不受影響',d1.error||'D1 unavailable');return;}
