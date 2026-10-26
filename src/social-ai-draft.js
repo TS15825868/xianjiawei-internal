@@ -25,7 +25,7 @@ export async function socialAiDraft(request,env,{authenticate}={}){
  if(typeof authenticate!=='function')return blocked('auth_unavailable',503);
  let profile;
  try{profile=await authenticate(request,env);}catch{return blocked('access_not_verified',401);}
- if(!['owner','admin','content'].includes(profile?.role)||profile?.active===0)return blocked('role_denied',403);
+ if(!['owner','admin','content'].includes(profile?.role)||Number(profile?.active)!==1)return blocked('role_denied',403);
  // Flags are server deployment configuration, NEVER fields supplied by callers.
  if(env?.XJW_SOCIAL_AI_DRAFT_ENABLED!=='true'||env?.XJW_AI_FREE_ACCOUNT_CONFIRMED!=='true')
   return blocked('free_ai_not_enabled',503);

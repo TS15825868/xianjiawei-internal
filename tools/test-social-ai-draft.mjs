@@ -16,7 +16,7 @@ test('AI defaults off and never spends neurons until both private free-plan flag
 });
 test('requires real auth and a permitted human staff role before any model calls',async()=>{
  let runs=0;const env={...flags,AI:{run(){runs++;return{}}}};
- for(const authenticate of [async()=>{throw Error('access denied')},async()=>({role:'viewer'}),async()=>({role:'sales'})]){
+ for(const authenticate of [async()=>{throw Error('access denied')},async()=>({role:'viewer',active:1}),async()=>({role:'sales',active:1}),async()=>({role:'owner'}),async()=>({role:'admin',active:'0'}),async()=>({role:'content',active:false})]){
   const r=await socialAiDraft(req(),env,{authenticate});assert.equal(r.ok,false);assert.notEqual(r.status,200);
  }
  assert.equal(runs,0);

@@ -21,7 +21,7 @@ test('product specificity for 30cc and 180cc remains exact, without inventing bo
 });
 test('unauthorized identities and invalid questions cannot access facts or cause side effects',async()=>{
  const env={AI:{run:()=>assert.fail('AI inference must not run')},DB:{prepare:()=>assert.fail('DB must not run')}};
- for(const authorize of [async()=>{throw Error('no Access')},async()=>({role:'viewer'}),async()=>({role:'sales'})]){
+ for(const authorize of [async()=>{throw Error('no Access')},async()=>({role:'viewer',active:1}),async()=>({role:'sales',active:0}),async()=>({role:'sales',active:'0'}),async()=>({role:'owner'})]){
   const r=await socialFactSuggestion(req(),env,{authenticate:authorize});assert.notEqual(r.status,200);
  }
  for(const x of [
@@ -55,5 +55,26 @@ test('medical, pricing, disputes and cooperation mixed with a fact always requir
   const r=await socialFactSuggestion(req({...body,question:'請問龜鹿膏的成分？'+detail}),env,{authenticate:staff});
   assert.equal(r.status,422,detail);
   const j=await r.json();assert.equal(j.code,'manual_review_required',detail);assert.equal(j.sent,false);assert.equal(j.reply,undefined);
+ }
+});
+
+test('sales role can safely prepare zero-cost verified fact draft under active Access',async()=>{
+ const env={AI:{run:()=>assert.fail('Sales fact request must never invoke inference')},DB:{prepare:()=>assert.fail('No customer DB request permitted')}};
+ const request=req({productId:'guilu-drink-30',topic:'specification',question:'請問龜鹿飲30cc玻璃罐的規格容量是什麼？'});
+ const res=await socialFactSuggestion(request,env,{authenticate:async()=>({role:'sales',active:1,email:'sales@example.test'})});
+ const data=await res.json();
+ assert.equal(res.status,200);
+ assert.equal(data.ok,true);
+ assert.equal(data.aiUsed,false);
+ assert.equal(data.neuronsUsed,0);
+ assert.equal(data.sent,false);
+ assert.equal(data.humanReviewRequired,true);
+ assert.ok(data.reply.includes('30cc／罐（小玻璃罐）'));
+ assert.ok(!JSON.stringify(data).includes('sales@example.test'));
+});
+test('free facts deny disabled and unverified role identities even if role says owner',async()=>{
+ for(const state of ['0',0,false,null,undefined]){
+  const res=await socialFactSuggestion(req(),{},{authenticate:async()=>({role:'owner',active:state})});
+  assert.equal(res.status,403,JSON.stringify(state));
  }
 });

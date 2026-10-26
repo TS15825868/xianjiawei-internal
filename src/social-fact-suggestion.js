@@ -12,7 +12,7 @@ export async function socialFactSuggestion(request,env,{authenticate}={}){
  if(typeof authenticate!=='function')return blocked('authentication_unavailable',503);
  let actor;
  try{actor=await authenticate(request,env);}catch{return blocked('access_required',401);}
- if(!['owner','admin','content'].includes(actor?.role)||actor?.active===0)
+ if(!['owner','admin','content','sales'].includes(actor?.role)||Number(actor?.active)!==1)
   return blocked('staff_role_required',403);
  if(!String(request.headers.get('content-type')||'').toLowerCase().startsWith('application/json'))
   return blocked('json_required',400);

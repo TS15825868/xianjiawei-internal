@@ -14,12 +14,16 @@ const MAX_SCHEDULE_LATENESS_MINUTES=15;
 const sleep=(ms)=>new Promise((resolve)=>setTimeout(resolve,ms));
 const clean=(value)=>String(value||'').trim();
 
-function parsePlatforms(value){
+function parsePlatformSelection(value){
   try{
-    const parsed=Array.isArray(value)?value:JSON.parse(value||'[]');
-    return Array.isArray(parsed)?[...new Set(parsed.map(clean).filter((item)=>PLATFORM_CONFIG[item]))]:[];
-  }catch{return[];}
+    const selected=Array.isArray(value)?value:JSON.parse(value||'[]');
+    if(!Array.isArray(selected))return{platforms:[],invalid:true};
+    const names=selected.map(clean);
+    return{platforms:[...new Set(names.filter(name=>Object.hasOwn(PLATFORM_CONFIG,name)))],
+      invalid:names.some(name=>!Object.hasOwn(PLATFORM_CONFIG,name))};
+  }catch{return{platforms:[],invalid:true};}
 }
+function parsePlatforms(value){return parsePlatformSelection(value).platforms;}
 function postText(post){
   return [post.headline,post.copy].map(clean).filter((value,index,values)=>value&&values.indexOf(value)===index).join('\n\n');
 }
@@ -326,13 +330,25 @@ function scheduleLatenessMinutes(post,now){
   return Math.max(0,(now.getTime()-scheduled)/60000);
 }
 async function expireLateScheduledPost(env,post,now){
-  const platforms=parsePlatforms(post.platforms_json);
+  const selection=parsePlatformSelection(post.platforms_json);
+  const platforms=selection.platforms;
   const rows=await env.DB.prepare('SELECT platform,status,remote_id,published_at FROM social_publish_deliveries WHERE post_id=?').bind(post.id).all();
   const byPlatform=new Map((rows.results||[]).map((row)=>[row.platform,row]));
   const publishedPlatforms=platforms.filter((platform)=>byPlatform.get(platform)?.status==='published');
   const unresolvedPlatforms=platforms.filter((platform)=>!publishedPlatforms.includes(platform));
   const nowIso=now.toISOString();
   const lateness=Math.round(scheduleLatenessMinutes(post,now)*10)/10;
+  // Unknown platform choices must never be silently dropped, especially
+  // if an older attempt may have reached a real external platform.
+  if(selection.invalid){
+    const updated=await env.DB.prepare(
+      "UPDATE social_posts SET status='manual_required',published_at=NULL,scheduled_at=NULL,updated_at=? WHERE id=? AND status='scheduled'"
+    ).bind(nowIso,post.id).run();
+    if(updated?.success!==true||updated?.meta?.changes!==1)
+      return{id:post.id,ok:false,blocked:true,reason:'invalid_platform_selection',state_unconfirmed:true};
+    return{id:post.id,ok:false,manual_required:true,expired:true,
+      reason:'invalid_platform_selection',returned_to:'manual_required'};
+  }
   const reason=`已超過正式排程 ${MAX_SCHEDULE_LATENESS_MINUTES} 分鐘自動發布窗口（目前延遲約 ${lateness} 分鐘）；為避免非預期晚發，系統已停止自動補發。`;
   const uncertainPlatforms=unresolvedPlatforms.filter((platform)=>
     ['sending','retry','manual_required'].includes(byPlatform.get(platform)?.status));
@@ -352,7 +368,11 @@ async function expireLateScheduledPost(env,post,now){
 async function publishOne(env,post,now){
   const media=mediaUrl(post);
   if(!media)return{id:post.id,ok:false,blocked:true,reason:'missing_media',error:'缺少正式圖片或影片，依仙加味最新規則禁止發布。',results:[]};
-  const platforms=parsePlatforms(post.platforms_json);
+  const selection=parsePlatformSelection(post.platforms_json);
+  const platforms=selection.platforms;
+  if(selection.invalid)return{id:post.id,ok:false,blocked:true,
+    reason:'invalid_platform_selection',
+    error:'包含不支援或無法辨識的發布平台，禁止忽略原設定而部分發布。請人工重新檢查完整平台清單。',results:[]};
   if(platforms.length===0)return{id:post.id,ok:false,blocked:true,reason:'no_valid_platforms',error:'未設定有效發布平台，禁止將貼文標記為已發布。',results:[]};
   const results=[];
   for(const platform of platforms){

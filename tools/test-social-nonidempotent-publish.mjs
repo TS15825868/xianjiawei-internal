@@ -198,3 +198,30 @@ test('Facebook Reel finish returned HTTP 200 success false must not publish',asy
   assert.equal(report.results[0].manual_required,true);
  }finally{globalThis.fetch=saved}
 });
+
+test('mixed known and unknown platforms block every external send and any false published state',async()=>{
+ for(const invalid of ['["Facebook","unrecognized-network"]','["Instagram",null]','["LINE OA",""]','["Google 商家",{"network":"untrusted"}]']){
+  const db=fakeInvalidPlatformsDb(invalid);
+  let called=0;const original=globalThis.fetch;
+  globalThis.fetch=async()=>{called++;throw Error('External publishing must never run')};
+  try{
+   const result=await publishPostById({DB:db.DB,META_PAGE_ID:'123',META_PAGE_ACCESS_TOKEN:'fake'},'P-20261026-UNIQUE',new Date('2026-10-26T00:02:00Z'));
+   assert.equal(result.ok,false,invalid);
+   assert.equal(result.blocked,true,invalid);
+   assert.equal(result.reason,'invalid_platform_selection',invalid);
+   assert.equal(called,0,invalid);
+   assert.equal(db.writes.length,0,invalid);
+  }finally{globalThis.fetch=original}
+ }
+});
+test('valid multi-platform selection remains valid and reaches only configured routes',async()=>{
+ const db=fakeInvalidPlatformsDb('["Facebook","Facebook","LINE VOOM"]');
+ let sends=0;const save=globalThis.fetch;
+ globalThis.fetch=async()=>{sends++;return new Response('{"id":"published-remote-id"}',{status:200})};
+ try{
+  const result=await publishPostById({DB:db.DB,META_PAGE_ID:'123',META_INSTAGRAM_USER_ID:'456',META_PAGE_ACCESS_TOKEN:'fake'},'P-20261026-UNIQUE',new Date('2026-10-26T00:02:00Z'));
+  assert.notEqual(result.reason,'invalid_platform_selection');
+  assert.equal(sends,1,'Duplicated Facebook option publishes at most once');
+  assert.ok(result.results.some(x=>x.platform==='LINE VOOM'&&x.manual_required===true));
+ }finally{globalThis.fetch=save}
+});
