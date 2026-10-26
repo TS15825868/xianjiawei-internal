@@ -56,3 +56,9 @@ test('Threads status widget never forces connected/ready green status',()=>{
  assert.doesNotMatch(helper,/chip\.textContent='Threads：Metricool 發布'/);
  assert.match(helper,/chip\.dataset\.threadsRoute='metricool'/);
 });
+
+test('Threads main platform chip is not hardcoded green before Metricool remote proof',()=>{
+ assert.match(ui,/Threads：Metricool 待遠端發布驗證/);
+ assert.match(ui,/platform-chip manual" data-threads-route="metricool"/);
+ assert.doesNotMatch(ui,/platform-chip ready" data-threads-route="metricool"/);
+});

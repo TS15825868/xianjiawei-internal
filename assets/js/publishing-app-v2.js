@@ -166,7 +166,7 @@ function renderPlatforms(){
   const entries=Object.entries(state.platforms?.platforms||{});
   root.innerHTML=entries.length
     ?entries.map(([name,p])=>{
-      if(name==='Threads')return '<span class="platform-chip ready" data-threads-route="metricool">Threads：Metricool 發布</span>';
+      if(name==='Threads')return '<span class="platform-chip manual" data-threads-route="metricool">Threads：Metricool 待遠端發布驗證</span>';
       return `<span class="platform-chip ${p.ready?'ready':'manual'}">${esc(name)}：${p.ready?'已設定，待連線驗證':'人工／未授權'}</span>`;
     }).join('')
     :'<span class="platform-chip">平台狀態稍後載入</span>';

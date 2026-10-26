@@ -21,7 +21,7 @@ for(const token of requiredJs){if(!js.includes(token))throw new Error(`publishin
 if(!/const\s+PAGE_SIZE\s*=/.test(js))throw new Error('publishing-app-v2.js缺少分批載入大小設定');
 if(!/matchMedia\s*&&\s*window\.matchMedia\(['"]\(max-width:720px\)['"]\)/.test(js))throw new Error('手機分批載入缺少720px裝置判斷');
 if(!/\?\s*6\s*:\s*18\s*;/.test(js))throw new Error('手機首批必須維持輕量6篇、桌機18篇能力，避免iPhone一次繪製過多卡片');
-if(!js.includes("name==='Threads'")||!js.includes('Threads：Metricool 發布'))throw new Error('Threads 平台狀態必須以已連線 Metricool 為正式主路徑');
+if(!js.includes("name==='Threads'")||!js.includes('Threads：Metricool 待遠端發布驗證')||js.includes('platform-chip ready" data-threads-route="metricool"'))throw new Error('Threads 平台主路徑仍為 Metricool，但沒有遠端回執不得顯示為可正式發表');
 if(!js.includes("['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家']"))throw new Error('貼文新增／編輯平台選項缺少 Threads');
 if(!/dataset\.publishingRuntime=['"][^'"]+['"]/.test(js))throw new Error('publishing-app-v2.js 缺少目前正式 runtime 識別');
 if(js.includes("state.items.map(card).join('')")&&!js.includes('state.total-state.items.length'))throw new Error('載入更多不得回退為只在本機切片全部貼文');
