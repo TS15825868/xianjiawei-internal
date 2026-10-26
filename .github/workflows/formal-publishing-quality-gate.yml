@@ -122,6 +122,9 @@ jobs:
           const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
           const imageRequiredStatuses=new Set(['pending_review','approved','scheduled','published']);
           const imageApprovedStatuses=new Set(['approved','scheduled','published']);
+          // Preserve existing review workflow: draft/pending image rework is
+          // permitted but must be reported, never mislabelled as "all approved".
+          const reworkByStatus={draft:0,pending_review:0};
           const imageOwners=new Map();
           const copyOwners=new Map();
           const errors=[];
@@ -147,6 +150,12 @@ jobs:
             if(hasTang&&!hasJiao&&(has600||has32))errors.push(`${p.id}: 單一龜鹿湯塊文案混入龜鹿膠規格`);
             if(hasJiao&&!hasTang&&(has75||has8))errors.push(`${p.id}: 單一龜鹿膠文案混入龜鹿湯塊規格`);
             const image=String(p.image_url||'').trim();
+            const qualityStatus=String(p.image_quality_status||'').trim();
+            if(qualityStatus==='needs_rework'){
+              if(Object.hasOwn(reworkByStatus,p.status))reworkByStatus[p.status]++;
+              if(imageApprovedStatuses.has(p.status))
+                errors.push(`${p.id}: ${p.status}仍標記needs_rework，不得核准或發布`);
+            }
             if(image){
               if(image.includes('/images/brand/approved-v405/'))errors.push(`${p.id}: 使用已退役approved-v405舊圖`);
               if(imageOwners.has(image)&&p.status!=='published')errors.push(`${p.id}: 圖片與 ${imageOwners.get(image)} 重複使用`);
@@ -164,7 +173,24 @@ jobs:
           }
           if(errors.length){console.error(errors.join('\n'));process.exit(1)}
           const counts=posts.reduce((m,p)=>(m[p.status]=(m[p.status]||0)+1,m),{});
-          console.log(`PASS ${posts.length}篇貼文動態品質守門`,counts);
+          const rework=reworkByStatus.draft+reworkByStatus.pending_review;
+          const active=posts.filter(p=>p.status!=='archived').length;
+          // Passing this gate only certifies structural/copy rule compliance,
+          // NOT visual approval of candidate images or the 16 human checks.
+          console.log(`PASS ${posts.length}篇紀錄結構與文案規則檢查；活躍${active}篇；圖片待修${rework}篇`,counts);
+          if(rework)
+            console.log(`::warning title=仙加味貼文圖片待修::${rework}篇尚須人工核對圖片品質（待審核${reworkByStatus.pending_review}、草稿${reworkByStatus.draft}），本次成功不代表可核准或發布。`);
+          if(process.env.GITHUB_STEP_SUMMARY){
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,[
+              '## 仙加味｜唯讀貼文品質守門',
+              '',
+              `- D1 全部紀錄：${posts.length} 篇；活躍工作資料：${active} 篇；已封存：${counts.archived||0} 篇（保留不清除）`,
+              `- 待審核：${counts.pending_review||0} 篇；草稿：${counts.draft||0} 篇；已發布：${counts.published||0} 篇`,
+              `- 標記 needs_rework：${rework} 篇（待審核 ${reworkByStatus.pending_review}、草稿 ${reworkByStatus.draft}）`,
+              '- 此工作流程只驗證資料結構及明確文案規則；不代表 16 項圖文人工審核完成，不會自動核准或發布。',
+              ''
+            ].join('\n')+'\n');
+          }
           NODE
 
       - name: Verify live maintenance boundary when enabled
