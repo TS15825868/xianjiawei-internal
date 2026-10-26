@@ -57,3 +57,10 @@ https://help.metricool.com/main-differences-between-free-and-paid-plans-bl0v9
 https://help.metricool.com/mcp-vs-api-access-what-is-the-difference-5y3ib
 
 限制：沒有無人值守D1→Metricool→D1閉環；Work或人工仍需交接與查證。不得宣稱全天候自動同步。
+
+
+## 2026-10-26｜Threads 連線狀態與免費排程必須有真實證據
+
+仙加味的 Threads 正式發文路徑採用 Metricool 帳號 `xianjiawei.tw`，但 **Cloudflare Worker 沒有 Metricool 遠端正式排程 API 與回執**。連接帳號、排程草稿或存在 Webhook 參數，不代表貼文已核准或自動發布成功。以前把 Threads 回傳為 `connected:true`、`verified:true`、`externalSchedulerReady:true` 的假健康訊號已停用；維持 `metricool_external_publish_unverified`，直到真正透過 Metricool Connector 取得核准、排程 UUID 及遠端發表證據。
+
+正式內容流程不變：新品與生活情境圖文逐篇符合 16 項品質審核、人工核准、唯一 UUID、免費方案剩餘額度與發布結果，才能標示 `scheduled` 或 `published`。對顧客公開的貼文不得由 Worker 推定為已送出；沒有遠端發送回執就保持待驗證／人工接手，不重複發布。

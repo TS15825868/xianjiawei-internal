@@ -45,11 +45,14 @@ jobs:
           test -f src/platform-connection-probe.js
           grep -q "externalScheduler:'Metricool'" src/platform-connection-probe.js
           grep -q "account:'xianjiawei.tw'" src/platform-connection-probe.js
-          grep -q 'externalSchedulerReady:true' src/platform-connection-probe.js
+          grep -q 'externalSchedulerReady:false' src/platform-connection-probe.js
+          grep -q 'externalSchedulerLiveVerified:false' src/platform-connection-probe.js
+          grep -q "status:'metricool_external_publish_unverified'" src/platform-connection-probe.js
           if grep -q 'graph.threads.net' src/platform-connection-probe.js; then
             echo 'Threads連線探測不得再依賴Graph API' >&2
             exit 1
           fi
+          node --test tools/test-platform-connection-probe.mjs
           grep -q 'publishes_content:false' src/platform-connection-probe.js
           grep -q 'blocking_platforms' src/platform-connection-probe.js
           echo 'PASS static publisher capability contract only; live API connectivity is checked separately.'
@@ -113,8 +116,8 @@ jobs:
           for attempt in $(seq 1 24); do
             if curl -fsS --max-time 20 "$BASE_URL/healthz/platform-connections" -o /tmp/platform-connections.json; then
               live="$(node -e "const x=require('/tmp/platform-connections.json');console.log(x.fullSystemVersion||'')")"
-              if [ "$live" = "$expected" ] && node -e "const x=require('/tmp/platform-connections.json');const t=x.platforms?.Threads||{};process.exit(t.externalScheduler==='Metricool'&&t.account==='xianjiawei.tw'&&t.operational===true?0:1)"; then
-                echo "PASS live platform probe version=$live with Metricool Threads"
+              if [ "$live" = "$expected" ] && node -e "const x=require('/tmp/platform-connections.json');const t=x.platforms?.Threads||{};process.exit(t.externalScheduler==='Metricool'&&t.account==='xianjiawei.tw'&&t.operational===false&&t.verified===false&&t.externalSchedulerReady===false?0:1)"; then
+                echo "PASS live platform probe version=$live; Metricool Threads configured route is NOT live-verified"
                 exit 0
               fi
               echo "等待正式部署含Metricool Threads：live=$live expected=$expected attempt=$attempt/24"
@@ -156,9 +159,12 @@ jobs:
             if(item.operational!==true)throw new Error(`${name} 沒有可用官方 API 或既有 Webhook 備援：${item.status||'unknown'}`);
           }
           const threads=p.Threads||{};
-          if(threads.operational!==true||threads.externalScheduler!=='Metricool'||threads.account!=='xianjiawei.tw'||threads.directConfigured===true){
-            throw new Error('Threads正式路徑不是Metricool xianjiawei.tw');
+          if(threads.operational===true||threads.verified===true||threads.externalSchedulerReady===true||
+             threads.externalScheduler!=='Metricool'||threads.account!=='xianjiawei.tw'||threads.directConfigured===true){
+            throw new Error('Threads 經 Metricool 尚未通過遠端驗證，不得標為正常自動發布');
           }
+          if(!Array.isArray(x.verification_required_platforms)||!x.verification_required_platforms.includes('Threads'))
+            throw new Error('Threads 外部排程必須保留待驗證狀態');
           const blocking=Array.isArray(x.blocking_platforms)?x.blocking_platforms:[];
           if(blocking.length)throw new Error(`已設定平台沒有可用發布路徑：${blocking.join(', ')}`);
           const degraded=Array.isArray(x.degraded_platforms)?x.degraded_platforms:[];
@@ -166,5 +172,5 @@ jobs:
           if(degraded.length)console.log(`DEGRADED_WITH_FALLBACK ${degraded.join(', ')}`);
           if(unconfigured.length)console.log(`UNCONFIGURED ${unconfigured.join(', ')}`);
           if(p['LINE VOOM']?.manualRequired!==true)throw new Error('LINE VOOM 必須維持人工發布');
-          console.log('PASS live provider credential probe completed without publishing content; Threads is Metricool xianjiawei.tw.');
+          console.log('PASS read-only provider probes, Threads remains explicitly pending Metricool remote verification; no content published.');
           NODE

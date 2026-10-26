@@ -97,21 +97,23 @@ async function probeMeta(env){
 
 async function probeThreads(env){
   const webhookConfigured=pair(env,'THREADS_PUBLISH_WEBHOOK_URL','THREADS_PUBLISH_WEBHOOK_TOKEN');
+  // A Work-only handoff or configured webhook is not evidence of a live
+  // Metricool planner entry or a successful Threads publishing receipt.
+  // This Worker has no Metricool API; it MUST NOT fabricate connected:true.
   return {
     platform:'Threads',
     mode:webhookConfigured?'metricool_webhook':'metricool_external',
-    configured:true,
+    configured:webhookConfigured,
     directConfigured:false,
     webhookConfigured,
-    connected:true,
-    verified:true,
+    connected:null,
+    verified:false,
     externalScheduler:'Metricool',
-    externalSchedulerReady:true,
+    externalSchedulerReady:false,
+    externalSchedulerLiveVerified:false,
     account:'xianjiawei.tw',
-    status:'connected',
-    reason:webhookConfigured
-      ? 'Threads固定走Metricool Webhook；不探測Graph API。'
-      : 'Threads固定走Metricool xianjiawei.tw 外部正式排程；不探測Graph API。'
+    status:'metricool_external_publish_unverified',
+    reason:'Threads 規劃使用 Metricool xianjiawei.tw；Worker 無法核對正式外部排程、核准狀態與遠端發布回執。'
   };
 }
 
@@ -162,6 +164,13 @@ async function probeGoogle(env){
 }
 
 function operationalState(item){
+  if(item?.platform==='Threads'&&item?.externalScheduler==='Metricool'&&item?.externalSchedulerLiveVerified!==true){
+    // A valid URL and token name do not prove Metricool remote health.
+    // Keep it pending, not blocking separately working Facebook/LINE.
+    return {...item,operational:false,degraded:false,
+      unconfigured:!item.webhookConfigured,blockingFailure:false,
+      verificationRequired:true};
+  }
   const directConnected=item?.directConfigured===true&&item?.connected===true;
   const fallbackReady=item?.webhookConfigured===true;
   const externalReady=item?.externalSchedulerReady===true;
@@ -202,6 +211,7 @@ export async function probePublisherConnections(env){
   const degradedPlatforms=automaticEntries.filter(([,item])=>item.degraded).map(([name])=>name);
   const unconfiguredPlatforms=automaticEntries.filter(([,item])=>item.unconfigured).map(([name])=>name);
   const blockingPlatforms=automaticEntries.filter(([,item])=>item.blockingFailure).map(([name])=>name);
+  const verificationRequiredPlatforms=automaticEntries.filter(([,item])=>item.verificationRequired).map(([name])=>name);
   const operationalPlatforms=automaticEntries.filter(([,item])=>item.operational).map(([name])=>name);
   const directCredentialsValid=configuredDirect.every((item)=>item.connected===true);
   const allAutomaticChannelsConfigured=automatic.every((item)=>item.directConfigured||item.webhookConfigured||item.externalSchedulerReady);
@@ -219,6 +229,8 @@ export async function probePublisherConnections(env){
     degraded_platforms:degradedPlatforms,
     unconfigured_platforms:unconfiguredPlatforms,
     blocking_platforms:blockingPlatforms,
+    verification_required_platforms:verificationRequiredPlatforms,
+    all_external_schedulers_verified:verificationRequiredPlatforms.length===0,
     platforms
   };
 }
