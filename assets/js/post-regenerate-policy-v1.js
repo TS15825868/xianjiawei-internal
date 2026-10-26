@@ -71,7 +71,7 @@
   }
   function enhanceReturnButtons(root=document){
     const cards=[];if(root?.matches?.('.xjw-row,.publish-card'))cards.push(root);root?.querySelectorAll?.('.xjw-row,.publish-card').forEach(card=>cards.push(card));
-    [...new Set(cards)].forEach(card=>{if(card.dataset.status==='published'||card.dataset.locked==='true')return;const id=postId(card),actions=card.querySelector('.xjw-actions');if(!id||!actions||actions.querySelector('[data-xjw-regeneration-return]'))return;const button=document.createElement('button');button.type='button';button.className='btn small green';button.dataset.xjwRegenerationReturn=id;button.textContent=recalled(id)?'生成後回填／上傳｜待送審':'回填新文案／圖片';actions.appendChild(button)})
+    [...new Set(cards)].forEach(card=>{if(card.dataset.status==='published'||card.dataset.locked==='true'||card.dataset.externalPublishedHold==='1'){card.querySelector('[data-xjw-regeneration-return]')?.remove();return;}const id=postId(card),actions=card.querySelector('.xjw-actions');if(!id||!actions||actions.querySelector('[data-xjw-regeneration-return]'))return;const button=document.createElement('button');button.type='button';button.className='btn small green';button.dataset.xjwRegenerationReturn=id;button.textContent=recalled(id)?'生成後回填／上傳｜待送審':'回填新文案／圖片';actions.appendChild(button)})
   }
 
   window.fetch=async function xjwGenerationAwareFetch(input,init={}){
@@ -88,9 +88,9 @@
 
   document.addEventListener('click',event=>{
     const returnButton=event.target.closest('[data-xjw-regeneration-return]');
-    if(returnButton){const card=returnButton.closest('.xjw-row,.publish-card');if(!card)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReturnEditor(card).catch(error=>toast(error?.message||String(error),true));return}
+    if(returnButton){const card=returnButton.closest('.xjw-row,.publish-card');if(!card||card.dataset.externalPublishedHold==='1')return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReturnEditor(card).catch(error=>toast(error?.message||String(error),true));return}
     const button=event.target.closest('[data-xjw-regenerate]');if(!button)return;
-    const card=button.closest('.xjw-row,.publish-card');if(!card||card.dataset.status==='published'||card.dataset.locked==='true')return;
+    const card=button.closest('.xjw-row,.publish-card');if(!card||card.dataset.status==='published'||card.dataset.locked==='true'||card.dataset.externalPublishedHold==='1')return;
     event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();launch(button.dataset.xjwRegenerate||'image',card).catch(error=>toast(error?.message||String(error),true));
   },true);
 

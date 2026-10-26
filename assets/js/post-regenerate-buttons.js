@@ -4,7 +4,7 @@
   function locked(card){
     const status=String(card?.dataset?.status||'');
     const text=String(card?.textContent||'').replace(/\s+/g,' ');
-    return status==='published'||status==='archived'||card?.dataset?.locked==='true'||/已發布鎖定|published_final_locked/.test(text);
+    return status==='published'||status==='archived'||card?.dataset?.locked==='true'||card?.dataset?.externalPublishedHold==='1'||/已發布鎖定|published_final_locked/.test(text);
   }
   function addButton(actions,mode,label,className='btn small'){
     const existing=actions.querySelector(`[data-xjw-regenerate="${mode}"]`);

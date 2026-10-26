@@ -137,7 +137,7 @@ async function auditOne(env,row,rows){
   const receiptHold=publishedPlatformReceiptHold(row);
   const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,rows),...semanticErrors(row,rows)];
   const unique=uniq(errors);
-  return{ok:unique.length===0,errors:unique,recommended_action:unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
+  return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
 async function batchAudit(request,env,ctx){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;

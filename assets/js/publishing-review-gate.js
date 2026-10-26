@@ -51,6 +51,13 @@
     const card=cardFor(item.id);if(!card)return;
     const errors=Array.isArray(item.errors)?item.errors:[];
     card.dataset.contentAudit=item.ok?'ok':'blocked';
+    const externalHold=item.publication_reconciliation_required===true;
+    card.dataset.externalPublishedHold=externalHold?'1':'0';
+    // Never offer generation/re-submission actions for a D1 row whose
+    // same publication already has public platform receipts.
+    if(externalHold){
+      card.querySelectorAll('[data-xjw-regenerate],[data-xjw-regeneration-return]').forEach(button=>button.remove());
+    }
     const box=auditBox(card);
     if(box){
       box.className=item.ok?'xjw-ok':'xjw-danger';

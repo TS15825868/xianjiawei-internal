@@ -23,6 +23,14 @@ test('backend approval, regeneration and immediate publish all apply hold indepe
  const content=fs.readFileSync(new URL('../src/publishing-content-audit-entry.js',import.meta.url),'utf8');
  const gate=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
  assert.match(content,/publishedPlatformReceiptHold\(row\)/);
+ assert.match(content,/publication_reconciliation_required:Boolean\(receiptHold\)/);
+ const ui=fs.readFileSync(new URL('../assets/js/publishing-review-gate.js',import.meta.url),'utf8');
+ const buttons=fs.readFileSync(new URL('../assets/js/post-regenerate-buttons.js',import.meta.url),'utf8');
+ const policy=fs.readFileSync(new URL('../assets/js/post-regenerate-policy-v1.js',import.meta.url),'utf8');
+ assert.match(ui,/item\.publication_reconciliation_required===true/);
+ assert.match(ui,/card\.dataset\.externalPublishedHold/);
+ assert.match(buttons,/externalPublishedHold==='1'/);
+ assert.match(policy,/externalPublishedHold==='1'/);
  assert.match(content,/\.\.\.\(receiptHold\?\[receiptHold\.reason\]/);
  for(const fn of ['regenerationStart','regenerationReady']){
   const a=gate.indexOf('async function '+fn+'('),b=gate.indexOf('async function ',a+20);
