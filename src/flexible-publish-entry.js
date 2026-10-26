@@ -69,7 +69,7 @@ async function audit(env,request,profile,id,before,after,action='彈性立即發
   try{
     await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
       .bind(`AUD-${crypto.randomUUID()}`,profile?.email||'',action,'貼文',id,JSON.stringify(before||{}),JSON.stringify(after||{}),request.headers.get('cf-connecting-ip')||'').run();
-  }catch(error){console.warn('flex publish audit failed',clean(error?.message||error));}
+  }catch{console.warn('[XJW_FLEX_AUDIT] database audit failed (sensitive details withheld)');}
 }
 function platformReady(configuration,platform){
   return configuration?.platforms?.[platform]?.ready===true;
@@ -217,24 +217,24 @@ export default{
     const path=new URL(request.url).pathname;
     if(request.method==='GET'&&path==='/healthz'){
       try{return await currentHealth(request,env,ctx);}
-      catch(error){return json({ok:false,error:clean(error?.message||error)||'健康檢查失敗',flexiblePublishingVersion:FLEX_VERSION},500);}
+      catch{console.warn('[XJW_FLEX_HEALTH] internal error (details withheld)');return json({ok:false,error:'健康檢查失敗',flexiblePublishingVersion:FLEX_VERSION},500);}
     }
     const publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/);
     if(request.method==='POST'&&publishMatch){
       try{return await flexiblePublishNow(request,env,ctx,decodeURIComponent(publishMatch[1]));}
-      catch(error){return json({error:clean(error?.message||error)||'立即發布失敗'},500);}
+      catch{console.warn('[XJW_FLEX_PUBLISH] internal error (details withheld)');return json({error:'立即發布失敗，請重新整理後聯絡管理員查核發送狀態'},500);}
     }
     const deliveryMatch=path.match(/^\/api\/posts\/([^/]+)\/deliveries$/);
     if(request.method==='GET'&&deliveryMatch){
       try{return await deliveryState(request,env,ctx,decodeURIComponent(deliveryMatch[1]));}
-      catch(error){return json({error:clean(error?.message||error)||'發布狀態讀取失敗'},500);}
+      catch{console.warn('[XJW_FLEX_DELIVERIES] internal error (details withheld)');return json({error:'發布狀態讀取失敗'},500);}
     }
     const statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/);
     if(request.method==='POST'&&statusMatch){
       try{
         const handled=await changeManualRequiredStatus(request,env,ctx,decodeURIComponent(statusMatch[1]));
         if(handled)return handled;
-      }catch(error){return json({error:clean(error?.message||error)||'狀態更新失敗'},500);}
+      }catch{console.warn('[XJW_FLEX_STATUS] internal error (details withheld)');return json({error:'狀態更新失敗'},500);}
     }
     return app.fetch(request,env,ctx);
   },

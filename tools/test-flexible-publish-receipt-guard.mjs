@@ -75,3 +75,32 @@ test('the canonical sender preserves original multi-platform audience and puts u
   assert.ok(mutations.every(x=>!x.sql.includes('SET platforms_json=')));
  }finally{globalThis.fetch=oldFetch}
 });
+
+
+test('unexpected publishing and readiness exceptions never leak SQL, credentials or customer PII',async()=>{
+ let isolated=readFileSync(new URL('../src/flexible-publish-entry.js',import.meta.url),'utf8');
+ isolated=isolated.replace("import app from './authority-entry.js';",
+  "const app={fetch:async request=>{if(new URL(request.url).pathname==='/api/me')return Response.json({role:'owner',email:'offline-owner@example.invalid'});throw Error('PRIVATE_CF_TOKEN=abc and customer phone 0912345678');}};");
+ isolated=isolated.replace("import { publishPostById, publisherConfiguration } from './social-publisher.js';",
+  "const publishPostById=async()=>{throw Error('PRIVATE_PUBLISH_TOKEN');};const publisherConfiguration=()=>({});");
+ isolated=isolated.replace("import { validatePostPayload } from './product-authority.js';",
+  "const validatePostPayload=()=>[];");
+ const entry=(await import('data:text/javascript;base64,'+Buffer.from(isolated).toString('base64'))).default;
+ const env={DB:{prepare(){throw Error('PRIVATE_SQL_URL=postgresql://private and phone 0912345678')}}};
+ for(const [path,method] of [
+  ['/healthz','GET'],
+  ['/api/posts/OFFLINE_ONLY/publish-now','POST'],
+  ['/api/posts/OFFLINE_ONLY/deliveries','GET'],
+  ['/api/posts/OFFLINE_ONLY/status','POST']
+ ]){
+  const url='https://offline.test'+path;
+  const res=await entry.fetch(new Request(url,{method}),env,{});
+  assert.equal(res.status,500,'Unexpected failure must not be treated as success: '+path);
+  const text=await res.text();
+  for(const leaked of ['PRIVATE_','postgresql://private','0912345678','abc'])
+   assert.ok(!text.includes(leaked),path+' must not reveal sensitive error details: '+leaked);
+  assert.ok(text.includes('失敗'),'User still needs a safe actionable error message');
+ }
+ assert.doesNotMatch(isolated,/clean\(error\?\.message\|\|error\)/,
+  'Unexpected errors are never serialized into public API responses or logs');
+});
