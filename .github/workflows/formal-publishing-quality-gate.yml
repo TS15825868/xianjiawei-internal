@@ -197,8 +197,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --test tools/test-build-post-image-rework-queue.mjs
+          node --test tools/test-build-post-image-rework-queue.mjs tools/test-external-published-receipt-holds.mjs
           node tools/build-post-image-rework-queue.mjs formal-post-quality.json ops/social-post-image-scenes-20261010.json post-image-rework-queue.json
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const q=JSON.parse(fs.readFileSync('post-image-rework-queue.json','utf8'));
+          if(q.externalReceiptReconciliationCount+q.eligibleForImageReworkCount!==q.total)throw Error('跨平台回執分流數量不一致');
+          console.log(`PASS 帖文圖片清單：合計${q.total}篇；已發布回執待核對${q.externalReceiptReconciliationCount}篇；一般圖片製作候選${q.eligibleForImageReworkCount}篇。`);
+          if(q.externalReceiptReconciliationCount)console.log('::warning title=禁止已發布內容重發::已發布回執待核對的貼文不得重新製圖或發布。');
+          NODE
 
       - name: Verify live maintenance boundary when enabled
         shell: bash
@@ -233,4 +240,4 @@ jobs:
             post-image-rework-queue.json
             live-*.json
           if-no-files-found: warn
-          retention-days: 3
+          retention-days: 7
