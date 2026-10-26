@@ -31,12 +31,18 @@ export function buildPlan(rows, sceneByPostId={}){
     const scene=clean(sceneByPostId[id])||clean(row.image_alt);
     const text=[row.title,row.headline,row.copy,row.image_alt].map(clean).join(' ');
     const products=PRODUCT_TERMS.filter(word=>text.includes(word));
+    // Existing copy often says just "30cc 跟 180cc" while its formal
+    // product scene/image-alt identifies the approved 龜鹿飲 variants.
+    // Never omit the corresponding original package photo in a comparison.
+    if(/(?:^|[^\\d])30\\s*cc/i.test(text) && !products.includes('龜鹿飲30cc'))products.push('龜鹿飲30cc');
+    if(/(?:^|[^\\d])180\\s*cc/i.test(text) && !products.includes('龜鹿飲180cc'))products.push('龜鹿飲180cc');
     const window=windowFor(row);
     counts[status]=(counts[status]||0)+1;
     items.push({
       postId:id, title:clean(row.title), status, imageQualityStatus:q,
       existingImageUrl:clean(row.image_url), imageAlt:clean(row.image_alt),
       scene, sceneSource:clean(sceneByPostId[id])?'formal_scene_map':'current_image_alt',
+      sceneRequiresManualReview:!clean(sceneByPostId[id]),
       category:clean(row.category), productsMentioned:products,
       copyHash:crypto.createHash('sha256').update(clean(row.copy)).digest('hex').slice(0,16),
       window, priority:status==='approved'||status==='scheduled'?'urgent_hold':status==='pending_review'?'review_backlog':'draft_backlog',

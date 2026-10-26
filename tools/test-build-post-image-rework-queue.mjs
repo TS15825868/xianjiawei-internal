@@ -16,6 +16,9 @@ test('rework queue includes existing rejected images without touching missing-im
  assert.equal(p.items.find(x=>x.postId==='a').requiredAction,'replace_existing_rejected_image');
  assert.deepEqual(p.items.find(x=>x.postId==='a').productsMentioned,['龜鹿飲30cc']);
  assert.equal(p.items.find(x=>x.postId==='b').requiredAction,'produce_missing_or_rejected_image');
+ assert.equal(p.items.find(x=>x.postId==='b').sceneRequiresManualReview,true);
+ const comparison=buildPlan([{id:'compare',status:'pending_review',title:'30cc跟180cc，怎麼選？',copy:'仙加味說明兩種包裝',image_alt:'龜鹿飲30cc裸玻璃罐與180cc鋁袋',image_quality_status:'needs_rework',image_url:'https://example.test/old.png'}]);
+ assert.deepEqual(comparison.items[0].productsMentioned,['龜鹿飲30cc','龜鹿飲180cc']);
  assert.equal(p.items.every(x=>x.readyForAutomaticPublication===false&&x.requiresHumanVisualReview===true),true);
  assert.equal(JSON.stringify(rows),old);assert.equal(JSON.stringify(p).includes('"copy":"在家"'),false);
 });
