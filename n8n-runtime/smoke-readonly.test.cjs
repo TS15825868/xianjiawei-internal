@@ -29,19 +29,25 @@ function fixtures(){
   [cloudflareUrl]:{status:503,body:{accepted:false,code:'disabled',sent:false}}
  };
 }
-async function exercise(mutate){
+async function exercise(mutate,options={}){
  const routes=fixtures();
+ let virtualNow=Date.now();
+ class VirtualDate extends Date{
+  constructor(...args){super(...(args.length?args:[virtualNow]));}
+  static now(){return virtualNow;}
+ }
  if(mutate)mutate(routes);
  const output=[],errors=[],exits=[],requests=[];
  const fakeFetch=async url=>{
   requests.push(String(url));
+  if(String(url)===lineUrl && options.lineLatencyMs)virtualNow+=options.lineLatencyMs;
   const entry=routes[String(url)];
   if(!entry)throw Error('Unexpected destination (network forbidden): '+url);
   if(entry.transportFailure)throw Error('simulated transport error: never expose details');
   return {status:entry.status,ok:entry.status>=200&&entry.status<300,
    text:async()=>typeof entry.body==='string'?entry.body:JSON.stringify(entry.body)};
  };
- const ctx={fetch:fakeFetch,AbortController,setTimeout,clearTimeout,
+ const ctx={fetch:fakeFetch,AbortController,setTimeout,clearTimeout,Date:VirtualDate,
   process:{env:{},exit:code=>{exits.push(code);throw Error('mock process.exit '+code);}},
   console:{log:(...args)=>output.push(args.join(' ')),
    error:(...args)=>errors.push(args.join(' '))}};
@@ -192,4 +198,46 @@ test('wrong code or misleading send state cannot masquerade as independently gat
   assert.equal(x.report.ok,false);
   assert.equal(x.report.metaReceipts.supabase.safelyBlocked,false);
  }
+});
+
+test('line health 8+ second latency is visible and fails even if HTTP 200 eventually succeeds',async()=>{
+ const x=await exercise(null,{lineLatencyMs:9000});
+ assert.equal(x.report.line.status,200);
+ assert.equal(x.report.line.healthLatencyMs,9000);
+ assert.equal(x.report.line.slowHealth,true);
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
+ assert.equal(x.report.ok,false);
+ assert.ok(x.report.errors.some(t=>t.includes('超過 8 秒')));
+ assert.deepEqual(x.exits,[1,1]);
+});
+test('line response errors surface as a privacy-safe warning not guessed customer failure',async()=>{
+ const x=await exercise(routes=>{
+  routes[lineUrl].body.lastWebhookAt=new Date().toISOString();
+  routes[lineUrl].body.lastReplySuccessAt='2026-10-01T00:00:00Z';
+  routes[lineUrl].body.lastReplyError='PRIVATE TOKEN / PRIVATE CUSTOMER MESSAGE';
+ });
+ assert.equal(x.report.ok,true,'Unsupported follow/unfollow events can have no expected reply');
+ assert.equal(x.report.line.replyFailureUnresolved,true);
+ assert.ok(x.report.warnings.some(t=>t.includes('回覆失敗紀錄')));
+ assert.doesNotMatch(JSON.stringify(x.report),/PRIVATE TOKEN|PRIVATE CUSTOMER MESSAGE/);
+});
+test('historical reply errors and successfully recovered LINE conversations are not recent incidents',async()=>{
+ for(const fix of [
+  {lastWebhookAt:'2026-09-01T00:00:00Z',lastReplySuccessAt:''},
+  {lastWebhookAt:new Date(Date.now()-1000).toISOString(),
+   lastReplySuccessAt:new Date().toISOString()}
+ ]){
+  const x=await exercise(routes=>Object.assign(routes[lineUrl].body,fix,
+   {lastReplyError:'PRIVATE REPLY DETAIL'}));
+  assert.equal(x.report.ok,true);
+  assert.equal(x.report.line.replyFailureUnresolved,false);
+  assert.deepEqual(x.report.warnings,[]);
+  assert.doesNotMatch(JSON.stringify(x.report),/PRIVATE REPLY DETAIL/);
+ }
+});
+test('LINE health data transfer failure is flagged without exposing URL secrets',async()=>{
+ const x=await exercise(r=>{r[lineUrl].transportFailure=true;});
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
+ assert.ok(Number.isFinite(x.report.line.healthLatencyMs));
+ assert.equal(x.report.line.transportFailure,true);
 });

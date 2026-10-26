@@ -1,6 +1,10 @@
-const TIMEOUT_MS = 90000;
+// Keep independent checks bounded even if Render cold starts or becomes unreachable.
+const TIMEOUT_MS = 25000;
+const LINE_SLOW_MS = 8000;
+const RECENT_WEBHOOK_MS = 2 * 60 * 60 * 1000;
 
 async function fetchResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
+  const startedAt = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -8,7 +12,8 @@ async function fetchResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
     const text = await res.text();
     let body;
     try { body = JSON.parse(text); } catch { body = text; }
-    return { status: res.status, ok: res.ok, body };
+    return { status: res.status, ok: res.ok, body,
+      latencyMs: Math.max(0,Date.now()-startedAt) };
   } finally {
     clearTimeout(timer);
   }
@@ -17,12 +22,14 @@ async function fetchResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
 // Transport failures must not prevent checks of independently hosted backups.
 // Return only a generic reason; raw TLS/network errors can include private data.
 async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
+  const startedAt = Date.now();
   try { return await fetchResource(url, headers, timeoutMs); }
-  catch { return { status: 0, ok: false, body: null, transportFailure: true }; }
+  catch { return { status: 0, ok: false, body: null, transportFailure: true,
+    latencyMs: Math.max(0,Date.now()-startedAt) }; }
 }
 
 (async () => {
-  const errors = [];
+  const errors = [], warnings = [];
   const lineUrl = process.env.XJW_LINE_HEALTH_URL || 'https://ts-line.onrender.com/healthz';
 
   const receiptEndpoints = [
@@ -40,7 +47,7 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   // timeout cannot hide the Supabase/Cloudflare fail-closed status. The maximum
   // wait is bounded by the slowest GET, not the sum of seven independent waits.
   const [line, master, ai, geo, pages, ...receiptChecks] = await Promise.all([
-    observeResource(lineUrl),
+    observeResource(lineUrl,{},20000),
     observeResource('https://ts15825868.github.io/xianjiawei/public-product-master.json'),
     observeResource('https://ts15825868.github.io/xianjiawei/ai-answers.json'),
     observeResource('https://ts15825868.github.io/xianjiawei/geo-data.json'),
@@ -57,6 +64,23 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   if (line.body?.orderOpen !== true) {
     errors.push('LINE OA 接單功能未開啟');
   }
+  // A successful HTTP 200 can still mean users waited for a full Render
+  // cold start. The read-only heartbeat is a proxy, not a real LINE reply test.
+  const lineHealthLatencyMs = Number(line.latencyMs);
+  const lineHealthSlow = Number.isFinite(lineHealthLatencyMs) && lineHealthLatencyMs > LINE_SLOW_MS;
+  if(lineHealthSlow)
+    errors.push('LINE OA 健康檢查超過 8 秒：疑似 Render 冷啟動或網路壅塞，請優先查核即時客服。');
+  const now=Date.now();
+  const lastWebhookAt=Date.parse(String(line.body?.lastWebhookAt||''));
+  const lastReplySuccessAt=Date.parse(String(line.body?.lastReplySuccessAt||''));
+  const recentWebhook=Number.isFinite(lastWebhookAt)&&lastWebhookAt<=now+60000
+    &&now-lastWebhookAt<=RECENT_WEBHOOK_MS;
+  const replyFailureUnresolved=recentWebhook&&Boolean(String(line.body?.lastReplyError||'').trim())
+    &&(!Number.isFinite(lastReplySuccessAt)||lastReplySuccessAt<lastWebhookAt);
+  // The lastWebhookAt field also includes unsupported LINE events that do not
+  // need a reply. Treat this as an actionable warning, not proof of outage.
+  if(replyFailureUnresolved)
+    warnings.push('LINE 最近事件有回覆失敗紀錄，請比對官方聊天室與實際回覆；未取得真實 E2E 成功證據。');
 
   const m = master.body || {};
   const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'];
@@ -104,13 +128,19 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   const result = {
     ok: errors.length === 0,
     checkedAt: new Date().toISOString(),
-    line: { status: line.status, bodyOk: line.body?.ok, transportFailure: line.transportFailure === true },
+    line: {
+      status:line.status,bodyOk:line.body?.ok,
+      transportFailure:line.transportFailure===true,
+      healthLatencyMs:Number.isFinite(lineHealthLatencyMs)?lineHealthLatencyMs:null,
+      slowHealth:lineHealthSlow,replyFailureUnresolved,
+      customerReplyE2EVerified:false
+    },
     master: { status: master.status, version: m.version, productCount: m.productCount },
     ai: { status: ai.status, version: ai.body?.version },
     geo: { status: geo.status, dateModified: graph.find((x) => x?.['@type'] === 'Dataset')?.dateModified || null },
     githubPages: { status: pages.status, sitemapOk: pages.ok && typeof pages.body === 'string' && pages.body.includes('<urlset'), transportFailure: pages.transportFailure === true },
     metaReceipts: receipts,
-    errors,
+    errors,warnings,
   };
 
   console.log('[readonly-smoke]', JSON.stringify(result));
