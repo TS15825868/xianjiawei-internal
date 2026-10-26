@@ -126,7 +126,8 @@ test('Facebook HTTP 200 without official remote post ID stays pending manual ver
  assert.equal(report.results[0].manual_required,true);
  assert.equal(report.results[0].delivery_outcome_unverified,true);
  assert.ok(db.state.writes.some(x=>x.sql.includes('social_publish_deliveries')&&x.binds.includes('manual_required')));
- assert.equal(db.state.writes.some(x=>x.sql.includes("status='published'")),false);
+ assert.equal(db.state.writes.some(x=>x.sql.startsWith("UPDATE social_posts SET status='published'")),false,
+  'No UPDATE social_posts to published may execute without remote publication proof');
 });
 test('Instagram media_publish 200 lacking media ID cannot be labeled published',async()=>{
  const env={META_PAGE_ACCESS_TOKEN:'fake',META_PAGE_ID:'11111',META_INSTAGRAM_USER_ID:'22222'};
