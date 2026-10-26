@@ -107,7 +107,7 @@ for(const platforms_json of ['[]','["unsupported-platform"]','invalid-json']){
   const report=await publishPostById({DB:db.DB},'P-20261026-UNIQUE',new Date('2026-10-26T00:02:00.000Z'));
   assert.equal(report.ok,false);
   assert.equal(report.blocked,true);
-  assert.equal(report.reason,'no_valid_platforms');
+  assert.equal(report.reason,platforms_json==='[]'?'no_valid_platforms':'invalid_platform_selection');
   assert.equal(db.writes.length,0,'no delivery or published-state writes permitted');
  });
 }
@@ -224,4 +224,41 @@ test('valid multi-platform selection remains valid and reaches only configured r
   assert.equal(sends,1,'Duplicated Facebook option publishes at most once');
   assert.ok(result.results.some(x=>x.platform==='LINE VOOM'&&x.manual_required===true));
  }finally{globalThis.fetch=save}
+});
+
+test('late scheduled post with mixed invalid platforms goes to manual review without posting or deleting approval evidence',async()=>{
+ let status='',mutationCount=0,externalCalls=0;
+ const row={...post('Facebook'),status:'scheduled',
+  platforms_json:'["Facebook","unsupported"]',scheduled_at:'2026-10-26T00:00:00.000Z'};
+ const DB={prepare(sql){
+  return{bind(){return this},
+   async all(){
+    if(sql.includes('FROM social_posts'))return {results:[row]};
+    if(sql.includes('FROM social_publish_deliveries'))return {results:[]};
+    throw Error('unexpected list SQL: '+sql);
+   },
+   async first(){
+    if(sql.includes('FROM social_metricool_sync'))return null;
+    throw Error('unexpected read SQL: '+sql);
+   },
+   async run(){
+    mutationCount++;
+    assert.ok(sql.startsWith("UPDATE social_posts SET status='manual_required'"),
+     'Do not delete approved images, review checks, or publication evidence');
+    status='manual_required';
+    return{success:true,meta:{changes:1}};
+   }
+  };
+ }};
+ const saved=globalThis.fetch;
+ globalThis.fetch=async()=>{externalCalls++;throw Error('No public sends')};
+ try{
+  const result=await publishDuePosts({DB},new Date('2026-10-26T00:18:00.000Z'));
+  assert.equal(result.results[0].reason,'invalid_platform_selection');
+  assert.equal(result.results[0].manual_required,true);
+  assert.equal(result.results[0].returned_to,'manual_required');
+  assert.equal(status,'manual_required');
+  assert.equal(mutationCount,1);
+  assert.equal(externalCalls,0);
+ }finally{globalThis.fetch=saved}
 });
