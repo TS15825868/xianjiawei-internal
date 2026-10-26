@@ -354,6 +354,22 @@ async function expireLateScheduledPost(env,post,now){
     return{id:post.id,ok:false,manual_required:true,expired:true,
       reason:'invalid_platform_selection',returned_to:'manual_required'};
   }
+  // All requested platforms have official remote receipt IDs. If a Worker
+  // crashed after persisting the per-platform receipts but before updating
+  // social_posts, it is safe to finish the local state without another POST.
+  if(platforms.length>0&&publishedPlatforms.length===platforms.length){
+    const acceptedTimes=platforms.map(platform=>Date.parse(byPlatform.get(platform)?.published_at||''));
+    const acceptedAt=acceptedTimes.every(Number.isFinite)
+      ?new Date(Math.max(...acceptedTimes)).toISOString():nowIso;
+    const updated=await env.DB.prepare(
+      "UPDATE social_posts SET status='published',published_at=COALESCE(NULLIF(published_at,''),?),scheduled_at=NULL,updated_at=? WHERE id=? AND status='scheduled'"
+    ).bind(acceptedAt,nowIso,post.id).run();
+    if(updated?.success!==true||Number(updated?.meta?.changes)!==1)
+      return{id:post.id,ok:false,state_unconfirmed:true,
+        reason:'verified_delivery_recovery_write_unconfirmed',published_platforms:publishedPlatforms};
+    return{id:post.id,ok:true,recovered:true,reason:'verified_delivery_recovery',
+      published_platforms:publishedPlatforms,remote_receipts_verified:true,external_requests:0};
+  }
   const reason=`已超過正式排程 ${MAX_SCHEDULE_LATENESS_MINUTES} 分鐘自動發布窗口（目前延遲約 ${lateness} 分鐘）；為避免非預期晚發，系統已停止自動補發。`;
   const uncertainPlatforms=unresolvedPlatforms.filter((platform)=>
     ['sending','retry','manual_required','published'].includes(byPlatform.get(platform)?.status));

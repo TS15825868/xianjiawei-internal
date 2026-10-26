@@ -167,3 +167,61 @@ test('overdue legacy published receipt without remote ID goes to human reconcili
   assert.ok(r.results[0].uncertain_platforms.includes('Facebook'));
  }finally{globalThis.fetch=save}
 });
+
+test('fully accepted overdue post recovers from persisted remote receipts without another public API call',async()=>{
+ let writes=0,writeSQL='',binds=[];
+ const scheduled={...post,status:'scheduled',platforms_json:'["Facebook","Instagram"]',
+  scheduled_at:'2026-10-26T00:00:00.000Z'};
+ const receipts=[
+  {platform:'Facebook',status:'published',remote_id:'fb-real-001',published_at:'2026-10-26T00:01:00.000Z'},
+  {platform:'Instagram',status:'published',remote_id:'ig-real-002',published_at:'2026-10-26T00:02:00.000Z'}
+ ];
+ const DB={prepare(sql){return{
+  bind(...args){binds=args;return this},
+  async first(){if(sql.includes('social_metricool_sync'))return null;throw Error('unexpected read')},
+  async all(){
+   if(sql.includes("FROM social_posts WHERE status='scheduled'"))return{results:[scheduled]};
+   if(sql.includes('FROM social_publish_deliveries'))return{results:receipts};
+   throw Error('unexpected query');
+  },
+  async run(){writes++;writeSQL=sql;return{success:true,meta:{changes:1}}}
+ }}};
+ const saved=globalThis.fetch;globalThis.fetch=()=>assert.fail('Recovery must never call an external publishing API');
+ try{
+  const report=await publishDuePosts({DB},new Date('2026-10-26T00:25:00.000Z'));
+  assert.equal(report.due_count,1);
+  assert.equal(report.results[0].ok,true);
+  assert.equal(report.results[0].recovered,true);
+  assert.equal(report.results[0].remote_receipts_verified,true);
+  assert.equal(report.results[0].external_requests,0);
+  assert.equal(writes,1);
+  assert.match(writeSQL,/UPDATE social_posts SET status='published'/);
+  assert.equal(binds[0],'2026-10-26T00:02:00.000Z');
+  assert.deepEqual(report.results[0].published_platforms,['Facebook','Instagram']);
+ }finally{globalThis.fetch=saved}
+});
+test('verified receipts do not claim recovery success if D1 final state change did not commit',async()=>{
+ let writes=0;
+ const scheduled={...post,status:'scheduled',platforms_json:'["Facebook"]',
+  scheduled_at:'2026-10-26T00:00:00.000Z'};
+ const DB={prepare(sql){return {
+  bind(){return this},
+  async first(){if(sql.includes('social_metricool_sync'))return null;throw Error('unexpected read')},
+  async all(){
+   if(sql.includes("FROM social_posts WHERE status='scheduled'"))return{results:[scheduled]};
+   if(sql.includes('FROM social_publish_deliveries'))return{results:[{
+    platform:'Facebook',status:'published',remote_id:'fb-real-001',published_at:'2026-10-26T00:01:00.000Z'
+   }]};
+   throw Error('unexpected query')
+  },
+  async run(){writes++;return{success:true,meta:{changes:0}}}
+ }}};
+ const save=globalThis.fetch;globalThis.fetch=()=>assert.fail('No external sends');
+ try{
+  const res=await publishDuePosts({DB},new Date('2026-10-26T00:30:00Z'));
+  assert.equal(res.results[0].ok,false);
+  assert.equal(res.results[0].state_unconfirmed,true);
+  assert.equal(res.results[0].reason,'verified_delivery_recovery_write_unconfirmed');
+  assert.equal(writes,1);
+ }finally{globalThis.fetch=save}
+});
