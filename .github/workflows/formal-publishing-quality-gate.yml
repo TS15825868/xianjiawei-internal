@@ -193,6 +193,13 @@ jobs:
           }
           NODE
 
+      - name: Build unique rework image assignments from active D1 records
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test tools/test-build-post-image-rework-queue.mjs
+          node tools/build-post-image-rework-queue.mjs formal-post-quality.json ops/social-post-image-scenes-20261010.json post-image-rework-queue.json
+
       - name: Verify live maintenance boundary when enabled
         shell: bash
         run: |
@@ -223,6 +230,7 @@ jobs:
           name: formal-publishing-quality-${{ github.run_id }}
           path: |
             formal-post-quality.json
+            post-image-rework-queue.json
             live-*.json
           if-no-files-found: warn
           retention-days: 3
