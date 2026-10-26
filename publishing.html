@@ -75,12 +75,12 @@
           setTimeout(function(){
             loadScript('/assets/js/publishing-readiness-ui.js?v=20261021-audit-lock-v11').catch(function(){});
             loadScript('/assets/js/manual-publish-tools.js?v=20261026-explicit-threads-v5').catch(function(){});
-            loadScript('/assets/js/post-regenerate-policy-v1.js?v=20261021-fixed-mascot-reference-v3').then(function(){return loadScript('/assets/js/post-regenerate-buttons.js?v=20260916-mobile-buttons-v4')}).catch(function(){});
+            loadScript('/assets/js/post-regenerate-policy-v1.js?v=20261027-fixed-mascot-original-reference-v4').then(function(){return loadScript('/assets/js/post-regenerate-buttons.js?v=20260916-mobile-buttons-v4')}).catch(function(){});
           },900);
           return;
         }
         var essential=['/assets/js/publishing-readiness-ui.js?v=20261021-audit-lock-v11','/assets/js/manual-publish-tools.js?v=20261026-explicit-threads-v5'];
-        var deferred=['/assets/js/svg-candidate-rasterizer.js?v=20260818-lazy-raster-v2','/assets/js/post-regenerate-buttons.js?v=20260818-regeneration-buttons-v3','/assets/js/post-regenerate-policy-v1.js?v=20261021-fixed-mascot-reference-v3','/assets/js/formal-media-policy-v20260810.js?v=20261021-current-media-v4','/assets/js/zip-media-assistant.js?v=20261021-candidate-verdict-v3','/assets/js/product-authority-guard.js?v=20260818-lazy-authority-v2','/assets/js/publishing-content-guidance-v20260814.js?v=20261021-tea-claims-guard-v9'];
+        var deferred=['/assets/js/svg-candidate-rasterizer.js?v=20260818-lazy-raster-v2','/assets/js/post-regenerate-buttons.js?v=20260818-regeneration-buttons-v3','/assets/js/post-regenerate-policy-v1.js?v=20261027-fixed-mascot-original-reference-v4','/assets/js/formal-media-policy-v20260810.js?v=20261021-current-media-v4','/assets/js/zip-media-assistant.js?v=20261021-candidate-verdict-v3','/assets/js/product-authority-guard.js?v=20260818-lazy-authority-v2','/assets/js/publishing-content-guidance-v20260814.js?v=20261021-tea-claims-guard-v9'];
         var run=function(){essential.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*100)});setTimeout(function(){deferred.forEach(function(src,index){setTimeout(function(){loadScript(src).catch(function(){})},index*260)})},4200)};
         if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1800});else setTimeout(run,900);
       }
@@ -120,7 +120,7 @@
   </script>
   <script defer src="/assets/js/device-image-upload.js?v=20260916-consolidated-v3"></script>
   <script defer src="/assets/js/publishing-app-v2.js?v=20261026-platform-selection-v14"></script>
-  <script defer src="/assets/js/publishing-review-gate.js?v=20261021-audit-fail-closed-v5"></script>
+  <script defer src="/assets/js/publishing-review-gate.js?v=20261027-identity-human-check-v7"></script>
 <script src="/assets/js/metricool-free-status.js?v=20261013-free-v2" defer></script>
 </body>
 </html>
