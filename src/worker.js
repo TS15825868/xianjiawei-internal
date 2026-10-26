@@ -177,7 +177,8 @@ async function updatePost(request,env,profile,id){
 async function changePostStatus(request,env,profile,id){
   if(!canWrite(profile,'posts'))return json({error:'沒有貼文審核權限'},403);
   const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
-  const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['pending_review'],approved:['draft','scheduled'],scheduled:['draft','published'],published:['archived']};
+  const body=await readJson(request),next=clean(body.status),allowed={pending_review:['approved','draft'],draft:['pending_review'],approved:['draft','scheduled'],scheduled:['draft'],published:['archived']};
+  if(next==='published')return json({error:'禁止直接補登「已發布」；必須先取得各平台的正式回執並逐平台核對，避免虛假成功或重複發文。'},409);
   if(!(allowed[before.status]||[]).includes(next))return json({error:`不允許由「${before.status}」變更為「${next}」`},400);
   if(before.published_at&&next!=='archived')return json({error:'已有發布紀錄，禁止重新排程或變回草稿'},409);
   if(next==='pending_review'){
@@ -195,7 +196,7 @@ async function changePostStatus(request,env,profile,id){
     const scheduledAt=clean(body.scheduled_at);if(!scheduledAt)return json({error:'加入排程時必須填寫排程時間'},400);
     const date=new Date(scheduledAt);if(Number.isNaN(date.getTime())||date.getTime()<=Date.now())return json({error:'排程時間必須晚於目前時間'},400);
   }
-  const now=new Date().toISOString(),approvedBy=next==='approved'?profile.email:next==='draft'?null:before.approved_by||null,approvedAt=next==='approved'?now:next==='draft'?null:before.approved_at||null,scheduledAt=next==='scheduled'?clean(body.scheduled_at):next==='draft'?null:before.scheduled_at||null,publishedAt=next==='published'?now:next==='draft'?null:before.published_at||null,imageApproved=next==='approved'?1:next==='draft'?0:before.image_approved?1:0;
+  const now=new Date().toISOString(),approvedBy=next==='approved'?profile.email:next==='draft'?null:before.approved_by||null,approvedAt=next==='approved'?now:next==='draft'?null:before.approved_at||null,scheduledAt=next==='scheduled'?clean(body.scheduled_at):next==='draft'?null:before.scheduled_at||null,publishedAt=next==='draft'?null:before.published_at||null,imageApproved=next==='approved'?1:next==='draft'?0:before.image_approved?1:0;
   const applied=await env.DB.prepare("UPDATE social_posts SET status=?,scheduled_at=?,approved_by=?,approved_at=?,published_at=?,image_approved=?,updated_at=? WHERE id=? AND status=? AND (published_at IS NULL OR ?='archived')").bind(next,scheduledAt,approvedBy,approvedAt,publishedAt,imageApproved,now,id,before.status,next).run();
   if(Number(applied?.meta?.changes)!==1)return json({error:'貼文狀態已被其他操作變更，未更新'},409);
   const after=await getPost(env,id);await audit(env,request,profile,`狀態改為${next}`,'貼文',id,before,after);return json(after);

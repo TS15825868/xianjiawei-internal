@@ -518,7 +518,7 @@ async function openPostView(post,button){
       <h3>文案</h3><div class="xjw-copy">${esc(p.copy||'')}</div>
       <h3>各平台發布結果</h3>
       ${rows.length?`<div class="delivery-list">${rows.map(r=>`<div class="delivery-row"><strong>${esc(r.platform)}</strong><span>${esc(statusLabel(r.status))}</span><small>${esc(r.remote_id||r.error_text||'')}</small></div>`).join('')}</div>`:'<p class="muted">尚無發布紀錄。</p>'}
-      ${!state.maintenanceReadonly&&p.status==='manual_required'?`<div class="xjw-warning">有平台需要人工發布。請使用卡片上的「手動發布包」，完成後再補登已發布。</div><div class="xjw-modal-footer"><button class="btn green" data-post-status="published" data-id="${esc(p.id)}">手動補登已發布</button></div>`:''}
+      ${p.status==='manual_required'?`<div class="xjw-warning">部分平台尚未取得可採信的發布回執。請開啟「人工發布查核資料」，到官方平台逐一確認；結果不明時不得重發，也不得直接把整篇貼文補登成已發布。</div>`:''}
       <div class="xjw-modal-footer"><button class="btn" data-close-modal>關閉</button></div>
     </div></div>`;
   }catch(error){
