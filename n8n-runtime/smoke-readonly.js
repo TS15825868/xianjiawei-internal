@@ -64,6 +64,19 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   if (line.body?.orderOpen !== true) {
     errors.push('LINE OA 接單功能未開啟');
   }
+  // This is the latest TS-LINE main, independently read from the public repo
+  // by the scheduled GitHub Actions job; NEVER use this ERP job's GITHUB_SHA.
+  // A 200 /healthz can still be an older Render build.
+  const expectedLineCommit = String(process.env.XJW_LINE_EXPECTED_SHA||'').trim().toLowerCase();
+  const deployedLineCommit = String(line.body?.deploymentCommit||'').trim().toLowerCase();
+  const validCommit = sha=>/^[a-f0-9]{40}$/.test(sha);
+  const bothCommitsKnown = validCommit(expectedLineCommit)&&validCommit(deployedLineCommit);
+  const deploymentCurrentVerified = bothCommitsKnown && expectedLineCommit===deployedLineCommit;
+  const deploymentDriftDetected = bothCommitsKnown && expectedLineCommit!==deployedLineCommit;
+  if(deploymentDriftDetected)
+    warnings.push('LINE Render 線上版本落後於正式 GitHub main；程式 CI 通過不代表已部署。');
+  else if(validCommit(expectedLineCommit)&&!validCommit(deployedLineCommit))
+    warnings.push('LINE Render 未提供有效正式部署 SHA，無法確認是否已套用最新版。');
   // A successful HTTP 200 can still mean users waited for a full Render
   // cold start. The read-only heartbeat is a proxy, not a real LINE reply test.
   const lineHealthLatencyMs = Number(line.latencyMs);
@@ -197,7 +210,14 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
       webhookObservedSinceRestart:Number.isFinite(lastWebhookAt),
       recentReplyAckObserved:recentCustomerEvent && customerAckTimingAvailable
         && line.body?.lastCustomerResponseAccepted===true,
-      customerReplyE2EVerified:false
+      customerReplyE2EVerified:false,
+      deployedCommit:validCommit(deployedLineCommit)?deployedLineCommit.slice(0,7):null,
+      latestMainCommit:validCommit(expectedLineCommit)?expectedLineCommit.slice(0,7):null,
+      deploymentCurrentVerified,
+      deploymentDriftDetected,
+      // Live customer acceptance AND current production code must both pass
+      // independent acceptance before anyone can certify a LINE release.
+      lineReleaseReady:false
     },
     master: { status: master.status, version: m.version, productCount: m.productCount },
     ai: { status: ai.status, version: ai.body?.version },

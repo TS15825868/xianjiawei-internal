@@ -83,6 +83,20 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Identify latest LINE OA main without builds or secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The ERP checkout SHA is NOT the LINE SHA. Query only the public
+          # TS-LINE main ref; never use a private credential or deploy hook.
+          output="$(timeout 12 git ls-remote https://github.com/TS15825868/TS-LINE.git refs/heads/main || true)"
+          sha="$(printf '%s\n' "$output" | awk '{print $1}')"
+          if [[ "$sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "XJW_LINE_EXPECTED_SHA=$sha" >> "$GITHUB_ENV"
+            echo "LINE main authority available (public read-only ref)."
+          else
+            echo "::warning::LINE main ref unavailable, release parity remains unverified."
+          fi
       - name: Execute independent GET-only public health fallback
         run: |
           set -euo pipefail

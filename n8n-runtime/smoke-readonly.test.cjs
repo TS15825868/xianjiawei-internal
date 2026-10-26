@@ -49,7 +49,8 @@ async function exercise(mutate,options={}){
    text:async()=>typeof entry.body==='string'?entry.body:JSON.stringify(entry.body)};
  };
  const ctx={fetch:fakeFetch,AbortController,setTimeout,clearTimeout,Date:VirtualDate,
-  process:{env:{},exit:code=>{exits.push(code);throw Error('mock process.exit '+code);}},
+  process:{env:options.expectedLineSha?{XJW_LINE_EXPECTED_SHA:options.expectedLineSha}:{},
+    exit:code=>{exits.push(code);throw Error('mock process.exit '+code);}},
   console:{log:(...args)=>output.push(args.join(' ')),
    error:(...args)=>errors.push(args.join(' '))}};
  try { await vm.runInNewContext(script,ctx,{filename:'smoke-readonly.js',timeout:2000}); }
@@ -358,4 +359,55 @@ test('a working health endpoint with no customer chat proof is explicitly marked
  assert.equal(x.report.line.webhookObservedSinceRestart,false);
  assert.equal(x.report.line.recentReplyAckObserved,false);
  assert.equal(x.report.line.customerReplyE2EVerified,false);
+});
+
+
+test('GitHub main and live Render SHA equality is required to confirm deployment',async()=>{
+ const latest='a'.repeat(40);
+ const current=await exercise(routes=>{
+  routes[lineUrl].body.deploymentCommit=latest;
+ },{expectedLineSha:latest});
+ assert.equal(current.report.ok,true);
+ assert.equal(current.report.line.deploymentCurrentVerified,true);
+ assert.equal(current.report.line.deploymentDriftDetected,false);
+ assert.equal(current.report.line.lineReleaseReady,false,'Unverified end-to-end customer reply prevents launch');
+ assert.equal(current.report.line.customerReplyE2EVerified,false);
+});
+test('HTTP 200 from stale Render does not count as current LINE code',async()=>{
+ const latest='b'.repeat(40),stale='c'.repeat(40);
+ const x=await exercise(routes=>{
+  routes[lineUrl].body.deploymentCommit=stale;
+ },{expectedLineSha:latest});
+ assert.equal(x.report.ok,true,'Read-only web health should remain separately observable');
+ assert.equal(x.report.line.deploymentCurrentVerified,false);
+ assert.equal(x.report.line.deploymentDriftDetected,true);
+ assert.equal(x.report.line.latestMainCommit,'bbbbbbb');
+ assert.equal(x.report.line.deployedCommit,'ccccccc');
+ assert.ok(x.report.warnings.some(m=>m.includes('Render 線上版本落後')));
+ assert.equal(x.report.line.lineReleaseReady,false);
+});
+test('missing or malformed Render commit cannot be misrepresented as a verified deployment',async()=>{
+ for(const deploymentCommit of [undefined,'', 'shortsha','g'.repeat(40)]){
+  const x=await exercise(routes=>{
+   routes[lineUrl].body.deploymentCommit=deploymentCommit;
+  },{expectedLineSha:'d'.repeat(40)});
+  assert.equal(x.report.line.deploymentCurrentVerified,false);
+  assert.equal(x.report.line.deploymentDriftDetected,false);
+  assert.ok(x.report.warnings.some(m=>m.includes('未提供有效正式部署 SHA')));
+ }
+});
+test('an ERP checkout SHA is not a LINE commit authority',async()=>{
+ const x=await exercise(routes=>{
+  routes[lineUrl].body.deploymentCommit='e'.repeat(40);
+ });
+ assert.equal(x.report.ok,true);
+ assert.equal(x.report.line.deploymentCurrentVerified,false);
+ assert.equal(x.report.line.latestMainCommit,null);
+ assert.equal(x.report.line.deploymentDriftDetected,false);
+});
+test('the hourly monitor only resolves LINE main via read-only git; never deploys or contacts paying APIs',()=>{
+ const yaml=readFileSync(join(__dirname,'../.github/workflows/n8n-readonly-monitor-scheduler.yml'),'utf8');
+ assert.match(yaml,/git ls-remote https:\/\/github\.com\/TS15825868\/TS-LINE\.git refs\/heads\/main/);
+ assert.match(yaml,/XJW_LINE_EXPECTED_SHA=/);
+ assert.doesNotMatch(yaml,/render\.com\/deploy\/|trigger_deploy\(|cloudflare deploy/);
 });
