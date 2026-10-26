@@ -39,10 +39,10 @@ function scenario({failHealth=false,failQuery=false,failUpdate=false,review={ok:
  };}};
  return {state,env:{DB}};
 }
-async function exercise(options){
+async function exercise(options,{scheduledTime=Date.parse('2026-10-26T00:00:00Z')}={}){
  const {state,env}=scenario(options);
  const tasks=[];
- await production.scheduled({scheduledTime:Date.now()},env,{waitUntil:promise=>{tasks.push(promise)}});
+ await production.scheduled({scheduledTime},env,{waitUntil:promise=>{tasks.push(promise)}});
  await Promise.all(tasks);
  return state;
 }
@@ -78,5 +78,10 @@ async function exercise(options){
  assert.equal(a.forwarded,1,'Healthy, reviewed schedule retains normal behavior');
  assert.equal(a.probes,1,'Valid schedules still check current provider health');
 }
+{
+ const a=await exercise({due:[]},{scheduledTime:Date.parse('2026-10-26T00:02:00Z')});
+ assert.equal(a.forwarded,0,'No reviewed posts means no publisher calls on non-heartbeat minute');
+ assert.equal(a.lineWarmed,0,'Do not wake Render LINE on every cron minute');
+}
 delete globalThis.__scheduleSafety;
-console.log('PASS scheduled publication fails closed on review lookup/quarantine write/D1 failures, retains LINE keep-warm and reviewed schedule routing; no external requests');
+console.log('PASS scheduled publication fails closed on review lookup/quarantine write/D1 failures, retains five-minute LINE keep-warm and one-minute reviewed schedule routing; no external requests');
