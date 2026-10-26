@@ -159,3 +159,16 @@ test('sales support role can view aggregate ops status without raw LINE or Meta 
  assert.ok(!JSON.stringify(data).includes('replyToken'));
  assert.equal(data.capabilities.metaCommentAutoReply,'external_e2e_and_platform_control_unverified');
 });
+
+test('inactive or incompletely verified staff profiles cannot access aggregate operations',async()=>{
+ let dbReads=0;
+ const env={DB:{prepare(){dbReads++;throw Error('inactive staff must never reach private D1')}}};
+ for(const role of ['owner','admin','content','sales']){
+  for(const active of [0,'0',false,null,undefined]){
+   const res=await aiOperationsReadiness(request,env,{authenticate:async()=>({role,active})});
+   assert.equal(res.status,403,role+':'+String(active));
+   assert.equal((await res.json()).code,'role_denied');
+  }
+ }
+ assert.equal(dbReads,0);
+});

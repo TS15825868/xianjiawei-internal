@@ -11,7 +11,7 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   let person;
   try { person=await authenticate(request,env); }
   catch { return denied('access_required',401); }
-  if(!ROLES.has(person?.role)||person?.active===0)return denied('role_denied',403);
+  if(!ROLES.has(person?.role)||Number(person?.active)!==1)return denied('role_denied',403);
   if(typeof env?.DB?.prepare!=='function')return denied('d1_unavailable',503);
   let rows;
   try {

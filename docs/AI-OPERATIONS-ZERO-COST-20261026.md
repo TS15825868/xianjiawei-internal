@@ -21,7 +21,7 @@
 
 ## 新增零推論 read-only API
 
-`GET /api/ai-ops/readiness`：需 Cloudflare Access + D1 權限為 owner/admin/content；只讀貼文各狀態數、Workers AI 啟用條件是否齊備、外部流程仍須驗證的項目。回傳 `allAutonomous:false`、`modelCalls:0`、`customerSend:false`；不得把它當作模型／Meta／LINE／Metricool 端對端驗收證據。
+`GET /api/ai-ops/readiness`：需 Cloudflare Access + D1 權限為 owner/admin/content/sales 且帳號 active=1；只讀貼文各狀態數、Workers AI 啟用條件是否齊備、外部流程仍須驗證的項目。回傳 `allAutonomous:false`、`modelCalls:0`、`customerSend:false`；不得把它當作模型／Meta／LINE／Metricool 端對端驗收證據。
 
 ## 切換／驗收門檻
 
@@ -45,3 +45,9 @@
 ## Meta／LINE 備援收件統一唯讀狀態
 
 內部 `social-support.html` 使用受 Cloudflare Access 保護的 `/api/ai-ops/readiness`，分別查詢 D1 `xjw_line_receipt_inbox` 與 `xjw_webhook_receipts` 的統計。僅回傳事件數量與平台分類，沒有原始訊息、簽章、Webhook reply token 或任何外部發送行為。表格存在不代表正式 API 簽章或回覆已通過真實 E2E；狀態明確標示 `liveWebhookVerified:false` 和 `canReply:false`。
+
+## 2026-10-26 客服角色與免費產品資料一致性驗收
+
+`social-support.html` 的免模型產品規格／成分草稿可讓 `owner`、`admin`、`content`、`sales` 的**啟用帳號**使用。模型推論草稿仍維持原本角色及免費用量放行雙重限制，沒有因 `sales` 新增免模型權限而打開推論或對客自動發送。
+
+`/api/ai-ops/readiness`、`/api/social-facts/suggest` 及 `/api/social-ai/draft` 一律以 `active=1` 判斷有效人員；缺少 active、假字串 `"0"`、停用帳號不得只憑角色名稱通過。這是內部授權一致性修復，未更動 Cloudflare Access 的實際登入憑證或外部 API Token。
