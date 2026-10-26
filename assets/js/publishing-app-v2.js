@@ -419,6 +419,9 @@ function selectedPlatforms(form){
 function openPostForm(post=null){
   if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；新增與修改暫時鎖定。',true);return;}
   const edit=!!post;
+  // Threads requires a separately verified Metricool route; never add
+  // it to a new draft automatically. Edits preserve user-selected choices.
+  const newPostDefaults=['Facebook','Instagram'];
   const root=$('#modalRoot');
   if(!root)return;
   root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-close-modal></div><form class="xjw-modal-card" id="postForm">
@@ -432,7 +435,7 @@ function openPostForm(post=null){
       <label class="field"><span>圖片網址</span><input name="image_url" type="url" value="${esc(post?.image_url||'')}"></label>
     <div class="field full xjw-direct-image-upload"><span>直接上傳圖片</span><input name="image_file" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif"><div class="xjw-actions"><button type="button" class="btn small" data-upload-image>上傳並套用</button><small data-image-upload-state>手機可直接從照片選擇；系統會自動壓縮到700KB以下。</small></div><img class="xjw-image-preview" data-image-upload-preview ${post?.image_url?`src="${esc(post.image_url)}"`:'hidden'} alt="圖片上傳預覽"></div>
       <label class="field full"><span>圖片說明</span><input name="image_alt" value="${esc(post?.image_alt||'')}"></label>
-      <fieldset class="field full"><legend>發布平台</legend>${['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家'].map(name=>`<label class="check-label"><input type="checkbox" name="platforms" value="${name}" ${(post?.platforms||['Facebook','Instagram','Threads']).includes(name)?'checked':''}> ${name}</label>`).join('')}</fieldset>
+      <fieldset class="field full"><legend>發布平台</legend>${['Facebook','Instagram','Threads','LINE OA','LINE VOOM','Google 商家'].map(name=>`<label class="check-label"><input type="checkbox" name="platforms" value="${name}" ${(post?.platforms||newPostDefaults).includes(name)?'checked':''}> ${name}</label>`).join('')}</fieldset>
     </div>
     <div class="xjw-modal-footer"><button type="button" class="btn" data-close-modal>取消</button><button class="btn primary" data-submit-post>${edit?'儲存並退回草稿':'儲存草稿'}</button></div>
   </form></div>`;
@@ -462,6 +465,8 @@ uploadButton?.addEventListener('click',async()=>{
     const button=form.querySelector('[data-submit-post]');
     const done=setButtonBusy(button,'儲存中…');
     try{
+      const chosen=selectedPlatforms(form);
+      if(!chosen.length)throw Error('請先明確選擇至少一個發布平台，才能儲存草稿。');
       const selectedFile=form.querySelector('[name="image_file"]')?.files?.[0];
       if(selectedFile&&form.dataset.uploadedFileKey!==fileKey(selectedFile))await uploadImageFile(form,selectedFile);
       const body=Object.fromEntries(new FormData(form).entries());
@@ -478,7 +483,7 @@ uploadButton?.addEventListener('click',async()=>{
       }else if(!imageUrl){
         body.image_width=0;body.image_height=0;body.image_bytes=0;
       }
-      body.platforms=selectedPlatforms(form);
+      body.platforms=chosen;
       await api(edit?`/posts/${encodeURIComponent(post.id)}`:'/posts',{
         method:edit?'PUT':'POST',body:JSON.stringify(body)
       });

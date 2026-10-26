@@ -98,7 +98,7 @@
     const fieldset=[...form.querySelectorAll('fieldset')].find((node)=>/發布平台/.test(node.querySelector('legend')?.textContent||''));
     if(!fieldset)return;
     const label=document.createElement('label');label.className='check-label';
-    const input=document.createElement('input');input.type='checkbox';input.name='platforms';input.value='Threads';input.checked=true;
+    const input=document.createElement('input');input.type='checkbox';input.name='platforms';input.value='Threads';input.checked=false;
     label.append(input,document.createTextNode(' Threads（Metricool）'));
     const lineLabel=[...fieldset.querySelectorAll('label')].find((node)=>/LINE OA/.test(node.textContent||''));
     if(lineLabel)fieldset.insertBefore(label,lineLabel);else fieldset.appendChild(label);
@@ -129,5 +129,5 @@
   },true);
   document.addEventListener('xjw-publishing-list-rendered',()=>{enhanceLight();setTimeout(ensureThreadsStatus,600);});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{enhanceLight();setTimeout(ensureThreadsStatus,900);},{once:true});else{enhanceLight();setTimeout(ensureThreadsStatus,900);}
-  window.XJWManualPublishTools=Object.freeze({version:'2026-09-15-v4-metricool-threads-light',publishingUrl:PUBLISHING_URL,threadsRoute:THREADS_ROUTE,packageText,ensureThreadsCheckbox,ensureThreadsStatus});
+  window.XJWManualPublishTools=Object.freeze({version:'2026-10-26-v5-explicit-threads-opt-in',publishingUrl:PUBLISHING_URL,threadsRoute:THREADS_ROUTE,packageText,ensureThreadsCheckbox,ensureThreadsStatus});
 })();

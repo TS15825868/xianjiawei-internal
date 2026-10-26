@@ -17,9 +17,21 @@ function cleanMultiline(value,fallback=''){return clean(value,fallback).replace(
 function makeId(prefix){return `${prefix}-${crypto.randomUUID()}`;}
 function safeNumber(value){const number=Number(value??0);return Number.isFinite(number)?number:0;}
 function safeInt(value){const number=Number(value??0);return Number.isFinite(number)?Math.round(number):0;}
-function safePlatforms(value){
-  const input=Array.isArray(value)?value:[];
-  return [...new Set(input.map(clean).filter((item)=>ALLOWED_PLATFORMS.has(item)))];
+export function validatePostPlatformSelection(value){
+  // A hidden default or silently discarded unknown platform can send a
+  // reviewed public post to a different audience than its intended list.
+  if(!Array.isArray(value)||value.length===0||value.length>12)
+    return{ok:false,platforms:[],error:'請明確選擇至少一個有效發布平台'};
+  const platforms=[];
+  for(const raw of value){
+    if(typeof raw!=='string')return{ok:false,platforms:[],error:'發布平台設定包含無效資料，請重新選擇'};
+    const input=clean(raw),platform=input==='LINE OA 廣播'?'LINE OA':input;
+    if(!ALLOWED_PLATFORMS.has(platform))
+      return{ok:false,platforms:[],error:'發布平台設定包含不支援的項目，請檢查完整平台清單'};
+    if(!platforms.includes(platform))platforms.push(platform);
+  }
+  if(!platforms.length)return{ok:false,platforms:[],error:'請至少選擇一個發布平台'};
+  return{ok:true,platforms};
 }
 function roleLabel(role){return({owner:'系統擁有者',admin:'管理員',sales:'業務',warehouse:'倉庫',accounting:'財務',content:'內容管理',viewer:'僅檢視'})[role]||role;}
 function canRead(profile,module){const roles=READ_RESTRICTED[module];return !roles||roles.includes(profile.role);}
@@ -158,8 +170,10 @@ async function listPosts(env){const result=await env.DB.prepare("SELECT * FROM s
 async function createPost(request,env,profile){
   if(!canWrite(profile,'posts'))return json({error:'沒有新增貼文權限'},403);
   const body=await readJson(request),now=new Date().toISOString(),width=safeInt(body.image_width),height=safeInt(body.image_height),quality=imageQuality(width,height);
-  const post={id:makeId('XJW'),title:clean(body.title),headline:cleanMultiline(body.headline),copy:cleanMultiline(body.copy),category:clean(body.category,'日常節奏'),platforms:safePlatforms(body.platforms),image_url:clean(body.image_url),image_alt:clean(body.image_alt),image_source:clean(body.image_source,'官方素材'),image_width:width,image_height:height,image_bytes:safeInt(body.image_bytes),image_quality_status:clean(body.image_quality_status,quality.status)};
-  if(!post.title)return json({error:'貼文標題不可空白'},400);if(!post.platforms.length)post.platforms=['Facebook','Instagram'];
+  const selection=validatePostPlatformSelection(body.platforms);
+  if(!selection.ok)return json({error:selection.error},400);
+  const post={id:makeId('XJW'),title:clean(body.title),headline:cleanMultiline(body.headline),copy:cleanMultiline(body.copy),category:clean(body.category,'日常節奏'),platforms:selection.platforms,image_url:clean(body.image_url),image_alt:clean(body.image_alt),image_source:clean(body.image_source,'官方素材'),image_width:width,image_height:height,image_bytes:safeInt(body.image_bytes),image_quality_status:clean(body.image_quality_status,quality.status)};
+  if(!post.title)return json({error:'貼文標題不可空白'},400);
   await env.DB.prepare("INSERT INTO social_posts(id,title,headline,copy,category,platforms_json,status,scheduled_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,created_by,created_at,updated_at) VALUES(?,?,?,?,?,?,'draft',NULL,?,?,?,0,?,?,?,?,?,?,?)").bind(post.id,post.title,post.headline,post.copy,post.category,JSON.stringify(post.platforms),post.image_url,post.image_alt,post.image_source,post.image_width,post.image_height,post.image_bytes,post.image_quality_status,profile.email,now,now).run();
   const saved=await getPost(env,post.id);await audit(env,request,profile,'新增','貼文',post.id,null,saved);return json(saved,201);
 }
@@ -168,7 +182,11 @@ async function updatePost(request,env,profile,id){
   const before=await getPost(env,id);if(!before)return json({error:'找不到貼文'},404);
   if(before.published_at||['published','archived','manual_required'].includes(before.status))return json({error:'已發布、封存或人工接手中的貼文不可覆寫'},409);
   const body=await readJson(request),now=new Date().toISOString();
-  const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=body.platforms===undefined?before.platforms:safePlatforms(body.platforms),imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=clean(body.image_quality_status,quality.status);
+  const selection=body.platforms===undefined
+    ?validatePostPlatformSelection(before.platforms)
+    :validatePostPlatformSelection(body.platforms);
+  if(!selection.ok)return json({error:selection.error},400);
+  const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=selection.platforms,imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=clean(body.image_quality_status,quality.status);
   if(!title)return json({error:'貼文標題不可空白'},400);if(!platforms.length)return json({error:'請至少選擇一個發布平台'},400);
   const applied=await env.DB.prepare("UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=? AND status=? AND published_at IS NULL AND COALESCE(updated_at,'')=?").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,now,id,before.status,before.updated_at||'').run();
   if(Number(applied?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，未覆寫既有內容'},409);
