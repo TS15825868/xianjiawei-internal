@@ -128,7 +128,8 @@ function audit(post){
     return{level:'danger',text:`文案提到「${mentioned.map(x=>x[0]).join('、')}」，圖片資訊無法確認對應產品，請先修正。`};
   }
   if(!post.image_alt)return{level:'warning',text:'尚未填寫圖片說明，請補齊後再完成審核。'};
-  if(post.image_quality_status==='low')return{level:'danger',text:'圖片解析度不足，請更換清晰圖片。'};
+  if(['needs_rework','needs_regeneration','rejected','low','missing'].includes(String(post.image_quality_status||'').trim().toLowerCase()))
+    return{level:'danger',text:'目前圖片仍標記為需要重製／品質不合格。請更換正確情境圖片，重新送待審核並完成16項人工檢查。'};
   return{level:'ok',text:'基本圖文預檢通過；正式發布前仍須完成16項人工圖文審核。'};
 }
 

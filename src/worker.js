@@ -40,6 +40,10 @@ function decodeJwtPayload(token){
   try{const part=String(token||'').split('.')[1];if(!part)return null;const normalized=part.replace(/-/g,'+').replace(/_/g,'/');const padded=normalized.padEnd(Math.ceil(normalized.length/4)*4,'=');return JSON.parse(atob(padded));}catch{return null;}
 }
 function audienceValues(value){if(Array.isArray(value))return value.flatMap(audienceValues).filter(Boolean);return String(value||'').split(/[\s,]+/).map(clean).filter(Boolean);}
+const UNAPPROVED_IMAGE_QUALITY = new Set(['needs_rework','needs_regeneration','rejected','low','missing']);
+function imageNeedsRework(status){
+  return UNAPPROVED_IMAGE_QUALITY.has(String(status||'').trim().toLowerCase());
+}
 function imageQuality(width,height){
   if(!width||!height)return{ok:true,status:'unknown'};
   const longSide=Math.max(width,height),shortSide=Math.min(width,height),squareLike=longSide/Math.max(1,shortSide)<=1.15;
@@ -186,7 +190,11 @@ async function updatePost(request,env,profile,id){
     ?validatePostPlatformSelection(before.platforms)
     :validatePostPlatformSelection(body.platforms);
   if(!selection.ok)return json({error:selection.error},400);
-  const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=selection.platforms,imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=clean(body.image_quality_status,quality.status);
+  const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=selection.platforms,imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=imageUrl===clean(before.image_url)
+    ? (imageNeedsRework(before.image_quality_status)
+        ? clean(before.image_quality_status)
+        : clean(body.image_quality_status,quality.status))
+    : quality.status;
   if(!title)return json({error:'貼文標題不可空白'},400);if(!platforms.length)return json({error:'請至少選擇一個發布平台'},400);
   const applied=await env.DB.prepare("UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=? AND status=? AND published_at IS NULL AND COALESCE(updated_at,'')=?").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,now,id,before.status,before.updated_at||'').run();
   if(Number(applied?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，未覆寫既有內容'},409);
@@ -208,7 +216,7 @@ async function changePostStatus(request,env,profile,id){
     if(!before.copy&&!before.headline)return json({error:'貼文沒有文案，不能審核通過'},400);
     if(!before.image_url)return json({error:'貼文沒有圖片，不能審核通過'},400);
     if(!before.platforms.length)return json({error:'貼文沒有發布平台，不能審核通過'},400);
-    if(before.image_quality_status==='low')return json({error:'圖片解析度不足，不能審核通過'},400);
+    if(imageNeedsRework(before.image_quality_status))return json({error:'圖片仍標記為需重製或不合格，請先更換圖片並重新完成16項審核'},409);
   }
   if(next==='scheduled'){
     const scheduledAt=clean(body.scheduled_at);if(!scheduledAt)return json({error:'加入排程時必須填寫排程時間'},400);
@@ -224,6 +232,7 @@ async function publishNow(request,env,profile,id){
   const post=await getPost(env,id);if(!post)return json({error:'找不到貼文'},404);
   if(!['approved','scheduled'].includes(post.status))return json({error:'貼文必須先審核通過，才能立即發布'},409);
   if(!post.image_url||!post.image_approved)return json({error:'貼文圖片尚未完成審核，不能立即發布'},409);
+  if(imageNeedsRework(post.image_quality_status))return json({error:'圖片仍標記為需重製或不合格，不能發布'},409);
   const configuration=publisherConfiguration(env);
   const automatic=post.platforms.filter((platform)=>platform!=='LINE VOOM');
   const missing=automatic.filter((platform)=>!configuration.platforms?.[platform]?.ready);

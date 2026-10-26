@@ -7,7 +7,7 @@ let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',impo
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
 source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({ok:true}),metricoolOwns=async()=>Boolean(globalThis.__reviewTest.externalLink),metricoolImmediate=async()=>{throw Error("unexpected publish")};');
 source=source.replace("import {imageHash,recordAiReview} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")};');
-const {default:gate,REQUIRED_CHECKS,fingerprint,invalidateEditedPost}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const {default:gate,REQUIRED_CHECKS,fingerprint,invalidateEditedPost,productMatchErrors,gateState}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 const state={forwarded:0,writes:[],externalLink:null,casFail:false,row:{id:'ISOLATED',title:'萬華日常',headline:'店裡的一天',copy:'分享今天的生活',category:'品牌',status:'draft',image_url:'https://example.invalid/unique.png',image_alt:'萬華店裡的一天',image_width:1200,image_height:1200,image_quality_status:'ok'},review:null};
 globalThis.__reviewTest=state;
 const env={DB:{
@@ -32,6 +32,42 @@ assert.equal((await post('status',{status:'approved',review_checklist:{},copy_im
 assert.equal(state.forwarded,0);assert.equal(state.writes.length,0);
 state.row={...state.row,status:'approved',approved_by:'reviewer@example.com',scheduled_at:'2026-10-27T02:00:00Z'};
 state.review={content_fingerprint:await fingerprint(state.row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(key=>[key,true]))),copy_image_match:1,reviewed_by:'reviewer@example.com',reviewed_at:new Date().toISOString()};
+// Explicitly rejected or needs_rework images must not pass 16-point
+// approval, scheduled publishing or immediate publish through API bypasses.
+const approvedSnapshot={...state.row};
+const reviewSnapshot={...state.review};
+for(const quality of ['needs_rework','needs_regeneration','rejected','low','missing']){
+  state.row={...approvedSnapshot,image_quality_status:quality,status:'pending_review'};
+  const n=state.writes.length,forwarded=state.forwarded;
+  assert.ok(productMatchErrors(state.row).some(x=>/待重製|不合格/.test(x)),
+    quality+' must fail backend product/media review');
+  assert.equal((await post('status',{status:'approved',
+    review_checklist:Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true])),
+    copy_image_match:true})).status,409,'Fail approval for '+quality);
+  state.row.status='approved';
+  state.review={...reviewSnapshot,content_fingerprint:await fingerprint(state.row)};
+  assert.equal((await gateState(env,state.row)).ok,false,
+    quality+' must fail scheduled-publish gate even with a matching old review fingerprint');
+  assert.equal((await post('status',{status:'scheduled',
+    scheduled_at:'2026-10-27T02:00:00Z'})).status,409);
+  assert.equal((await post('publish-now')).status,409,'No external publish for '+quality);
+  assert.equal(state.writes.length,n,'Blocked requests must not mutate D1');
+  assert.equal(state.forwarded,forwarded,'Blocked requests must not reach publisher');
+}
+state.row=approvedSnapshot;
+state.review=reviewSnapshot;
+
+// Worker must preserve a blocked image status across a text-only edit,
+// and only re-evaluate the quality metric when the actual media URL changes.
+const workerSource=fs.readFileSync(new URL('../src/worker.js',import.meta.url),'utf8');
+assert.match(workerSource,/imageUrl===clean\(before\.image_url\)/);
+assert.match(workerSource,/imageNeedsRework\(before\.image_quality_status\)/);
+assert.match(workerSource,/if\(imageNeedsRework\(before\.image_quality_status\)\)/);
+assert.match(workerSource,/if\(imageNeedsRework\(post\.image_quality_status\)\)/);
+const uiSource=fs.readFileSync(new URL('../assets/js/publishing-app-v2.js',import.meta.url),'utf8');
+assert.match(uiSource,/needs_rework.*needs_regeneration.*rejected.*low.*missing/);
+console.log('PASS rejected images cannot be approved, scheduled or published; text-only edits retain needs_rework');
+
 // Immediate publishing must not depend on the future fixed schedule slot.
 assert.equal((await post('publish-now')).status,200);assert.equal(state.forwarded,1);
 state.row.copy='內容已修改';assert.equal((await post('publish-now')).status,409);assert.equal(state.forwarded,1);

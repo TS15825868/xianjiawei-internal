@@ -109,7 +109,9 @@ function productMatchErrors(row){
   for(const segment of reviewProductSegments(combined,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排');
   if(!clean(row?.image_url))errors.push('缺少圖片');
   if(!clean(row?.image_alt))errors.push('缺少圖片說明，無法完成圖文一致審核');
-  if(clean(row?.image_quality_status)==='low')errors.push('圖片解析度不足');
+  if(['needs_rework','needs_regeneration','rejected','low','missing']
+    .includes(clean(row?.image_quality_status).toLowerCase()))
+    errors.push('圖片仍標記為待重製／不合格，需更換後重新完成16項審核');
   errors.push(...semanticSceneErrors(row));
   errors.push(...customerCopyErrors(row));
   return[...new Set(errors)]
@@ -117,6 +119,9 @@ function productMatchErrors(row){
 function checklistFrom(body){const value=body?.review_checklist&&typeof body.review_checklist==='object'&&!Array.isArray(body.review_checklist)?body.review_checklist:{};return{value,missing:REQUIRED_CHECKS.filter(key=>value[key]!==true)}}
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};if(row.published_at||['published','archived'].includes(clean(row.status)))return{ok:false,reason:'已有發布歷史，不能再次審核或發布'};
+  if(['needs_rework','needs_regeneration','rejected','low','missing']
+    .includes(clean(row.image_quality_status).toLowerCase()))
+    return{ok:false,reason:'圖片仍需重製或未通過品質檢查；不能排程或發布'};
   // Keep AI-reviewed drafts visible for triage without allowing publication.
   // The actual AI approval pathway remains disabled until end-to-end evidence and scheduling tests pass.
   if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
