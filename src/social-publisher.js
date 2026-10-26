@@ -39,7 +39,14 @@ async function responseResult(response,platform){
   let responseData=null;
   try{responseData=responseText?JSON.parse(responseText):{};}catch{}
   if(!response.ok){
-    return {platform,ok:false,retryable:[408,409,425,429].includes(response.status)||response.status>=500,status:response.status,error:responseData?.error?.message||responseData?.error_description||responseText||response.statusText,response:responseData||responseText};
+    // Meta/Google publish POSTs have no validated replay-safe key here.
+    // A 408/409/425/429/5xx response can have an ambiguous write outcome.
+    // Never blindly issue a second public post; request operator verification.
+    const ambiguous=!['LINE OA','LINE OA 廣播'].includes(platform)&&
+      ([408,409,425,429].includes(response.status)||response.status>=500);
+    return {platform,ok:false,retryable:!ambiguous&&([408,409,425,429].includes(response.status)||response.status>=500),
+      ...(ambiguous?{manual_required:true,delivery_outcome_unverified:true}:{}),
+      status:response.status,error:responseData?.error?.message||responseData?.error_description||responseText||response.statusText,response:responseData||responseText};
   }
   return {platform,ok:true,status:response.status,remote_id:responseData?.id||responseData?.post_id||responseData?.video_id||responseData?.name||response.headers.get('x-remote-post-id')||response.headers.get('x-line-request-id')||'',response:responseData||responseText};
 }
@@ -82,20 +89,22 @@ function payloadFor(post,platform){
 }
 
 async function dispatchFacebookImage(env,post){
-  const platform='Facebook',timeout=withTimeout();
+  const platform='Facebook',timeout=withTimeout();let writeAttempted=false;
   try{
     const identity=await resolveMetaIdentity(env);
     const pageId=clean(identity.pageId);
     if(!pageId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Meta Page Access Token 解析 Facebook Page ID'};
-    const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
+    writeAttempted=true;const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
     return responseResult(response,platform);
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+  }catch(error){return{platform,ok:false,retryable:!writeAttempted,
+    ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
+    error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function dispatchFacebookReel(env,post){
-  const platform='Facebook',token=clean(env.META_PAGE_ACCESS_TOKEN),version=graphVersion(env),timeout=withTimeout();
+  const platform='Facebook',token=clean(env.META_PAGE_ACCESS_TOKEN),version=graphVersion(env),timeout=withTimeout();let writeAttempted=false;
   try{
     const reelEndpoint=`https://graph.facebook.com/${version}/me/video_reels`;
-    const startResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,upload_phase:'start'})});
+    writeAttempted=true;const startResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,upload_phase:'start'})});
     const started=await responseResult(startResponse,platform);
     if(!started.ok)return started;
     const videoId=clean(started.response?.video_id||started.remote_id);
@@ -107,12 +116,14 @@ async function dispatchFacebookReel(env,post){
     const finishResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,video_id:videoId,upload_phase:'finish',video_state:'PUBLISHED',description:postText(post),title:clean(post.title)})});
     const finished=await responseResult(finishResponse,platform);
     return finished.ok?{...finished,remote_id:finished.remote_id||videoId,media_type:'reel'}:finished;
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+  }catch(error){return{platform,ok:false,retryable:!writeAttempted,
+    ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
+    error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function dispatchFacebook(env,post){return isVideoPost(post)?dispatchFacebookReel(env,post):dispatchFacebookImage(env,post);}
 
 async function dispatchInstagram(env,post){
-  const platform='Instagram',timeout=withTimeout();
+  const platform='Instagram',timeout=withTimeout();let writeAttempted=false;
   try{
     const identity=await resolveMetaIdentity(env);
     const instagramUserId=clean(identity.instagramUserId);
@@ -122,7 +133,7 @@ async function dispatchInstagram(env,post){
     const params=video
       ? {media_type:'REELS',video_url:mediaUrl(post),caption:postText(post),share_to_feed:'true',access_token:token}
       : {image_url:mediaUrl(post),caption:postText(post),access_token:token};
-    const createResponse=await fetch(`${base}/media`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});
+    writeAttempted=true;const createResponse=await fetch(`${base}/media`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams(params)});
     const created=await responseResult(createResponse,platform);
     if(!created.ok) return created;
     const creationId=clean(created.remote_id);
@@ -138,7 +149,9 @@ async function dispatchInstagram(env,post){
     const publishResponse=await fetch(`${base}/media_publish`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:creationId,access_token:token})});
     const result=await responseResult(publishResponse,platform);
     return result.ok?{...result,media_type:video?'reel':'image'}:result;
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+  }catch(error){return{platform,ok:false,retryable:!writeAttempted,
+    ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
+    error:String(error?.message||error)};}finally{timeout.done();}
 }
 
 // One LINE broadcast request must use the same retry key across runtime
@@ -195,21 +208,25 @@ async function dispatchGoogleBusiness(env,post){
   const platform='Google 商家';
   if(isVideoPost(post))return{platform,ok:false,retryable:false,manual_required:true,error:'Google 商家目前這條正式發布流程只處理已核准圖片；短影片不強制套用圖片 API。'};
   const tokenResult=await googleAccessToken(env); if(!tokenResult.ok) return{platform,...tokenResult};
-  const timeout=withTimeout();
+  const timeout=withTimeout();let writeAttempted=false;
   try{
     const accountId=encodeURIComponent(clean(env.GOOGLE_BUSINESS_ACCOUNT_ID));
     const locationId=encodeURIComponent(clean(env.GOOGLE_BUSINESS_LOCATION_ID));
     const body={languageCode:'zh-TW',summary:postText(post).slice(0,1500),topicType:'STANDARD',media:[{mediaFormat:'PHOTO',sourceUrl:mediaUrl(post)}]};
-    const response=await fetch(`https://mybusiness.googleapis.com/v4/accounts/${accountId}/locations/${locationId}/localPosts`,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${tokenResult.token}`,'content-type':'application/json; charset=utf-8'},body:JSON.stringify(body)});
+    writeAttempted=true;const response=await fetch(`https://mybusiness.googleapis.com/v4/accounts/${accountId}/locations/${locationId}/localPosts`,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${tokenResult.token}`,'content-type':'application/json; charset=utf-8'},body:JSON.stringify(body)});
     return responseResult(response,platform);
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+  }catch(error){return{platform,ok:false,retryable:!writeAttempted,
+    ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
+    error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function dispatchWebhook(env,post,platform,config){
-  const timeout=withTimeout();
+  const timeout=withTimeout();let writeAttempted=false;
   try{
-    const response=await fetch(clean(env[config.url]),{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/json; charset=utf-8',authorization:`Bearer ${clean(env[config.token])}`,'idempotency-key':`${post.id}:${platform}`,'x-xianjiawei-post-id':post.id,'x-xianjiawei-platform':encodeURIComponent(platform)},body:JSON.stringify(payloadFor(post,platform))});
+    writeAttempted=true;const response=await fetch(clean(env[config.url]),{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/json; charset=utf-8',authorization:`Bearer ${clean(env[config.token])}`,'idempotency-key':`${post.id}:${platform}`,'x-xianjiawei-post-id':post.id,'x-xianjiawei-platform':encodeURIComponent(platform)},body:JSON.stringify(payloadFor(post,platform))});
     return responseResult(response,platform);
-  }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
+  }catch(error){return{platform,ok:false,retryable:!writeAttempted,
+    ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
+    error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function dispatchPlatform(env,post,platform){
   const config=PLATFORM_CONFIG[platform];
