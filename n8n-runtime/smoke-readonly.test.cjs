@@ -306,6 +306,10 @@ test('new user-approved public product is accepted when LINE actually matches la
   const line=routes[lineUrl].body;
   line.productCount=5;
   line.publicProductAuthority.products.push({...newProduct});
+  // GEO is an independent authority consumer and must also reflect the
+  // newly approved fifth public item in this fully-consistent fixture.
+  routes[base+'geo-data.json'].body['@graph']
+    .find(node=>node['@type']==='ItemList').numberOfItems=5;
  });
  assert.equal(x.report.ok,true);
  assert.deepEqual(x.report.errors,[]);
