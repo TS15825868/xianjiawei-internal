@@ -25,7 +25,7 @@
   }
   function postId(card){return card?.querySelector('[data-post-view]')?.getAttribute('data-post-view')||'';}
   function statusText(card){return card?.querySelector('.status-pill')?.textContent?.trim()||'';}
-  function eligible(card){return ['已核准','已排程','需人工發布'].includes(statusText(card));}
+  function eligible(card){return ['已核准','已排程','需人工核對'].includes(statusText(card));}
   function confirmedPlatformsFor(delivery){
     // Reconcile actual per-platform receipts. A status-only record without
     // a remote ID cannot be treated as proof of publication.
@@ -82,7 +82,7 @@
     const text=packageText(post,delivery);const root=document.getElementById('modalRoot');
     if(!root){copy(text);toast('手動發布包已複製');return;}
     const manual=manualPlatformsFor(post,delivery);
-    const done=Array.isArray(delivery?.published_platforms)?delivery.published_platforms:[];
+    const done=confirmedPlatformsFor(delivery);
     const threadsNote=manual.includes('Threads')?`<div class="xjw-ok">Threads 優先走 ${esc(THREADS_ROUTE)}；只有外部排程失敗時才改成人工發布。</div>`:'';
     root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-manual-close></div><div class="xjw-modal-card"><h2>人工發布查核資料包</h2><div class="xjw-ok">${done.length?`已取得正式回執：${esc(done.join('、'))}，不得再發。<br>`:''}待人工核對：${esc(manual.join('、')||'未指定平台')}。遇到結果不明請先查官方後台，不可直接重發或補登成功。</div>${threadsNote}<pre class="xjw-copy" style="white-space:pre-wrap;max-height:52vh;overflow:auto">${esc(text)}</pre><div class="xjw-modal-footer"><button type="button" class="btn" data-manual-copy>複製全部</button><button type="button" class="btn orange" data-manual-download>下載文字檔</button><button type="button" class="btn" data-manual-close>關閉</button></div></div></div>`;
     root.querySelector('[data-manual-copy]')?.addEventListener('click',async()=>{await copy(text);toast('手動發布包已複製');});

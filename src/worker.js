@@ -215,8 +215,17 @@ async function publishNow(request,env,profile,id){
   if(Number(reserved?.meta?.changes)!==1)return json({error:'貼文已發布或狀態已被其他操作變更，不能重複發布'},409);
   const result=await publishPostById(env,id,new Date());
   const after=await getPost(env,id);await audit(env,request,profile,'立即發布','貼文',id,post,{post:after,result});
-  if(!result.ok)return json({error:'立即發布未全部完成，系統會依重試規則繼續處理',...result},502);
-  return json({ok:true,partially_published:Boolean(result.manual_required),manual_required:Boolean(result.manual_required),id,status:after?.status||'published',message:result.manual_required?'自動平台已完成；LINE VOOM 仍需人工發布。':'立即發布完成。',result});
+  if(!result.ok){
+    return json({...result,id,status:after?.status||'scheduled',
+      error:result.manual_required
+        ?'部分平台必須人工核對正式發送回執；不會自動重送，請先查看官方平台。'
+        :result.blocked
+        ?'立即發布被安全守門阻擋；請檢查平台、圖片與審核設定。'
+        :'立即發布尚未全部成功；只有明確可重試的結果才會依規則處理，請核對各平台狀態。'
+    },result.manual_required?409:502);
+  }
+  return json({ok:true,partially_published:false,manual_required:false,id,
+    status:after?.status||'published',message:'已取得全部指定平台的可採信發布回執。',result});
 }
 
 export async function overview(env){

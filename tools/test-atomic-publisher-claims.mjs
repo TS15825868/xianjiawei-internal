@@ -123,3 +123,47 @@ test('prior manual, published and ambiguous sending states never retry',async()=
   }
  }finally{globalThis.fetch=saved}
 });
+
+test('legacy published record missing official remote ID must never be treated as a confirmed send',async()=>{
+ const d=fixture({firstStatus:'published'}),save=globalThis.fetch;
+ globalThis.fetch=()=>assert.fail('No duplicate send permitted');
+ try{
+  const r=await publishPostById(env(d),id,now);
+  assert.equal(r.ok,false);
+  assert.equal(r.manual_required,true);
+  assert.equal(r.results[0].reason,'published_receipt_missing');
+  assert.equal(r.results[0].delivery_outcome_unverified,true);
+  assert.equal(d.claims,0);
+  assert.ok(d.updates.some(x=>x.sql.startsWith("UPDATE social_posts SET status='manual_required'")));
+  assert.ok(!d.updates.some(x=>x.sql.startsWith("UPDATE social_posts SET status='published'")));
+ }finally{globalThis.fetch=save}
+});
+test('legacy published record with real remote ID is recognized without sending another request',async()=>{
+ const d=fixture({firstStatus:'published'}),original=d.DB.prepare,save=globalThis.fetch;
+ d.DB.prepare=function(sql){
+  const statement=original.call(this,sql);
+  if(sql.includes('FROM social_publish_deliveries')&&sql.includes('LIMIT 1')){
+   const old=statement.first.bind(statement);
+   statement.first=async()=>({...await old(),remote_id:'fb-remote-accepted-111'});
+  }
+  return statement;
+ };
+ globalThis.fetch=()=>assert.fail('No duplicate send permitted');
+ try{
+  const r=await publishPostById(env(d),id,now);
+  assert.equal(r.results[0].reason,'published');
+  assert.equal(r.results[0].skipped,true);
+  assert.equal(r.ok,true);
+  assert.ok(d.updates.some(x=>x.sql.startsWith("UPDATE social_posts SET status='published'")));
+ }finally{globalThis.fetch=save}
+});
+test('overdue legacy published receipt without remote ID goes to human reconciliation',async()=>{
+ const d=fixture({firstStatus:'published'}),save=globalThis.fetch;
+ globalThis.fetch=()=>assert.fail('No external sends');
+ try{
+  const r=await publishDuePosts(env(d),new Date(now.getTime()+1200000));
+  assert.equal(r.results[0].manual_required,true);
+  assert.equal(r.results[0].published_platforms.length,0);
+  assert.ok(r.results[0].uncertain_platforms.includes('Facebook'));
+ }finally{globalThis.fetch=save}
+});

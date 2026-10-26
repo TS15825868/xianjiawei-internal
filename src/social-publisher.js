@@ -281,7 +281,12 @@ async function dispatchPlatform(env,post,platform){
 function retryDelayMs(attemptCount){const index=Math.min(Math.max(Number(attemptCount||1)-1,0),RETRY_DELAYS_MINUTES.length-1);return RETRY_DELAYS_MINUTES[index]*60000;}
 function retryAllowed(prior,now,platform){
   if(!prior) return{allowed:true};
-  if(['published','manual_required','permanent_failed'].includes(prior.status)) return{allowed:false,reason:prior.status};
+  if(prior.status==='published'){
+    // Legacy status-only data is not proof of a platform acceptance.
+    if(!clean(prior.remote_id))return{allowed:false,reason:'published_receipt_missing',manual_required:true};
+    return{allowed:false,reason:'published'};
+  }
+  if(['manual_required','permanent_failed'].includes(prior.status)) return{allowed:false,reason:prior.status};
   // 'sending' is a durable pre-send claim. Never auto-recover it by
   // guessing that the prior network request failed, even after a crash.
   // Only an explicitly persisted retry can enter a new dispatch.
@@ -334,7 +339,7 @@ async function expireLateScheduledPost(env,post,now){
   const platforms=selection.platforms;
   const rows=await env.DB.prepare('SELECT platform,status,remote_id,published_at FROM social_publish_deliveries WHERE post_id=?').bind(post.id).all();
   const byPlatform=new Map((rows.results||[]).map((row)=>[row.platform,row]));
-  const publishedPlatforms=platforms.filter((platform)=>byPlatform.get(platform)?.status==='published');
+  const publishedPlatforms=platforms.filter((platform)=>byPlatform.get(platform)?.status==='published'&&clean(byPlatform.get(platform)?.remote_id));
   const unresolvedPlatforms=platforms.filter((platform)=>!publishedPlatforms.includes(platform));
   const nowIso=now.toISOString();
   const lateness=Math.round(scheduleLatenessMinutes(post,now)*10)/10;
@@ -351,7 +356,7 @@ async function expireLateScheduledPost(env,post,now){
   }
   const reason=`已超過正式排程 ${MAX_SCHEDULE_LATENESS_MINUTES} 分鐘自動發布窗口（目前延遲約 ${lateness} 分鐘）；為避免非預期晚發，系統已停止自動補發。`;
   const uncertainPlatforms=unresolvedPlatforms.filter((platform)=>
-    ['sending','retry','manual_required'].includes(byPlatform.get(platform)?.status));
+    ['sending','retry','manual_required','published'].includes(byPlatform.get(platform)?.status));
   // One uncertain platform send is enough to require human verification,
   // even when there is no confirmed published platform yet.
   if(publishedPlatforms.length||uncertainPlatforms.length){
@@ -378,7 +383,11 @@ async function publishOne(env,post,now){
   for(const platform of platforms){
     const prior=await deliveryRecord(env,post.id,platform);
     const allowed=retryAllowed(prior,now,platform);
-    if(!allowed.allowed){results.push({platform,skipped:true,reason:allowed.reason,status:prior?.status||''});continue;}
+    if(!allowed.allowed){
+      results.push({platform,skipped:true,reason:allowed.reason,status:prior?.status||'',
+        ...(allowed.manual_required?{manual_required:true,delivery_outcome_unverified:true}:{})});
+      continue;
+    }
     let claimed=false;
     try{claimed=await reserveDelivery(env,post.id,platform,prior,now)}
     catch{results.push({platform,ok:false,skipped:true,reason:'delivery_claim_unavailable',retryable:false});continue}

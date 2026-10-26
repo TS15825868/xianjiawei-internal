@@ -62,3 +62,13 @@ test('Threads main platform chip is not hardcoded green before Metricool remote 
  assert.match(ui,/platform-chip manual" data-threads-route="metricool"/);
  assert.doesNotMatch(ui,/platform-chip ready" data-threads-route="metricool"/);
 });
+
+test('manual required UI shows verification rather than direct publication or unproven retries',()=>{
+ const html=read('../publishing.html');
+ assert.match(html,/<option value="manual_required">需人工核對<\/option>/);
+ assert.match(ui,/manual_required:'需人工核對'/);
+ assert.match(helper,/function eligible\(card\).*需人工核對/);
+ assert.match(helper,/const done=confirmedPlatformsFor\(delivery\)/);
+ assert.doesNotMatch(worker,/系統會依重試規則繼續處理/);
+ assert.match(worker,/不會自動重送/);
+});

@@ -78,7 +78,7 @@ function connection(message,error=false){
 }
 
 function statusLabel(v=''){
-  return({draft:'草稿',pending_review:'待審核',approved:'已核准',scheduled:'已排程',published:'已發布',manual_required:'需人工發布',failed:'失敗',archived:'已封存'})[v]||v||'—';
+  return({draft:'草稿',pending_review:'待審核',approved:'已核准',scheduled:'已排程',published:'已發布',manual_required:'需人工核對',failed:'失敗',archived:'已封存'})[v]||v||'—';
 }
 
 function setButtonBusy(button,text='處理中…'){
@@ -156,7 +156,7 @@ function renderMetrics(){
     ['人工已核准',c.approved,'human_approved'],
     ['已排程',c.scheduled,'scheduled'],
     ['已發布',c.published,'published'],
-    ['需人工發布',c.manual,'manual_required']
+    ['需人工核對',c.manual,'manual_required']
   ].map(([label,value,status])=>`<button class="publish-metric ${state.status===status?'active':''}" data-filter-status="${status}"><small>${label}</small><strong>${value}</strong></button>`).join('');
 }
 
@@ -584,7 +584,7 @@ async function changeStatus(id,status,button){
 
 async function publishNow(id,button){
   if(state.maintenanceReadonly){toast('系統整理期間為唯讀模式；立即發布暫時鎖定。',true);return;}
-  if(!confirm('確認要立即發布這篇貼文？系統只會發布到已完成授權的平台，其他平台會轉為人工發布。'))return;
+  if(!confirm('確認立即發布這篇已核准貼文？只有正式平台回執才算發布成功，結果不明時要人工查核且不能直接重發。'))return;
   const done=setButtonBusy(button,'發布中…');
   try{
     const result=await api(`/posts/${encodeURIComponent(id)}/publish-now`,{method:'POST',body:'{}',timeout:30000});
