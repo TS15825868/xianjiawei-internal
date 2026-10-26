@@ -199,6 +199,78 @@ jobs:
           set -euo pipefail
           node --test tools/test-build-post-image-rework-queue.mjs tools/test-external-published-receipt-holds.mjs
           node tools/build-post-image-rework-queue.mjs formal-post-quality.json ops/social-post-image-scenes-20261010.json post-image-rework-queue.json
+          # Bind each live rejected image assignment to the actual approved
+          # website product photo. Never re-use a stale hardcoded package path.
+          curl -fsS --retry 2 --max-time 30 \
+            'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/public-product-master.json' \
+            -o /tmp/xjw-current-public-product-master.json
+          curl -fsS --retry 2 --max-time 30 \
+            'https://raw.githubusercontent.com/TS15825868/xianjiawei/main/products.html' \
+            -o /tmp/xjw-current-public-products.html
+          node --test tools/current-formal-product-media.test.cjs
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          import {createRequire} from 'node:module';
+          const require=createRequire(import.meta.url);
+          const authority=require('./tools/current-formal-product-media.cjs').currentFormalProducts(
+            JSON.parse(fs.readFileSync('/tmp/xjw-current-public-product-master.json','utf8')),
+            fs.readFileSync('/tmp/xjw-current-public-products.html','utf8'));
+          const snapshot=JSON.parse(fs.readFileSync('formal-post-quality.json','utf8'));
+          const posts=(Array.isArray(snapshot)?snapshot[0]?.results:snapshot?.results)||[];
+          const byId=new Map(posts.map(p=>[p.id,p]));
+          const q=JSON.parse(fs.readFileSync('post-image-rework-queue.json','utf8'));
+          const approvedByAlias=Object.fromEntries(authority.approved.map(p=>[p.key,p]));
+          const productAliases=Object.freeze({'龜鹿飲30cc':'30cc','龜鹿飲180cc':'180cc'});
+          let verified=0,blocked=0,notNeeded=0;
+          for(const item of q.items){
+            const p=byId.get(item.postId);
+            if(!p)throw Error('D1紀錄未找到 '+item.postId);
+            const text=[p.title,p.headline,p.copy,p.image_alt,item.scene].filter(Boolean).join(' ');
+            const needed=new Set();
+            const blockers=new Set();
+            try{
+              for(const key of authority.productsFor(text))needed.add(key);
+            }catch(error){
+              // Never fail the entire unrelated backlog solely because
+              // a specific product lacks owner-approved public photography.
+              blockers.add(String(error.message||error));
+            }
+            for(const name of item.productsMentioned||[]){
+              const alias=productAliases[name]||name;
+              if(approvedByAlias[alias])needed.add(alias);
+              else blockers.add('尚未取得官網核准產品原圖：'+name);
+            }
+            item.formalProductPhotos=[...needed].map(key=>({
+              product:approvedByAlias[key].name,
+              originalSource:'website-main-owner-approved-product-photo',
+              websiteRelativePath:authority.assets[key],
+              compositionOnly:true
+            }));
+            if(item.publicationReconciliationRequired)blockers.add('已公開平台回執待核對，禁止重新製圖');
+            item.formalPhotoBlockers=[...blockers];
+            item.formalPhotoStatus=item.publicationReconciliationRequired?'external_published_hold'
+              :blockers.size?'manual_photo_authority_check_required'
+              :needed.size?'approved_originals_bound':'no_product_photo_required';
+            item.safeToCompositeProduct=!item.publicationReconciliationRequired&&!blockers.size;
+            if(item.publicationReconciliationRequired)continue;
+            if(blockers.size)blocked++;
+            else if(needed.size)verified++;
+            else notNeeded++;
+          }
+          q.photoAuthorityVersion='current-main-website-master-and-product-catalog';
+          q.photoAuthorityApprovedProducts=authority.approved.length;
+          q.photoBinding={verifiedProductPhotoPosts:verified,
+            manualPhotoAuthorityReviewPosts:blocked,nonProductScenePosts:notNeeded,
+            publishedReceiptHolds:q.externalReceiptReconciliationCount};
+          if(verified+blocked+notNeeded!==q.eligibleForImageReworkCount)
+            throw Error('正式商品實物主圖驗證數量不一致');
+          fs.writeFileSync('post-image-rework-queue.json',JSON.stringify(q,null,2)+'\n');
+          console.log('PASS 逐篇正式實物主圖綁定 '+JSON.stringify(q.photoBinding));
+          if(blocked)console.log('::warning title=正式商品原圖待核對::有'+blocked+'篇存在尚未核准產品圖或產品描述，禁止自創包裝，僅保留待人工核對');
+          if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            '## 正式產品原圖綁定\n\n- 已確認產品原圖 '+verified+' 篇；不需產品實物 '+notNeeded+
+            ' 篇；原圖需人工核對 '+blocked+' 篇；已發布對帳 '+q.externalReceiptReconciliationCount+' 篇。\n\n');
+          NODE
           node --input-type=module - <<'NODE'
           import fs from 'node:fs';
           const q=JSON.parse(fs.readFileSync('post-image-rework-queue.json','utf8'));
