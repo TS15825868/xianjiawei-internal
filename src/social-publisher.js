@@ -304,6 +304,7 @@ async function publishOne(env,post,now){
   const media=mediaUrl(post);
   if(!media)return{id:post.id,ok:false,blocked:true,reason:'missing_media',error:'缺少正式圖片或影片，依仙加味最新規則禁止發布。',results:[]};
   const platforms=parsePlatforms(post.platforms_json);
+  if(platforms.length===0)return{id:post.id,ok:false,blocked:true,reason:'no_valid_platforms',error:'未設定有效發布平台，禁止將貼文標記為已發布。',results:[]};
   const results=[];
   for(const platform of platforms){
     const prior=await deliveryRecord(env,post.id,platform);

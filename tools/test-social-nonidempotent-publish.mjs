@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {publishPostById} from '../src/social-publisher.js';
+import {publishPostById,publishDuePosts} from '../src/social-publisher.js';
 const root='https://assets.example.test/official-post.webp';
 const post=(platform)=>({id:'P-20261026-UNIQUE',status:'approved',
  headline:'仙加味生活情境',copy:'補養，是一種節奏。',image_url:root,
@@ -83,4 +83,37 @@ test('confirmed HTTP 2xx still records normal successful delivery',async()=>{
  assert.equal(report.results[0].ok,true);
  assert.equal(report.results[0].remote_id,'555_123');
  assert.notEqual(report.results[0].manual_required,true);
+});
+
+function fakeInvalidPlatformsDb(platforms_json,{scheduled=false}={}){
+ const writes=[];
+ const row={...post('Facebook'),platforms_json,status:scheduled?'scheduled':'approved',scheduled_at:'2026-10-26T00:00:00.000Z'};
+ const DB={prepare(sql){return{
+  bind(){return this;},
+  async first(){
+   if(sql.includes('FROM social_metricool_sync'))return null;
+   if(sql.includes('FROM social_posts'))return row;
+   if(sql.includes('FROM social_publish_deliveries'))return null;
+   throw Error('unexpected read: '+sql);
+  },
+  async all(){if(sql.includes('FROM social_posts'))return{results:[row]};throw Error('unexpected list: '+sql);},
+  async run(){writes.push(sql);return{success:true,meta:{changes:1}}}
+ }}};
+ return{DB,writes};
+}
+for(const platforms_json of ['[]','["unsupported-platform"]','invalid-json']){
+ test('approved post with invalid platform list '+platforms_json+' cannot become published',async()=>{
+  const db=fakeInvalidPlatformsDb(platforms_json);
+  const report=await publishPostById({DB:db.DB},'P-20261026-UNIQUE',new Date('2026-10-26T00:02:00.000Z'));
+  assert.equal(report.ok,false);
+  assert.equal(report.blocked,true);
+  assert.equal(report.reason,'no_valid_platforms');
+  assert.equal(db.writes.length,0,'no delivery or published-state writes permitted');
+ });
+}
+test('scheduled post with no valid platforms cannot become published',async()=>{
+ const db=fakeInvalidPlatformsDb('[]',{scheduled:true});
+ const report=await publishDuePosts({DB:db.DB},new Date('2026-10-26T00:02:00.000Z'));
+ assert.equal(report.results[0].reason,'no_valid_platforms');
+ assert.equal(db.writes.length,0);
 });
