@@ -7,6 +7,7 @@ let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',impo
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
 source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({ok:true}),metricoolOwns=async()=>Boolean(globalThis.__reviewTest.externalLink),metricoolImmediate=async()=>{throw Error("unexpected publish")};');
 source=source.replace("import {imageHash,recordAiReview} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")};');
+source=source.replace("import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';",'const publishedPlatformReceiptHold=(row)=>null; // isolated: external receipts exercised separately');
 const {default:gate,REQUIRED_CHECKS,fingerprint,invalidateEditedPost,productMatchErrors,gateState}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 const state={forwarded:0,writes:[],externalLink:null,casFail:false,row:{id:'ISOLATED',title:'萬華日常',headline:'店裡的一天',copy:'分享今天的生活',category:'品牌',status:'draft',image_url:'https://example.invalid/unique.png',image_alt:'萬華店裡的一天',image_width:1200,image_height:1200,image_quality_status:'ok'},review:null};
 globalThis.__reviewTest=state;

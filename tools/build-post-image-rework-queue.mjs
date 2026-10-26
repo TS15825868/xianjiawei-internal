@@ -35,8 +35,8 @@ export function buildPlan(rows, sceneByPostId={}){
     // Existing copy often says just "30cc 跟 180cc" while its formal
     // product scene/image-alt identifies the approved 龜鹿飲 variants.
     // Never omit the corresponding original package photo in a comparison.
-    if(/(?:^|[^\\d])30\\s*cc/i.test(text) && !products.includes('龜鹿飲30cc'))products.push('龜鹿飲30cc');
-    if(/(?:^|[^\\d])180\\s*cc/i.test(text) && !products.includes('龜鹿飲180cc'))products.push('龜鹿飲180cc');
+    if(/(?:^|[^\d])30\s*cc/i.test(text) && !products.includes('龜鹿飲30cc'))products.push('龜鹿飲30cc');
+    if(/(?:^|[^\d])180\s*cc/i.test(text) && !products.includes('龜鹿飲180cc'))products.push('龜鹿飲180cc');
     const window=windowFor(row);
     counts[status]=(counts[status]||0)+1;
     const remoteHold=publishedPlatformReceiptHold(row);
