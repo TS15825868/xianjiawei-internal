@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='20261017-current-brand-product-visual-policy-v2';
+  const VERSION='20261027-fixed-mascot-source-reference-v3';
   const SITE='https://ts15825868.github.io/xianjiawei/';
   const PRODUCT_IMAGE_VERSION='20261017-owner-approved-photo-main-v4';
   const STORAGE_PREFIX='xjw-regeneration:';
@@ -24,16 +24,27 @@
   const PRODUCT_URLS=Object.entries(OFFICIAL).map(([name,url])=>name+'：'+url+'?v='+PRODUCT_IMAGE_VERSION).join('\n');
   const HARD_RULES=`【仙加味圖片與文案唯一正式規格】\n\n一、視覺總原則\n- 每張只能是一個完整、自然、統一光影與透視的單一場景。\n- 禁止拼貼、拼版、六格、海報疊海報、卡片堆疊、產品裁片硬貼、角色裁片硬貼、黑色補位、不同畫風素材混搭。\n- 不為了塞版面把多個產品強制做成一樣大；沒有可信相對尺寸時改成單品構圖。\n- 圖片與文案的季節、天氣、地點、場合、環境、冷熱、表情、動作必須一致。\n\n二、產品本體\n- AI絕對不得重畫、改造、補畫、變形仙加味產品。\n- 一般產品主題優先使用下列最新核准真實完整產品主圖，完整等比例呈現，不裁切、不拉寬、不拉高、不改標籤、不改包裝；舊products-v3只作歷史參照，不能取代最新正式實拍。\n${PRODUCT_URLS}\n- 明確「DM／詳細DM」主題才使用官網目前images/dm-final正式詳細DM；試喝主題固定使用images/trial/trial-poster-small-boss-official-v20260814.jpg。\n- 若文案提到實物產品，必須使用正式原圖自然合成並檢查標籤、比例；做不到就維持草稿等待重製，不得用AI虛構包裝或無產品圖片冒充正式合格圖。\n- 多產品同框若無法維持真實比例，拆成不同貼文，不做拼貼式全系列。\n\n三、最新正式公開商品與持續擴充\n- 現行公開商品以官網主檔與商品總覽為準：仙加味四款與其他來源五個商品／系列入口，丹參茶六款須各自使用對應的完整原廠盒圖；不把目前公開數量鎖成永久上限。\n- 品名、成分、規格、供貨與正式實物圖片依當期最新確認資料；新增核准商品可加入，舊照片與舊守門員不得阻擋正確新商品。\n- 尚未核准公開的龜鹿膠、龜鹿湯塊、柒玄茶及ERP內部資料不自動公開；商品是否能宣傳或交易仍依適用法規判斷。\n\n四、產品比例硬規則\n- 30cc：小玻璃裸罐、無貼紙；約Ø42×H51mm；不可叫瓶、不可改罐型或比例、不可放大成100g罐大小。\n- 100g龜鹿膏：約寬51×高78mm；正式罐型與標籤比例固定。\n- 180cc：狹長直立鋁袋，寬高比約0.64，可接受約0.60～0.68；不可拉胖、不可誇張放大。\n- 鹿茸粉75g沒有可信毫米尺寸，不得自行猜；只維持正式原圖盒型／罐型比例。\n\n五、小老闆與角色\n- 依使用者提供的正式原圖使用仙加味固定Q版小老闆（不得自行改成2D或重新設計；避免廉價3D玩具感、寫實化或換人）：圓臉、大而圓深棕眼、短黑髮、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章。\n- 頭、頭髮、雙手、雙腳與持物完整，不可裁切，四周保留安全空間。\n- 小鹿與小烏龜需要時才加入，必須分開的獨立角色；不可拿LINE OA裁切素材當社群貼文角色。\n\n六、文案與法規\n- 生活文案需同時有明確生活情境、仙加味品牌或正式產品連結、圖文一致的原創情境圖；空泛心情文字、舊圖換句話重發都不合格。\n- 龜鹿膏成分：鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘；龜鹿飲成分前加「水」，其餘順序相同，不得漏字。\n- 龜鹿飲接單後製作約5～7工作天出貨，僅適用龜鹿飲，不可寫成全部商品交期。\n- 繁體中文；現代漢方生活品牌語氣，日常飲食、生活節奏、料理搭配為主。\n- 不做療效、治療、改善、治癒、保證等宣稱。\n- 品牌只顯示「仙加味」。\n- 龜鹿膏食用時間可依個人使用習慣與作息時間安排；初次可先從半匙開始。不得設定固定早上／下午、一天一次或早晚固定時段。\n- 龜鹿飲30cc目前使用方式為每日 1-2罐；飲用時間可依個人使用習慣與作息時間安排。\n- 龜鹿飲180cc目前使用方式為每日一包；飲用時間可依個人使用習慣與作息時間安排。\n- 文案提到產品、成分、規格、使用方式、價格或活動時必須使用目前正式版本，不可自行補資料。\n\n七、流程\n- 新文案與新圖一律只作 candidate／待審核。\n- 不得因生成完成就自動核准、排程或發布。\n- 生成後回仙加味貼文系統，按同一張卡片的「生成後回填／上傳」，貼上新文案或上傳新圖片；儲存後系統自動送回待審核。\n- 生成後必須重新完成16項圖文審核。`;
 
+  // These references are NOT automatically transferred to a new ChatGPT
+  // tab. The image generator must actually see the owner-approved original
+  // mascot/companion images; a text description or previous AI candidate
+  // cannot substitute for those identity-locked assets.
+  const CHARACTER_REFERENCE_LOCK=`【製圖前的正式小老闆／夥伴原圖鎖定：最高優先】
+- 先確認本次對話已實際附有使用者正式核准的「仙加味Q版小老闆」角色定稿原圖。若沒有看見正式原圖附件，立即停止生圖；只能列出需補的參考素材與場景，不得僅憑文字、記憶或舊AI候選重畫一個相似角色。
+- 同一位小老闆：圓潤兒童Q版臉型、短黑髮和自然瀏海、眼睛大小及間距、五官位置、頭身比、身高與四肢比例、米白中式上衣、深橄欖綠圍裙版型與長度、紅色直式「仙加味」印章都必須以定稿原圖為準。禁止長大、變少年、變寫實、改成另一個小朋友，禁止任意替換畫風。
+- 若本篇讓小鹿或小烏龜入鏡，也必須先實際取得各自正式核准的獨立原圖參考；未取得就停止包含該夥伴的生圖，絕不自由想像另一隻鹿或龜，也不能用其他AI候選充當正式原圖。小鹿與小烏龜是兩個獨立夥伴，不能合體；同框時依正式構圖小鹿在左、小烏龜在右，體型與小老闆的相對比例固定。
+- 僅允許在正式角色外觀不變的前提下改動表情、手勢、姿勢、場景或道具。不可將不同版本角色裁切拼貼，更不能用調整印章文字掩蓋臉型或夥伴不一致。
+- 請先逐項比對正式原圖，再將作品列為「候選、待人工視覺審核」。未驗證同一人或夥伴身分、印章不可辨識、或畫面拼貼感不合格者，直接退回，維持草稿；不自動送審、排程或發布。
+- 產品需另外提供正式實拍原圖：不得以任何生成方式重畫包裝。沒有可用的正式原圖，就停止產出涉及產品的主圖。`;
   const escText=(value='')=>String(value||'').trim();
   function cardInfo(card){return{title:escText(card?.querySelector('.xjw-row-head h3')?.textContent)||'仙加味貼文',copy:escText(card?.querySelector('.xjw-copy')?.textContent),image:escText(card?.querySelector('.xjw-image-preview')?.getAttribute('src'))}}
   function postId(card){const button=card?.querySelector('[data-post-view],[data-post-edit]');return escText(button?.dataset?.postView||button?.dataset?.postEdit)}
   function promptFor(mode,card){
     const p=cardInfo(card);
-    const common=`\n\n目前標題：${p.title}\n目前文案：${p.copy||'（無）'}\n目前圖片：${p.image||'（無／需重新生成）'}\n\n${HARD_RULES}`;
+    const common=`\n\n目前標題：${p.title}\n目前文案：${p.copy||'（無）'}\n目前圖片：${p.image||'（無／需重新生成）'}\n\n${HARD_RULES}${mode==='copy'?'':'\n\n'+CHARACTER_REFERENCE_LOCK}`;
     const back='\n\n完成後請回到仙加味貼文審核系統，在原貼文卡片按「生成後回填／上傳」，把新文案貼回或把生成圖片從手機／平板／電腦上傳；儲存後系統會自動改成待審核，不會自動發布。';
     if(mode==='copy')return`請重新撰寫這篇仙加味社群貼文文案。保留原主題與正確產品事實，但文字重新組織；自然、精簡、有生活感。不要生成圖片。${common}\n\n只輸出：新標題、新正文、建議分類、建議圖片情境摘要。${back}`;
-    if(mode==='all')return`請把這篇仙加味社群貼文的「文案＋圖片」整套重新製作。先重寫文案，再直接使用圖像生成能力產出一張待審核主圖。舊圖不要沿用，也不要做拼貼。${common}\n\n圖片必須是1:1單一完整場景、不是九宮格、海報或型錄拼板；若需要產品，只能使用目前核准正式產品圖完整等比例融入同一場景；products-v3只作真實產品身份與比例校正參考；若無法安全合成正式實拍，必須保留草稿不得提交正式審核；絕對不要AI重畫產品。完成後仍是待審核。${back}`;
-    return`請直接使用圖像生成能力，為這篇仙加味社群貼文重新製作一張「待審核候選主圖」。不要只回提示詞或製圖步驟。${common}\n\n先判斷文案是否需要產品；不需要就不要硬塞。需要產品時只能使用目前核准正式產品圖完整等比例融入單一場景；products-v3只作真實產品身份與比例校正參考。禁止任何拼貼式構圖。若提到產品但無法安全使用正式產品原圖，必須保留草稿等待正確素材，不能虛構產品。輸出1:1社群主圖，完成後仍須16項人工審核。${back}`;
+    if(mode==='all')return`請先確認本對話已實際附上正式小老闆角色定稿原圖、以及本文需入鏡的正式小鹿與小烏龜原圖。尚未附上則只重寫文案並列出缺少的參考圖，絕對不要呼叫生圖或想像新角色。確認原圖後，才將這篇仙加味社群貼文的文案與圖片整套重新製作。舊圖不要沿用，也不要做拼貼。${common}\n\n圖片必須是1:1單一完整場景、不是九宮格、海報或型錄拼板；若需要產品，只能使用目前核准正式產品圖完整等比例融入同一場景；products-v3只作真實產品身份與比例校正參考；若無法安全合成正式實拍，必須保留草稿不得提交正式審核；絕對不要AI重畫產品。完成後仍是待審核。${back}`;
+    return`首先檢查本對話有沒有實際附上使用者核准的正式小老闆角色原圖，以及本篇需入鏡的正式小鹿、小烏龜原圖；沒有正式原圖就停止生圖，回報缺少哪些參考圖，不能憑文字創作相似的人物或夥伴。只有確認並能逐項對照正式原圖時，才使用圖像編修能力為這篇仙加味社群貼文重製「待人工審核候選主圖」。${common}\n\n先判斷文案是否需要產品；不需要就不要硬塞。需要產品時只能使用目前核准正式產品圖完整等比例融入單一場景；products-v3只作真實產品身份與比例校正參考。禁止任何拼貼式構圖。若提到產品但無法安全使用正式產品原圖，必須保留草稿等待正確素材，不能虛構產品。輸出1:1社群主圖，完成後仍須16項人工審核。${back}`;
   }
   function copy(text){if(navigator.clipboard?.writeText)return navigator.clipboard.writeText(text).catch(()=>fallback(text));return fallback(text)}
   function fallback(text){const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();return Promise.resolve()}
@@ -56,6 +67,7 @@
     try{
       await beginRegeneration(id,mode);
       const prompt=promptFor(mode,card);await copy(prompt);enhanceReturnButtons();
+      if(mode!=='copy')toast('重要：新對話不會自動附上角色原圖。請加入正式小老闆原圖，以及本文要入鏡的固定小鹿／小烏龜原圖；缺原圖不得生圖。',true);
       const target=`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
       if(tab&&!tab.closed){try{tab.location.replace(target)}catch{tab.location.href=target}}
       else toast('瀏覽器阻擋了新分頁；正式生成指令已複製，請手動開啟 ChatGPT 貼上即可。',true);

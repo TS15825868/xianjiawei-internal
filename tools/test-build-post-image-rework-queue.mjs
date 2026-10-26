@@ -20,6 +20,8 @@ test('rework queue includes existing rejected images without touching missing-im
  const comparison=buildPlan([{id:'compare',status:'pending_review',title:'30cc跟180cc，怎麼選？',copy:'仙加味說明兩種包裝',image_alt:'龜鹿飲30cc裸玻璃罐與180cc鋁袋',image_quality_status:'needs_rework',image_url:'https://example.test/old.png'}]);
  assert.deepEqual(comparison.items[0].productsMentioned,['龜鹿飲30cc','龜鹿飲180cc']);
  assert.equal(p.items.every(x=>x.readyForAutomaticPublication===false&&x.requiresHumanVisualReview===true),true);
+ assert.equal(p.items.every(x=>x.approvedMascotReferenceRequired===true&&x.approvedMascotReferenceAttachedAndVerified===false),true);
+ assert.equal(p.items.every(x=>x.approvedPartnerReferenceRequiredIfVisible===true&&x.textOnlyCharacterGenerationAllowed===false),true);
  assert.equal(JSON.stringify(rows),old);assert.equal(JSON.stringify(p).includes('"copy":"在家"'),false);
 });
 test('retains dynamic counts without hardcoded four-item or 59-post limits',()=>{

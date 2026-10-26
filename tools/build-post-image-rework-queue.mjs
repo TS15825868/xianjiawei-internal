@@ -45,6 +45,12 @@ export function buildPlan(rows, sceneByPostId={}){
       existingImageUrl:clean(row.image_url), imageAlt:clean(row.image_alt),
       scene, sceneSource:clean(sceneByPostId[id])?'formal_scene_map':'current_image_alt',
       sceneRequiresManualReview:!clean(sceneByPostId[id]),
+      approvedMascotReferenceRequired:true,
+      approvedPartnerReferenceRequiredIfVisible:true,
+      approvedMascotReferenceAttachedAndVerified:false,
+      approvedPartnerReferenceAttachedAndVerified:false,
+      textOnlyCharacterGenerationAllowed:false,
+      generatedCharacterIdentityReview:'not_yet_verified',
       category:clean(row.category), productsMentioned:products,
       copyHash:crypto.createHash('sha256').update(clean(row.copy)).digest('hex').slice(0,16),
       window, priority:status==='approved'||status==='scheduled'?'urgent_hold':status==='pending_review'?'review_backlog':'draft_backlog',
@@ -53,7 +59,8 @@ export function buildPlan(rows, sceneByPostId={}){
       safeToBeginImageRework:!remoteHold,
       productionRules:[
         '以本篇當前文案和對應場景重新製作專屬情境，禁止重複使用既有貼文圖片',
-        '小老闆維持正式Q版幼童：短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章',
+        '先實際附上正式小老闆定稿原圖、必要的小鹿及小烏龜各自核准原圖；沒有圖片附件時不生成角色，文字提示不可代替原圖',
+        '小老闆嚴格比對同一位Q版幼童的臉型、眼睛、頭身比例、短黑髮、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章；絕不換人',
         '小鹿與小烏龜必須分開，場景、季節、天氣、動作、產品溫度一致',
         '產品只使用使用者核准的正式實拍原圖等比例合成；AI不得重新設計瓶罐、鋁袋、標籤、產品尺寸',
         '不擅自修改本文、D1狀態、原圖片綁定或核准紀錄；新圖需由使用者人工確認再回待審核'
