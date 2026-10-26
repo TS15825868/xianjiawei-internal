@@ -52,31 +52,19 @@ async function deliveryState(request,env,ctx,id){
     id,
     post_status:post.status,
     platforms,
-    published_platforms:platforms.filter((item)=>item.status==='published').map((item)=>item.platform),
-    manual_required_platforms:platforms.filter((item)=>item.status==='manual_required').map((item)=>item.platform),
-    unresolved_platforms:platforms.filter((item)=>!['published','manual_required'].includes(item.status)).map((item)=>item.platform)
+    // A status-only legacy entry without a platform-issued remote ID is
+    // unresolved, not evidence that customers saw a published post.
+    published_platforms:platforms.filter((item)=>item.status==='published'&&clean(item.remote_id)).map((item)=>item.platform),
+    manual_required_platforms:platforms.filter((item)=>
+      item.status==='manual_required'||(item.status==='published'&&!clean(item.remote_id))).map((item)=>item.platform),
+    unresolved_platforms:platforms.filter((item)=>
+      !['published','manual_required'].includes(item.status)).map((item)=>item.platform)
   });
 }
-async function markManualDelivery(env,id,platform,reason){
-  const now=new Date().toISOString();
-  await env.DB.prepare(`
-    INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at)
-    VALUES(?,?,'manual_required',0,NULL,NULL,'','',?,?,?)
-    ON CONFLICT(post_id,platform) DO UPDATE SET
-      status='manual_required',
-      error_text=excluded.error_text,
-      updated_at=excluded.updated_at
-  `).bind(id,platform,reason,now,now).run();
-}
-async function completeManualDeliveries(env,id){
-  const now=new Date().toISOString();
-  const result=await env.DB.prepare(`
-    UPDATE social_publish_deliveries
-    SET status='published',published_at=COALESCE(published_at,?),last_attempt_at=COALESCE(last_attempt_at,?),error_text='',updated_at=?
-    WHERE post_id=? AND status='manual_required'
-  `).bind(now,now,now,id).run();
-  return Number(result?.meta?.changes||0);
-}
+// The former markManualDelivery/completeManualDeliveries helpers could
+// overwrite earlier remote receipts or manufacture a published status without
+// an official platform receipt. The canonical social-publisher now owns all
+// D1 per-platform delivery mutations and atomic claim/retry safety.
 async function audit(env,request,profile,id,before,after,action='彈性立即發布'){
   try{
     await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
@@ -86,12 +74,6 @@ async function audit(env,request,profile,id,before,after,action='彈性立即發
 function platformReady(configuration,platform){
   return configuration?.platforms?.[platform]?.ready===true;
 }
-async function setManualRequired(env,id){
-  const now=new Date().toISOString();
-  // Preserve any platform already published before an unresolved manual handoff.
-  await env.DB.prepare("UPDATE social_posts SET status='manual_required',scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,id).run();
-}
-
 async function changeManualRequiredStatus(request,env,ctx,id){
   const before=await getPostRow(env,id);
   if(!before||before.status!=='manual_required')return null;
@@ -101,33 +83,35 @@ async function changeManualRequiredStatus(request,env,ctx,id){
   if(!['owner','admin','content'].includes(profile?.role))return json({error:'沒有修改貼文狀態權限'},403);
   const body=await readJsonClone(request);
   const next=clean(body?.status);
-  if(!['published','draft'].includes(next))return json({error:'需人工發布的貼文只能補登為已發布，或退回草稿'},400);
+  if(next==='published')return json({error:'禁止沒有正式平台遠端 ID 的人工補登。請先在平台後台核對並保留官方貼文網址／回執；此入口不會假裝發送成功。'},409);
+  if(next!=='draft')return json({error:'目前只允許安全退回草稿；人工已發布需走獨立官方回執核對流程'},400);
   const now=new Date().toISOString();
-  let manualDeliveriesCompleted=0;
-  if(next==='published'){
-    manualDeliveriesCompleted=await completeManualDeliveries(env,id);
-    await env.DB.prepare("UPDATE social_posts SET status='published',published_at=?,scheduled_at=NULL,updated_at=? WHERE id=?").bind(now,now,id).run();
-  }else{
-    // A partially published post cannot become a fresh draft. A prior
-    // platform receipt may exist even if the top-level published_at was null.
-    const deliveries=await deliveryRows(env,id);
-    if(before.published_at||deliveries.some(d=>d.status==='published'||d.published_at||clean(d.remote_id)))
-      return json({error:'已有平台發布紀錄；不能退回草稿造成重複發布。請保留紀錄並人工處理未完成平台。'},409);
-    const changed=await env.DB.prepare(`UPDATE social_posts SET
-      status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,
-      image_approved=0,updated_at=? WHERE id=? AND status='manual_required'
-      AND published_at IS NULL AND NOT EXISTS (
-        SELECT 1 FROM social_publish_deliveries d WHERE d.post_id=social_posts.id
-        AND (d.status='published' OR d.published_at IS NOT NULL
-          OR (d.remote_id IS NOT NULL AND TRIM(d.remote_id)<>'')))`)
-      .bind(now,id).run();
-    if(Number(changed?.meta?.changes)!==1)
-      return json({error:'貼文或平台發布結果已變更；未退回草稿，請重新確認'},409);
-  }
-  const after=await getPostRow(env,id);
+  // A partially sent or ambiguous attempt must not be re-opened as a new
+  // draft. That can create a second identical publication even if the first
+  // remote platform accepted the message before the connection failed.
   const deliveries=await deliveryRows(env,id);
-  await audit(env,request,profile,id,before,{post:after,deliveries,manualDeliveriesCompleted},next==='published'?'手動補登已發布':'人工發布退回草稿');
-  return json({...after,manual_deliveries_completed:manualDeliveriesCompleted,deliveries});
+  const anyRemoteEvidence=before.published_at||deliveries.some(d=>
+    ['sending','retry','published'].includes(d.status)||
+    Number(d.attempt_count||0)>0||d.last_attempt_at||
+    d.published_at||clean(d.remote_id));
+  if(anyRemoteEvidence)
+    return json({error:'此篇已有發送紀錄或發送結果不明，不能退回草稿造成重複發布。請先人工核對平台官方回執。'},409);
+  const changed=await env.DB.prepare(`UPDATE social_posts SET
+    status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,
+    image_approved=0,updated_at=? WHERE id=? AND status='manual_required'
+    AND published_at IS NULL AND NOT EXISTS (
+      SELECT 1 FROM social_publish_deliveries d WHERE d.post_id=social_posts.id
+      AND (d.status IN ('sending','retry','published')
+        OR COALESCE(d.attempt_count,0)>0 OR d.last_attempt_at IS NOT NULL
+        OR d.published_at IS NOT NULL
+        OR (d.remote_id IS NOT NULL AND TRIM(d.remote_id)<>'')))`)
+    .bind(now,id).run();
+  if(changed?.success!==true||Number(changed?.meta?.changes)!==1)
+    return json({error:'貼文或平台發送狀態已變更；未退回草稿，請重新核對'},409);
+  const after=await getPostRow(env,id);
+  const confirmed=await deliveryRows(env,id);
+  await audit(env,request,profile,id,before,{post:after,deliveries:confirmed},'待人工核對退回草稿');
+  return json({...after,manual_deliveries_completed:0,deliveries:confirmed});
 }
 
 async function flexiblePublishNow(request,env,ctx,id){
@@ -148,74 +132,43 @@ async function flexiblePublishNow(request,env,ctx,id){
 
   const originalPlatforms=parsePlatforms(before.platforms_json);
   if(!originalPlatforms.length)return json({error:'尚未指定發布平台'},409);
-  const configuration=publisherConfiguration(env);
-  const automaticPlatforms=originalPlatforms.filter((platform)=>platformReady(configuration,platform));
-  const manualPlatforms=originalPlatforms.filter((platform)=>!automaticPlatforms.includes(platform));
-  const reason='此平台尚未完成官方自動發布授權，或目前採人工發布流程；請使用貼文審核發佈系統的「手動發布包」，完成後補登已發布。';
 
-  for(const platform of manualPlatforms)await markManualDelivery(env,id,platform,reason);
-
-  if(!automaticPlatforms.length){
-    await setManualRequired(env,id);
-    const after=await getPostRow(env,id);
-    const deliveries=await deliveryRows(env,id);
-    await audit(env,request,profile,id,before,{post:after,deliveries,manual_platforms:manualPlatforms});
-    return json({
-      ok:true,
-      partially_published:false,
-      automatic_published:false,
-      manual_required:true,
-      id,
-      status:'manual_required',
-      manual_platforms:manualPlatforms,
-      message:`目前沒有可自動發布的平台；已轉為人工發布：${manualPlatforms.join('、')}。請使用「手動發布包」，完成後補登已發布。`,
-      publisher:configuration
-    });
-  }
-
-  const now=new Date().toISOString();
-  await env.DB.prepare("UPDATE social_posts SET platforms_json=?,status='scheduled',scheduled_at=?,updated_at=? WHERE id=?")
-    .bind(JSON.stringify(automaticPlatforms),now,now,id).run();
-
-  let result;
-  try{
-    result=await publishPostById(env,id,new Date());
-  }finally{
-    await env.DB.prepare('UPDATE social_posts SET platforms_json=?,updated_at=? WHERE id=?')
-      .bind(JSON.stringify(originalPlatforms),new Date().toISOString(),id).run();
-  }
-
-  if(result?.ok&&manualPlatforms.length)await setManualRequired(env,id);
+  // ONE production sender: the same approved post/platform pair must be
+  // atomically reserved in D1 by social-publisher before any external POST.
+  // Never overwrite platforms_json to a "ready" subset. An overlapping
+  // one-minute cron or instant-publish request could otherwise publish the
+  // wrong partial audience or duplicate a platform delivery.
+  const result=await publishPostById(env,id,new Date());
   const after=await getPostRow(env,id);
   const deliveries=await deliveryRows(env,id);
-  await audit(env,request,profile,id,before,{post:after,result,deliveries,automatic_platforms:automaticPlatforms,manual_platforms:manualPlatforms});
-
+  const automaticPlatforms=(result?.results||[])
+    .filter(item=>item.ok===true||(item.skipped===true&&item.reason==='published'))
+    .map(item=>item.platform);
+  const manualPlatforms=(result?.results||[])
+    .filter(item=>item.manual_required===true)
+    .map(item=>item.platform);
+  await audit(env,request,profile,id,before,
+    {post:after,result,deliveries,automatic_platforms:automaticPlatforms,manual_platforms:manualPlatforms});
   if(!result?.ok){
+    const manual=Boolean(result?.manual_required||manualPlatforms.length);
     return json({
-      error:'可自動發布的平台未全部完成；系統不會盲目重複補發。請先查看發布結果，再人工處理失敗平台。',
-      id,
+      ok:false,id,status:after?.status||before.status,
+      error:manual
+        ?'有平台需要人工查核正式發送回執。結果不明時不能重發，也不能直接補登已發布。'
+        :result?.blocked
+        ?'正式發布守門阻止本次對外發送；請先確認圖文審核及完整平台設定。'
+        :'各平台發布未全部完成；只允許原發布器依經驗證的重試規則處理，請查看逐平台紀錄。',
       automatic_platforms:automaticPlatforms,
       manual_platforms:manualPlatforms,
-      manual_required:manualPlatforms.length>0,
-      deliveries,
-      result
-    },502);
+      manual_required:manual,
+      deliveries,result
+    },manual?409:502);
   }
-
   return json({
-    ok:true,
-    partially_published:manualPlatforms.length>0,
-    automatic_published:true,
-    manual_required:manualPlatforms.length>0,
-    id,
-    status:after?.status||(manualPlatforms.length?'manual_required':'published'),
-    automatic_platforms:automaticPlatforms,
-    manual_platforms:manualPlatforms,
-    deliveries,
-    message:manualPlatforms.length
-      ? `已完成可自動發布平台：${automaticPlatforms.join('、')}；仍需人工發布：${manualPlatforms.join('、')}。`
-      : `立即發布完成：${automaticPlatforms.join('、')}。`,
-    result
+    ok:true,partially_published:false,automatic_published:true,manual_required:false,
+    id,status:after?.status||'published',
+    automatic_platforms:automaticPlatforms,manual_platforms:[],
+    deliveries,message:'已取得全部指定平台可採信的正式發布回執。',result
   });
 }
 
@@ -243,6 +196,8 @@ async function currentHealth(request,env,ctx){
     immediatePublishingBypassesFixedSchedule:true,
     unreadyPlatformFallsBackToManual:true,
     manualDeliveryReconciliation:true,
+    manualCompletionRequiresOfficialReceipt:true,
+    oldStatusOnlyManualCompletionDisabled:true,
     blindRetryAfterImmediateFailure:false,
     lineRenderFreeKeepWarm:true,
     lineHealthUrl:LINE_HEALTH_URL,
@@ -283,4 +238,4 @@ export default{
   }
 };
 
-export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl, completeManualDeliveries, currentHealth, keepLineWarm };
+export { flexiblePublishNow, changeManualRequiredStatus, deliveryState, platformReady, publishableImageUrl, currentHealth, keepLineWarm };

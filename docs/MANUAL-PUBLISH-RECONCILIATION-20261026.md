@@ -34,3 +34,16 @@
 新版保留原本 FB／IG 的新增草稿預設勾選，**Threads 必須由使用者親自勾選**；編輯舊貼文完整保存原選擇。舊插件若補上 Threads 選項，也預設不勾選。建立／編輯貼文時，後端必須取得非空、全數受支援的平台陣列；不得默默跳過混入的不支援項目、也不得將未選擇的平台偷偷改成 FB／IG。正式舊稱 `LINE OA 廣播` 會正規化為現行 `LINE OA`，避免新資料存成已廢棄的平台名稱。
 
 使用者仍需要通過 16 項圖文人工審核與圖片正式外觀規則，任何本輪程式變更都不會直接核准或發布貼文。
+
+## 2026-10-26｜修復仍存在的舊版彈性立即發布／人工補登漏洞
+
+正式路由鏈 `publishing-review-gate-entry.js → flexible-publish-entry.js → authority-entry.js` 仍保留舊版捷徑：原程式可在手動補登時直接將 `manual_required` 的 `social_publish_deliveries` 與貼文強制寫為 `published`，沒有任何平台核發的遠端 ID；彈性立即發布亦曾暫時把 `platforms_json` 改為已設定 API 的子集合，可能與每分鐘排程同時執行而競爭。僅移除前端按鈕／下一層 worker 直通入口不足以避免這些風險。
+
+此次已從正式鏈修正：
+1. `manual_required → published` 的舊補登入口一律拒絕，未擁有可稽核遠端回執不可造假；刪除直接偽造 `published` 的資料庫 helper。
+2. 彈性立即發布直接委派到已通過測試的 `publishPostById`，使用原有完整平台清單，不會改寫 `platforms_json`，由 D1 `(post_id,platform)` 原子認領及正式回執保存。
+3. 對既有 `sending`、`retry`、已發布或任何可能已嘗試發送的紀錄，禁止退回草稿造成重發；只有確認完全沒有發送痕跡時才允許退回草稿重新審核。
+4. 逐平台狀態只接受 `published + remote_id` 作為已發布；舊版狀態不完整者列人工核對。
+5. API 回應不再將純人工待核對的結果當成整篇 `ok:true`；不清除歷史資料、不建立新平台發文、不啟動測試發送。
+
+本次只修正式發布安全與一致性；Meta、LINE OA、n8n 的官方端對端串接驗收仍需獨立證據。
