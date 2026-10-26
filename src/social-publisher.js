@@ -141,6 +141,22 @@ async function dispatchInstagram(env,post){
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
 
+// One LINE broadcast request must use the same retry key across runtime
+// restarts and HTTP timeouts. An arbitrary new UUID for each attempt can
+// double-send an accepted broadcast. Hashing the stable approved post ID
+// gives a syntactically valid v4 UUID without storing or exposing tokens.
+export async function lineBroadcastRetryKey(post){
+  const id=clean(post?.id);
+  if(!id||id.length>500)throw Error('LINE 廣播缺少合法貼文識別碼');
+  const digest=new Uint8Array(await crypto.subtle.digest('SHA-256',
+    new TextEncoder().encode('仙加味:line-oa-broadcast:v1:'+id)));
+  const bytes=digest.slice(0,16);
+  bytes[6]=(bytes[6]&15)|64;
+  bytes[8]=(bytes[8]&63)|128;
+  const hex=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  return [hex.slice(0,8),hex.slice(8,12),hex.slice(12,16),hex.slice(16,20),hex.slice(20)].join('-');
+}
+
 async function dispatchLineOfficialAccount(env,post,platform){
   const timeout=withTimeout();
   try{
@@ -153,7 +169,16 @@ async function dispatchLineOfficialAccount(env,post,platform){
       if(media&&/^https:\/\//i.test(media))messages.push({type:'image',originalContentUrl:media,previewImageUrl:media});
     }
     if(!messages.length) return{platform,ok:false,retryable:false,error:'LINE OA 貼文沒有可發布內容'};
-    const response=await fetch('https://api.line.me/v2/bot/message/broadcast',{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${clean(env.LINE_CHANNEL_ACCESS_TOKEN)}`,'content-type':'application/json; charset=utf-8','x-line-retry-key':crypto.randomUUID()},body:JSON.stringify({messages:messages.slice(0,5),notificationDisabled:false})});
+    const retryKey=await lineBroadcastRetryKey(post);
+    const response=await fetch('https://api.line.me/v2/bot/message/broadcast',{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${clean(env.LINE_CHANNEL_ACCESS_TOKEN)}`,'content-type':'application/json; charset=utf-8','x-line-retry-key':retryKey},body:JSON.stringify({messages:messages.slice(0,5),notificationDisabled:false})});
+    // LINE's official 409 + x-line-accepted-request-id is proof the
+    // SAME logical broadcast was already accepted, not a new failed send.
+    if(response.status===409){
+      const accepted=clean(response.headers.get('x-line-accepted-request-id'));
+      if(accepted)return{platform,ok:true,status:409,remote_id:accepted,already_accepted:true};
+      return{platform,ok:false,retryable:false,manual_required:true,status:409,
+        error:'LINE 409 未附已受理請求 ID；停止重試，須人工核對官方發送紀錄'};
+    }
     return responseResult(response,platform);
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
@@ -212,9 +237,16 @@ async function dispatchPlatform(env,post,platform){
 }
 
 function retryDelayMs(attemptCount){const index=Math.min(Math.max(Number(attemptCount||1)-1,0),RETRY_DELAYS_MINUTES.length-1);return RETRY_DELAYS_MINUTES[index]*60000;}
-function retryAllowed(prior,now){
+function retryAllowed(prior,now,platform){
   if(!prior) return{allowed:true};
   if(['published','manual_required','permanent_failed'].includes(prior.status)) return{allowed:false,reason:prior.status};
+  // LINE's retry-key deduplication expires 24 hours after the first send.
+  // Never silently broadcast again with the same key outside a safe window.
+  if(['LINE OA','LINE OA 廣播'].includes(platform)&&prior.status==='retry'){
+    const first=Date.parse(prior.created_at||'');
+    if(!Number.isFinite(first)||now.getTime()-first>=23*3600000)
+      return{allowed:false,reason:'line_retry_window_expired_manual_verification'};
+  }
   const attempts=Number(prior.attempt_count||0); if(attempts>=MAX_RETRY_ATTEMPTS) return{allowed:false,reason:'max_attempts'};
   const last=Date.parse(prior.last_attempt_at||''); if(!Number.isFinite(last)) return{allowed:true};
   const next=last+retryDelayMs(attempts); if(now.getTime()<next) return{allowed:false,reason:'backoff',next_retry_at:new Date(next).toISOString()};
@@ -258,7 +290,7 @@ async function publishOne(env,post,now){
   const results=[];
   for(const platform of platforms){
     const prior=await deliveryRecord(env,post.id,platform);
-    const allowed=retryAllowed(prior,now);
+    const allowed=retryAllowed(prior,now,platform);
     if(!allowed.allowed){results.push({platform,skipped:true,reason:allowed.reason,status:prior?.status||''});continue;}
     const result=await dispatchPlatform(env,post,platform);
     await saveDelivery(env,post.id,platform,result,now.toISOString());
