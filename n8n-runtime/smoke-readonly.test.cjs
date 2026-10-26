@@ -15,7 +15,8 @@ function fixtures(){
   {id:'guilu-drink-180'},{id:'luerong-fen'}
  ];
  return {
-  [lineUrl]:{status:200,body:{ok:true,credentialsConfigured:true,orderOpen:true,productCount:4}},
+  [lineUrl]:{status:200,body:{ok:true,credentialsConfigured:true,orderOpen:true,
+    productCount:4,publicProductAuthority:{products:products.map(p=>({...p}))}}},
   [base+'public-product-master.json']:{status:200,body:{authority:'user-confirmed-current',
     brand:{name:'仙加味'},productCount:4,version:'fixture',products}},
   [base+'ai-answers.json']:{status:200,body:{sourceOfTruth:'public-product-master.json',version:'fixture'}},
@@ -293,4 +294,64 @@ test('old slow-event telemetry is not treated as a fresh customer incident',asyn
  assert.equal(x.report.ok,true);
  assert.equal(x.report.line.slowRecentCustomerReply,false);
  assert.equal(x.report.line.recentReplyUnconfirmed,false);
+});
+
+
+test('new user-approved public product is accepted when LINE actually matches latest authority',async()=>{
+ const x=await exercise(routes=>{
+  const master=routes[base+'public-product-master.json'].body;
+  const newProduct={id:'new-approved-release',name:'新版核准商品',spec:'10g／包',usage:['每日一包']};
+  master.products.push(newProduct);
+  master.productCount=5;
+  const line=routes[lineUrl].body;
+  line.productCount=5;
+  line.publicProductAuthority.products.push({...newProduct});
+ });
+ assert.equal(x.report.ok,true);
+ assert.deepEqual(x.report.errors,[]);
+ assert.equal(x.report.master.productCount,5);
+});
+
+test('replacing an old item with a newly approved public item is not blocked by stale ID constants',async()=>{
+ const x=await exercise(routes=>{
+  const master=routes[base+'public-product-master.json'].body;
+  const updated={id:'new-approved-product',name:'新版商品',spec:'100g／盒'};
+  master.products[0]=updated;
+  routes[lineUrl].body.publicProductAuthority.products[0]={...updated};
+ });
+ assert.equal(x.report.ok,true);
+ assert.deepEqual(x.report.errors,[]);
+});
+
+test('LINE missing a newly approved public item is still a real cross-system mismatch',async()=>{
+ const x=await exercise(routes=>{
+  const master=routes[base+'public-product-master.json'].body;
+  master.products.push({id:'new-approved-product',name:'新品',spec:'20g／包'});
+  master.productCount=5;
+ });
+ assert.equal(x.report.ok,false);
+ assert.ok(x.report.errors.some(s=>s.includes('LINE 產品筆數')));
+ assert.ok(x.report.errors.some(s=>s.includes('LINE 公開商品 ID')));
+});
+
+test('actual LINE name, specification and latest approved daily-use mismatches are rejected',async()=>{
+ for(const change of [
+  (line,master)=>{master.products[0].name='正式新版名稱';line.publicProductAuthority.products[0].name='舊名稱';},
+  (line,master)=>{master.products[0].spec='新版規格';line.publicProductAuthority.products[0].spec='舊規格';},
+  (line,master)=>{master.products[1].usage=['每日 2 罐'];line.publicProductAuthority.products[1].usage=['每日 1～2 罐'];}
+ ]){
+  const x=await exercise(routes=>{
+    change(routes[lineUrl].body,routes[base+'public-product-master.json'].body);
+  });
+  assert.equal(x.report.ok,false);
+  assert.ok(x.report.errors.some(s=>/LINE 公開商品名稱|LINE 公開商品規格|LINE 商品每日使用文案/.test(s)));
+ }
+});
+
+test('a working health endpoint with no customer chat proof is explicitly marked unverified',async()=>{
+ const x=await exercise();
+ assert.equal(x.report.ok,true,'Keep network health separate from customer E2E proof');
+ assert.equal(x.report.line.webhookObservedSinceRestart,false);
+ assert.equal(x.report.line.recentReplyAckObserved,false);
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
 });

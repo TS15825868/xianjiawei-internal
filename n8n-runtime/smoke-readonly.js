@@ -105,16 +105,50 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
     warnings.push('LINE 最近事件有回覆失敗紀錄，請比對官方聊天室與實際回覆；未取得真實 E2E 成功證據。');
 
   const m = master.body || {};
-  const expected = ['guilu-gao','guilu-drink-30','guilu-drink-180','luerong-fen'];
-  const ids = Array.isArray(m.products) ? m.products.map((p) => p.id) : [];
+  // Only the current user-approved public master determines which products
+  // are public. Never freeze old item IDs, counts or daily usage as gatekeeper
+  // constants. A future approved addition/removal must not be called an error.
+  const approvedProducts = Array.isArray(m.products) ? m.products : [];
+  const ids = approvedProducts.map(p => String(p?.id || '').trim());
+  const liveProducts = Array.isArray(line.body?.publicProductAuthority?.products)
+    ? line.body.publicProductAuthority.products : null;
+  const normalizeText = value => String(value || '').replace(/\s+/g,'').trim();
   if (!master.ok) errors.push(`產品母資料 HTTP ${master.status}`);
   if (m.brand?.name !== '仙加味') errors.push('公開產品母資料品牌錯誤');
   if (m.authority !== 'user-confirmed-current') errors.push('產品母資料 authority 錯誤');
-  if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id)) errors.push('產品母資料 productCount／ID 不一致');
-  if (!expected.every(id => ids.includes(id))) errors.push('產品母資料缺少核心產品');
-  if (Number(line.body?.productCount) !== ids.length) errors.push('LINE 產品筆數與公開母資料不一致');
-  const p30 = Array.isArray(m.products) ? m.products.find((p) => p.id === 'guilu-drink-30') : null;
-  if (p30 && (!Array.isArray(p30.usage) || !p30.usage.some(x => /每日\s*1\s*[～–-]\s*2\s*罐/.test(String(x))))) errors.push('30cc 每日 1～2 罐使用資料不一致');
+  if (!ids.length || Number(m.productCount) !== ids.length || new Set(ids).size !== ids.length || ids.some(id => !id))
+    errors.push('產品母資料 productCount／ID 不一致');
+  if (Number(line.body?.productCount) !== ids.length)
+    errors.push('LINE 產品筆數與最新公開母資料不一致');
+  if (!liveProducts) {
+    errors.push('LINE 未提供可比對的正式公開商品明細');
+  } else {
+    const liveIds = liveProducts.map(p => String(p?.id || '').trim());
+    if (liveIds.length !== ids.length || new Set(liveIds).size !== liveIds.length ||
+        [...liveIds].sort().join('|') !== [...ids].sort().join('|'))
+      errors.push('LINE 公開商品 ID 與最新母資料不一致');
+    const liveById = new Map(liveProducts.map(p => [String(p?.id || '').trim(),p]));
+    for (const product of approvedProducts) {
+      const live = liveById.get(String(product?.id || '').trim());
+      if (!live) continue;
+      const masterName = normalizeText(product?.name);
+      const liveName = normalizeText(live?.name);
+      const masterSpec = normalizeText(product?.specification || product?.spec || product?.size);
+      const liveSpec = normalizeText(live?.specification || live?.spec || live?.size);
+      if (masterName && liveName !== masterName)
+        errors.push('LINE 公開商品名稱與最新母資料不一致');
+      if (masterSpec && liveSpec !== masterSpec)
+        errors.push('LINE 公開商品規格與最新母資料不一致');
+      // Check only explicitly approved "每日..." guidance. Do not invent
+      // legacy dosage rules when the authoritative product copy changes.
+      const masterDaily = (Array.isArray(product?.usage) ? product.usage : [])
+        .map(normalizeText).filter(text => text.includes('每日'));
+      const liveDaily = new Set((Array.isArray(live?.usage) ? live.usage : [])
+        .map(normalizeText).filter(text => text.includes('每日')));
+      if (masterDaily.some(text => !liveDaily.has(text)))
+        errors.push('LINE 商品每日使用文案與最新母資料不一致');
+    }
+  }
 
   if (!ai.ok) errors.push(`AI answers HTTP ${ai.status}`);
   if (ai.body?.sourceOfTruth !== 'public-product-master.json') errors.push('AI answers 未指向產品母資料');
@@ -158,6 +192,11 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
       recentCustomerReplyAckMs:customerAckTimingAvailable?recordedAckMs:null,
       slowRecentCustomerReply:slowRecentCustomerReply===true,
       recentReplyUnconfirmed:recentReplyUnconfirmed===true,
+      // Absence of a webhook/reply sample since restart means "unverified",
+      // NOT a successful customer conversation or zero-millisecond latency.
+      webhookObservedSinceRestart:Number.isFinite(lastWebhookAt),
+      recentReplyAckObserved:recentCustomerEvent && customerAckTimingAvailable
+        && line.body?.lastCustomerResponseAccepted===true,
       customerReplyE2EVerified:false
     },
     master: { status: master.status, version: m.version, productCount: m.productCount },
