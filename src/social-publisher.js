@@ -278,6 +278,10 @@ function retryDelayMs(attemptCount){const index=Math.min(Math.max(Number(attempt
 function retryAllowed(prior,now,platform){
   if(!prior) return{allowed:true};
   if(['published','manual_required','permanent_failed'].includes(prior.status)) return{allowed:false,reason:prior.status};
+  // 'sending' is a durable pre-send claim. Never auto-recover it by
+  // guessing that the prior network request failed, even after a crash.
+  // Only an explicitly persisted retry can enter a new dispatch.
+  if(prior.status!=='retry')return{allowed:false,reason:'delivery_unconfirmed_or_in_flight'};
   // LINE's retry-key deduplication expires 24 hours after the first send.
   // Never silently broadcast again with the same key outside a safe window.
   if(['LINE OA','LINE OA 廣播'].includes(platform)&&prior.status==='retry'){
@@ -291,10 +295,30 @@ function retryAllowed(prior,now,platform){
   return{allowed:true};
 }
 async function deliveryRecord(env,postId,platform){return env.DB.prepare('SELECT * FROM social_publish_deliveries WHERE post_id=? AND platform=? LIMIT 1').bind(postId,platform).first();}
+// Reserve before ANY outbound platform POST: a D1 unique (post_id,platform)
+// claim prevents two workers / instant-publish requests sending concurrently.
+// A worker crash leaves 'sending' for manual reconciliation, never blind retry.
+async function reserveDelivery(env,postId,platform,prior,now){
+  const at=now.toISOString();
+  let result;
+  if(!prior){
+    result=await env.DB.prepare(
+      "INSERT OR IGNORE INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,'sending',0,?,NULL,'','','',?,?)"
+    ).bind(postId,platform,at,at,at).run();
+  }else if(prior.status==='retry'){
+    result=await env.DB.prepare(
+      "UPDATE social_publish_deliveries SET status='sending',last_attempt_at=?,updated_at=? WHERE post_id=? AND platform=? AND status='retry' AND last_attempt_at IS ? AND attempt_count=?"
+    ).bind(at,at,postId,platform,prior.last_attempt_at??null,Number(prior.attempt_count||0)).run();
+  }else return false;
+  if(result?.success!==true||!Number.isSafeInteger(result?.meta?.changes))
+    throw Error('delivery_claim_unconfirmed');
+  return result.meta.changes===1;
+}
 async function saveDelivery(env,postId,platform,result,now){
   const status=result.manual_required?'manual_required':result.ok?'published':result.retryable?'retry':'permanent_failed';
   const remoteId=clean(result.remote_id).slice(0,500),responseJson=JSON.stringify(result).slice(0,12000),errorText=result.ok?'':clean(result.error||'發布失敗').slice(0,2000);
-  await env.DB.prepare(`INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,?,1,?,?,?,?,?,?,?) ON CONFLICT(post_id,platform) DO UPDATE SET status=excluded.status,attempt_count=CASE WHEN excluded.status='manual_required' THEN social_publish_deliveries.attempt_count ELSE social_publish_deliveries.attempt_count+1 END,last_attempt_at=excluded.last_attempt_at,published_at=CASE WHEN excluded.status='published' THEN excluded.published_at ELSE social_publish_deliveries.published_at END,remote_id=CASE WHEN excluded.status='published' THEN excluded.remote_id ELSE social_publish_deliveries.remote_id END,response_json=excluded.response_json,error_text=excluded.error_text,updated_at=excluded.updated_at`).bind(postId,platform,status,now,result.ok?now:null,remoteId,responseJson,errorText,now,now).run();
+  const saved=await env.DB.prepare(`INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,?,1,?,?,?,?,?,?,?) ON CONFLICT(post_id,platform) DO UPDATE SET status=excluded.status,attempt_count=CASE WHEN excluded.status='manual_required' THEN social_publish_deliveries.attempt_count ELSE social_publish_deliveries.attempt_count+1 END,last_attempt_at=excluded.last_attempt_at,published_at=CASE WHEN excluded.status='published' THEN excluded.published_at ELSE social_publish_deliveries.published_at END,remote_id=CASE WHEN excluded.status='published' THEN excluded.remote_id ELSE social_publish_deliveries.remote_id END,response_json=excluded.response_json,error_text=excluded.error_text,updated_at=excluded.updated_at`).bind(postId,platform,status,now,result.ok?now:null,remoteId,responseJson,errorText,now,now).run();
+  if(saved?.success!==true||saved?.meta?.changes!==1)throw Error('delivery_receipt_not_persisted');
 }
 function scheduleLatenessMinutes(post,now){
   const scheduled=Date.parse(clean(post?.scheduled_at));
@@ -310,12 +334,16 @@ async function expireLateScheduledPost(env,post,now){
   const nowIso=now.toISOString();
   const lateness=Math.round(scheduleLatenessMinutes(post,now)*10)/10;
   const reason=`已超過正式排程 ${MAX_SCHEDULE_LATENESS_MINUTES} 分鐘自動發布窗口（目前延遲約 ${lateness} 分鐘）；為避免非預期晚發，系統已停止自動補發。`;
-  if(publishedPlatforms.length){
+  const uncertainPlatforms=unresolvedPlatforms.filter((platform)=>
+    ['sending','retry','manual_required'].includes(byPlatform.get(platform)?.status));
+  // One uncertain platform send is enough to require human verification,
+  // even when there is no confirmed published platform yet.
+  if(publishedPlatforms.length||uncertainPlatforms.length){
     for(const platform of unresolvedPlatforms){
       await env.DB.prepare(`INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) VALUES(?,?,'manual_required',0,NULL,NULL,'','',?,?,?) ON CONFLICT(post_id,platform) DO UPDATE SET status='manual_required',response_json='',error_text=excluded.error_text,updated_at=excluded.updated_at`).bind(post.id,platform,reason,nowIso,nowIso).run();
     }
     await env.DB.prepare("UPDATE social_posts SET status='manual_required',published_at=NULL,scheduled_at=NULL,updated_at=? WHERE id=?").bind(nowIso,post.id).run();
-    return{id:post.id,ok:false,manual_required:true,expired:true,reason:'schedule_late_cutoff',lateness_minutes:lateness,published_platforms:publishedPlatforms,manual_required_platforms:unresolvedPlatforms};
+    return{id:post.id,ok:false,manual_required:true,expired:true,reason:'schedule_late_cutoff',lateness_minutes:lateness,published_platforms:publishedPlatforms,uncertain_platforms:uncertainPlatforms,manual_required_platforms:unresolvedPlatforms};
   }
   await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=?").bind(nowIso,post.id).run();
   try{await env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=?').bind(post.id).run();}catch{}
@@ -331,9 +359,19 @@ async function publishOne(env,post,now){
     const prior=await deliveryRecord(env,post.id,platform);
     const allowed=retryAllowed(prior,now,platform);
     if(!allowed.allowed){results.push({platform,skipped:true,reason:allowed.reason,status:prior?.status||''});continue;}
+    let claimed=false;
+    try{claimed=await reserveDelivery(env,post.id,platform,prior,now)}
+    catch{results.push({platform,ok:false,skipped:true,reason:'delivery_claim_unavailable',retryable:false});continue}
+    if(!claimed){results.push({platform,ok:false,skipped:true,reason:'delivery_claim_conflict',retryable:false});continue}
     const result=await dispatchPlatform(env,post,platform);
-    await saveDelivery(env,post.id,platform,result,now.toISOString());
-    results.push(result);
+    try{await saveDelivery(env,post.id,platform,result,now.toISOString());results.push(result)}
+    catch{
+      // The remote platform may have accepted this send; leave the durable
+      // claim in an unverified state, never retry or mark published.
+      results.push({platform,ok:false,manual_required:true,delivery_outcome_unverified:true,
+        retryable:false,reason:'delivery_receipt_persist_failed',
+        error:'對外發布結果未能存入 D1；停止重發，請人工核對平台回執'});
+    }
   }
   const manual=results.filter((item)=>item.manual_required||item.reason==='manual_required');
   const automatic=results.filter((item)=>!item.manual_required&&item.reason!=='manual_required');
@@ -357,7 +395,7 @@ export function publisherConfiguration(env){
     const metricoolRoute=config.route==='metricool';
     platforms[name]={mode:metricoolRoute?(webhookConfigured?'metricool_webhook':'metricool_external'):directConfigured?'official_api':webhookConfigured?'webhook':'unconfigured',directConfigured:Boolean(directConfigured),webhookConfigured,tokenConfigured:ready,ready,manualRequired:!ready,externalScheduler:metricoolRoute?'Metricool':'',account:metricoolRoute?'xianjiawei.tw':'',reason:metricoolRoute?(webhookConfigured?'Threads 固定走 Metricool Webhook。':'Threads 固定走 Metricool xianjiawei.tw；伺服器端未設定Webhook時由外部正式排程處理，禁止改走Graph API。'):directConfigured?'官方 API 必要設定已存在。':webhookConfigured?'Webhook 備援設定已存在。':'尚未完成伺服器端設定；發布時會轉人工發布包，不阻擋其他平台。'};
   }
-  return{cronEnabled:true,approvalGate:true,mediaRequired:true,onlyScheduledDuePosts:true,idempotencyProtection:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,threadsFormalRoute:'Metricool xianjiawei.tw',lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>!['LINE VOOM','Threads'].includes(name)).every(([,item])=>item.ready)};
+  return{cronEnabled:true,approvalGate:true,mediaRequired:true,onlyScheduledDuePosts:true,idempotencyProtection:true,preDispatchAtomicClaim:true,crashRecoveryManualOnly:true,perPlatformDeliveryTracking:true,retryBackoffEnabled:true,maximumRetryAttempts:MAX_RETRY_ATTEMPTS,maximumScheduleLatenessMinutes:MAX_SCHEDULE_LATENESS_MINUTES,lateScheduleGuardEnabled:true,requestTimeoutSeconds:REQUEST_TIMEOUT_MS/1000,officialApiPreferred:true,webhookFallbackEnabled:true,shortVideoReelsSupported:true,threadsSupported:true,threadsFormalRoute:'Metricool xianjiawei.tw',lineVoomManualOnly:true,partialDeliveryStatus:'manual_required',platforms,fullyConfigured:Object.entries(platforms).filter(([name])=>!['LINE VOOM','Threads'].includes(name)).every(([,item])=>item.ready)};
 }
 export async function publishPostById(env,postId,now=new Date()){
   try{const owned=await env.DB.prepare('SELECT post_id FROM social_metricool_sync WHERE post_id=?').bind(postId).first();if(owned)return{ok:false,id:postId,external_scheduler:'Metricool',error:'此貼文由Metricool唯一排程管理，禁止由第二路徑重複發布'};}catch(error){if(!/no such table/.test(String(error)))throw error}
