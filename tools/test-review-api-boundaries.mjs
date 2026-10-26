@@ -99,14 +99,15 @@ assert.equal((await post('regeneration-start',{mode:'image'})).status,200);asser
 for(const quality of ['needs_rework','needs_regeneration','rejected','low','missing']){
   state.row.image_quality_status=quality;
   const writesBefore=state.writes.length, forwardedBefore=state.forwarded;
-  for(const mode of ['image','all']){
-    const denied=await post('regeneration-ready',{mode});
-    assert.equal(denied.status,409,'Must not mark '+quality+' image completed for '+mode);
+  for(const body of [{mode:'image'},{mode:'all'},{mode:'copy'},{mode:''},{}, {mode:'invalid'}]){
+    const denied=await post('regeneration-ready',body);
+    assert.equal(denied.status,409,'Unresolved '+quality+' image must be blocked regardless of untrusted mode: '+JSON.stringify(body));
     assert.equal(state.row.status,'draft','Keep rework in draft');
     assert.equal(state.writes.length,writesBefore,'No D1 write after failed rework readiness');
     assert.equal(state.forwarded,forwardedBefore,'No platform publishing after failed rework');
   }
 }
+// New image quality has been re-checked after an actual replacement.
 state.row.image_quality_status='clear'; // Mock a replacement upload and fresh quality check.
 assert.equal((await post('regeneration-ready',{mode:'image'})).status,200);assert.equal(state.row.status,'pending_review');assert.equal(state.row.image_approved,0);
 console.log('PASS regeneration-ready refuses unchanged rejected images; new quality checked image returns to human review');

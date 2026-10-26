@@ -169,10 +169,13 @@ async function regenerationReady(request,env,ctx,id){const authorization=await a
   // image was uploaded. Leave the row in draft until the replacement has
   // cleared its rejected-quality marker. This does not auto-approve images:
   // every replacement returns to the human 16-check review.
-  if(['image','all'].includes(mode)&&
-    ['needs_rework','needs_regeneration','rejected','low','missing']
+  // Regeneration mode comes from the client and is not proof that rejected
+  // media was replaced. Never let "copy", omitted mode, or an invalid mode
+  // bypass the quality hold. Text-only rework can be drafted, but completion
+  // requires a new qualifying image before returning to human review.
+  if(['needs_rework','needs_regeneration','rejected','low','missing']
       .includes(clean(before.image_quality_status).toLowerCase()))
-    return json({error:'原圖片仍標記為待重製／不合格，請先上傳新圖片並儲存，再送回待審核'},409);
+    return json({error:'圖片仍標記為待重製／不合格，請先更換圖片並儲存，再送回待審核'},409);
   const now=new Date().toISOString();const changed=await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=? AND status=? AND published_at IS NULL").bind(now,id,before.status).run();if(Number(changed?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，請重新整理'},409);await clearGate(env,id);const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核',id,before,after,mode);return json({ok:true,id,status:'pending_review',mode,review_required:true,required_checks:REQUIRED_CHECKS,message:'新文案／圖片已送回待審核；必須重新完成16項圖文審核。'})}
 
 export default{async fetch(request,env,ctx){
