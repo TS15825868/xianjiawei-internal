@@ -51,3 +51,9 @@
 `social-support.html` 的免模型產品規格／成分草稿可讓 `owner`、`admin`、`content`、`sales` 的**啟用帳號**使用。模型推論草稿仍維持原本角色及免費用量放行雙重限制，沒有因 `sales` 新增免模型權限而打開推論或對客自動發送。
 
 `/api/ai-ops/readiness`、`/api/social-facts/suggest` 及 `/api/social-ai/draft` 一律以 `active=1` 判斷有效人員；缺少 active、假字串 `"0"`、停用帳號不得只憑角色名稱通過。這是內部授權一致性修復，未更動 Cloudflare Access 的實際登入憑證或外部 API Token。
+
+## 2026-10-26｜貼文發布卡住狀態的免費唯讀監控
+
+登入 Cloudflare Access 的客服／管理帳號後，點「檢查 AI 營運狀態」，會新增既有 D1 `social_publish_deliveries` 的唯讀聚合：總筆數、待重試、人工核對、發送中超過 15 分鐘、舊版已標記發布卻缺少遠端 ID 的筆數。不查詢貼文本文、顧客資料、金流、Token，不呼叫模型、不建立定時排程與付費服務。
+
+此狀態是 D1 紀錄而非平台遠端 API 實測；資料庫缺失、計數異常時回報 unavailable，絕不推定 0 筆就是正常。

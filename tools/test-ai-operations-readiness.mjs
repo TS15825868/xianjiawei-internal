@@ -172,3 +172,47 @@ test('inactive or incompletely verified staff profiles cannot access aggregate o
  }
  assert.equal(dbReads,0);
 });
+
+test('staff-only publication backlog returns aggregate counts without customer/private content',async()=>{
+ const sql="SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN status='retry' THEN 1 ELSE 0 END),0) AS waiting_retry, COALESCE(SUM(CASE WHEN status='manual_required' THEN 1 ELSE 0 END),0) AS manual_review, COALESCE(SUM(CASE WHEN status='sending' AND (updated_at IS NULL OR datetime(updated_at)<=datetime('now','-15 minutes')) THEN 1 ELSE 0 END),0) AS stale_sending, COALESCE(SUM(CASE WHEN status='published' AND TRIM(COALESCE(remote_id,''))='' THEN 1 ELSE 0 END),0) AS published_no_remote_id FROM social_publish_deliveries";
+ const DB={prepare(q){
+  if(q==='SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status')
+   return{all:async()=>({results:[{status:'scheduled',total:5}]})};
+  if(q===sql)return{first:async()=>({
+   total:17,waiting_retry:3,manual_review:4,stale_sending:2,published_no_remote_id:1,
+   private_post_text:'PRIVATE CUSTOMER COPY',reply_token:'DO NOT SHOW'})};
+  throw Error('other optional standby tables unavailable');
+ }};
+ const response=await aiOperationsReadiness(request,{DB},{authenticate:owner});
+ const data=await response.json();
+ assert.equal(response.status,200);
+ assert.deepEqual(data.data.publicationQueue,{
+  schema:'available',total:17,waitingRetry:3,manualReview:4,staleSending:2,publishedMissingRemoteId:1
+ });
+ assert.equal(data.readOnly,true);
+ assert.equal(data.modelCalls,0);
+ assert.equal(data.writes,0);
+ assert.equal(data.customerSend,false);
+ assert.ok(!JSON.stringify(data).includes('PRIVATE CUSTOMER COPY'));
+ assert.ok(!JSON.stringify(data).includes('DO NOT SHOW'));
+});
+test('bad or inconsistent publish backlog cannot be reported as a healthy zero',async()=>{
+ const sql="SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN status='retry' THEN 1 ELSE 0 END),0) AS waiting_retry, COALESCE(SUM(CASE WHEN status='manual_required' THEN 1 ELSE 0 END),0) AS manual_review, COALESCE(SUM(CASE WHEN status='sending' AND (updated_at IS NULL OR datetime(updated_at)<=datetime('now','-15 minutes')) THEN 1 ELSE 0 END),0) AS stale_sending, COALESCE(SUM(CASE WHEN status='published' AND TRIM(COALESCE(remote_id,''))='' THEN 1 ELSE 0 END),0) AS published_no_remote_id FROM social_publish_deliveries";
+ for(const value of [
+  {total:10,waiting_retry:'bad',manual_review:0,stale_sending:0,published_no_remote_id:0},
+  {total:3,waiting_retry:2,manual_review:2,stale_sending:2,published_no_remote_id:2},
+  null
+ ]){
+  const DB={prepare(q){
+   if(q==='SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status')
+    return{all:async()=>({results:[]})};
+   if(q===sql)return{first:async()=>value};
+   throw Error('private D1 failure');
+  }};
+  const data=await (await aiOperationsReadiness(request,{DB},{authenticate:owner})).json();
+  assert.equal(data.ok,true);
+  assert.equal(data.data.publicationQueue.schema,'unavailable');
+  assert.equal(data.data.publicationQueue.manualReview,null);
+  assert.ok(!JSON.stringify(data).includes('private D1 failure'));
+ }
+});

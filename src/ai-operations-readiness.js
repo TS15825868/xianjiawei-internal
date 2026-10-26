@@ -85,13 +85,30 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   }catch{
     // Existing production services remain independent; never infer a live callback.
   }
+  // Staff-only aggregated delivery backlog. No post copy, customer data
+  // or reply tokens are read. Authentication and roles already validated.
+  let publicationQueue={schema:'unavailable',total:null,waitingRetry:null,
+    manualReview:null,staleSending:null,publishedMissingRemoteId:null};
+  try{
+    const row=await env.DB.prepare("SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN status='retry' THEN 1 ELSE 0 END),0) AS waiting_retry, COALESCE(SUM(CASE WHEN status='manual_required' THEN 1 ELSE 0 END),0) AS manual_review, COALESCE(SUM(CASE WHEN status='sending' AND (updated_at IS NULL OR datetime(updated_at)<=datetime('now','-15 minutes')) THEN 1 ELSE 0 END),0) AS stale_sending, COALESCE(SUM(CASE WHEN status='published' AND TRIM(COALESCE(remote_id,''))='' THEN 1 ELSE 0 END),0) AS published_no_remote_id FROM social_publish_deliveries").first();
+    if(!row||typeof row!=='object')throw Error('invalid_publish_queue');
+    const counts=['total','waiting_retry','manual_review','stale_sending','published_no_remote_id']
+      .map(key=>Number(row[key]));
+    if(counts.some(value=>!Number.isSafeInteger(value)||value<0))throw Error('invalid_publish_counts');
+    const [total,waitingRetry,manualReview,staleSending,publishedMissingRemoteId]=counts;
+    if(waitingRetry+manualReview+staleSending+publishedMissingRemoteId>total)
+      throw Error('inconsistent_publish_counts');
+    publicationQueue={schema:'available',total,waitingRetry,manualReview,staleSending,publishedMissingRemoteId};
+  }catch{
+    // D1 query failure is unknown, never a healthy zero queue.
+  }
   const configured=env?.XJW_SOCIAL_AI_DRAFT_ENABLED==='true' &&
     env?.XJW_AI_FREE_ACCOUNT_CONFIRMED==='true' && typeof env?.AI?.run==='function';
   return respond({
     ok:true,readOnly:true,customerSend:false,writes:0,modelCalls:0,
     checkedAt:new Date().toISOString(),
     mode:'human_supervised_ai',allAutonomous:false,
-    data:{d1:'query_succeeded',postStatusCounts:posts,lineReceiptInbox:lineInbox,lineHandoff:handoff,metaReceiptInbox:metaInbox},
+    data:{d1:'query_succeeded',postStatusCounts:posts,publicationQueue,lineReceiptInbox:lineInbox,lineHandoff:handoff,metaReceiptInbox:metaInbox},
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',
@@ -110,6 +127,6 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
       publishedPostsImmutable:true,actualCustomerSendNotVerified:true
     },
     limits:{modelBudgetEnforcedByThisEndpoint:false,freePlanVerifiedByThisEndpoint:false},
-    note:'D1 post counts and optional LINE inbox metadata only. Model/Meta/LINE/Metricool live API, customer replies and AI free balance are NOT tested.'
+    note:'D1 post counts, publish-delivery aggregates and LINE/Meta inbox metadata only. No live platform API, customer sends, models or free AI balance tested.'
   });
 }

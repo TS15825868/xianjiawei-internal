@@ -31,3 +31,10 @@ test('Cloudflare Worker delivers staff page through unchanged protected asset pi
  assert.match(await r.text(),/仙加味備援/);
  assert.equal(r.headers.get('cache-control'),'no-store');
 });
+
+test('staff status shows publishing retry and stuck delivery counts without outbound API writes',()=>{
+ assert.match(html,/社群發送紀錄：/);
+ assert.match(html,/發送中逾15分鐘/);
+ assert.match(html,/舊紀錄缺發布 ID/);
+ assert.match(html,/publicationQueue\?\.schema==='available'/);
+});

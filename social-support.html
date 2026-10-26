@@ -114,6 +114,15 @@ aiOpsButton.addEventListener('click',async()=>{
    '已排程：'+(count.scheduled??0)+' 篇',
    '已發布：'+(count.published??0)+' 篇',
    '',
+   data?.data?.publicationQueue?.schema==='available'
+    ? '社群發送紀錄：總 '+data.data.publicationQueue.total+
+      ' 筆｜待重試 '+data.data.publicationQueue.waitingRetry+
+      '｜需人工核對 '+data.data.publicationQueue.manualReview+
+      '｜發送中逾15分鐘 '+data.data.publicationQueue.staleSending+
+      '｜舊紀錄缺發布 ID '+data.data.publicationQueue.publishedMissingRemoteId+
+      '（僅 D1 記錄，不代表官方 API 已驗證）'
+    : '社群發送紀錄：尚無可採信的 D1 狀態，不能推定全部正常',
+   '',
    aiState,
    data?.data?.metaReceiptInbox?.schema==='available'
     ? 'Meta 備援收件箱：已建立，FB '+(data.data.metaReceiptInbox.platformCounts?.facebook??0)+'、IG '+(data.data.metaReceiptInbox.platformCounts?.instagram??0)+'、Threads '+(data.data.metaReceiptInbox.platformCounts?.threads??0)+'（正式自動收件／回覆仍未放行）'
