@@ -382,7 +382,9 @@ async function publishOne(env,post,now){
   }else if(allAutomaticDone){
     await env.DB.prepare("UPDATE social_posts SET status='published',published_at=COALESCE(NULLIF(published_at,''),?),scheduled_at=NULL,updated_at=? WHERE id=?").bind(now.toISOString(),now.toISOString(),post.id).run();
   }
-  return{id:post.id,ok:allAutomaticDone,manual_required:manual.length>0,results};
+  // A post awaiting even one human reconciliation is not 'ok' as a whole,
+  // regardless of successful deliveries to other platforms.
+  return{id:post.id,ok:allAutomaticDone&&manual.length===0,manual_required:manual.length>0,results};
 }
 
 export function publisherConfiguration(env){

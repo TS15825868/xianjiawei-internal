@@ -92,7 +92,7 @@ test('receipt D1 failure after confirmed outbound request never repeats public p
  try{
   const first=await publishPostById(e,id,now);
   assert.equal(outbound,1);
-  assert.equal(first.ok,true,'the operation is quarantined for manual reconciliation');
+  assert.equal(first.ok,false,'unverified send must not be presented as overall publication success');
   assert.equal(first.manual_required,true);
   assert.equal(first.results[0].delivery_outcome_unverified,true);
   assert.equal(d.delivery.status,'sending','D1 reservation survives app receipt-save failure');
