@@ -91,3 +91,27 @@ test('missing original delivery time never silently resets retry-key safety',asy
   assert.equal(r.results[0].reason,'line_retry_window_expired_manual_verification');
  }finally{globalThis.fetch=save}
 });
+
+test('LINE 200 without request ID or sentMessages ID cannot fake published state',async()=>{
+ const saved=globalThis.fetch;
+ globalThis.fetch=async()=>new Response('{}',{status:200});
+ try{
+  const res=await publishPostById({DB:fakeDb().DB,LINE_CHANNEL_ACCESS_TOKEN:'local-test-only'},post.id,new Date('2026-10-26T00:00:00Z'));
+  assert.equal(res.results[0].ok,false);
+  assert.equal(res.results[0].manual_required,true);
+  assert.equal(res.results[0].delivery_outcome_unverified,true);
+ }finally{globalThis.fetch=saved}
+});
+test('LINE official request ID or sentMessages ID proves accepted HTTP 200',async()=>{
+ const saved=globalThis.fetch;
+ try{
+  globalThis.fetch=async()=>new Response('{}',{status:200,headers:{'x-line-request-id':'line-receipt-001'}});
+  let r=await publishPostById({DB:fakeDb().DB,LINE_CHANNEL_ACCESS_TOKEN:'local-test-only'},post.id,new Date('2026-10-26T00:00:00Z'));
+  assert.equal(r.results[0].ok,true);
+  assert.equal(r.results[0].remote_id,'line-receipt-001');
+  globalThis.fetch=async()=>new Response('{"sentMessages":[{"id":"sent-message-001"}]}',{status:200});
+  r=await publishPostById({DB:fakeDb().DB,LINE_CHANNEL_ACCESS_TOKEN:'local-test-only'},post.id,new Date('2026-10-26T00:00:00Z'));
+  assert.equal(r.results[0].ok,true);
+  assert.equal(r.results[0].remote_id,'sent-message-001');
+ }finally{globalThis.fetch=saved}
+});

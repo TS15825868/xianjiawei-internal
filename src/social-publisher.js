@@ -50,6 +50,22 @@ async function responseResult(response,platform){
   }
   return {platform,ok:true,status:response.status,remote_id:responseData?.id||responseData?.post_id||responseData?.video_id||responseData?.name||response.headers.get('x-remote-post-id')||response.headers.get('x-line-request-id')||'',response:responseData||responseText};
 }
+function verifiedPublication(result,{webhook=false,allowAcceptedReel=false}={}){
+  if(!result?.ok)return result;
+  const remoteId=clean(result.remote_id);
+  const body=result.response&&typeof result.response==='object'&&!Array.isArray(result.response)
+    ?result.response:{};
+  // Webhook 200 can mean queued, not delivered. No remote post ID means no proof.
+  const confirmed=webhook
+    ?body.published===true||body.status==='published'||body.delivery_status==='published'
+    :allowAcceptedReel?body.success!==false:true;
+  if(remoteId&&confirmed)return result;
+  return {...result,ok:false,retryable:false,manual_required:true,
+    delivery_outcome_unverified:true,error:webhook
+      ?'Webhook 未提供已發布狀態與正式遠端貼文 ID；等待外部回執及人工查證'
+      :'平台雖回傳成功 HTTP，但未取得有效正式發布回執；需人工核對，禁止重複送出'};
+}
+
 function graphVersion(env){return clean(env.META_GRAPH_VERSION||'v25.0').replace(/^\/+|\/+$/g,'');}
 async function resolveMetaIdentity(env){
   const token=clean(env.META_PAGE_ACCESS_TOKEN);
@@ -95,7 +111,7 @@ async function dispatchFacebookImage(env,post){
     const pageId=clean(identity.pageId);
     if(!pageId)return{platform,ok:false,retryable:false,error:identity.error||'無法由 Meta Page Access Token 解析 Facebook Page ID'};
     writeAttempted=true;const response=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(pageId)}/photos`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({url:mediaUrl(post),caption:postText(post),access_token:clean(env.META_PAGE_ACCESS_TOKEN)})});
-    return responseResult(response,platform);
+    return verifiedPublication(await responseResult(response,platform));
   }catch(error){return{platform,ok:false,retryable:!writeAttempted,
     ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
     error:String(error?.message||error)};}finally{timeout.done();}
@@ -109,13 +125,13 @@ async function dispatchFacebookReel(env,post){
     if(!started.ok)return started;
     const videoId=clean(started.response?.video_id||started.remote_id);
     const uploadUrl=clean(started.response?.upload_url)||`https://rupload.facebook.com/video-upload/${version}/${encodeURIComponent(videoId)}`;
-    if(!videoId)return{platform,ok:false,retryable:true,error:'Facebook Reel 未回傳 video_id'};
+    if(!videoId)return{platform,ok:false,retryable:false,manual_required:true,delivery_outcome_unverified:true,error:'Facebook Reel 初始請求已成功，但沒有取得 video_id，先核對官方狀態'};
     const uploadResponse=await fetch(uploadUrl,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`OAuth ${token}`,file_url:mediaUrl(post)}});
     const uploaded=await responseResult(uploadResponse,platform);
     if(!uploaded.ok)return uploaded;
     const finishResponse=await fetch(reelEndpoint,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({access_token:token,video_id:videoId,upload_phase:'finish',video_state:'PUBLISHED',description:postText(post),title:clean(post.title)})});
     const finished=await responseResult(finishResponse,platform);
-    return finished.ok?{...finished,remote_id:finished.remote_id||videoId,media_type:'reel'}:finished;
+    return finished.ok?verifiedPublication({...finished,remote_id:finished.remote_id||videoId,media_type:'reel'},{allowAcceptedReel:true}):finished;
   }catch(error){return{platform,ok:false,retryable:!writeAttempted,
     ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
     error:String(error?.message||error)};}finally{timeout.done();}
@@ -137,7 +153,7 @@ async function dispatchInstagram(env,post){
     const created=await responseResult(createResponse,platform);
     if(!created.ok) return created;
     const creationId=clean(created.remote_id);
-    if(!creationId) return{platform,ok:false,retryable:true,error:'Instagram 未回傳媒體容器 ID'};
+    if(!creationId) return{platform,ok:false,retryable:false,manual_required:true,delivery_outcome_unverified:true,error:'Instagram 建立容器成功但未取得容器 ID；停止重試並查核'};
     for(let attempt=0;attempt<8;attempt+=1){
       await sleep(attempt===0?1000:1800);
       const statusResponse=await fetch(`https://graph.facebook.com/${graphVersion(env)}/${encodeURIComponent(creationId)}?fields=status_code,status&access_token=${encodeURIComponent(token)}`,{signal:timeout.controller.signal});
@@ -148,7 +164,7 @@ async function dispatchInstagram(env,post){
     }
     const publishResponse=await fetch(`${base}/media_publish`,{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:creationId,access_token:token})});
     const result=await responseResult(publishResponse,platform);
-    return result.ok?{...result,media_type:video?'reel':'image'}:result;
+    return result.ok?verifiedPublication({...result,media_type:video?'reel':'image'}):result;
   }catch(error){return{platform,ok:false,retryable:!writeAttempted,
     ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
     error:String(error?.message||error)};}finally{timeout.done();}
@@ -192,7 +208,12 @@ async function dispatchLineOfficialAccount(env,post,platform){
       return{platform,ok:false,retryable:false,manual_required:true,status:409,
         error:'LINE 409 未附已受理請求 ID；停止重試，須人工核對官方發送紀錄'};
     }
-    return responseResult(response,platform);
+    const accepted=await responseResult(response,platform);
+    if(accepted.ok&&!clean(accepted.remote_id)){
+      const messageId=clean(accepted.response?.sentMessages?.[0]?.id);
+      return verifiedPublication({...accepted,remote_id:messageId});
+    }
+    return verifiedPublication(accepted);
   }catch(error){return{platform,ok:false,retryable:true,error:String(error?.message||error)};}finally{timeout.done();}
 }
 async function googleAccessToken(env){
@@ -214,7 +235,7 @@ async function dispatchGoogleBusiness(env,post){
     const locationId=encodeURIComponent(clean(env.GOOGLE_BUSINESS_LOCATION_ID));
     const body={languageCode:'zh-TW',summary:postText(post).slice(0,1500),topicType:'STANDARD',media:[{mediaFormat:'PHOTO',sourceUrl:mediaUrl(post)}]};
     writeAttempted=true;const response=await fetch(`https://mybusiness.googleapis.com/v4/accounts/${accountId}/locations/${locationId}/localPosts`,{method:'POST',signal:timeout.controller.signal,headers:{authorization:`Bearer ${tokenResult.token}`,'content-type':'application/json; charset=utf-8'},body:JSON.stringify(body)});
-    return responseResult(response,platform);
+    return verifiedPublication(await responseResult(response,platform));
   }catch(error){return{platform,ok:false,retryable:!writeAttempted,
     ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
     error:String(error?.message||error)};}finally{timeout.done();}
@@ -223,7 +244,7 @@ async function dispatchWebhook(env,post,platform,config){
   const timeout=withTimeout();let writeAttempted=false;
   try{
     writeAttempted=true;const response=await fetch(clean(env[config.url]),{method:'POST',signal:timeout.controller.signal,headers:{'content-type':'application/json; charset=utf-8',authorization:`Bearer ${clean(env[config.token])}`,'idempotency-key':`${post.id}:${platform}`,'x-xianjiawei-post-id':post.id,'x-xianjiawei-platform':encodeURIComponent(platform)},body:JSON.stringify(payloadFor(post,platform))});
-    return responseResult(response,platform);
+    return verifiedPublication(await responseResult(response,platform),{webhook:true});
   }catch(error){return{platform,ok:false,retryable:!writeAttempted,
     ...(writeAttempted?{manual_required:true,delivery_outcome_unverified:true}:{}),
     error:String(error?.message||error)};}finally{timeout.done();}

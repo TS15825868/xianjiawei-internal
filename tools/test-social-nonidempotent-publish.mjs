@@ -117,3 +117,83 @@ test('scheduled post with no valid platforms cannot become published',async()=>{
  assert.equal(report.results[0].reason,'no_valid_platforms');
  assert.equal(db.writes.length,0);
 });
+
+test('Facebook HTTP 200 without official remote post ID stays pending manual verification',async()=>{
+ const env={META_PAGE_ACCESS_TOKEN:'fake',META_PAGE_ID:'11111',META_INSTAGRAM_USER_ID:'22222'};
+ const {report,requests,db}=await simulate('Facebook',env,async()=>new Response('{"success":true}',{status:200}));
+ assert.equal(requests.length,1);
+ assert.equal(report.results[0].ok,false);
+ assert.equal(report.results[0].manual_required,true);
+ assert.equal(report.results[0].delivery_outcome_unverified,true);
+ assert.ok(db.state.writes.some(x=>x.sql.includes('social_publish_deliveries')&&x.binds.includes('manual_required')));
+ assert.equal(db.state.writes.some(x=>x.sql.includes("status='published'")),false);
+});
+test('Instagram media_publish 200 lacking media ID cannot be labeled published',async()=>{
+ const env={META_PAGE_ACCESS_TOKEN:'fake',META_PAGE_ID:'11111',META_INSTAGRAM_USER_ID:'22222'};
+ const {report,requests}=await simulate('Instagram',env,async(url)=>{
+  if(String(url).endsWith('/media'))return new Response('{"id":"ig-local-container"}',{status:200});
+  if(String(url).includes('status_code'))return new Response('{"status_code":"FINISHED"}',{status:200});
+  if(String(url).endsWith('/media_publish'))return new Response('{}',{status:200});
+  throw Error('unexpected Instagram route');
+ });
+ assert.equal(requests.length,3);
+ assert.equal(report.results[0].manual_required,true);
+ assert.equal(report.results[0].delivery_outcome_unverified,true);
+ assert.equal(report.results[0].retryable,false);
+});
+test('Google 200 without returned local-post name requires manual verification',async()=>{
+ const env={GOOGLE_OAUTH_CLIENT_ID:'fake',GOOGLE_OAUTH_CLIENT_SECRET:'fake',
+  GOOGLE_OAUTH_REFRESH_TOKEN:'fake',GOOGLE_BUSINESS_ACCOUNT_ID:'111',GOOGLE_BUSINESS_LOCATION_ID:'222'};
+ const {report}=await simulate('Google 商家',env,async url=>String(url).includes('oauth2.googleapis.com')
+  ?new Response('{"access_token":"local-test-only"}',{status:200})
+  :new Response('{}',{status:200}));
+ assert.equal(report.results[0].ok,false);
+ assert.equal(report.results[0].manual_required,true);
+});
+test('Webhook 200 queued acknowledgement cannot impersonate a published post',async()=>{
+ const env={FACEBOOK_PUBLISH_WEBHOOK_URL:'https://hook.example.test/receive',
+  FACEBOOK_PUBLISH_WEBHOOK_TOKEN:'fake'};
+ const {report}=await simulate('Facebook',env,async()=>new Response('{"accepted":true,"id":"queue-123"}',{status:200}));
+ assert.equal(report.results[0].ok,false);
+ assert.equal(report.results[0].manual_required,true);
+ assert.equal(report.results[0].delivery_outcome_unverified,true);
+});
+test('Webhook explicit published state with remote post ID is valid evidence',async()=>{
+ const env={FACEBOOK_PUBLISH_WEBHOOK_URL:'https://hook.example.test/receive',
+  FACEBOOK_PUBLISH_WEBHOOK_TOKEN:'fake'};
+ const {report}=await simulate('Facebook',env,async()=>new Response('{"published":true,"id":"remote-post-123"}',{status:200}));
+ assert.equal(report.results[0].ok,true);
+ assert.equal(report.results[0].remote_id,'remote-post-123');
+ assert.notEqual(report.results[0].manual_required,true);
+});
+test('Webhook published flag without remote ID still lacks a valid publication receipt',async()=>{
+ const env={FACEBOOK_PUBLISH_WEBHOOK_URL:'https://hook.example.test/receive',
+  FACEBOOK_PUBLISH_WEBHOOK_TOKEN:'fake'};
+ const {report}=await simulate('Facebook',env,async()=>new Response('{"published":true}',{status:200}));
+ assert.equal(report.results[0].ok,false);
+ assert.equal(report.results[0].manual_required,true);
+});
+test('Facebook Reel finish returned HTTP 200 success false must not publish',async()=>{
+ const env={META_PAGE_ACCESS_TOKEN:'fake',META_PAGE_ID:'11111',META_INSTAGRAM_USER_ID:'22222'};
+ const fixture={...post('Facebook'),media_type:'reel',video_url:'https://assets.example.test/clip.mp4'};
+ const saved=globalThis.fetch;let calls=0;
+ globalThis.fetch=async()=>{
+  calls++;
+  if(calls===1)return new Response('{"video_id":"video-1122","upload_url":"https://uploader.example.test"}',{status:200});
+  if(calls===2)return new Response('{}',{status:200});
+  if(calls===3)return new Response('{"success":false}',{status:200});
+  throw Error('unexpected extra POST');
+ };
+ try{
+  const db=fakeDb('Facebook'),originalPrepare=db.DB.prepare;
+  db.DB.prepare=function(sql){
+   const statement=originalPrepare.call(this,sql);
+   if(sql.includes('FROM social_posts'))statement.first=async()=>fixture;
+   return statement;
+  };
+  const report=await publishPostById({DB:db.DB,...env},fixture.id,new Date('2026-10-26T00:00:00Z'));
+  assert.equal(calls,3);
+  assert.equal(report.results[0].ok,false);
+  assert.equal(report.results[0].manual_required,true);
+ }finally{globalThis.fetch=saved}
+});
