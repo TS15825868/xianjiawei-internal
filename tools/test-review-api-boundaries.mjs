@@ -117,16 +117,19 @@ flexibleSource=flexibleSource.replace("import { publishPostById, publisherConfig
   "const publishPostById=async()=>{throw Error('No external sends in test')};const publisherConfiguration=()=>({platforms:{}});");
 flexibleSource=flexibleSource.replace("import { validatePostPayload } from './product-authority.js';",
   "const validatePostPayload=()=>[];");
-const manualStart=flexibleSource.indexOf('async function setManualRequired(');
-const manualEnd=flexibleSource.indexOf('async function changeManualRequiredStatus(',manualStart);
+const manualStart=flexibleSource.indexOf('async function changeManualRequiredStatus(');
+const manualEnd=flexibleSource.indexOf('async function flexiblePublishNow(',manualStart);
 assert.ok(manualStart>=0&&manualEnd>manualStart);
-assert.doesNotMatch(flexibleSource.slice(manualStart,manualEnd),/published_at=NULL/,
-  'A partial handoff must preserve previously published_at');
+assert.doesNotMatch(flexibleSource.slice(manualStart,manualEnd),/SET status='published'|UPDATE social_posts SET status='published'/,
+  'A manual handoff must never manufacture a published status without official remote proof');
+assert.match(flexibleSource.slice(manualStart,manualEnd),/if\(next==='published'\)return json\(\{error:/);
+assert.doesNotMatch(flexibleSource,/async function completeManualDeliveries\(/);
 const {changeManualRequiredStatus}=await import('data:text/javascript;base64,'+Buffer.from(flexibleSource).toString('base64'));
 
-async function manualDraftScenario({publishedAt=null,receiptStatus='manual_required',receiptAt=null,remoteId=''}={}){
+async function manualDraftScenario({publishedAt=null,receiptStatus='manual_required',receiptAt=null,remoteId='',attemptCount=0,lastAttempt=null,nextStatus='draft'}={}){
  let row={id:'TEST-PARTIAL',status:'manual_required',published_at:publishedAt,approved_by:'reviewer@example.com',image_approved:1};
- const deliveries=[{platform:'facebook',status:receiptStatus,published_at:receiptAt,remote_id:remoteId}];
+ const deliveries=[{platform:'facebook',status:receiptStatus,published_at:receiptAt,remote_id:remoteId,
+  attempt_count:attemptCount,last_attempt_at:lastAttempt}];
  const writes=[],db={prepare(sql){
   return {bind(){return this},async first(){return row},async all(){return{results:deliveries}},
     async run(){
@@ -134,17 +137,18 @@ async function manualDraftScenario({publishedAt=null,receiptStatus='manual_requi
       if(sql.includes("UPDATE social_posts SET")){
         assert.match(sql,/AND status='manual_required'/);
         assert.match(sql,/published_at IS NULL AND NOT EXISTS/);
-        assert.match(sql,/d.status='published'/);
-        if(row.published_at||deliveries.some(d=>d.status==='published'||d.published_at||d.remote_id))
-          return{meta:{changes:0}};
+        assert.match(sql,/d.status IN \('sending','retry','published'\)/);
+        if(row.published_at||deliveries.some(d=>['sending','retry','published'].includes(d.status)||
+          d.published_at||d.remote_id||d.attempt_count>0||d.last_attempt_at))
+          return{success:true,meta:{changes:0}};
         row={...row,status:'draft',approved_by:null,image_approved:0};
       }
-      return{meta:{changes:1}};
+      return{success:true,meta:{changes:1}};
     }
   };
  }};
  const request=new Request('https://isolated.invalid/api/posts/TEST-PARTIAL/status',
-   {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({status:'draft'})});
+   {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({status:nextStatus})});
  const response=await changeManualRequiredStatus(request,{DB:db},{},row.id);
  return {response,row,writes};
 }
@@ -152,6 +156,10 @@ for(const fixture of [
  {receiptStatus:'published',remoteId:'existing-remote'},
  {receiptStatus:'manual_required',receiptAt:'2026-10-23T09:00:00Z'},
  {receiptStatus:'manual_required',remoteId:'existing-remote'},
+ {receiptStatus:'sending'},
+ {receiptStatus:'retry'},
+ {receiptStatus:'manual_required',attemptCount:1},
+ {receiptStatus:'manual_required',lastAttempt:'2026-10-23T09:00:00Z'},
  {publishedAt:'2026-10-23T09:00:00Z'}
 ]){
  const outcome=await manualDraftScenario(fixture);
@@ -163,4 +171,8 @@ const safeManual=await manualDraftScenario();
 assert.equal(safeManual.response.status,200);
 assert.equal(safeManual.row.status,'draft');
 assert.ok(safeManual.writes.some(sql=>sql.includes('NOT EXISTS')));
-console.log('PASS partial platform publication remains immutable; only an unposted manual handoff can return to draft');
+const rejectedPublished=await manualDraftScenario({nextStatus:'published'});
+assert.equal(rejectedPublished.response.status,409);
+assert.equal(rejectedPublished.row.status,'manual_required');
+assert.equal(rejectedPublished.writes.length,0,'Published requires official remote proof, not a status button');
+console.log('PASS partial publication remains immutable, direct fake-published status rejected, unposted handoff may return to draft');
