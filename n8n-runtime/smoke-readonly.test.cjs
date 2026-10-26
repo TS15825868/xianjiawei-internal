@@ -241,3 +241,56 @@ test('LINE health data transfer failure is flagged without exposing URL secrets'
  assert.ok(Number.isFinite(x.report.line.healthLatencyMs));
  assert.equal(x.report.line.transportFailure,true);
 });
+
+test('new deployment uses boolean LINE error state without leaking a raw SDK message',async()=>{
+ const x=await exercise(routes=>{
+  routes[lineUrl].body.lastWebhookAt=new Date().toISOString();
+  routes[lineUrl].body.lastReplySuccessAt='2026-10-01T00:00:00Z';
+  routes[lineUrl].body.lastReplyErrorPresent=true;
+  routes[lineUrl].body.lastReplyError='PRIVATE LINE SDK ERROR';
+ });
+ assert.equal(x.report.ok,true);
+ assert.equal(x.report.line.replyFailureUnresolved,true);
+ assert.ok(x.report.warnings.length>0);
+ assert.doesNotMatch(JSON.stringify(x.report),/PRIVATE LINE SDK ERROR/);
+});
+test('recent slow customer event to LINE reply API acceptance is an actual latency incident',async()=>{
+ const x=await exercise(routes=>Object.assign(routes[lineUrl].body,{
+  lastCustomerEventProcessedAt:new Date().toISOString(),
+  lastEventToLineAckApproxMs:13740,
+  lastCustomerResponseAccepted:true
+ }));
+ assert.equal(x.report.ok,false);
+ assert.equal(x.report.line.recentCustomerReplyAckMs,13740);
+ assert.equal(x.report.line.slowRecentCustomerReply,true);
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
+ assert.ok(x.report.errors.some(e=>e.includes('客戶事件至回覆 API')));
+});
+test('recent customer event without LINE acceptance acknowledgement is surfaced independently',async()=>{
+ const x=await exercise(routes=>Object.assign(routes[lineUrl].body,{
+  lastCustomerEventProcessedAt:new Date().toISOString(),
+  lastEventToLineAckApproxMs:600,
+  lastCustomerResponseAccepted:false
+ }));
+ assert.equal(x.report.ok,false);
+ assert.equal(x.report.line.recentReplyUnconfirmed,true);
+ assert.equal(x.report.line.slowRecentCustomerReply,false);
+ assert.ok(x.report.errors.some(e=>e.includes('沒有回覆 API 成功確認')));
+});
+test('legacy live service without new latency counters stays unverified, not falsely zero',async()=>{
+ const x=await exercise();
+ assert.equal(x.report.line.recentCustomerReplyAckMs,null);
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
+ assert.equal(x.report.line.slowRecentCustomerReply,false);
+ assert.equal(x.report.ok,true);
+});
+test('old slow-event telemetry is not treated as a fresh customer incident',async()=>{
+ const x=await exercise(routes=>Object.assign(routes[lineUrl].body,{
+  lastCustomerEventProcessedAt:'2026-09-01T00:00:00Z',
+  lastEventToLineAckApproxMs:65000,
+  lastCustomerResponseAccepted:false
+ }));
+ assert.equal(x.report.ok,true);
+ assert.equal(x.report.line.slowRecentCustomerReply,false);
+ assert.equal(x.report.line.recentReplyUnconfirmed,false);
+});

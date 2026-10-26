@@ -75,8 +75,30 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   const lastReplySuccessAt=Date.parse(String(line.body?.lastReplySuccessAt||''));
   const recentWebhook=Number.isFinite(lastWebhookAt)&&lastWebhookAt<=now+60000
     &&now-lastWebhookAt<=RECENT_WEBHOOK_MS;
-  const replyFailureUnresolved=recentWebhook&&Boolean(String(line.body?.lastReplyError||'').trim())
+  // Deployed LINE vNext exposes only a boolean, never raw SDK errors.
+  // Backward compatibility: current Render live can still expose the legacy
+  // error text. Read it only to classify, never echo its content to logs.
+  const errorFlag=line.body?.lastReplyErrorPresent===true||
+    (line.body?.lastReplyErrorPresent!==false&&Boolean(String(line.body?.lastReplyError||'').trim()));
+  const replyFailureUnresolved=recentWebhook&&errorFlag
     &&(!Number.isFinite(lastReplySuccessAt)||lastReplySuccessAt<lastWebhookAt);
+  const lastCustomerEventProcessedAt=Date.parse(String(line.body?.lastCustomerEventProcessedAt||''));
+  const recentCustomerEvent=Number.isFinite(lastCustomerEventProcessedAt)
+    &&lastCustomerEventProcessedAt<=now+60000
+    &&now-lastCustomerEventProcessedAt<=RECENT_WEBHOOK_MS;
+  // The new runtime measures LINE event timestamp to API ACK, including
+  // cold starts, but this is not a full user-phone delivery confirmation.
+  const recordedAckMs=line.body?.lastEventToLineAckApproxMs;
+  const customerAckTimingAvailable=typeof recordedAckMs==='number'
+    &&Number.isFinite(recordedAckMs)&&recordedAckMs>=0;
+  const slowRecentCustomerReply=recentCustomerEvent&&customerAckTimingAvailable
+    &&recordedAckMs>LINE_SLOW_MS;
+  const recentReplyUnconfirmed=recentCustomerEvent
+    &&line.body?.lastCustomerResponseAccepted===false;
+  if(slowRecentCustomerReply)
+    errors.push('LINE 最近客戶事件至回覆 API 接受超過 8 秒，包含可能的 Render 冷啟動。');
+  if(recentReplyUnconfirmed)
+    errors.push('LINE 最近一次客戶事件沒有回覆 API 成功確認，請優先檢查官方聊天室。');
   // The lastWebhookAt field also includes unsupported LINE events that do not
   // need a reply. Treat this as an actionable warning, not proof of outage.
   if(replyFailureUnresolved)
@@ -133,6 +155,9 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
       transportFailure:line.transportFailure===true,
       healthLatencyMs:Number.isFinite(lineHealthLatencyMs)?lineHealthLatencyMs:null,
       slowHealth:lineHealthSlow,replyFailureUnresolved,
+      recentCustomerReplyAckMs:customerAckTimingAvailable?recordedAckMs:null,
+      slowRecentCustomerReply:slowRecentCustomerReply===true,
+      recentReplyUnconfirmed:recentReplyUnconfirmed===true,
       customerReplyE2EVerified:false
     },
     master: { status: master.status, version: m.version, productCount: m.productCount },
