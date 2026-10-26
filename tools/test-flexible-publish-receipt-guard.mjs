@@ -64,7 +64,7 @@ test('the canonical sender preserves original multi-platform audience and puts u
  const oldFetch=globalThis.fetch;let count=0;
  globalThis.fetch=async()=>{count++;return new Response('{"id":"facebook-remote-001"}',{status:200})};
  try{
-  const result=await publishPostById({DB,META_PAGE_ID:'123',META_PAGE_ACCESS_TOKEN:'local-fixture'},post.id);
+  const result=await publishPostById({DB,META_PAGE_ID:'123',META_INSTAGRAM_USER_ID:'456',META_PAGE_ACCESS_TOKEN:'local-fixture'},post.id);
   assert.equal(result.ok,false);
   assert.equal(result.manual_required,true);
   assert.equal(count,1);
