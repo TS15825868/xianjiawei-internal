@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { publishedPlatformReceiptHold } from '../src/external-published-receipt-holds.js';
 
 // Read-only production backlog. This is deliberately separate from the
 // missing-image draft queue: existing-but-rejected images must not be ignored.
@@ -38,6 +39,7 @@ export function buildPlan(rows, sceneByPostId={}){
     if(/(?:^|[^\\d])180\\s*cc/i.test(text) && !products.includes('龜鹿飲180cc'))products.push('龜鹿飲180cc');
     const window=windowFor(row);
     counts[status]=(counts[status]||0)+1;
+    const remoteHold=publishedPlatformReceiptHold(row);
     items.push({
       postId:id, title:clean(row.title), status, imageQualityStatus:q,
       existingImageUrl:clean(row.image_url), imageAlt:clean(row.image_alt),
@@ -46,7 +48,9 @@ export function buildPlan(rows, sceneByPostId={}){
       category:clean(row.category), productsMentioned:products,
       copyHash:crypto.createHash('sha256').update(clean(row.copy)).digest('hex').slice(0,16),
       window, priority:status==='approved'||status==='scheduled'?'urgent_hold':status==='pending_review'?'review_backlog':'draft_backlog',
-      requiredAction:clean(row.image_url)?'replace_existing_rejected_image':'produce_missing_or_rejected_image',
+      requiredAction:remoteHold?'reconcile_previously_published_platform_receipts':clean(row.image_url)?'replace_existing_rejected_image':'produce_missing_or_rejected_image',
+      publicationReconciliationRequired:Boolean(remoteHold),
+      safeToBeginImageRework:!remoteHold,
       productionRules:[
         '以本篇當前文案和對應場景重新製作專屬情境，禁止重複使用既有貼文圖片',
         '小老闆維持正式Q版幼童：短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章',
@@ -64,6 +68,8 @@ export function buildPlan(rows, sceneByPostId={}){
     version:'2026-10-26-live-rework-v1',brand:'仙加味',
     source:'Cloudflare D1 live social_posts; read-only snapshot; excludes published, archived and manual_required',
     status:'image-rework-production-backlog-not-approved',total:items.length,
+    externalReceiptReconciliationCount:items.filter(x=>x.publicationReconciliationRequired).length,
+    eligibleForImageReworkCount:items.filter(x=>x.safeToBeginImageRework).length,
     byStatus:counts,hasMissingScenes:items.some(x=>!x.scene),
     warning:'這不是已生成或已核准圖片；不能自動推進貼文狀態或發文。需逐張核對正式原圖、固定小老闆與圖文一致。',
     originalAssetAuthority:'使用者已提供的正式原圖或官網最新已核准原圖；未驗證不得自創產品外觀。',
@@ -86,7 +92,7 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
   if(process.env.GITHUB_STEP_SUMMARY){
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,[
       '## 圖片實際待重製工作清單（只讀，不是已完成）','',
-      '- 待重製：'+plan.total+' 篇；待審核 '+(plan.byStatus.pending_review||0)+'；草稿 '+(plan.byStatus.draft||0),
+      '- 待修資料：'+plan.total+' 篇；其中已發布紀錄需先核對 '+plan.externalReceiptReconciliationCount+' 篇；其他圖片重製候選 '+plan.eligibleForImageReworkCount+' 篇；待審核 '+(plan.byStatus.pending_review||0)+'；草稿 '+(plan.byStatus.draft||0),
       '- 清單附每篇專屬情境、原圖位置、產品提及、文案指紋及固定角色要求；不包含完整未發布文案。',
       '- 不修改貼文、圖片、排程或發布；實際產圖及人工視覺審核仍未完成。',''
     ].join('\n')+'\n');

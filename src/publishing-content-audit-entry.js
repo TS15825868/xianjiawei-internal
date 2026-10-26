@@ -1,5 +1,6 @@
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
+import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
 const VERSION='2026-10-21-fixed-mascot-reference-review-v11';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
@@ -133,7 +134,8 @@ async function liveRows(env){
 }
 async function auditOne(env,row,rows){
   if(!row)return{ok:false,errors:['找不到貼文']};
-  const errors=[...productErrors(row),...await duplicatePostErrors(env,row,rows),...semanticErrors(row,rows)];
+  const receiptHold=publishedPlatformReceiptHold(row);
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,rows),...semanticErrors(row,rows)];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,recommended_action:unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
