@@ -34,6 +34,22 @@ const env={DB:{
   }}
 }};
 async function post(path,body={}){return gate.fetch(new Request(`https://isolated.invalid/api/posts/ISOLATED/${path}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}),env,{})}
+
+const readinessBefore=state.writes.length;
+const readinessResponse=await gate.fetch(
+  new Request('https://isolated.invalid/api/posts/ISOLATED/autopublish-readiness'),
+  env,{});
+assert.equal(readinessResponse.status,200);
+const readiness=await readinessResponse.json();
+assert.equal(readiness.review_gate_passed,false);
+assert.equal(readiness.auto_publish_enabled,false);
+assert.equal(readiness.auto_schedule_enabled,false);
+assert.equal(readiness.external_quota_verified,false);
+assert.equal(readiness.external_platform_verified,false);
+assert.equal(readiness.external_delivery_dedup_verified,false);
+assert.ok(readiness.review_blocker);
+assert.equal(state.writes.length,readinessBefore,'Readiness must not approve a draft or write posts');
+
 for(const [path,body] of [['status',{status:'approved'}],['status',{status:'scheduled',scheduled_at:'2026-10-27T02:00:00Z'}],['publish-now',{}]]){assert.equal((await post(path,body)).status,409)}
 state.row.status='pending_review';
 assert.equal((await post('status',{status:'approved',review_checklist:{},copy_image_match:true})).status,409);
