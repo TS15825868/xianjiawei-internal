@@ -1,7 +1,7 @@
 import evidence from './ai-quality-evidence.cjs';
 export const AI_POLICY_VERSION='2026-10-27-ai-evidence-channel-bound-v2';
 const AI_CHANNELS=new Set(['facebook','instagram','threads']);
-function aiApprovedChannels(row){
+export function aiApprovedChannels(row){
   try{
     const raw=JSON.parse(row?.platforms_json||'[]');
     if(!Array.isArray(raw)||raw.length===0||raw.length>AI_CHANNELS.size)return null;
@@ -21,7 +21,7 @@ export async function aiGate(env,row,fp){
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
   const result=evidence.assess(e,row.id,fp,row.image_url);
   const reviewed=Date.parse(r.reviewed_at||'');
-  if(!Number.isFinite(reviewed)||Math.abs(Date.now()-reviewed)>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
+  if(!Number.isFinite(reviewed)||reviewed>Date.now()+60000||Date.now()-reviewed>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
   if(r.content_fingerprint!==fp||r.image_url!==row.image_url||r.image_sha256!==e.image_sha256)return{ok:false,reason:'AI審核紀錄與目前圖文不一致'};
   const channels=aiApprovedChannels(row);
   if(!channels||JSON.stringify(channels)!==JSON.stringify(e.approved_channels))
@@ -63,7 +63,7 @@ export async function recordAiReview(env,row,e,profile,checks){
     if(await imageHash(e.visual.mascot_reference.url)!==e.visual.mascot_reference.sha256)throw Error('角色原始參考雜湊不一致');
     for(const asset of e.visual.product_assets||[])if(await imageHash(asset.url)!==asset.sha256)throw Error('正式產品原圖雜湊不一致');
     if(checks.isWeatherPost(row)&&Date.now()-Date.parse(e.reviewed_at)>12*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('天氣需重新查證')}
-    if(Math.abs(Date.now()-Date.parse(e.reviewed_at))>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期')}
+    if(!Number.isFinite(Date.parse(e.reviewed_at))||Date.parse(e.reviewed_at)>Date.now()+60000||Date.now()-Date.parse(e.reviewed_at)>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期或時間不合法')}
   }
   await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?`ai:${e.model}`:null;
   const saved=await env.DB.batch([
