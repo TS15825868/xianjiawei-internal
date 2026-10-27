@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
 import {aiApprovedChannels} from '../src/ai-quality-review.js';
+import {aiScheduleFresh} from '../src/metricool-sync.js';
 const valid={status:'pending_review',copy:'在家準備一壺溫熱的紅棗茶，聊聊漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
 const checks=Object.fromEntries(['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
 test('完整證據才可排程',()=>assert.equal(assessAutopublishCandidate(valid,checks).ok,true));
@@ -26,4 +27,14 @@ test('外部發送結果未知不可重發',()=>{
   assert.equal(assessAutopublishCandidate({...valid,externalStatus:'unknown'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,published_at:'2026-10-20T01:00:00Z'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,platforms:['Facebook','LINE OA']},checks).ok,false);
+});
+
+test('24小時AI證據不得用於逾期外部排程',()=>{
+  const row={approved_by:'ai:verified'};
+  const reviewed='2026-10-27T12:00:00Z';
+  assert.equal(aiScheduleFresh(row,reviewed,'2026-10-28T10:00:00Z').ok,true);
+  assert.equal(aiScheduleFresh(row,reviewed,'2026-10-28T12:30:00Z').ok,false);
+  assert.equal(aiScheduleFresh(row,reviewed,'2026-10-27T10:00:00Z').ok,false);
+  assert.equal(aiScheduleFresh(row,'invalid','2026-10-28T10:00:00Z').ok,false);
+  assert.equal(aiScheduleFresh({approved_by:'human@example.com'},reviewed,'2026-11-25T09:00:00Z').ok,true);
 });
