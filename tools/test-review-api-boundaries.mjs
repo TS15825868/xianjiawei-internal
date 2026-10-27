@@ -5,6 +5,11 @@ import assert from 'node:assert/strict';
 // No credentials, production database or external network are used.
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
 source=source.replace("import {assessAutopublishCandidate} from './ai-autopublish-policy.js';",'const assessAutopublishCandidate=()=>({ok:false,reasons:["Isolated test"]});');
+assert.match(source,/const fullAudit=await auditOne\(env,row,/);
+assert.ok(source.indexOf('const fullAudit=await auditOne(env,row,')<source.indexOf('const result=await recordAiReview(env,row,'),
+  'AI approval must run full official content audit before writing any AI approval');
+assert.match(source,/auto_schedule:false,queued_for_work:/,
+  'Local Work queue must never claim a remote scheduled publication');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
 source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({ok:true}),metricoolOwns=async()=>Boolean(globalThis.__reviewTest.externalLink),metricoolImmediate=async()=>{throw Error("unexpected publish")};');
 source=source.replace("import {imageHash,recordAiReview,aiGate} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")},aiGate=async()=>({ok:false,reason:"No AI evidence in isolated tests"});');
