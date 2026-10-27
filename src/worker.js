@@ -259,10 +259,10 @@ export async function overview(env){
   const modules=Object.fromEntries(Array.from(MODULES,module=>[module,0]));
   const moduleCounts=await env.DB.prepare("SELECT module,COUNT(*) AS count FROM app_records WHERE archived=0 GROUP BY module").all();
   for(const row of moduleCounts.results||[]){if(Object.hasOwn(modules,row.module))modules[row.module]=Number(row.count||0);}
-  const result=await env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting FROM social_posts WHERE status<>'archived' GROUP BY status").all();
-  const posts={draft:0,pending_review:0,approved:0,ai_pending:0,human_approved:0,scheduled:0,published:0};
-  for(const row of result.results||[]){posts[row.status]=Number(row.count||0);if(row.status==='approved')posts.ai_pending=Number(row.ai_review_waiting||0);}
-  posts.human_approved=Math.max(0,posts.approved-posts.ai_pending);
+  const result=await env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))<>'' AND COALESCE(review_note,'') LIKE 'AI審核：AI_APPROVED；%' THEN 1 ELSE 0 END) AS ai_approved_count FROM social_posts WHERE status<>'archived' GROUP BY status").all();
+  const posts={draft:0,pending_review:0,approved:0,ai_pending:0,ai_approved:0,human_approved:0,scheduled:0,published:0};
+  for(const row of result.results||[]){posts[row.status]=Number(row.count||0);if(row.status==='approved'){posts.ai_pending=Number(row.ai_review_waiting||0);posts.ai_approved=Number(row.ai_approved_count||0);}}
+  posts.human_approved=Math.max(0,posts.approved-posts.ai_pending-posts.ai_approved);
   return{modules,posts,checked_at:new Date().toISOString()};
 }
 async function settings(env){
