@@ -3,7 +3,7 @@ import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-ga
 import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate} from '../src/metricool-sync.js';
 const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com',platforms_json:'["Facebook","Instagram","Threads"]'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
-const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
+const env={DB:{exec:async()=>({}),prepare:()=>({run:async()=>({meta:{changes:0}}),bind:()=>({first:async()=>gate})})}};
 assert.equal((await gateState(env,row)).ok,true);
 gate={...gate,reviewed_by:'chatgpt:owner-delegated-reviewed'};assert.equal((await gateState(env,row)).ok,false);
 gate={...gate,reviewed_by:'human@example.com',checklist_json:'{}'};assert.equal((await gateState(env,row)).ok,false);
