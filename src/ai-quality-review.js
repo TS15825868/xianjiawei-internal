@@ -1,5 +1,16 @@
 import evidence from './ai-quality-evidence.cjs';
-export const AI_POLICY_VERSION='2026-10-13-ai-evidence-v1';
+export const AI_POLICY_VERSION='2026-10-27-ai-evidence-channel-bound-v2';
+const AI_CHANNELS=new Set(['facebook','instagram','threads']);
+function aiApprovedChannels(row){
+  try{
+    const raw=JSON.parse(row?.platforms_json||'[]');
+    if(!Array.isArray(raw)||raw.length===0||raw.length>AI_CHANNELS.size)return null;
+    const channels=raw.map(item=>String(item||'').trim().toLowerCase());
+    if(channels.some(item=>!AI_CHANNELS.has(item))||new Set(channels).size!==channels.length)return null;
+    return channels.sort();
+  }catch{return null}
+}
+
 export async function ensureAiSchema(env){await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_post_quality_reviews(id TEXT PRIMARY KEY,post_id TEXT NOT NULL,reviewer_type TEXT NOT NULL CHECK(reviewer_type IN ('AI','HUMAN')),decision TEXT NOT NULL CHECK(decision IN ('AI_APPROVED','HUMAN_APPROVED','PENDING_REVIEW','REJECTED','NEEDS_HUMAN_REVIEW')),content_fingerprint TEXT NOT NULL,image_url TEXT NOT NULL,image_sha256 TEXT NOT NULL,evidence_json TEXT NOT NULL,model TEXT NOT NULL,policy_version TEXT NOT NULL,authorized_by TEXT NOT NULL,reviewed_at TEXT NOT NULL,old_status TEXT NOT NULL,new_status TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`).run()}
 export async function imageHash(url){const u=new URL(url);if(u.protocol!=='https:'||!['raw.githubusercontent.com','static.metricool.com'].includes(u.hostname))throw Error('圖片來源不在正式允許範圍');const r=await fetch(u,{redirect:'error',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 export async function aiGate(env,row,fp){
@@ -12,6 +23,14 @@ export async function aiGate(env,row,fp){
   const reviewed=Date.parse(r.reviewed_at||'');
   if(!Number.isFinite(reviewed)||Math.abs(Date.now()-reviewed)>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
   if(r.content_fingerprint!==fp||r.image_url!==row.image_url||r.image_sha256!==e.image_sha256)return{ok:false,reason:'AI審核紀錄與目前圖文不一致'};
+  const channels=aiApprovedChannels(row);
+  if(!channels||JSON.stringify(channels)!==JSON.stringify(e.approved_channels))
+    return{ok:false,reason:'AI授權平台與原審核時不一致，禁止擴大發布對象'};
+  if(!['ok','clear','approved','passed','high'].includes(String(row.image_quality_status||'').toLowerCase()))
+    return{ok:false,reason:'圖片品質缺少正式合格紀錄'};
+  try{
+    if(await imageHash(row.image_url)!==r.image_sha256)return{ok:false,reason:'正式發布圖片實體已變更，舊AI審核失效'};
+  }catch{return{ok:false,reason:'正式發布圖片無法重新驗證'}}
   if(result.decision!=='AI_APPROVED')return{ok:false,reason:result.reasons.join('；')};
   return{ok:true,reviewer_type:'AI',decision:'AI_APPROVED',reviewed_by:`ai:${r.model}`,reviewed_at:r.reviewed_at,fingerprint:fp,image_sha256:r.image_sha256};
 }
@@ -29,6 +48,12 @@ export async function recordAiReview(env,row,e,profile,checks){
   const highRisk=/(優惠|折扣|促銷|特價|限時|售價|價格|元整|批發|經銷|加盟|首次上架|新品上市|新上市|預購|現貨|免運|買一送一|折價|折扣碼|柒玄茶|龜鹿調飲粉|藥品|許可證|療效|醫療|代工|委託製造)/.test(material);
   const unsupportedClaims=/(保證|根治|預防疾病|改善疾病|醫治|促進關節|膠原蛋白|鈣質)/.test(material);
   if(unsupportedClaims){result.decision='REJECTED';result.reasons.push('禁止未經確認的醫療或食品功效宣稱')}
+  const approvedChannels=aiApprovedChannels(row);
+  const imageQualityOk=['ok','clear','approved','passed','high'].includes(String(row.image_quality_status||'').toLowerCase());
+  if(result.decision==='AI_APPROVED'&&(!approvedChannels||!imageQualityOk)){
+    result.decision='NEEDS_HUMAN_REVIEW';
+    result.reasons.push(!approvedChannels?'AI委託授權僅涵蓋 Facebook／Instagram／Threads，其他平台須人工確認':'圖片品質狀態尚未正式合格');
+  }
   if(result.decision==='AI_APPROVED'&&(highRisk||!String(row.image_url||'').trim()||checks.isWeatherPost(row))){
     result.decision='NEEDS_HUMAN_REVIEW';
     result.reasons.push(highRisk?'涉及商業／新商品／法規敏感內容':!String(row.image_url||'').trim()?'純文字發布平台尚未完成正式驗證':'天氣時效內容須人工確認');
@@ -42,7 +67,7 @@ export async function recordAiReview(env,row,e,profile,checks){
   }
   await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?`ai:${e.model}`:null;
   const saved=await env.DB.batch([
-    env.DB.prepare('INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result}),e?.model||'unverified',AI_POLICY_VERSION,profile.email,e?.reviewed_at||now,row.status,next),
+    env.DB.prepare('INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result,approved_channels:approvedChannels}),e?.model||'unverified',AI_POLICY_VERSION,profile.email,e?.reviewed_at||now,row.status,next),
     // Only LOW risk, fully verified evidence is owner-authorized for AI approval.
     // External scheduling and publication remain separate fail-closed operations.
     env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review') AND published_at IS NULL").bind(next,aiIdentity,approved?now:null,approved?1:0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at)
