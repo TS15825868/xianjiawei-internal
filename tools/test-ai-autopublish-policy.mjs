@@ -61,11 +61,18 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
       async run(){return{success:true,meta:{changes:1}}}
     }},
     async batch(stmts){
-      const v=stmts[0].args;
-      store.review={post_id:v[1],reviewer_type:v[2],decision:v[3],content_fingerprint:v[4],image_url:v[5],image_sha256:v[6],evidence_json:v[7],model:v[8],policy_version:v[9],authorized_by:v[10],reviewed_at:v[11]};
-      const u=stmts[1].args;
+      const u=stmts[0].args;
+      assert.match(stmts[0].sql,/^UPDATE social_posts/);
       assert.equal(u[7],store.row.updated_at);
       Object.assign(store.row,{status:u[0],approved_by:u[1],approved_at:u[2],image_approved:u[3],review_note:u[4],updated_at:u[5]});
+      const v=stmts[1].args;
+      assert.match(stmts[1].sql,/INSERT INTO social_post_quality_reviews.*WHERE EXISTS/);
+      assert.equal(v[14],row.id);
+      assert.equal(v[15],store.row.status);
+      assert.equal(v[16],store.row.updated_at);
+      assert.equal(v[17],store.row.approved_by);
+      assert.equal(v[18],store.row.image_approved);
+      store.review={post_id:v[1],reviewer_type:v[2],decision:v[3],content_fingerprint:v[4],image_url:v[5],image_sha256:v[6],evidence_json:v[7],model:v[8],policy_version:v[9],authorized_by:v[10],reviewed_at:v[11]};
       return[{meta:{changes:1}},{meta:{changes:1}}];
     }
   }};
@@ -88,5 +95,24 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
     assert.equal((await aiGate(env,store.row,fingerprint)).ok,true);
     assert.equal((await aiGate(env,{...store.row,platforms_json:'["Facebook","LINE OA"]'},fingerprint)).ok,false);
     assert.equal((await aiGate(env,{...store.row,image_quality_status:'needs_rework'},fingerprint)).ok,false);
+
+    const pastDeliveryEnv={DB:{prepare(sql){return{bind(){return this},async first(){
+      return sql.includes('FROM social_publish_deliveries')?{platform:'Facebook',status:'sending'}:null;
+    }}}}};
+    await assert.rejects(
+      ()=>recordAiReview(pastDeliveryEnv,row,evidence,{role:'owner',email:'owner@example.com'},checks),
+      /已有平台發送嘗試/
+    );
+    const racedEnv={DB:{prepare(sql){return{bind(){return this},async first(){return null},async run(){return{meta:{changes:1}}}}},
+      async batch(stmts){assert.match(stmts[0].sql,/^UPDATE social_posts/);
+        assert.match(stmts[1].sql,/WHERE EXISTS/);
+        return[{meta:{changes:0}},{meta:{changes:0}}];
+      }
+    }};
+    await assert.rejects(
+      ()=>recordAiReview(racedEnv,row,evidence,{role:'owner',email:'owner@example.com'},checks),
+      /正式內容已變更/
+    );
+
   }finally{globalThis.fetch=previousFetch}
 });
