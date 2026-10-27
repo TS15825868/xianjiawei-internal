@@ -71,9 +71,16 @@ export function metricoolBody(row,link,at){
   const channels=metricoolChannels(row);
   if(!channels)throw Error('貼文指定平台含未授權項目、重複平台或無有效平台，不能移交 Metricool');
   const prior=JSON.parse(link?.template_json||'{}');
-  delete prior.twitterData;
-  for(const [network,key] of [['facebook','facebookData'],['instagram','instagramData'],['threads','threadsData']]){
-    if(!channels.includes(network))delete prior[key];
+  if(!prior||typeof prior!=='object'||Array.isArray(prior))throw Error('既有 Metricool 範本格式不合法');
+  // A historical draft may contain stale settings for other networks.
+  // Remove ALL non-authorized platform fields, not merely twitterData:
+  // providers is overwritten below but nested provider-specific payloads
+  // must never accidentally target an additional account.
+  const providerFields=['facebookData','instagramData','threadsData','twitterData','linkedinData',
+    'tiktokData','pinterestData','youtubeData','googleData','gmbData','blueskyData',
+    'twitchData','mastodonData'];
+  for(const key of providerFields){
+    if(!channels.includes(key.replace(/Data$/,'').toLowerCase()))delete prior[key];
   }
   if(!Number.isFinite(Date.parse(at)))throw Error('Metricool 排程日期不合法');
   const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
