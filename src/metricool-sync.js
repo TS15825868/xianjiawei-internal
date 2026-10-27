@@ -118,7 +118,9 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
     Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at));
   const freshness=aiScheduleFresh(row,gate.reviewed_at,at);
   if(!freshness.ok)return{ok:false,code:'AI_REVIEW_WILL_EXPIRE',error:freshness.reason};
-  const capacity=metricoolScheduleCapacity(linked,at);
+  // Reserve only the candidate's authorized networks. Keep unknown historical
+  // reservations at the conservative three-network cost until reconciled.
+  const capacity=metricoolScheduleCapacity(linked,at,{postCost:metricoolChannels(row).length});
   if(!capacity.ok)return{ok:false,code:capacity.reason,error:'Metricool 免費額度已滿或本地排程狀態無法確認；必須先由Work核對正式計數器與既有UUID',quota:capacity};
   if(!immediate&&Date.parse(preferred)>now.getTime()&&capacity.slotConflict)
     return{ok:false,code:'local_schedule_collision',error:'同一天已有排程；請先核對Metricool現有UUID與安排，避免一日多篇',quota:capacity};
