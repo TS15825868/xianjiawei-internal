@@ -130,5 +130,18 @@
     "countPolicy": "dynamic-no-hard-coded-limit",
     "refreshPolicy": "read-latest-main-before-content-generation-and-review"
   },
-  "productsRole": "仙加味品牌商品鏡像；完整公開商品名單尚須動態合併 partnerAuthority 的 public=true 紀錄。"
+  "productsRole": "仙加味品牌商品鏡像；完整公開商品名單尚須動態合併 partnerAuthority 的 public=true 紀錄。",
+  "selectedProductDisplayPolicy": {
+    "rule": "非仙加味自行製作商品對外使用「仙加味精選｜商品名」，保留原廠名稱、原廠品牌與法定標示；不因命名而啟用未公開商品。",
+    "partnerAuthority": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/partner-catalog.json",
+    "approvedPartnerDisplayNames": {
+      "jinan-sisheng-siwuyin": "仙加味精選｜參仲四物飲",
+      "danshen-tea-collection": "仙加味精選｜丹參茶包系列",
+      "guilu-vitality": "仙加味精選｜龜鹿活力飲（葡萄糖胺）",
+      "royalherb-erzhenbao-64": "仙加味精選｜二珍寶",
+      "uboss-sizhenbao": "仙加味精選｜四珍寶"
+    },
+    "activationPolicy": "僅供命名核對；未完成銷售資料、正式圖、審核與通路驗證不得自動開啟 LINE 下單或對客發送。",
+    "selfProducedNamesUnaffected": true
+  }
 }
