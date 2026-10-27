@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
 import {aiApprovedChannels} from '../src/ai-quality-review.js';
-import {aiScheduleFresh} from '../src/metricool-sync.js';
+import {aiScheduleFresh,metricoolChannels,metricoolBody} from '../src/metricool-sync.js';
 import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
 import {createHash} from 'node:crypto';
@@ -138,4 +138,19 @@ test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
     }
     assert.equal(db.prepare('SELECT COUNT(*) AS c FROM social_post_quality_reviews').get().c,1);
   }finally{db.close();}
+});
+
+test('Metricool只交付實際已核准平台，不得把FB一平台擴張三平台',()=>{
+  const row={copy:'仙加味正式品牌故事',image_url:'https://raw.githubusercontent.com/brand/post.jpg',image_alt:'萬華工藝',platforms_json:'["Facebook"]'};
+  const body=metricoolBody(row,{uuid:'existing-uuid',template_json:JSON.stringify({threadsData:{type:'POST'},instagramData:{type:'POST'}})},'2026-10-29T01:00:00Z');
+  assert.deepEqual(body.providers,[{network:'facebook'}]);
+  assert.equal(Object.hasOwn(body,'threadsData'),false);
+  assert.equal(Object.hasOwn(body,'instagramData'),false);
+  assert.equal(body.autoPublish,true);
+  assert.deepEqual(metricoolChannels({...row,platforms_json:'["Instagram","Threads"]'}),['instagram','threads']);
+  for(const invalid of ['["Facebook","LINE OA"]','["Facebook","facebook"]','[]','null']){
+    assert.equal(metricoolChannels({...row,platforms_json:invalid}),null);
+    assert.throws(()=>metricoolBody({...row,platforms_json:invalid},{template_json:'{}'},'2026-10-29T01:00:00Z'),/未授權|有效平台/);
+  }
+  assert.throws(()=>metricoolBody(row,{template_json:'{}'},'invalid'),/排程日期不合法/);
 });
