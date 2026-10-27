@@ -38,7 +38,10 @@ export function metricoolScheduleCapacity(links,at,{monthlyLimit=20,postCost=3}=
   if(item?.state&&!active.has(item.state))continue;
   const day=localDay(typeof item==='string'?item:item?.publication_at);
   if(!day)return{ok:false,reason:'invalid_existing_schedule',localEvidenceOnly:true};
-  if(day.slice(0,7)===target.slice(0,7))count+=postCost;
+  // Historical network counts are not proven by this local index: reserve
+  // three per historical post until Metricool's external receipt is reconciled.
+  // Candidate cost is separately calculated from its approved network list.
+  if(day.slice(0,7)===target.slice(0,7))count+=3;
   if(day===target)slotConflict=true;
  }
  return {ok:count+postCost<=monthlyLimit,reason:count+postCost<=monthlyLimit?'local_capacity_available':'local_free_quota_exceeded',
