@@ -9,7 +9,11 @@ export function assessAutopublishCandidate(post, checks = {}) {
   const reasons = [];
   const content = [post?.title,post?.headline,post?.copy,post?.image_alt].filter(Boolean).join(' ');
   if (!post || !ACTIVE.has(post.status)) reasons.push('未完成有效核准的貼文不可進入自動排程');
-  if (!String(post?.approved_by||'').startsWith('ai:')) reasons.push('缺少已授權的 AI 核准來源');
+  // Keep the real approving user in profiles.email to honor D1 foreign keys.
+  // The immutable AI review record, not approved_by alone, proves AI origin.
+  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(post?.approved_by||''))||
+      !String(post?.review_note||'').startsWith('AI審核：AI_APPROVED；'))
+    reasons.push('缺少正式管理者身分及已驗證的AI核准註記');
   if (Number(post?.image_approved||0)!==1) reasons.push('正式圖片尚未核准');
   if (post?.published_at || post?.publishedAt) reasons.push('已有發布紀錄，不得重複發送');
   if (post?.externalStatus && ['unknown','published','awaiting_verification','cancel_required'].includes(post.externalStatus)) reasons.push('外部平台狀態未釐清或已發布');
