@@ -69,6 +69,13 @@ state.row.approved_by='ai:unverified';
 assert.equal((await gateState(env,state.row)).ok,false,'AI label alone cannot bypass missing evidence');
 assert.equal((await post('publish-now')).status,409,'AI label without verified proof cannot publish');
 state.row.approved_by=oldHumanApproval;
+state.row.review_note='AI審核：AI_APPROVED；';
+assert.equal((await gateState(env,state.row)).ok,false,
+  'A real owner email plus forged AI review note cannot bypass missing AI evidence');
+assert.equal((await post('publish-now')).status,409,
+  'Forged AI note with matching owner FK must never publish');
+state.row.review_note='';
+
 
 
 // Worker must preserve a blocked image status across a text-only edit,
