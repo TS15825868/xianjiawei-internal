@@ -6,7 +6,7 @@ import {aiScheduleFresh,metricoolChannels,metricoolBody,metricoolScheduleCapacit
 import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
 import {createHash} from 'node:crypto';
-const valid={status:'approved',approved_by:'ai:verified',image_approved:1,copy:'在家準備一壺溫熱的紅棗茶，聊聊仙加味的漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
+const valid={status:'approved',approved_by:'owner@example.com',review_note:'AI審核：AI_APPROVED；',image_approved:1,copy:'在家準備一壺溫熱的紅棗茶，聊聊仙加味的漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
 const checks=Object.fromEntries(['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
 test('完整證據才可排程',()=>assert.equal(assessAutopublishCandidate(valid,checks).ok,true));
 test('沒有證據預設拒絕',()=>assert.equal(assessAutopublishCandidate(valid,{}).ok,false));
@@ -14,6 +14,9 @@ test('草稿或待審核、缺乏正式AI核准、圖片未核准都不得自動
   assert.equal(assessAutopublishCandidate({...valid,status:'draft'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,status:'pending_review'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,approved_by:''},checks).ok,false);
+  assert.equal(assessAutopublishCandidate({...valid,approved_by:'ai:fake-model'},checks).ok,false);
+  assert.equal(assessAutopublishCandidate({...valid,review_note:''},checks).ok,false);
+  assert.equal(assessAutopublishCandidate({...valid,approved_by:'wrong-profile'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,image_approved:0},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,platforms:['Facebook','facebook']},checks).ok,false);
 });
@@ -41,7 +44,7 @@ test('外部發送結果未知不可重發',()=>{
 });
 
 test('24小時AI證據不得用於逾期外部排程',()=>{
-  const row={approved_by:'ai:verified'};
+  const row={approved_by:'owner@example.com',review_note:'AI審核：AI_APPROVED；'};
   const reviewed='2026-10-27T12:00:00Z';
   assert.equal(aiScheduleFresh(row,reviewed,'2026-10-28T10:00:00Z').ok,true);
   assert.equal(aiScheduleFresh(row,reviewed,'2026-10-28T12:30:00Z').ok,false);
@@ -98,7 +101,9 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
     const result=await recordAiReview(env,row,evidence,{role:'owner',email:'owner@example.com'},checks);
     assert.equal(result.decision,'AI_APPROVED');
     assert.equal(store.row.status,'approved');
-    assert.equal(store.row.approved_by,'ai:isolated-verifier');
+    assert.equal(store.row.approved_by,'owner@example.com');
+    assert.equal(store.review.authorized_by,'owner@example.com');
+    assert.equal((await aiGate(env,{...store.row,approved_by:'ai:isolated-verifier'},fingerprint)).ok,false);
     assert.deepEqual(JSON.parse(store.review.evidence_json).approved_channels,['facebook','instagram','threads']);
     assert.equal((await aiGate(env,store.row,fingerprint)).ok,true);
     assert.equal((await aiGate(env,{...store.row,platforms_json:'["Facebook","LINE OA"]'},fingerprint)).ok,false);
@@ -135,12 +140,14 @@ test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
   assert.ok(updateSql&&insertSql,'回歸測試需使用正式程式的 SQL');
   const db=new sqlite.DatabaseSync(':memory:');
   try{
-    db.exec('CREATE TABLE social_posts(id TEXT PRIMARY KEY,status TEXT,approved_by TEXT,approved_at TEXT,image_approved INTEGER,scheduled_at TEXT,review_note TEXT,updated_at TEXT,published_at TEXT)');
+    db.exec("PRAGMA foreign_keys=ON; CREATE TABLE profiles(email TEXT PRIMARY KEY); INSERT INTO profiles(email) VALUES('owner@example.com');");
+    db.exec('CREATE TABLE social_posts(id TEXT PRIMARY KEY,status TEXT,approved_by TEXT REFERENCES profiles(email),approved_at TEXT,image_approved INTEGER,scheduled_at TEXT,review_note TEXT,updated_at TEXT,published_at TEXT)');
     db.exec('CREATE TABLE social_post_quality_reviews(id TEXT PRIMARY KEY,post_id TEXT,reviewer_type TEXT,decision TEXT,content_fingerprint TEXT,image_url TEXT,image_sha256 TEXT,evidence_json TEXT,model TEXT,policy_version TEXT,authorized_by TEXT,reviewed_at TEXT,old_status TEXT,new_status TEXT)');
     db.prepare("INSERT INTO social_posts(id,status,image_approved,updated_at) VALUES ('P','draft',0,'original')").run();
+    assert.throws(()=>db.prepare(updateSql).run('approved','ai:fake-model','approved-now',1,'AI審核','saved-now','P','original'),/FOREIGN KEY/);
     for(const [rid,changes] of [['REVIEW-1',1],['REVIEW-2',0]]){
-      const update=db.prepare(updateSql).run('approved','ai:verified','approved-now',1,'AI審核','saved-now','P','original');
-      const review=db.prepare(insertSql).run(rid,'P','AI','AI_APPROVED','fingerprint','image','hash','{}','verified','policy','staff','approved-now','draft','approved','P','approved','saved-now','ai:verified',1);
+      const update=db.prepare(updateSql).run('approved','owner@example.com','approved-now',1,'AI審核：AI_APPROVED；','saved-now','P','original');
+      const review=db.prepare(insertSql).run(rid,'P','AI','AI_APPROVED','fingerprint','image','hash','{}','verified','policy','staff','approved-now','draft','approved','P','approved','saved-now','owner@example.com',1);
       assert.equal(update.changes,changes);
       assert.equal(review.changes,changes,'沒有更新貼文時不得新增 AI 核准證據');
     }
