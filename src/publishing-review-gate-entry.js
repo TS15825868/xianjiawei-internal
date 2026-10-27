@@ -189,7 +189,7 @@ export default{async fetch(request,env,ctx){
   }
   const returnAiReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/prepare-human-review$/),statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
-  if(request.method==='GET'&&path.endsWith('/autopublish-readiness')){
+  if(request.method==='GET'&&/^\/api\/posts\/[^/]+\/autopublish-readiness$/.test(path)){
     const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
     const id=decodeURIComponent(path.split('/')[3]||'');
     const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
