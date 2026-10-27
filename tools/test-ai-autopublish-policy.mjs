@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
 import {aiApprovedChannels} from '../src/ai-quality-review.js';
 import {aiScheduleFresh} from '../src/metricool-sync.js';
+import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
+import qualityEvidence from '../src/ai-quality-evidence.cjs';
+import {createHash} from 'node:crypto';
 const valid={status:'pending_review',copy:'在家準備一壺溫熱的紅棗茶，聊聊漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
 const checks=Object.fromEntries(['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
 test('完整證據才可排程',()=>assert.equal(assessAutopublishCandidate(valid,checks).ok,true));
@@ -37,4 +40,53 @@ test('24小時AI證據不得用於逾期外部排程',()=>{
   assert.equal(aiScheduleFresh(row,reviewed,'2026-10-27T10:00:00Z').ok,false);
   assert.equal(aiScheduleFresh(row,'invalid','2026-10-28T10:00:00Z').ok,false);
   assert.equal(aiScheduleFresh({approved_by:'human@example.com'},reviewed,'2026-11-25T09:00:00Z').ok,true);
+});
+
+test('真正的低風險AI證據只核准原平台；更改發布對象立即失效',async()=>{
+  const previousFetch=globalThis.fetch;
+  const imageBytes=new TextEncoder().encode('isolated-approved-media-content');
+  const digest=createHash('sha256').update(imageBytes).digest('hex');
+  const imageUrl='https://raw.githubusercontent.com/xianjiawei/formal/main/approved.jpg';
+  const referenceUrl='https://raw.githubusercontent.com/xianjiawei/formal/main/mascot.jpg';
+  globalThis.fetch=async()=>new Response(imageBytes,{status:200,headers:{'content-type':'image/jpeg'}});
+  const row={id:'TEST-AI-SAFE',status:'draft',title:'仙加味下午茶',headline:'在家溫熱飲用',copy:'下午在家準備溫熱飲品，分享仙加味的日常漢方飲食文化。',category:'生活情境',image_url:imageUrl,image_alt:'小老闆在家中準備溫熱飲品，分開的小鹿與小烏龜在一旁',image_quality_status:'ok',platforms_json:'["Facebook","Instagram","Threads"]',updated_at:'2026-10-27T12:00:00Z'};
+  const fingerprint='f'.repeat(64),store={row:{...row},review:null};
+  const env={DB:{
+    prepare(sql){return{sql,args:[],bind(...args){this.args=args;return this},
+      async first(){
+        if(sql.includes('FROM social_metricool_sync'))return null;
+        if(sql.includes('FROM social_post_quality_reviews'))return store.review;
+        return null;
+      },
+      async run(){return{success:true,meta:{changes:1}}}
+    }},
+    async batch(stmts){
+      const v=stmts[0].args;
+      store.review={post_id:v[1],reviewer_type:v[2],decision:v[3],content_fingerprint:v[4],image_url:v[5],image_sha256:v[6],evidence_json:v[7],model:v[8],policy_version:v[9],authorized_by:v[10],reviewed_at:v[11]};
+      const u=stmts[1].args;
+      assert.equal(u[7],store.row.updated_at);
+      Object.assign(store.row,{status:u[0],approved_by:u[1],approved_at:u[2],image_approved:u[3],review_note:u[4],updated_at:u[5]});
+      return[{meta:{changes:1}},{meta:{changes:1}}];
+    }
+  }};
+  const reviewedAt=new Date().toISOString();
+  const evidence={
+    reviewer_type:'AI',model:'isolated-verifier',post_id:row.id,
+    content_fingerprint:fingerprint,image_url:imageUrl,image_sha256:digest,reviewed_at:reviewedAt,
+    checks:Object.fromEntries(qualityEvidence.CHECKS.map(key=>[key,{result:'PASS',evidence:'已查核正式仙加味產品來源與對應場景影像'}])),
+    risk:{level:'LOW',uncertainties:[],flags:[]},
+    visual:{image_sha256:digest,scene_summary:'仙加味小老闆在下午的家中準備溫熱飲品，小鹿與小烏龜分開坐在桌邊，與文案一致。',mascot_reference:{url:referenceUrl,sha256:digest},products_visible:false,product_assets:[]},
+    publication:{approved:false,auto_publish:false}
+  };
+  const checks={fingerprint:async()=>fingerprint,productMatchErrors:()=>[],duplicatePostErrors:async()=>[],isWeatherPost:()=>false};
+  try{
+    const result=await recordAiReview(env,row,evidence,{role:'owner',email:'owner@example.com'},checks);
+    assert.equal(result.decision,'AI_APPROVED');
+    assert.equal(store.row.status,'approved');
+    assert.equal(store.row.approved_by,'ai:isolated-verifier');
+    assert.deepEqual(JSON.parse(store.review.evidence_json).approved_channels,['facebook','instagram','threads']);
+    assert.equal((await aiGate(env,store.row,fingerprint)).ok,true);
+    assert.equal((await aiGate(env,{...store.row,platforms_json:'["Facebook","LINE OA"]'},fingerprint)).ok,false);
+    assert.equal((await aiGate(env,{...store.row,image_quality_status:'needs_rework'},fingerprint)).ok,false);
+  }finally{globalThis.fetch=previousFetch}
 });
