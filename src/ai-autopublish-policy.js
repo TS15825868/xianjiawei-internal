@@ -11,7 +11,7 @@ export function assessAutopublishCandidate(post, checks = {}) {
   if (!post || !ACTIVE.has(post.status)) reasons.push('未完成有效核准的貼文不可進入自動排程');
   // Keep the real approving user in profiles.email to honor D1 foreign keys.
   // The immutable AI review record, not approved_by alone, proves AI origin.
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(post?.approved_by||''))||
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(post?.approved_by||''))||
       !String(post?.review_note||'').startsWith('AI審核：AI_APPROVED；'))
     reasons.push('缺少正式管理者身分及已驗證的AI核准註記');
   if (Number(post?.image_approved||0)!==1) reasons.push('正式圖片尚未核准');
