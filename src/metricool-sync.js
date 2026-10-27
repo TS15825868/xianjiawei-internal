@@ -44,6 +44,17 @@ export function metricoolScheduleCapacity(links,at,{monthlyLimit=20,postCost=3}=
  return {ok:count+postCost<=monthlyLimit,reason:count+postCost<=monthlyLimit?'local_capacity_available':'local_free_quota_exceeded',
   usedKnown:count,withCandidate:count+postCost,monthlyLimit,slotConflict,localEvidenceOnly:true};
 }
+// An AI review is valid for only 24 hours. Never hand an older unverified
+// approval to an external scheduler that could publish after it expires.
+// Human-reviewed posts retain their existing scheduling policy.
+export function aiScheduleFresh(row,reviewedAt,publicationAt){
+  if(!String(row?.approved_by||'').startsWith('ai:'))return{ok:true};
+  const reviewed=Date.parse(reviewedAt||''),published=Date.parse(publicationAt||'');
+  if(!Number.isFinite(reviewed)||!Number.isFinite(published)||published<=reviewed||
+     published>reviewed+23*3600000)
+    return{ok:false,reason:'AI審核憑證在預定發文前可能過期；請於發文前23小時內重新完成AI審核，再進行外部排程'};
+  return{ok:true};
+}
 export function metricoolBody(row,link,at){
   const prior=JSON.parse(link.template_json||'{}');delete prior.twitterData;
   const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
@@ -73,6 +84,8 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
   const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
   const at=immediate?new Date(now.getTime()+60000).toISOString():
     Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at));
+  const freshness=aiScheduleFresh(row,gate.reviewed_at,at);
+  if(!freshness.ok)return{ok:false,code:'AI_REVIEW_WILL_EXPIRE',error:freshness.reason};
   const capacity=metricoolScheduleCapacity(linked,at);
   if(!capacity.ok)return{ok:false,code:capacity.reason,error:'Metricool 免費額度已滿或本地排程狀態無法確認；必須先由Work核對正式計數器與既有UUID',quota:capacity};
   if(!immediate&&Date.parse(preferred)>now.getTime()&&capacity.slotConflict)
