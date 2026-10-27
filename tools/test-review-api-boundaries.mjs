@@ -58,6 +58,12 @@ for(const quality of ['needs_rework','needs_regeneration','rejected','low','miss
 }
 state.row=approvedSnapshot;
 state.review=reviewSnapshot;
+const oldHumanApproval=state.row.approved_by;
+state.row.approved_by='ai:unverified';
+assert.equal((await gateState(env,state.row)).ok,false,'AI label alone cannot bypass missing evidence');
+assert.equal((await post('publish-now')).status,409,'AI label without verified proof cannot publish');
+state.row.approved_by=oldHumanApproval;
+
 
 // Worker must preserve a blocked image status across a text-only edit,
 // and only re-evaluate the quality metric when the actual media URL changes.
