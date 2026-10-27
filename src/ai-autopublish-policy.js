@@ -1,0 +1,22 @@
+// 仙加味 AI 自動發布決策：預設拒絕，僅允許具備完整驗證的非敏感內容。
+// 本模組不直接發送訊息、不改變現有審核狀態；供正式排程入口整合。
+export const AUTOPUBLISH_POLICY_VERSION = '2026-10-27-owner-authorized-v1';
+const BANNED = /(治療|根治|預防疾病|改善疾病|降血壓|降血糖|降血脂|冠心病|糖尿病|高血壓|關節|卡卡|疲勞|精神不濟|補氣|生津|膠原蛋白|鈣質|保證功效|台興山產)/;
+const HIGH_RISK = /(價格|售價|優惠|折扣|特價|促銷|免運|贈送|買一送一|預購|現貨|新品上市|藥品|醫療|許可證|颱風|豪雨|即時天氣)/;
+const ACTIVE = new Set(['draft','pending_review','approved','scheduled']);
+const CHANNELS = new Set(['facebook','instagram','threads']);
+export function assessAutopublishCandidate(post, checks = {}) {
+  const reasons = [];
+  const content = [post?.title,post?.headline,post?.copy,post?.image_alt].filter(Boolean).join(' ');
+  if (!post || !ACTIVE.has(post.status)) reasons.push('無效或已發布的貼文狀態');
+  if (!String(post?.copy||'').trim()) reasons.push('缺少文案');
+  if (BANNED.test(content)) reasons.push('疑似醫療療效或禁止公開用語');
+  if (HIGH_RISK.test(content)) reasons.push('價格、促銷或時效敏感內容須另行驗證');
+  if (!String(post?.image_url||'').startsWith('https://')) reasons.push('未提供可驗證的正式 HTTPS 圖片');
+  if (!Array.isArray(post?.platforms) || !post.platforms.length || post.platforms.some(p => !CHANNELS.has(String(p).toLowerCase()))) reasons.push('平台清單不符合授權範圍');
+  for (const key of ['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady']) {
+    if (checks[key] !== true) reasons.push('未通過 '+key);
+  }
+  if (!checks.reviewedAt || !Number.isFinite(Date.parse(checks.reviewedAt)) || Date.now()-Date.parse(checks.reviewedAt)>24*3600000 || Date.parse(checks.reviewedAt)>Date.now()+60000) reasons.push('AI 審核證據逾期或不合法');
+  return {ok:reasons.length===0,decision:reasons.length===0?'ELIGIBLE_FOR_SCHEDULING':'BLOCKED',reasons,policyVersion:AUTOPUBLISH_POLICY_VERSION};
+}
