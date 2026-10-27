@@ -2,7 +2,7 @@ import app from './flexible-publish-entry.js';
 import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
-import {imageHash,recordAiReview} from './ai-quality-review.js';
+import {imageHash,recordAiReview,aiGate} from './ai-quality-review.js';
 
 const VERSION='2026-10-17-current-product-and-image-v9';
 const REQUIRED_CHECKS=Object.freeze([
@@ -125,11 +125,18 @@ async function gateState(env,row){
   if(['needs_rework','needs_regeneration','rejected','low','missing']
     .includes(clean(row.image_quality_status).toLowerCase()))
     return{ok:false,reason:'圖片仍需重製或未通過品質檢查；不能排程或發布'};
-  // Keep AI-reviewed drafts visible for triage without allowing publication.
-  // The actual AI approval pathway remains disabled until end-to-end evidence and scheduling tests pass.
-  if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
-    return{ok:false,reason:'AI品質檢查僅供參考；必須由使用者完成人工核准後才可排程或發布'};
+  // Owner-authorized AI approvals use versioned, content-bound evidence;
+  // unapproved AI drafts never enter the publication path.
+  if(clean(row.approved_by).startsWith('ai:')){
+    const current=await fingerprint(row);
+    const verified=await aiGate(env,row,current);
+    if(!verified.ok)return verified;
+    const errors=[...productMatchErrors(row),...await duplicatePostErrors(env,row)];
+    if(errors.length)return{ok:false,reason:[...new Set(errors)].join('；')};
+    return{ok:true,reviewed_at:verified.reviewed_at,reviewed_by:verified.reviewed_by,fingerprint:current,reviewer_type:'AI'};
   }
+  if(clean(row.review_note).startsWith('AI審核：AI_APPROVED；')&&clean(row.status)!=='approved')
+    return{ok:false,reason:'AI審核完成但尚未有效核准，禁止排程'};
   await ensureSchema(env);
   const gate=await env.DB.prepare('SELECT * FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(row.id).first();
   if(!gate)return{ok:false,reason:'尚未完成16項正式圖文審核'};
@@ -200,7 +207,7 @@ export default{async fetch(request,env,ctx){
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
-    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=true;return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
+    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
