@@ -66,7 +66,7 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
       assert.equal(u[7],store.row.updated_at);
       Object.assign(store.row,{status:u[0],approved_by:u[1],approved_at:u[2],image_approved:u[3],review_note:u[4],updated_at:u[5]});
       const v=stmts[1].args;
-      assert.match(stmts[1].sql,/INSERT INTO social_post_quality_reviews.*WHERE EXISTS/);
+      assert.match(stmts[1].sql,/INSERT INTO social_post_quality_reviews.*WHERE changes\\(\\)=1 AND EXISTS/);
       assert.equal(v[14],row.id);
       assert.equal(v[15],store.row.status);
       assert.equal(v[16],store.row.updated_at);
@@ -105,7 +105,7 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
     );
     const racedEnv={DB:{prepare(sql){return{bind(){return this},async first(){return null},async run(){return{meta:{changes:1}}}}},
       async batch(stmts){assert.match(stmts[0].sql,/^UPDATE social_posts/);
-        assert.match(stmts[1].sql,/WHERE EXISTS/);
+        assert.match(stmts[1].sql,/WHERE changes\\(\\)=1 AND EXISTS/);
         return[{meta:{changes:0}},{meta:{changes:0}}];
       }
     }};
@@ -115,4 +115,27 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
     );
 
   }finally{globalThis.fetch=previousFetch}
+});
+
+test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
+  const sqlite=await import('node:sqlite').catch(()=>null);
+  if(!sqlite){t.skip('此 Node 版本未內建 SQLite');return;}
+  const {readFileSync}=await import('node:fs');
+  const source=readFileSync(new URL('../src/ai-quality-review.js',import.meta.url),'utf8');
+  const updateSql=source.match(/env\\.DB\\.prepare\\("(UPDATE social_posts[^"]+)"\\)/)?.[1];
+  const insertSql=source.match(/env\\.DB\\.prepare\\("(INSERT INTO social_post_quality_reviews[^"]+)"\\)/)?.[1];
+  assert.ok(updateSql&&insertSql,'回歸測試需使用正式程式的 SQL');
+  const db=new sqlite.DatabaseSync(':memory:');
+  try{
+    db.exec('CREATE TABLE social_posts(id TEXT PRIMARY KEY,status TEXT,approved_by TEXT,approved_at TEXT,image_approved INTEGER,scheduled_at TEXT,review_note TEXT,updated_at TEXT,published_at TEXT)');
+    db.exec('CREATE TABLE social_post_quality_reviews(id TEXT PRIMARY KEY,post_id TEXT,reviewer_type TEXT,decision TEXT,content_fingerprint TEXT,image_url TEXT,image_sha256 TEXT,evidence_json TEXT,model TEXT,policy_version TEXT,authorized_by TEXT,reviewed_at TEXT,old_status TEXT,new_status TEXT)');
+    db.prepare("INSERT INTO social_posts(id,status,image_approved,updated_at) VALUES ('P','draft',0,'original')").run();
+    for(const [rid,changes] of [['REVIEW-1',1],['REVIEW-2',0]]){
+      const update=db.prepare(updateSql).run('approved','ai:verified','approved-now',1,'AI審核','saved-now','P','original');
+      const review=db.prepare(insertSql).run(rid,'P','AI','AI_APPROVED','fingerprint','image','hash','{}','verified','policy','staff','approved-now','draft','approved','P','approved','saved-now','ai:verified',1);
+      assert.equal(update.changes,changes);
+      assert.equal(review.changes,changes,'沒有更新貼文時不得新增 AI 核准證據');
+    }
+    assert.equal(db.prepare('SELECT COUNT(*) AS c FROM social_post_quality_reviews').get().c,1);
+  }finally{db.close();}
 });
