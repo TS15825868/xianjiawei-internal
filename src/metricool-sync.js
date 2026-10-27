@@ -50,8 +50,13 @@ export function metricoolScheduleCapacity(links,at,{monthlyLimit=20,postCost=3}=
 // An AI review is valid for only 24 hours. Never hand an older unverified
 // approval to an external scheduler that could publish after it expires.
 // Human-reviewed posts retain their existing scheduling policy.
-export function aiScheduleFresh(row,reviewedAt,publicationAt){
-  if(!String(row?.approved_by||'').startsWith('ai:'))return{ok:true};
+export function aiScheduleFresh(row,reviewedAt,publicationAt,{reviewerType}={}){
+  // approved_by is the real owner email (FK profiles.email), not a synthetic
+  // model identity. Distinguish AI via the verified reviewer type and stamp.
+  const aiApproved=reviewerType==='AI'||
+    String(row?.review_note||'').startsWith('AI審核：AI_APPROVED；')||
+    String(row?.approved_by||'').startsWith('ai:');
+  if(!aiApproved)return{ok:true};
   const reviewed=Date.parse(reviewedAt||''),published=Date.parse(publicationAt||'');
   if(!Number.isFinite(reviewed)||!Number.isFinite(published)||published<=reviewed||
      published>reviewed+23*3600000)
@@ -119,7 +124,7 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
   const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
   const at=immediate?new Date(now.getTime()+60000).toISOString():
     Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at));
-  const freshness=aiScheduleFresh(row,gate.reviewed_at,at);
+  const freshness=aiScheduleFresh(row,gate.reviewed_at,at,{reviewerType:gate.reviewer_type});
   if(!freshness.ok)return{ok:false,code:'AI_REVIEW_WILL_EXPIRE',error:freshness.reason};
   // Reserve only the candidate's authorized networks. Keep unknown historical
   // reservations at the conservative three-network cost until reconciled.
