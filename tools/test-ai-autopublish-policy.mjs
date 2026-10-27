@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
+const valid={status:'pending_review',copy:'在家準備一壺溫熱的紅棗茶，聊聊漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
+const checks=Object.fromEntries(['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
+test('完整證據才可排程',()=>assert.equal(assessAutopublishCandidate(valid,checks).ok,true));
+test('沒有證據預設拒絕',()=>assert.equal(assessAutopublishCandidate(valid,{}).ok,false));
+test('疾病療效阻擋',()=>assert.equal(assessAutopublishCandidate({...valid,copy:'治療高血壓'},checks).ok,false));
+test('已發布不可重發',()=>assert.equal(assessAutopublishCandidate({...valid,status:'published'},checks).ok,false));
+test('缺圖不可排程',()=>assert.equal(assessAutopublishCandidate({...valid,image_url:''},checks).ok,false));
