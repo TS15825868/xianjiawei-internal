@@ -127,7 +127,7 @@ async function gateState(env,row){
     return{ok:false,reason:'圖片仍需重製或未通過品質檢查；不能排程或發布'};
   // Owner-authorized AI approvals use versioned, content-bound evidence;
   // unapproved AI drafts never enter the publication path.
-  if(clean(row.approved_by).startsWith('ai:')){
+  if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
     const current=await fingerprint(row);
     const verified=await aiGate(env,row,current);
     if(!verified.ok)return verified;
