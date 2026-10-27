@@ -131,8 +131,13 @@ async function gateState(env,row){
     const current=await fingerprint(row);
     const verified=await aiGate(env,row,current);
     if(!verified.ok)return verified;
-    const errors=[...productMatchErrors(row),...await duplicatePostErrors(env,row)];
-    if(errors.length)return{ok:false,reason:[...new Set(errors)].join('；')};
+    // Always re-run the complete copy/image/season/mascot audit at dispatch,
+    // not just the lightweight product guard used when evidence was saved.
+    // This catches newly prohibited visuals and policy changes without
+    // weakening the existing human-review branch.
+    const {auditOne}=await import('./publishing-content-audit-entry.js');
+    const fullAudit=await auditOne(env,row);
+    if(!fullAudit.ok)return{ok:false,reason:fullAudit.errors.join('；')};
     return{ok:true,reviewed_at:verified.reviewed_at,reviewed_by:verified.reviewed_by,fingerprint:current,reviewer_type:'AI'};
   }
   if(clean(row.review_note).startsWith('AI審核：AI_APPROVED；')&&clean(row.status)!=='approved')
