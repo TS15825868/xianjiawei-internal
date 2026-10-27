@@ -9,7 +9,10 @@ export function assessAutopublishCandidate(post, checks = {}) {
   const reasons = [];
   const content = [post?.title,post?.headline,post?.copy,post?.image_alt].filter(Boolean).join(' ');
   if (!post || !ACTIVE.has(post.status)) reasons.push('無效或已發布的貼文狀態');
+  if (post?.published_at || post?.publishedAt) reasons.push('已有發布紀錄，不得重複發送');
+  if (post?.externalStatus && ['unknown','published','awaiting_verification','cancel_required'].includes(post.externalStatus)) reasons.push('外部平台狀態未釐清或已發布');
   if (!String(post?.copy||'').trim()) reasons.push('缺少文案');
+  if (post?.image_quality_status && !['approved','passed','high'].includes(String(post.image_quality_status).toLowerCase())) reasons.push('圖片品質尚未通過');
   if (BANNED.test(content)) reasons.push('疑似醫療療效或禁止公開用語');
   if (HIGH_RISK.test(content)) reasons.push('價格、促銷或時效敏感內容須另行驗證');
   if (!String(post?.image_url||'').startsWith('https://')) reasons.push('未提供可驗證的正式 HTTPS 圖片');
