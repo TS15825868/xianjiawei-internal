@@ -12,7 +12,17 @@ export function aiApprovedChannels(row){
 }
 
 export async function ensureAiSchema(env){await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_post_quality_reviews(id TEXT PRIMARY KEY,post_id TEXT NOT NULL,reviewer_type TEXT NOT NULL CHECK(reviewer_type IN ('AI','HUMAN')),decision TEXT NOT NULL CHECK(decision IN ('AI_APPROVED','HUMAN_APPROVED','PENDING_REVIEW','REJECTED','NEEDS_HUMAN_REVIEW')),content_fingerprint TEXT NOT NULL,image_url TEXT NOT NULL,image_sha256 TEXT NOT NULL,evidence_json TEXT NOT NULL,model TEXT NOT NULL,policy_version TEXT NOT NULL,authorized_by TEXT NOT NULL,reviewed_at TEXT NOT NULL,old_status TEXT NOT NULL,new_status TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`).run()}
-export async function imageHash(url){const u=new URL(url);if(u.protocol!=='https:'||!['raw.githubusercontent.com','static.metricool.com'].includes(u.hostname))throw Error('圖片來源不在正式允許範圍');const r=await fetch(u,{redirect:'error',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
+export function approvedAiImageSource(url){
+  try{
+    const u=new URL(url);
+    if(u.protocol!=='https:'||u.username||u.password||u.port)return false;
+    if(u.hostname==='static.metricool.com')return u.pathname.startsWith('/planner/');
+    if(u.hostname==='ts15825868.github.io')return u.pathname.startsWith('/xianjiawei/images/');
+    if(u.hostname==='raw.githubusercontent.com')return /^\/TS15825868\/(?:xianjiawei|xianjiawei-internal)\/main\//i.test(u.pathname);
+    return false;
+  }catch{return false}
+}
+export async function imageHash(url){if(!approvedAiImageSource(url))throw Error('圖片來源不在仙加味正式允許範圍');const u=new URL(url);const r=await fetch(u,{redirect:'error',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 export async function aiGate(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
