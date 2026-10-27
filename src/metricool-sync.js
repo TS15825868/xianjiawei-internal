@@ -75,8 +75,8 @@ export function metricoolBody(row,link,at){
   for(const [network,key] of [['facebook','facebookData'],['instagram','instagramData'],['threads','threadsData']]){
     if(!channels.includes(network))delete prior[key];
   }
-  const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
   if(!Number.isFinite(Date.parse(at)))throw Error('Metricool 排程日期不合法');
+  const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
   const body={...prior,id:link?.metricool_id||undefined,uuid:link?.uuid||undefined,publicationDate:{dateTime,timezone:'Asia/Taipei'},text:row.copy,providers:channels.map(network=>({network})),media:[row.image_url],mediaAltText:[row.image_alt],saveExternalMediaFiles:true,draft:false,autoPublish:true};
   if(channels.includes('facebook'))body.facebookData={...(prior.facebookData||{}),type:'POST'};
   if(channels.includes('instagram'))body.instagramData={...(prior.instagramData||{}),type:'POST',autoPublish:true};
