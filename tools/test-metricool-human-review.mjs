@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
 import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate} from '../src/metricool-sync.js';
-const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com'};
+const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com',platforms_json:'["Facebook","Instagram","Threads"]'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({bind:()=>({first:async()=>gate})})}};
 assert.equal((await gateState(env,row)).ok,true);
@@ -34,7 +34,7 @@ const queued=await simulate({...baseLink,state:'blocked_config'});assert(queued.
 const unknown=await simulate({...baseLink,state:'unknown'});assert.equal(unknown.calls.length,0);assert.equal(unknown.writes.filter(x=>x.sql.startsWith('UPDATE')).length,0);
 assert.equal(metricoolConfiguration({METRICOOL_API_TOKEN:'ignored'}).serverApiEnabled,false);
 assert.equal(metricoolConfiguration().monthlyPublishedPlatformLimit,20);
-console.log('PASS: free plan never calls server API; existing schedules unchanged; elapsed dates await verification, not success; invalid review needs cancellation; unknown writes never retry; AI cannot approve');
+console.log('PASS: free plan never calls server API; existing schedules unchanged; elapsed dates await verification, not success; invalid review needs cancellation; unknown writes never retry; AI approval still requires current evidence');
 assert.equal(requiresDatedSchedule({...row,title:'元宵，一起把湯圓搓好'}),true);
 assert.equal(requiresDatedSchedule(row),false);
 const festivalDB={prepare:sql=>({bind(){return this},run:async()=>({}),first:async()=>null,all:async()=>{throw Error('Seasonal post must not reserve an arbitrary weekday')}})};
@@ -42,8 +42,8 @@ const festival=await enqueueMetricool({DB:festivalDB},{...row,status:'approved',
 assert.equal(festival.ok,false);assert.match(festival.error,/節慶/);
 console.log('PASS holiday posts without explicit dates cannot enter ordinary October slots');
 
-assert.equal(metricoolConfiguration().humanReviewRequired,true);
-assert.deepEqual(metricoolConfiguration().approvalModes,['HUMAN_APPROVED']);
+assert.equal(metricoolConfiguration().humanReviewRequired,false);
+assert.deepEqual(metricoolConfiguration().approvalModes,['HUMAN_APPROVED','AI_APPROVED']);
 assert.equal((await gateState(env,{...row,approved_by:'ai:model',review_note:'AI審核：AI_APPROVED；'})).ok,false);
 assert.equal((await gateState(env,{...row,review_note:'AI審核：AI_APPROVED；'})).ok,false);
 
@@ -105,7 +105,7 @@ assert.equal(quotaTests.filter(q=>q.includes('INSERT INTO social_metricool_sync'
 console.log('PASS Metricool: 20 published platform slots maximum, multi-network slots counted, same-day collisions detectable and fail closed; external counter must be verified');
 
 const immediateWrites=[];
-const existingScheduled={id:'already-scheduled',status:'scheduled',scheduled_at:'2026-10-26T10:00:00+08:00'};
+const existingScheduled={id:'already-scheduled',status:'scheduled',scheduled_at:'2026-10-26T10:00:00+08:00',platforms_json:'["Facebook"]'};
 const alreadyScheduledDB={prepare(sql){return{
  bind(...args){this.args=args;return this},
  async first(){if(sql==='SELECT * FROM social_metricool_sync WHERE post_id=?')return{state:'scheduled',content_fingerprint:'same',metricool_id:9,uuid:'stable-existing'};throw Error('Unexpected lookup '+sql)},
