@@ -224,7 +224,7 @@ export default{async fetch(request,env,ctx){
         try{initialized=(await env.DB.prepare("SELECT setting_value FROM social_metricool_control WHERE setting_key='initialized'").first())?.setting_value==='20261013-eight-recovery'}catch{}
         if(!initialized)return json({...result,auto_schedule:false,queue_error:'Metricool 既有UUID尚未對帳；AI已核准但不自動建立外部排程'});
         try{const queued=await enqueueMetricool(env,current,{gateState,fingerprint});
-          return json({...result,auto_schedule:queued.ok,metricool:queued,external_published:false});
+          return json({...result,auto_schedule:false,queued_for_work:Boolean(queued.ok&&queued.queued),metricool:queued,external_scheduled:false,external_published:false,message:queued.ok?'AI審核已通過，僅加入免費Work待排程佇列；尚未在Metricool建立正式排程':'AI審核已通過，但未建立排程；請核對阻擋原因'});
         }catch(error){return json({...result,auto_schedule:false,queue_error:clean(error?.message||error)})}
       }
       return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
