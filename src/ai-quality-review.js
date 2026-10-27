@@ -5,7 +5,7 @@ export async function imageHash(url){const u=new URL(url);if(u.protocol!=='https
 export async function aiGate(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
-  if(!r||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||row.approved_by!==r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
+  if(!r||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||row.approved_by!==`ai:${r.model}`)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
   if(!['approved','scheduled'].includes(row.status)||Number(row.image_approved)!==1)return{ok:false,reason:'貼文尚未完成正式核准及圖片確認，不得使用AI證據發布'};
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
   const result=evidence.assess(e,row.id,fp,row.image_url);
@@ -40,11 +40,12 @@ export async function recordAiReview(env,row,e,profile,checks){
     if(checks.isWeatherPost(row)&&Date.now()-Date.parse(e.reviewed_at)>12*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('天氣需重新查證')}
     if(Math.abs(Date.now()-Date.parse(e.reviewed_at))>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期')}
   }
-  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next='pending_review';
+  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?`ai:${e.model}`:null;
   const saved=await env.DB.batch([
     env.DB.prepare('INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result}),e?.model||'unverified',AI_POLICY_VERSION,profile.email,e?.reviewed_at||now,row.status,next),
-    // AI assessment is evidence only; clear human approval and scheduling.
-    env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review')").bind(next,null,null,0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at)
+    // Only LOW risk, fully verified evidence is owner-authorized for AI approval.
+    // External scheduling and publication remain separate fail-closed operations.
+    env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review') AND published_at IS NULL").bind(next,aiIdentity,approved?now:null,approved?1:0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at)
   ]);
   if(saved[1]?.meta?.changes!==1)throw Error('正式內容已變更；舊核准證據不生效');
   return{ok:true,review_id:id,reviewer_type:'AI',...result,status:next};
