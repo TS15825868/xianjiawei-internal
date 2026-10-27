@@ -1,4 +1,5 @@
 import app from './flexible-publish-entry.js';
+import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
 import {imageHash,recordAiReview} from './ai-quality-review.js';
@@ -188,6 +189,14 @@ export default{async fetch(request,env,ctx){
   }
   const returnAiReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/prepare-human-review$/),statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
+  if(request.method==='GET'&&path.endsWith('/autopublish-readiness')){
+    const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
+    const id=decodeURIComponent(path.split('/')[3]||'');
+    const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
+    let platforms=[];try{platforms=JSON.parse(row.platforms_json||'[]')}catch{}
+    const assessment=assessAutopublishCandidate({...row,platforms},{});
+    return json({...assessment,post_id:id,auto_publish_enabled:false});
+  }
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
