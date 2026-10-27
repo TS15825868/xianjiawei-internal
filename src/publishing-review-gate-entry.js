@@ -206,8 +206,37 @@ export default{async fetch(request,env,ctx){
     const id=decodeURIComponent(path.split('/')[3]||'');
     const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     let platforms=[];try{platforms=JSON.parse(row.platforms_json||'[]')}catch{}
-    const assessment=assessAutopublishCandidate({...row,platforms},{});
-    return json({...assessment,post_id:id,auto_publish_enabled:false});
+    // Report the ACTUAL verified gate, rather than always passing an empty
+    // evidence object. No guesswork about paid quotas, external UUIDs, or
+    // platform permission can authorize a customer-visible publication.
+    let gate;
+    try{gate=await gateState(env,row);}
+    catch{gate={ok:false,reason:'正式圖文審核查詢失敗，禁止排程'};}
+    const aiEvidenceValid=gate.ok===true&&gate.reviewer_type==='AI';
+    const checks={
+      aiEvidenceValid,
+      imageAuthentic:aiEvidenceValid,
+      sceneMatches:aiEvidenceValid,
+      productAuthorityValid:aiEvidenceValid,
+      uniqueCopy:aiEvidenceValid,
+      uniqueImage:aiEvidenceValid,
+      rightsVerified:aiEvidenceValid,
+      // A local post and AI review cannot prove a scheduled delivery, quota,
+      // deduplication of external UUIDs, or live FB/IG/Threads publish rights.
+      scheduledTimeValid:false,
+      platformReady:false,
+      quotaVerified:false,
+      deliveryDedupReady:false,
+      reviewedAt:aiEvidenceValid?gate.reviewed_at:null
+    };
+    const assessment=assessAutopublishCandidate({...row,platforms},checks);
+    return json({...assessment,post_id:id,review_gate_passed:gate.ok===true,
+      reviewer_type:gate.ok?gate.reviewer_type||'HUMAN':null,
+      review_blocker:gate.ok?null:gate.reason||'缺少有效圖文審核',
+      external_quota_verified:false,external_platform_verified:false,
+      external_delivery_dedup_verified:false,
+      auto_schedule_enabled:false,auto_publish_enabled:false,
+      external_scheduled:false,external_published:false});
   }
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
