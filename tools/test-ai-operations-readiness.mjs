@@ -27,6 +27,11 @@ test('reads only post status totals without spending neurons or sending any repl
  assert.equal(d.ok,true);assert.equal(d.data.postStatusCounts.pending_review,7);assert.equal(d.data.postStatusCounts.published,9);
  assert.equal(d.modelCalls,0);assert.equal(d.writes,0);assert.equal(d.customerSend,false);
  assert.equal(d.capabilities.generativeDraft,'disabled_or_free_account_unconfirmed');
+ assert.equal(d.capabilities.postReview,'human_or_verified_low_risk_ai_approval');
+ assert.equal(d.capabilities.lowRiskAiApproval.supported,true);
+ assert.equal(d.capabilities.lowRiskAiApproval.highRiskNeedsHuman,true);
+ assert.equal(d.capabilities.pendingPostAutoApproval,false);
+ assert.equal(d.capabilities.metricool,'external_queue_requires_live_review');
  assert.equal(d.capabilities.metaCommentAutoReply,'external_e2e_and_platform_control_unverified');
  assert.equal(d.allAutonomous,false);
 });
