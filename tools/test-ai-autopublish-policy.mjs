@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
 import {aiApprovedChannels,approvedAiImageSource} from '../src/ai-quality-review.js';
-import {aiScheduleFresh,metricoolChannels,metricoolBody} from '../src/metricool-sync.js';
+import {aiScheduleFresh,metricoolChannels,metricoolBody,metricoolScheduleCapacity} from '../src/metricool-sync.js';
 import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
 import {createHash} from 'node:crypto';
@@ -177,4 +177,22 @@ test('AI影像僅接受仙加味正式儲存來源',()=>{
     'https://ts15825868.github.io/unrelated/photo.jpg',
     'https://static.metricool.com/unrelated/photo.jpg'
   ])assert.equal(approvedAiImageSource(invalid),false);
+});
+
+test('Metricool 免費額度依候選貼文實際核准平台數計算，歷史未知紀錄仍保守保留三平台',()=>{
+  const existing=Array.from({length:6},(_,i)=>({
+    publication_at:`2026-11-${String(2+i*3).padStart(2,'0')}T10:00:00+08:00`,
+    state:'scheduled'
+  }));
+  const at='2026-11-23T10:00:00+08:00';
+  const fbOnly=metricoolScheduleCapacity(existing,at,{postCost:1});
+  assert.equal(fbOnly.ok,true);
+  assert.equal(fbOnly.usedKnown,18);
+  assert.equal(fbOnly.withCandidate,19);
+  const fbIg=metricoolScheduleCapacity(existing,at,{postCost:2});
+  assert.equal(fbIg.ok,true);
+  assert.equal(fbIg.withCandidate,20);
+  const triple=metricoolScheduleCapacity(existing,at,{postCost:3});
+  assert.equal(triple.ok,false);
+  assert.equal(triple.withCandidate,21);
 });
