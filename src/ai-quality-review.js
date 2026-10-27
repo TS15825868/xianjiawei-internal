@@ -26,9 +26,10 @@ export async function imageHash(url){if(!approvedAiImageSource(url))throw Error(
 export async function aiGate(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
-  if(!r||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||row.approved_by!==`ai:${r.model}`)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
+  if(!r||r.reviewer_type!=='AI'||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||!r.authorized_by||row.approved_by!==r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
   if(!['approved','scheduled'].includes(row.status)||Number(row.image_approved)!==1)return{ok:false,reason:'貼文尚未完成正式核准及圖片確認，不得使用AI證據發布'};
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
+  if(e.model!==r.model||!String(row.review_note||'').startsWith('AI審核：AI_APPROVED；'))return{ok:false,reason:'AI審核證據與原核准身分不一致'};
   const result=evidence.assess(e,row.id,fp,row.image_url);
   const reviewed=Date.parse(r.reviewed_at||'');
   if(!Number.isFinite(reviewed)||reviewed>Date.now()+60000||Date.now()-reviewed>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
@@ -45,7 +46,9 @@ export async function aiGate(env,row,fp){
   return{ok:true,reviewer_type:'AI',decision:'AI_APPROVED',reviewed_by:`ai:${r.model}`,reviewed_at:r.reviewed_at,fingerprint:fp,image_sha256:r.image_sha256};
 }
 export async function recordAiReview(env,row,e,profile,checks){
-  if(!['owner','admin'].includes(profile.role))throw Error('只有正式管理者能提交AI審核證據');
+  if(!['owner','admin'].includes(profile?.role))throw Error('只有正式管理者能提交AI審核證據');
+  const ownerEmail=String(profile?.email||'').trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail))throw Error('AI委託核准必須綁定正式管理者的有效帳號');
   if(!['draft','pending_review'].includes(row.status))throw Error('只接受未核准內容；已排程、已發布及歷史人工核准不得被覆蓋');
   const existing=await env.DB.prepare('SELECT state,metricool_id FROM social_metricool_sync WHERE post_id=? LIMIT 1').bind(row.id).first().catch(err=>{if(String(err).includes('no such table'))return null;throw err});
   if(existing&&(existing.metricool_id||['scheduled','awaiting_work','awaiting_verification','cancel_required','unknown','published'].includes(existing.state)))throw Error('已有外部排程紀錄，禁止覆蓋核准狀態');
@@ -83,13 +86,13 @@ export async function recordAiReview(env,row,e,profile,checks){
     if(checks.isWeatherPost(row)&&Date.now()-Date.parse(e.reviewed_at)>12*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('天氣需重新查證')}
     if(!Number.isFinite(Date.parse(e.reviewed_at))||Date.parse(e.reviewed_at)>Date.now()+60000||Date.now()-Date.parse(e.reviewed_at)>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期或時間不合法')}
   }
-  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?`ai:${e.model}`:null;
+  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?ownerEmail:null;
   // D1 batch is transactional. Compare-and-set the post FIRST and only
   // record review evidence when the updated row still matches this approval.
   // A raced or externally modified post must not acquire phantom AI evidence.
   const saved=await env.DB.batch([
     env.DB.prepare("UPDATE social_posts SET status=?,approved_by=?,approved_at=?,image_approved=?,scheduled_at=NULL,review_note=?,updated_at=? WHERE id=? AND updated_at=? AND status IN ('draft','pending_review') AND published_at IS NULL").bind(next,aiIdentity,approved?now:null,approved?1:0,'AI審核：'+result.decision+'；'+result.reasons.join('；'),now,row.id,row.updated_at),
-    env.DB.prepare("INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE changes()=1 AND EXISTS (SELECT 1 FROM social_posts WHERE id=? AND status=? AND updated_at=? AND approved_by IS ? AND image_approved=?)").bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result,approved_channels:approvedChannels}),e?.model||'unverified',AI_POLICY_VERSION,profile.email,e?.reviewed_at||now,row.status,next,row.id,next,now,aiIdentity,approved?1:0)
+    env.DB.prepare("INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE changes()=1 AND EXISTS (SELECT 1 FROM social_posts WHERE id=? AND status=? AND updated_at=? AND approved_by IS ? AND image_approved=?)").bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result,approved_channels:approvedChannels}),e?.model||'unverified',AI_POLICY_VERSION,ownerEmail,e?.reviewed_at||now,row.status,next,row.id,next,now,aiIdentity,approved?1:0)
   ]);
   if(saved[0]?.meta?.changes!==1||saved[1]?.meta?.changes!==1)throw Error('正式內容已變更或審核紀錄未成功寫入；舊核准證據不生效');
   return{ok:true,review_id:id,reviewer_type:'AI',...result,status:next};
