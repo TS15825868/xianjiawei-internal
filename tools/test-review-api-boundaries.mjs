@@ -8,6 +8,7 @@ source=source.replace("import {assessAutopublishCandidate} from './ai-autopublis
 assert.match(source,/const fullAudit=await auditOne\(env,row,/);
 assert.ok(source.indexOf('const fullAudit=await auditOne(env,row,')<source.indexOf('const result=await recordAiReview(env,row,'),
   'AI approval must run full official content audit before writing any AI approval');
+assert.match(source,/const fullAudit=await auditOne\(env,row\);/, 'AI gate must re-run full brand and visual audit at scheduled or immediate publication');
 assert.match(source,/auto_schedule:false,queued_for_work:/,
   'Local Work queue must never claim a remote scheduled publication');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
