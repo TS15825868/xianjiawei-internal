@@ -207,7 +207,14 @@ export default{async fetch(request,env,ctx){
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
-    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
+    try{
+      // AI approval must pass the SAME full image/scene/season/brand audit as
+      // manually submitted posts. Previously the AI route bypassed this wrapper.
+      const {auditOne}=await import('./publishing-content-audit-entry.js');
+      const auditedRows=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
+      const fullAudit=await auditOne(env,row,auditedRows.results||[]);
+      if(!fullAudit.ok)return json({error:'AI核准前完整圖文稽核未通過，禁止核准或發布',details:fullAudit.errors},409);
+      const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
       if(result.decision==='AI_APPROVED'){
         const current=await postRow(env,id),gate=await gateState(env,current);
         if(!gate.ok)return json({...result,auto_schedule:false,queue_error:gate.reason});
