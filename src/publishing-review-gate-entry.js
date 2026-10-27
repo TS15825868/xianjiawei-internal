@@ -207,7 +207,20 @@ export default{async fetch(request,env,ctx){
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
-    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
+    try{const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
+      if(result.decision==='AI_APPROVED'){
+        const current=await postRow(env,id),gate=await gateState(env,current);
+        if(!gate.ok)return json({...result,auto_schedule:false,queue_error:gate.reason});
+        // Existing external UUIDs and the owner's previous schedules must
+        // be reconciled before any unattended scheduling request is queued.
+        let initialized=false;
+        try{initialized=(await env.DB.prepare("SELECT setting_value FROM social_metricool_control WHERE setting_key='initialized'").first())?.setting_value==='20261013-eight-recovery'}catch{}
+        if(!initialized)return json({...result,auto_schedule:false,queue_error:'Metricool 既有UUID尚未對帳；AI已核准但不自動建立外部排程'});
+        try{const queued=await enqueueMetricool(env,current,{gateState,fingerprint});
+          return json({...result,auto_schedule:queued.ok,metricool:queued,external_published:false});
+        }catch(error){return json({...result,auto_schedule:false,queue_error:clean(error?.message||error)})}
+      }
+      return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
