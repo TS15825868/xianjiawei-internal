@@ -39,6 +39,14 @@ export async function recordAiReview(env,row,e,profile,checks){
   if(!['draft','pending_review'].includes(row.status))throw Error('只接受未核准內容；已排程、已發布及歷史人工核准不得被覆蓋');
   const existing=await env.DB.prepare('SELECT state,metricool_id FROM social_metricool_sync WHERE post_id=? LIMIT 1').bind(row.id).first().catch(err=>{if(String(err).includes('no such table'))return null;throw err});
   if(existing&&(existing.metricool_id||['scheduled','awaiting_work','awaiting_verification','cancel_required','unknown','published'].includes(existing.state)))throw Error('已有外部排程紀錄，禁止覆蓋核准狀態');
+  // A previous network attempt can have succeeded despite an ambiguous response.
+  // Refuse AI reapproval until every existing platform receipt is reconciled.
+  // Missing delivery storage fails closed instead of assuming the post is new.
+  const pastDelivery=await env.DB.prepare(
+    "SELECT platform,status FROM social_publish_deliveries WHERE post_id=? AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed')) LIMIT 1"
+  ).bind(row.id).first();
+  if(pastDelivery)throw Error('此篇已有平台發送嘗試或結果不明，必須先核對原始回執，不能重新AI核准');
+  if(row.published_at)throw Error('已有正式發布紀錄，不能重新AI核准');
   const fp=await checks.fingerprint(row),result=evidence.assess(e,row.id,fp,row.image_url);
   const errors=checks.productMatchErrors(row);errors.push(...await checks.duplicatePostErrors(env,row));
   if(/(治療|改善|關節|卡卡|疲勞|精神不濟|補氣|生津|膠原蛋白|鈣質|台興山產有限公司)/.test([row.title,row.headline,row.copy,row.image_alt].join(' ')))errors.push('療效／不適合公開的品牌用語阻擋');
