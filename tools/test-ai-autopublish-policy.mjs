@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
-import {aiApprovedChannels} from '../src/ai-quality-review.js';
+import {aiApprovedChannels,approvedAiImageSource} from '../src/ai-quality-review.js';
 import {aiScheduleFresh,metricoolChannels,metricoolBody} from '../src/metricool-sync.js';
 import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
@@ -46,8 +46,8 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
   const previousFetch=globalThis.fetch;
   const imageBytes=new TextEncoder().encode('isolated-approved-media-content');
   const digest=createHash('sha256').update(imageBytes).digest('hex');
-  const imageUrl='https://raw.githubusercontent.com/xianjiawei/formal/main/approved.jpg';
-  const referenceUrl='https://raw.githubusercontent.com/xianjiawei/formal/main/mascot.jpg';
+  const imageUrl='https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/social/approved.jpg';
+  const referenceUrl='https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/social/mascot.jpg';
   globalThis.fetch=async()=>new Response(imageBytes,{status:200,headers:{'content-type':'image/jpeg'}});
   const row={id:'TEST-AI-SAFE',status:'draft',title:'仙加味下午茶',headline:'在家溫熱飲用',copy:'下午在家準備溫熱飲品，分享仙加味的日常漢方飲食文化。',category:'生活情境',image_url:imageUrl,image_alt:'小老闆在家中準備溫熱飲品，分開的小鹿與小烏龜在一旁',image_quality_status:'ok',platforms_json:'["Facebook","Instagram","Threads"]',updated_at:'2026-10-27T12:00:00Z'};
   const fingerprint='f'.repeat(64),store={row:{...row},review:null};
@@ -153,4 +153,18 @@ test('Metricool只交付實際已核准平台，不得把FB一平台擴張三平
     assert.throws(()=>metricoolBody({...row,platforms_json:invalid},{template_json:'{}'},'2026-10-29T01:00:00Z'),/未授權|有效平台/);
   }
   assert.throws(()=>metricoolBody(row,{template_json:'{}'},'invalid'),/排程日期不合法/);
+});
+
+test('AI影像僅接受仙加味正式儲存來源',()=>{
+  assert.equal(approvedAiImageSource('https://static.metricool.com/planner/202610/a.webp'),true);
+  assert.equal(approvedAiImageSource('https://ts15825868.github.io/xianjiawei/images/product.jpg'),true);
+  assert.equal(approvedAiImageSource('https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/product.jpg'),true);
+  assert.equal(approvedAiImageSource('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/photo.png'),true);
+  for(const invalid of [
+    'http://ts15825868.github.io/xianjiawei/images/product.jpg',
+    'https://other.github.io/xianjiawei/images/product.jpg',
+    'https://raw.githubusercontent.com/elsewhere/other/main/photo.jpg',
+    'https://ts15825868.github.io/unrelated/photo.jpg',
+    'https://static.metricool.com/unrelated/photo.jpg'
+  ])assert.equal(approvedAiImageSource(invalid),false);
 });
