@@ -150,10 +150,12 @@ test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
 
 test('Metricool只交付實際已核准平台，不得把FB一平台擴張三平台',()=>{
   const row={copy:'仙加味正式品牌故事',image_url:'https://raw.githubusercontent.com/brand/post.jpg',image_alt:'萬華工藝',platforms_json:'["Facebook"]'};
-  const body=metricoolBody(row,{uuid:'existing-uuid',template_json:JSON.stringify({threadsData:{type:'POST'},instagramData:{type:'POST'}})},'2026-10-29T01:00:00Z');
+  const body=metricoolBody(row,{uuid:'existing-uuid',template_json:JSON.stringify({threadsData:{type:'POST'},instagramData:{type:'POST'},tiktokData:{type:'POST'},linkedinData:{type:'POST'}})},'2026-10-29T01:00:00Z');
   assert.deepEqual(body.providers,[{network:'facebook'}]);
   assert.equal(Object.hasOwn(body,'threadsData'),false);
   assert.equal(Object.hasOwn(body,'instagramData'),false);
+  assert.equal(Object.hasOwn(body,'tiktokData'),false);
+  assert.equal(Object.hasOwn(body,'linkedinData'),false);
   assert.equal(body.autoPublish,true);
   assert.deepEqual(metricoolChannels({...row,platforms_json:'["Instagram","Threads"]'}),['instagram','threads']);
   for(const invalid of ['["Facebook","LINE OA"]','["Facebook","facebook"]','[]','null']){
