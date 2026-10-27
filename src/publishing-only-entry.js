@@ -114,15 +114,15 @@ async function fastPostList(request,env){
   const status=clean(url.searchParams.get('status')),q=clean(url.searchParams.get('q')).slice(0,100);
   const where=["status<>'archived'"];const binds=[];
   if(status==='ai_pending'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))=''");}
-  else if(status==='human_approved'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))<>'' AND LOWER(approved_by) NOT LIKE 'ai:%'");}
-  else if(status==='ai_approved'){where.push("status='approved' AND LOWER(approved_by) LIKE 'ai:%'");}
+  else if(status==='human_approved'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))<>'' AND COALESCE(review_note,'') NOT LIKE 'AI審核：AI_APPROVED；%'");}
+  else if(status==='ai_approved'){where.push("status='approved' AND COALESCE(review_note,'') LIKE 'AI審核：AI_APPROVED；%'");}
   else if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status);}
   if(q){where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');const like=`%${q}%`;binds.push(like,like,like,like,like);}
   const clause=where.join(' AND ');
   const fields='id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,proposed_scheduled_at';
   const rowsStmt=env.DB.prepare(`SELECT ${fields} FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC,id DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset);
   const totalStmt=env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds);
-  const groupedStmt=env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting,SUM(CASE WHEN status='approved' AND LOWER(COALESCE(approved_by,'')) LIKE 'ai:%' THEN 1 ELSE 0 END) AS ai_approved_count FROM social_posts GROUP BY status");
+  const groupedStmt=env.DB.prepare("SELECT status,COUNT(*) AS count,SUM(CASE WHEN status='approved' AND TRIM(COALESCE(approved_by,''))='' THEN 1 ELSE 0 END) AS ai_review_waiting,SUM(CASE WHEN status='approved' AND COALESCE(review_note,'') LIKE 'AI審核：AI_APPROVED；%' THEN 1 ELSE 0 END) AS ai_approved_count FROM social_posts GROUP BY status");
   let rows,totalRow,grouped;
   if(typeof env.DB.batch==='function'){
     const result=await withTimeout(env.DB.batch([rowsStmt,totalStmt,groupedStmt]),D1_TIMEOUT_MS,'D1 貼文清單查詢暫時逾時');
