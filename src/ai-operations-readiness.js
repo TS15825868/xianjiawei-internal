@@ -112,7 +112,11 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',
-      postReview:'human_approval_required',pendingPostAutoApproval:false,
+      postReview:'human_or_verified_low_risk_ai_approval',
+      lowRiskAiApproval:{supported:true,activeRuntimeEvidenceNotChecked:true,
+        required:'current policy, 16 verified checks, approved official image hash, matching authorized networks and full audit',
+        highRiskNeedsHuman:true},
+      pendingPostAutoApproval:false,
       metaCommentAutoReply:'external_e2e_and_platform_control_unverified',
       metaReceiptStandby:'d1_schema_not_official_callback_verified',
       lineOa:'external_service_requires_live_verification',
