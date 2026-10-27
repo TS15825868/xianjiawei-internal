@@ -66,7 +66,7 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
       assert.equal(u[7],store.row.updated_at);
       Object.assign(store.row,{status:u[0],approved_by:u[1],approved_at:u[2],image_approved:u[3],review_note:u[4],updated_at:u[5]});
       const v=stmts[1].args;
-      assert.match(stmts[1].sql,/INSERT INTO social_post_quality_reviews.*WHERE changes\\(\\)=1 AND EXISTS/);
+      assert.match(stmts[1].sql,/INSERT INTO social_post_quality_reviews.*WHERE changes\(\)=1 AND EXISTS/);
       assert.equal(v[14],row.id);
       assert.equal(v[15],store.row.status);
       assert.equal(v[16],store.row.updated_at);
@@ -105,7 +105,7 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
     );
     const racedEnv={DB:{prepare(sql){return{bind(){return this},async first(){return null},async run(){return{meta:{changes:1}}}}},
       async batch(stmts){assert.match(stmts[0].sql,/^UPDATE social_posts/);
-        assert.match(stmts[1].sql,/WHERE changes\\(\\)=1 AND EXISTS/);
+        assert.match(stmts[1].sql,/WHERE changes\(\)=1 AND EXISTS/);
         return[{meta:{changes:0}},{meta:{changes:0}}];
       }
     }};
@@ -122,8 +122,8 @@ test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
   if(!sqlite){t.skip('此 Node 版本未內建 SQLite');return;}
   const {readFileSync}=await import('node:fs');
   const source=readFileSync(new URL('../src/ai-quality-review.js',import.meta.url),'utf8');
-  const updateSql=source.match(/env\\.DB\\.prepare\\("(UPDATE social_posts[^"]+)"\\)/)?.[1];
-  const insertSql=source.match(/env\\.DB\\.prepare\\("(INSERT INTO social_post_quality_reviews[^"]+)"\\)/)?.[1];
+  const updateSql=source.match(/env\.DB\.prepare\("(UPDATE social_posts[^"]+)"\)/)?.[1];
+  const insertSql=source.match(/env\.DB\.prepare\("(INSERT INTO social_post_quality_reviews[^"]+)"\)/)?.[1];
   assert.ok(updateSql&&insertSql,'回歸測試需使用正式程式的 SQL');
   const db=new sqlite.DatabaseSync(':memory:');
   try{
