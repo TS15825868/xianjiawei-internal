@@ -103,7 +103,7 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
       ()=>recordAiReview(pastDeliveryEnv,row,evidence,{role:'owner',email:'owner@example.com'},checks),
       /已有平台發送嘗試/
     );
-    const racedEnv={DB:{prepare(sql){return{bind(){return this},async first(){return null},async run(){return{meta:{changes:1}}}}},
+    const racedEnv={DB:{prepare(sql){return{sql,bind(){return this},async first(){return null},async run(){return{meta:{changes:1}}}}},
       async batch(stmts){assert.match(stmts[0].sql,/^UPDATE social_posts/);
         assert.match(stmts[1].sql,/WHERE changes\(\)=1 AND EXISTS/);
         return[{meta:{changes:0}},{meta:{changes:0}}];

@@ -22,7 +22,7 @@ console.log('PASS AI evidence: all16 + current hash + source + risk; FAIL reject
   const owner='owner@example.com',post={id:'TEST',status:'pending_review',updated_at:'before',image_url:e.image_url};
   let review;
   const DB={prepare:sql=>({bind(...values){this.values=values;return this},async run(){},async first(){return review},sql}),async batch(statements){
-    const insert=statements[0].values,update=statements[1].values;
+    const update=statements[0].values,insert=statements[1].values;
     // Model identities are not profiles: this reproduces the production FK constraint.
     assert.equal(update[0],'pending_review');
     assert.equal(update[1],null,'AI must not impersonate human approval');
