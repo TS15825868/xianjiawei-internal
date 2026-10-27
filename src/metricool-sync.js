@@ -55,19 +55,44 @@ export function aiScheduleFresh(row,reviewedAt,publicationAt){
     return{ok:false,reason:'AI審核憑證在預定發文前可能過期；請於發文前23小時內重新完成AI審核，再進行外部排程'};
   return{ok:true};
 }
+// Preserve the exact approved audience. In particular, a one-network
+// approval must never become a three-network Metricool post.
+const METRICOOL_CHANNELS=new Set(['facebook','instagram','threads']);
+export function metricoolChannels(row){
+  try{
+    const raw=JSON.parse(row?.platforms_json||'[]');
+    if(!Array.isArray(raw)||raw.length<1||raw.length>METRICOOL_CHANNELS.size)return null;
+    const items=raw.map(x=>String(x||'').trim().toLowerCase());
+    if(items.some(x=>!METRICOOL_CHANNELS.has(x))||new Set(items).size!==items.length)return null;
+    return items;
+  }catch{return null}
+}
 export function metricoolBody(row,link,at){
-  const prior=JSON.parse(link.template_json||'{}');delete prior.twitterData;
+  const channels=metricoolChannels(row);
+  if(!channels)throw Error('貼文指定平台含未授權項目、重複平台或無有效平台，不能移交 Metricool');
+  const prior=JSON.parse(link?.template_json||'{}');
+  delete prior.twitterData;
+  for(const [network,key] of [['facebook','facebookData'],['instagram','instagramData'],['threads','threadsData']]){
+    if(!channels.includes(network))delete prior[key];
+  }
   const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
-  return{...prior,id:link.metricool_id||undefined,uuid:link.uuid||undefined,publicationDate:{dateTime,timezone:'Asia/Taipei'},text:row.copy,providers:['facebook','instagram','threads'].map(network=>({network})),media:[row.image_url],mediaAltText:[row.image_alt],saveExternalMediaFiles:true,draft:false,autoPublish:true,facebookData:{...(prior.facebookData||{}),type:'POST'},instagramData:{...(prior.instagramData||{}),type:'POST',autoPublish:true},threadsData:{...(prior.threadsData||{}),type:'POST'}};
+  if(!Number.isFinite(Date.parse(at)))throw Error('Metricool 排程日期不合法');
+  const body={...prior,id:link?.metricool_id||undefined,uuid:link?.uuid||undefined,publicationDate:{dateTime,timezone:'Asia/Taipei'},text:row.copy,providers:channels.map(network=>({network})),media:[row.image_url],mediaAltText:[row.image_alt],saveExternalMediaFiles:true,draft:false,autoPublish:true};
+  if(channels.includes('facebook'))body.facebookData={...(prior.facebookData||{}),type:'POST'};
+  if(channels.includes('instagram'))body.instagramData={...(prior.instagramData||{}),type:'POST',autoPublish:true};
+  if(channels.includes('threads'))body.threadsData={...(prior.threadsData||{}),type:'POST'};
+  return body;
 }
 export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new Date(),{immediate=false}={}){
   if(!row||!['approved','scheduled'].includes(row.status))return{ok:false,error:'只有已完成有效核准、尚未發布的貼文能排程'};
+  if(!metricoolChannels(row))return{ok:false,error:'Metricool 只接受貼文原始審核指定的 Facebook／Instagram／Threads；不允許自動增加平台或轉為 LINE OA'};
   const gate=await gateState(env,row);if(!gate.ok)return{ok:false,error:gate.reason};
   await ensureMetricoolSchema(env);
   const link=await env.DB.prepare('SELECT * FROM social_metricool_sync WHERE post_id=?').bind(row.id).first();
   if(['published','unknown','failed','awaiting_verification','cancel_required'].includes(link?.state))return{ok:false,error:'已發布或存在未釐清結果；須先查證既有貼文，禁止重建'};
   const fp=await fingerprint(row);
-  if(link?.state==='scheduled'&&link.content_fingerprint===fp)return{ok:true,alreadyScheduled:true,metricoolId:link.metricool_id};
+  if(link?.state==='scheduled'&&link.content_fingerprint===fp&&link.metricool_id&&link.uuid)return{ok:true,alreadyScheduled:true,metricoolId:link.metricool_id};
+  if(link?.state==='scheduled'&&(!link.metricool_id||!link.uuid))return{ok:false,error:'本地標記已排程，但缺少可信的 Metricool ID／UUID，禁止視為外部排程成功'};
   if(link?.state==='scheduled')return{ok:false,error:'既有外部排程版本已變更；請先透過Work取消／更新原UUID'};
   if(requiresDatedSchedule(row)&&!hasExplicitFutureDate(row,now))return{ok:false,error:'節慶內容需先指定符合節日的日期，禁止自動套用一般週間時段'};
   // Existing human approval cannot authorize a second identical post created
