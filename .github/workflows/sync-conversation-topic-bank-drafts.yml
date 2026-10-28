@@ -7,6 +7,7 @@ on:
     paths:
       - 'assets/data/social-conversation-topic-bank-current.json'
       - 'tools/build-conversation-draft-seed.mjs'
+      - '.github/workflows/sync-conversation-topic-bank-drafts.yml'
 
 permissions:
   contents: read
