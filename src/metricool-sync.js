@@ -4,7 +4,7 @@ const BRAND='6889683';
 const clean=x=>String(x??'').trim();
 export function requiresDatedSchedule(row){return /(元旦|除夕|元宵|春節|過年|走春|農曆年|中秋|端午|聖誕|冬至)/.test([row?.title,row?.headline,row?.category,row?.copy].join(' '))}
 function hasExplicitFutureDate(row,now){return [row?.scheduled_at,row?.proposed_scheduled_at].some(x=>Date.parse(x)>now.getTime())}
-export const metricoolConfiguration=()=>({version:'2026-10-13-metricool-free-ai-v3',brandId:BRAND,mode:'free_work_handoff',enabled:false,paidApiRequired:false,serverApiEnabled:false,connectorExecution:'Work 執行期間',externalScheduling:'Metricool 免費排程器',monthlyPublishedPlatformLimit:20,perThreePlatformPostCost:3,backgroundResultSync:false,timezone:'Asia/Taipei',defaultPolicy:'週一／週三／週五09:00；保留既有明確日期',humanReviewRequired:false,evidenceApprovalRequired:true,approvalModes:['HUMAN_APPROVED','AI_APPROVED'],uncertainContentRequiresHuman:true,message:'低風險貼文可依完整AI證據自動核准，符合安全條件才排入待Work佇列；外部發布仍需正式排程及平台回執驗證。'});
+export const metricoolConfiguration=()=>({version:'2026-10-13-metricool-free-ai-v3',brandId:BRAND,mode:'free_work_handoff',enabled:false,paidApiRequired:false,serverApiEnabled:false,connectorExecution:'Work 執行期間',externalScheduling:'Metricool 免費排程器',monthlyPublishedPlatformLimit:20,perThreePlatformPostCost:3,backgroundResultSync:false,timezone:'Asia/Taipei',defaultPolicy:'週一／週三／週五台灣時間10:00；保留既有明確日期',humanReviewRequired:false,evidenceApprovalRequired:true,approvalModes:['HUMAN_APPROVED','AI_APPROVED'],uncertainContentRequiresHuman:true,message:'低風險貼文可依完整AI證據自動核准，符合安全條件才排入待Work佇列；外部發布仍需正式排程及平台回執驗證。'});
 export async function ensureMetricoolSchema(env){
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_metricool_sync(post_id TEXT PRIMARY KEY,metricool_id INTEGER,uuid TEXT UNIQUE,publication_at TEXT,content_fingerprint TEXT NOT NULL DEFAULT '',state TEXT NOT NULL DEFAULT 'pending_review',attempts INTEGER NOT NULL DEFAULT 0,last_error TEXT NOT NULL DEFAULT '',template_json TEXT NOT NULL DEFAULT '{}',lease_until TEXT,last_sync_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`).run();
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_metricool_control(setting_key TEXT PRIMARY KEY,setting_value TEXT NOT NULL DEFAULT '')`).run();
@@ -16,7 +16,8 @@ export function nextMetricoolSlot(now=new Date(),reserved=[]){
   const occupied=new Set(reserved.filter(x=>Number.isFinite(Date.parse(x))).map(x=>new Date(Date.parse(x)+8*3600000).toISOString().slice(0,10)));
   const local=new Date(now.getTime()+8*3600000);
   for(let d=0;d<366;d++){
-    const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,9));
+    // Current approved default: 10:00 Asia/Taipei (02:00 UTC), not the retired 09:00 UTC candidate.
+    const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,2));
     const date=day.toISOString().slice(0,10),at=new Date(day.getTime()-8*3600000);
     if([1,3,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date))return at.toISOString();
   }
