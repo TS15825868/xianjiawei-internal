@@ -62,7 +62,17 @@
       "guilu-tangkuai"
     ],
     "failedImageStatus": "draft_until_regenerated_then_pending_review",
-    "qualityLabelDoesNotReplaceEvidenceVisualReview": true
+    "qualityLabelDoesNotReplaceEvidenceVisualReview": true,
+    "userApprovedVisualDirectionAt": "2026-10-28",
+    "userApprovedVisualDirection": "使用者已確認所示小老闆、小鹿、小烏龜之完整生活情境插畫風格可接受；不因屬Q版插畫或原有舊品質標記就一律要求重製。依每篇圖文一致、角色一致、無亂碼、無重複及產品原圖真實性逐項審核。",
+    "userApprovedExamples": [
+      "郊外散步夕陽",
+      "萬華店內整理筆記",
+      "居家工作桌與漢方飲食文化",
+      "小玻璃裸罐於店內展示",
+      "居家介紹180cc鋁袋成分的情境"
+    ],
+    "reviewDistinction": "純生活情境不強制露出產品，但文案須自然連結仙加味；涉及產品者須另核對正式實物照片、外觀及比例。截圖中可接受的畫風不等於逐篇正式核准，舊版圖片品質標記可重新評估但不可直接忽略其他風險。"
   },
   "productImagePolicy": {
     "formalAssetsOnly": true,
