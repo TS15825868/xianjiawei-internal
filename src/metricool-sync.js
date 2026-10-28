@@ -16,8 +16,9 @@ export function nextMetricoolSlot(now=new Date(),reserved=[]){
   const occupied=new Set(reserved.filter(x=>Number.isFinite(Date.parse(x))).map(x=>new Date(Date.parse(x)+8*3600000).toISOString().slice(0,10)));
   const local=new Date(now.getTime()+8*3600000);
   for(let d=0;d<366;d++){
-    // Current approved default: 10:00 Asia/Taipei (02:00 UTC), not the retired 09:00 UTC candidate.
-    const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,2));
+    // `day` is an Asia/Taipei wall-clock value represented in UTC fields;
+    // subtract eight hours below exactly once to obtain 02:00 UTC / 10:00 Taiwan.
+    const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,10));
     const date=day.toISOString().slice(0,10),at=new Date(day.getTime()-8*3600000);
     if([1,3,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date))return at.toISOString();
   }
