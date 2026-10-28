@@ -56,7 +56,7 @@
     // Never offer generation/re-submission actions for a D1 row whose
     // same publication already has public platform receipts.
     if(externalHold){
-      card.querySelectorAll('[data-xjw-regenerate],[data-xjw-regeneration-return]').forEach(button=>button.remove());
+      card.querySelectorAll('[data-xjw-regenerate],[data-xjw-regeneration-return],[data-ai-evidence]').forEach(button=>button.remove());
     }
     const box=auditBox(card);
     if(box){
@@ -175,7 +175,38 @@
     if(!button||button.disabled)return;
     event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReview(button);
   },true);
+  // Keep AI evidence submission separate from human checklist attestations.
+  function openAiEvidence(button){
+    const id=cardId(button),root=document.getElementById('modalRoot');
+    if(!id||!root||maintenanceReadonly())return;
+    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-ai-close></div><div class="xjw-modal-card"><h2>提交16項 AI 審核證據</h2><p>僅接受已逐項看圖完成的證據。伺服器會重新核對目前圖文、圖片雜湊、原始回執與權限；提交證據不等於正式排程或發布。</p><label for="aiReviewEvidence">審核證據 JSON</label><textarea id="aiReviewEvidence" rows="16" style="width:100%;box-sizing:border-box;max-width:100%" spellcheck="false"></textarea><p id="aiReviewResult" role="status" style="white-space:pre-wrap;overflow-wrap:anywhere"></p><div class="xjw-modal-footer"><button class="btn" type="button" data-ai-close>關閉</button><button class="btn primary" type="button" data-ai-submit>提交 AI 證據</button></div></div></div>`;
+    root.querySelectorAll('[data-ai-close]').forEach(b=>b.addEventListener('click',()=>{root.innerHTML=''}));
+    const submit=root.querySelector('[data-ai-submit]'),result=root.querySelector('#aiReviewResult');
+    submit.addEventListener('click',async()=>{
+      submit.disabled=true;result.textContent='正在驗證目前圖文及證據…';
+      try{
+        const proof=JSON.parse(root.querySelector('#aiReviewEvidence').value);
+        if(proof.post_id!==id||proof.reviewer_type!=='AI')throw Error('證據必須屬於目前貼文，且 reviewer_type 必須是 AI');
+        const response=await api('/posts/'+encodeURIComponent(id)+'/ai-quality-review',{method:'POST',body:JSON.stringify(proof),timeout:60000});
+        result.textContent=JSON.stringify(response,null,2);
+        // Preserve the receipt for inspection; refresh only the background list.
+        document.querySelector('[data-refresh]')?.click();
+      }catch(error){result.textContent=error.message||String(error)}
+      finally{submit.disabled=false}
+    });
+  }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-ai-evidence]');
+    if(!button||button.disabled)return;
+    event.preventDefault();event.stopPropagation();openAiEvidence(button);
+  });
   function enhance(){
+    if(!maintenanceReadonly())document.querySelectorAll('.publish-card[data-status="draft"],.publish-card[data-status="pending_review"]').forEach(card=>{
+      if(card.dataset.externalPublishedHold==='1'||card.querySelector('[data-ai-evidence]'))return;
+      const id=card.querySelector('[data-post-view]')?.dataset.postView,actions=card.querySelector('.xjw-actions');
+      if(!id||!actions)return;
+      const button=document.createElement('button');button.type='button';button.className='btn small';button.dataset.aiEvidence='1';button.dataset.id=id;button.textContent='提交 AI 審核證據';actions.append(button);
+    });
     document.querySelectorAll('.publish-card[data-status="draft"] [data-post-status="approved"]').forEach(button=>{
       button.dataset.postStatus='pending_review';delete button.dataset.reviewGateReady;button.textContent='送待審核';button.title='先送入待審核，再由人工完成16項圖文審核；草稿不能直接核准。';
     });
