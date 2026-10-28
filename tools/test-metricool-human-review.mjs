@@ -9,8 +9,8 @@ gate={...gate,reviewed_by:'chatgpt:owner-delegated-reviewed'};assert.equal((awai
 gate={...gate,reviewed_by:'human@example.com',checklist_json:'{}'};assert.equal((await gateState(env,row)).ok,false);
 gate={...gate,checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true])))};assert.equal((await gateState(env,{...row,copy:'版本已變更'})).ok,false);
 assert.equal((await gateState(env,{...row,approved_by:null})).ok,false);
-assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-14T01:00:00.000Z');
-assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-14T10:00:00+08:00']),'2026-10-16T01:00:00.000Z');
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-14T02:00:00.000Z');
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-14T10:00:00+08:00']),'2026-10-16T02:00:00.000Z');
 const body=metricoolBody(row,{uuid:'stable-uuid',metricool_id:1,template_json:'{"twitterData":{"type":"POST"}}'},'2026-10-16T10:00:00+08:00');
 assert.equal(body.uuid,'stable-uuid');assert.equal(body.publicationDate.dateTime,'2026-10-16T10:00:00');assert.equal(body.twitterData,undefined);assert.equal(body.instagramData.autoPublish,true);assert.deepEqual(body.providers.map(p=>p.network),['facebook','instagram','threads']);
 assert.equal(metricoolConfiguration({}).enabled,false);
