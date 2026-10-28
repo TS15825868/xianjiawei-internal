@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-23-human-approval-safety-alignment-v3",
+  "version": "2026-10-28-owner-ai-approval-authorized-runtime-gated",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -88,13 +88,13 @@
     "publicBrandOnly": "仙加味"
   },
   "reviewFlow": {
-    "manualApprovalRequired": true,
+    "manualApprovalRequired": false,
     "regeneratedImageReturnsTo": "pending_review",
     "unapprovedContentMayPublish": false,
     "immediatePublishRequiresApproval": true,
     "scheduledPublishRequiresApproval": true,
-    "automaticApprovalEnabled": false,
-    "automaticApprovalRule": "AI僅負責16項品質檢查與產生證據；所有正式貼文均須經使用者人工審核核准，不得自動產生HUMAN_APPROVED或AI_APPROVED取代人工決定。"
+    "automaticApprovalEnabled": true,
+    "automaticApprovalRule": "使用者 2026-10-28 最新明確授權：低風險內容可由正式 AI 審核產生 AI_APPROVED；必須逐篇具備 16 項 PASS 與可稽核證據、真實圖片與原圖雜湊、品牌產品權威、圖文一致、去重、平台授權及免費額度證明。任何缺項或高風險回待人工審核，不得冒充 HUMAN_APPROVED；正式端對端驗收前不可啟用外部自動發送。"
   },
   "autoPublish": {
     "enabled": true,
@@ -119,8 +119,8 @@
       "compliance_final"
     ],
     "approvalRequired": true,
-    "automaticApprovalAfterAllChecks": false,
-    "afterManualApproval": "僅在使用者人工核准且目前圖文證據仍有效後，才可由Work排程；Metricool正式排程與回執須再次核對。"
+    "automaticApprovalAfterAllChecks": true,
+    "afterManualApproval": "正式 AI_APPROVED 或 HUMAN_APPROVED 均可成為排程候選；必須保留審核身分與有效證據、逐平台發布前重查狀態及去重、實際免費額度與外部回執。AI 審核證據過期須重新審核；未通過正式端對端驗收仍保持不發送。"
   },
   "crossPlatformPublishing": {
     "mode": "same_day_same_post",
@@ -137,13 +137,13 @@
   "liveLifeInsert": {
     "enabled": true,
     "freshnessWindowHours": "24-72",
-    "humanApprovalRequired": true,
+    "humanApprovalRequired": false,
     "replaceEvergreenSlot": true,
     "shiftReplacedEvergreenForward": true,
     "preserveRealScene": true,
     "mascotTransform": "真人小老闆可轉為正式Q版小老闆，加入分開的小鹿與小烏龜",
     "productRule": "如有產品，只能合成正式產品原圖，不得AI重畫包裝",
-    "approvalRule": "先完成16項AI品質檢查、時效與圖文一致性驗證；使用者人工審核核准後才可插播，不能以AI_APPROVED取代人工。"
+    "approvalRule": "時效性內容須有新鮮外部證據及完整16項 AI 品質檢查；若天氣／重大事件／圖片來源或時效有疑義，交人工核准，未核准不得發布。"
   },
   "weeklyCadence": {
     "normalPostsPerWeek": 3,
@@ -164,9 +164,9 @@
     "rule": "平台個人檔案／Bio統一使用此入口；貼文內若為產品詢問、試喝、價格、下單、配送、售後，仍直接導LINE OA。"
   },
   "automationTransition": {
-    "authorizedAt": "2026-10-13",
-    "authorization": "使用者明確授權AI自動產文、製圖、品質審核、排程及正式發布；高風險或不確定內容保留人工確認",
-    "targetMode": "ai_quality_check_then_human_approval_then_publish",
+    "authorizedAt": "2026-10-28",
+    "authorization": "使用者最新明確授權 AI 自動產文、製圖、16項審核、低風險 AI_APPROVED、自動排程及正式發布；高風險或無法驗證者必須人工確認，禁止冒充人工審核。",
+    "targetMode": "evidence_bound_ai_or_human_approval_then_verified_scheduled_publish",
     "currentEnforcement": "typed_ai_or_human_evidence_gate",
     "aiReviewMustNotImpersonateHuman": true,
     "requiredEvidence": [
@@ -179,13 +179,13 @@
       "platform_publish_receipt"
     ],
     "unsafeOrUncertainAction": "hold_for_human_review",
-    "existingScheduledPostAction": "preserve_and_never_duplicate; 2026-10-21至2026-11-17已建立Metricool正式排程9篇，核對即時平台後才可調整",
-    "freeMetricoolConstraint": "no_paid_rest_api_no_unattended_connector_claim",
-    "rolloutState": "manual_approval_required_runtime_end_to_end_unverified",
+    "existingScheduledPostAction": "保留既有外部已發／已排紀錄，先查即時 Metricool，禁止複製或重送；目前候選草稿不代表正式排程。",
+    "freeMetricoolConstraint": "免費方案不提供可靠無人值守 REST 發文通道；僅在可驗證的正式連接器／排程與免費額度條件滿足後啟用，否則保持 fail-closed。",
+    "rolloutState": "owner_authorized_ai_approval_runtime_end_to_end_unverified_fail_closed",
     "pausedTopics": [
       "龜鹿飲試喝：暫停，使用者另行指定日期前不得自動排程或發布"
     ],
     "officialWebsiteProductImageRule": "官網main目前正式使用的產品原圖為最高圖像權威；禁止AI重畫、覆蓋、變形或用舊ZIP取代；貼文產品圖須核對正式圖檔及實際外觀。",
-    "latestInstruction": "2026-10-23：正式社群貼文仍須人工審核；AI可以自動產文、製圖、品質檢查，但不得自行核准或發布未經人工審核內容。已核准的既有排程不重置，須繼續核對實際核准證據。"
+    "latestInstruction": "2026-10-28：使用者要求先完成貼文系統，合格低風險貼文可由 AI 自動審核、自動排程、自動發文；必須先完成正式平台、媒體、配額、防重複、端對端安全驗收。高風險、資料不足、證據過期、未知發送結果保持待審核／人工處理。"
   }
 }
