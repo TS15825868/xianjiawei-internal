@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-02-conversation-content-v8-third-generation-note",
+  "version": "2026-10-28-mixed-content-ai-evidence-gated",
   "brand": "仙加味",
   "purpose": "仙加味輕鬆互動、聊天、了解、生活知識與季節內容母庫。以混合題材自然穿插，不做制式系列連發；短影片只有正式正常才採用，否則使用完整正式情境圖。",
   "rules": {
@@ -13,7 +13,7 @@
     ],
     "productMentionRequired": false,
     "lineOaMentionRequired": false,
-    "brandConnection": "可以直接、間接或由整體帳號脈絡建立，不要求每篇硬塞品牌、產品或LINE OA。",
+    "brandConnection": "每篇生活／飲食／養生內容都必須有自然且明確的仙加味品牌、傳統漢方飲食文化、料理搭配、正式產品使用或官方LINE諮詢連結；不可只靠帳號脈絡，也不可空泛心靈雞湯。",
     "knowledgeScope": [
       "漢方飲食文化",
       "生活觀察",
@@ -56,11 +56,11 @@
     "productVisualPolicy": "產品一旦入鏡，產品本體優先使用正式實物原圖並維持真實比例；不得AI重畫、換包裝、換瓶型、加不存在標籤或文字。30cc必須是小玻璃裸罐且無貼紙，180cc必須是正式比例鋁袋。",
     "videoPolicy": "只有角色、動作、場景、字幕、旁白與產品外觀全部正常且正式可上線時才採用短影片；若有紙偶感、拼貼感、圖動、角色走樣、產品變形、字幕亂碼或測試感，直接改用完整正式情境圖。",
     "imagePolicy": "完整情境圖必須與文案、季節、天氣、冷熱、場景、動作一致；涉及產品時AI只負責背景、小老闆與輔助場景，產品本體使用正式素材。",
-    "reviewRule": "沒有合格圖片或正式影片不得送審；完成後一律回待審核並完成16項人工圖文審核，不自動發布。",
+    "reviewRule": "完成圖文及正式圖片後必須逐篇完成16項完整品質檢查；符合最新正式證據、低風險及防重複要求者可AI_APPROVED，時效／商品來源／圖文疑義者待人工審核；外部自動發布需另通過免費配額、平台授權、實際端對端驗收及回執核對。",
     "publishedReuseRule": "已發布內容不得換句話重發；相似主題先去重，只保留真正不同角度。",
     "publishingSequencePolicy": {
       "mode": "mixed_dynamic_pool",
-      "rule": "產品、生活、料理、品牌、萬華、工藝、互動、季節內容自然穿插，不整個系列連發。",
+      "rule": "每週約3篇、特殊週最多4篇，在養生飲食文化、家常料理、具體生活情境、品牌傳承、萬華、正式產品、季節與互動題材間輪替；每3篇至少1篇非直接商品推銷的養生／飲食／生活內容，不額外灌量。",
       "avoidBackToBackSameCategory": true,
       "avoidBackToBackSameProduct": true,
       "minimumGapForSimilarAngle": 6,
@@ -103,8 +103,8 @@
       "mode": "fresh_life_insert",
       "trigger": "使用者上傳最近24～72小時內的真實外出、拜拜、散步、親子、萬華、天氣或節日生活照片",
       "transformRule": "可保留真實場景，將真人小老闆轉為仙加味正式Q版小老闆，加入分開的小鹿與小烏龜；若有產品則只用正式產品原圖，不得AI重畫包裝。",
-      "reviewRule": "完成圖文後一律先進pending_review，使用者人工審核通過後才可發布。",
-      "publishRule": "有時效的生活內容優先於24～72小時內插播；若原時段已有一般常青貼文，常青貼文順延，不同日內容不重複。",
+      "reviewRule": "時效生活內容需完成16項品質檢查及新鮮來源驗證；低風險可AI_APPROVED，時效與圖文有疑義者待人工核准。",
+      "publishRule": "只有審核有效、平台授權與外部端對端驗收完成時才能在24～72小時內插播；原常青時段順延，未知結果不得重送。",
       "crossPlatformRule": "Facebook、Instagram、Threads同一天、同一時間、同一張正式圖、同一主題同步。",
       "fallbackRule": "沒有時效性的戶外照片改排進一般混合內容池，不搶即時插播位。"
     }
