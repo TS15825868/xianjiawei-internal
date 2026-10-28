@@ -61,7 +61,7 @@
     const box=auditBox(card);
     if(box){
       box.className=item.ok?'xjw-ok':'xjw-danger';
-      box.innerHTML=item.ok?'<strong>圖文完整檢查（不會發布）</strong><br>產品、重複圖、季節／天氣與明確情境自動預檢通過；仍須人工完成16項審核。':`<strong>圖文完整檢查未通過（不會發布）</strong><br>${errors.map(esc).join('；')}`;
+      box.innerHTML=item.ok?'<strong>圖文完整檢查（不會發布）</strong><br>產品、重複圖、季節／天氣與明確情境自動預檢通過；仍須取得完整16項 AI 審核證據或人工核准。':`<strong>圖文完整檢查未通過（不會發布）</strong><br>${errors.map(esc).join('；')}`;
     }
     card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
       if(item.ok){

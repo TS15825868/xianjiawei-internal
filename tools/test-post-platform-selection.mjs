@@ -41,7 +41,7 @@ test('new post never implicitly subscribes to unverified Threads; edit preserves
  assert.match(ui,/if\(!chosen\.length\)throw Error\('請先明確選擇至少一個發布平台/);
  assert.match(fallback,/input\.value='Threads';input\.checked=false/);
  assert.doesNotMatch(fallback,/input\.value='Threads';input\.checked=true/);
- assert.match(html,/publishing-app-v2\.js\?v=20261026-platform-selection-v14/);
+ assert.match(html,/publishing-app-v2\.js\?v=20261028-ai-approved-filter-v15/);
  assert.equal((html.match(/manual-publish-tools\.js\?v=20261026-explicit-threads-v5/g)||[]).length,2);
 });
 test('publisher still requires valid platform selection, remote post receipts and human approval before sending',()=>{

@@ -140,6 +140,7 @@ function metricsData(){
     pending:Number(c.pending_review||0),
     approved:Number(c.human_approved??c.approved??0),
     aiPending:Number(c.ai_pending||0),
+    aiApproved:Number(c.ai_approved||0),
     scheduled:Number(c.scheduled||0),
     published:Number(c.published||0),
     manual:Number(c.manual_required||0)
@@ -154,6 +155,7 @@ function renderMetrics(){
     ['草稿',c.draft,'draft'],
     ['待審核',c.pending,'pending_review'],
     ['AI 預審待人工',c.aiPending,'ai_pending'],
+    ['AI 已核准',c.aiApproved,'ai_approved'],
     ['人工已核准',c.approved,'human_approved'],
     ['已排程',c.scheduled,'scheduled'],
     ['已發布',c.published,'published'],

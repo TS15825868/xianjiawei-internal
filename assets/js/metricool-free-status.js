@@ -1,11 +1,11 @@
 (()=>{
-  const labels={scheduled:'已送入Metricool',pending_review:'待審核',awaiting_work:'待送入排程',blocked_context:'待核對節慶日期',awaiting_verification:'待查證發布結果',cancel_required:'需處理外部排程',expired:'未送出且已過期',failed:'失敗，需查原因',unknown:'結果不明，禁止重建',published:'已查證發布'};
+  const labels={scheduled:'已查證正式排程',pending_review:'待審核',awaiting_work:'待送入排程',blocked_context:'待核對節慶日期',awaiting_verification:'待查證發布結果',cancel_required:'需處理外部排程',expired:'未送出且已過期',failed:'失敗，需查原因',unknown:'結果不明，禁止重建',published:'已查證發布'};
   let loaded=false;
   async function load(){
     if(loaded)return;loaded=true;
     const box=document.createElement('section');box.id='metricoolFreeStatus';box.className='xjw-warning';box.style.cssText='margin:16px;padding:16px;max-width:100%;overflow-wrap:anywhere';
     const title=document.createElement('strong');title.textContent='免費排程與發布紀錄';box.append(title);
-    const note=document.createElement('p');note.textContent='AI 預審後仍須使用者人工核准，才可由 Work 送入排程。Metricool每月20次發布，三平台各計一次；結果未查證時不標記成功。';box.append(note);
+    const note=document.createElement('p');note.textContent='低風險貼文可依完整16項證據取得 AI 核准；高風險或資料不足交人工確認。AI 核准與 Work 待排程佇列不等於正式排程：須查證原 UUID、有效核准、平台額度及遠端 draft=false、autoPublish=true；三平台結果分別回查。';box.append(note);
     (document.querySelector('main')||document.body).append(box);
     const button=document.createElement('button');button.type='button';button.className='btn';button.textContent='重新讀取狀態';box.append(button);
     const list=document.createElement('div');list.setAttribute('aria-live','polite');box.append(list);
