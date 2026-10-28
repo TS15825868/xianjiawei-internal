@@ -1,17 +1,16 @@
 {
-  "version": "2026-10-28-flexible-2-3-prioritize-erzhenbao-sizhenbao",
+  "version": "2026-10-28-social-traffic-knowledge-demand-led",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
   "contentMix": [
-    "養生飲食文化",
-    "日常飲食與家常料理",
-    "生活情境",
-    "品牌傳承與工藝",
-    "正式產品與使用方式",
-    "萬華在地日常",
-    "季節與天氣",
-    "互動問答"
+    "日常分享與聊天",
+    "認識食材與分辨食材",
+    "常用搭配與複方茶飲",
+    "家常料理與飲食文化",
+    "季節生活與互動問答",
+    "品牌故事與工藝",
+    "正式產品與使用方式"
   ],
   "weatherInsert": {
     "enabled": true,
@@ -91,7 +90,7 @@
   "copyPolicy": {
     "traditionalChinese": true,
     "topicFree": true,
-    "mustLinkToBrandOrProduct": true,
+    "mustLinkToBrandOrProduct": false,
     "lifestylePostNeedsConcreteScene": true,
     "forbidPublishedDuplicate": true,
     "forbidMedicalClaims": true,
@@ -202,23 +201,23 @@
   },
   "contentRotation": {
     "enabled": true,
-    "goal": "每週以2篇為基礎、視合格內容與時機增加第3篇；在養生飲食文化、家常料理、生活情境、品牌傳承、正式產品、萬華、季節天氣、互動問答間交錯，不為湊篇數加發。",
-    "guidance": "每週2篇原則上至少1篇為非直接商品推銷的養生／飲食／料理／生活內容，另一篇為品牌／工藝／產品／問答；第3篇依真實時效與品質彈性安排。避免連發硬廣與重複主題。",
+    "goal": "社群以吸引流量、互動與追蹤為主，日常分享、食材知識、茶飲、料理、生活趣事與正式產品自然交錯；每週通常2篇，品質合格時最多3篇，不為湊量發文。",
+    "guidance": "不固定推二珍寶、四珍寶或其他商品，不連續硬廣、不重複題材；知識貼文不必提品牌或商品，也不強制導購。品牌識別由帳號與視覺呈現。",
     "wellnessScope": "只談一般飲食文化、食材風味、溫熱飲用、家常料理、保存與日常習慣；不提供疾病治療、預防或特定食品功效宣稱。",
-    "brandConnection": "每篇生活／飲食／養生內容必須有自然且明確的仙加味品牌、漢方飲食文化、料理、正式產品使用或LINE諮詢連結；不能是空泛心靈雞湯。",
+    "brandConnection": "日常知識與聊天貼文可不提品牌、產品或LINE；只有正式產品介紹、品牌故事及實際客戶需求才自然導向官網或LINE OA。",
     "imageRequirements": "每篇使用獨立且對應情境的完整圖片，正式Q版小老闆、小鹿及小烏龜分開；提到具體產品則只能合成正式產品原圖，維持原尺寸比例與包裝，不得AI重畫。",
     "reviewAndPublish": "每篇仍須通過完整16項審核、去重、圖片來源與當前版本證據；低風險可AI_APPROVED，有疑義回待人工審核；正式發送仍受平台回執、配額、去重及端對端安全驗收限制。",
-    "seasonalAdjustment": "季節、天氣、節慶主題必須符合實際日期與情境；有時效內容可替換既有常青時段，避免同日擠發。"
+    "seasonalAdjustment": "季節、天氣、節慶主題必須符合實際日期與情境；有時效內容可替換既有常青時段，避免同日擠發。",
+    "teaAndIngredientTopics": "可從公開社群與可靠食譜蒐集靈感，涵蓋單方及多食材茶飲、認識／分辨食材、常用搭配、泡煮與保存；重新查證及原創編寫，不搬運他人圖文、不暗示療效；一般茶飲分享不代表已販售。",
+    "channelRoles": "官網展示正式品牌與產品；LINE OA負責正式銷售與詢問；FB/IG/Threads主要吸引流量與互動。",
+    "demandLedSales": "茶飲食材先依客戶需求，原包裝原重量販售；少量需求先找同業／供應商合法現成小包裝進貨轉售，不散賣；只有客戶特別要求且合法合規時才評估另計工資分裝；不預製茶包庫存，不假稱已推出自有品牌。"
   },
   "productPromotionPriority": {
     "updatedAt": "2026-10-28",
-    "priorityProducts": [
-      "二珍寶",
-      "四珍寶"
-    ],
-    "status": "owner_requested_priority_not_auto_approved",
-    "intent": "近期優先推廣二珍寶與四珍寶，兩款交錯輪替、不連續硬廣；每週基本2篇、最多3篇不變。龜鹿膏保留一般產品內容資格，但不佔近期優先輪替名額。",
-    "weeklyPlan": "每週1篇品牌／產品主題優先在二珍寶紫盒與四珍寶紅盒間輪替；另1篇保留養生飲食文化／家常料理／生活情境，第三篇僅品質及時效均合格才加入。已排／已發貼文不因優先順序變更而覆蓋、取消或重發。",
+    "priorityProducts": [],
+    "status": "all_eligible_products_interleaved_no_forced_priority",
+    "intent": "正式產品偶爾自然穿插，與生活、食材、複方茶飲、料理、聊天交錯；不再以二珍寶及四珍寶固定優先。",
+    "weeklyPlan": "每週約2篇，合格時最多3篇；以內容價值、時效、去重和互動為依據，不必每週有商品文；保留已排及已發內容。",
     "copySafety": "二珍寶、四珍寶可介紹原有配方及自行挑選適合食材的料理彈性；龜鹿膏可介紹直接食用、溫熱調開及適合的日常搭配。自行選擇產地、品質與風味，不宣稱任意藥材均安全、不暗示療效。以最新正式母檔為準，不猜售價、成分、用量或活動。",
     "imageSafety": "二珍寶紫盒、四珍寶紅盒、龜鹿膏正式產品原圖分別核對，維持實物比例、容量與外觀；禁止AI重畫產品包裝或以舊DM替代。",
     "reviewSafety": "逐篇16項圖文品質檢查、相似貼文去重、平台免費額度及有效AI／人工審核證據俱全才可進入排程；尚未通過外部端對端驗收不得宣稱已自動發布。",
