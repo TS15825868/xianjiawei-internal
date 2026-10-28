@@ -7,7 +7,6 @@ on:
     paths:
       - 'assets/data/social-conversation-topic-bank-current.json'
       - 'tools/build-conversation-draft-seed.mjs'
-      - '.github/workflows/sync-conversation-topic-bank-drafts.yml'
 
 permissions:
   contents: read
@@ -47,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-CONV-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS active_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived'; SELECT COUNT(*) AS threads_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND platforms_json LIKE '%Threads%'; SELECT COUNT(*) AS literal_newline_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'published' AND instr(copy,char(92)||'n')>0;" > /tmp/verify.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-CONV-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS active_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived'; SELECT COUNT(*) AS threads_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived' AND platforms_json LIKE '%Threads%'; SELECT COUNT(*) AS literal_newline_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'published' AND instr(copy,char(92)||'n')>0;" > /tmp/verify.txt
           cat /tmp/verify.txt
           node - <<'NODE'
           const fs=require('fs');
