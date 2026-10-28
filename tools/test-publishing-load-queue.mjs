@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const source=fs.readFileSync(new URL('../assets/js/publishing-app-v2.js',import.meta.url),'utf8');
+const load=source.slice(source.indexOf('async function load({append=false}={})'),source.indexOf('\nfunction closeModal()'));
+let release;const first=new Promise(resolve=>release=resolve);const calls=[];
+const state={loading:false,queuedLoad:null,loadId:0,items:[],counts:{},filter:'old'};
+const context={state,api:async path=>{calls.push(path);if(calls.length===1)await first;return{items:[],total:0}},queryPath:()=>state.filter,connection:()=>{},$$:()=>[],$:()=>null,setButtonBusy:()=>()=>{},renderList:()=>{},loadPlatforms:()=>{},applyMaintenanceMode:()=>{},toast:()=>{},esc:String};
+vm.createContext(context);vm.runInContext(load+';this.load=load',context);
+const running=context.load();state.filter='latest';await context.load();await context.load({append:true});release();await running;await new Promise(setImmediate);
+assert.deepEqual(calls,['old','latest']);assert.equal(state.loading,false);assert.equal(state.queuedLoad,null);
+console.log('PASS search/filter changes during loading are retained; repeated pagination does not queue extra pages');
