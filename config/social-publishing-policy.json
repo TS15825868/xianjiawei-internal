@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-28-2-to-3-weekly-owner-approved",
+  "version": "2026-10-28-flexible-2-3-prioritize-erzhenbao-sizhenbao",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -199,5 +199,19 @@
     "imageRequirements": "每篇使用獨立且對應情境的完整圖片，正式Q版小老闆、小鹿及小烏龜分開；提到具體產品則只能合成正式產品原圖，維持原尺寸比例與包裝，不得AI重畫。",
     "reviewAndPublish": "每篇仍須通過完整16項審核、去重、圖片來源與當前版本證據；低風險可AI_APPROVED，有疑義回待人工審核；正式發送仍受平台回執、配額、去重及端對端安全驗收限制。",
     "seasonalAdjustment": "季節、天氣、節慶主題必須符合實際日期與情境；有時效內容可替換既有常青時段，避免同日擠發。"
+  },
+  "productPromotionPriority": {
+    "updatedAt": "2026-10-28",
+    "priorityProducts": [
+      "二珍寶",
+      "四珍寶"
+    ],
+    "status": "owner_requested_priority_not_auto_approved",
+    "intent": "近期優先推廣二珍寶與四珍寶，與養生飲食、家常料理、生活情境及品牌故事交錯，不連續硬廣；每週基本2篇、最多3篇不變。",
+    "weeklyPlan": "優先在每週品牌／產品／工藝／問答的1個主貼文時段輪替二珍寶與四珍寶；另1篇保持養生飲食文化／家常料理／生活情境，第3篇僅合格且有時效時加入。",
+    "copySafety": "僅使用當前正式產品母檔及同品牌核實資料，不猜測售價、成分、功效、用量、優惠或適用族群；不能有療效宣稱。",
+    "imageSafety": "二珍寶、四珍寶必須各用正式實物原圖，核對紫盒／紅盒與正確容量、內容物及產品比例；不得用AI重繪包裝、互換產品圖或使用舊版DM。",
+    "reviewSafety": "逐篇16項圖文品質檢查、相似貼文去重、平台免費額度及有效AI／人工審核證據俱全才可進入排程；尚未通過外部端對端驗收不得宣稱已自動發布。",
+    "existingPosts": "已發布／已排程內容不得無證據覆蓋或重發；待審核候選可依優先順序重新選題。"
   }
 }
