@@ -213,5 +213,23 @@
     "imageSafety": "二珍寶、四珍寶必須各用正式實物原圖，核對紫盒／紅盒與正確容量、內容物及產品比例；不得用AI重繪包裝、互換產品圖或使用舊版DM。",
     "reviewSafety": "逐篇16項圖文品質檢查、相似貼文去重、平台免費額度及有效AI／人工審核證據俱全才可進入排程；尚未通過外部端對端驗收不得宣稱已自動發布。",
     "existingPosts": "已發布／已排程內容不得無證據覆蓋或重發；待審核候選可依優先順序重新選題。"
+  },
+  "metricoolDraftReconciliation": {
+    "checkedAt": "2026-10-28",
+    "source": "official_metricool_connector",
+    "brandId": "6889683",
+    "observedFutureDraftCount": 11,
+    "observedDraft": true,
+    "observedAutoPublish": false,
+    "policy": "既有11篇僅為草稿，日期不是已啟用自動發文的證據。不可無有效16項AI/HUMAN審核、正式圖片來源、平台配額與回查證據而批次轉正式排程。",
+    "requiredBeforeActivation": [
+      "current_16_check_approval_evidence",
+      "official_product_asset_and_visual_review",
+      "duplicate_and_cadence_check",
+      "free_plan_monthly_quota",
+      "remote_draft_false_autopublish_true_readback",
+      "platform_publication_receipts"
+    ],
+    "status": "hold_until_evidence_verified"
   }
 }
