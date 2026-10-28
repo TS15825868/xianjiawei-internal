@@ -46,14 +46,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT status,COUNT(*) AS count FROM social_posts WHERE id LIKE 'XJW-CONV-%' GROUP BY status ORDER BY status; SELECT COUNT(*) AS active_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived'; SELECT COUNT(*) AS threads_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived' AND platforms_json LIKE '%Threads%'; SELECT COUNT(*) AS literal_newline_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'published' AND instr(copy,char(92)||'n')>0;" > /tmp/verify.txt
-          cat /tmp/verify.txt
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS active_count, SUM(CASE WHEN LOWER(platforms_json) LIKE '%threads%' THEN 1 ELSE 0 END) AS threads_count, SUM(CASE WHEN status<>'published' AND instr(copy,char(92)||'n')>0 THEN 1 ELSE 0 END) AS literal_newline_count FROM social_posts WHERE id LIKE 'XJW-CONV-%' AND status<>'archived';" > /tmp/verify.json
           node - <<'NODE'
           const fs=require('fs');
-          const text=fs.readFileSync('/tmp/verify.txt','utf8');
-          const values=[...text.matchAll(/"(active_count|threads_count|literal_newline_count)"\s*:\s*(\d+)/g)].reduce((m,x)=>(m[x[1]]=Number(x[2]),m),{});
-          if(!values.active_count||values.active_count<40)throw new Error(`可見草稿不足，active_count=${values.active_count||0}`);
-          if(values.threads_count!==values.active_count)throw new Error(`Threads 覆蓋不完整：threads=${values.threads_count||0} active=${values.active_count||0}`);
-          if(Number(values.literal_newline_count||0)!==0)throw new Error(`D1仍有字面\\n：${values.literal_newline_count}`);
-          console.log(`PASS visible conversation drafts=${values.active_count}, Threads=${values.threads_count}, literalNewlines=${values.literal_newline_count||0}`);
+          const data=JSON.parse(fs.readFileSync('/tmp/verify.json','utf8'));
+          const row=(Array.isArray(data)?data[0]?.results:data?.results)?.[0];
+          if(!row)throw Error('D1 驗證未回傳有效的資料列');
+          const active=Number(row.active_count),threads=Number(row.threads_count),literal=Number(row.literal_newline_count);
+          if(!Number.isSafeInteger(active)||active<40)throw Error('可見草稿不足或回傳不合法：'+row.active_count);
+          if(!Number.isSafeInteger(threads)||threads!==active)throw Error('Threads 覆蓋不完整：threads='+threads+' active='+active);
+          if(!Number.isSafeInteger(literal)||literal!==0)throw Error('D1仍有字面\\n：'+row.literal_newline_count);
+          console.log('PASS conversation drafts='+active+', Threads='+threads+', literalNewlines='+literal);
           NODE
