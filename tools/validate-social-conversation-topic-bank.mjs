@@ -6,7 +6,7 @@ const errors = [];
 const req = (ok, message) => { if (!ok) errors.push(message); };
 const text = (value) => String(value ?? '');
 
-req(/^2026-\d{2}-\d{2}-conversation-content-v\d+/.test(text(bank.version)), '題庫版本格式不符合現行正式內容母庫規則');
+req(/^2026-\d{2}-\d{2}-(?:conversation-content-v\d+|mixed-content-ai-evidence-gated)/.test(text(bank.version)), '題庫版本格式不符合現行正式內容母庫規則');
 req(bank.brand === '仙加味', '題庫品牌不是仙加味');
 req(Array.isArray(bank.topics) && bank.topics.length >= 50, '正式題庫不足50題，無法支撐到農曆年前後');
 req(bank.rules?.publishingSequencePolicy?.mode === 'mixed_dynamic_pool', '未啟用混合動態發布池');
@@ -23,7 +23,7 @@ req(text(bank.rules?.productVisualPolicy).includes('30cc') && text(bank.rules?.p
 req(text(bank.rules?.productVisualPolicy).includes('180cc') && text(bank.rules?.productVisualPolicy).includes('鋁袋'), '180cc正式鋁袋規則缺失');
 req(Array.isArray(bank.rules?.blockedPublicProducts) && bank.rules.blockedPublicProducts.includes('柒玄茶・龜鹿調飲粉'), '未封鎖尚未完成的柒玄茶・龜鹿調飲粉');
 req(text(bank.rules?.videoPolicy).includes('完整正式情境圖'), '短影片失敗時缺少完整正式情境圖fallback');
-req(text(bank.rules?.reviewRule).includes('待審核') && text(bank.rules?.reviewRule).includes('不自動發布'), '人工審核流程缺失');
+req(text(bank.rules?.reviewRule).includes('16項') && text(bank.rules?.reviewRule).includes('AI_APPROVED') && text(bank.rules?.reviewRule).includes('待人工審核') && text(bank.rules?.reviewRule).includes('端對端驗收'), 'AI品質審核或人工覆核／正式發布安全門檻缺失');
 
 const allowedProducts = new Set(bank.rules?.allowedPublicProductIds || []);
 const ids = new Set();
