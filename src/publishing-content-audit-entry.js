@@ -2,7 +2,7 @@ import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-10-21-fixed-mascot-reference-review-v11';
+const VERSION='2026-10-30-traffic-lifestyle-policy-v12';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -21,7 +21,6 @@ const LIFESTYLE_CONTEXT_TERMS=Object.freeze([
   'LINE 諮詢','LINE諮詢','諮詢','試喝前','試喝後','試喝','隨身','出門','餐前','餐後','週末','傍晚','清晨'
 ]);
 const LIFESTYLE_CATEGORY_TERMS=Object.freeze(['生活情境','生活提醒','氣候','天氣','節氣','換季']);
-const LIFESTYLE_BRAND_PRODUCT_TERMS=Object.freeze(['仙加味','龜鹿膏','龜鹿飲','鹿茸粉','四珍寶','二珍寶','參仲四物飲','丹參','萬華四代']);
 
 function publicText(row){return [row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ')}
 function publicVisibleText(row){return [row?.title,row?.headline,row?.copy,row?.category,row?.image_alt].filter(Boolean).join(' ')}
@@ -68,7 +67,6 @@ function lifestyleRuleErrors(row){
   if(!isLifestylePost(row))return[];
   const text=publicText(row),errors=[];
   if(!hasAny(text,LIFESTYLE_CONTEXT_TERMS))errors.push('生活情境文缺少明確場景；請補上在家、外出、工作空檔、時段、天氣、料理、保存、諮詢或其他可辨識的實際生活情境');
-  if(!hasAny([row?.title,row?.headline,row?.copy].filter(Boolean).join(' '),LIFESTYLE_BRAND_PRODUCT_TERMS))errors.push('生活情境文缺少仙加味品牌、目前核准產品或萬華四代工藝的實際連結，只有空泛心情內容不合格');
   return errors;
 }
 
