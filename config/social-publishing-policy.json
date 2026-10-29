@@ -239,6 +239,7 @@
       "remote_draft_false_autopublish_true_readback",
       "platform_publication_receipts"
     ],
-    "status": "hold_until_evidence_verified"
+    "status": "hold_until_evidence_verified",
+    "publishedHistoryDedup": "2026-10-29 巡檢發現 2026-10-23 00:13 與 00:23 有兩篇全文相同的風雨提醒，FB/IG/Threads 均有各自發布回執；兩筆都必須保留在已發布去重比對資料範圍，不可因一筆存在而忽略另一筆、不可重發補檔或擅自刪除歷史。每次排程或立即發布前，以正式資料庫+Metricool+三平台已發布回執跨來源比對正規化文案、媒體雜湊、主題與日期；相同文案或實質重複內容一律阻擋並留待人工核對。"
   }
 }
