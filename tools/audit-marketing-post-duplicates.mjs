@@ -9,7 +9,9 @@ const extractMetricool=v=>v.data||v.items||v.posts||[];
 const d1=extractD1(read(d1Path)),metricool=extractMetricool(read(metricoolPath));
 if(!Array.isArray(d1)||!Array.isArray(metricool))throw new Error('Invalid input arrays');
 const norm=s=>String(s||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'').trim();
-// Compare the actual public copy across sources: D1 title/headline are separate\n// fields, while Metricool text is the body. Including D1 headings hides duplicates.\nconst d1Text=p=>norm(p.copy);
+// Compare the actual public copy across sources: D1 title/headline are separate
+// fields, while Metricool text is the body. Including D1 headings hides duplicates.
+const d1Text=p=>norm(p.copy);
 const metricoolText=p=>norm(p.text);
 const groups=new Map();
 for(const p of d1){const key=d1Text(p);if(!key)continue;const arr=groups.get(key)||[];arr.push({source:'D1',id:p.id,status:p.status});groups.set(key,arr);}
