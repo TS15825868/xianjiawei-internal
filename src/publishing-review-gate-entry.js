@@ -199,12 +199,15 @@ async function regenerationReady(request,env,ctx,id){const authorization=await a
 
 
 const IMAGE_REVIEW_REJECTED=new Set(['needs_rework','needs_regeneration','rejected','low','missing']);
+async function imageDeliveryHold(env,id){
+  return Boolean(await env.DB.prepare("SELECT platform FROM social_publish_deliveries WHERE post_id=? AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed')) LIMIT 1").bind(id).first());
+}
 async function imageReviewContext(request,env,ctx,id){
   const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
   const profile=await auth.json();
   if(!REGENERATION_ROLES.has(clean(profile?.role))||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(profile?.email)))return json({error:'沒有圖片覆核權限'},403);
   const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
-  const held=row.published_at||!['draft','pending_review','approved'].includes(clean(row.status))||publishedPlatformReceiptHold(row)||await activeExternalSchedule(env,id);
+  const held=row.published_at||!['draft','pending_review','approved'].includes(clean(row.status))||publishedPlatformReceiptHold(row)||await activeExternalSchedule(env,id)||await imageDeliveryHold(env,id);
   if(held)return json({error:'已有發布回執、外部排程或不可變更狀態，禁止覆核'},409);
   return json({id,image_url:row.image_url,image_alt:row.image_alt,title:row.title,copy:row.copy,expected_fingerprint:await fingerprint(row),expected_updated_at:row.updated_at,required_checks:REQUIRED_CHECKS,auto_publish:false});
 }
@@ -224,7 +227,7 @@ async function reviewExistingImage(request,env,ctx,id){
   if(before.published_at||['published','archived','manual_required','scheduled'].includes(clean(before.status)))
     return json({error:'已有發布歷史、排程或人工接手，不可重新覆核'},409);
   const receipt=publishedPlatformReceiptHold(before);if(receipt)return json({error:receipt.reason},409);
-  if(await activeExternalSchedule(env,id))return json({error:'存在外部排程或回執，禁止變更圖片審核'},409);
+  if(await activeExternalSchedule(env,id)||await imageDeliveryHold(env,id))return json({error:'存在外部排程、發送嘗試或回執，禁止變更圖片審核'},409);
   if(!clean(before.image_url))return json({error:'缺少圖片，無法覆核'},409);
   const body=await readBody(request);
   const decision=clean(body.decision);
@@ -246,7 +249,7 @@ async function reviewExistingImage(request,env,ctx,id){
   const reviewedFingerprint=await fingerprint({...before,image_quality_status:next});
   const auditAfter=JSON.stringify({image_url:before.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email),fingerprint:reviewedFingerprint,previous_fingerprint:current,image_width:before.image_width,image_height:before.image_height});
   const results=await env.DB.batch([
-    env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=? AND title=? AND headline=? AND copy=? AND category=? AND image_alt=? AND image_source=? AND image_width=? AND image_height=? AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id AND metricool_id IS NOT NULL AND state IN ('scheduled','awaiting_work','queued','blocked_config','awaiting_verification','cancel_required','unknown','published'))`)
+    env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=? AND title=? AND headline=? AND copy=? AND category=? AND image_alt=? AND image_source=? AND image_width=? AND image_height=? AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id AND metricool_id IS NOT NULL AND state IN ('scheduled','awaiting_work','queued','blocked_config','awaiting_verification','cancel_required','unknown','published')) AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id=social_posts.id AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed')))`)
       .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at,before.title,before.headline,before.copy,before.category,before.image_alt,before.image_source,before.image_width,before.image_height),
     env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT ?,?,?,?,?,?,?,? WHERE changes()=1')
       .bind(auditId,clean(profile.email),'圖片原網址重新視覺覆核','貼文',id,auditBefore,auditAfter,request.headers.get('cf-connecting-ip')||''),

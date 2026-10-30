@@ -214,7 +214,8 @@
           fullAuditCache={at:0,result:null};lastAuditSignature='';lastAuditAt=0;
           const audit=await auditIds([id]);(audit.items||[]).forEach(applyAudit);scheduleAudit(0);
           result.textContent=response.message+'。重新預檢：'+((audit.items||[])[0]?.ok?'通過；仍待正式審核':((audit.items||[])[0]?.errors||[]).join('；'));
-          // Keep successful receipt visible; require a fresh context for another write.
+          // Refresh the background cards/counts while preserving this audit receipt.
+          document.querySelector('[data-refresh]')?.click();
         }catch(error){result.textContent=error.message||String(error);controls.forEach(b=>b.disabled=false)}
       };
       root.querySelector('[data-original-pass]').onclick=()=>save('pass');root.querySelector('[data-original-reject]').onclick=()=>save('reject');

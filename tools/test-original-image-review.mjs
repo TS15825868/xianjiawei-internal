@@ -15,6 +15,7 @@ function fixture(){
  db.exec(`CREATE TABLE social_posts(id TEXT PRIMARY KEY,title TEXT,headline TEXT,copy TEXT,category TEXT,status TEXT,image_url TEXT,image_alt TEXT,image_source TEXT,image_width INTEGER,image_height INTEGER,image_quality_status TEXT,updated_at TEXT,published_at TEXT,image_approved INTEGER,approved_by TEXT,approved_at TEXT,scheduled_at TEXT);
  CREATE TABLE audit_logs(id TEXT PRIMARY KEY,actor_email TEXT,action TEXT,entity_type TEXT,entity_id TEXT,before_json TEXT,after_json TEXT,ip TEXT);
  CREATE TABLE social_metricool_sync(post_id TEXT,metricool_id TEXT,state TEXT);
+ CREATE TABLE social_publish_deliveries(post_id TEXT,platform TEXT,attempt_count INTEGER,last_attempt_at TEXT,published_at TEXT,remote_id TEXT,status TEXT);
  CREATE TABLE social_post_review_gates(post_id TEXT PRIMARY KEY,content_fingerprint TEXT,checklist_json TEXT,copy_image_match INTEGER,reviewed_by TEXT,reviewed_at TEXT);
  INSERT INTO social_posts VALUES('P','仙加味工作日常','午後','仙加味小老闆在工作間整理筆記','生活','pending_review','https://example.com/xjw-conv-chat-quiet-work-audit-v1.jpg','小老闆、小鹿、小烏龜整理筆記','官方素材',1200,1200,'needs_rework','2026-10-30T00:00:00Z',NULL,1,'old@example.com','old',NULL);
  INSERT INTO social_post_review_gates(post_id) VALUES('P');`);
@@ -42,4 +43,8 @@ test('historical filename holds clear only with matching full evidence; other er
  const audited=await auditOne(f.env,f.row(),[],[]);assert.equal(audited.ok,true,JSON.stringify(audited.errors));
  f.db.exec("UPDATE social_posts SET copy='治療疾病'");const changed=await auditOne(f.env,f.row(),[],[]);
  assert(changed.errors.some(e=>e.includes('2026/10/17')));assert(changed.errors.some(e=>e.includes('治療')));
+});
+
+test('uncertain platform delivery blocks precheck and a concurrent delivery blocks CAS',async()=>{
+ for(const concurrent of [false,true]){const f=fixture(),p=await f.proof();const insert=()=>f.db.exec("INSERT INTO social_publish_deliveries VALUES('P','instagram',1,'now',NULL,NULL,'manual_required')");if(concurrent)f.state.beforeBatch=insert;else insert();assert.equal((await reviewExistingImage(f.req(p),f.env,{},'P')).status,409);assert.equal(f.row().image_quality_status,'needs_rework');assert.equal(f.db.prepare('SELECT COUNT(*) n FROM audit_logs').get().n,0)}
 });
