@@ -96,7 +96,7 @@ async function duplicatePostErrors(env,row,liveRows=null){
     const otherTitle=publicNorm(other.title),otherCopy=publicNorm(other.copy);
     const archived=clean(other.status)==='archived';
     if(!archived&&title&&title===otherTitle)errors.push(`貼文標題與「${other.title}」重複`);
-    if(copy.length>=40&&otherCopy.length>=40&&diceSimilarity(copy,otherCopy)>=0.90)errors.push(`貼文內容與「${other.title}」過度相似`);
+    if(copy.length>=20&&otherCopy.length>=20&&(copy===otherCopy||(copy.length>=40&&otherCopy.length>=40&&diceSimilarity(copy,otherCopy)>=0.90)))errors.push(`貼文內容與「${other.title}」過度相似`);
     const otherImage=imageNorm(other.image_url);
     if(!archived&&image&&otherImage&&image===otherImage)errors.push(`主圖與「${other.title}」重複；每篇貼文需使用符合各自文案的不同圖片`);
   }
