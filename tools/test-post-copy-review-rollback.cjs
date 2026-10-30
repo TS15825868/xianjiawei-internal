@@ -114,9 +114,6 @@ test('copy-only edit preserves image review quality; changed image re-evaluates'
  const expected="qualityStatus=imageUrl===clean(before.image_url)\\n    ? clean(before.image_quality_status,'unknown')\\n    : quality.status;";
  assert.ok(worker.includes(expected),'unchanged image must retain persisted quality status');
  assert.match(worker,/image_approved=0,status='draft'/);
- assert.match(worker,/published_at IS NULL AND COALESCE\(updated_at,'\)='\?/);
- for(const status of ['needs_review','needs_rework','rejected','ok','clear','unknown']){
-  const unchanged=status;
-  assert.equal(unchanged,status);
- }
+ assert.ok(worker.includes("published_at IS NULL AND COALESCE(updated_at,'')=?"));
+ assert.match(worker,/imageUrl===clean\(before\.image_url\)/);
 });
