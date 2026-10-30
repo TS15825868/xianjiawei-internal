@@ -2,7 +2,7 @@ import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-10-30-traffic-lifestyle-policy-v14';
+const VERSION='2026-10-30-batched-history-audit-v15';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -130,20 +130,24 @@ async function liveRows(env){
   const result=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
   return result.results||[];
 }
-async function auditOne(env,row,rows){
+async function auditOne(env,row,rows,history=null){
   if(!row)return{ok:false,errors:['找不到貼文']};
   const receiptHold=publishedPlatformReceiptHold(row);
-  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row),...semanticErrors(row,rows)];
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows)];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
 async function batchAudit(request,env,ctx){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
-  const url=new URL(request.url),all=url.searchParams.get('all')==='1',rows=await liveRows(env);
+  // Read the full history once per request, including archived copy for deduplication.
+  // Keep archived rows out of active image/scene checks and the all=1 response.
+  const historyResult=await env.DB.prepare('SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts').all();
+  const history=historyResult.results||[],rows=history.filter(row=>clean(row.status)!=='archived');
+  const url=new URL(request.url),all=url.searchParams.get('all')==='1';
   const ids=all?rows.map(row=>row.id):(url.searchParams.get('ids')||'').split(',').map(decodeURIComponent).map(clean).filter(Boolean).slice(0,80);
   if(!ids.length)return json({version:VERSION,items:[],total:0,scope:all?'all':'selected'});
-  const byId=new Map(rows.map(row=>[row.id,row])),items=[];
-  for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows)});}
+  const byId=new Map(history.map(row=>[row.id,row])),items=[];
+  for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows,history)});}
   return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',items});
 }
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
