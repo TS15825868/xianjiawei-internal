@@ -1,6 +1,6 @@
 {
-  "version": "2026-10-30-continuation-checkpoint-v1",
-  "baseline_main": "a0a757c67a3060b14b9943cdf95075d4ba305d9c",
+  "version": "2026-10-31-continuation-checkpoint-v2",
+  "baseline_main": "04b72b14c4f10f2282d19a2c0e37b8f267896a41",
   "baseline_deployment": "6ed83cfe-e235-4095-8a8c-eef15d844602",
   "source_records": [
     "ops/post-visual-review-20261017.json",
@@ -24,34 +24,48 @@
   "partial": [
     {
       "post_id": "XJW-CONV-chat-30-bare-jar",
-      "actual_stored_decision": "reject",
-      "intended_classification": "INSUFFICIENT_EVIDENCE",
-      "reason": "Product original-photo provenance and proportions unverified; not proof of incorrect packaging.",
-      "original_visual_evidence_saved": true,
-      "full_16_check_complete": false,
-      "requires_defer_correction_after_compatible_release": true
+      "decision": "defer",
+      "image_quality_status": "needs_review",
+      "status": "pending_review",
+      "readback_verified": true,
+      "updated_at": "2026-10-30T16:04:30.281Z",
+      "reason": "正式產品像素來源與比例未確認，不能判定包裝確定錯誤；舊歷史阻擋訊息仍待整理"
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "decision": "defer",
+      "image_quality_status": "needs_review",
+      "status": "pending_review",
+      "reason": "已實際查看目前成圖並保存16項觀察；夥伴身份及跨系統去重尚待確認",
+      "api_success_receipt_observed": true,
+      "independent_row_readback_pending": true
     }
   ],
   "integration": {
     "branch": "fix/review-defer-evidence-20261030",
     "commit": "31863493186aba1111100dda034775921e4eea41",
-    "ahead_by": 1,
-    "behind_by": 0,
-    "merged": false,
-    "related_tests_passed": 13,
-    "main_push_would_trigger_full_suite_and_deploy": true
+    "merged": true,
+    "merge_commit": "922d9238805b4622b2e10f728772219593fdac70",
+    "followup_fix": "04b72b14c4f10f2282d19a2c0e37b8f267896a41",
+    "deployment": "e0b223fe-9a0c-44f7-9dee-116cfa70c79b",
+    "deployment_run": 41085947592,
+    "deployment_success": true,
+    "full_ecosystem_passed": false,
+    "ecosystem_blocker": "LINE health HTTP503"
   },
   "cursor": {
-    "next_post_title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
-    "next_action": "Read live post and existing evidence, inspect actual current image, submit individually bound 16-check AI evidence only if all checks proven.",
-    "remaining_formal_reviews": 61
+    "next_action": "Read latest saved per-post evidence; do not re-merge or re-deploy successful three-state fix. Complete unresolved defer evidence and continue remaining unreviewed posts.",
+    "unreviewed_posts": 59,
+    "deferred_posts": 2,
+    "remaining_formal_reviews": 61,
+    "all_61_complete": false
   },
   "this_checkpoint": {
-    "new_d1_writes": 0,
     "new_ai_approvals": 0,
+    "distinct_posts_with_defer_evidence": 2,
     "new_schedules": 0,
     "new_publications": 0,
-    "additional_cost": 0
+    "additional_paid_operations": 0
   },
   "not_completed": [
     "remaining individual reviews",
@@ -63,5 +77,21 @@
     "auto_publish_authorized": false,
     "auto_reply_authorized": false,
     "do_not_restart_completed_work": true
+  },
+  "metricool": {
+    "query_range": "2026-10-01 through 2026-12-31 Asia/Taipei",
+    "records": 33,
+    "published": 14,
+    "drafts": 19,
+    "all_drafts_auto_publish_off": true,
+    "uuid_matches": 9,
+    "stale_numeric_ids_in_matched_rows": 8,
+    "matched_copy_equal": 1,
+    "matched_copy_different": 8,
+    "published_duplicate_ids": [
+      403318046,
+      403326277
+    ],
+    "reconciliation_written": false
   }
 }
