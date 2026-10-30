@@ -2,7 +2,7 @@ import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-10-30-traffic-lifestyle-policy-v12';
+const VERSION='2026-10-30-traffic-lifestyle-policy-v13';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -167,7 +167,7 @@ export default{
     if(publishMatch&&request.method==='POST'){const blocked=await enforceBeforeWrite(request,env,ctx,decodeURIComponent(publishMatch[1]));if(blocked)return blocked;}
     const response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/healthz','/healthz/core'].includes(path)){
-      try{return json({...await response.clone().json(),contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:true,conversationalKnowledgeAllowed:true,mixedContentPolicy:true,unfinishedQixuanPublicBlocked:true,mascotIdentityConsistencyRequired:true,mascot2DAllowed:true,mascot3DAllowed:true,mascotStyleFlexible:false,mascotOfficialReferenceRequired:true,realPersonReferencePrivate:true,blockedOldPublicName:true},response.status)}catch{return response}
+      try{return json({...await response.clone().json(),contentImageAuditVersion:VERSION,duplicateImageHardGate:true,seasonWeatherContextAudit:true,semanticImageMatchHardGate:true,topicIntentAware:true,visualRenderIntegrityHardGate:true,unsafePostingSvgBlocked:true,fullLibraryAudit:true,strictUniqueImagePerPost:true,lifestyleSceneRequired:true,lifestyleBrandOrProductLinkRequired:false,conversationalKnowledgeAllowed:true,mixedContentPolicy:true,unfinishedQixuanPublicBlocked:true,mascotIdentityConsistencyRequired:true,mascot2DAllowed:true,mascot3DAllowed:true,mascotStyleFlexible:false,mascotOfficialReferenceRequired:true,realPersonReferencePrivate:true,blockedOldPublicName:true},response.status)}catch{return response}
     }
     return response;
   },
