@@ -2,7 +2,7 @@ import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-10-30-traffic-lifestyle-policy-v13';
+const VERSION='2026-10-30-traffic-lifestyle-policy-v14';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -133,7 +133,7 @@ async function liveRows(env){
 async function auditOne(env,row,rows){
   if(!row)return{ok:false,errors:['找不到貼文']};
   const receiptHold=publishedPlatformReceiptHold(row);
-  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,rows),...semanticErrors(row,rows)];
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row),...semanticErrors(row,rows)];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
