@@ -22,7 +22,7 @@ export function approvedAiImageSource(url){
     return false;
   }catch{return false}
 }
-export async function imageHash(url){if(!approvedAiImageSource(url))throw Error('圖片來源不在仙加味正式允許範圍');const u=new URL(url);const r=await fetch(u,{redirect:'error',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
+export async function imageHash(url){if(!approvedAiImageSource(url))throw Error('圖片來源不在仙加味正式允許範圍');const u=new URL(url);const r=await fetch(u,{redirect:'manual',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 export async function aiGate(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
