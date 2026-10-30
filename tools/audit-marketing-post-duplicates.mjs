@@ -9,7 +9,7 @@ const extractMetricool=v=>v.data||v.items||v.posts||[];
 const d1=extractD1(read(d1Path)),metricool=extractMetricool(read(metricoolPath));
 if(!Array.isArray(d1)||!Array.isArray(metricool))throw new Error('Invalid input arrays');
 const norm=s=>String(s||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'').trim();
-const d1Text=p=>norm([p.title,p.headline,p.copy].filter(Boolean).join('\n'));
+// Compare the actual public copy across sources: D1 title/headline are separate\n// fields, while Metricool text is the body. Including D1 headings hides duplicates.\nconst d1Text=p=>norm(p.copy);
 const metricoolText=p=>norm(p.text);
 const groups=new Map();
 for(const p of d1){const key=d1Text(p);if(!key)continue;const arr=groups.get(key)||[];arr.push({source:'D1',id:p.id,status:p.status});groups.set(key,arr);}
@@ -18,5 +18,5 @@ const exact=[...groups.values()].filter(v=>v.length>1);
 const titles=new Map();
 for(const p of d1){const key=norm(p.title);if(!key)continue;const arr=titles.get(key)||[];arr.push({id:p.id,status:p.status});titles.set(key,arr);}
 const duplicateTitles=[...titles.entries()].filter(([,v])=>v.length>1).map(([normalizedTitle,posts])=>({normalizedTitle,posts}));
-const summary={d1Count:d1.length,metricoolCount:metricool.length,exactTextDuplicateGroups:exact,duplicateD1TitleGroups:duplicateTitles,metricoolDrafts:metricool.filter(p=>p.draft===true).length,metricoolAutoPublishEnabled:metricool.filter(p=>p.autoPublish===true).length,limitations:['Different wording for same idea requires manual semantic review','D1 snapshot and Metricool data must be current','No image similarity or published-platform verification','No write or publication operations']};
+const fullyPublished=p=>Array.isArray(p.providers)&&p.providers.length>0&&p.providers.every(x=>String(x?.status||'').toUpperCase()==='PUBLISHED');\nconst summary={d1Count:d1.length,metricoolCount:metricool.length,exactTextDuplicateGroups:exact,duplicateD1TitleGroups:duplicateTitles,metricoolDrafts:metricool.filter(p=>p.draft===true).length,metricoolAutoPublishEnabled:metricool.filter(p=>p.autoPublish===true).length,metricoolPublishedRecords:metricool.filter(fullyPublished).length,metricoolDraftsWithAutoPublishOn:metricool.filter(p=>p.draft===true&&p.autoPublish===true).length,metricoolUnpublishedAutoPublishOn:metricool.filter(p=>p.draft!==true&&p.autoPublish===true&&!fullyPublished(p)).length,limitations:['Different wording for same idea requires manual semantic review','D1 snapshot and Metricool data must be current','No image similarity or published-platform verification','No write or publication operations','metricoolAutoPublishEnabled includes historical published posts and is not evidence of active scheduling']};
 console.log(JSON.stringify(summary,null,2));
