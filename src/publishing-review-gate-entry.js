@@ -310,4 +310,3 @@ export default{async fetch(request,env,ctx){
 
 export { VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
 
-export {duplicatePostErrors};
