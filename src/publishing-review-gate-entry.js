@@ -307,7 +307,7 @@ export default{async fetch(request,env,ctx){
       }
       return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
-  const imageReviewMatch=path.match(/^\\/api\\/posts\\/([^/]+)\\/image-visual-review$/);
+  const imageReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/image-visual-review$/);
   if(imageReviewMatch&&request.method==='POST')return reviewExistingImage(request,env,ctx,decodeURIComponent(imageReviewMatch[1]));
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
