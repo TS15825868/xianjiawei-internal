@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {publishedPlatformReceiptHold,PUBLISHED_PLATFORM_RECEIPTS} from '../src/external-published-receipt-holds.js';
 import {buildPlan} from './build-post-image-rework-queue.mjs';
+import {duplicatePostErrors} from '../src/publishing-review-gate-entry.js';
 test('real remote receipts hold two pre-published D1 drafts without modifying any row',()=>{
  assert.equal(PUBLISHED_PLATFORM_RECEIPTS.length,2);
  const rows=PUBLISHED_PLATFORM_RECEIPTS.map(r=>({id:r.postId,status:'draft',image_quality_status:'needs_rework',image_url:'https://example.invalid/old.jpg',title:'仙加味'}));
@@ -46,4 +47,22 @@ test('backend approval, regeneration and immediate publish all apply hold indepe
  assert.match(gate,/const priorPublic=publishedPlatformReceiptHold\(row\);if\(priorPublic\)return/);
  assert.match(gate,/async function saveGate\(env,row,body,profile\)\{const priorPublic=publishedPlatformReceiptHold\(row\)/);
  assert.match(content,/if\(publishMatch&&request\.method==='POST'\)/);
+});
+test('archived historical copy blocks duplicate publication but not shared headings or product images',async()=>{
+ const sameCopy='在家準備一份熟悉的家常料理，備料、慢煮、端上餐桌，每個步驟都有不同的生活風味與家人記憶。';
+ const row={id:'new-post',title:'家常料理',copy:sameCopy,image_url:'https://example.invalid/official-product.jpg'};
+ const archived={id:'old-post',title:'家常料理',copy:sameCopy,image_url:row.image_url,status:'archived'};
+ const calls=[];
+ const env={DB:{prepare:sql=>{calls.push(sql);return{bind:()=>({all:async()=>({results:[archived]})})}}}};
+ const issues=await duplicatePostErrors(env,row);
+ assert.ok(calls[0].includes('FROM social_posts WHERE id<>?'));
+ assert.ok(!calls[0].includes("status<>'archived'"));
+ assert.ok(issues.some(issue=>issue.includes('內容')&&issue.includes('過度相似')));
+ assert.ok(!issues.some(issue=>issue.includes('標題')||issue.includes('主圖')));
+ const unrelatedArchived={...archived,copy:'另外一個完全不同的飲食文化分享內容，食材來源、品名與保存方式各有其重要性，需要慢慢確認再開始。'};
+ assert.deepEqual(await duplicatePostErrors(env,row,[unrelatedArchived]),[]);
+ const active={...unrelatedArchived,status:'pending_review'};
+ const activeErrors=await duplicatePostErrors(env,row,[active]);
+ assert.ok(activeErrors.some(issue=>issue.includes('標題')));
+ assert.ok(activeErrors.some(issue=>issue.includes('主圖')));
 });
