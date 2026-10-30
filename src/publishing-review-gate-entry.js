@@ -87,14 +87,18 @@ function isWeatherPost(row){const text=[row?.title,row?.headline,row?.copy,row?.
 async function duplicatePostErrors(env,row,liveRows=null){
   const title=publicNorm(row?.title),copy=publicNorm(row?.copy),image=imageNorm(row?.image_url);
   let others=Array.isArray(liveRows)?liveRows.filter(other=>other.id!==row.id):null;
-  if(!others){const result=await env.DB.prepare("SELECT id,title,copy,status,image_url,image_source FROM social_posts WHERE id<>? AND status<>'archived'").bind(row.id).all();others=result.results||[];}
+  // Archived posts may have already been published externally. Keep their
+  // substantive copy in the historical dedup check without treating an
+  // archived title or reusable product photo as a fresh-post collision.
+  if(!others){const result=await env.DB.prepare("SELECT id,title,copy,status,image_url,image_source FROM social_posts WHERE id<>?").bind(row.id).all();others=result.results||[];}
   const errors=[];
   for(const other of others){
     const otherTitle=publicNorm(other.title),otherCopy=publicNorm(other.copy);
-    if(title&&title===otherTitle)errors.push(`貼文標題與「${other.title}」重複`);
-    else if(copy.length>=40&&otherCopy.length>=40&&diceSimilarity(copy,otherCopy)>=0.90)errors.push(`貼文內容與「${other.title}」過度相似`);
+    const archived=clean(other.status)==='archived';
+    if(!archived&&title&&title===otherTitle)errors.push(`貼文標題與「${other.title}」重複`);
+    if(copy.length>=40&&otherCopy.length>=40&&diceSimilarity(copy,otherCopy)>=0.90)errors.push(`貼文內容與「${other.title}」過度相似`);
     const otherImage=imageNorm(other.image_url);
-    if(image&&otherImage&&image===otherImage)errors.push(`主圖與「${other.title}」重複；每篇貼文需使用符合各自文案的不同圖片`);
+    if(!archived&&image&&otherImage&&image===otherImage)errors.push(`主圖與「${other.title}」重複；每篇貼文需使用符合各自文案的不同圖片`);
   }
   return[...new Set(errors)]
 }
@@ -305,3 +309,5 @@ export default{async fetch(request,env,ctx){
 },async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
 
 export { VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
+
+export {duplicatePostErrors};
