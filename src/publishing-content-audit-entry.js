@@ -1,5 +1,5 @@
 import app from './publishing-only-entry.js';
-import { productMatchErrors, duplicatePostErrors } from './publishing-review-gate-entry.js';
+import { productMatchErrors, duplicatePostErrors, validOriginalImageReview } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
 const VERSION='2026-10-30-batched-history-audit-v15';
@@ -70,12 +70,12 @@ function lifestyleRuleErrors(row){
   return errors;
 }
 
-function semanticErrors(row,liveRows=[]){
+function semanticErrors(row,liveRows=[],originalReviewed=false){
   const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=[];
   const imageUrl=normalizedImageUrl(row?.image_url);
   const imageFilename=imageUrl.split('/').pop();
-  if(KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');
-  if(REVIEW_REQUIRED_SCENES_20261017.includes(imageFilename))errors.push('此圖保留2026/10/17視覺待覆核紀錄：須依使用者正式參考確認固定Q版小男孩、服裝、印章及夥伴身分，避免廉價玩具感、拼貼或造型改變；不得僅因立體光影就要求改成2D。若需換圖，使用正式角色參考及產品實拍，重新回待審核。');
+  if(!originalReviewed&&KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');
+  if(!originalReviewed&&REVIEW_REQUIRED_SCENES_20261017.includes(imageFilename))errors.push('此圖保留2026/10/17視覺待覆核紀錄：須依使用者正式參考確認固定Q版小男孩、服裝、印章及夥伴身分，避免廉價玩具感、拼貼或造型改變；不得僅因立體光影就要求改成2D。若需換圖，使用正式角色參考及產品實拍，重新回待審核。');
   if(row?.id==='XJW-CONV-chat-brand-not-only-product' && imageUrl.endsWith('/2026-09-22/xjw-active-img-003.png'))errors.push('此圖片與另一篇使用相同Git實體圖片，禁止一圖多文，需重製專屬情境。');
   if(['rejected','needs_regeneration','needs_rework','low','missing'].includes(clean(row?.image_quality_status).toLowerCase()))errors.push('目前圖片尚未通過正式視覺驗收，禁止核准、排程或發布。');
 
@@ -127,13 +127,13 @@ async function authorize(request,env,ctx){
 async function postRow(env,id){return env?.DB?.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first()}
 async function liveRows(env){
   if(!env?.DB)return[];
-  const result=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
+  const result=await env.DB.prepare("SELECT * FROM social_posts WHERE status<>'archived'").all();
   return result.results||[];
 }
-async function auditOne(env,row,rows,history=null){
+async function auditOne(env,row,rows,history=null,visualLogs=null){
   if(!row)return{ok:false,errors:['找不到貼文']};
   const receiptHold=publishedPlatformReceiptHold(row);
-  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows)];
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows,await validOriginalImageReview(env,row,visualLogs))];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
@@ -141,13 +141,16 @@ async function batchAudit(request,env,ctx){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
   // Read the full history once per request, including archived copy for deduplication.
   // Keep archived rows out of active image/scene checks and the all=1 response.
-  const historyResult=await env.DB.prepare('SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts').all();
+  const historyResult=await env.DB.prepare('SELECT * FROM social_posts').all();
   const history=historyResult.results||[],rows=history.filter(row=>clean(row.status)!=='archived');
   const url=new URL(request.url),all=url.searchParams.get('all')==='1';
   const ids=all?rows.map(row=>row.id):(url.searchParams.get('ids')||'').split(',').map(decodeURIComponent).map(clean).filter(Boolean).slice(0,80);
   if(!ids.length)return json({version:VERSION,items:[],total:0,scope:all?'all':'selected'});
   const byId=new Map(history.map(row=>[row.id,row])),items=[];
-  for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows,history)});}
+  // One batched evidence read; avoid a D1 request per reviewed image.
+  const visualResult=await env.DB.prepare("SELECT entity_id,actor_email,after_json FROM audit_logs WHERE action='圖片原網址重新視覺覆核' ORDER BY rowid DESC").all();
+  const visualById=new Map();for(const log of visualResult.results||[])if(!visualById.has(log.entity_id))visualById.set(log.entity_id,[log]);
+  for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows,history,visualById.get(id)||[])});}
   return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',items});
 }
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}

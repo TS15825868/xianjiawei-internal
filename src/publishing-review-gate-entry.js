@@ -4,7 +4,7 @@ import { publishedPlatformReceiptHold } from './external-published-receipt-holds
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
 import {imageHash,recordAiReview,aiGate} from './ai-quality-review.js';
 
-const VERSION='2026-10-17-current-product-and-image-v9';
+const VERSION='2026-10-30-original-image-evidence-v10';
 const REQUIRED_CHECKS=Object.freeze([
   'brand','product','specification','pricing_activity','season','weather','occasion','location',
   'scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'
@@ -199,6 +199,22 @@ async function regenerationReady(request,env,ctx,id){const authorization=await a
 
 
 const IMAGE_REVIEW_REJECTED=new Set(['needs_rework','needs_regeneration','rejected','low','missing']);
+async function imageReviewContext(request,env,ctx,id){
+  const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
+  const profile=await auth.json();
+  if(!REGENERATION_ROLES.has(clean(profile?.role))||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(profile?.email)))return json({error:'沒有圖片覆核權限'},403);
+  const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
+  const held=row.published_at||!['draft','pending_review','approved'].includes(clean(row.status))||publishedPlatformReceiptHold(row)||await activeExternalSchedule(env,id);
+  if(held)return json({error:'已有發布回執、外部排程或不可變更狀態，禁止覆核'},409);
+  return json({id,image_url:row.image_url,image_alt:row.image_alt,title:row.title,copy:row.copy,expected_fingerprint:await fingerprint(row),expected_updated_at:row.updated_at,required_checks:REQUIRED_CHECKS,auto_publish:false});
+}
+// Only authenticated, version-bound audit evidence can retire historical path holds.
+async function validOriginalImageReview(env,row,records=null){
+  if(clean(row?.image_quality_status)!=='passed')return false;
+  const logs=records||((await env.DB.prepare("SELECT actor_email,after_json FROM audit_logs WHERE entity_id=? AND action='圖片原網址重新視覺覆核' ORDER BY rowid DESC LIMIT 1").bind(row.id).all()).results||[]);
+  const current=await fingerprint(row);
+  return logs.some(log=>{try{const proof=JSON.parse(log.after_json);return proof.decision==='pass'&&proof.fingerprint===current&&proof.image_url===row.image_url&&proof.reviewed_by===log.actor_email&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(log.actor_email)&&clean(proof.visual_evidence).length>=40&&proof.copy_image_match===true&&REQUIRED_CHECKS.every(key=>proof.review_checklist?.[key]===true)}catch{return false}});
+}
 async function reviewExistingImage(request,env,ctx,id){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
   const profile=await authorization.json();
@@ -215,22 +231,23 @@ async function reviewExistingImage(request,env,ctx,id){
   if(!['pass','reject'].includes(decision))return json({error:'覆核結果必須是 pass 或 reject'},400);
   const expected=clean(body.expected_fingerprint);
   const current=await fingerprint(before);
-  if(!expected||expected!==current)return json({error:'圖片或貼文版本已變更，請重新載入後覆核'},409);
+  if(!expected||expected!==current||clean(body.expected_updated_at)!==clean(before.updated_at))return json({error:'圖片或貼文版本已變更，請重新載入後覆核'},409);
   const evidence=clean(body.visual_evidence);
   if(evidence.length<40||evidence.length>4000)return json({error:'須提供40至4000字的實際看圖證據，包括角色、產品、比例、場景及圖文一致性'},400);
   const checklist=checklistFrom(body);
   if(decision==='pass'&&(checklist.missing.length||body.copy_image_match!==true))
     return json({error:'圖片通過須具備16項完整覆核與圖文一致證據',missing:checklist.missing},409);
-  const now=new Date().toISOString(),next=decision==='pass'?'reviewed':'needs_rework';
+  const now=new Date().toISOString(),next=decision==='pass'?'passed':'needs_rework';
   // D1 batch executes as one transaction: update, evidence log and gate
   // invalidation must commit together. A stale compare-and-swap logs nothing.
   await ensureSchema(env);
   const auditId=`AUD-${crypto.randomUUID()}`;
   const auditBefore=JSON.stringify({image_url:before.image_url,image_quality_status:before.image_quality_status,fingerprint:current});
-  const auditAfter=JSON.stringify({image_url:before.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email),fingerprint:current});
+  const reviewedFingerprint=await fingerprint({...before,image_quality_status:next});
+  const auditAfter=JSON.stringify({image_url:before.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email),fingerprint:reviewedFingerprint,previous_fingerprint:current,image_width:before.image_width,image_height:before.image_height});
   const results=await env.DB.batch([
-    env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=?`)
-      .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at),
+    env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=? AND title=? AND headline=? AND copy=? AND category=? AND image_alt=? AND image_source=? AND image_width=? AND image_height=? AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id AND metricool_id IS NOT NULL AND state IN ('scheduled','awaiting_work','queued','blocked_config','awaiting_verification','cancel_required','unknown','published'))`)
+      .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at,before.title,before.headline,before.copy,before.category,before.image_alt,before.image_source,before.image_width,before.image_height),
     env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT ?,?,?,?,?,?,?,? WHERE changes()=1')
       .bind(auditId,clean(profile.email),'圖片原網址重新視覺覆核','貼文',id,auditBefore,auditAfter,request.headers.get('cf-connecting-ip')||''),
     env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=? AND EXISTS(SELECT 1 FROM audit_logs WHERE id=?)')
@@ -312,6 +329,7 @@ export default{async fetch(request,env,ctx){
       return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
   const imageReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/image-visual-review$/);
+  if(imageReviewMatch&&request.method==='GET')return imageReviewContext(request,env,ctx,decodeURIComponent(imageReviewMatch[1]));
   if(imageReviewMatch&&request.method==='POST')return reviewExistingImage(request,env,ctx,decodeURIComponent(imageReviewMatch[1]));
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
@@ -354,5 +372,5 @@ export default{async fetch(request,env,ctx){
   return app.fetch(request,env,ctx)
 },async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
 
-export { VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
+export { reviewExistingImage, imageReviewContext, validOriginalImageReview, VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
 
