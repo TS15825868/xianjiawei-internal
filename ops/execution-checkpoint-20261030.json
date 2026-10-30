@@ -1,0 +1,67 @@
+{
+  "version": "2026-10-30-continuation-checkpoint-v1",
+  "baseline_main": "a0a757c67a3060b14b9943cdf95075d4ba305d9c",
+  "baseline_deployment": "6ed83cfe-e235-4095-8a8c-eef15d844602",
+  "source_records": [
+    "ops/post-visual-review-20261017.json",
+    "ops/review-backlog-20261012-after-batch9.json"
+  ],
+  "legacy_evidence": {
+    "inspected_images": 62,
+    "contains_individual_16_check_evidence": false,
+    "blanket_3d_rejection_is_not_current_owner_authority": true,
+    "overlap_46_and_15": "UNVERIFIED_DO_NOT_SUM"
+  },
+  "locked_complete": [
+    {
+      "post_id": "XJW-CONV-chat-drink-made-to-order",
+      "decision": "AI_APPROVED",
+      "review_id": "AI-REVIEW-390fe0ec-6665-4e04-ba32-42a19e3d5364",
+      "source": "successful formal API receipt in prior session",
+      "do_not_reprocess": true
+    }
+  ],
+  "partial": [
+    {
+      "post_id": "XJW-CONV-chat-30-bare-jar",
+      "actual_stored_decision": "reject",
+      "intended_classification": "INSUFFICIENT_EVIDENCE",
+      "reason": "Product original-photo provenance and proportions unverified; not proof of incorrect packaging.",
+      "original_visual_evidence_saved": true,
+      "full_16_check_complete": false,
+      "requires_defer_correction_after_compatible_release": true
+    }
+  ],
+  "integration": {
+    "branch": "fix/review-defer-evidence-20261030",
+    "commit": "31863493186aba1111100dda034775921e4eea41",
+    "ahead_by": 1,
+    "behind_by": 0,
+    "merged": false,
+    "related_tests_passed": 13,
+    "main_push_would_trigger_full_suite_and_deploy": true
+  },
+  "cursor": {
+    "next_post_title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+    "next_action": "Read live post and existing evidence, inspect actual current image, submit individually bound 16-check AI evidence only if all checks proven.",
+    "remaining_formal_reviews": 61
+  },
+  "this_checkpoint": {
+    "new_d1_writes": 0,
+    "new_ai_approvals": 0,
+    "new_schedules": 0,
+    "new_publications": 0,
+    "additional_cost": 0
+  },
+  "not_completed": [
+    "remaining individual reviews",
+    "D1/Metricool/three-platform ID reconciliation",
+    "four-week content drafts",
+    "TLS and suspended-runtime end-to-end verification"
+  ],
+  "safety": {
+    "auto_publish_authorized": false,
+    "auto_reply_authorized": false,
+    "do_not_restart_completed_work": true
+  }
+}
