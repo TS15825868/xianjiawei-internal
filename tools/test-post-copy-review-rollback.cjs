@@ -108,3 +108,12 @@ test('post-image binding and proposal workflows never rewrite published history'
   assert.match(source,/r\.published_at!==null/);
  }
 });
+
+test('copy-only edit preserves image review quality; changed image re-evaluates',()=>{
+ const worker=fs.readFileSync(path.join(root,'src/worker.js'),'utf8');
+ const expected="qualityStatus=imageUrl===clean(before.image_url)\n    ? clean(before.image_quality_status,'unknown')\n    : quality.status;";
+ assert.ok(worker.includes(expected),'unchanged image must retain persisted quality status');
+ assert.match(worker,/image_approved=0,status='draft'/);
+ assert.ok(worker.includes("published_at IS NULL AND COALESCE(updated_at,'')=?"));
+ assert.match(worker,/imageUrl===clean\(before\.image_url\)/);
+});

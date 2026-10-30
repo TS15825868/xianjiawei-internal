@@ -191,9 +191,7 @@ async function updatePost(request,env,profile,id){
     :validatePostPlatformSelection(body.platforms);
   if(!selection.ok)return json({error:selection.error},400);
   const title=clean(body.title,before.title),headline=cleanMultiline(body.headline,before.headline),copy=cleanMultiline(body.copy,before.copy),category=clean(body.category,before.category),platforms=selection.platforms,imageUrl=clean(body.image_url,before.image_url),imageAlt=clean(body.image_alt,before.image_alt),imageSource=clean(body.image_source,before.image_source),imageWidth=body.image_width===undefined?before.image_width:safeInt(body.image_width),imageHeight=body.image_height===undefined?before.image_height:safeInt(body.image_height),imageBytes=body.image_bytes===undefined?before.image_bytes:safeInt(body.image_bytes),quality=imageQuality(imageWidth,imageHeight),qualityStatus=imageUrl===clean(before.image_url)
-    ? (imageNeedsRework(before.image_quality_status)
-        ? clean(before.image_quality_status)
-        : clean(body.image_quality_status,quality.status))
+    ? clean(before.image_quality_status,'unknown')
     : quality.status;
   if(!title)return json({error:'貼文標題不可空白'},400);if(!platforms.length)return json({error:'請至少選擇一個發布平台'},400);
   const applied=await env.DB.prepare("UPDATE social_posts SET title=?,headline=?,copy=?,category=?,platforms_json=?,image_url=?,image_alt=?,image_source=?,image_width=?,image_height=?,image_bytes=?,image_quality_status=?,image_approved=0,status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,updated_at=? WHERE id=? AND status=? AND published_at IS NULL AND COALESCE(updated_at,'')=?").bind(title,headline,copy,category,JSON.stringify(platforms),imageUrl,imageAlt,imageSource,imageWidth,imageHeight,imageBytes,qualityStatus,now,id,before.status,before.updated_at||'').run();
