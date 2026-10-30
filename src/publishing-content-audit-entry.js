@@ -77,6 +77,7 @@ function semanticErrors(row,liveRows=[],originalReviewed=false){
   if(!originalReviewed&&KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');
   if(!originalReviewed&&REVIEW_REQUIRED_SCENES_20261017.includes(imageFilename))errors.push('此圖保留2026/10/17視覺待覆核紀錄：須依使用者正式參考確認固定Q版小男孩、服裝、印章及夥伴身分，避免廉價玩具感、拼貼或造型改變；不得僅因立體光影就要求改成2D。若需換圖，使用正式角色參考及產品實拍，重新回待審核。');
   if(row?.id==='XJW-CONV-chat-brand-not-only-product' && imageUrl.endsWith('/2026-09-22/xjw-active-img-003.png'))errors.push('此圖片與另一篇使用相同Git實體圖片，禁止一圖多文，需重製專屬情境。');
+  if(clean(row?.image_quality_status)==='needs_review')errors.push('圖片證據不足，待人工確認；不是確定不合格，禁止核准、排程或發布。');
   if(['rejected','needs_regeneration','needs_rework','low','missing'].includes(clean(row?.image_quality_status).toLowerCase()))errors.push('目前圖片尚未通過正式視覺驗收，禁止核准、排程或發布。');
 
   const risky=RISKY.find(term=>text.includes(term));

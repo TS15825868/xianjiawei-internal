@@ -115,9 +115,9 @@ function productMatchErrors(row){
   for(const segment of reviewProductSegments(combined,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排');
   if(!clean(row?.image_url))errors.push('缺少圖片');
   if(!clean(row?.image_alt))errors.push('缺少圖片說明，無法完成圖文一致審核');
-  if(['needs_rework','needs_regeneration','rejected','low','missing']
+  if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']
     .includes(clean(row?.image_quality_status).toLowerCase()))
-    errors.push('圖片仍標記為待重製／不合格，需更換後重新完成16項審核');
+    errors.push(clean(row?.image_quality_status)==='needs_review'?'圖片證據不足，待人工確認；不代表圖片確定不合格，不得核准或發布':'圖片仍標記為待重製／不合格，需更換後重新完成16項審核');
   errors.push(...semanticSceneErrors(row));
   errors.push(...customerCopyErrors(row));
   return[...new Set(errors)]
@@ -126,9 +126,9 @@ function checklistFrom(body){const value=body?.review_checklist&&typeof body.rev
 async function gateState(env,row){
   if(!row)return{ok:false,reason:'找不到貼文'};if(row.published_at||['published','archived'].includes(clean(row.status)))return{ok:false,reason:'已有發布歷史，不能再次審核或發布'};
   const priorPublic=publishedPlatformReceiptHold(row);if(priorPublic)return{ok:false,reason:priorPublic.reason};
-  if(['needs_rework','needs_regeneration','rejected','low','missing']
+  if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']
     .includes(clean(row.image_quality_status).toLowerCase()))
-    return{ok:false,reason:'圖片仍需重製或未通過品質檢查；不能排程或發布'};
+    return{ok:false,reason:clean(row.image_quality_status)==='needs_review'?'圖片證據不足，待人工確認；不能排程或發布':'圖片仍需重製或未通過品質檢查；不能排程或發布'};
   // Owner-authorized AI approvals use versioned, content-bound evidence;
   // unapproved AI drafts never enter the publication path.
   if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
@@ -192,13 +192,13 @@ async function regenerationReady(request,env,ctx,id){const authorization=await a
   // media was replaced. Never let "copy", omitted mode, or an invalid mode
   // bypass the quality hold. Text-only rework can be drafted, but completion
   // requires a new qualifying image before returning to human review.
-  if(['needs_rework','needs_regeneration','rejected','low','missing']
+  if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']
       .includes(clean(before.image_quality_status).toLowerCase()))
     return json({error:'圖片仍標記為待重製／不合格，請先更換圖片並儲存，再送回待審核'},409);
   const now=new Date().toISOString();const changed=await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=? AND status=? AND published_at IS NULL").bind(now,id,before.status).run();if(Number(changed?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，請重新整理'},409);await clearGate(env,id);const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核',id,before,after,mode);return json({ok:true,id,status:'pending_review',mode,review_required:true,required_checks:REQUIRED_CHECKS,message:'新文案／圖片已送回待審核；必須重新完成16項圖文審核。'})}
 
 
-const IMAGE_REVIEW_REJECTED=new Set(['needs_rework','needs_regeneration','rejected','low','missing']);
+const IMAGE_REVIEW_REJECTED=new Set(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']);
 async function imageDeliveryHold(env,id){
   return Boolean(await env.DB.prepare("SELECT platform FROM social_publish_deliveries WHERE post_id=? AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed')) LIMIT 1").bind(id).first());
 }
@@ -240,7 +240,7 @@ async function reviewExistingImage(request,env,ctx,id){
   const checklist=checklistFrom(body);
   if(decision==='pass'&&(checklist.missing.length||body.copy_image_match!==true))
     return json({error:'圖片通過須具備16項完整覆核與圖文一致證據',missing:checklist.missing},409);
-  const now=new Date().toISOString(),next=decision==='pass'?'passed':'needs_rework';
+  const now=new Date().toISOString(),next=decision==='pass'?'passed':decision==='defer'?'needs_review':'needs_rework';
   // D1 batch executes as one transaction: update, evidence log and gate
   // invalidation must commit together. A stale compare-and-swap logs nothing.
   await ensureSchema(env);
