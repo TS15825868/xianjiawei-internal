@@ -205,10 +205,10 @@
     button.disabled=true;
     try{
       const context=await api('/posts/'+encodeURIComponent(id)+'/image-visual-review');
-      root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-original-close></div><div class="xjw-modal-card publishing-review-card"><h2>重新覆核原圖</h2><p>保留目前圖片網址。請實際比對正式參考圖並逐項填寫；通過只回待審核，不核准、不排程、不發布。</p><strong>${esc(context.title)}</strong><div class="publishing-review-copy">${esc(context.copy)}</div><img style="max-width:100%;max-height:60vh;object-fit:contain" src="${esc(context.image_url)}" alt="${esc(context.image_alt)}"><div class="publishing-review-checks">${CHECKS.map(([key,label,help])=>`<label><input type="checkbox" data-original-check="${key}">${esc(label)}：${esc(help)}</label>`).join('')}</div><label><input type="checkbox" data-original-match>文案與圖片一致</label><label>實際視覺證據（40–4000字）<textarea data-original-evidence rows="6" style="width:100%" maxlength="4000"></textarea></label><p data-original-result role="status"></p><div class="xjw-modal-footer"><button class="btn" data-original-close>關閉</button><button class="btn" data-original-reject>不合格，保留阻擋</button><button class="btn primary" data-original-pass>通過覆核，回待審核</button></div></div></div>`;
+      root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-original-close></div><div class="xjw-modal-card publishing-review-card"><h2>重新覆核原圖</h2><p>保留目前圖片網址。請實際比對正式參考圖並逐項填寫；通過只回待審核，不核准、不排程、不發布。</p><strong>${esc(context.title)}</strong><div class="publishing-review-copy">${esc(context.copy)}</div><img style="max-width:100%;max-height:60vh;object-fit:contain" src="${esc(context.image_url)}" alt="${esc(context.image_alt)}"><div class="publishing-review-checks">${CHECKS.map(([key,label,help])=>`<label><input type="checkbox" data-original-check="${key}">${esc(label)}：${esc(help)}</label>`).join('')}</div><label><input type="checkbox" data-original-match>文案與圖片一致</label><label>實際視覺證據（40–4000字）<textarea data-original-evidence rows="6" style="width:100%" maxlength="4000"></textarea></label><p data-original-result role="status"></p><div class="xjw-modal-footer"><button class="btn" data-original-close>關閉</button><button class="btn" data-original-defer>證據不足，待人工</button><button class="btn" data-original-reject>不合格，保留阻擋</button><button class="btn primary" data-original-pass>通過覆核，回待審核</button></div></div></div>`;
       root.querySelectorAll('[data-original-close]').forEach(b=>b.onclick=()=>{root.innerHTML=''});
       const save=async decision=>{
-        const result=root.querySelector('[data-original-result]'),controls=[...root.querySelectorAll('[data-original-pass],[data-original-reject]')];controls.forEach(b=>b.disabled=true);
+        const result=root.querySelector('[data-original-result]'),controls=[...root.querySelectorAll('[data-original-pass],[data-original-reject],[data-original-defer]')];controls.forEach(b=>b.disabled=true);
         try{
           const response=await api('/posts/'+encodeURIComponent(id)+'/image-visual-review',{method:'POST',body:JSON.stringify({decision,expected_fingerprint:context.expected_fingerprint,expected_updated_at:context.expected_updated_at,visual_evidence:root.querySelector('[data-original-evidence]').value,review_checklist:Object.fromEntries([...root.querySelectorAll('[data-original-check]')].map(b=>[b.dataset.originalCheck,b.checked])),copy_image_match:root.querySelector('[data-original-match]').checked})});
           fullAuditCache={at:0,result:null};lastAuditSignature='';lastAuditAt=0;
@@ -218,6 +218,7 @@
           document.querySelector('[data-refresh]')?.click();
         }catch(error){result.textContent=error.message||String(error);controls.forEach(b=>b.disabled=false)}
       };
+      root.querySelector('[data-original-defer]').onclick=()=>save('defer');
       root.querySelector('[data-original-pass]').onclick=()=>save('pass');root.querySelector('[data-original-reject]').onclick=()=>save('reject');
     }catch(error){toast(error.message||String(error),true)}finally{button.disabled=false}
   }
