@@ -197,6 +197,46 @@ async function regenerationReady(request,env,ctx,id){const authorization=await a
     return json({error:'圖片仍標記為待重製／不合格，請先更換圖片並儲存，再送回待審核'},409);
   const now=new Date().toISOString();const changed=await env.DB.prepare("UPDATE social_posts SET status='pending_review',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=? AND status=? AND published_at IS NULL").bind(now,id,before.status).run();if(Number(changed?.meta?.changes)!==1)return json({error:'貼文已被其他操作變更，請重新整理'},409);await clearGate(env,id);const after=await postRow(env,id);await regenerationAudit(env,request,profile,'重新生成完成送回待審核',id,before,after,mode);return json({ok:true,id,status:'pending_review',mode,review_required:true,required_checks:REQUIRED_CHECKS,message:'新文案／圖片已送回待審核；必須重新完成16項圖文審核。'})}
 
+
+const IMAGE_REVIEW_REJECTED=new Set(['needs_rework','needs_regeneration','rejected','low','missing']);
+async function reviewExistingImage(request,env,ctx,id){
+  const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+  const profile=await authorization.json();
+  if(!REGENERATION_ROLES.has(clean(profile?.role))||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(clean(profile?.email)))
+    return json({error:'僅限可驗證的內容審核人員操作'},403);
+  const before=await postRow(env,id);if(!before)return json({error:'找不到貼文'},404);
+  if(before.published_at||['published','archived','manual_required','scheduled'].includes(clean(before.status)))
+    return json({error:'已有發布歷史、排程或人工接手，不可重新覆核'},409);
+  const receipt=publishedPlatformReceiptHold(before);if(receipt)return json({error:receipt.reason},409);
+  if(await activeExternalSchedule(env,id))return json({error:'存在外部排程或回執，禁止變更圖片審核'},409);
+  if(!clean(before.image_url))return json({error:'缺少圖片，無法覆核'},409);
+  const body=await readBody(request);
+  const decision=clean(body.decision);
+  if(!['pass','reject'].includes(decision))return json({error:'覆核結果必須是 pass 或 reject'},400);
+  const expected=clean(body.expected_fingerprint);
+  const current=await fingerprint(before);
+  if(!expected||expected!==current)return json({error:'圖片或貼文版本已變更，請重新載入後覆核'},409);
+  const evidence=clean(body.visual_evidence);
+  if(evidence.length<40||evidence.length>4000)return json({error:'須提供40至4000字的實際看圖證據，包括角色、產品、比例、場景及圖文一致性'},400);
+  const checklist=checklistFrom(body);
+  if(decision==='pass'&&(checklist.missing.length||body.copy_image_match!==true))
+    return json({error:'圖片通過須具備16項完整覆核與圖文一致證據',missing:checklist.missing},409);
+  const now=new Date().toISOString(),next=decision==='pass'?'reviewed':'needs_rework';
+  // Guard against stale clients and concurrent publication; never change a published row.
+  const changed=await env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=?`)
+    .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at).run();
+  if(Number(changed?.meta?.changes||0)!==1)return json({error:'覆核時貼文已被修改，請重新載入'},409);
+  await clearGate(env,id);
+  const after=await postRow(env,id);
+  // The full evidence is retained in the existing audit trail, not merely the quality flag.
+  await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
+    .bind(`AUD-${crypto.randomUUID()}`,clean(profile.email),'圖片原網址重新視覺覆核','貼文',id,
+      JSON.stringify({image_url:before.image_url,image_quality_status:before.image_quality_status,fingerprint:current}),
+      JSON.stringify({image_url:after.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email)}),
+      request.headers.get('cf-connecting-ip')||'').run();
+  return json({ok:true,id,status:'pending_review',image_quality_status:next,reviewed_at:now,reviewed_by:clean(profile.email),image_preserved:true,review_gate_passed:false,auto_publish:false,message:'圖片覆核證據已記錄；仍須重新完成正式貼文核准'});
+}
+
 export default{async fetch(request,env,ctx){
   const url=new URL(request.url),path=url.pathname;
   if(request.method==='GET'&&path==='/healthz'){
@@ -267,6 +307,8 @@ export default{async fetch(request,env,ctx){
       }
       return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
   }
+  const imageReviewMatch=path.match(/^\\/api\\/posts\\/([^/]+)\\/image-visual-review$/);
+  if(imageReviewMatch&&request.method==='POST')return reviewExistingImage(request,env,ctx,decodeURIComponent(imageReviewMatch[1]));
   if(regenStartMatch&&request.method==='POST')return regenerationStart(request,env,ctx,decodeURIComponent(regenStartMatch[1]));
   if(regenReadyMatch&&request.method==='POST')return regenerationReady(request,env,ctx,decodeURIComponent(regenReadyMatch[1]));
   if(gateMatch&&request.method==='GET'){const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;await ensureSchema(env);const id=decodeURIComponent(gateMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);const duplicates=await duplicatePostErrors(env,row);return json({id,...await gateState(env,row),errors:[...new Set([...productMatchErrors(row),...duplicates])],required_checks:REQUIRED_CHECKS})}
