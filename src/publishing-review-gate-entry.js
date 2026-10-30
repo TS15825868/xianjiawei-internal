@@ -202,7 +202,7 @@ const IMAGE_REVIEW_REJECTED=new Set(['needs_rework','needs_regeneration','reject
 async function reviewExistingImage(request,env,ctx,id){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
   const profile=await authorization.json();
-  if(!REGENERATION_ROLES.has(clean(profile?.role))||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(clean(profile?.email)))
+  if(!REGENERATION_ROLES.has(clean(profile?.role))||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(profile?.email)))
     return json({error:'僅限可驗證的內容審核人員操作'},403);
   const before=await postRow(env,id);if(!before)return json({error:'找不到貼文'},404);
   if(before.published_at||['published','archived','manual_required','scheduled'].includes(clean(before.status)))
@@ -222,18 +222,22 @@ async function reviewExistingImage(request,env,ctx,id){
   if(decision==='pass'&&(checklist.missing.length||body.copy_image_match!==true))
     return json({error:'圖片通過須具備16項完整覆核與圖文一致證據',missing:checklist.missing},409);
   const now=new Date().toISOString(),next=decision==='pass'?'reviewed':'needs_rework';
-  // Guard against stale clients and concurrent publication; never change a published row.
-  const changed=await env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=?`)
-    .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at).run();
-  if(Number(changed?.meta?.changes||0)!==1)return json({error:'覆核時貼文已被修改，請重新載入'},409);
-  await clearGate(env,id);
-  const after=await postRow(env,id);
-  // The full evidence is retained in the existing audit trail, not merely the quality flag.
-  await env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES(?,?,?,?,?,?,?,?)')
-    .bind(`AUD-${crypto.randomUUID()}`,clean(profile.email),'圖片原網址重新視覺覆核','貼文',id,
-      JSON.stringify({image_url:before.image_url,image_quality_status:before.image_quality_status,fingerprint:current}),
-      JSON.stringify({image_url:after.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email)}),
-      request.headers.get('cf-connecting-ip')||'').run();
+  // D1 batch executes as one transaction: update, evidence log and gate
+  // invalidation must commit together. A stale compare-and-swap logs nothing.
+  await ensureSchema(env);
+  const auditId=`AUD-${crypto.randomUUID()}`;
+  const auditBefore=JSON.stringify({image_url:before.image_url,image_quality_status:before.image_quality_status,fingerprint:current});
+  const auditAfter=JSON.stringify({image_url:before.image_url,image_quality_status:next,decision,visual_evidence:evidence,review_checklist:checklist.value,copy_image_match:body.copy_image_match===true,reviewed_at:now,reviewed_by:clean(profile.email),fingerprint:current});
+  const results=await env.DB.batch([
+    env.DB.prepare(`UPDATE social_posts SET image_quality_status=?,image_approved=0,approved_by=NULL,approved_at=NULL,scheduled_at=NULL,status='pending_review',updated_at=? WHERE id=? AND status IN ('draft','pending_review','approved') AND published_at IS NULL AND image_url=? AND COALESCE(image_quality_status,'')=? AND updated_at=?`)
+      .bind(next,now,id,before.image_url,before.image_quality_status||'',before.updated_at),
+    env.DB.prepare('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT ?,?,?,?,?,?,?,? WHERE changes()=1')
+      .bind(auditId,clean(profile.email),'圖片原網址重新視覺覆核','貼文',id,auditBefore,auditAfter,request.headers.get('cf-connecting-ip')||''),
+    env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=? AND EXISTS(SELECT 1 FROM audit_logs WHERE id=?)')
+      .bind(id,auditId)
+  ]);
+  if(Number(results?.[0]?.meta?.changes||0)!==1)return json({error:'覆核時貼文已被修改，請重新載入'},409);
+  if(Number(results?.[1]?.meta?.changes||0)!==1)throw new Error('圖片覆核稽核日誌未寫入，禁止視為成功');
   return json({ok:true,id,status:'pending_review',image_quality_status:next,reviewed_at:now,reviewed_by:clean(profile.email),image_preserved:true,review_gate_passed:false,auto_publish:false,message:'圖片覆核證據已記錄；仍須重新完成正式貼文核准'});
 }
 
