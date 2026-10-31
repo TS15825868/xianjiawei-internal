@@ -1,0 +1,964 @@
+{
+  "retrieved_at": "2026-10-31 Asia/Taipei",
+  "brand": "6889683",
+  "range_start": "2026-10-01",
+  "range_end": "2027-02-28",
+  "scope": "Read-only Metricool window; not full FB/IG/Threads history",
+  "posts": [
+    {
+      "id": 384813552,
+      "uuid": "-2754556598321918410",
+      "copy": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步這些很普通卻很珍貴的時刻。\n\n補養，是一種節奏。你最近有沒有也帶家人出去走走？",
+      "date": "2026-10-01T12:30:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1496075599209324"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/Dd8DjQ8FJHo/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "17945204499076604"
+        }
+      ]
+    },
+    {
+      "id": 386519368,
+      "uuid": "-6901715357797955670",
+      "copy": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一買就是很多年。\n\n現在大家生活都不容易，買東西之前先看看價格、比較一下，其實很正常，我們也完全能理解。\n\n只是做了這麼多年，有些地方還是捨不得省。\n\n原料怎麼挑、工序怎麼做、哪些地方需要時間，都是上一代和老師傅一點一點留下來的經驗。\n\n龜鹿膠這項老工藝做到今天，對仙加味來說，早就不只是賣一樣東西，而是把該做好的事情繼續做好。\n\n這條路不一定好走，但只要還有人記得、還有人願意相信，我們就想繼續把這份做事的方法留下來。\n\n也想問問一路支持仙加味的老朋友：\n你還記得第一次認識我們，是什麼時候嗎？\n\n不用買東西，留言跟我們聊幾句也很好。\n\n謝謝一路沒有忘記我們的人。\n\n——仙加味",
+      "date": "2026-10-03T10:00:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1498042925679258"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DeA8Gj_jTCh/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18383749882226989"
+        }
+      ]
+    },
+    {
+      "id": 386526307,
+      "uuid": "3260834743637984166",
+      "copy": "第一次看仙加味，常見問題其實就幾個：怎麼選、怎麼使用、怎麼保存、龜鹿飲多久出貨。\n\n不用一次記很多，一題一題看懂就好。\n\n官網 FAQ 已經把常見資訊整理好；如果是試喝、價格、下單、配送或售後，再到 LINE OA @762jybnm 找我們。\n\n#仙加味 #常見問題 #龜鹿日常",
+      "date": "2026-10-07T12:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 386526439,
+      "uuid": "-331875931746907880",
+      "copy": "龜鹿膏的日常使用方式其實可以很簡單。\n\n仙加味龜鹿膏 100g／罐，可以直接小匙取用，也可以用約 100～300mL 溫熱水化開。\n\n食用時間可依個人使用習慣與作息安排，找到自己容易維持的方式就好。\n\n想看完整規格與使用說明，可以到官網；有個別選擇問題，再到 LINE OA @762jybnm 詢問。",
+      "date": "2026-10-05T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 390408055,
+      "uuid": "4714723117383569142",
+      "copy": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。",
+      "date": "2026-10-09T10:00:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1503614131788804"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DeQY36LFeDh/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18099186008387083"
+        }
+      ]
+    },
+    {
+      "id": 390438496,
+      "uuid": "-3479926218505237444",
+      "copy": "第一次來到仙加味，歡迎你。\n\n仙加味是一個從台北萬華一路走來的現代漢方生活品牌。\n\n家族四代一路累積鹿角與熬膠工藝，也陪著我們看見漢方飲食文化怎麼從以前的生活方式，慢慢走到現在。\n\n現在的仙加味，不只是把傳統留下來。\n\n我們希望把原本需要很多說明的漢方產品，整理成更清楚、更方便，也更貼近日常生活的選擇。\n\n目前你會在仙加味看到龜鹿系列，也會持續加入更多不同形式的日常漢方產品。\n\n在這裡，我們會分享：\n龜鹿與漢方產品\n日常使用與保存\n料理與飲食文化\n萬華與家族故事\n生活中的補養節奏\n\n不需要一次把所有產品都記住。\n\n想先認識產品、看看怎麼選，可以從仙加味連結入口開始；有試喝、價格、下單、配送或個別問題，再直接到官方 LINE 找我們。\n\n補養，是一種節奏。\n\n仙加味｜連結入口\nhttps://ts15825868.github.io/xianjiawei/links.html\n\n官方 LINE｜@762jybnm\n\n#仙加味 #現代漢方生活品牌 #萬華 #漢方日常",
+      "date": "2026-10-07T23:23:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1502281831922034"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DeMrC6VFO02/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18649317766043683"
+        }
+      ]
+    },
+    {
+      "id": 390449069,
+      "uuid": "5524257369653004922",
+      "copy": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表性產品線，也會持續帶來更多不同形式的日常漢方選擇。\n\n這裡會分享品牌故事、產品資訊、日常使用、料理搭配，以及我們在萬華一路走來的生活。\n\n想認識仙加味、查看產品，或有試喝、價格、下單與配送問題，都可以從連結入口找到我們。\n\n補養，是一種節奏。\n\n仙加味｜連結入口\nhttps://ts15825868.github.io/xianjiawei/links.html\n\n官方 LINE｜@762jybnm\n\n#仙加味 #現代漢方生活品牌 #萬華 #漢方日常",
+      "date": "2026-10-07T23:36:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1502290961921121"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DeMsiLMlKTt/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18487968418129820"
+        }
+      ]
+    },
+    {
+      "id": 391749052,
+      "uuid": "-6917105881054820252",
+      "copy": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單的保存習慣，讓日常使用更順手。\n\n補養，是一種節奏。\n\n#仙加味 #龜鹿膏 #冷藏保存 #漢方生活 #日常補養",
+      "date": "2026-10-09T13:03:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1503722418444642"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DeQtraNEZRo/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18112632515469532"
+        }
+      ]
+    },
+    {
+      "id": 393739186,
+      "uuid": "-366328423850621778",
+      "copy": "料理搭配不用特別複雜。\n\n如果家裡平常就會煮雞湯、排骨湯或家常燉湯，就從原本熟悉的料理方式開始，比較自然。\n\n仙加味想分享的，是把漢方飲食文化放回真正做得到的生活裡。\n\n#仙加味 #料理搭配 #漢方飲食文化 #日常生活",
+      "date": "2026-10-11T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 394674560,
+      "uuid": "-5334395324803955349",
+      "copy": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡單。\n\n有個別問題，再到官方 LINE OA @762jybnm 一對一問我們。\n\n#仙加味 #龜鹿日常 #怎麼選 #漢方生活",
+      "date": "2026-10-13T16:15:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1507731614710389"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DebW10zjO9o/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18078440909399328"
+        }
+      ]
+    },
+    {
+      "id": 395780320,
+      "uuid": "-4149122829168327944",
+      "copy": "傳統不一定代表今天要照以前一模一樣地生活。\n\n有些值得留下來的是做法、經驗和背後的文化；至於怎麼進到現在的日常，可以慢慢調整。\n\n仙加味把四代累積的鹿角與熬膠工藝整理成今天更容易理解的資訊，也是這個想法。\n\n你有沒有什麼小時候覺得老派，長大後反而開始喜歡的東西？",
+      "date": "2026-10-16T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780595,
+      "uuid": "-4666029736018688758",
+      "copy": "元旦早上，不一定要急著列出一整年的目標。把熱粥、饅頭和家人喜歡的小菜準備好，坐下來一起吃一餐，也是一個踏實的開始。\n\n仙加味想留下的漢方生活，不只在產品裡，也在這些照顧日常、好好相聚的小事裡。\n\n新年的第一餐，你最想和誰一起吃？",
+      "date": "2027-01-01T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780663,
+      "uuid": "-2388141536229897403",
+      "copy": "小時候期待過年，跟長大後期待的事情常常完全不一樣。有人記得的是年夜飯，有人記得長輩家，也有人現在最期待的是終於可以休息。\n\n仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。\n\n你覺得自己家過年最大的改變是什麼？",
+      "date": "2027-02-03T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780722,
+      "uuid": "4739607617070649128",
+      "copy": "除夕準備年夜飯時，小老闆想先做一件小事：替剛回到家的家人拉好椅子，讓大家不用急，慢慢坐下來。\n\n仙加味從萬華走過幾代家庭日常，一直珍惜的，是有人一起吃飯、有人願意等你回家的時刻。\n\n今年的年夜飯，你最想把哪個位置留給誰？",
+      "date": "2027-02-05T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780780,
+      "uuid": "8803367464274840026",
+      "copy": "過年的期待每個人都不一樣。有人等的是一桌菜，有人是想見家人，也有人很單純就是想好好放假。\n\n仙加味從萬華的四代家族工作走到現在，也特別珍惜一家人相聚吃飯的時候。\n\n如果今天只能選一個，你會選哪一個？",
+      "date": "2027-02-06T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780855,
+      "uuid": "7059549514727835567",
+      "copy": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
+      "date": "2027-02-08T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 395780924,
+      "uuid": "-4565812021150200465",
+      "copy": "元宵節，把一小塊糯米糰慢慢搓圓，大小不必每顆都一模一樣。有人喜歡甜湯圓，也有人想念鹹湯圓，口味不同，坐在一起就很好。\n\n仙加味喜歡記錄這些傳統飲食文化裡的日常動作：一起準備、一起聊天，再把熟悉的味道留在家裡。\n\n你家的元宵湯圓，是甜的還是鹹的？",
+      "date": "2027-02-20T09:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 399616512,
+      "uuid": "4058297471817699092",
+      "copy": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先把昨天沒收好的東西整理完。\n\n仙加味萬華工作間的一天，從拉起竹簾、放好木匙和確認食材抽屜開始。\n\n小老闆先把眼前的小事做好。你開始工作前的第一件事通常是什麼？\n\n仙加味官方連結入口：\nhttps://ts15825868.github.io/xianjiawei/links.html",
+      "date": "2026-10-26T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 399616530,
+      "uuid": "5662205195050239362",
+      "copy": "第一次接觸一個沒用過的產品，本來就不一定要馬上決定。可以先問、先了解，也可以看看龜鹿飲的試喝方式。\n\n如果你第一次接觸龜鹿系列，最想先知道的是產品差別、使用方式、試喝，還是其他問題？有需要再到仙加味官方LINE OA慢慢問我們就好。\n\n仙加味官方連結入口：\nhttps://ts15825868.github.io/xianjiawei/links.html",
+      "date": "2026-10-20T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 399616547,
+      "uuid": "-8941937064773136394",
+      "copy": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？\n\n仙加味官方連結入口：\nhttps://ts15825868.github.io/xianjiawei/links.html",
+      "date": "2026-10-22T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 401038662,
+      "uuid": "4410043598024428792",
+      "copy": "重新認識仙加味。\n\n我們從台北萬華起家，承接四代家族與鹿角、熬膠工藝的故事。這些年，我們持續學習把傳統漢方飲食文化，用更清楚、方便、貼近日常的方式分享給大家。\n\n仙加味不只有龜鹿系列，也分享日常飲食、料理搭配，以及不同產品的選擇方式。無論是想了解產品內容、使用方式，或洽詢合作，都歡迎從官方 LINE 與我們聯繫。\n\n補養，是一種節奏。\n\n仙加味官方連結：https://ts15825868.github.io/xianjiawei/links.html\n\n#仙加味 #現代漢方生活品牌 #品牌故事 #萬華 #漢方飲食文化",
+      "date": "2026-10-21T10:00:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1515305020619715"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DevSb55iJIW/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18103848701022389"
+        }
+      ]
+    },
+    {
+      "id": 401784001,
+      "uuid": "5605036023223108509",
+      "copy": "從萬華開始，把漢方飲食文化帶進今天的生活。\n\n仙加味的故事，從家族四代傳承與鹿角、熬膠工藝延續至今。傳統對我們而言，不只是記住過去的做法，更是學習如何用清楚的產品資訊、方便的使用方式，讓更多人認識這份飲食文化。\n\n我們分享龜鹿系列，也持續介紹不同的漢方飲食選擇。從認識原料、了解包裝，到找到適合自己的日常搭配，都可以慢慢來。\n\n想先了解仙加味的哪一部分：品牌故事、產品介紹，還是料理搭配？\n\n仙加味｜補養，是一種節奏。\n官方連結：https://ts15825868.github.io/xianjiawei/links.html\n\n#仙加味 #萬華 #漢方飲食文化 #品牌故事",
+      "date": "2026-10-23T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 401809472,
+      "uuid": "6383705809000481846",
+      "copy": "仙加味試喝資訊｜先試喝，再決定\n\n第一次認識龜鹿飲，可以先從30cc玻璃罐試喝組開始。\n\n・試喝組：30cc × 3罐\n・3罐試喝品免費，運費自付\n・7-11店到店60元／郵局宅配100元\n・每位顧客、電話及地址限申請一次\n・接單後安排製作，約5～7個工作天出貨，物流配送時間另計\n\n加入仙加味官方 LINE，留言「申請試喝」，我們會協助確認收件資料與配送方式。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n完整試喝資訊：https://ts15825868.github.io/xianjiawei/trial.html\n\n仙加味｜補養，是一種節奏。\n#仙加味 #龜鹿飲 #試喝資訊 #漢方飲食文化",
+      "date": "2026-10-21T14:10:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/Devu3vIiAca/"
+        }
+      ]
+    },
+    {
+      "id": 401816970,
+      "uuid": "-3169342223180872085",
+      "copy": "龜鹿膏 100g｜日常食補的小罐安排\n\n成分：鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘。\n\n・100g／罐，六角玻璃罐\n・初次可先從半匙開始\n・可直接取用或以約100～300mL溫熱水化開\n・食用時間可依個人使用習慣與作息時間安排\n\n商品諮詢、試喝、訂購及合作洽詢，歡迎加入仙加味官方 LINE：https://lin.ee/sHZW7NkR\n商品資訊：https://ts15825868.github.io/xianjiawei/product-guilu-gao.html\n\n仙加味｜補養，是一種節奏。\n#仙加味 #龜鹿膏 #漢方飲食文化 #日常食補",
+      "date": "2026-10-21T14:25:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/Devwl_8iCTz/"
+        }
+      ]
+    },
+    {
+      "id": 402249028,
+      "uuid": "5678118768328461286",
+      "copy": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不是讓大家面對一堆看不懂的產品名稱。\n\n挑選時可以先想三件事：\n・你想搭配家常料理，還是單純準備飲品？\n・習慣自己沖泡，還是偏好方便的形式？\n・產品標示的食用與保存方式，是否符合自己的生活安排？\n\n想了解仙加味有哪些選擇，可以從官方 LINE 詢問，我們會協助介紹產品形式與使用資訊。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n仙加味｜補養，是一種節奏。\n#仙加味 #日常飲食 #家常料理 #漢方飲食文化",
+      "date": "2026-10-23T10:00:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1517298460420371"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/De0cBHEEXQd/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18028282769871354"
+        }
+      ]
+    },
+    {
+      "id": 403318046,
+      "uuid": "4657988173958170408",
+      "copy": "🌧️ 風雨來了，平安最重要。\n\n仙加味想提醒大家：\n\n記得關好門窗、收好陽台物品，準備好飲水、食物與必要用品。\n\n風雨期間盡量避免外出，也別忘了關心家中的長輩，以及獨自居住的親友。\n\n希望大家都能平平安安地待在家裡。\n\n願風雨平息，大家一切安好。❤️\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #颱風天注意安全 #平安最重要",
+      "date": "2026-10-23T00:13:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1516859700464247"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DezYqE6FSvZ/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "17944071615092421"
+        }
+      ]
+    },
+    {
+      "id": 403326277,
+      "uuid": "4370271214323059892",
+      "copy": "🌧️ 風雨來了，平安最重要。\n\n仙加味想提醒大家：\n\n記得關好門窗、收好陽台物品，準備好飲水、食物與必要用品。\n\n風雨期間盡量避免外出，也別忘了關心家中的長輩，以及獨自居住的親友。\n\n希望大家都能平平安安地待在家裡。\n\n願風雨平息，大家一切安好。❤️\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #颱風天注意安全 #平安最重要",
+      "date": "2026-10-23T00:23:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1516867403796810"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DezZzJfFWZg/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "17914139262285776"
+        }
+      ]
+    },
+    {
+      "id": 408704868,
+      "uuid": "-7438246016100776062",
+      "copy": "第一次認識仙加味，從這四個問題開始。\n\n在家準備飲品或料理時，大家最常想知道的是：\n\n① 怎麼選？先看產品形式與自己的日常習慣。\n② 怎麼使用？依各產品包裝標示了解食用方式。\n③ 怎麼保存？依產品標示的保存條件妥善存放。\n④ 怎麼詢問？加入仙加味官方 LINE，可以了解商品資訊、使用方式與合作洽詢。\n\n我們希望每一項資訊都清楚，讓第一次認識仙加味的朋友，也能慢慢找到需要的答案。\n\n仙加味官方 LINE：https://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n#仙加味 #常見問題 #漢方飲食文化",
+      "date": "2026-10-28T19:30:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 408869789,
+      "uuid": "-2779792268526468321",
+      "copy": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依原廠標示搭配家常燉湯。紫色盒裝，每盒600g±15g，共64塊；實際使用方式與用量請以原廠包裝標示為準。\n\n想了解產品資訊與訂購方式，歡迎洽詢仙加味官方 LINE：https://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #二珍寶 #家常料理 #漢方飲食文化",
+      "date": "2026-10-28T21:00:00",
+      "draft": false,
+      "auto_publish": true,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PUBLISHED",
+          "receipt_id": "1522853336531550"
+        },
+        {
+          "network": "instagram",
+          "status": "PUBLISHED",
+          "receipt_id": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        },
+        {
+          "network": "threads",
+          "status": "PUBLISHED",
+          "receipt_id": "18148202098570237"
+        }
+      ]
+    },
+    {
+      "id": 409115588,
+      "uuid": "4329837969942398654",
+      "copy": "天氣開始有些涼意時，窗邊放一杯溫熱的飲品，或在家煮一鍋熱湯，感覺就很有秋天的味道。\n\n有的人先拿薄外套，有的人先找杯子，也有人已經在想晚餐要煮什麼了。\n\n你遇到涼爽的日子，第一件事通常會做什麼？🍵\n\n#秋日日常 #生活分享 #溫熱飲品",
+      "date": "2026-10-30T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409115861,
+      "uuid": "-3392347560393946949",
+      "copy": "週三早上，在想這週要煮什麼家常湯嗎？\n\n有些人喜歡蘿蔔排骨湯的清爽，有些人偏愛菇類、玉米一起煮的香甜。先選家人愛吃的食材，再決定清燉或慢煮，就能有不同的餐桌風味。\n\n如果想加入不熟悉的乾燥食材，記得先確認來源、標示與料理方式，不用一次放很多種。\n\n這週你家比較想喝清湯、燉湯，還是熱飲？🍲\n\n#家常料理 #餐桌日常 #煮湯",
+      "date": "2026-11-11T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409115909,
+      "uuid": "2443915431236944055",
+      "copy": "今天工作間比較安靜。小老闆整理完桌子，就坐下來翻翻筆記，小鹿和小烏龜也各自找了個舒服的位置。\n\n有人做事一定要開點音樂，有人只要旁邊有聲音就容易分心。\n\n你是哪一派？安靜派，還是背景音樂派？🎵\n\n#工作日常 #生活聊天",
+      "date": "2026-11-13T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409115962,
+      "uuid": "4946143609391040391",
+      "copy": "一天忙完，回頭看都是些不起眼的小事：開燈、整理桌子、回幾則訊息，再把用完的東西放回原位。\n\n小老闆擦拭桌面，小鹿整理紙張，小烏龜守在收納籃旁。看起來沒什麼大事，桌面卻慢慢變得清爽。\n\n今天你完成哪一件小事？\n\n#生活日常 #整理日常",
+      "date": "2026-11-22T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409123176,
+      "uuid": "-7982498099912555116",
+      "copy": "一杯日常飲品，會想搭配哪些食材？\n\n像紅棗和枸杞，都是料理、熱飲裡常見的材料。準備之前，不妨先看看包裝上的品名、產地、保存方式與建議使用方法，再依個人喜好決定要不要搭配。\n\n小老闆今天把食材資訊記在筆記本上。你平常比較常在煮湯時用到紅棗、枸杞，還是泡熱飲時？\n\n#認識食材 #飲食文化 #日常分享",
+      "date": "2026-11-03T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409149556,
+      "uuid": "-3743061634977870369",
+      "copy": "同樣是準備一份飲品，有人喜歡在家慢慢沖泡，也有人在意外出時好不好攜帶。\n\n像仙加味的龜鹿膏是膏狀，可以依產品說明取用；龜鹿飲則是液態形式，30cc 為小玻璃裸罐。不同形式，準備方式也不太一樣。\n\n小老闆在早餐桌前聊起這些差別。你平常比較喜歡自己慢慢準備，還是方便攜帶的形式？\n\n#生活習慣 #日常飲品 #仙加味",
+      "date": "2026-11-19T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409149617,
+      "uuid": "-1550277316695077790",
+      "copy": "有朋友第一次看到仙加味，會好奇我們從哪裡開始。\n\n我們的故事從萬華出發，經過四代家族的經驗累積，把熟悉的漢方飲食文化，用比較貼近日常的方式慢慢說給大家聽。\n\n今天分享一張小小的品牌聯絡卡，把官網、故事與聯絡方式放在一起。第一次來到這裡的朋友，歡迎先認識我們。\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #萬華故事 #品牌日常",
+      "date": "2026-11-01T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409189881,
+      "uuid": "-1546358116532992876",
+      "copy": "認識仙加味龜鹿膏｜100g／罐\n\n有些人喜歡直接取用膏狀食材，有些人比較習慣用溫熱的水慢慢調開。\n\n龜鹿膏可依產品說明取一小匙，加入約100～300ml熱水攪拌化開，再依個人口味調整濃淡。實際食用、保存方式仍以正式產品標示為準。\n\n你平常準備溫熱飲品，喜歡濃一些還是淡一些？\n\n#仙加味 #龜鹿膏 #日常飲品",
+      "date": "2026-11-16T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409189928,
+      "uuid": "2100266406683036682",
+      "copy": "你看過這種小小的玻璃罐嗎？\n\n仙加味龜鹿飲30cc是小玻璃裸罐，瓶身沒有額外貼紙。認識一款飲品，除了看名稱，也可以先看容量和包裝形式。\n\n龜鹿飲採接單後製作，約5～7個工作天出貨。日常飲用方式與保存請依正式產品說明。\n\n你比較習慣小份量的玻璃容器，還是隨身攜帶的鋁袋包裝？\n\n#仙加味 #龜鹿飲 #認識包裝",
+      "date": "2026-11-25T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    },
+    {
+      "id": 409190019,
+      "uuid": "9095248166936789919",
+      "copy": "認識仙加味鹿茸粉｜75g／罐\n\n挑選粉狀食材時，你會先看什麼？品名、重量、包裝標示，還是保存方式？\n\n這款鹿茸粉以每罐75g的形式呈現。認識原有包裝上的資訊，才能在使用與收納時更清楚；實際方式仍以產品正式標示為準。\n\n你平常買粉狀食材，最先注意包裝上的哪一項資訊？\n\n#仙加味 #鹿茸粉 #認識食材",
+      "date": "2026-11-28T10:00:00",
+      "draft": true,
+      "auto_publish": false,
+      "providers": [
+        {
+          "network": "facebook",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "instagram",
+          "status": "PENDING",
+          "receipt_id": null
+        },
+        {
+          "network": "threads",
+          "status": "PENDING",
+          "receipt_id": null
+        }
+      ]
+    }
+  ]
+}

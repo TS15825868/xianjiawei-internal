@@ -1,0 +1,52 @@
+name: XJW one-time evidence-only 16-item AI review for 57 pending posts
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/submit-57-ai-review-evidence-20261031.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-d1-ai-review-evidence-not-approval
+  cancel-in-progress: false
+jobs:
+  review-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read latest D1 pending posts, full copy inventory and external locks
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE status='pending_review' ORDER BY id" > /tmp/xjw-pending-ai-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,copy,status FROM social_posts ORDER BY id" > /tmp/xjw-all-post-copies.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,uuid,metricool_id,state FROM social_metricool_sync WHERE post_id IN (SELECT id FROM social_posts WHERE status='pending_review')" > /tmp/xjw-pending-ai-links.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_publish_deliveries WHERE post_id IN (SELECT id FROM social_posts WHERE status='pending_review')" > /tmp/xjw-pending-ai-deliveries.json
+      - name: Build each review from current post copy, original image bytes, previous visual check and Metricool snapshot
+        run: node tools/prepare-pending-ai-evidence-20261031.mjs prepare
+      - name: Write 57 evidence-only AI review records (not approval)
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/xjw-57-ai-review-evidence.sql
+      - name: Independently read back all unchanged posts and exact 57 AI review/audit records
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE status='pending_review' ORDER BY id" > /tmp/xjw-pending-ai-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_quality_reviews WHERE id LIKE 'AI-PRECHECK-20261031-%' ORDER BY post_id" > /tmp/xjw-ai-review-records-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM audit_logs WHERE action='AI正式待審貼文16項證據採集' ORDER BY entity_id" > /tmp/xjw-ai-review-audits-after.json
+          node tools/prepare-pending-ai-evidence-20261031.mjs verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-57-ai-16-item-review-evidence-${{ github.run_id }}
+          path: |
+            /tmp/xjw-57-ai-review-evidence.json
+            /tmp/xjw-pending-ai-before.json
+            /tmp/xjw-pending-ai-after.json
+            /tmp/xjw-ai-review-records-after.json
+            /tmp/xjw-ai-review-audits-after.json
+          retention-days: 3
