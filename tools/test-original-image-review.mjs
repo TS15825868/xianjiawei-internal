@@ -3,10 +3,11 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
+source=source.replace("import {recordAiDeferral} from './ai-review-deferral.js';",'const recordAiDeferral=()=>{throw Error("unexpected defer write")};');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async()=>Response.json(globalThis.imageTestProfile)};`)
 .replace("import {assessAutopublishCandidate} from './ai-autopublish-policy.js';",'const assessAutopublishCandidate=()=>({});')
 .replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({}),metricoolOwns=async()=>true,metricoolImmediate=async()=>({});')
-.replace("import {imageHash,recordAiReview,aiGate} from './ai-quality-review.js';",'const imageHash=()=>"",recordAiReview=()=>{},aiGate=()=>{};')
+.replace("import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';",'const imageHash=()=>"",recordAiReview=()=>{},aiGate=()=>{};')
 .replace("import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';",'const publishedPlatformReceiptHold=row=>row.id==="RECEIPT"?{reason:"Published receipt"}:null;');
 const {reviewExistingImage,imageReviewContext,validOriginalImageReview,fingerprint,REQUIRED_CHECKS,productMatchErrors,gateState}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 function fixture(){

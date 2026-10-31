@@ -231,7 +231,30 @@
     }catch(error){toast(error.message||String(error),true)}finally{button.disabled=false}
   }
   document.addEventListener('click',event=>{const button=event.target.closest('[data-original-review]');if(!button||button.disabled)return;event.preventDefault();openOriginalReview(button)});
+  function openDeferralBatch(){
+    const root=document.getElementById('modalRoot');if(!root||maintenanceReadonly())return;
+    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-defer-close></div><div class="xjw-modal-card"><h2>批次記錄 defer 證據</h2><p>僅保存未確認事項；每篇仍由正式API驗證權限、16項證據及目前版本。不核准、不排程、不發布，任一失敗立即停止。</p><label for="aiDeferralBatch">批次 defer 證據 JSON</label><textarea id="aiDeferralBatch" rows="14" style="width:100%;box-sizing:border-box"></textarea><pre id="aiDeferralBatchResult" role="status" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:35vh;overflow:auto"></pre><div class="xjw-modal-footer"><button class="btn" data-defer-close>關閉</button><button class="btn primary" data-defer-submit>保存 defer 證據</button></div></div></div>`;
+    root.querySelectorAll('[data-defer-close]').forEach(b=>b.onclick=()=>{if(!root.querySelector('[data-defer-submit]').disabled)root.innerHTML=''});
+    const submit=root.querySelector('[data-defer-submit]'),result=root.querySelector('#aiDeferralBatchResult');
+    submit.onclick=async()=>{
+      submit.disabled=true;const receipts=[];
+      try{
+        const proofs=JSON.parse(root.querySelector('#aiDeferralBatch').value);
+        if(!Array.isArray(proofs)||!proofs.length||proofs.length>60||new Set(proofs.map(p=>p.post_id)).size!==proofs.length||proofs.some(p=>p.requested_decision!=='defer'||p.reviewer_type!=='AI'||!p.post_id))throw Error('僅接受1–60篇不同ID的AI defer證據');
+        for(const proof of proofs){
+          const response=await api('/posts/'+encodeURIComponent(proof.post_id)+'/ai-quality-review',{method:'POST',body:JSON.stringify(proof),timeout:60000});
+          if(response.ok!==true||response.decision!=='NEEDS_HUMAN_REVIEW'||!response.review_id)throw Error('未取得有效defer成功回執，已停止');
+          receipts.push({post_id:proof.post_id,...response});result.textContent=JSON.stringify({completed:receipts.length,total:proofs.length,receipts},null,2);
+        }
+        document.querySelector('[data-refresh]')?.click();
+      }catch(error){result.textContent=JSON.stringify({completed:receipts.length,receipts,error:error.message||String(error),stopped:true},null,2)}
+      finally{submit.disabled=false}
+    };
+  }
+  document.addEventListener('click',event=>{const button=event.target.closest('[data-ai-deferral-batch]');if(!button||button.disabled)return;event.preventDefault();openDeferralBatch()});
   function enhance(){
+    const toolbar=document.querySelector('[data-refresh]')?.parentElement;
+    if(toolbar&&!maintenanceReadonly()&&!toolbar.querySelector('[data-ai-deferral-batch]')){const b=document.createElement('button');b.type='button';b.className='btn';b.dataset.aiDeferralBatch='1';b.textContent='批次記錄 defer 證據';toolbar.append(b)}
     if(!maintenanceReadonly())document.querySelectorAll('.publish-card[data-status="draft"],.publish-card[data-status="pending_review"]').forEach(card=>{
       if(card.dataset.externalPublishedHold==='1'||card.querySelector('[data-ai-evidence]'))return;
       const id=card.querySelector('[data-post-view]')?.dataset.postView,actions=card.querySelector('.xjw-actions');

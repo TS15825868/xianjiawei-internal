@@ -1,8 +1,9 @@
+import {recordAiDeferral} from './ai-review-deferral.js';
 import app from './flexible-publish-entry.js';
 import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
-import {imageHash,recordAiReview,aiGate} from './ai-quality-review.js';
+import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';
 
 const VERSION='2026-10-30-original-image-evidence-v10';
 const REQUIRED_CHECKS=Object.freeze([
@@ -323,13 +324,15 @@ export default{async fetch(request,env,ctx){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     try{
+      const proof=await readBody(request);
+      if(proof.requested_decision==='defer')return json(await recordAiDeferral(env,row,proof,profile,{fingerprint,ensureAiSchema}));
       // AI approval must pass the SAME full image/scene/season/brand audit as
       // manually submitted posts. Previously the AI route bypassed this wrapper.
       const {auditOne}=await import('./publishing-content-audit-entry.js');
       const auditedRows=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
       const fullAudit=await auditOne(env,row,auditedRows.results||[]);
       if(!fullAudit.ok)return json({error:'AI核准前完整圖文稽核未通過，禁止核准或發布',details:fullAudit.errors},409);
-      const result=await recordAiReview(env,row,await readBody(request),profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
+      const result=await recordAiReview(env,row,proof,profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
       if(result.decision==='AI_APPROVED'){
         const current=await postRow(env,id),gate=await gateState(env,current);
         if(!gate.ok)return json({...result,auto_schedule:false,queue_error:gate.reason});
