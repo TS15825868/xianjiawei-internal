@@ -1,0 +1,36 @@
+name: XJW one-time read-only official product photo cutout verification
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/export-official-product-cutouts-20261031.yml']
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify four approved photo cutouts against locked provenance SHA
+        run: |
+          python3 - <<'PY'
+          import pathlib,json,hashlib,shutil
+          items=json.loads(pathlib.Path('ops/post-image-production-reviewed-current.json').read_text())['items']
+          paths={r['path']:r['sha256'] for x in items for r in x.get('productPhotoProvenance',[])}
+          if len(paths)!=4:raise RuntimeError('Expected exactly four unique official source cutouts')
+          out=pathlib.Path('official-product-cutouts-20261031');out.mkdir()
+          verified=[]
+          for rel,expected in paths.items():
+            src=pathlib.Path(rel); actual=hashlib.sha256(src.read_bytes()).hexdigest()
+            if actual!=expected:raise RuntimeError('Source photo provenance changed: '+rel)
+            shutil.copy2(src,out/src.name)
+            verified.append({'path':rel,'sha256':actual,'bytes':src.stat().st_size})
+          (out/'proof.json').write_text(json.dumps(verified,ensure_ascii=False,indent=2))
+          print('PASS 4 original product-photo cutout hashes match locked production evidence')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xjw-official-product-cutouts-20261031
+          path: official-product-cutouts-20261031
+          retention-days: 2
+          compression-level: 1
