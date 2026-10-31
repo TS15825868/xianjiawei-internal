@@ -1,0 +1,44 @@
+name: XJW one-time pending image evidence export
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/export-pending-image-evidence-20261031.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Export 12 exact D1-linked images for read-only human/AI visual audit
+        shell: bash
+        env:
+          IMAGE_MANIFEST: '[{"post_id":"XJW-CONV-chat-30-bare-jar","path":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-bare-jar-scene-v1.jpg"},{"post_id":"XJW-CONV-chat-quiet-work","path":"assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg"},{"post_id":"XJW-0663bdeb-49aa-46bf-8a41-95a14486f425","path":"assets/post-images/2026-10-14/formal-production/XJW-drink180-ingredients.png"},{"post_id":"XJW-CONV-care-before-home-message","path":"assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg"},{"post_id":"XJW-CONV-care-simple-checkin","path":"assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg"},{"post_id":"XJW-CONV-chat-30-vs-180","path":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-vs-180-scene-v1.jpg"},{"post_id":"XJW-CONV-chat-ask-boss-topic","path":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg"},{"post_id":"XJW-CONV-chat-brand-not-only-product","path":"assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-brand-not-only-product.jpg"},{"post_id":"XJW-CONV-chat-buy-first-look","path":"assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png"},{"post_id":"XJW-CONV-chat-craft-years","path":"assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg"},{"post_id":"XJW-CONV-chat-customer-first-question","path":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-customer-first-question-audit-v1.jpg"},{"post_id":"XJW-CONV-chat-dayoff-cook","path":"assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg"}]'
+        run: |
+          python3 - <<'PY'
+          import os,json,pathlib,shutil,hashlib
+          rows=json.loads(os.environ['IMAGE_MANIFEST'])
+          out=pathlib.Path('review-evidence-20261031');out.mkdir(exist_ok=True)
+          evidence=[]
+          for row in rows:
+            src=pathlib.Path(row['path'])
+            if not str(src).startswith('assets/post-images/') or '..' in src.parts:
+              raise RuntimeError('unsafe asset path')
+            if not src.is_file():raise RuntimeError('missing source asset: '+str(src))
+            target=out/src
+            target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(src,target)
+            evidence.append(dict(post_id=row['post_id'],path=str(src),image_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),bytes=src.stat().st_size))
+          (out/'image-sha256-manifest.json').write_text(json.dumps(evidence,ensure_ascii=False,indent=2),encoding='utf8')
+          print('PASS read-only image export:',len(evidence))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xjw-pending-image-evidence-20261031
+          path: review-evidence-20261031
+          if-no-files-found: error
+          retention-days: 2
+          compression-level: 1
