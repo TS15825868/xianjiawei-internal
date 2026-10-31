@@ -26,7 +26,7 @@
     const timer=setTimeout(()=>controller.abort(),timeout);
     try{
       const response=await fetch(`/api${path}`,{credentials:'same-origin',cache:'no-store',...requestOptions,signal:controller.signal,headers:{...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}});
-      const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{throw new Error('伺服器未回傳有效資料，請重新檢查')}
+      const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch{throw new Error(`伺服器未回傳有效JSON（HTTP ${response.status}；${(response.headers.get('content-type')||'未標示內容類型').split(';')[0]}）。尚未取得成功回執，請先讀回審核紀錄，勿直接重送。`)}
       if(!response.ok){const details=Array.isArray(data.details)&&data.details.length?`：${data.details.join('；')}`:'';throw new Error((data.error||data.detail||data.message||`HTTP ${response.status}`)+details)}
       return data;
     }catch(error){if(error.name==='AbortError')throw new Error('圖文檢查連線逾時，請重新檢查');throw error}finally{clearTimeout(timer)}

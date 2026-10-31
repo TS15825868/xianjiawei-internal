@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const source=fs.readFileSync(new URL('../assets/js/publishing-review-gate.js',import.meta.url),'utf8');
+const apiSource=source.slice(source.indexOf('  async function api('),source.indexOf('  function validateAudit('));
+const api=new Function('fetch','AbortController','setTimeout','clearTimeout',apiSource+';return api;');
+const run=response=>api(async()=>response,AbortController,setTimeout,clearTimeout)('/posts/test/ai-quality-review');
+await assert.rejects(run(new Response('<html>PRIVATE_BODY</html>',{status:500,headers:{'content-type':'text/html'}})),e=>/HTTP 500/.test(e.message)&&/text\/html/.test(e.message)&&!/PRIVATE_BODY/.test(e.message));
+await assert.rejects(run(Response.json({error:'版本已變更'},{status:409})),/版本已變更/);
+assert.deepEqual(await run(Response.json({ok:true,review_id:'receipt'})),{ok:true,review_id:'receipt'});
+console.log('Review API diagnostics: non-JSON status, private body exclusion, error and receipt preservation passed');
