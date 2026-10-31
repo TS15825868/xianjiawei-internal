@@ -1,0 +1,122 @@
+{
+  "schema": "xjw_ai_visual_precheck_batch02_20261031",
+  "source": {
+    "d1_live_readonly_job": "GitHub Actions run 41167729599, SHA 9dc89a13607b9bd05f121896245d2a4354f9fbfb",
+    "original_image_artifact_id": 13029776644,
+    "files": 49,
+    "all_sha256_matched": true,
+    "dimensions": "49 files at 1254x1254",
+    "published_reconciliation": "Metricool Brand 6889683, historical Oct 2026 through Feb 2027",
+    "audit_date": "2026-10-31"
+  },
+  "summary": {
+    "total_reviewed": 49,
+    "visual_precheck_candidates": 34,
+    "requires_further_evidence": 13,
+    "already_external_published_duplicate_drafts": 2,
+    "full16_ai_approved": 0,
+    "auto_publish_executed": 0
+  },
+  "classification": {
+    "visual_candidate_rule": "Every image opened through internal QA image sheets; original bytes and SHA-256 match repo. These candidates were not made formally approved, because current-version 16-item evidence and verified identity are separate gates.",
+    "defer": [
+      {
+        "post_id": "XJW-CONV-chat-deer-turtle-soup-choice",
+        "reason_code": "raw_meat_near_mascot_and_food_hygiene",
+        "reason": "生雞腿與排骨裸放桌面，動物角色靠近，料理衛生情境應先確認",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-gao-vs-drink",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "圖中有龜鹿膏罐與龜鹿飲30cc玻璃罐，需要正式實物原圖來源與比例確認",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-glass-vs-pouch-storage",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "圖中有30cc玻璃罐與180cc鋁袋，需要正式原圖像素與標示核對",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-home-soup",
+        "reason_code": "hot_pot_lid_safety",
+        "reason": "小老闆徒手開啟冒蒸氣的熱鍋蓋，料理安全待確認",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-luerong-intro",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "圖中鹿茸粉罐需核對正式原始產品照片及規格標籤",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-photo-size",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "談產品實物比例的圖片須核對30cc裸罐正式照片及實際大小",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-picture-or-text",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "圖中龜鹿膏罐需核對正式原圖，即使文案主要談資訊呈現方式",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-soup-day",
+        "reason_code": "food_and_hot_stove_safety",
+        "reason": "熱鍋與生肉食材同場，角色距離及料理流程衛生待審",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-chat-trial-first",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "試喝用30cc玻璃罐外觀與大小須核對正式照片及合成來源",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-cny-first-soup",
+        "reason_code": "raw_meat_food_safety",
+        "reason": "雞腿及排骨靠近家常廚房備料台，須確認生熟食分置與料理安全",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-cny-gift-choice",
+        "reason_code": "official_product_photo_provenance",
+        "reason": "桌上龜鹿膏罐標示須依正式產品照片核對",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-new-year-open-door",
+        "reason_code": "topic_overlap_with_other_pending",
+        "reason": "同批開工第一天開門文案與XJW-CONV-cny-reopen構思及畫面高度接近，需改角度或擇一",
+        "do_not_approve": true
+      },
+      {
+        "post_id": "XJW-CONV-season-more-soup",
+        "reason_code": "hot_pot_lid_safety",
+        "reason": "小老闆徒手掀起大量冒蒸氣的鍋蓋，存在料理安全情境疑慮",
+        "do_not_approve": true
+      }
+    ],
+    "external_published_duplicates": [
+      {
+        "post_id": "XJW-CONV-brand-third-generation-note",
+        "reason": "Metricool published 386519368; same price-versus-craft story, semantic near-duplicate",
+        "do_not_republish": true
+      },
+      {
+        "post_id": "XJW-CONV-live-hongludi-outing-20260929",
+        "reason": "Metricool published 384813552; exact full public copy duplicate",
+        "do_not_republish": true
+      }
+    ]
+  },
+  "progress_handoff": "Original needs_rework held many acceptable mascot images. For 41 candidates across 2 batches, a separate guarded AI precheck workflow is scheduled to change needs_rework -> needs_review only, keeping status pending_review and image_approved=0, never impersonating a human reviewer. Require actual D1 success and audit readback before considering it applied.",
+  "cautions": [
+    "Every live approval still requires authenticated reviewer and full 16-point current evidence",
+    "Do not clear published/archived history",
+    "Do not claim photo provenance for product scenes without official source pixels",
+    "No draft should be backfilled or auto-published due to historical dates"
+  ]
+}
