@@ -1,0 +1,81 @@
+name: XJW archive two overlapping never-published draft subjects
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/close-two-overlapping-pending-posts-20261031.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-d1-overlapping-pending
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read current D1 exact posts, Metricool links and delivery receipts
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id IN ('XJW-CONV-chat-customer-first-question','XJW-CONV-new-year-open-door') ORDER BY id" > /tmp/overlap-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,uuid,metricool_id,state FROM social_metricool_sync WHERE post_id IN ('XJW-CONV-chat-customer-first-question','XJW-CONV-new-year-open-door')" > /tmp/overlap-links.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_publish_deliveries WHERE post_id IN ('XJW-CONV-chat-customer-first-question','XJW-CONV-new-year-open-door')" > /tmp/overlap-deliveries.json
+      - name: Prepare guarded exact archiving SQL with truthful AI content deduplication evidence
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto'),read=x=>JSON.parse(fs.readFileSync(x,'utf8'))[0]?.results||[];
+          const rows=read('/tmp/overlap-before.json'),links=read('/tmp/overlap-links.json'),deliveries=read('/tmp/overlap-deliveries.json');
+          const evidence=[
+            {id:'XJW-CONV-chat-customer-first-question',retain:'XJW-CONV-chat-ask-boss-topic',reason:'兩篇皆詢問讀者想問小老闆什麼，角度重疊；保留已通過生活場景預檢的 ask-boss-topic'},
+            {id:'XJW-CONV-new-year-open-door',retain:'XJW-CONV-cny-reopen',reason:'兩篇皆以小老闆新年開門為畫面與主題，避免同場景重複發布'}
+          ];
+          if(rows.length!==2||links.length||deliveries.length)throw Error('Linked/previously attempted posts or unexpected population; no writes');
+          const q=s=>"'"+String(s??'').replaceAll("'","''")+"'",sql=[];
+          for(const e of evidence){
+            const row=rows.find(x=>x.id===e.id);
+            if(!row||row.status!=='pending_review'||row.image_quality_status!=='needs_rework'||Number(row.image_approved)!==0||row.published_at||row.scheduled_at||row.approved_by||row.approved_at||!String(row.copy).trim()||!String(row.image_url).includes('/assets/post-images/'))
+              throw Error('Post not identical to eligible pending duplicate: '+e.id);
+            const old=JSON.stringify({status:row.status,image_quality_status:row.image_quality_status,updated_at:row.updated_at,copy_sha256:crypto.createHash('sha256').update(row.copy).digest('hex')});
+            const next=JSON.stringify({status:'archived',reason:e.reason,retained_post:e.retain,content_copy_preserved:true,product_image_preserved:true,actor_type:'AI_DEDUP_SERVICE_NOT_HUMAN',release:false});
+            const audit='AUD-XJW-CONTENT-OVERLAP-20261031-'+crypto.createHash('sha256').update(e.id).digest('hex').slice(0,18);
+            sql.push("UPDATE social_posts SET status='archived',updated_at=datetime('now') WHERE id="+q(row.id)+" AND status='pending_review' AND image_quality_status='needs_rework' AND image_approved=0 AND updated_at="+q(row.updated_at)+" AND copy="+q(row.copy)+" AND image_url="+q(row.image_url)+" AND published_at IS NULL AND scheduled_at IS NULL AND approved_by IS NULL AND approved_at IS NULL AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id) AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id=social_posts.id);");
+            sql.push("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT "+[audit,'system:ai-semantic-dedup','貼文主題重複安全封存','貼文',e.id,old,next,''].map(q).join(',')+" WHERE changes()=1;");
+            e.audit=audit;
+          }
+          fs.writeFileSync('/tmp/overlap-update.sql',sql.join('\n')+'\n');fs.writeFileSync('/tmp/overlap-manifest.json',JSON.stringify(evidence,null,2));
+          console.log('PASS guarded 2 overlapping not-yet-published posts; no customer sending');
+          NODE
+      - name: Archive two only with compare-and-swap, never delete history
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/overlap-update.sql
+      - name: Verify archived statuses, preserved content, and truthful audit
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id IN ('XJW-CONV-chat-customer-first-question','XJW-CONV-new-year-open-door') ORDER BY id" > /tmp/overlap-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,entity_id,actor_email,after_json FROM audit_logs WHERE action='貼文主題重複安全封存'" > /tmp/overlap-audit.json
+          node - <<'NODE'
+          const assert=require('assert/strict'),fs=require('fs'),read=x=>JSON.parse(fs.readFileSync(x))[0].results;
+          const b=read('/tmp/overlap-before.json'),a=read('/tmp/overlap-after.json'),logs=read('/tmp/overlap-audit.json'),targets=JSON.parse(fs.readFileSync('/tmp/overlap-manifest.json'));
+          assert.equal(b.length,2);assert.equal(a.length,2);
+          for(const t of targets){
+            const before=b.find(x=>x.id===t.id),after=a.find(x=>x.id===t.id),audit=logs.find(x=>x.id===t.audit);
+            assert(after&&after.status==='archived'&&after.image_url===before.image_url&&after.copy===before.copy&&after.image_quality_status===before.image_quality_status&&after.published_at===null&&after.approved_at===null);
+            assert(audit&&audit.actor_email==='system:ai-semantic-dedup'&&JSON.parse(audit.after_json).retained_post===t.retain);
+          }
+          console.log('PASS 2 AI-detected near-duplicate pending posts safely archived with full D1 evidence');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-20261031-near-duplicate-archive-${{ github.run_id }}
+          path: |
+            /tmp/overlap-before.json
+            /tmp/overlap-after.json
+            /tmp/overlap-links.json
+            /tmp/overlap-deliveries.json
+            /tmp/overlap-audit.json
+            /tmp/overlap-manifest.json
+          retention-days: 3
