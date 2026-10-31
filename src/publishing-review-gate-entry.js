@@ -306,6 +306,19 @@ export default{async fetch(request,env,ctx){
       auto_schedule_enabled:false,auto_publish_enabled:false,
       external_scheduled:false,external_published:false});
   }
+  if(aiMatch&&request.method==='GET'){
+    const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+    const profile=await authorization.json();
+    if(!['owner','admin'].includes(clean(profile?.role)))return json({error:'只有正式管理者能讀取完整AI審核證據'},403);
+    const id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
+    const history=await env.DB.prepare('SELECT id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,reviewed_at,old_status,new_status FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC').bind(id).all();
+    const current=await fingerprint(row);
+    return json({post_id:id,current:{...postMaterial(row),status:row.status,updated_at:row.updated_at,content_fingerprint:current},required_checks:REQUIRED_CHECKS,reviews:(history.results||[]).map(review=>{
+      let evidence=null;try{evidence=JSON.parse(review.evidence_json)}catch{}
+      const {evidence_json,...summary}=review;
+      return {...summary,matches_current_content:review.content_fingerprint===current&&review.image_url===row.image_url,evidence,evidence_parse_error:evidence===null};
+    }),read_only:true,auto_schedule:false,auto_publish:false});
+  }
   if(aiMatch&&request.method==='POST'){
     const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);

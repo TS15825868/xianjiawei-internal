@@ -176,11 +176,19 @@
     event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openReview(button);
   },true);
   // Keep AI evidence submission separate from human checklist attestations.
-  function openAiEvidence(button){
+  async function openAiEvidence(button){
     const id=cardId(button),root=document.getElementById('modalRoot');
     if(!id||!root||maintenanceReadonly())return;
     root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-ai-close></div><div class="xjw-modal-card"><h2>提交16項 AI 審核證據</h2><p>僅接受已逐項看圖完成的證據。伺服器會重新核對目前圖文、圖片雜湊、原始回執與權限；提交證據不等於正式排程或發布。</p><label for="aiReviewEvidence">審核證據 JSON</label><textarea id="aiReviewEvidence" rows="16" style="width:100%;box-sizing:border-box;max-width:100%" spellcheck="false"></textarea><p id="aiReviewResult" role="status" style="white-space:pre-wrap;overflow-wrap:anywhere"></p><div class="xjw-modal-footer"><button class="btn" type="button" data-ai-close>關閉</button><button class="btn primary" type="button" data-ai-submit>提交 AI 證據</button></div></div></div>`;
     root.querySelectorAll('[data-ai-close]').forEach(b=>b.addEventListener('click',()=>{root.innerHTML=''}));
+    const contextBox=document.createElement('details');
+    const contextTitle=document.createElement('summary');contextTitle.textContent='目前圖文版本與既有審核證據（唯讀）';
+    const contextText=document.createElement('pre');contextText.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;max-height:35vh;overflow:auto';contextText.textContent='讀取既有證據中…';
+    contextBox.append(contextTitle,contextText);root.querySelector('#aiReviewEvidence').before(contextBox);
+    // Never prefill PASS or submit an earlier version as a new review.
+    api('/posts/'+encodeURIComponent(id)+'/ai-quality-review',{timeout:30000})
+      .then(context=>{contextText.textContent=JSON.stringify(context,null,2)})
+      .catch(error=>{contextText.textContent='既有證據讀取失敗：'+(error.message||String(error))});
     const submit=root.querySelector('[data-ai-submit]'),result=root.querySelector('#aiReviewResult');
     submit.addEventListener('click',async()=>{
       submit.disabled=true;result.textContent='正在驗證目前圖文及證據…';
