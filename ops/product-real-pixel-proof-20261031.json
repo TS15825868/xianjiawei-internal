@@ -1,0 +1,247 @@
+{
+  "schema": "xjw-real-photo-pixel-match-v1",
+  "date": "2026-10-31",
+  "method": "OpenCV original-photo alpha-masked normalized RGB correlation; uniform scaling, full-resolution coordinate refinement; RGB MAE over alpha>248 opaque pixels; JPEG output artifact, source PNG original colors. 1254x1254 target images.",
+  "thresholds": {
+    "full_rgb_ncc_min": 0.985,
+    "rgb_mae_max": 13
+  },
+  "source_cutouts": {
+    "paths": {
+      "drink-30": {
+        "path": "assets/product-photo-cutouts/2026-10-11/drink-30.png",
+        "sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3"
+      },
+      "drink-180": {
+        "path": "assets/product-photo-cutouts/2026-10-11/drink-180.png",
+        "sha256": "cc417adb35787ed6716536f63e4a3b3821c6ef4495c946cf76516dc2e9f52f46"
+      },
+      "gao": {
+        "path": "assets/product-photo-cutouts/2026-10-11/gao.png",
+        "sha256": "2c6776f1327691e3c567277d5775c3b3439a3cbd9999a893d574dfc87356a410"
+      },
+      "luerong": {
+        "path": "assets/product-photo-cutouts/2026-10-11/luerong.png",
+        "sha256": "d1ff289ce779cd9d0dead94dde43343156eb39d767aa5d647f38f8ef1f8290b7"
+      }
+    }
+  },
+  "results": [
+    {
+      "post_id": "XJW-CONV-chat-30-bare-jar",
+      "match": [
+        {
+          "product": "drink-30",
+          "full_ncc": 0.99643,
+          "rgb_mae": 4.98,
+          "uniform_scale": 0.225,
+          "top_left": [
+            563,
+            809
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-30-vs-180",
+      "match": [
+        {
+          "product": "drink-30",
+          "full_ncc": 0.98979,
+          "rgb_mae": 8.83,
+          "uniform_scale": 0.2225,
+          "top_left": [
+            403,
+            855
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        },
+        {
+          "product": "drink-180",
+          "full_ncc": 0.99599,
+          "rgb_mae": 8.76,
+          "uniform_scale": 0.28,
+          "top_left": [
+            619,
+            691
+          ],
+          "source_sha256": "cc417adb35787ed6716536f63e4a3b3821c6ef4495c946cf76516dc2e9f52f46",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-gao-vs-drink",
+      "match": [
+        {
+          "product": "gao",
+          "full_ncc": 0.99501,
+          "rgb_mae": 9.44,
+          "uniform_scale": 0.1725,
+          "top_left": [
+            429,
+            779
+          ],
+          "source_sha256": "2c6776f1327691e3c567277d5775c3b3439a3cbd9999a893d574dfc87356a410",
+          "passed": true
+        },
+        {
+          "product": "drink-30",
+          "full_ncc": 0.98978,
+          "rgb_mae": 8.84,
+          "uniform_scale": 0.2225,
+          "top_left": [
+            703,
+            865
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "match": [
+        {
+          "product": "drink-30",
+          "full_ncc": 0.98978,
+          "rgb_mae": 8.83,
+          "uniform_scale": 0.2225,
+          "top_left": [
+            413,
+            865
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        },
+        {
+          "product": "drink-180",
+          "full_ncc": 0.99599,
+          "rgb_mae": 8.76,
+          "uniform_scale": 0.28,
+          "top_left": [
+            629,
+            701
+          ],
+          "source_sha256": "cc417adb35787ed6716536f63e4a3b3821c6ef4495c946cf76516dc2e9f52f46",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-luerong-intro",
+      "match": [
+        {
+          "product": "luerong",
+          "full_ncc": 0.99321,
+          "rgb_mae": 8.65,
+          "uniform_scale": 0.3375,
+          "top_left": [
+            661,
+            921
+          ],
+          "source_sha256": "d1ff289ce779cd9d0dead94dde43343156eb39d767aa5d647f38f8ef1f8290b7",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-photo-size",
+      "match": [
+        {
+          "product": "drink-30",
+          "full_ncc": 0.98979,
+          "rgb_mae": 8.82,
+          "uniform_scale": 0.2225,
+          "top_left": [
+            513,
+            835
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-picture-or-text",
+      "match": [
+        {
+          "product": "gao",
+          "full_ncc": 0.99057,
+          "rgb_mae": 12.17,
+          "uniform_scale": 0.17,
+          "top_left": [
+            651,
+            921
+          ],
+          "source_sha256": "2c6776f1327691e3c567277d5775c3b3439a3cbd9999a893d574dfc87356a410",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-trial-first",
+      "match": [
+        {
+          "product": "drink-30",
+          "full_ncc": 0.98978,
+          "rgb_mae": 8.84,
+          "uniform_scale": 0.2225,
+          "top_left": [
+            463,
+            845
+          ],
+          "source_sha256": "aedd059bd0abfa4c65084e3a6ae6612975782cc0f5cb43f37ba4471c788eafb3",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-cny-gift-choice",
+      "match": [
+        {
+          "product": "gao",
+          "full_ncc": 0.99057,
+          "rgb_mae": 12.17,
+          "uniform_scale": 0.17,
+          "top_left": [
+            611,
+            921
+          ],
+          "source_sha256": "2c6776f1327691e3c567277d5775c3b3439a3cbd9999a893d574dfc87356a410",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "missing_legacy_provenance": [
+    "XJW-CONV-chat-picture-or-text",
+    "XJW-CONV-cny-gift-choice"
+  ],
+  "ingredient_only": {
+    "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+    "product": "龜鹿飲180cc鋁袋",
+    "product_container_visible": false,
+    "ingredient_list": [
+      "水",
+      "鹿角萃取物",
+      "龜板萃取物",
+      "枸杞",
+      "紅棗",
+      "黃耆",
+      "粉光蔘"
+    ],
+    "authority_repo": "TS15825868/TS-LINE",
+    "authority_ref": "081dbfa3c910fed5e5559e2cb543d99bfcf8a9cc",
+    "authority_file": "config/official-products.json",
+    "specification": "180cc／包（鋁袋）"
+  },
+  "unresolved_food_safety": {
+    "post_id": "XJW-CONV-chat-soup-day",
+    "reason": "實際照片包含生肉食材與蒸氣料理場景，現有16項預審誤將scene_environment、temperature、action列PASS，應退回DEFER等待安全新圖"
+  },
+  "note": "Pixel proof supports actual photos kept in scene; it does not authorize publication, nor replace all 16 safety, content, holiday and provenance checks."
+}
