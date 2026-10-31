@@ -1,0 +1,215 @@
+{
+  "schema": "xjw_visual_review_batch_v1",
+  "review_scope": "AI preliminary visual inspection, not a D1 approval, not a human review",
+  "basis": {
+    "d1_artifact_id": 13017656731,
+    "d1_run_id": 41139071596,
+    "d1_snapshot_at": "2026-10-30T22:35:24Z",
+    "image_artifact_id": 13029414371,
+    "image_run_id": 41167353763,
+    "image_source_commit": "1ed7179329a30d8aeb9ecf260181ad77d8a477a4",
+    "visual_inspection_date": "2026-10-31",
+    "metricool_brand_id": "6889683",
+    "metricool_range": "2026-10-01 through 2027-02-28 Asia/Taipei"
+  },
+  "summary": {
+    "image_files_opened": 12,
+    "image_sha256_verified": 12,
+    "visual_candidate_pass": 8,
+    "defer": 4,
+    "formal_16_item_approved": 0,
+    "remote_d1_writes": 0,
+    "posts_scheduled": 0,
+    "posts_published": 0
+  },
+  "checks_from_live_metricool": "12 leading copy excerpts did not exactly appear in 39 live Metricool records; this does NOT exclude semantically duplicated topics or replace a complete publishing history check.",
+  "requirements_before_write": [
+    "Re-read current D1 post row and verify unchanged copy/image/updated_at and image SHA",
+    "For product scenes, check official source photo origin and package text before pass",
+    "Check complete 16-item content/image audit with current public sources and duplicate history",
+    "Write through authenticated image-visual-review endpoint and record evidence/audit log; do not forge reviewer identity or directly bypass its authorization",
+    "Read back each D1 change; leave status pending_review, no approval/publishing until separate complete review"
+  ],
+  "posts": [
+    {
+      "post_id": "XJW-CONV-chat-30-bare-jar",
+      "sha256_prefix": "6d2400848e25",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_review",
+      "visual_verdict": "defer",
+      "observations": "小玻璃罐與正式黃色金屬蓋裸罐外觀方向相符，但尚無原圖合成來源及像素一致性證據；不得僅靠視覺相似宣稱正式實物。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "retain_defer_until_specified_evidence_resolved",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "sha256_prefix": "caa172f0d855",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_review",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "桌前翻閱工作筆記，小鹿在矮凳休息、小烏龜在旁；與安靜工作文案一致。角色分離、胸前仙加味直式章清楚，未露出產品。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "sha256_prefix": "be6c09f2537a",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "passed",
+      "visual_verdict": "defer",
+      "observations": "文案介紹180cc鋁袋配方，圖片為小老闆筆記、紅棗枸杞及茶杯，沒有清楚呈現正式鋁袋；產品實物與成分原始權威尚須核對。既有passed不代表本次已完成新版驗收。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "retain_defer_until_specified_evidence_resolved",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-care-before-home-message",
+      "sha256_prefix": "19fe92c1df87",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "傍晚萬華街景，小老闆在店前使用手機與家人聯絡，小鹿小烏龜分開，光線及動作對應回家前問候。未顯示商品。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-care-simple-checkin",
+      "sha256_prefix": "7ff37b482e18",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "店內工作桌以手機傳訊，陪伴動物分開，對應工作空檔問候家人的情境，未露出產品；與傍晚收店篇需錯週交錯避免題材連發。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-30-vs-180",
+      "sha256_prefix": "823e2833d982",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "defer",
+      "observations": "圖中確實有黃色蓋小玻璃罐與銀色鋁袋、且尺寸相對合理；但需比對正式原照來源及鋁袋印字像素，不能只看起來像正式包裝就放行。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "retain_defer_until_specified_evidence_resolved",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-ask-boss-topic",
+      "sha256_prefix": "a7ac0e6b871a",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "小老闆伸手邀請留言，小鹿與小烏龜分開同桌、筆紙與飲杯，圖文對應開放式聊天，胸前正式紅色直式仙加味清楚；不涉及實物產品。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-brand-not-only-product",
+      "sha256_prefix": "a148b5484449",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "小老闆翻閱舊照片及料理筆記，小鹿小烏龜分開陪伴，呼應品牌生活文化不必每篇介紹產品。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-buy-first-look",
+      "sha256_prefix": "9c933fa3e74d",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "小老闆用放大鏡仔細看素面卡片，小鹿小烏龜分開，對應購買前先看標示；沒有虛構產品包裝或療效資訊。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-craft-years",
+      "sha256_prefix": "504c4a3873ae",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "整理家族舊照片與工具的工藝工作桌，小老闆及鹿龜分開，與傳承熬膠經驗的文案一致，未展示虛構商品。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-customer-first-question",
+      "sha256_prefix": "149f09686eb9",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "defer",
+      "observations": "圖片本身為小老闆筆紙等提問、角色外觀合格，但提問角度與同批XJW-CONV-chat-ask-boss-topic高度重疊；應選其一或改不同生活情境，避免變相重發。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "retain_defer_until_specified_evidence_resolved",
+      "auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-dayoff-cook",
+      "sha256_prefix": "8d8a7274b619",
+      "image_size": [
+        1254,
+        1254
+      ],
+      "quality_before": "needs_rework",
+      "visual_verdict": "visual_candidate_pass",
+      "observations": "小老闆在家揉麵準備餐點，小鹿端碗與小烏龜分開陪伴；料理場景合理並呼應放假慢慢煮飯，沒有商品包裝。",
+      "reviewer": "AI_PRELIMINARY_VISUAL_CHECK_NOT_HUMAN",
+      "full_16_checks_completed": false,
+      "proposed_next_action": "authenticated_current-version_visual_recheck_then_full_16_checks",
+      "auto_publish": false
+    }
+  ]
+}
