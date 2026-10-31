@@ -24,7 +24,7 @@ if(mode==='prepare'){
   if(c.type==='product'){
    if(!c.match.length||!c.match.every(x=>x.passed&&x.full_ncc>=.985&&x.rgb_mae<=13))throw Error('Not enough real-photo pixel evidence '+c.id);
    for(const m of c.match){
-    const ref=photo.source_cutouts[m.product];if(!ref||sha(fs.readFileSync(ref.path))!==m.source_sha256||m.source_sha256!==ref.sha256)throw Error('Official cutout provenance incorrect '+c.id);
+    const ref=photo.source_cutouts.paths[m.product];if(!ref||sha(fs.readFileSync(ref.path))!==m.source_sha256||m.source_sha256!==ref.sha256)throw Error('Official cutout provenance incorrect '+c.id);
    }
    if(p.image_quality_status==='needs_rework'){
     next.image_quality_status='needs_review';next.updated_at=now;changes=true;

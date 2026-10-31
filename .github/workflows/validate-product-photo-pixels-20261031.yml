@@ -48,3 +48,5 @@ jobs:
             /tmp/photo-reviews-after.json
             /tmp/photo-audits-after.json
           retention-days: 3
+
+# V2: rerun after correcting source_cutouts.paths schema reference.
