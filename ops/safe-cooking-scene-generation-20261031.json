@@ -1,0 +1,47 @@
+{
+  "schema": "xianjiawei_safe_cooking_scene_generation_v1",
+  "date": "2026-10-31",
+  "source": "Canva standalone image generation requested using exact archived original scene as reference",
+  "no_new_billing_action": true,
+  "all_status": "generation_jobs_submitted_pending_final_media_export_and_human_visual_review",
+  "automatic_publication_allowed": false,
+  "items": [
+    {
+      "post_id": "XJW-CONV-chat-home-soup",
+      "reference_media_id": "MAHZjoecC1I",
+      "intent": "Safe household soup prep with no direct handling of steaming hot lid; Q boss/deer/turtle matching fixed reference",
+      "status": "CANVA_IMAGE_GENERATION_SUBMITTED_UNVERIFIED_OUTPUT"
+    },
+    {
+      "post_id": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "reference_media_id": "MAHZjkVVIE8",
+      "intent": "Compare two cooked soup bowls, no raw meat, companion animals away from food",
+      "status": "CANVA_IMAGE_GENERATION_SUBMITTED_UNVERIFIED_OUTPUT"
+    },
+    {
+      "post_id": "XJW-CONV-chat-soup-day",
+      "reference_media_id": "MAHZjsmaLTE",
+      "intent": "Off-heat soup pot and safely held ladle/oven mitts; no hot lid handling or raw meat",
+      "status": "CANVA_IMAGE_GENERATION_SUBMITTED_UNVERIFIED_OUTPUT"
+    },
+    {
+      "post_id": "XJW-CONV-cny-first-soup",
+      "reference_media_id": "MAHZjsvSVH4",
+      "intent": "Family new-year cooked bowls, no raw chicken or pork near companions",
+      "status": "CANVA_IMAGE_GENERATION_SUBMITTED_UNVERIFIED_OUTPUT"
+    },
+    {
+      "post_id": "XJW-CONV-season-more-soup",
+      "reference_media_id": "MAHZjg8idXM",
+      "intent": "Seasonal warm soup and tea, pot off heat; no close steam and no direct bare-hand lid",
+      "status": "CANVA_IMAGE_GENERATION_SUBMITTED_UNVERIFIED_OUTPUT"
+    }
+  ],
+  "next_actions": [
+    "Verify generated image existence, full 1254px or square source, authentic Q mascot and separate deer/turtle, no unsafe cooking or unreadable AI words",
+    "Export exact resulting image bytes into protected GitHub media path with SHA256; never substitute Canva preview thumbnail",
+    "Re-read D1 current post copy/image timestamp; atomically bind only new verified images to pending_review and read back",
+    "Run official 16-item current-image audit through authenticated safe review flow; never impersonate human approval",
+    "No external Metricool schedule or publishing until all relevant gates and release safety verified"
+  ]
+}

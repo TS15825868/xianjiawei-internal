@@ -33,31 +33,79 @@
       "d1_written": 41,
       "readback_success": true,
       "posted": false
+    },
+    {
+      "run_id": 41175327811,
+      "action": "Safely archive 2 still-unpublished semantically overlapping themes (user's no-repeat rule)",
+      "d1_written": 2,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41175588376,
+      "artifact_id": 13033030866,
+      "action": "Write full 16-item AI precheck evidence for 57 pending D1 posts; 37 16/16 pass candidate, 20 deferred",
+      "d1_written": 57,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41175915088,
+      "action": "Correct 8 evidence records: six become 16/16 precheck, one evergreen weather title edit, two product/brand linkage false positives removed",
+      "d1_written": 8,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41176024145,
+      "artifact_id": 13033106473,
+      "action": "Read-only export and SHA confirmation of 4 official product PNG cutouts",
+      "d1_written": 0,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41176597183,
+      "action": "Verify 12 products across 9 original photo composited scenes using pixel NCC & MAE; validate 180cc exact ingredients; repair 8 image quality labels, catch one false kitchen pass",
+      "d1_written": 19,
+      "readback_success": true,
+      "posted": false
     }
   ],
   "last_verified_d1_status": {
     "total": 137,
-    "archived": 74,
+    "archived": 76,
     "draft": 0,
-    "pending_review": 59,
+    "pending_review": 57,
     "approved": 1,
     "published": 3,
     "image_quality_pending": {
-      "needs_review": 43,
-      "needs_rework": 15,
+      "needs_review": 51,
+      "needs_rework": 5,
       "passed": 1
     },
-    "status_time": "after archive 2, after image precheck 41, after review message cleanup 41; workflow readbacks, not a permanent live counter"
+    "image_16_check_precheck_candidates": 52,
+    "image_16_check_unresolved": 5,
+    "actual_new_approved_in_this_round": 0,
+    "actual_new_scheduled_in_this_round": 0,
+    "actual_new_published_in_this_round": 0,
+    "status_time": "Calculated from latest successful independent D1 before/after readbacks through run 41176597183; not live until next D1 query"
   },
   "next_unfinished": {
-    "image_verification_and_full_16_checks": 59,
-    "needs_review": 43,
-    "remaining_rework": 15,
-    "prior_passed_not_proven_current": 1,
-    "metricool_id_mismatches": 0,
-    "full_AI_APPROVED_new_this_run": 0,
-    "remote_posts_scheduled": 0,
-    "remote_posts_published": 0
+    "unsafe_cooking_images": 5,
+    "precheck_ready_but_authorized_image_review_required": 52,
+    "pending_review_total": 57,
+    "metricool_draft_id_mismatches": 0,
+    "formal_all16_AI_APPROVED_new_this_round": 0,
+    "live_external_scheduling": 0,
+    "unsafe_cooking_posts": [
+      "XJW-CONV-chat-deer-turtle-soup-choice",
+      "XJW-CONV-chat-home-soup",
+      "XJW-CONV-chat-soup-day",
+      "XJW-CONV-cny-first-soup",
+      "XJW-CONV-season-more-soup"
+    ],
+    "need_access_to_protected_cloudflare_review": "Only after new image bytes are available, final visual proof and actual authorized reviewer session; do not bypass official image-visual-review/AI approval APIs"
   },
   "guardrails": {
     "preserve_16_item_human_or_authorized_ai_review": true,
@@ -68,6 +116,9 @@
   "records": [
     "ops/post-visual-review-20261031-batch01.json",
     "ops/post-visual-review-20261031-batch02.json",
-    "ops/metricool-id-reconciliation-20261031.json"
-  ]
+    "ops/metricool-id-reconciliation-20261031.json",
+    "ops/product-real-pixel-proof-20261031.json",
+    "ops/metricool-live-copy-snapshot-20261031.json"
+  ],
+  "note": "Real photo pixel evidence 9 photos / 12 objects, all NCC >=0.985 and masked RGB MAE <=13, validates product images. No synthetic approval, no customer posts. 4 unsafe cooking images need replacement plus one home-soup candidate requested from Canva. Newly AI prechecked 52/57 not approved."
 }
