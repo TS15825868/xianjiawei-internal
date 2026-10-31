@@ -1,0 +1,73 @@
+{
+  "schema": "xjw-publishing-verified-work-20261031",
+  "evidence_date": "2026-10-31",
+  "verified_runs": [
+    {
+      "run_id": 41167980504,
+      "artifact_id": 13029752101,
+      "action": "Archive 2 posts whose content already appeared on Metricool",
+      "d1_written": 2,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41168125353,
+      "artifact_id": 13029802409,
+      "action": "Update 41 pre-inspected stale needs_rework flags to needs_review only; 16 checks and approval still pending",
+      "d1_written": 41,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41174361395,
+      "artifact_id": 13031693501,
+      "action": "Repair 8 stale D1 metricool_id links by unique UUID, CAS and audit",
+      "d1_written": 8,
+      "readback_success": true,
+      "posted": false
+    },
+    {
+      "run_id": 41174604821,
+      "artifact_id": 13032094302,
+      "action": "Clear 41 obsolete 3D rejection messages and contradictory notes without altering image or status",
+      "d1_written": 41,
+      "readback_success": true,
+      "posted": false
+    }
+  ],
+  "last_verified_d1_status": {
+    "total": 137,
+    "archived": 74,
+    "draft": 0,
+    "pending_review": 59,
+    "approved": 1,
+    "published": 3,
+    "image_quality_pending": {
+      "needs_review": 43,
+      "needs_rework": 15,
+      "passed": 1
+    },
+    "status_time": "after archive 2, after image precheck 41, after review message cleanup 41; workflow readbacks, not a permanent live counter"
+  },
+  "next_unfinished": {
+    "image_verification_and_full_16_checks": 59,
+    "needs_review": 43,
+    "remaining_rework": 15,
+    "prior_passed_not_proven_current": 1,
+    "metricool_id_mismatches": 0,
+    "full_AI_APPROVED_new_this_run": 0,
+    "remote_posts_scheduled": 0,
+    "remote_posts_published": 0
+  },
+  "guardrails": {
+    "preserve_16_item_human_or_authorized_ai_review": true,
+    "ai_evidence_does_not_impersonate_human": true,
+    "no_external_sending_before_end_to_end_safety": true,
+    "no_budget_increase": true
+  },
+  "records": [
+    "ops/post-visual-review-20261031-batch01.json",
+    "ops/post-visual-review-20261031-batch02.json",
+    "ops/metricool-id-reconciliation-20261031.json"
+  ]
+}

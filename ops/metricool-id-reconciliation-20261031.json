@@ -91,5 +91,14 @@
     403326277
   ],
   "safe_resolution": "Read current D1 social_metricool_sync and live Metricool by exact uuid before any write. Check that all eight UUIDs remain unique and refer to the same draft with autoPublish=false, and verify post_id and current metricool_id. Update only mismatched metricool_id using per-row compare-and-swap on post_id, uuid, old id, state='pending_review'; independently read back. Abort per-row on changed evidence. Do not change post status, content, images, approval, scheduling or publishing. Never rewrite published records.",
-  "status": "READ_ONLY_EVIDENCE_PENDING_CURRENT_D1_COMPARE_AND_SWAP"
+  "status": "VERIFIED_REMOTE_D1_CAS_8_OF_8",
+  "verification": {
+    "verified_at_taipei_date": "2026-10-31",
+    "workflow_run_id": 41174361395,
+    "artifact_id": 13031693501,
+    "corrected_count": 8,
+    "audit_count": 8,
+    "unchanged_other_links": 7,
+    "source": "GitHub Actions D1 before/after records independently read back; exact UUID 8 of 8; zero scheduling or publication"
+  }
 }
