@@ -1,0 +1,95 @@
+{
+  "schema": "xianjiawei_metricool_readonly_reconciliation_v1",
+  "basis": {
+    "d1": "Cloudflare D1 read-only GitHub Actions artifact 13017656731, workflow run 41139071596, snapshot 2026-10-30T22:35:24Z",
+    "metricool": "Metricool connected brand 6889683, queried 2026-10-31 Asia/Taipei, 2026-10-01 through 2027-02-28",
+    "snapshot_is_not_current_write_authority": true
+  },
+  "summary": {
+    "d1_total": 137,
+    "d1_archived": 72,
+    "d1_pending_review": 59,
+    "d1_draft": 2,
+    "d1_approved": 1,
+    "d1_published": 3,
+    "metricool_records": 39,
+    "metricool_published": 14,
+    "metricool_drafts": 25,
+    "metricool_drafts_auto_publish_on": 0,
+    "linked_rows_examined": 15,
+    "uuid_not_found": 0,
+    "id_conflicts": 8
+  },
+  "conflicts": [
+    {
+      "post_id": "XJW-CONV-chat-trial-first",
+      "uuid": "5662205195050239362",
+      "snapshot_metricool_id": 395596116,
+      "observed_metricool_id": 399616530,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "uuid": "-8941937064773136394",
+      "snapshot_metricool_id": 395596139,
+      "observed_metricool_id": 399616547,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-opening-prep",
+      "uuid": "4058297471817699092",
+      "snapshot_metricool_id": 395596100,
+      "observed_metricool_id": 399616512,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "uuid": "-7982498099912555116",
+      "snapshot_metricool_id": 395596198,
+      "observed_metricool_id": 409123176,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "uuid": "4329837969942398654",
+      "snapshot_metricool_id": 394828939,
+      "observed_metricool_id": 409115588,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "uuid": "2443915431236944055",
+      "snapshot_metricool_id": 395596162,
+      "observed_metricool_id": 409115909,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-small-things-work",
+      "uuid": "4946143609391040391",
+      "snapshot_metricool_id": 395780529,
+      "observed_metricool_id": 409115962,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-gao-vs-drink",
+      "uuid": "-3743061634977870369",
+      "snapshot_metricool_id": 395596178,
+      "observed_metricool_id": 409149556,
+      "observed_draft": true,
+      "observed_auto_publish": false
+    }
+  ],
+  "published_exact_duplicate_ids": [
+    403318046,
+    403326277
+  ],
+  "safe_resolution": "Read current D1 social_metricool_sync and live Metricool by exact uuid before any write. Check that all eight UUIDs remain unique and refer to the same draft with autoPublish=false, and verify post_id and current metricool_id. Update only mismatched metricool_id using per-row compare-and-swap on post_id, uuid, old id, state='pending_review'; independently read back. Abort per-row on changed evidence. Do not change post status, content, images, approval, scheduling or publishing. Never rewrite published records.",
+  "status": "READ_ONLY_EVIDENCE_PENDING_CURRENT_D1_COMPARE_AND_SWAP"
+}
