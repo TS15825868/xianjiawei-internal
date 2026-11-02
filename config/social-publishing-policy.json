@@ -29,12 +29,12 @@
       "metricoolBrandId": "6889683",
       "account": "xianjiawei.tw",
       "directGraphApiFormalRoute": false,
-      "draftUntilImageAndApproval": true
+      "draftUntilImageAndApproval": false
     }
   },
   "imagePolicy": {
-    "imageRequiredForEveryPublicPost": true,
-    "blankImageUrlAllowed": false,
+    "imageRequiredForEveryPublicPost": false,
+    "blankImageUrlAllowed": true,
     "singleIntegratedScene": true,
     "forbidCollage": true,
     "forbidCutAndPaste": true,
@@ -71,7 +71,8 @@
       "小玻璃裸罐於店內展示",
       "居家介紹180cc鋁袋成分的情境"
     ],
-    "reviewDistinction": "純生活情境不強制露出產品，文案也不必提及仙加味、商品或 LINE；若提及品牌或產品，須自然且正確；涉及產品者須另核對正式實物照片、外觀及比例。截圖中可接受的畫風不等於逐篇正式核准，舊版圖片品質標記可重新評估但不可直接忽略其他風險。"
+    "reviewDistinction": "純生活情境不強制露出產品，文案也不必提及仙加味、商品或 LINE；若提及品牌或產品，須自然且正確；涉及產品者須另核對正式實物照片、外觀及比例。截圖中可接受的畫風不等於逐篇正式核准，舊版圖片品質標記可重新評估但不可直接忽略其他風險。 使用者2026-11-02確認部分文案可無圖，依平台審核，不因缺圖直接退件。",
+    "textOnlyPolicy": "僅Facebook與Threads可依平台實際支援採純文字；Instagram一般貼文須具備有效圖片或影片。缺圖不等於不合格，但有圖時仍須完成圖像來源、角色、產品、圖文一致及去重審核；不得藉移除圖片掩蓋已知違規。"
   },
   "productImagePolicy": {
     "formalAssetsOnly": true,
@@ -104,10 +105,10 @@
     "immediatePublishRequiresApproval": true,
     "scheduledPublishRequiresApproval": true,
     "automaticApprovalEnabled": true,
-    "automaticApprovalRule": "使用者 2026-10-28 最新明確授權：低風險內容可由正式 AI 審核產生 AI_APPROVED；必須逐篇具備 16 項 PASS 與可稽核證據、真實圖片與原圖雜湊、品牌產品權威、圖文一致、去重、平台授權及免費額度證明。任何缺項或高風險回待人工審核，不得冒充 HUMAN_APPROVED；正式端對端驗收前不可啟用外部自動發送。"
+    "automaticApprovalRule": "使用者 2026-10-28 最新明確授權：低風險內容可由正式 AI 審核產生 AI_APPROVED；必須逐篇具備 16 項 PASS 與可稽核證據、真實圖片與原圖雜湊、品牌產品權威、圖文一致、去重、平台授權及免費額度證明。任何缺項或高風險回待人工審核，不得冒充 HUMAN_APPROVED；正式端對端驗收前不可啟用外部自動發送。 純文字候選須有平台適配及文字版16項可適用檢查的正式證據；圖像相關檢查須明確標示不適用，不得偽造PASS。"
   },
   "autoPublish": {
-    "enabled": true,
+    "enabled": false,
     "publishOnlyIfAllChecksPass": true,
     "failureAction": "pending_review_no_publish",
     "requiredChecks": [
@@ -130,7 +131,7 @@
     ],
     "approvalRequired": true,
     "automaticApprovalAfterAllChecks": true,
-    "afterManualApproval": "正式 AI_APPROVED 或 HUMAN_APPROVED 均可成為排程候選；必須保留審核身分與有效證據、逐平台發布前重查狀態及去重、實際免費額度與外部回執。AI 審核證據過期須重新審核；未通過正式端對端驗收仍保持不發送。"
+    "afterManualApproval": "正式 AI_APPROVED 或 HUMAN_APPROVED 均可成為排程候選；必須保留審核身分與有效證據、逐平台發布前重查狀態及去重、實際免費額度與外部回執。AI 審核證據過期須重新審核；未通過正式端對端驗收仍保持不發送。 本次純文字跨平台規則變更期間暫停自動發布，待端對端測試與平台驗收後另行啟用。"
   },
   "crossPlatformPublishing": {
     "mode": "same_day_same_post",
@@ -139,10 +140,11 @@
       "Instagram",
       "Threads"
     ],
-    "sameImageRequired": true,
+    "sameImageRequired": false,
     "sameTopicRequired": true,
     "platformTextAdjustment": "只允許格式與字數微調",
-    "forbidStaggeringSamePostAcrossDays": true
+    "forbidStaggeringSamePostAcrossDays": true,
+    "textOnlyPlatformRule": "同主題可依平台採不同媒體形式，Facebook與Threads可純文字，Instagram一般貼文必須有有效媒體；各平台獨立審核與防重複。"
   },
   "liveLifeInsert": {
     "enabled": true,
@@ -205,7 +207,7 @@
     "guidance": "不固定推二珍寶、四珍寶或其他商品，不連續硬廣、不重複題材；知識貼文不必提品牌或商品，也不強制導購。品牌識別由帳號與視覺呈現。",
     "wellnessScope": "只談一般飲食文化、食材風味、溫熱飲用、家常料理、保存與日常習慣；不提供疾病治療、預防或特定食品功效宣稱。",
     "brandConnection": "日常知識與聊天貼文可不提品牌、產品或LINE；只有正式產品介紹、品牌故事及實際客戶需求才自然導向官網或LINE OA。",
-    "imageRequirements": "每篇採用獨立且符合內文的真實食材、料理、生活情境照片或合法授權插畫；知識／聊天貼文不必強制加入吉祥物。使用小老闆時須維持正式Q版設定（短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式仙加味印章），小鹿與小烏龜須分開且風格一致。提到實際販售產品時優先使用正式產品原圖，維持完整包裝、實際比例與原始文字，禁止AI重畫、虛構茶飲商品包裝；圖片來源與授權須可驗證。",
+    "imageRequirements": "依主題與平台決定是否附圖；Facebook及Threads允許純文字，Instagram一般貼文必須有合格圖片或影片。有圖片時須查來源、授權、圖文一致；產品正式原圖不得重畫或變形。純文字不要求吉祥物或產品原照來源，但仍須完成文案、法規、版本與歷史重複比對。",
     "reviewAndPublish": "每篇仍須通過完整16項審核、去重、圖片來源與當前版本證據；低風險可AI_APPROVED，有疑義回待人工審核；正式發送仍受平台回執、配額、去重及端對端安全驗收限制。",
     "seasonalAdjustment": "季節、天氣、節慶主題必須符合實際日期與情境；有時效內容可替換既有常青時段，避免同日擠發。",
     "teaAndIngredientTopics": "可從公開社群與可靠食譜蒐集靈感，涵蓋單方及多食材茶飲、認識／分辨食材、常用搭配、泡煮與保存；重新查證及原創編寫，不搬運他人圖文、不暗示療效；一般茶飲分享不代表已販售。",
