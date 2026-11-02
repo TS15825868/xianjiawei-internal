@@ -1,0 +1,147 @@
+{
+  "schema": "xianjiawei_metricool_readonly_reconciliation_v1",
+  "basis": {
+    "d1": "Live authenticated /api/metricool-sync on 2026-11-02",
+    "metricool": "Connected getScheduledPosts readback after 8 same-UUID draft repairs on 2026-11-02",
+    "status": "PENDING_CAS_NOT_YET_APPLIED",
+    "remote_verified_at": "2026-11-02T06:59:04.577Z"
+  },
+  "conflicts": [
+    {
+      "post_id": "XJW-CONV-chat-trial-first",
+      "uuid": "5662205195050239362",
+      "snapshot_metricool_id": 399616530,
+      "observed_metricool_id": 413607595,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "第一次接觸一個沒用過的產品，本來就不一定要馬上決定。可以先問、先了解，也可以看看龜鹿飲的試喝方式。\n\n如果你第一次接觸龜鹿系列，最想先知道的是產品差別、使用方式、試喝，還是其他問題？有需要再到仙加味官方LINE OA慢慢問我們就好。",
+      "observed_publication_date": {
+        "dateTime": "2026-10-20T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-15144720058520428122.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "uuid": "-8941937064773136394",
+      "snapshot_metricool_id": 399616547,
+      "observed_metricool_id": 413607626,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？",
+      "observed_publication_date": {
+        "dateTime": "2026-10-22T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-8463241700005616996.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-opening-prep",
+      "uuid": "4058297471817699092",
+      "snapshot_metricool_id": 399616512,
+      "observed_metricool_id": 413607568,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先把昨天沒收好的東西整理完。\n\n仙加味萬華工作間的一天，從拉起竹簾、放好木匙和確認食材抽屜開始。\n\n小老闆先把眼前的小事做好。你開始工作前的第一件事通常是什麼？",
+      "observed_publication_date": {
+        "dateTime": "2026-10-26T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-7102648335025741341.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "uuid": "-7982498099912555116",
+      "snapshot_metricool_id": 409123176,
+      "observed_metricool_id": 413610836,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "認識一包龜鹿飲，先把內容物看清楚。\n\n仙加味龜鹿飲180cc鋁袋，成分依序為：\n水、鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘。\n\n每包180cc，可直接飲用，也可溫熱後飲用。把產品資訊看明白，再依自己的日常習慣安排。\n\n想了解產品內容，歡迎到仙加味官方 LINE OA 聊聊：\nhttps://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #龜鹿飲 #180cc鋁袋 #日常飲食",
+      "observed_publication_date": {
+        "dateTime": "2026-10-28T09:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-9165506878409531046.png"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "uuid": "4329837969942398654",
+      "snapshot_metricool_id": 409115588,
+      "observed_metricool_id": 413607665,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "天氣轉涼時，有些人會比較想準備一杯溫熱的，或替家裡煮一鍋湯。\n\n仙加味分享的漢方飲食文化，也從這些簡單的日常安排開始。\n\n遇到涼爽的日子，你會先準備熱飲、湯，還是找件薄外套？",
+      "observed_publication_date": {
+        "dateTime": "2026-10-30T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-18422101596712622156.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "uuid": "2443915431236944055",
+      "snapshot_metricool_id": 409115909,
+      "observed_metricool_id": 413610902,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "今天店裡比較安靜。小老闆整理完桌子，就坐著慢慢把事情做完。\n\n有些人工作時喜歡安靜，有些人旁邊一定要有點聲音才習慣。\n\n仙加味萬華工作間也有這種安靜時刻，讓小老闆專心翻看工作筆記。\n\n你是哪一種？",
+      "observed_publication_date": {
+        "dateTime": "2026-11-02T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-15692021012977458124.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-small-things-work",
+      "uuid": "4946143609391040391",
+      "snapshot_metricool_id": 409115962,
+      "observed_metricool_id": 413610813,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "有時候一天忙完，回頭看好像都不是什麼大事：開燈、整理桌子、回幾個訊息、把東西放回去。\n\n仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。\n\n但店裡的日常就是這些小事情慢慢堆起來的。你今天完成了哪一件小事？",
+      "observed_publication_date": {
+        "dateTime": "2026-11-04T12:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-16875025134476917615.jpeg"
+      ]
+    },
+    {
+      "post_id": "XJW-CONV-chat-gao-vs-drink",
+      "uuid": "-3743061634977870369",
+      "snapshot_metricool_id": 409149556,
+      "observed_metricool_id": 413610864,
+      "observed_draft": true,
+      "observed_auto_publish": false,
+      "observed_instagram_auto_publish": false,
+      "observed_text": "最近有人問我們：「龜鹿膏跟龜鹿飲，到底差在哪？」\n\n如果只問哪個比較好，其實很難回答。我們反而會先問：你平常比較習慣怎麼準備？有人喜歡在家慢慢來，有人比較喜歡方便一點的形式。\n\n你比較像在家慢慢準備型，還是方便快速型？",
+      "observed_publication_date": {
+        "dateTime": "2026-11-06T10:00:00",
+        "timezone": "Asia/Taipei"
+      },
+      "observed_media": [
+        "https://static.metricool.com/planner/202610/6889683-file-8086255241733285392.jpeg"
+      ]
+    }
+  ]
+}
