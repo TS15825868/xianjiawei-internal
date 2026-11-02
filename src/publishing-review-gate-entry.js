@@ -325,6 +325,7 @@ export default{async fetch(request,env,ctx){
     const profile=await authorization.json(),id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     try{
       const proof=await readBody(request);
+      if(proof.requested_decision==='reject'){const {recordAiRejection}=await import('./ai-review-rejection.js');return json(await recordAiRejection(env,row,proof,profile,{fingerprint,ensureAiSchema,imageHash}));}
       if(proof.requested_decision==='defer')return json(await recordAiDeferral(env,row,proof,profile,{fingerprint,ensureAiSchema}));
       // AI approval must pass the SAME full image/scene/season/brand audit as
       // manually submitted posts. Previously the AI route bypassed this wrapper.
