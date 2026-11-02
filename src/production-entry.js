@@ -74,7 +74,7 @@ async function fastPostList(request,env){
   const status=clean(url.searchParams.get('status')),q=clean(url.searchParams.get('q')).slice(0,100);
   const where=["status<>'archived'"];const binds=[];
   if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status);}
-  if(q){where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');const like=`%${q}%`;binds.push(like,like,like,like,like);}
+  if(q){where.push("(instr(lower(coalesce(title,'')),lower(?))>0 OR instr(lower(coalesce(headline,'')),lower(?))>0 OR instr(lower(coalesce(copy,'')),lower(?))>0 OR instr(lower(coalesce(category,'')),lower(?))>0 OR instr(lower(coalesce(image_alt,'')),lower(?))>0)");binds.push(q,q,q,q,q);}
   const clause=where.join(' AND ');
   const [rows,totalRow,grouped]=await Promise.all([
     env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all(),

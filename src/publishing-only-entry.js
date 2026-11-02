@@ -117,7 +117,7 @@ async function fastPostList(request,env){
   else if(status==='human_approved'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))<>'' AND LOWER(approved_by) NOT LIKE 'ai:%' AND COALESCE(review_note,'') NOT LIKE 'AI審核：AI_APPROVED；%'");}
   else if(status==='ai_approved'){where.push("status='approved' AND TRIM(COALESCE(approved_by,''))<>'' AND COALESCE(review_note,'') LIKE 'AI審核：AI_APPROVED；%'");}
   else if(POST_STATUSES.has(status)){where.push('status=?');binds.push(status);}
-  if(q){where.push('(title LIKE ? OR headline LIKE ? OR copy LIKE ? OR category LIKE ? OR image_alt LIKE ?)');const like=`%${q}%`;binds.push(like,like,like,like,like);}
+  if(q){where.push("(instr(lower(coalesce(title,'')),lower(?))>0 OR instr(lower(coalesce(headline,'')),lower(?))>0 OR instr(lower(coalesce(copy,'')),lower(?))>0 OR instr(lower(coalesce(category,'')),lower(?))>0 OR instr(lower(coalesce(image_alt,'')),lower(?))>0)");binds.push(q,q,q,q,q);}
   const clause=where.join(' AND ');
   const fields='id,title,headline,copy,category,platforms_json,status,scheduled_at,approved_by,approved_at,published_at,created_by,created_at,updated_at,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,proposed_scheduled_at';
   const rowsStmt=env.DB.prepare(`SELECT ${fields} FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC,id DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset);
