@@ -1,0 +1,93 @@
+name: Record approved home soup publication receipts
+on:
+  push:
+    branches: [main]
+    paths: ['ops/metricool-home-soup-release-20261103.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read only the approved post and its delivery records
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id='XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa'" > release-post.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_metricool_sync WHERE post_id='XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa'" > release-link.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_publish_deliveries WHERE post_id='XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa'" > release-deliveries.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_quality_reviews WHERE id='AI-REVIEW-331de4c6-661f-4abf-9ef4-c67d702a8d78'" > release-review.json
+      - name: Validate exact version, explicit owner confirmation and actual platform receipts
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+          const {fingerprint}=require('./tools/metricool-free-evidence.cjs');
+          const read=f=>JSON.parse(fs.readFileSync(f))[0].results;
+          const e=JSON.parse(fs.readFileSync('ops/metricool-home-soup-release-20261103.json'));
+          const p=read('release-post.json')[0],m=read('release-link.json')[0],a=read('release-review.json')[0],deliveries=read('release-deliveries.json');
+          assert.equal(e.postId,'XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa');
+          assert.equal(e.source,'official_metricool_connector');assert.equal(e.brandId,'6889683');
+          assert.equal(e.ownerConfirmation.text,'核准這個版本，立即發布三平台');
+          assert.equal(e.ownerConfirmation.source,'explicit_user_message_in_ChatGPT');
+          assert.equal(e.contentFingerprint,'0d76d14d47eacc2636ad42c3925d7ee81860aaccd1206a2e1b6c2638e54e3c9e');
+          assert.equal(fingerprint(p),e.contentFingerprint);
+          assert.equal(a.decision,'AI_APPROVED');assert.equal(a.content_fingerprint,e.contentFingerprint);
+          assert.equal(a.image_sha256,e.imageSHA256);assert.equal(e.remote.text,p.copy);
+          assert.equal(e.remote.uuid,'-8969748972288521475');assert.equal(e.remote.id,415226845);
+          assert.equal(e.remote.draft,false);assert.equal(e.remote.autoPublish,true);
+          assert.equal(e.remote.instagramData.autoPublish,true);
+          assert.deepEqual(e.remote.providers.map(x=>x.network).sort(),['facebook','instagram','threads']);
+          const hosts={facebook:['facebook.com','www.facebook.com'],instagram:['instagram.com','www.instagram.com'],threads:['threads.com','www.threads.com','threads.net','www.threads.net']};
+          for(const x of e.remote.providers){assert.equal(x.status,'PUBLISHED');assert(x.id);const u=new URL(x.publicUrl);assert.equal(u.protocol,'https:');assert(hosts[x.network].includes(u.hostname));}
+          assert.equal(new Date(e.publicationAt).toISOString(),'2026-11-03T12:52:00.000Z');
+          assert(Date.parse(e.verifiedAt)>=Date.parse(e.publicationAt));assert(Math.abs(Date.now()-Date.parse(e.verifiedAt))<6*3600000);
+          if(m?.metricool_id)assert.equal(Number(m.metricool_id),e.remote.id);
+          if(m?.uuid)assert.equal(m.uuid,e.remote.uuid);
+          assert(['approved','scheduled','manual_required','published'].includes(p.status));
+          const q=v=>v==null?'NULL':"'"+String(v).replaceAll("'","''")+"'";
+          const names={facebook:'Facebook',instagram:'Instagram',threads:'Threads'};
+          for(const d of deliveries){const x=e.remote.providers.find(x=>names[x.network]===d.platform);if(d.remote_id&&d.status==='published')assert.equal(d.remote_id,String(x.id));}
+          async function bytes(url){const u=new URL(url);assert(['raw.githubusercontent.com','static.metricool.com'].includes(u.hostname));const r=await fetch(url,{redirect:'error',signal:AbortSignal.timeout(20000)});assert(r.ok);return Buffer.from(await r.arrayBuffer());}
+          (async()=>{
+            const [original,remote]=await Promise.all([bytes(p.image_url),bytes(e.remote.media[0])]);
+            assert(original.equals(remote));assert.equal(crypto.createHash('sha256').update(original).digest('hex'),e.imageSHA256);
+            const sql=[
+              "CREATE TABLE IF NOT EXISTS social_metricool_import_guard(token TEXT PRIMARY KEY,passed INTEGER NOT NULL CHECK(passed=1));",
+              "CREATE TABLE IF NOT EXISTS social_owner_release_receipts(post_id TEXT PRIMARY KEY,content_fingerprint TEXT NOT NULL,confirmation_source TEXT NOT NULL,confirmation_text TEXT NOT NULL,receipt_json TEXT NOT NULL,recorded_at TEXT NOT NULL);",
+              "INSERT INTO social_metricool_import_guard(token,passed) SELECT "+q('home-soup-20261103:'+e.remote.uuid)+",CASE WHEN EXISTS(SELECT 1 FROM social_posts WHERE id="+q(p.id)+" AND updated_at="+q(p.updated_at)+" AND image_url="+q(p.image_url)+" AND image_approved=1 AND status IN ('approved','scheduled','manual_required','published')) THEN 1 ELSE 0 END;",
+              "INSERT INTO social_owner_release_receipts VALUES("+[p.id,e.contentFingerprint,e.ownerConfirmation.source,e.ownerConfirmation.text,JSON.stringify(e),e.verifiedAt].map(q).join(',')+") ON CONFLICT(post_id) DO UPDATE SET receipt_json=excluded.receipt_json,recorded_at=excluded.recorded_at;",
+              "INSERT INTO social_metricool_sync(post_id,metricool_id,uuid,publication_at,content_fingerprint,state,attempts,last_error,template_json,last_sync_at,updated_at) VALUES("+[q(p.id),e.remote.id,q(e.remote.uuid),q(e.publicationAt),q(e.contentFingerprint),"'published'",1,"''",q(JSON.stringify(e.remote)),q(e.verifiedAt),"datetime('now')"].join(',')+") ON CONFLICT(post_id) DO UPDATE SET metricool_id=excluded.metricool_id,uuid=excluded.uuid,publication_at=excluded.publication_at,content_fingerprint=excluded.content_fingerprint,state='published',last_error='',template_json=excluded.template_json,last_sync_at=excluded.last_sync_at,updated_at=datetime('now');"
+            ];
+            for(const x of e.remote.providers)sql.push("INSERT INTO social_publish_deliveries(post_id,platform,status,remote_id,response_json,error_text,published_at) VALUES("+[q(p.id),q(names[x.network]),"'published'",q(x.id),q(JSON.stringify(x)),"''",q(e.publicationAt)].join(',')+") ON CONFLICT(post_id,platform) DO UPDATE SET status='published',remote_id=excluded.remote_id,response_json=excluded.response_json,error_text='',published_at=COALESCE(social_publish_deliveries.published_at,excluded.published_at),updated_at=datetime('now');");
+            sql.push("UPDATE social_posts SET status='published',published_at=COALESCE(published_at,"+q(e.publicationAt)+"),scheduled_at=NULL,updated_at=datetime('now') WHERE id="+q(p.id)+" AND updated_at="+q(p.updated_at)+";");
+            fs.writeFileSync('/tmp/home-soup-release.sql',sql.join('\n'));
+            console.log('PASS exact AI-reviewed version, explicit user release, three official receipts and identical image bytes; no external sending.');
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          NODE
+      - name: Record verified receipt, preserve original copy, image and AI review
+        run: |
+          npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/home-soup-release.sql
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.id,p.status,p.published_at,m.metricool_id,m.uuid,m.state FROM social_posts p JOIN social_metricool_sync m ON m.post_id=p.id WHERE p.id='XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa'" > release-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT platform,status,remote_id,published_at,response_json FROM social_publish_deliveries WHERE post_id='XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa'" > release-deliveries-after.json
+          node - <<'NODE'
+          const fs=require('fs'),assert=require('assert/strict'),p=JSON.parse(fs.readFileSync('release-after.json'))[0].results[0],d=JSON.parse(fs.readFileSync('release-deliveries-after.json'))[0].results;
+          assert.equal(p.status,'published');assert.equal(p.state,'published');assert.equal(p.metricool_id,415226845);assert.equal(p.uuid,'-8969748972288521475');assert.equal(d.length,3);assert(d.every(x=>x.status==='published'&&x.remote_id));console.log('PASS D1 formal readback: three published platforms.');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: home-soup-release-${{ github.run_id }}
+          path: |
+            release-after.json
+            release-deliveries-after.json
+          retention-days: 7
