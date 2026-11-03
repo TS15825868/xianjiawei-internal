@@ -9,7 +9,7 @@
     "text": "核准這個版本，立即發布三平台"
   },
   "publicationAt": "2026-11-03T12:52:00.000Z",
-  "verifiedAt": "2026-11-03T12:54:58.621Z",
+  "verifiedAt": "2026-11-03T12:56:42.540Z",
   "remote": {
     "id": 415226845,
     "publicationDate": {
@@ -76,5 +76,9 @@
       "shareAsInstagramStory": false
     },
     "brandTags": []
+  },
+  "localQueueReconciliation": {
+    "previousLocalOnlyUuid": "ba2efce8-1a2b-4a04-91fe-af2d75755a54",
+    "reason": "Local awaiting_work UUID was not a remote Metricool post; bind only after official remote publication receipts."
   }
 }
