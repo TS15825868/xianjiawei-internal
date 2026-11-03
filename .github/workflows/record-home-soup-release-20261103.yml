@@ -52,7 +52,8 @@ jobs:
           assert.equal(new Date(e.publicationAt).toISOString(),'2026-11-03T12:52:00.000Z');
           assert(Date.parse(e.verifiedAt)>=Date.parse(e.publicationAt));assert(Math.abs(Date.now()-Date.parse(e.verifiedAt))<6*3600000);
           if(m?.metricool_id)assert.equal(Number(m.metricool_id),e.remote.id);
-          if(m?.uuid)assert.equal(m.uuid,e.remote.uuid);
+          if(m?.metricool_id&&m?.uuid)assert.equal(m.uuid,e.remote.uuid);
+          if(m&&!m.metricool_id){assert.equal(m.uuid,'ba2efce8-1a2b-4a04-91fe-af2d75755a54');assert.equal(m.state,'awaiting_work');}
           assert(['approved','scheduled','manual_required','published'].includes(p.status));
           const q=v=>v==null?'NULL':"'"+String(v).replaceAll("'","''")+"'";
           const names={facebook:'Facebook',instagram:'Instagram',threads:'Threads'};
@@ -64,7 +65,7 @@ jobs:
             const sql=[
               "CREATE TABLE IF NOT EXISTS social_metricool_import_guard(token TEXT PRIMARY KEY,passed INTEGER NOT NULL CHECK(passed=1));",
               "CREATE TABLE IF NOT EXISTS social_owner_release_receipts(post_id TEXT PRIMARY KEY,content_fingerprint TEXT NOT NULL,confirmation_source TEXT NOT NULL,confirmation_text TEXT NOT NULL,receipt_json TEXT NOT NULL,recorded_at TEXT NOT NULL);",
-              "INSERT INTO social_metricool_import_guard(token,passed) SELECT "+q('home-soup-20261103:'+e.remote.uuid)+",CASE WHEN EXISTS(SELECT 1 FROM social_posts WHERE id="+q(p.id)+" AND updated_at="+q(p.updated_at)+" AND image_url="+q(p.image_url)+" AND image_approved=1 AND status IN ('approved','scheduled','manual_required','published')) THEN 1 ELSE 0 END;",
+              "INSERT INTO social_metricool_import_guard(token,passed) SELECT "+q('home-soup-20261103:'+e.remote.uuid)+",CASE WHEN EXISTS(SELECT 1 FROM social_posts WHERE id="+q(p.id)+" AND updated_at="+q(p.updated_at)+" AND image_url="+q(p.image_url)+" AND EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id="+q(p.id)+" AND updated_at="+q(m.updated_at)+" AND uuid="+q(m.uuid)+" AND COALESCE(metricool_id,0)="+Number(m.metricool_id||0)+") AND image_approved=1 AND status IN ('approved','scheduled','manual_required','published')) THEN 1 ELSE 0 END;",
               "INSERT INTO social_owner_release_receipts VALUES("+[p.id,e.contentFingerprint,e.ownerConfirmation.source,e.ownerConfirmation.text,JSON.stringify(e),e.verifiedAt].map(q).join(',')+") ON CONFLICT(post_id) DO UPDATE SET receipt_json=excluded.receipt_json,recorded_at=excluded.recorded_at;",
               "INSERT INTO social_metricool_sync(post_id,metricool_id,uuid,publication_at,content_fingerprint,state,attempts,last_error,template_json,last_sync_at,updated_at) VALUES("+[q(p.id),e.remote.id,q(e.remote.uuid),q(e.publicationAt),q(e.contentFingerprint),"'published'",1,"''",q(JSON.stringify(e.remote)),q(e.verifiedAt),"datetime('now')"].join(',')+") ON CONFLICT(post_id) DO UPDATE SET metricool_id=excluded.metricool_id,uuid=excluded.uuid,publication_at=excluded.publication_at,content_fingerprint=excluded.content_fingerprint,state='published',last_error='',template_json=excluded.template_json,last_sync_at=excluded.last_sync_at,updated_at=datetime('now');"
             ];
