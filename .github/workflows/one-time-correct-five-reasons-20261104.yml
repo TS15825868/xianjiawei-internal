@@ -1,0 +1,80 @@
+name: XJW one-time correct five stale rejection reasons
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/one-time-correct-five-reasons-20261104.yml']
+permissions:
+  contents: read
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Read latest five version-bound D1 rows and published history
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id IN ('XJW-CONV-chat-quiet-work','XJW-CONV-chat-drink-made-to-order','XJW-0663bdeb-49aa-46bf-8a41-95a14486f425','XJW-CONV-chat-30-bare-jar','XJW-CONV-chat-home-soup') ORDER BY id" > /tmp/before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE status='published' ORDER BY id" > /tmp/published-before.json
+      - name: Validate exact image and stale policy; leave original AI evidence intact
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),assert=require('node:assert/strict'),crypto=require('crypto');
+          const entries=[["XJW-CONV-chat-quiet-work","XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg","needs_review",""],["XJW-CONV-chat-drink-made-to-order","XJW-CONV-chat-drink-made-to-order-scene-v2.jpg","needs_review",""],["XJW-0663bdeb-49aa-46bf-8a41-95a14486f425","XJW-drink180-ingredients.png","passed","龜鹿飲180cc成分主題圖片尚須核對正式鋁袋外觀及最新成分標示；待實物來源與圖文一致證據完整後重新審核。"],["XJW-CONV-chat-30-bare-jar","XJW-CONV-chat-30-bare-jar-scene-v1.jpg","needs_review","30cc玻璃罐圖片中的產品外觀仍需與正式裸罐實物原圖比對；未取得原圖與比例證據前不得核准。"],["XJW-CONV-chat-home-soup","XJW-CONV-chat-home-soup-unique-poll-v2.png","needs_review",""]];
+          const rows=JSON.parse(fs.readFileSync('/tmp/before.json','utf8'))[0].results;
+          assert.equal(rows.length,entries.length);
+          const oldReason='實際圖片覆核：小老闆與夥伴為非正式立體3D風格；涉及產品的貼文需核對正式實物原圖。請重新製作固定2D Q版並回待審核。';
+          const q=x=>"'"+String(x??'').replaceAll("'","''")+"'";
+          const sql=[];
+          for(const [id,suffix,quality,updatedReason] of entries){
+            const p=rows.find(v=>v.id===id);assert(p,id);
+            assert.equal(p.status,'pending_review');
+            assert.equal(p.image_quality_status,quality);
+            assert.equal(p.rejection_reason,oldReason);
+            assert(String(p.image_url).endsWith('/'+suffix),'Image version changed '+id);
+            assert.equal(Number(p.image_approved),0);
+            assert(!p.approved_by&&!p.approved_at&&!p.scheduled_at&&!p.published_at);
+            const auditId='XJW-REASON-20261104-'+crypto.createHash('sha256').update(id+'|'+p.image_url).digest('hex').slice(0,16);
+            sql.push('UPDATE social_posts SET rejection_reason='+q(updatedReason)+' WHERE id='+q(id)+' AND status='+q('pending_review')+' AND image_url='+q(p.image_url)+' AND image_quality_status='+q(quality)+' AND rejection_reason='+q(oldReason)+' AND updated_at='+q(p.updated_at)+' AND approved_by IS NULL AND published_at IS NULL;');
+            sql.push('INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT '+[auditId,'system:xjw-version-bound-review-note','撤回過時2D限定退件理由，保留真實產品比對及AI待審','貼文',id,JSON.stringify({previous:oldReason}),JSON.stringify({newReason:updatedReason,unchangedImage:p.image_url,reviewRequired:true,approved:false}),''].map(q).join(',')+' WHERE changes()=1;');
+          }
+          fs.writeFileSync('/tmp/update.sql',sql.join('\n')+'\n');
+          console.log('PASS five exact image-version guards, preserve AI and manual review');
+          NODE
+      - name: Apply narrow D1 metadata correction only
+        run: npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/update.sql
+      - name: Verify all five exact metadata changes and published rows unchanged
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE id IN ('XJW-CONV-chat-quiet-work','XJW-CONV-chat-drink-made-to-order','XJW-0663bdeb-49aa-46bf-8a41-95a14486f425','XJW-CONV-chat-30-bare-jar','XJW-CONV-chat-home-soup') ORDER BY id" > /tmp/after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_posts WHERE status='published' ORDER BY id" > /tmp/published-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,entity_id FROM audit_logs WHERE id LIKE 'XJW-REASON-20261104-%'" > /tmp/audit.json
+          node - <<'NODE'
+          const fs=require('fs'),assert=require('node:assert/strict');
+          const entries=[["XJW-CONV-chat-quiet-work","XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg","needs_review",""],["XJW-CONV-chat-drink-made-to-order","XJW-CONV-chat-drink-made-to-order-scene-v2.jpg","needs_review",""],["XJW-0663bdeb-49aa-46bf-8a41-95a14486f425","XJW-drink180-ingredients.png","passed","龜鹿飲180cc成分主題圖片尚須核對正式鋁袋外觀及最新成分標示；待實物來源與圖文一致證據完整後重新審核。"],["XJW-CONV-chat-30-bare-jar","XJW-CONV-chat-30-bare-jar-scene-v1.jpg","needs_review","30cc玻璃罐圖片中的產品外觀仍需與正式裸罐實物原圖比對；未取得原圖與比例證據前不得核准。"],["XJW-CONV-chat-home-soup","XJW-CONV-chat-home-soup-unique-poll-v2.png","needs_review",""]];
+          const rd=f=>JSON.parse(fs.readFileSync(f))[0].results;
+          const before=rd('/tmp/before.json'),after=rd('/tmp/after.json'),logs=rd('/tmp/audit.json');
+          assert.equal(after.length,5);
+          for(const [id,suffix,quality,newReason] of entries){
+            const p=before.find(x=>x.id===id),q=after.find(x=>x.id===id);
+            assert(q,id);assert.equal(q.rejection_reason,newReason);assert(logs.some(x=>x.entity_id===id));
+            for(const k of Object.keys(p))if(k!=='rejection_reason')assert.deepEqual(q[k],p[k],id+':'+k);
+          }
+          assert.deepEqual(rd('/tmp/published-before.json'),rd('/tmp/published-after.json'));
+          console.log('PASS five precise stale review reasons corrected; existing 58 pending and published rows unchanged except their obsolete note');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-five-reason-correction-${{ github.run_id }}
+          path: |
+            /tmp/after.json
+            /tmp/audit.json
+          retention-days: 3
