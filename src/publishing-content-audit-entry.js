@@ -9,7 +9,9 @@ const clean=value=>String(value??'').trim();
 const uniq=items=>[...new Set(items.filter(Boolean))];
 const RISKY=Object.freeze(['治療','治癒','療效','改善疾病','預防疾病','保證功效','保證改善','藥到病除','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質']);
 const BLOCKED_OLD_PUBLIC_NAMES=Object.freeze(['台興山產']);
-const BLOCKED_UNFINISHED_PUBLIC_NAMES=Object.freeze(['柒玄茶','龜鹿調飲粉','龜鹿膠','龜鹿湯塊']);
+// The current official catalog includes 柒玄茶・龜鹿調飲粉、龜鹿膠及龜鹿湯塊.
+// Never reject their names as 'unfinished'; packaging, image and claim checks remain active.
+const BLOCKED_UNFINISHED_PUBLIC_NAMES=Object.freeze([]);
 // Confirmed, image-specific rejects. A genuinely new and correctly reviewed image path can replace any rejected one.
 const KNOWN_BAD_VISUAL_FILENAMES=Object.freeze(['xjw-conv-chat-30-bare-jar.jpg','xjw-conv-chat-30-vs-180.jpg','xjw-conv-chat-drink-made-to-order.jpg','xjw-conv-chat-gao-storage.jpg','xjw-conv-chat-gao-vs-drink.jpg','xjw-conv-chat-glass-vs-pouch-storage.jpg','xjw-conv-chat-luerong-intro.jpg','xjw-conv-chat-photo-size.jpg','xjw-conv-chat-jiao-spec.jpg','xjw-conv-chat-tang-vs-jiao.jpg','xjw-conv-chat-tangkuai-spec.jpg','xjw-conv-cny-family-choice.jpg','xjw-conv-cny-gift-choice.jpg','xjw-conv-cny-pre-clean.jpg','xjw-conv-chat-gao-vs-drink-scene-v1.jpg','xjw-conv-chat-trial-first-scene-v1.jpg','xjw-conv-weather-cool-drink-audit-v1.jpg','xjw-conv-chat-receive-package.jpg','xjw-conv-chat-30-bare-jar-scene-v1.jpg','xjw-conv-chat-shop-organizing-scene-v5.jpg']);
 // Retain the exact historical review holds until each image is reviewed/replaced.
