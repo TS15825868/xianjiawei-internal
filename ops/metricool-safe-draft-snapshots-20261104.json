@@ -1,0 +1,1037 @@
+{
+  "schema": "xjw_metricool_safe_draft_snapshot_v1",
+  "purpose": "read-only connector verification; safely refresh D1 sync snapshots; no Metricool writes",
+  "brandId": "6889683",
+  "retrievedAt": "2026-11-04T21:38:00+08:00",
+  "recordCount": 15,
+  "items": [
+    {
+      "post_id": "XJW-CONV-chat-tradition-today",
+      "metricool_id": 395780320,
+      "uuid": "-4149122829168327944",
+      "d1_copy_digest_fnv1a": "121dffc3",
+      "remote": {
+        "id": 395780320,
+        "publicationDate": {
+          "dateTime": "2026-10-16T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "傳統不一定代表今天要照以前一模一樣地生活。\n\n有些值得留下來的是做法、經驗和背後的文化；至於怎麼進到現在的日常，可以慢慢調整。\n\n仙加味把四代累積的鹿角與熬膠工藝整理成今天更容易理解的資訊，也是這個想法。\n\n你有沒有什麼小時候覺得老派，長大後反而開始喜歡的東西？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8684507256650264266.png"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "萬華傳統街區晨光情境，現代仙加味小老闆與小鹿、小烏龜同行，呈現傳統生活文化延續到今日，無產品"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-4149122829168327944",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-trial-first",
+      "metricool_id": 413607595,
+      "uuid": "5662205195050239362",
+      "d1_copy_digest_fnv1a": "e5d51c69",
+      "remote": {
+        "id": 413607595,
+        "publicationDate": {
+          "dateTime": "2026-10-20T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:44:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "第一次接觸一個沒用過的產品，本來就不一定要馬上決定。可以先問、先了解，也可以看看龜鹿飲的試喝方式。\n\n如果你第一次接觸龜鹿系列，最想先知道的是產品差別、使用方式、試喝，還是其他問題？有需要再到仙加味官方LINE OA慢慢問我們就好。",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-15144720058520428122.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味店內的木桌前，小老闆拿著白色小杯介紹試喝，30cc 小玻璃裸罐擺在桌上，小鹿與小烏龜在旁觀看。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "5662205195050239362",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "metricool_id": 413607626,
+      "uuid": "-8941937064773136394",
+      "d1_copy_digest_fnv1a": "fe0b708e",
+      "remote": {
+        "id": 413607626,
+        "publicationDate": {
+          "dateTime": "2026-10-22T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:44:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8463241700005616996.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味小老闆在家打開紙箱，先閱讀隨附說明卡，小鹿與小烏龜在旁陪伴。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-8941937064773136394",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-opening-prep",
+      "metricool_id": 413607568,
+      "uuid": "4058297471817699092",
+      "d1_copy_digest_fnv1a": "5ed4c512",
+      "remote": {
+        "id": 413607568,
+        "publicationDate": {
+          "dateTime": "2026-10-26T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:44:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先把昨天沒收好的東西整理完。\n\n仙加味萬華工作間的一天，從拉起竹簾、放好木匙和確認食材抽屜開始。\n\n小老闆先把眼前的小事做好。你開始工作前的第一件事通常是什麼？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-7102648335025741341.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "清晨的仙加味萬華工作間，小老闆拉起竹簾並將木匙放回食材抽屜，小鹿與小烏龜陪著準備開店。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4058297471817699092",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "metricool_id": 413610836,
+      "uuid": "-7982498099912555116",
+      "d1_copy_digest_fnv1a": "7bb8c1a1",
+      "remote": {
+        "id": 413610836,
+        "publicationDate": {
+          "dateTime": "2026-10-28T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:50:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "認識一包龜鹿飲，先把內容物看清楚。\n\n仙加味龜鹿飲180cc鋁袋，成分依序為：\n水、鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘。\n\n每包180cc，可直接飲用，也可溫熱後飲用。把產品資訊看明白，再依自己的日常習慣安排。\n\n想了解產品內容，歡迎到仙加味官方 LINE OA 聊聊：\nhttps://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #龜鹿飲 #180cc鋁袋 #日常飲食",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-9165506878409531046.png"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "小老闆在居家木桌前整理飲品筆記，旁邊放著溫水、紅棗與枸杞，小鹿和小烏龜分開陪伴。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-7982498099912555116",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "metricool_id": 413607665,
+      "uuid": "4329837969942398654",
+      "d1_copy_digest_fnv1a": "1235eea0",
+      "remote": {
+        "id": 413607665,
+        "publicationDate": {
+          "dateTime": "2026-10-30T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:44:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "天氣轉涼時，有些人會比較想準備一杯溫熱的，或替家裡煮一鍋湯。\n\n仙加味分享的漢方飲食文化，也從這些簡單的日常安排開始。\n\n遇到涼爽的日子，你會先準備熱飲、湯，還是找件薄外套？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-18422101596712622156.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "天氣轉涼時，仙加味小老闆在窗邊翻看生活筆記，桌上放著溫熱飲品，小鹿與小烏龜一起享受安靜的午後。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4329837969942398654",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "metricool_id": 413610902,
+      "uuid": "2443915431236944055",
+      "d1_copy_digest_fnv1a": "d734f0aa",
+      "remote": {
+        "id": 413610902,
+        "publicationDate": {
+          "dateTime": "2026-11-02T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:51:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "今天店裡比較安靜。小老闆整理完桌子，就坐著慢慢把事情做完。\n\n有些人工作時喜歡安靜，有些人旁邊一定要有點聲音才習慣。\n\n仙加味萬華工作間也有這種安靜時刻，讓小老闆專心翻看工作筆記。\n\n你是哪一種？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-15692021012977458124.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "安靜的午後，仙加味小老闆在萬華工作間專心翻看工作筆記，小鹿坐在矮凳休息，小烏龜陪在食材桌旁。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "2443915431236944055",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-small-things-work",
+      "metricool_id": 413610813,
+      "uuid": "4946143609391040391",
+      "d1_copy_digest_fnv1a": "426cf872",
+      "remote": {
+        "id": 413610813,
+        "publicationDate": {
+          "dateTime": "2026-11-04T12:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:50:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "有時候一天忙完，回頭看好像都不是什麼大事：開燈、整理桌子、回幾個訊息、把東西放回去。\n\n仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。\n\n但店裡的日常就是這些小事情慢慢堆起來的。你今天完成了哪一件小事？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-16875025134476917615.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "萬華店內的日常工作桌，小老闆擦拭桌面並把鉛筆收回筆筒，小鹿整理空白紙張，小烏龜守著收納籃，呈現小事歸位的動作。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4946143609391040391",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-chat-gao-vs-drink",
+      "metricool_id": 413610864,
+      "uuid": "-3743061634977870369",
+      "d1_copy_digest_fnv1a": "274434fd",
+      "remote": {
+        "id": 413610864,
+        "publicationDate": {
+          "dateTime": "2026-11-06T10:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-11-02T14:51:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "最近有人問我們：「龜鹿膏跟龜鹿飲，到底差在哪？」\n\n如果只問哪個比較好，其實很難回答。我們反而會先問：你平常比較習慣怎麼準備？有人喜歡在家慢慢來，有人比較喜歡方便一點的形式。\n\n你比較像在家慢慢準備型，還是方便快速型？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-8086255241733285392.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "仙加味小老闆在居家早餐桌前，拿著小匙介紹龜鹿膏100g罐與龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在桌旁聆聽。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "imageVariants": false,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-3743061634977870369",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-FEST-2027-newyear-breakfast",
+      "metricool_id": 395780595,
+      "uuid": "-4666029736018688758",
+      "d1_copy_digest_fnv1a": "8b3facac",
+      "remote": {
+        "id": 395780595,
+        "publicationDate": {
+          "dateTime": "2027-01-01T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "元旦早上，不一定要急著列出一整年的目標。把熱粥、饅頭和家人喜歡的小菜準備好，坐下來一起吃一餐，也是一個踏實的開始。\n\n仙加味想留下的漢方生活，不只在產品裡，也在這些照顧日常、好好相聚的小事裡。\n\n新年的第一餐，你最想和誰一起吃？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-2787967735441711605.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "元旦清晨的居家早餐情境，仙加味小老闆將熱粥與饅頭放上餐桌，小鹿與小烏龜陪在旁邊，家人在桌邊等著一起吃早餐。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-4666029736018688758",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-cny-childhood-now",
+      "metricool_id": 395780663,
+      "uuid": "-2388141536229897403",
+      "d1_copy_digest_fnv1a": "c825722c",
+      "remote": {
+        "id": 395780663,
+        "publicationDate": {
+          "dateTime": "2027-02-03T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "小時候期待過年，跟長大後期待的事情常常完全不一樣。有人記得的是年夜飯，有人記得長輩家，也有人現在最期待的是終於可以休息。\n\n仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。\n\n你覺得自己家過年最大的改變是什麼？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-332421681141374024.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "年節回憶的情境插畫，仙加味小老闆與小鹿、小烏龜一起翻看家庭聚餐照片道具，聊聊小時候與現在的過年記憶。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-2388141536229897403",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-FEST-2027-eve-welcome-home",
+      "metricool_id": 395780722,
+      "uuid": "4739607617070649128",
+      "d1_copy_digest_fnv1a": "7b772502",
+      "remote": {
+        "id": 395780722,
+        "publicationDate": {
+          "dateTime": "2027-02-05T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "除夕準備年夜飯時，小老闆想先做一件小事：替剛回到家的家人拉好椅子，讓大家不用急，慢慢坐下來。\n\n仙加味從萬華走過幾代家庭日常，一直珍惜的，是有人一起吃飯、有人願意等你回家的時刻。\n\n今年的年夜飯，你最想把哪個位置留給誰？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-12915704977023112905.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "除夕傍晚，仙加味小老闆替剛回家的家人拉開餐桌旁的椅子，小鹿與小烏龜在安全位置陪伴，屋內亮著溫暖燈光。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "4739607617070649128",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-CONV-cny-family-choice",
+      "metricool_id": 395780780,
+      "uuid": "8803367464274840026",
+      "d1_copy_digest_fnv1a": "666bd83f",
+      "remote": {
+        "id": 395780780,
+        "publicationDate": {
+          "dateTime": "2027-02-06T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "過年的期待每個人都不一樣。有人等的是一桌菜，有人是想見家人，也有人很單純就是想好好放假。\n\n仙加味從萬華的四代家族工作走到現在，也特別珍惜一家人相聚吃飯的時候。\n\n如果今天只能選一個，你會選哪一個？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-13050442033821600915.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "春節團聚的情境插畫，仙加味小老闆抱抱坐在家中的長輩，小鹿與小烏龜分開陪伴，背景餐桌上有簡單家常菜。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "8803367464274840026",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-FEST-2027-spring-walk",
+      "metricool_id": 395780855,
+      "uuid": "7059549514727835567",
+      "d1_copy_digest_fnv1a": "60a2b583",
+      "remote": {
+        "id": 395780855,
+        "publicationDate": {
+          "dateTime": "2027-02-08T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:14:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-13031052408353198187.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "7059549514727835567",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    },
+    {
+      "post_id": "XJW-FEST-2027-lantern-riceballs",
+      "metricool_id": 395780924,
+      "uuid": "-4565812021150200465",
+      "d1_copy_digest_fnv1a": "4db3b859",
+      "remote": {
+        "id": 395780924,
+        "publicationDate": {
+          "dateTime": "2027-02-20T09:00:00",
+          "timezone": "Asia/Taipei"
+        },
+        "creationDate": {
+          "dateTime": "2026-10-14T19:15:00",
+          "timezone": "Asia/Taipei"
+        },
+        "text": "元宵節，把一小塊糯米糰慢慢搓圓，大小不必每顆都一模一樣。有人喜歡甜湯圓，也有人想念鹹湯圓，口味不同，坐在一起就很好。\n\n仙加味喜歡記錄這些傳統飲食文化裡的日常動作：一起準備、一起聊天，再把熟悉的味道留在家裡。\n\n你家的元宵湯圓，是甜的還是鹹的？",
+        "firstCommentText": "",
+        "providers": [
+          {
+            "network": "facebook",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "instagram",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          },
+          {
+            "network": "threads",
+            "status": "PENDING",
+            "detailedStatus": "Pending"
+          }
+        ],
+        "media": [
+          "https://static.metricool.com/planner/202610/6889683-file-13576794906107738782.jpeg"
+        ],
+        "autoPublish": false,
+        "saveExternalMediaFiles": false,
+        "mediaAltText": [
+          "元宵夜的家常廚房，仙加味小老闆和家人一起搓小顆白色湯圓，小鹿與小烏龜在旁陪伴，窗外可見素面燈籠與月光。"
+        ],
+        "shortener": false,
+        "draft": true,
+        "twitterData": {
+          "type": "POST"
+        },
+        "facebookData": {
+          "type": "POST"
+        },
+        "instagramData": {
+          "autoPublish": false,
+          "type": "POST",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        },
+        "hasNotReadNotes": false,
+        "uuid": "-4565812021150200465",
+        "creatorUserMail": "a314069@hotmail.com.tw",
+        "creatorUserId": 5306293,
+        "threadsData": {
+          "replyControl": "EVERYONE",
+          "type": "POST",
+          "shareAsInstagramStory": false
+        },
+        "brandTags": []
+      }
+    }
+  ]
+}
