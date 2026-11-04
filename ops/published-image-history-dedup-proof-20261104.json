@@ -1,0 +1,23 @@
+{
+  "schema": "xjw-partial-historical-image-dedup-proof-v1",
+  "date": "2026-11-04",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/41851268855",
+  "sourceArtifact": "xjw-published-image-history-compare-41851268855",
+  "sourceManifest": "ops/metricool-published-media-history-20261104.json",
+  "scope": "Read-only D1 current 58 unpublished images compared against accessible D1 published/archived and 28 Metricool observed published posts. Not exhaustive FB/IG/Threads history.",
+  "unpublishedImagesChecked": 58,
+  "d1HistoricalImages": 8,
+  "metricoolPublishedMediaEntries": 32,
+  "historicalUniqueImageURLs": 40,
+  "historicalImagesSuccessfullyDecoded": 38,
+  "historicalImagesNotDecoded": 2,
+  "historicalUnreadableReasons": {
+    "unsafe_protocol": 2
+  },
+  "confirmedSameFileSHA256Pairs": 0,
+  "possibleVisualSimilarityPairsUnderThreshold": 0,
+  "reviewDecision": "PARTIAL_PROVENANCE_ONLY; missing history remains and AI/human checks still required",
+  "noD1Writes": true,
+  "noPublication": true,
+  "noDeletion": true
+}
