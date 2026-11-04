@@ -1,0 +1,92 @@
+name: XJW read-only published media route proof
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/one-time-read-published-media-routes-20261104.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 11
+    env:
+      CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+      CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Read current unpublished D1 source-image list without writes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,image_url FROM social_posts WHERE status IN ('draft','pending_review') ORDER BY id" >/tmp/active.json
+      - name: Read only two protected images used by published historical posts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -q pillow
+          python - <<'PY'
+          import os,urllib.request,urllib.error,pathlib,json,io,hashlib
+          from PIL import Image,ImageOps
+          paths=['/media/IMG-OFFICIAL-13-BRAND-STORY','/media/IMG-OFFICIAL-12-TRIAL']
+          base='https://xianjiawei-internal.tung314069.workers.dev'
+          env=os.environ
+          rows=json.load(open('/tmp/active.json'))[0]['results']
+          def safe_image(b):
+              try:
+                  im=Image.open(io.BytesIO(b)).convert('L').resize((9,8))
+                  p=im.load();h=0
+                  for y in range(8):
+                      for x in range(8):h=(h<<1)|int(p[x,y]>p[x+1,y])
+                  return hashlib.sha256(b).hexdigest(),h
+              except Exception:return None
+          active=[]
+          for r in rows:
+              url=r.get('image_url') or ''
+              prefix='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'
+              if not url.startswith(prefix):continue
+              p=pathlib.Path(url[len(prefix):])
+              if not p.is_file():continue
+              b=p.read_bytes();h=safe_image(b)
+              if h:active.append({'id':r['id'],'sha':h[0],'dhash':h[1]})
+          results=[]
+          for route in paths:
+              outcome={'published_route':route,'access':'unknown','hashMatchesUnpublished':[],'closeCandidatesUnconfirmed':[]}
+              if not env.get('CF_ACCESS_CLIENT_ID') or not env.get('CF_ACCESS_CLIENT_SECRET'):
+                  outcome['access']='service_credentials_unconfigured'
+              else:
+                  req=urllib.request.Request(base+route,headers={'CF-Access-Client-Id':env['CF_ACCESS_CLIENT_ID'],'CF-Access-Client-Secret':env['CF_ACCESS_CLIENT_SECRET'],'Accept':'image/*','User-Agent':'XJW-published-media-readonly-audit/1.0'})
+                  try:
+                      with urllib.request.urlopen(req,timeout=14) as response:
+                          b=response.read(12*1024*1024+1)
+                          ctype=response.headers.get('content-type','')
+                          h=safe_image(b) if len(b)<=12*1024*1024 else None
+                          outcome['httpStatus']=response.status
+                          if h:
+                              outcome['access']='image_recovered'
+                              outcome['sha256']=h[0]
+                              outcome['bytes']=len(b)
+                              outcome['hashMatchesUnpublished']=[v['id'] for v in active if v['sha']==h[0]]
+                              outcome['closeCandidatesUnconfirmed']=[v['id'] for v in active if v['sha']!=h[0] and (v['dhash']^h[1]).bit_count()<=5]
+                          else:outcome['access']='non_image_response'
+                  except Exception as e:
+                      outcome['access']='http_'+str(getattr(e,'code','')) if getattr(e,'code',None) else type(e).__name__
+              results.append(outcome)
+          report={'schema':'xjw-protected-published-media-readonly-v1','liveImageRepoCount':len(active),'publishedRoutesReadOnly':results,'safety':'no writes/no approvals/no publishing; unrecovered images stay missing'}
+          pathlib.Path('/tmp/published-media-route-proof.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('PASS read-only attempt, recovered',sum(x['access']=='image_recovered' for x in results),'of 2 published internal images')
+          for x in results:print(x['published_route'],x['access'],'hash_matches',len(x['hashMatchesUnpublished']))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-protected-published-media-proof-${{ github.run_id }}
+          path: /tmp/published-media-route-proof.json
+          if-no-files-found: warn
+          retention-days: 3
