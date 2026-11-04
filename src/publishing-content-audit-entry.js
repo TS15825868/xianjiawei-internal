@@ -2,7 +2,7 @@ import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors, validOriginalImageReview } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-10-30-batched-history-audit-v15';
+const VERSION='2026-11-04-paged-history-audit-v16';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -142,17 +142,20 @@ async function batchAudit(request,env,ctx){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
   // Read the full history once per request, including archived copy for deduplication.
   // Keep archived rows out of active image/scene checks and the all=1 response.
-  const historyResult=await env.DB.prepare('SELECT * FROM social_posts').all();
+  const historyResult=await env.DB.prepare('SELECT id,title,copy,status,image_url,image_source FROM social_posts').all();
   const history=historyResult.results||[],rows=history.filter(row=>clean(row.status)!=='archived');
   const url=new URL(request.url),all=url.searchParams.get('all')==='1';
-  const ids=all?rows.map(row=>row.id):(url.searchParams.get('ids')||'').split(',').map(decodeURIComponent).map(clean).filter(Boolean).slice(0,80);
+  const offset=Math.max(0,Number.parseInt(url.searchParams.get('offset')||'0',10)||0),limit=Math.min(8,Math.max(1,Number.parseInt(url.searchParams.get('limit')||'4',10)||4));
+  const ids=all?rows.map(row=>row.id).sort().slice(offset,url.searchParams.has('limit')?offset+limit:undefined):(url.searchParams.get('ids')||'').split(',').map(decodeURIComponent).map(clean).filter(Boolean).slice(0,8);
   if(!ids.length)return json({version:VERSION,items:[],total:0,scope:all?'all':'selected'});
-  const byId=new Map(history.map(row=>[row.id,row])),items=[];
+  const items=[];
+  const selected=await env.DB.prepare(`SELECT * FROM social_posts WHERE id IN (${ids.map(()=>'?').join(',')})`).bind(...ids).all();
+  const byId=new Map((selected.results||[]).map(row=>[row.id,row]));
   // One batched evidence read; avoid a D1 request per reviewed image.
-  const visualResult=await env.DB.prepare("SELECT entity_id,actor_email,after_json FROM audit_logs WHERE action='圖片原網址重新視覺覆核' ORDER BY rowid DESC").all();
+  const visualResult=await env.DB.prepare(`SELECT a.entity_id,a.actor_email,a.after_json FROM audit_logs a WHERE a.rowid IN (SELECT MAX(rowid) FROM audit_logs WHERE action='圖片原網址重新視覺覆核' AND entity_id IN (${ids.map(()=>'?').join(',')}) GROUP BY entity_id)`).bind(...ids).all();
   const visualById=new Map();for(const log of visualResult.results||[])if(!visualById.has(log.entity_id))visualById.set(log.entity_id,[log]);
   for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows,history,visualById.get(id)||[])});}
-  return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',items});
+  return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',offset:all?offset:0,next_offset:all&&offset+ids.length<rows.length?offset+ids.length:null,library_total:rows.length,items});
 }
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
 async function enforceBeforeWrite(request,env,ctx,id){
