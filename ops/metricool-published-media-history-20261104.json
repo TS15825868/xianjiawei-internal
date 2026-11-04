@@ -1,0 +1,350 @@
+{
+  "schema": "xjw-metricool-published-media-history-v1",
+  "brand": "仙加味",
+  "brandId": "6889683",
+  "capturedOn": "2026-11-04",
+  "scope": "Metricool observed published records Apr 2026-Mar 2027; no edits",
+  "records": [
+    {
+      "metricool_id": 374250233,
+      "uuid": "-2505697611638748338",
+      "published_networks": [
+        "instagram"
+      ],
+      "date": "2026-09-20T12:30:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-246752664696486559.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 374250281,
+      "uuid": "6950151883400300392",
+      "published_networks": [
+        "instagram"
+      ],
+      "date": "2026-09-24T19:45:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-5238920486714089918.webp"
+      ]
+    },
+    {
+      "metricool_id": 381321224,
+      "uuid": "-6191312950570498373",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-09-24T20:20:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-15678998739789605911.png"
+      ]
+    },
+    {
+      "metricool_id": 381460200,
+      "uuid": "3031900610089730901",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-09-25T10:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-14197825101715867656.png"
+      ]
+    },
+    {
+      "metricool_id": 373166032,
+      "uuid": "-1872410059056657569",
+      "published_networks": [
+        "threads"
+      ],
+      "date": "2026-09-09T19:30:00",
+      "media": []
+    },
+    {
+      "metricool_id": 373633196,
+      "uuid": "8238378764901434251",
+      "published_networks": [
+        "instagram"
+      ],
+      "date": "2026-09-16T19:45:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-13400425258538276686.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 373684071,
+      "uuid": "-4469213669257818654",
+      "published_networks": [
+        "facebook"
+      ],
+      "date": "2026-09-10T18:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-8641764242970631853.webp"
+      ]
+    },
+    {
+      "metricool_id": 373684105,
+      "uuid": "4782339360770902078",
+      "published_networks": [
+        "threads"
+      ],
+      "date": "2026-09-10T20:30:00",
+      "media": []
+    },
+    {
+      "metricool_id": 373684158,
+      "uuid": "-7830001758349670514",
+      "published_networks": [
+        "threads"
+      ],
+      "date": "2026-09-11T12:00:00",
+      "media": []
+    },
+    {
+      "metricool_id": 374341464,
+      "uuid": "-550089368619171039",
+      "published_networks": [
+        "facebook"
+      ],
+      "date": "2026-09-18T12:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-6686366045816383625.png"
+      ]
+    },
+    {
+      "metricool_id": 374518682,
+      "uuid": "-5956048141445018395",
+      "published_networks": [
+        "threads"
+      ],
+      "date": "2026-09-13T11:00:00",
+      "media": []
+    },
+    {
+      "metricool_id": 376700707,
+      "uuid": "4638476563433605611",
+      "published_networks": [
+        "facebook",
+        "threads"
+      ],
+      "date": "2026-09-16T13:30:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-12228078222202646136.png"
+      ]
+    },
+    {
+      "metricool_id": 378504347,
+      "uuid": "-1472202903323459584",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-09-19T16:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-14046352937096209016.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-13769941406958735567.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-12248332353702510569.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-14610292758353612517.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-18413200528643381686.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-849948959135799428.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-15641722929826504635.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-11432916494416801701.jpeg",
+        "https://static.metricool.com/planner/202609/6889683-file-4769220013454586866.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 384813552,
+      "uuid": "-2754556598321918410",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-01T12:30:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-16563740925706833057.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 386519368,
+      "uuid": "-6901715357797955670",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-03T10:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-10931547685988149743.png"
+      ]
+    },
+    {
+      "metricool_id": 390408055,
+      "uuid": "4714723117383569142",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-09T10:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-16822007336739654727.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 390438496,
+      "uuid": "-3479926218505237444",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-07T23:23:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-14733210130965053042.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 390449069,
+      "uuid": "5524257369653004922",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-07T23:36:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-6554743816106043100.png"
+      ]
+    },
+    {
+      "metricool_id": 391749052,
+      "uuid": "-6917105881054820252",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-09T13:03:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-10474567675227870038.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 394674560,
+      "uuid": "-5334395324803955349",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-13T16:15:00",
+      "media": [
+        "https://static.metricool.com/planner/202609/6889683-file-8864998100104123380.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 401038662,
+      "uuid": "4410043598024428792",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-21T10:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-13348597572293676223.jpeg"
+      ]
+    },
+    {
+      "metricool_id": 401809472,
+      "uuid": "6383705809000481846",
+      "published_networks": [
+        "instagram"
+      ],
+      "date": "2026-10-21T14:10:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-3789907623120776568.webp"
+      ]
+    },
+    {
+      "metricool_id": 401816970,
+      "uuid": "-3169342223180872085",
+      "published_networks": [
+        "instagram"
+      ],
+      "date": "2026-10-21T14:25:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-5277415609091240133.webp"
+      ]
+    },
+    {
+      "metricool_id": 402249028,
+      "uuid": "5678118768328461286",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-23T10:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-13532923681880088192.webp"
+      ]
+    },
+    {
+      "metricool_id": 403318046,
+      "uuid": "4657988173958170408",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-23T00:13:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-1507786455130171658.png"
+      ]
+    },
+    {
+      "metricool_id": 403326277,
+      "uuid": "4370271214323059892",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-23T00:23:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-10549660693804258593.png"
+      ]
+    },
+    {
+      "metricool_id": 408869789,
+      "uuid": "-2779792268526468321",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-10-28T21:00:00",
+      "media": [
+        "https://static.metricool.com/planner/202610/6889683-file-7045929136470601191.png"
+      ]
+    },
+    {
+      "metricool_id": 415226845,
+      "uuid": "-8969748972288521475",
+      "published_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "date": "2026-11-03T20:52:00",
+      "media": [
+        "https://static.metricool.com/planner/202611/6889683-file-10396452374892241192.png"
+      ]
+    }
+  ]
+}
