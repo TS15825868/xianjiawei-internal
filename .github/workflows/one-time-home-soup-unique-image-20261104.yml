@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 16
     env:
-      CLOUDFLARE_API_TOKEN: \${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: \${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       IMAGE_SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/2d6703c3-e700-45a7-9257-579a635f3dd9.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMDIzNmY1ZDI4ZGE5ZWNhYyIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MzkyNzUwNn0.6S-WY9RlItiE_4UW4yAjfWJjUY4E1eJzdQ8GV3DStmo"
     steps:
       - uses: actions/checkout@v5
@@ -133,7 +133,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: home-soup-unique-unpublished-bind-\${{ github.run_id }}
+          name: home-soup-unique-unpublished-bind-${{ github.run_id }}
           path: |
             /tmp/after.json
             /tmp/counts-after.json
