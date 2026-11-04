@@ -88,7 +88,7 @@ jobs:
                   raw,status=fut.result()
                   results[url]={**(perceptual(raw) if raw else {}),'source_status':status}
           def hdist(a,b):return (a^b).bit_count()
-          exact=[],similar=[]
+          exact,similar=[],[]
           for left in live:
               la=results[left['url']]
               if 'sha256' not in la:continue
