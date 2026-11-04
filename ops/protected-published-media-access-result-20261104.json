@@ -1,0 +1,16 @@
+{
+  "schema": "xjw-protected-published-media-access-v1",
+  "date": "2026-11-04",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/41852120262",
+  "readOnly": true,
+  "publishedMediaRoutes": [
+    "/media/IMG-OFFICIAL-13-BRAND-STORY",
+    "/media/IMG-OFFICIAL-12-TRIAL"
+  ],
+  "result": "service_credentials_unconfigured",
+  "cfAccessServiceTokenConfigured": false,
+  "mediaRecovered": 0,
+  "imagesComparedAgainstUnpublished": 0,
+  "blocker": "Existing CI workflow lacks CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET; do not request credentials in chat, change Access policy or use insecure bypass.",
+  "retryOnlyAfter": "Existing protected execution environment has authorized credentials or official accessible sources."
+}
