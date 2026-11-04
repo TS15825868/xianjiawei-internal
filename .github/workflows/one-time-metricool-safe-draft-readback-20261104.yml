@@ -62,7 +62,8 @@ jobs:
             assert(!deliveries.some(x=>x.post_id===post_id&&(Number(x.attempt_count)>0||x.last_attempt_at||x.published_at||x.remote_id||['sending','retry','published','manual_required','permanent_failed'].includes(x.status))),'Unexpected prior send '+post_id);
             const prior=JSON.parse(link.template_json||'{}'),replacement=JSON.stringify(remote);
             if(prior.text!==post.copy)throw Error('Previous D1 template is mismatched to post copy '+post_id);
-            if(prior.id!==remote.id||String(prior.uuid)!==uuid)throw Error('Previous D1 template identity mismatched '+post_id);
+            // Old template IDs predate prior exact-UUID reconciliation; compare UUID, not stale numeric ID.
+            if(String(prior.uuid)!==uuid||!Number.isSafeInteger(Number(prior.id)))throw Error('Previous D1 template UUID invalid '+post_id);
             const changed=link.template_json!==replacement;
             if(changed){
               statements.push('UPDATE social_metricool_sync SET template_json='+q(replacement)+",last_sync_at=datetime('now'),updated_at=datetime('now') WHERE post_id="+q(post_id)+' AND metricool_id='+metricool_id+' AND uuid='+q(uuid)+" AND state='pending_review' AND template_json="+q(link.template_json)+' AND updated_at='+q(link.updated_at)+" AND EXISTS(SELECT 1 FROM social_posts WHERE id="+q(post_id)+" AND status='pending_review' AND approved_by IS NULL AND published_at IS NULL AND scheduled_at IS NULL) AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id="+q(post_id)+" AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed')));");
