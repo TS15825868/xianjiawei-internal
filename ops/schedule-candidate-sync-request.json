@@ -1,4 +1,7 @@
 {
-  "requestedAt": "2026-10-07T22:00:00+08:00",
-  "reason": "reconcile two Metricool-published D1 states after restoring ten missing images"
+  "requestedAt": "2026-11-05T19:36:00+08:00",
+  "reason": "Read-only latest Cloudflare D1 publishing review status reconciliation; keep all unpublished and external schedule state unchanged",
+  "reviewScope": "AI quality vs human approval, scheduled, pending review, image provenance",
+  "authorizedBy": "standing project maintenance authorization",
+  "publish": false
 }
