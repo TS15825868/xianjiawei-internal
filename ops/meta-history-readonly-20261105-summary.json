@@ -1,0 +1,82 @@
+{
+  "schema": "xjw-official-facebook-history-partial-provenance-v1",
+  "checkedAt": "2026-11-05",
+  "source": "Official Meta Graph API using existing Worker Page token, read-only",
+  "originRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42027078251",
+  "artifact": "xjw-meta-history-readonly-42027078251",
+  "d1Table": "social_meta_history_readonly",
+  "d1RunId": "XJW-META-HISTORY-20261105-V1",
+  "scope": {
+    "facebook": "74 Page posts visible to existing official token, 2022-03-30 through 2026-11-03; Facebook first-page paging.hasMore=false",
+    "facebookPostCount": 74,
+    "facebookDateMin": "2022-03-30",
+    "facebookDateMax": "2026-11-03",
+    "facebookRawMediaSlots": 179,
+    "facebookDistinctMediaPathnames": 101,
+    "facebookPostsWithImage": 68,
+    "facebookMultiImagePostsByDistinctPath": 10,
+    "instagram": "Worker official Page token exposes no linked Instagram account ID; read not available",
+    "threads": "Current production deliberately routes publishing through Metricool and has no Threads history API token",
+    "threePlatformHistoryComplete": false
+  },
+  "facebookMultiImagePosts": [
+    {
+      "date": "2026-09-19",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "distinctMediaFiles": 9
+    },
+    {
+      "date": "2026-05-11",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1370780828405469",
+      "distinctMediaFiles": 2
+    },
+    {
+      "date": "2025-11-20",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1234210218729198",
+      "distinctMediaFiles": 4
+    },
+    {
+      "date": "2025-05-23",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1087842966699258",
+      "distinctMediaFiles": 2
+    },
+    {
+      "date": "2025-04-12",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1057526489730906",
+      "distinctMediaFiles": 5
+    },
+    {
+      "date": "2025-01-28",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/1001127575370798",
+      "distinctMediaFiles": 2
+    },
+    {
+      "date": "2023-08-29",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/678282490988643",
+      "distinctMediaFiles": 2
+    },
+    {
+      "date": "2022-06-21",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/5393916953981084",
+      "distinctMediaFiles": 4
+    },
+    {
+      "date": "2022-04-03",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/5168748886497893",
+      "distinctMediaFiles": 10
+    },
+    {
+      "date": "2022-03-31",
+      "postUrl": "https://www.facebook.com/1531256482357902/posts/5159587880747327",
+      "distinctMediaFiles": 3
+    }
+  ],
+  "cautions": [
+    "Facebook full_picture and attachment.media may duplicate one file with different CDN signatures: compare canonical media pathnames and image hash, not raw URL count",
+    "Meta CDN media URLs can expire; use post permalink plus original media relation as durable provenance",
+    "Page visible posts may exclude inaccessible/hidden posts; not proof of all-time historical absence",
+    "No Instagram or Threads source data, so no 58 deferred posts are automatically AI_APPROVED",
+    "Do not overwrite published or archived posts, AI review decisions, D1 approvals or Metricool drafts"
+  ],
+  "actionableNext": "Fetch authenticated Instagram historical media with children for xianjiawei.tw and Threads post/carousel history via authorized platform session; reconcile only missing media relation and specific semantic duplicates; then re-run targeted 16-point review and read back D1. No public auto-send."
+}
