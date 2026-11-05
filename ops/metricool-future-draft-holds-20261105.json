@@ -1,0 +1,154 @@
+{
+  "version": "2026-11-05-checked-metricool-future-drafts",
+  "source": "Metricool connector live getScheduledPosts",
+  "brandId": "6889683",
+  "timezone": "Asia/Taipei",
+  "snapshotNature": "point_in_time_must_recheck_before_publish",
+  "notPublished": true,
+  "notes": "每筆皆為 draft:true、autoPublish:false，日期是草稿預定時間，不代表已核准或正式排程。不得依此自動對外發布。",
+  "items": [
+    {
+      "id": 395780595,
+      "date": "2027-01-01",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 395780663,
+      "date": "2027-02-03",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 395780722,
+      "date": "2027-02-05",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 395780780,
+      "date": "2027-02-06",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 395780855,
+      "date": "2027-02-08",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 395780924,
+      "date": "2027-02-20",
+      "time": "09:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 409115861,
+      "date": "2026-11-11",
+      "time": "10:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 409189881,
+      "date": "2026-11-16",
+      "time": "10:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 409190019,
+      "date": "2026-11-28",
+      "time": "10:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 413610864,
+      "date": "2026-11-06",
+      "time": "10:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "id": 415295632,
+      "date": "2026-11-25",
+      "time": "10:00",
+      "draft": true,
+      "autoPublish": false,
+      "mediaCount": 1,
+      "networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    }
+  ]
+}
