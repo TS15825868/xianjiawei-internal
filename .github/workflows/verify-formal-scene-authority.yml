@@ -8,6 +8,8 @@ on:
       - 'ops/social-scene-image-production-queue-20261105.json'
       - 'ops/social-calendar-2026-11-to-2027-03-candidates.json'
       - 'tools/test-formal-scene-authority.mjs'
+      - 'tools/test-formal-media-retired-safety.mjs'
+      - 'assets/js/formal-media-policy-v20260810.js'
       - '.github/workflows/verify-formal-scene-authority.yml'
 
 permissions:
@@ -30,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check tools/test-formal-scene-authority.mjs
-          node --test tools/test-formal-scene-authority.mjs
+          node --test tools/test-formal-scene-authority.mjs tools/test-formal-media-retired-safety.mjs
       - name: Confirm zero external mutations
         run: |
           echo "PASS: source identity validation is read-only; no D1 writes, approvals, auto scheduling or publication."
