@@ -1,0 +1,17 @@
+{
+  "schema": "xjw-social-calendar-draft-import-request-v1",
+  "action": "stage_drafts_only",
+  "createdOn": "2026-11-05",
+  "source": "ops/social-calendar-safe-drafts-20261105.json",
+  "target": "Cloudflare D1 social_posts",
+  "expectedMaximum": 23,
+  "requireLiveD1ReadBeforeWrite": true,
+  "requireReadbackOfEachInsertedPost": true,
+  "allowApprove": false,
+  "allowSchedule": false,
+  "allowPublish": false,
+  "allowEditExisting": false,
+  "images": "intentionally_missing_until_independent_visual_review",
+  "humanApproval": "mandatory_before_any_public_schedule",
+  "newCost": "NT$0"
+}
