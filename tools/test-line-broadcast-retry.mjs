@@ -1,18 +1,22 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {lineBroadcastRetryKey,publishPostById} from '../src/social-publisher.js';
+import {fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
 
 const uuidV4=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
 const post={id:'P-LINE-20261026-STABLE',status:'approved',headline:'正式已核准草稿',
  copy:'本輪只測試 LINE 安全重試，不向真正顧客發送',image_url:'https://assets.example.test/line.webp',
+ image_quality_status:'ok',approved_by:'owner@example.com',approved_at:'2026-10-26T00:00:00Z',
  platforms_json:JSON.stringify(['LINE OA'])};
+const verifiedHumanGate={content_fingerprint:await fingerprint(post),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true]))),copy_image_match:1,reviewed_by:'owner@example.com',reviewed_at:'2026-10-26T00:00:00Z'};
 function fakeDb({prior=null}={}){
  let writes=[];
- const DB={prepare(sql){let args=[];
+ const DB={exec:async()=>({}),prepare(sql){let args=[];
   return {bind(...v){args=v;return this},
    async first(){
     if(sql.includes('FROM social_metricool_sync'))return null;
     if(sql.includes('FROM social_posts'))return {...post};
+    if(sql.includes('FROM social_post_review_gates'))return verifiedHumanGate;
     if(sql.includes('FROM social_publish_deliveries'))return prior;
     throw Error('Unexpected read SQL: '+sql);
    },
