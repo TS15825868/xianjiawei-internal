@@ -9,7 +9,8 @@ source=source.replace("import {assessAutopublishCandidate} from './ai-autopublis
 assert.match(source,/const fullAudit=await auditOne\(env,row,/);
 assert.ok(source.indexOf('const fullAudit=await auditOne(env,row,')<source.indexOf('const result=await recordAiReview(env,row,'),
   'AI approval must run full official content audit before writing any AI approval');
-assert.match(source,/const fullAudit=await auditOne\(env,row\);/, 'AI gate must re-run full brand and visual audit at scheduled or immediate publication');
+assert.match(source,/AI品質審核不能代替使用者人工核准/, 'AI review can never authorize publication without a HUMAN gate');
+assert.match(source,/reviewer_type:'HUMAN'/, 'Only a verified HUMAN review gate may authorize publication');
 assert.match(source,/auto_schedule:false,queued_for_work:/,
   'Local Work queue must never claim a remote scheduled publication');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
@@ -55,7 +56,7 @@ for(const [path,body] of [['status',{status:'approved'}],['status',{status:'sche
 state.row.status='pending_review';
 assert.equal((await post('status',{status:'approved',review_checklist:{},copy_image_match:true})).status,409);
 assert.equal(state.forwarded,0);assert.equal(state.writes.length,0);
-state.row={...state.row,status:'approved',approved_by:'reviewer@example.com',scheduled_at:'2026-10-27T02:00:00Z'};
+state.row={...state.row,status:'approved',approved_by:'reviewer@example.com',approved_at:new Date().toISOString(),scheduled_at:'2026-10-27T02:00:00Z'};
 state.review={content_fingerprint:await fingerprint(state.row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(key=>[key,true]))),copy_image_match:1,reviewed_by:'reviewer@example.com',reviewed_at:new Date().toISOString()};
 // Explicitly rejected or needs_rework images must not pass 16-point
 // approval, scheduled publishing or immediate publish through API bypasses.
@@ -87,10 +88,8 @@ assert.equal((await gateState(env,state.row)).ok,false,'AI label alone cannot by
 assert.equal((await post('publish-now')).status,409,'AI label without verified proof cannot publish');
 state.row.approved_by=oldHumanApproval;
 state.row.review_note='AI審核：AI_APPROVED；';
-assert.equal((await gateState(env,state.row)).ok,false,
-  'A real owner email plus forged AI review note cannot bypass missing AI evidence');
-assert.equal((await post('publish-now')).status,409,
-  'Forged AI note with matching owner FK must never publish');
+assert.equal((await gateState(env,state.row)).ok,true,
+  'A legacy AI note must not block a separately verified HUMAN approval');
 state.row.review_note='';
 
 
