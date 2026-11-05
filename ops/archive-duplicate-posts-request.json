@@ -1,0 +1,17 @@
+{
+  "schema": "xjw-exact-two-archive-request-v1",
+  "action": "archive_exact_two_pending_editorial_duplicates",
+  "date": "2026-11-05",
+  "source": "ops/archive-evidence-backed-duplicates-20261105.json",
+  "expectedIds": [
+    "XJW-CONV-chat-gao-vs-drink",
+    "XJW-CONV-year-end-keep-habit"
+  ],
+  "purpose": "User instructed unusable duplicate-angle posts to leave the publication queue, preserving full audit evidence",
+  "delete": false,
+  "approve": false,
+  "publish": false,
+  "schedule": false,
+  "requireCAS": true,
+  "requireRemoteReadback": true
+}
