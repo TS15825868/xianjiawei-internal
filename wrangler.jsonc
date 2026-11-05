@@ -11,7 +11,8 @@
     "TEMP_DISABLE_ACCESS": "false",
     "XJW_SOCIAL_AI_DRAFT_ENABLED": "false",
     "XJW_SOCIAL_CONTENT_DRAFT_ENABLED": "false",
-    "XJW_AI_FREE_ACCOUNT_CONFIRMED": "false"
+    "XJW_AI_FREE_ACCOUNT_CONFIRMED": "false",
+    "XJW_META_HISTORY_READONLY_DATE": "2026-11-05"
   },
   "ai": {"binding": "AI"},
   "assets": {
