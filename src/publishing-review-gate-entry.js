@@ -130,23 +130,10 @@ async function gateState(env,row){
   if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']
     .includes(clean(row.image_quality_status).toLowerCase()))
     return{ok:false,reason:clean(row.image_quality_status)==='needs_review'?'圖片證據不足，待人工確認；不能排程或發布':'圖片仍需重製或未通過品質檢查；不能排程或發布'};
-  // Owner-authorized AI approvals use versioned, content-bound evidence;
-  // unapproved AI drafts never enter the publication path.
-  if(clean(row.approved_by).startsWith('ai:')||clean(row.review_note).startsWith('AI審核：AI_APPROVED；')){
-    const current=await fingerprint(row);
-    const verified=await aiGate(env,row,current);
-    if(!verified.ok)return verified;
-    // Always re-run the complete copy/image/season/mascot audit at dispatch,
-    // not just the lightweight product guard used when evidence was saved.
-    // This catches newly prohibited visuals and policy changes without
-    // weakening the existing human-review branch.
-    const {auditOne}=await import('./publishing-content-audit-entry.js');
-    const fullAudit=await auditOne(env,row);
-    if(!fullAudit.ok)return{ok:false,reason:fullAudit.errors.join('；')};
-    return{ok:true,reviewed_at:verified.reviewed_at,reviewed_by:verified.reviewed_by,fingerprint:current,reviewer_type:'AI'};
-  }
-  if(clean(row.review_note).startsWith('AI審核：AI_APPROVED；')&&clean(row.status)!=='approved')
-    return{ok:false,reason:'AI審核完成但尚未有效核准，禁止排程'};
+  // A quality-only AI review never satisfies the publication gate. All posts,
+  // including AI_APPROVED ones, require a version-bound HUMAN gate and owner approval.
+  if(!['approved','scheduled'].includes(clean(row.status))||!clean(row.approved_by)||!row.approved_at)
+    return{ok:false,reason:'AI品質審核不能代替使用者人工核准；尚未取得正式人工核准'};
   await ensureSchema(env);
   const gate=await env.DB.prepare('SELECT * FROM social_post_review_gates WHERE post_id=? LIMIT 1').bind(row.id).first();
   if(!gate)return{ok:false,reason:'尚未完成16項正式圖文審核'};
@@ -333,20 +320,12 @@ export default{async fetch(request,env,ctx){
       const auditedRows=await env.DB.prepare("SELECT id,title,headline,copy,category,image_url,image_alt,image_source,image_quality_status,status FROM social_posts WHERE status<>'archived'").all();
       const fullAudit=await auditOne(env,row,auditedRows.results||[]);
       if(!fullAudit.ok)return json({error:'AI核准前完整圖文稽核未通過，禁止核准或發布',details:fullAudit.errors},409);
-      const result=await recordAiReview(env,row,proof,profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});const latest=await postRow(env,id);if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);result.human_review_required=result.decision!=='AI_APPROVED';
-      if(result.decision==='AI_APPROVED'){
-        const current=await postRow(env,id),gate=await gateState(env,current);
-        if(!gate.ok)return json({...result,auto_schedule:false,queue_error:gate.reason});
-        // Existing external UUIDs and the owner's previous schedules must
-        // be reconciled before any unattended scheduling request is queued.
-        let initialized=false;
-        try{initialized=(await env.DB.prepare("SELECT setting_value FROM social_metricool_control WHERE setting_key='initialized'").first())?.setting_value==='20261013-eight-recovery'}catch{}
-        if(!initialized)return json({...result,auto_schedule:false,queue_error:'Metricool 既有UUID尚未對帳；AI已核准但不自動建立外部排程'});
-        try{const queued=await enqueueMetricool(env,current,{gateState,fingerprint});
-          return json({...result,auto_schedule:false,queued_for_work:Boolean(queued.ok&&queued.queued),metricool:queued,external_scheduled:false,external_published:false,message:queued.ok?'AI審核已通過，僅加入免費Work待排程佇列；尚未在Metricool建立正式排程':'AI審核已通過，但未建立排程；請核對阻擋原因'});
-        }catch(error){return json({...result,auto_schedule:false,queue_error:clean(error?.message||error)})}
-      }
-      return json(result)}catch(e){return json({error:clean(e.message||e)},409)}
+      const result=await recordAiReview(env,row,proof,profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});
+      const latest=await postRow(env,id);
+      if(latest.status!==result.status)return json({error:'內容已被其他操作更新；未送出排程'},409);
+      // Quality-only approval is persisted, but scheduling and all remote sends stay blocked.
+      return json({...result,human_review_required:true,auto_schedule:false,queued_for_work:false,external_scheduled:false,external_published:false,message:'AI品質預審已記錄；須使用者人工核准目前圖文版本後，才可設定正式排程'});
+    }catch(e){return json({error:clean(e.message||e)},409)}
   }
   const imageReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/image-visual-review$/);
   if(imageReviewMatch&&request.method==='GET')return imageReviewContext(request,env,ctx,decodeURIComponent(imageReviewMatch[1]));
