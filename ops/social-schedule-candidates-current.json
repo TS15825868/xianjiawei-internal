@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-05T11:37:58.168Z",
+  "generatedAt": "2026-11-05T14:39:09.818Z",
   "counts": {
-    "pending_review": 58
+    "pending_review": 56
   },
   "items": [
     {
@@ -462,28 +462,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-04T10:03:41.787Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-year-end-keep-habit",
-      "title": "如果今年只能留下一個習慣，你會留哪個？",
-      "copy": "跨年前大家常想著明年要多做什麼，但也可以反過來想：今年已經有哪個習慣，值得繼續留下來？\n\n仙加味希望把家族做事的細節傳承下去，也想聽聽你最想留下的生活習慣。\n\n如果只能選一個，你會留哪個？",
-      "category": "年末互動",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": null,
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-keep-habit-audit-v1.jpg",
-      "image_alt": "年末傍晚，仙加味小老闆在工作筆記上記錄當天完成的小事，小鹿與小烏龜陪在桌旁，桌上有少量紅棗與木匙。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-04T10:03:43.627Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -968,28 +946,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-04T10:04:21.028Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-chat-gao-vs-drink",
-      "title": "龜鹿膏跟龜鹿飲，差在哪？",
-      "copy": "最近有人問我們：「龜鹿膏跟龜鹿飲，到底差在哪？」\n\n如果只問哪個比較好，其實很難回答。我們反而會先問：你平常比較習慣怎麼準備？有人喜歡在家慢慢來，有人比較喜歡方便一點的形式。\n\n你比較像在家慢慢準備型，還是方便快速型？",
-      "category": "輕鬆問答",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2026-11-06T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-gao-vs-drink-scene-v1.jpg",
-      "image_alt": "仙加味小老闆在居家早餐桌前，拿著小匙介紹龜鹿膏100g罐與龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在桌旁聆聽。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-04T10:03:45.193Z",
       "platforms": [
         "Facebook",
         "Instagram",
