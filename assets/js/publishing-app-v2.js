@@ -1,4 +1,4 @@
-const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,queuedLoad:null,platforms:null,loadId:0,maintenanceReadonly:false};
+const state={me:null,items:[],total:0,counts:{},filter:'',status:'all',loading:false,loadingAll:false,queuedLoad:null,platforms:null,loadId:0,maintenanceReadonly:false};
 const PAGE_SIZE=(window.matchMedia&&window.matchMedia('(max-width:720px)').matches)?6:18;
 const CUSTOMER_INTERNAL_TERMS=['待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料','Cloudflare','API Token','Secret','Repository','Repo','commit','deploy','部署','快取版本','測試資料','內部檢查','客戶實際會看到的文案','產品原圖','正式資訊','正式說明'];
 const $=(s,r=document)=>r.querySelector(s);
@@ -234,20 +234,20 @@ function markBrokenImages(root){
 function renderList(){
   const root=$('#listRoot');
   if(!root)return;
-  const signature=JSON.stringify([state.status,state.filter,state.total,state.items.map(p=>[p.id,p.updated_at,p.status,p.image_url])]);
+  const signature=JSON.stringify([state.status,state.filter,state.total,state.loadingAll,state.items.map(p=>[p.id,p.updated_at,p.status,p.image_url])]);
   if(root.dataset.renderSignature===signature){renderMetrics();return;}
   root.dataset.renderSignature=signature;
   const remaining=Math.max(0,state.total-state.items.length);
   root.innerHTML=state.items.length
-    ?`<div class="xjw-list">${state.items.map(card).join('')}</div>${remaining>0?`<div class="publish-load-more"><button class="btn primary" data-load-more>載入下一批 ${Math.min(PAGE_SIZE,remaining)} 篇 <small>（尚有 ${remaining} 篇）</small></button></div>`:''}`
+    ?`<div class="xjw-list">${state.items.map(card).join('')}</div>${remaining>0?`<div class="publish-load-more"><button class="btn primary" data-load-more ${state.loadingAll?'disabled':''}>載入下一批 ${Math.min(PAGE_SIZE,remaining)} 篇</button><button class="btn" data-load-all ${state.loadingAll?'disabled':''}>${state.loadingAll?'正在載入全部貼文…':`載入全部剩餘 ${remaining} 篇`}</button></div>`:''}`
     :'<section class="card empty-state"><h3>沒有符合條件的貼文</h3><p>可調整搜尋／狀態條件，或新增貼文草稿。</p></section>';
   renderMetrics();
   markBrokenImages(root);
   requestAnimationFrame(()=>document.dispatchEvent(new CustomEvent('xjw-publishing-list-rendered')));
 }
 
-function queryPath(offset=0){
-  const p=new URLSearchParams({limit:String(PAGE_SIZE),offset:String(offset)});
+function queryPath(offset=0,limit=PAGE_SIZE){
+  const p=new URLSearchParams({limit:String(Math.min(60,Math.max(1,Number(limit)||PAGE_SIZE))),offset:String(offset)});
   if(state.status!=='all')p.set('status',state.status);
   if(state.filter.trim())p.set('q',state.filter.trim());
   return`/posts?${p}`;
@@ -267,12 +267,12 @@ async function loadPlatforms(loadId){
   }
 }
 
-async function load({append=false}={}){
+async function load({append=false,batchSize=PAGE_SIZE}={}){
   if(state.loading){
     // Preserve the latest search/filter/refresh request while D1 is loading.
     // Repeated pagination clicks must not enqueue extra pages.
     if(!append)state.queuedLoad={append:false};
-    return;
+    return false;
   }
   const loadId=++state.loadId;
   state.loading=true;
@@ -283,8 +283,8 @@ async function load({append=false}={}){
   const loadMore=$('[data-load-more]');
   const doneMore=setButtonBusy(loadMore,'載入中…');
   try{
-    const data=await api(queryPath(offset),{timeout:10000});
-    if(loadId!==state.loadId)return;
+    const data=await api(queryPath(offset,batchSize),{timeout:10000});
+    if(loadId!==state.loadId)return false;
     if(data?.maintenance_readonly||data?.maintenance_no_login){state.maintenanceReadonly=true;applyMaintenanceMode();}
     const batch=Array.isArray(data)?data:(data?.items||[]);
     state.items=append?[...state.items,...batch.filter(n=>!state.items.some(o=>o.id===n.id))]:batch;
@@ -293,8 +293,9 @@ async function load({append=false}={}){
     renderList();
     connection(`已連線｜顯示 ${state.items.length}／${state.total} 篇`);
     if(!append)loadPlatforms(loadId);
+    return true;
   }catch(error){
-    if(loadId!==state.loadId)return;
+    if(loadId!==state.loadId)return false;
     connection('連線失敗',true);
     if(!append){
       const root=$('#listRoot');
@@ -302,6 +303,7 @@ async function load({append=false}={}){
     }else{
       toast(error.message||String(error),true);
     }
+    return false;
   }finally{
     if(loadId===state.loadId){
       state.loading=false;
@@ -311,6 +313,26 @@ async function load({append=false}={}){
       state.queuedLoad=null;
       if(queued)load(queued);
     }
+  }
+}
+
+async function loadAll(){
+  // The API limits pages to 60; fetch every remaining page without silently truncating the list.
+  // This is an opt-in visual inspection only: it never changes approvals or posts.
+  if(state.loading||state.loadingAll||state.items.length>=state.total)return;
+  const selectedStatus=state.status,selectedFilter=state.filter;
+  state.loadingAll=true;
+  renderList();
+  try{
+    while(state.items.length<state.total){
+      if(state.status!==selectedStatus||state.filter!==selectedFilter)break;
+      const before=state.items.length;
+      const ok=await load({append:true,batchSize:60});
+      if(!ok||state.items.length<=before)break; // failure/no progress: do not loop forever
+    }
+  }finally{
+    state.loadingAll=false;
+    renderList();
   }
 }
 
@@ -639,7 +661,9 @@ function bind(){
     const refresh=e.target.closest('[data-refresh]');
     if(refresh){load();return;}
     const more=e.target.closest('[data-load-more]');
-    if(more){load({append:true});return;}
+    if(more){if(!state.loadingAll)load({append:true});return;}
+    const all=e.target.closest('[data-load-all]');
+    if(all){loadAll();return;}
     const add=e.target.closest('[data-add-post]');
     if(add){openPostForm();return;}
     const metric=e.target.closest('[data-filter-status]');
