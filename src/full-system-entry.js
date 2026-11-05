@@ -2,6 +2,7 @@ import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
 import {socialContentDraft} from './social-content-draft.js';
+import {collectMetaHistoryOnce} from './meta-history-readonly.js';
 import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {lineHandoffApi} from './line-handoff.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
@@ -301,6 +302,13 @@ export default{
         await ensureAiSchema(env);
         await syncMetricool(env,{gateState,fingerprint},new Date(time));
       }catch(error){console.error('Metricool排程同步錯誤',String(error?.message||error))}
+    }
+    // Recover official FB/IG historical carousel metadata exactly once today, on existing free cron.
+    // This is read-only for public brand posts and cannot approve or dispatch anything.
+    if(env?.XJW_META_HISTORY_READONLY_DATE==='2026-11-05'&&
+       new Date(time).toISOString().slice(0,10)==='2026-11-05'&&
+       new Date(time).getUTCMinutes()%5===0&&typeof ctx?.waitUntil==='function'){
+      ctx.waitUntil(collectMetaHistoryOnce(env).catch(()=>console.warn('meta_history_readonly_unavailable')));
     }
     // Never resurrect the September historical first post on every tick.
     if(typeof publishingApp.scheduled==='function')return publishingApp.scheduled(controller,env,ctx);
