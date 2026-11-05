@@ -1,22 +1,26 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {publishPostById,publishDuePosts} from '../src/social-publisher.js';
+import {fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
 
 const id='P-ATOMIC-20261026-01',platform='Facebook',now=new Date('2026-10-26T00:00:00.000Z');
 const post={id,status:'approved',headline:'仙加味已核准社群貼文',copy:'只有本地模擬，無真實對客發布',
  image_url:'https://assets.example.test/approved.webp',platforms_json:JSON.stringify([platform]),
+ image_quality_status:'ok',approved_by:'owner@example.com',approved_at:'2026-10-26T00:00:00Z',
  scheduled_at:now.toISOString()};
+const humanReview={content_fingerprint:await fingerprint(post),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true]))),copy_image_match:1,reviewed_by:'owner@example.com',reviewed_at:'2026-10-26T00:00:00Z'};
 function fixture({firstStatus=null,throwOnSave=false}={}){
  let delivery=firstStatus?{
   status:firstStatus,post_id:id,platform,attempt_count:1,
   last_attempt_at:'2026-10-25T23:54:00.000Z',created_at:'2026-10-25T23:50:00.000Z'
  }:null;
  const updates=[];let claims=0,saveCalls=0;
- const DB={prepare(sql){let args=[];
+ const DB={exec:async()=>({}),prepare(sql){let args=[];
   return{bind(...v){args=v;return this},
    async first(){
     if(sql.includes('FROM social_metricool_sync'))return null;
     if(sql.includes('FROM social_posts'))return {...post};
+    if(sql.includes('FROM social_post_review_gates'))return humanReview;
     if(sql.includes('FROM social_publish_deliveries'))return delivery?{...delivery}:null;
     throw Error('unexpected SELECT '+sql);
    },
