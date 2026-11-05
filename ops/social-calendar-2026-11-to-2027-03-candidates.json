@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-05-social-calendar-to-2027-03-v2-draft",
+  "version": "2026-11-05-social-calendar-v3-live-metricool-held",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "source": "editorial_copies_draft_not_ai_approved",
@@ -7,7 +7,7 @@
     "ops/social-calendar-2026-11-to-2027-02-candidates.json",
     "ops/social-calendar-2027-03-candidates.json"
   ],
-  "externalMetricoolAndD1Dedup": "required_prior_to_activation_unverified",
+  "externalMetricoolAndD1Dedup": "Metricool11_drafts_checked;D1_and_published_history_still_required_before_activation",
   "weeklyCadence": {
     "regularPosts": 2,
     "maxPosts": 3,
@@ -20,7 +20,7 @@
   },
   "humanApprovalRequired": true,
   "autoPublish": false,
-  "releaseRule": "以下僅是待審核候選與文案草稿，不是已核准、已產圖、已寫入D1、已排程或已發布；必須先完成正式產品及角色圖像審核、16項AI品質證據、歷史去重、D1寫入讀回及使用者對當前版本人工核准。",
+  "releaseRule": "以下僅是待審核候選與文案草稿，不是已核准、已產圖、已寫入D1、已排程或已發布；必須先完成正式產品及角色圖像審核、16項AI品質證據、歷史去重、D1寫入讀回及使用者對當前版本人工核准。 另：已確認Metricool 11篇未發布草稿占位，新候選與其日期或每週總量衝突時status=held_existing_metricool_future_drafts，禁止匯入、排程。",
   "holidayReferences": [
     {
       "name": "2027行政院辦公日曆",
@@ -48,7 +48,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261124",
@@ -65,7 +66,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261127",
@@ -84,8 +86,10 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
-      "autoPublish": false
+      "status": "held_existing_metricool_future_drafts",
+      "autoPublish": false,
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20261201",
@@ -102,7 +106,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261204",
@@ -119,7 +124,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261208",
@@ -136,7 +142,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261211",
@@ -155,7 +162,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261215",
@@ -172,7 +180,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261218",
@@ -189,7 +198,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261222",
@@ -206,7 +216,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261225",
@@ -223,7 +234,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261229",
@@ -240,7 +252,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20261231",
@@ -258,7 +271,8 @@
       "topic": "跨年夜，先把今年最喜歡的一張照片留下",
       "category": "節慶",
       "copy_draft": "跨年夜的小老闆把今年拍的生活照片挑出一張，想好明年要記錄更多日常。仙加味祝大家今晚平安順心，新的一年繼續分享好故事。",
-      "scene_brief": "跨年夜居家翻看今年照片的小老闆與小烏龜，窗外城市夜景"
+      "scene_brief": "跨年夜居家翻看今年照片的小老闆與小烏龜，窗外城市夜景",
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270101",
@@ -274,8 +288,10 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
-      "autoPublish": false
+      "status": "held_existing_metricool_future_drafts",
+      "autoPublish": false,
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20270105",
@@ -292,7 +308,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270108",
@@ -311,7 +328,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270112",
@@ -328,7 +346,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270115",
@@ -347,7 +366,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270119",
@@ -364,7 +384,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270122",
@@ -381,7 +402,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270126",
@@ -398,7 +420,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270129",
@@ -415,7 +438,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270202",
@@ -431,8 +455,10 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
-      "autoPublish": false
+      "status": "held_existing_metricool_future_drafts",
+      "autoPublish": false,
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20270205",
@@ -448,8 +474,10 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
-      "autoPublish": false
+      "status": "held_existing_metricool_future_drafts",
+      "autoPublish": false,
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20270207",
@@ -460,31 +488,34 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
+      "status": "held_existing_metricool_future_drafts",
       "autoPublish": false,
       "optionalThirdPost": true,
       "date": "2027-02-07",
       "topic": "初二走親友，路上最期待哪道家常菜",
       "category": "節慶",
       "copy_draft": "大年初二出門拜訪親友前，小老闆把禮物與外套整理好。仙加味想問：你最期待親友餐桌上的哪一道家常菜？",
-      "scene_brief": "農曆初二走親友，小老闆出門前整理包袋與小鹿"
+      "scene_brief": "農曆初二走親友，小老闆出門前整理包袋與小鹿",
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20270209",
       "date": "2027-02-09",
       "time": "10:00",
       "timezone": "Asia/Taipei",
-      "category": "節慶",
-      "topic": "春節走春回家，先坐下來聊聊天",
-      "copy_draft": "新年走春回家，小老闆把外套掛好、為家人準備溫水。仙加味想問：今年過年你最想和哪位親友見面聊聊？",
-      "scene_brief": "春節走春歸家，小老闆掛外套並招呼家人坐下",
+      "category": "料理",
+      "topic": "初四的餐桌，白蘿蔔先煮湯還是炒菜",
+      "copy_draft": "初四在家準備午餐，小老闆把白蘿蔔切好，想了想今天做一鍋清湯還是簡單炒菜。仙加味想問大家：年節餐桌上，你最喜歡哪一種蘿蔔料理？",
+      "scene_brief": "農曆初四居家廚房，小老闆備好白蘿蔔、湯鍋與砧板",
       "product_ids": [],
       "image_url": "",
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270212",
@@ -501,7 +532,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270216",
@@ -518,24 +550,26 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270219",
       "date": "2027-02-19",
       "time": "10:00",
       "timezone": "Asia/Taipei",
-      "category": "節慶",
-      "topic": "元宵前夕，圓圓湯圓先準備好了嗎",
-      "copy_draft": "元宵節前夕，小老闆和小鹿、小烏龜一起擺好碗匙，準備隔天煮湯圓。仙加味想知道：你偏好芝麻、花生，還是鹹湯圓？",
-      "scene_brief": "元宵前夕廚房準備湯圓原料、湯匙與碗",
+      "category": "料理",
+      "topic": "年節過後的蔬菜餐桌，今天想吃哪一種青菜",
+      "copy_draft": "晚上準備家常晚餐，小老闆把高麗菜、青江菜和菇類分盤放好，打算煮一頓簡單的飯菜。仙加味想問：年節後你最想吃哪種青菜？",
+      "scene_brief": "年節後居家晚餐，小老闆在廚房料理高麗菜、青江菜與菇類",
       "product_ids": [],
       "image_url": "",
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270220",
@@ -546,14 +580,16 @@
       "image_status": "needs_formal_scene_visual_review",
       "ai_16_check_status": "not_run",
       "human_approval": false,
-      "status": "candidate_only",
+      "status": "held_existing_metricool_future_drafts",
       "autoPublish": false,
       "optionalThirdPost": true,
       "date": "2027-02-20",
       "topic": "元宵節，大家的湯圓煮好了嗎",
       "category": "節慶",
       "copy_draft": "元宵節晚上，小老闆把煮好的湯圓分到碗裡，和小鹿、小烏龜一起分享。仙加味祝大家有個熱鬧又溫馨的元宵夜。",
-      "scene_brief": "元宵節晚間家庭餐桌，煮好的湯圓、小老闆與分開小鹿小烏龜"
+      "scene_brief": "元宵節晚間家庭餐桌，煮好的湯圓、小老闆與分開小鹿小烏龜",
+      "enabled": false,
+      "blockReason": "同週有現存Metricool未發布草稿占位；禁止重複建立或超過3篇"
     },
     {
       "id": "XJW-CAND-20270223",
@@ -570,7 +606,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270226",
@@ -587,7 +624,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270302",
@@ -604,7 +642,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270305",
@@ -621,7 +660,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270309",
@@ -640,7 +680,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270312",
@@ -657,7 +698,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270316",
@@ -674,7 +716,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270319",
@@ -691,7 +734,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270323",
@@ -708,7 +752,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270326",
@@ -727,7 +772,8 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     },
     {
       "id": "XJW-CAND-20270330",
@@ -744,7 +790,10 @@
       "ai_16_check_status": "not_run",
       "human_approval": false,
       "status": "candidate_only",
-      "autoPublish": false
+      "autoPublish": false,
+      "enabled": true
     }
-  ]
+  ],
+  "metricoolDraftEvidence": "ops/metricool-future-draft-holds-20261105.json",
+  "cadenceHoldRule": "同一週所有候選enabled=true數量加上已存在Metricool draft=true數量最多3；已持有的草稿仍需AI及人工核准才可能發布。"
 }
