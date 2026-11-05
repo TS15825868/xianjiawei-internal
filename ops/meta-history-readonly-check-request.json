@@ -1,0 +1,9 @@
+{
+  "date": "2026-11-05",
+  "runId": "XJW-META-HISTORY-20261105-V1",
+  "purpose": "Read back only server-side one-shot public published Facebook and Instagram parent/child media inventory from Cloudflare D1",
+  "threads": "no official Threads history token in Worker; remains unverified",
+  "publish": false,
+  "approve": false,
+  "mutateSocialPosts": false
+}
