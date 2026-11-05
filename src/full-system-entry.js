@@ -16,10 +16,10 @@ const HOME_PATH='/index.html';
 const ERP_PATH='/erp.html';
 const PUBLISHING_PATH='/publishing.html';
 const SUPPORT_PATH='/social-support.html';
-const SOCIAL_SCHEDULE_POLICY='週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；短影片若有合格成品只取代當週其中一篇，不另外增加篇數';
-const SOCIAL_FIXED_FREQUENCY='每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）';
+const SOCIAL_SCHEDULE_POLICY='每週一般 2 篇：週二／週五 10:00；特殊週最多 3 篇，可加週日 10:00（Asia/Taipei）。AI 審核合格後仍須使用者人工核准目前圖文版本，才可設定對外排程；未核准一律不得發布。';
+const SOCIAL_FIXED_FREQUENCY='每週 2 篇（週二／週五 10:00），特殊週最多 3 篇（可加週日 10:00），Asia/Taipei；人工核准後才可排程';
 const SOCIAL_FIRST_PUBLISH_AT='2026-09-04T09:00:00+08:00';
-const SOCIAL_POLICY_VERSION='2026-09-03-social-publishing-v2-morning';
+const SOCIAL_POLICY_VERSION='2026-11-05-human-approval-before-scheduling';
 const HEADERS={'cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-full-system':VERSION};
 const POST_STATUSES=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed']);
 
