@@ -86,7 +86,9 @@ export async function recordAiReview(env,row,e,profile,checks){
     if(checks.isWeatherPost(row)&&Date.now()-Date.parse(e.reviewed_at)>12*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('天氣需重新查證')}
     if(!Number.isFinite(Date.parse(e.reviewed_at))||Date.parse(e.reviewed_at)>Date.now()+60000||Date.now()-Date.parse(e.reviewed_at)>24*3600000){result.decision='NEEDS_HUMAN_REVIEW';result.reasons.push('AI審核證據已過期或時間不合法')}
   }
-  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=result.decision==='AI_APPROVED',next=approved?'approved':'pending_review',aiIdentity=approved?ownerEmail:null;
+  await ensureAiSchema(env);const id='AI-REVIEW-'+crypto.randomUUID(),now=new Date().toISOString(),approved=false,next='pending_review',aiIdentity=null;
+  // AI_APPROVED is only a quality result; it never grants a human approval, marks
+  // the image as human-approved, or makes the post eligible for scheduling.
   // D1 batch is transactional. Compare-and-set the post FIRST and only
   // record review evidence when the updated row still matches this approval.
   // A raced or externally modified post must not acquire phantom AI evidence.
@@ -95,5 +97,5 @@ export async function recordAiReview(env,row,e,profile,checks){
     env.DB.prepare("INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE changes()=1 AND EXISTS (SELECT 1 FROM social_posts WHERE id=? AND status=? AND updated_at=? AND approved_by IS ? AND image_approved=?)").bind(id,row.id,'AI',result.decision,fp,row.image_url,e?.image_sha256||'',JSON.stringify({...e,assessment:result,approved_channels:approvedChannels}),e?.model||'unverified',AI_POLICY_VERSION,ownerEmail,e?.reviewed_at||now,row.status,next,row.id,next,now,aiIdentity,approved?1:0)
   ]);
   if(saved[0]?.meta?.changes!==1||saved[1]?.meta?.changes!==1)throw Error('正式內容已變更或審核紀錄未成功寫入；舊核准證據不生效');
-  return{ok:true,review_id:id,reviewer_type:'AI',...result,status:next};
+  return{ok:true,review_id:id,reviewer_type:'AI',...result,status:next,human_review_required:true,auto_schedule:false,external_scheduled:false};
 }
