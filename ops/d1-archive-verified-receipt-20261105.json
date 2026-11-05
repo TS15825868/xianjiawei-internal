@@ -1,0 +1,41 @@
+{
+  "schema": "xjw-verified-editorial-archive-receipt-v1",
+  "date": "2026-11-05",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42046761560",
+  "snapshotRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42047010175",
+  "sourceEvidence": "ops/verified-historical-editorial-overlap-20261105.json",
+  "idsArchived": [
+    "XJW-CONV-chat-gao-vs-drink",
+    "XJW-CONV-year-end-keep-habit"
+  ],
+  "before": {
+    "archived": 76,
+    "draft": 23,
+    "pending_review": 58,
+    "published": 4
+  },
+  "after": {
+    "archived": 78,
+    "draft": 23,
+    "pending_review": 56,
+    "published": 4
+  },
+  "changes": {
+    "archived": 2,
+    "deleted": 0,
+    "draftsCreated": 0,
+    "imagesGenerated": 0,
+    "aiReviewsCompleted": 0,
+    "humanApprovals": 0,
+    "scheduled": 0,
+    "published": 0
+  },
+  "restrictions": [
+    "These two posts are preserved for audit, never resurrect automatically or copy their angle into new draft",
+    "One corresponding Metricool future draft id 413610864 still exists as unpublished, autoPublish=false and must not be promoted without replacement creative and approval",
+    "The 23 D1 drafts lack verified images; do not interpret proposed_scheduled_at as external schedule",
+    "Do not overwrite current D1 with historical snapshot or re-import removed items"
+  ],
+  "d1ReadbackVerified": true,
+  "snapshotPendingCountVerified": 56
+}
