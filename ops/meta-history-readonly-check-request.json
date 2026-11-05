@@ -5,5 +5,7 @@
   "threads": "no official Threads history token in Worker; remains unverified",
   "publish": false,
   "approve": false,
-  "mutateSocialPosts": false
+  "mutateSocialPosts": false,
+  "checkpoint": "after-first-Worker-cron-run",
+  "requestRevision": 2
 }
