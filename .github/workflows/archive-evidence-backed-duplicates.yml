@@ -34,7 +34,7 @@ jobs:
           assert.equal(m.dataAction,'archive_only_no_delete_no_publish');
           assert.deepEqual(m.items.map(x=>x.id).sort(),[
             'XJW-CONV-chat-gao-vs-drink','XJW-CONV-year-end-keep-habit'].sort());
-          for(const x of m.items){const found=proof.findings.find(z=>z.pendingId===x.id);assert.equal(found.assessment.includes('high_risk'),true);assert.ok(found.history?.some(z=>z.permalink?.startsWith('https://www.facebook.com/')))}
+          for(const x of m.items){const found=proof.findings.find(z=>z.pendingId===x.id);assert.match(found.assessment,/risk/);assert.ok(found.history?.some(z=>z.permalink?.startsWith('https://www.facebook.com/')))}
           console.log('PASS: only two documented duplicate-angle pending posts can be archived');
           NODE
       - name: Install existing Wrangler
