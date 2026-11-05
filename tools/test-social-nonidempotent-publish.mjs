@@ -1,17 +1,21 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {publishPostById,publishDuePosts} from '../src/social-publisher.js';
+import {fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
 const root='https://assets.example.test/official-post.webp';
 const post=(platform)=>({id:'P-20261026-UNIQUE',status:'approved',
  headline:'仙加味生活情境',copy:'補養，是一種節奏。',image_url:root,
+ image_quality_status:'ok',approved_by:'owner@example.com',approved_at:'2026-10-26T00:00:00Z',
  platforms_json:JSON.stringify([platform])});
+const verifiedHumanGate={content_fingerprint:await fingerprint(post('Facebook')),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(key=>[key,true]))),copy_image_match:1,reviewed_by:'owner@example.com',reviewed_at:'2026-10-26T00:00:00Z'};
 function fakeDb(platform,prior=null){
  const state={writes:[]};
- const DB={prepare(sql){let binds=[];
+ const DB={exec:async()=>({}),prepare(sql){let binds=[];
   return {bind(...a){binds=a;return this},
    async first(){
     if(sql.includes('FROM social_metricool_sync'))return null;
     if(sql.includes('FROM social_posts'))return post(platform);
+    if(sql.includes('FROM social_post_review_gates'))return verifiedHumanGate;
     if(sql.includes('FROM social_publish_deliveries'))return prior;
     throw Error('unknown DB read');
    },
@@ -88,11 +92,12 @@ test('confirmed HTTP 2xx still records normal successful delivery',async()=>{
 function fakeInvalidPlatformsDb(platforms_json,{scheduled=false}={}){
  const writes=[];
  const row={...post('Facebook'),platforms_json,status:scheduled?'scheduled':'approved',scheduled_at:'2026-10-26T00:00:00.000Z'};
- const DB={prepare(sql){return{
+ const DB={exec:async()=>({}),prepare(sql){return{
   bind(){return this;},
   async first(){
    if(sql.includes('FROM social_metricool_sync'))return null;
    if(sql.includes('FROM social_posts'))return row;
+   if(sql.includes('FROM social_post_review_gates'))return verifiedHumanGate;
    if(sql.includes('FROM social_publish_deliveries'))return null;
    throw Error('unexpected read: '+sql);
   },
