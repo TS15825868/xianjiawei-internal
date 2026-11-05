@@ -1,0 +1,81 @@
+{
+  "schema": "xjw-exact-source-historic-angle-overlaps-v1",
+  "brand": "仙加味",
+  "date": "2026-11-05",
+  "source": {
+    "facebook": "Official Meta Graph API Facebook Page 74 published posts, Cloudflare D1 one-shot XJW-META-HISTORY-20261105-V1; run 42027078251",
+    "instagramThreads": "Connected Metricool 35 Instagram /23 Threads published post records; ops/metricool-instagram-threads-published-history-20261105.json",
+    "pending": "D1 snapshot ops/social-schedule-candidates-current.json refreshed 2026-11-05"
+  },
+  "findings": [
+    {
+      "pendingId": "XJW-CONV-chat-gao-vs-drink",
+      "pendingTitle": "龜鹿膏跟龜鹿飲，差在哪？",
+      "history": [
+        {
+          "platform": "Facebook",
+          "date": "2025-12-22",
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1252714703545416",
+          "angle": "已發布龜鹿膏和龜鹿飲生活習慣二選一比較"
+        },
+        {
+          "platform": "Facebook",
+          "date": "2026-09-18",
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1483861027097448",
+          "angle": "已發布龜鹿膏飲不同使用型態/30cc與180cc選法"
+        },
+        {
+          "platform": "Instagram",
+          "date": "2026-09-20",
+          "permalink": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "angle": "已發布膏的小匙取用與飲的直接飲用差異"
+        }
+      ],
+      "assessment": "same_editorial_angle_high_risk_not_identical_copy",
+      "requiredAction": "Do not clear current duplicate DEFER; replace topic with unique subject and produce matching new visual, or archive only after evidence-backed review."
+    },
+    {
+      "pendingId": "XJW-CONV-year-end-keep-habit",
+      "pendingTitle": "如果今年只能留下一個習慣，你會留哪個？",
+      "history": [
+        {
+          "platform": "Facebook",
+          "date": "2025-12-31",
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1252716290211924",
+          "angle": "已發布回顧一年、把生活節奏放慢的跨年互動"
+        },
+        {
+          "platform": "Facebook",
+          "date": "2025-12-31",
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1264806519002901",
+          "angle": "已發布新一年慢慢過、照顧自己的新年問候"
+        }
+      ],
+      "assessment": "same_year_end_life_habit_angle_risk_not_identical_copy",
+      "requiredAction": "Avoid republishing merely reworded year-end habits; select more concrete novel scene and unique visual before future AI review."
+    },
+    {
+      "pendingId": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "pendingTitle": "龜鹿飲180cc鋁袋裡，有哪些成分？",
+      "history": [
+        {
+          "platform": "Instagram",
+          "date": "2026-09-16",
+          "permalink": "https://www.instagram.com/p/DdWNZOPDb8B/",
+          "angle": "已發布180cc鋁袋包裝與形式"
+        }
+      ],
+      "assessment": "overlapping_product_subject_not_proven_duplicate",
+      "requiredAction": "Need formal current image 180cc original packaging label version proof; do not change historical packaging or auto release."
+    }
+  ],
+  "overall": {
+    "reviewedPendingIds": 3,
+    "highRiskEditorialAngles": 2,
+    "otherUnverifiedProducts": 1,
+    "aiApprovalsIssued": 0,
+    "d1PostMutations": 0,
+    "published": 0,
+    "limitations": "Angle overlap is a manually reviewed risk, not pixel or copy exact duplicate. Historic Facebook media not yet compared frame-by-frame against all images; Threads/IG carousel children incomplete."
+  }
+}
