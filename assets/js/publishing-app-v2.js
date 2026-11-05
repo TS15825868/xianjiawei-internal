@@ -576,7 +576,7 @@ function openSchedule(post){
     <p>${esc(post.title)}</p>
     <div class="xjw-schedule-presets"><button type="button" class="btn" data-schedule-preset="next">下一個固定時段</button><button type="button" class="btn" data-schedule-preset="following">再下一個固定時段</button><button type="button" class="btn green" data-publish-now-from-modal>立即發布</button></div>
     <label class="field full"><span>日期與時間（台灣時間）</span><input id="scheduleAt" type="datetime-local" required value="${esc(localInput(suggested))}"></label>
-    <div class="xjw-warning">固定建議時段為週二／週五 10:00（台灣時間）；特殊週可另訂週日10:00。手動修改時段與立即發布均須通過完整16項品質審核，以及使用者對當前圖文版本的正式人工核准。</div>
+    <div class="xjw-warning">固定建議時段為週二／週五 10:00（台灣時間）；特殊週可另訂週日10:00。立即發布不受固定時段限制，但手動修改時間與立即發布都須通過完整16項品質審核，以及使用者對當前圖文版本的正式人工核准。</div>
     <div class="xjw-modal-footer"><button type="button" class="btn" data-close-modal>取消</button><button class="btn primary" data-save-schedule>儲存排程</button></div>
   </form></div>`;
 
