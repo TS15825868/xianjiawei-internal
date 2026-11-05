@@ -7,15 +7,19 @@ import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
 import {createHash} from 'node:crypto';
 const valid={status:'approved',approved_by:'owner@example.com',review_note:'AI審核：AI_APPROVED；',image_approved:1,copy:'在家準備一壺溫熱的紅棗茶，聊聊仙加味的漢方飲食文化。',image_url:'https://example.com/image.jpg',platforms:['facebook','instagram','threads']};
-const checks=Object.fromEntries(['aiEvidenceValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
+const checks=Object.fromEntries(['aiEvidenceValid','humanApprovalValid','humanGateValid','imageAuthentic','sceneMatches','productAuthorityValid','uniqueCopy','uniqueImage','rightsVerified','scheduledTimeValid','platformReady','quotaVerified','deliveryDedupReady'].map(x=>[x,true]));checks.reviewedAt=new Date().toISOString();
 test('完整證據才可排程',()=>assert.equal(assessAutopublishCandidate(valid,checks).ok,true));
+test('AI品質證據與人工核准必須是不同的授權',()=>{
+  assert.equal(assessAutopublishCandidate(valid,{...checks,humanApprovalValid:false}).ok,false);
+  assert.equal(assessAutopublishCandidate(valid,{...checks,humanGateValid:false}).ok,false);
+});
 test('沒有證據預設拒絕',()=>assert.equal(assessAutopublishCandidate(valid,{}).ok,false));
 test('草稿或待審核、缺乏正式AI核准、圖片未核准都不得自動排程',()=>{
   assert.equal(assessAutopublishCandidate({...valid,status:'draft'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,status:'pending_review'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,approved_by:''},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,approved_by:'ai:fake-model'},checks).ok,false);
-  assert.equal(assessAutopublishCandidate({...valid,review_note:''},checks).ok,false);
+  assert.equal(assessAutopublishCandidate({...valid,review_note:''},{...checks,humanGateValid:false}).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,approved_by:'wrong-profile'},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,image_approved:0},checks).ok,false);
   assert.equal(assessAutopublishCandidate({...valid,platforms:['Facebook','facebook']},checks).ok,false);
@@ -100,12 +104,15 @@ test('真正的低風險AI證據只核准原平台；更改發布對象立即失
   try{
     const result=await recordAiReview(env,row,evidence,{role:'owner',email:'owner@example.com'},checks);
     assert.equal(result.decision,'AI_APPROVED');
-    assert.equal(store.row.status,'approved');
-    assert.equal(store.row.approved_by,'owner@example.com');
+    assert.equal(store.row.status,'pending_review');
+    assert.equal(store.row.approved_by,null);
+    assert.equal(store.row.approved_at,null);
+    assert.equal(store.row.image_approved,0);
+    assert.equal(result.human_review_required,true);
     assert.equal(store.review.authorized_by,'owner@example.com');
     assert.equal((await aiGate(env,{...store.row,approved_by:'ai:isolated-verifier'},fingerprint)).ok,false);
     assert.deepEqual(JSON.parse(store.review.evidence_json).approved_channels,['facebook','instagram','threads']);
-    assert.equal((await aiGate(env,store.row,fingerprint)).ok,true);
+    assert.equal((await aiGate(env,store.row,fingerprint)).ok,false);
     assert.equal((await aiGate(env,{...store.row,platforms_json:'["Facebook","LINE OA"]'},fingerprint)).ok,false);
     assert.equal((await aiGate(env,{...store.row,image_quality_status:'needs_rework'},fingerprint)).ok,false);
 
@@ -146,8 +153,8 @@ test('SQLite 批次 CAS 失敗不可產生第二筆 AI 核准證據',async t=>{
     db.prepare("INSERT INTO social_posts(id,status,image_approved,updated_at) VALUES ('P','draft',0,'original')").run();
     assert.throws(()=>db.prepare(updateSql).run('approved','ai:fake-model','approved-now',1,'AI審核','saved-now','P','original'),/FOREIGN KEY/);
     for(const [rid,changes] of [['REVIEW-1',1],['REVIEW-2',0]]){
-      const update=db.prepare(updateSql).run('approved','owner@example.com','approved-now',1,'AI審核：AI_APPROVED；','saved-now','P','original');
-      const review=db.prepare(insertSql).run(rid,'P','AI','AI_APPROVED','fingerprint','image','hash','{}','verified','policy','staff','approved-now','draft','approved','P','approved','saved-now','owner@example.com',1);
+      const update=db.prepare(updateSql).run('pending_review',null,null,0,'AI審核：AI_APPROVED；','saved-now','P','original');
+      const review=db.prepare(insertSql).run(rid,'P','AI','AI_APPROVED','fingerprint','image','hash','{}','verified','policy','staff','approved-now','draft','pending_review','P','pending_review','saved-now',null,0);
       assert.equal(update.changes,changes);
       assert.equal(review.changes,changes,'沒有更新貼文時不得新增 AI 核准證據');
     }
