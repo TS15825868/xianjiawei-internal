@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
 import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate} from '../src/metricool-sync.js';
-const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',approved_by:'human@example.com',platforms_json:'["Facebook","Instagram","Threads"]'};
+const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',status:'approved',approved_at:new Date().toISOString(),approved_by:'human@example.com',platforms_json:'["Facebook","Instagram","Threads"]'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({run:async()=>({meta:{changes:0}}),bind:()=>({first:async()=>gate})})}};
 assert.equal((await gateState(env,row)).ok,true);
@@ -9,8 +9,8 @@ gate={...gate,reviewed_by:'chatgpt:owner-delegated-reviewed'};assert.equal((awai
 gate={...gate,reviewed_by:'human@example.com',checklist_json:'{}'};assert.equal((await gateState(env,row)).ok,false);
 gate={...gate,checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true])))};assert.equal((await gateState(env,{...row,copy:'版本已變更'})).ok,false);
 assert.equal((await gateState(env,{...row,approved_by:null})).ok,false);
-assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-14T02:00:00.000Z');
-assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-14T10:00:00+08:00']),'2026-10-16T02:00:00.000Z');
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-16T02:00:00.000Z');
+assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-16T10:00:00+08:00']),'2026-10-20T02:00:00.000Z');
 const body=metricoolBody(row,{uuid:'stable-uuid',metricool_id:1,template_json:'{"twitterData":{"type":"POST"}}'},'2026-10-16T10:00:00+08:00');
 assert.equal(body.uuid,'stable-uuid');assert.equal(body.publicationDate.dateTime,'2026-10-16T10:00:00');assert.equal(body.twitterData,undefined);assert.equal(body.instagramData.autoPublish,true);assert.deepEqual(body.providers.map(p=>p.network),['facebook','instagram','threads']);
 assert.equal(metricoolConfiguration({}).enabled,false);
@@ -42,10 +42,10 @@ const festival=await enqueueMetricool({DB:festivalDB},{...row,status:'approved',
 assert.equal(festival.ok,false);assert.match(festival.error,/節慶/);
 console.log('PASS holiday posts without explicit dates cannot enter ordinary October slots');
 
-assert.equal(metricoolConfiguration().humanReviewRequired,false);
-assert.deepEqual(metricoolConfiguration().approvalModes,['HUMAN_APPROVED','AI_APPROVED']);
+assert.equal(metricoolConfiguration().humanReviewRequired,true);
+assert.deepEqual(metricoolConfiguration().approvalModes,['AI_QUALITY_THEN_HUMAN_APPROVED']);
 assert.equal((await gateState(env,{...row,approved_by:'ai:model',review_note:'AI審核：AI_APPROVED；'})).ok,false);
-assert.equal((await gateState(env,{...row,review_note:'AI審核：AI_APPROVED；'})).ok,false);
+assert.equal((await gateState(env,{...row,review_note:'AI審核：AI_APPROVED；'})).ok,true);
 
 
 const duplicatedPost={...row,id:'fresh-approved',status:'approved',
