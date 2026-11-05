@@ -387,6 +387,15 @@ async function expireLateScheduledPost(env,post,now){
   return{id:post.id,ok:false,expired:true,reason:'schedule_late_cutoff',lateness_minutes:lateness,returned_to:'pending_review',message:reason};
 }
 async function publishOne(env,post,now){
+  // Final server-side safety gate for both cron and immediate direct publishing.
+  // Historical AI_APPROVED status alone must never dispatch a public post.
+  let manualGate;
+  try{
+    const {gateState}=await import('./publishing-review-gate-entry.js');
+    manualGate=await gateState(env,post);
+  }catch(error){return{id:post.id,ok:false,blocked:true,reason:'human_gate_unavailable',error:String(error?.message||error),results:[]};}
+  if(!manualGate?.ok||manualGate.reviewer_type==='AI'||manualGate.reviewed_by!==post.approved_by)
+    return{id:post.id,ok:false,blocked:true,reason:'human_approval_required',error:manualGate?.reason||'未取得與目前圖文版本一致的人工審核及核准',results:[]};
   const media=mediaUrl(post);
   if(!media)return{id:post.id,ok:false,blocked:true,reason:'missing_media',error:'缺少正式圖片或影片，依仙加味最新規則禁止發布。',results:[]};
   const selection=parsePlatformSelection(post.platforms_json);
