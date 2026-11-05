@@ -26,7 +26,12 @@ jobs:
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           npm install --ignore-scripts --no-audit --no-fund --no-package-lock
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT run_id,status,result_json,created_at,completed_at FROM social_meta_history_readonly WHERE run_id='XJW-META-HISTORY-20261105-V1'" > /tmp/meta-history-readonly.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT name FROM sqlite_master WHERE type='table' AND name='social_meta_history_readonly'" > /tmp/meta-history-presence.json
+          if node -e "const x=require('/tmp/meta-history-presence.json');process.exit((x[0]?.results||[]).length?0:1)"; then
+            npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT run_id,status,result_json,created_at,completed_at FROM social_meta_history_readonly WHERE run_id='XJW-META-HISTORY-20261105-V1'" > /tmp/meta-history-readonly.json
+          else
+            echo '[{"results":[]}]' > /tmp/meta-history-readonly.json
+          fi
           node - <<'NODE'
           const fs=require('node:fs');
           const raw=JSON.parse(fs.readFileSync('/tmp/meta-history-readonly.json','utf8'));
