@@ -1,0 +1,15 @@
+{
+  "schema": "xjw-january-two-draft-text-cas-request-v1",
+  "action": "correct_existing_d1_draft_copy_only",
+  "date": "2026-11-05",
+  "source": "ops/correct-jan-draft-copy-20261105.json",
+  "issue": "2027/01/08 is not first Friday; 2027/01/12 is Tuesday, so weekend language must not refer to publication day",
+  "requireLiveD1Read": true,
+  "requireNoApproval": true,
+  "requireReadback": true,
+  "allowNewPost": false,
+  "approve": false,
+  "schedule": false,
+  "publish": false,
+  "cost": "NT$0"
+}
