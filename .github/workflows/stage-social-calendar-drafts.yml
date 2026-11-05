@@ -1,0 +1,102 @@
+name: 仙加味候選日曆安全匯入草稿（不發布）
+on:
+  push:
+    branches: [main]
+    paths:
+      - ops/social-calendar-draft-import-request.json
+permissions:
+  contents: read
+concurrency:
+  group: xjw-social-calendar-draft-only-import
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      XJW_CONTENT_SEED_CREATED_BY: tung314069@gmail.com
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Assert draft-only contract and unit tests
+        run: |
+          set -euo pipefail
+          node --check tools/stage-social-calendar-drafts.mjs
+          node --test tools/test-stage-social-calendar-drafts.mjs
+          node - <<'NODE'
+          const manifest=require('./ops/social-calendar-safe-drafts-20261105.json');
+          if(manifest.safety.status!=='draft_only'||manifest.safety.autoPublish!==false||
+            manifest.safety.requiresHumanApproval!==true||manifest.items.length!==23)throw Error('unsafe manifest');
+          const request=require('./ops/social-calendar-draft-import-request.json');
+          if(request.action!=='stage_drafts_only'||request.allowSchedule!==false||
+            request.allowPublish!==false||request.allowApprove!==false)throw Error('unsafe request');
+          console.log('PASS 23 candidate draft-only maintenance request');
+          NODE
+      - name: Install existing Wrangler
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read live D1 and verify existing source profile
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,scheduled_at,proposed_scheduled_at FROM social_posts" > /tmp/xjw-live-posts.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS found FROM profiles WHERE email='tung314069@gmail.com'" > /tmp/xjw-profile.json
+      - name: Make idempotent SQL using current D1 rows and known unpublished Metricool drafts
+        run: |
+          set -euo pipefail
+          node tools/stage-social-calendar-drafts.mjs \
+            --manifest ops/social-calendar-safe-drafts-20261105.json \
+            --live /tmp/xjw-live-posts.json \
+            --metricool ops/metricool-future-draft-holds-20261105.json \
+            --profile /tmp/xjw-profile.json \
+            --sql /tmp/xjw-only-drafts.sql \
+            --plan /tmp/xjw-draft-plan.json
+          node - <<'NODE'
+          const fs=require('fs'),p=require('/tmp/xjw-draft-plan.json');
+          if(p.count<0||p.count>23||p.mode!=='DRAFT_ONLY_NO_MEDIA_OR_APPROVAL')throw Error('unsafe plan');
+          fs.writeFileSync('/tmp/xjw-draft-count.txt',String(p.count));
+          NODE
+      - name: Write only new unscheduled drafts to D1
+        run: |
+          set -euo pipefail
+          count="$(cat /tmp/xjw-draft-count.txt)"
+          if [ "$count" -gt 0 ]; then
+            npx wrangler d1 execute xianjiawei-internal-db --remote --json --file /tmp/xjw-only-drafts.sql > /tmp/xjw-draft-write-response.json
+          else
+            echo '[{"success":true,"results":[]}]' > /tmp/xjw-draft-write-response.json
+          fi
+      - name: Read back every candidate and assert no approval or schedule
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,scheduled_at,approved_by,approved_at,published_at,image_url,image_approved,image_quality_status,proposed_scheduled_at FROM social_posts WHERE id LIKE 'XJW-CAND-%' ORDER BY id" > /tmp/xjw-draft-after.json
+          node - <<'NODE'
+          const fs=require('fs'),plan=require('/tmp/xjw-draft-plan.json');
+          const raw=JSON.parse(fs.readFileSync('/tmp/xjw-draft-after.json','utf8'));
+          const rows=(Array.isArray(raw)?raw[0]?.results:raw.results)||[];
+          const byId=new Map(rows.map(r=>[r.id,r]));
+          const expected=new Map(require('./ops/social-calendar-safe-drafts-20261105.json').items.map(r=>[r.id,r]));
+          for(const id of plan.ids){
+            const row=byId.get(id),p=expected.get(id);
+            if(!row||!p||row.title!==p.title||row.copy!==p.copy)throw Error('D1 missing or content mismatch: '+id);
+            if(row.status!=='draft'||row.scheduled_at||row.approved_by||row.approved_at||
+              row.published_at||row.image_url||Number(row.image_approved)!==0||
+              row.image_quality_status!=='needs-generation')throw Error('Unsafe D1 row state: '+id);
+            if(String(row.proposed_scheduled_at||'')!==p.date+'T'+p.time+':00+08:00')throw Error('Date mismatch: '+id);
+          }
+          const report={checkedAt:new Date().toISOString(),mode:'D1_DRAFT_ONLY_READBACK_VERIFIED',
+            writtenAndReadBack:plan.ids.length,expectedIds:plan.ids,skipped:plan.skipped,
+            allStatus:'draft',allImageUrlsEmpty:true,allApproved:false,allPublished:false,allScheduled:false};
+          fs.writeFileSync('social-calendar-draft-only-receipt.json',JSON.stringify(report,null,2)+'\n');
+          console.log('XJW_DRAFT_ONLY_RECEIPT '+JSON.stringify({writtenAndReadBack:report.writtenAndReadBack,skipped:report.skipped.length,allStatus:'draft',approved:0,scheduled:0,published:0}));
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-calendar-draft-only-receipt-${{ github.run_id }}
+          path: social-calendar-draft-only-receipt.json
+          retention-days: 2
+          if-no-files-found: warn
