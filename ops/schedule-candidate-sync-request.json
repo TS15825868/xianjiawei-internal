@@ -1,7 +1,8 @@
 {
-  "requestedAt": "2026-11-05T19:36:00+08:00",
-  "reason": "Read-only latest Cloudflare D1 publishing review status reconciliation; keep all unpublished and external schedule state unchanged",
-  "reviewScope": "AI quality vs human approval, scheduled, pending review, image provenance",
+  "requestedAt": "2026-11-05T22:38:00+08:00",
+  "reason": "Refresh D1 live published queue snapshot after verified archival of two overlapping pending posts; do not modify any social_posts, D1 media, approvals, or publishing",
+  "reviewScope": "All approved, scheduled, pending_review rows; compare only 56 pending after verified run 42046761560",
   "authorizedBy": "standing project maintenance authorization",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42046761560",
   "publish": false
 }
