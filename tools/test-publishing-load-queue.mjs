@@ -3,8 +3,7 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 const source=fs.readFileSync(new URL('../assets/js/publishing-app-v2.js',import.meta.url),'utf8');
 const loadStart=source.indexOf('async function load(');
-const loadEnd=source.indexOf('
-async function loadAll()',loadStart);
+const loadEnd=source.indexOf('\nasync function loadAll()',loadStart);
 assert.ok(loadStart>=0&&loadEnd>loadStart,'load() must be available and isolated from optional load-all');
 const load=source.slice(loadStart,loadEnd);
 let release;const first=new Promise(resolve=>release=resolve);const calls=[];
@@ -44,3 +43,11 @@ await emptyContext.loadAll();
 assert.equal(emptyAttempts,1,'no infinite paging loop if endpoint returns no new rows');
 console.log('PASS load-all halts on empty/non-progressing page');
 
+
+const slotStart=source.indexOf('function nextSlot(');
+const slotEnd=source.indexOf('\nasync function api(',slotStart);
+assert.ok(slotStart>=0&&slotEnd>slotStart);
+const slotSource=source.slice(slotStart,slotEnd);
+assert.ok(slotSource.includes('if(![2,5].includes(local.getDay()))continue;'));
+assert.ok(slotSource.includes('local.setHours(10,0,0,0);'));
+console.log('PASS default slot helper uses formal Tuesday/Friday 10:00 Taipei time');

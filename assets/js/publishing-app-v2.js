@@ -27,8 +27,8 @@ function nextSlot(which='next'){
   for(let add=0;add<15;add++){
     const local=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Taipei'}));
     local.setDate(local.getDate()+add);
-    if(![1,3,5].includes(local.getDay()))continue;
-    local.setHours(9,0,0,0);
+    if(![2,5].includes(local.getDay()))continue;
+    local.setHours(10,0,0,0);
     const iso=taipeiLocalToIso(`${local.getFullYear()}-${String(local.getMonth()+1).padStart(2,'0')}-${String(local.getDate()).padStart(2,'0')}T${String(local.getHours()).padStart(2,'0')}:${String(local.getMinutes()).padStart(2,'0')}`);
     if(new Date(iso)>now)out.push(iso);
   }
