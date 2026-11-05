@@ -54,6 +54,7 @@ jobs:
           const requiredJs=[
             "e.target.closest('[data-refresh]')","if(refresh){load();return;}",
             "e.target.closest('[data-load-more]')","load({append:true})",
+             "e.target.closest('[data-load-all]')","loadAll()",
             "e.target.closest('[data-add-post]')","openPostForm()",
             "e.target.closest('[data-filter-status]')","metric.dataset.filterStatus",
             "e.target.closest('[data-post-view],[data-post-deliveries]')","openPostView(post,view)",
@@ -68,7 +69,7 @@ jobs:
             "$('#clearFilters')?.addEventListener('click'","state.status='all'",
             "$('#searchInput')?.addEventListener('input'","$('#statusFilter')?.addEventListener('change'",
             "/publish-now","/deliveries","/platform-authorization","/status",
-            "週一／週三／週五 09:00","[1,3,5]"
+            "週二／週五 10:00","[2,5]"
           ];
           const errors=[];
           for(const t of requiredHtml)if(!html.includes(t))errors.push(`HTML缺少控制項/標記 ${t}`);
@@ -80,7 +81,7 @@ jobs:
           if(/content-visibility\s*:\s*auto|contain\s*:\s*layout paint style|contain-intrinsic-size\s*:\s*(620|560)px/.test(css))errors.push('主CSS仍含已退役Safari卡片虛擬化');
           if(/publishing-resilience\.js/.test(html))errors.push('重型resilience腳本不得回到首屏同步載入');
           if(errors.length)throw new Error(errors.join('\n'));
-          console.log('PASS 正式控制項、Threads平台選項、週一三五排程、iPhone無containment與輕量首屏契約');
+          console.log('PASS 正式控制項、Threads平台選項、週二五10時排程、全量分頁及iPhone無containment與輕量首屏契約');
           NODE
 
       - name: Verify maintenance security source contract

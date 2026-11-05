@@ -110,8 +110,8 @@ jobs:
           grep -q 'livePlatformSummary' dist/assets/js/publishing-readiness-ui.js
           grep -q 'platformSummaryObserver' dist/assets/js/publishing-readiness-ui.js
           grep -q 'platformProbeError' dist/assets/js/publishing-readiness-ui.js
-          grep -q '週一／週三／週五 09:00' dist/assets/js/publishing-app-v2.js
-          grep -q '\[1,3,5\]' dist/assets/js/publishing-app-v2.js
+          grep -q '週二／週五 10:00' dist/assets/js/publishing-app-v2.js
+          grep -q '\[2,5\]' dist/assets/js/publishing-app-v2.js
           if grep -R -n -E '週二19:30|週六09:30|\[2,6\]' assets/js src publishing.html; then
             echo '發現舊排程規則' >&2
             exit 1
