@@ -1,0 +1,46 @@
+{
+  "schema": "xjw-candidate-draft-date-copy-correction-v1",
+  "createdOn": "2026-11-05",
+  "source": "hourly assistant identified date/copy mismatch",
+  "purpose": "Correct 2 existing unscheduled D1 drafts by compare-and-swap; preserve original D1 import receipt",
+  "guard": {
+    "requireStatus": "draft",
+    "imageUrlMustBeEmpty": true,
+    "approvedByMustBeNull": true,
+    "approvedAtMustBeNull": true,
+    "publishedAtMustBeNull": true,
+    "scheduledAtMustBeNull": true,
+    "doNotChangeDate": true,
+    "doNotTouchOtherIds": true
+  },
+  "actions": {
+    "createNew": false,
+    "delete": false,
+    "archive": false,
+    "approve": false,
+    "schedule": false,
+    "publish": false
+  },
+  "items": [
+    {
+      "id": "XJW-CAND-20270108",
+      "date": "2027-01-08",
+      "oldTitle": "新年第一個週五，換一枝花給窗邊",
+      "newTitle": "一月的週五，換一枝花給窗邊",
+      "oldCopy": "新年第一個週五，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？",
+      "newCopy": "一月的週五早上，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？",
+      "sceneBrief": "冬日週五上午，仙加味店內窗邊，小老闆將一枝花插入素雅花瓶，旁邊小鹿好奇觀看",
+      "reason": "2027年第一個週五是01/01；01/08是第二個週五，避免錯誤的日曆敘述"
+    },
+    {
+      "id": "XJW-CAND-20270112",
+      "date": "2027-01-12",
+      "oldTitle": "親友來家裡，你會先拿出哪一個杯子",
+      "newTitle": "親友來家裡，你會先拿出哪一個杯子",
+      "oldCopy": "周末親友來坐坐，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
+      "newCopy": "準備招待來家裡坐坐的親友時，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
+      "sceneBrief": "居家杯架前小老闆挑杯子，小鹿望向茶几",
+      "reason": "候選發布日01/12星期二；文案保留明確親友來訪情境但不假稱發布日為週末"
+    }
+  ]
+}
