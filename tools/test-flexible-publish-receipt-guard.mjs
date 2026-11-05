@@ -29,7 +29,7 @@ test('staff-only per-platform readout counts published only when remote ID is pr
  assert.match(src,/published_platforms:platforms\.filter\(\(item\)=>item\.status==='published'&&clean\(item\.remote_id\)\)/);
  assert.match(src,/item\.status==='published'&&!clean\(item\.remote_id\)/);
 });
-test('the canonical sender preserves original multi-platform audience and puts uncertain writes in manual reconciliation',async()=>{
+test('unapproved legacy multi-platform post cannot reach remote sender or mutate original audience',async()=>{
  const post={id:'P-FLEX-SAFE',status:'approved',headline:'安全測試',copy:'無客戶訊息',
   image_url:'https://assets.example.test/approved.webp',
   platforms_json:'["Facebook","LINE VOOM"]'};
@@ -66,13 +66,13 @@ test('the canonical sender preserves original multi-platform audience and puts u
  try{
   const result=await publishPostById({DB,META_PAGE_ID:'123',META_INSTAGRAM_USER_ID:'456',META_PAGE_ACCESS_TOKEN:'local-fixture'},post.id);
   assert.equal(result.ok,false);
-  assert.equal(result.manual_required,true);
-  assert.equal(count,1);
+  assert.equal(result.blocked,true);
+  assert.equal(result.reason,'human_approval_required');
+  assert.equal(count,0,'Missing human gate must never trigger public network requests');
   assert.equal(post.platforms_json,beforeValue);
-  assert.equal(deliveries.get('Facebook').status,'published');
-  assert.equal(deliveries.get('LINE VOOM').status,'manual_required');
-  assert.equal(post.status,'manual_required');
-  assert.ok(mutations.every(x=>!x.sql.includes('SET platforms_json=')));
+  assert.equal(deliveries.size,0);
+  assert.equal(post.status,'approved');
+  assert.equal(mutations.length,0,'No mutating D1 writes without human approval');
  }finally{globalThis.fetch=oldFetch}
 });
 
