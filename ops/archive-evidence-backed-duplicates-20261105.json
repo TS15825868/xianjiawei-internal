@@ -1,0 +1,27 @@
+{
+  "schema": "xjw-evidence-backed-archive-v1",
+  "date": "2026-11-05",
+  "reason": "Owner directed unusable/repeated editorial angles to be removed from the future publishing queue; archive instead of irreversible deletion to preserve audit and media provenance",
+  "sourceEvidence": "ops/verified-historical-editorial-overlap-20261105.json",
+  "expectedSnapshot": "ops/social-schedule-candidates-current.json",
+  "dataAction": "archive_only_no_delete_no_publish",
+  "requireLiveMatch": true,
+  "requireNoExistingApproval": true,
+  "requireReadback": true,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-gao-vs-drink",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "statusExpected": "pending_review",
+      "sourceCopy": "最近有人問我們：「龜鹿膏跟龜鹿飲，到底差在哪？」\n\n如果只問哪個比較好，其實很難回答。我們反而會先問：你平常比較習慣怎麼準備？有人喜歡在家慢慢來，有人比較喜歡方便一點的形式。\n\n你比較像在家慢慢準備型，還是方便快速型？",
+      "sourceImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-gao-vs-drink-scene-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-year-end-keep-habit",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "statusExpected": "pending_review",
+      "sourceCopy": "跨年前大家常想著明年要多做什麼，但也可以反過來想：今年已經有哪個習慣，值得繼續留下來？\n\n仙加味希望把家族做事的細節傳承下去，也想聽聽你最想留下的生活習慣。\n\n如果只能選一個，你會留哪個？",
+      "sourceImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-keep-habit-audit-v1.jpg"
+    }
+  ]
+}
