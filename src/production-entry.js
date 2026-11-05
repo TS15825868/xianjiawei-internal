@@ -77,7 +77,7 @@ async function fastPostList(request,env){
   if(q){where.push("(instr(lower(coalesce(title,'')),lower(?))>0 OR instr(lower(coalesce(headline,'')),lower(?))>0 OR instr(lower(coalesce(copy,'')),lower(?))>0 OR instr(lower(coalesce(category,'')),lower(?))>0 OR instr(lower(coalesce(image_alt,'')),lower(?))>0)");binds.push(q,q,q,q,q);}
   const clause=where.join(' AND ');
   const [rows,totalRow,grouped]=await Promise.all([
-    env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all(),
+    env.DB.prepare(`SELECT * FROM social_posts WHERE ${clause} ORDER BY updated_at DESC,created_at DESC,id DESC LIMIT ? OFFSET ?`).bind(...binds,limit,offset).all(),
     env.DB.prepare(`SELECT COUNT(*) AS count FROM social_posts WHERE ${clause}`).bind(...binds).first(),
     env.DB.prepare("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status").all()
   ]);
