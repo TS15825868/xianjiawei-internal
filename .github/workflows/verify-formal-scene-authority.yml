@@ -1,0 +1,36 @@
+name: 仙加味正式角色與產品原圖來源守門（唯讀）
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/formal-visual-asset-authority-20261105.json'
+      - 'ops/social-scene-image-production-queue-20261105.json'
+      - 'ops/social-calendar-2026-11-to-2027-03-candidates.json'
+      - 'tools/test-formal-scene-authority.mjs'
+      - '.github/workflows/verify-formal-scene-authority.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xjw-visual-identity-source-verification
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Check 23 scene assets without image generation, D1 changes or publication
+        run: |
+          set -euo pipefail
+          node --check tools/test-formal-scene-authority.mjs
+          node --test tools/test-formal-scene-authority.mjs
+      - name: Confirm zero external mutations
+        run: |
+          echo "PASS: source identity validation is read-only; no D1 writes, approvals, auto scheduling or publication."
