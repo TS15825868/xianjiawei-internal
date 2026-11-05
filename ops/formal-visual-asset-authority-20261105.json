@@ -1,0 +1,174 @@
+{
+  "schema": "xjw-formal-visual-authority-pinned-main-20261105-v1",
+  "brand": "仙加味",
+  "capturedAt": "2026-11-05",
+  "websiteRepo": "TS15825868/xianjiawei",
+  "websiteMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+  "sourceMethod": "GitHub connector fetched exact file blobs from main, with content SHA per asset",
+  "assets": {
+    "mascot": {
+      "role": "character-identity-reference_not_ready-made_scene",
+      "repository": "TS15825868/xianjiawei",
+      "path": "assets/reference/heygen/mascot-primary-v20260818.jpg",
+      "gitBlobSha": "61516d7563b26fe0cfd88ec576e3aabf61348710",
+      "expectedAppearance": [
+        "短黑髮",
+        "圓臉",
+        "大眼睛",
+        "米白中式上衣",
+        "深橄欖綠圍裙",
+        "胸前紅色直式仙加味印章"
+      ],
+      "noTextOrStampInvention": true,
+      "note": "網站現存人物參考圖；必須逐張目視核對造型，不得因AI文字描述就當成正式角色像素符合。"
+    },
+    "deer": {
+      "role": "site-decoration_reference_only_not_scene_character_approved",
+      "repository": "TS15825868/xianjiawei",
+      "path": "images/brand/decor-v20261003/deer-right.webp",
+      "gitBlobSha": "57a2bf99fdde2513569f2f18f87e0c77d87fa93c",
+      "fullBodySceneApproved": false,
+      "note": "裝飾用小鹿圖不足以證明完整姿態角色；要新增獨立角色須先取得最新正式原圖並人工核對"
+    },
+    "turtle": {
+      "role": "site-decoration_reference_only_not_scene_character_approved",
+      "repository": "TS15825868/xianjiawei",
+      "path": "images/brand/decor-v20261003/turtle-bottom.webp",
+      "gitBlobSha": "0bdcaa9eafcb219fa9fea199e1af3db87b28f08e",
+      "fullBodySceneApproved": false,
+      "note": "裝飾用小烏龜圖不足以證明完整姿態角色；不能與小鹿融合；要新增獨立角色須先取得最新正式原圖並人工核對"
+    },
+    "sceneStyleReference": {
+      "role": "existing-post-only_for-style-comparison_never_reuse_as-new-post-image",
+      "repository": "TS15825868/xianjiawei",
+      "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
+      "copyAsFinalImageAllowed": false
+    }
+  },
+  "products": [
+    {
+      "id": "guilu-gao",
+      "name": "龜鹿膏",
+      "spec": "100g／罐",
+      "role": "current-public-main-photo-only",
+      "repository": "TS15825868/xianjiawei",
+      "sourceMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+      "path": "images/catalog-owner-final-v20261017/guilu-gao-main.webp",
+      "gitBlobSha": "a367b9390b44003923cdae21de6c9df63e032e50",
+      "identityReference": {
+        "path": "images/products-v3/guilu-gao.jpg",
+        "gitBlobSha": "058bac1e21ee52c41d24a8028c5cd9ff03967f6e",
+        "role": "product-shape-identity-only_not_customer-main"
+      },
+      "guard": "保留六角玻璃罐、金色蓋、標籤及原始比例",
+      "restrictions": [
+        "do_not_ai_redraw",
+        "do_not_change_label",
+        "do_not_crop_package",
+        "do_not_stretch",
+        "do_not_guess_scale",
+        "must_match_current_main_before_production",
+        "provenance_required_before_16_item_review"
+      ]
+    },
+    {
+      "id": "guilu-drink-30",
+      "name": "龜鹿飲30cc玻璃罐",
+      "spec": "30cc／罐",
+      "role": "current-public-main-photo-only",
+      "repository": "TS15825868/xianjiawei",
+      "sourceMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+      "path": "images/catalog-owner-final-v20261017/guilu-drink-30-main.webp",
+      "gitBlobSha": "b2d7cd7f2f5b93bb449f6a4d0e45c5de938c3391",
+      "identityReference": {
+        "path": "images/products-v3/guilu-drink-30.jpg",
+        "gitBlobSha": "9e78c5bf9e1f903c38f6e9ee2e814a9b87e3765a",
+        "role": "product-shape-identity-only_not_customer-main"
+      },
+      "guard": "小玻璃裸罐無標籤、不可稱瓶或改變大小",
+      "restrictions": [
+        "do_not_ai_redraw",
+        "do_not_change_label",
+        "do_not_crop_package",
+        "do_not_stretch",
+        "do_not_guess_scale",
+        "must_match_current_main_before_production",
+        "provenance_required_before_16_item_review"
+      ]
+    },
+    {
+      "id": "guilu-drink-180",
+      "name": "龜鹿飲180cc鋁袋",
+      "spec": "180cc／包",
+      "role": "current-public-main-photo-only",
+      "repository": "TS15825868/xianjiawei",
+      "sourceMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+      "path": "images/catalog-owner-final-v20261017/guilu-drink-180-main.webp",
+      "gitBlobSha": "608d2f0a45e3a07cec91ef02f2fa09210045216a",
+      "identityReference": {
+        "path": "images/products-v3/guilu-drink-180.jpg",
+        "gitBlobSha": "83c40fdbdf3f5c02cf84f8ed8a533ff487b0fe98",
+        "role": "product-shape-identity-only_not_customer-main"
+      },
+      "guard": "保持狹長直立鋁袋與真實包裝印字，不可橫向拉寬",
+      "restrictions": [
+        "do_not_ai_redraw",
+        "do_not_change_label",
+        "do_not_crop_package",
+        "do_not_stretch",
+        "do_not_guess_scale",
+        "must_match_current_main_before_production",
+        "provenance_required_before_16_item_review"
+      ]
+    },
+    {
+      "id": "luerong-fen",
+      "name": "鹿茸粉",
+      "spec": "75g／罐",
+      "role": "current-public-main-photo-only",
+      "repository": "TS15825868/xianjiawei",
+      "sourceMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+      "path": "images/catalog-owner-final-v20261017/luerong-fen-main.webp",
+      "gitBlobSha": "10dbb36a86f0247f564e015a2538effb9996b99b",
+      "identityReference": {
+        "path": "images/products-v3/luerong-fen.jpg",
+        "gitBlobSha": "e4a70aae7754afd9d3536fb8158168628759ca95",
+        "role": "product-shape-identity-only_not_customer-main"
+      },
+      "guard": "未確認毫米尺寸不得推測，保持原瓶標與圖像比例",
+      "restrictions": [
+        "do_not_ai_redraw",
+        "do_not_change_label",
+        "do_not_crop_package",
+        "do_not_stretch",
+        "do_not_guess_scale",
+        "must_match_current_main_before_production",
+        "provenance_required_before_16_item_review"
+      ]
+    }
+  ],
+  "retiredPublicIds": [
+    "guilu-jiao",
+    "guilu-tangkuai",
+    "qixuan-tea"
+  ],
+  "promotionHold": [
+    "龜鹿膠",
+    "龜鹿湯塊",
+    "柒玄茶"
+  ],
+  "zeroInventionPolicy": {
+    "person": "exact approved appearance required; no replacement character",
+    "deerTurtle": "strictly separate, only if scene explicitly requires them; current site decor alone never grants full character approval",
+    "product": "never generate a substitute product; use approved main originals unchanged with documented scale and origin",
+    "AI": "generated scene is provisional until visual review, formal character shape checks, 16-item audit, user approval; no autoSchedule or autoPublish"
+  },
+  "notes": [
+    "2026/08 user archive and older design posters are supporting historical references, not replacements for latest GitHub product master",
+    "Published scenes and LINE cropped mascot are not authorized reusable new public post images",
+    "If newest official main changes, compare and update reference assets; never fail simply because an obsolete historical hash differs",
+    "A Git blob SHA is Git object identity (not SHA-256); verify against current GitHub main before publication",
+    "No product or character image has been newly created or approved by this manifest"
+  ]
+}
