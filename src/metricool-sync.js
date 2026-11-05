@@ -4,7 +4,7 @@ const BRAND='6889683';
 const clean=x=>String(x??'').trim();
 export function requiresDatedSchedule(row){return /(元旦|除夕|元宵|春節|過年|走春|農曆年|中秋|端午|聖誕|冬至)/.test([row?.title,row?.headline,row?.category,row?.copy].join(' '))}
 function hasExplicitFutureDate(row,now){return [row?.scheduled_at,row?.proposed_scheduled_at].some(x=>Date.parse(x)>now.getTime())}
-export const metricoolConfiguration=()=>({version:'2026-10-13-metricool-free-ai-v3',brandId:BRAND,mode:'free_work_handoff',enabled:false,paidApiRequired:false,serverApiEnabled:false,connectorExecution:'Work 執行期間',externalScheduling:'Metricool 免費排程器',monthlyPublishedPlatformLimit:20,perThreePlatformPostCost:3,backgroundResultSync:false,timezone:'Asia/Taipei',defaultPolicy:'週一／週三／週五台灣時間10:00；保留既有明確日期',humanReviewRequired:false,evidenceApprovalRequired:true,approvalModes:['HUMAN_APPROVED','AI_APPROVED'],uncertainContentRequiresHuman:true,message:'低風險貼文可依完整AI證據自動核准，符合安全條件才排入待Work佇列；外部發布仍需正式排程及平台回執驗證。'});
+export const metricoolConfiguration=()=>({version:'2026-11-05-human-gated-free-20-limit-v4',brandId:BRAND,mode:'free_work_handoff',enabled:false,paidApiRequired:false,serverApiEnabled:false,connectorExecution:'Work 執行期間',externalScheduling:'Metricool 免費排程器',monthlyPublishedPlatformLimit:20,perThreePlatformPostCost:3,backgroundResultSync:false,timezone:'Asia/Taipei',defaultPolicy:'週二／週五台灣時間10:00；特殊週最多3篇；已核准既有日期優先',humanReviewRequired:true,evidenceApprovalRequired:true,approvalModes:['AI_QUALITY_THEN_HUMAN_APPROVED'],uncertainContentRequiresHuman:true,message:'AI僅品質預審；每篇須使用者人工核准當前圖文版本才可排程。Metricool免費20篇/月按實際發布平台分別計數，三平台同發每篇占3額度；每週2–3篇三平台同發可能超額，須保留阻擋或改用已驗證的免費原生排程，不可偷開付費。'});
 export async function ensureMetricoolSchema(env){
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_metricool_sync(post_id TEXT PRIMARY KEY,metricool_id INTEGER,uuid TEXT UNIQUE,publication_at TEXT,content_fingerprint TEXT NOT NULL DEFAULT '',state TEXT NOT NULL DEFAULT 'pending_review',attempts INTEGER NOT NULL DEFAULT 0,last_error TEXT NOT NULL DEFAULT '',template_json TEXT NOT NULL DEFAULT '{}',lease_until TEXT,last_sync_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`).run();
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_metricool_control(setting_key TEXT PRIMARY KEY,setting_value TEXT NOT NULL DEFAULT '')`).run();
@@ -20,7 +20,7 @@ export function nextMetricoolSlot(now=new Date(),reserved=[]){
     // subtract eight hours below exactly once to obtain 02:00 UTC / 10:00 Taiwan.
     const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,10));
     const date=day.toISOString().slice(0,10),at=new Date(day.getTime()-8*3600000);
-    if([1,3,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date))return at.toISOString();
+    if([2,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date))return at.toISOString();
   }
   throw new Error('找不到可用正式時段');
 }
@@ -53,6 +53,8 @@ export function metricoolScheduleCapacity(links,at,{monthlyLimit=20,postCost=3}=
 // approval to an external scheduler that could publish after it expires.
 // Human-reviewed posts retain their existing scheduling policy.
 export function aiScheduleFresh(row,reviewedAt,publicationAt,{reviewerType}={}){
+  // A verified HUMAN gate takes precedence over an older AI quality review_note.
+  if(reviewerType==='HUMAN')return{ok:true};
   // approved_by is the real owner email (FK profiles.email), not a synthetic
   // model identity. Distinguish AI via the verified reviewer type and stamp.
   const aiApproved=reviewerType==='AI'||
