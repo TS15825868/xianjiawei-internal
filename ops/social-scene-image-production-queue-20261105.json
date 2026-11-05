@@ -1,5 +1,5 @@
 {
-  "schema": "xjw-official-scene-production-queue-v1-draft-caption",
+  "schema": "xjw-official-scene-production-queue-v2-date-corrected",
   "date": "2026-11-05",
   "brand": "仙加味",
   "d1Readback": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42042179474",
@@ -133,7 +133,7 @@
       "id": "XJW-CAND-20270108",
       "sourceD1Id": "XJW-CAND-20270108",
       "plannedAt": "2027-01-08T10:00:00+08:00",
-      "title": "新年第一個週五，換一枝花給窗邊",
+      "title": "一月的週五，換一枝花給窗邊",
       "category": "生活",
       "sceneBrief": "冬日週五上午，仙加味店內窗邊，小老闆將一枝花插入素雅花瓶，旁邊小鹿好奇觀看",
       "mediaPrompt": "仙加味品牌原創完整生活情境插畫。畫面 1:1 正方形，清楚敘事，單一自然場景，色系深藍、米白、深紅、金色，專業現代乾淨。固定小老闆：短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色直式「仙加味」印章；小鹿與小烏龜依本篇場景擇一或兩者分開，維持人物比例與透視光影。具體場景：冬日週五上午，仙加味店內窗邊，小老闆將一枝花插入素雅花瓶，旁邊小鹿好奇觀看。與文案主題一致，不加廣告模板、字幕、對話框、產品造假、拼貼或亂碼。本篇生活主題不強制展示商品，避免生成虛構產品包裝。",
@@ -149,7 +149,8 @@
       "humanApproved": false,
       "externalScheduled": false,
       "externalPublished": false,
-      "draftCaption": "新年第一個週五，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？"
+      "draftCaption": "一月的週五早上，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？",
+      "lastD1CorrectionVerified": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42052527105"
     },
     {
       "id": "XJW-CAND-20270112",
@@ -171,7 +172,8 @@
       "humanApproved": false,
       "externalScheduled": false,
       "externalPublished": false,
-      "draftCaption": "周末親友來坐坐，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？"
+      "draftCaption": "準備招待來家裡坐坐的親友時，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
+      "lastD1CorrectionVerified": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42052527105"
     },
     {
       "id": "XJW-CAND-20270115",
