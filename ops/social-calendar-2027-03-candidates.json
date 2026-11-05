@@ -1,0 +1,99 @@
+{
+  "version": "2026-11-05-march-candidate-extension-v1",
+  "brand": "仙加味",
+  "timezone": "Asia/Taipei",
+  "sourceCalendar": "ops/social-calendar-2026-11-to-2027-02-candidates.json",
+  "kind": "candidate_only_not_metricool_schedule",
+  "manualApprovalRequired": true,
+  "autoPublish": false,
+  "weeklyMaximum": 3,
+  "notes": [
+    "不覆蓋既有候選、已發布或Metricool草稿；實際排程前須跨D1及三平台去重",
+    "每篇需原創文案、合格情境圖、正式產品原圖核對、16項AI審核、D1寫入讀回及人工核准",
+    "天氣內容在發文前依即時資料核對；不預先宣稱氣象",
+    "已停止公開推廣產品不得自動恢復"
+  ],
+  "slots": [
+    {
+      "date": "2027-03-02",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "生活",
+      "topic": "春季早晨：小老闆整理早餐桌與溫熱飲品",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-05",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "閒聊",
+      "topic": "萬華店內的日常：今天先整理哪個角落？",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-09",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "產品",
+      "topic": "仙加味龜鹿膏100g：查看正式包裝與保存標示",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-12",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "料理",
+      "topic": "春日家常湯：菇類與蔬菜的料理搭配",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-16",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "關心",
+      "topic": "出門前的春季日常：帶水與留意天氣",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-19",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "互動",
+      "topic": "小鹿與小烏龜的週末提問：你想在家煮飯還是散步？",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-23",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "品牌",
+      "topic": "萬華起家的熬膠工藝與家族記憶",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-26",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "產品",
+      "topic": "龜鹿飲30cc玻璃裸罐：正確辨識產品形式",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    },
+    {
+      "date": "2027-03-30",
+      "time": "10:00",
+      "timezone": "Asia/Taipei",
+      "category": "生活",
+      "topic": "春末整理：家中食品標示與保存習慣",
+      "status": "candidate_pending_copy_asset_16_checks_and_manual_approval",
+      "autoPublish": false
+    }
+  ]
+}
