@@ -1,0 +1,1737 @@
+{
+  "schema": "xjw-published-crossplatform-caption-dedup-triage-v1",
+  "date": "2026-11-05",
+  "brand": "仙加味",
+  "snapshotSource": {
+    "d1": "ops/social-schedule-candidates-current.json (2026-11-05 live D1 sync)",
+    "metricool": "ops/metricool-instagram-threads-published-history-20261105.json (actual published analytics)"
+  },
+  "method": {
+    "index": "Unicode NFKC, strip URLs, hashtags and generic brand boilerplate, compare unique character trigrams via Jaccard",
+    "scoresOnly": "triage not proof",
+    "limits": "35 Instagram/23 Threads observed published posts, Facebook 74 source stored separately; does not account for full carousel child images or inaccessible history",
+    "neverAutoApprove": true
+  },
+  "counts": {
+    "pendingReviewed": 58,
+    "instagramHistory": 35,
+    "threadsHistory": 23,
+    "exactMatches": 0,
+    "editorialRiskFlags": 5,
+    "releaseApproved": 0
+  },
+  "rows": [
+    {
+      "postId": "XJW-CONV-chat-tradition-today",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261007154524",
+          "postId": "4002774082772265069_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeMtdIXx-ht/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.041,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261007154808",
+          "postId": "17987156687878610",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92",
+          "mediaType": "IMAGE",
+          "score": 0.041,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-home-soup",
+      "title": "你家煮湯，最常放什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.017,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261028130632",
+          "postId": "18148202098570237",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfCf_EyiD1_",
+          "mediaType": "IMAGE",
+          "score": 0.017,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-wanhua-morning",
+      "title": "萬華的早上，你第一個想到什麼聲音？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260904103557",
+          "postId": "3978701086983039955_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dc3L479FavT/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0152,
+          "excerpt": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261007154524",
+          "postId": "4002774082772265069_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeMtdIXx-ht/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0092,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-trial-first",
+      "title": "想先了解，再決定也可以",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260913030203",
+          "postId": "17957985588234021",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+          "mediaType": "TEXT_POST",
+          "score": 0.0542,
+          "excerpt": "龜鹿飲是仙加味裡適合『想省時間』的人認識的一種。\n\n有 30cc 小玻璃罐，也有 180cc 鋁袋，都是接單後製作，約 5～7 個工作天出貨。\n\n平常可溫熱飲用"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261013081541",
+          "postId": "4006896749331148648_78424002938",
+          "postUrl": "https://www.instagram.com/p/DebW10zjO9o/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0452,
+          "excerpt": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-buy-first-look",
+      "title": "買東西時，你第一個看什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0101,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261028130632",
+          "postId": "18148202098570237",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfCf_EyiD1_",
+          "mediaType": "IMAGE",
+          "score": 0.0101,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-receive-package",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0104,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261021020202",
+          "postId": "4012506875442008598_78424002938",
+          "postUrl": "https://www.instagram.com/p/DevSb55iJIW/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0104,
+          "excerpt": "重新認識仙加味。\n\n我們從台北萬華起家，承接四代家族與鹿角、熬膠工藝的故事。這些年，我們持續學習把傳統漢方飲食文化，用更清楚、方便、貼近日常的方式分享給大家。\n"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-opening-prep",
+      "title": "開店前，小老闆先做哪一件事？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0066,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260925020240",
+          "postId": "18635160391019476",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdsVx35Cv_9",
+          "mediaType": "IMAGE",
+          "score": 0.0066,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-recipe-or-feel",
+      "title": "你煮東西是照食譜，還是憑感覺？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261023020158",
+          "postId": "4013956389500187677_78424002938",
+          "postUrl": "https://www.instagram.com/p/De0cBHEEXQd/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0112,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261023020244",
+          "postId": "18028282769871354",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/De0cCzuislu",
+          "mediaType": "IMAGE",
+          "score": 0.0112,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "title": "龜鹿飲180cc鋁袋裡，有哪些成分？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261021062533",
+          "postId": "4012639510524863731_78424002938",
+          "postUrl": "https://www.instagram.com/p/Devwl_8iCTz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.1317,
+          "excerpt": "龜鹿膏 100g｜日常食補的小罐安排\n\n成分：鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘。\n\n・100g／罐，六角玻璃罐\n・初次可先從半匙開始\n・可直接取"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260916114532",
+          "postId": "3987433427959660289_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdWNZOPDb8B/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0926,
+          "excerpt": "30cc 小玻璃罐之外，仙加味也有 180cc 鋁袋。\n\n龜鹿飲180cc正式規格為180cc／包（鋁袋），採狹長直立包裝。撕開即可飲用，也可以將未開封鋁袋隔水"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review",
+      "editorialRisk": {
+        "source": "https://www.instagram.com/p/DdWNZOPDb8B/",
+        "reason": "已發布IG介紹180cc鋁袋規格，且本篇另有實際包裝標示版本問題未驗證",
+        "kind": "potential_angle_or_historical_overlap",
+        "notAProvenDuplicate": true
+      }
+    },
+    {
+      "postId": "XJW-CONV-weather-cool-drink",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261023020158",
+          "postId": "4013956389500187677_78424002938",
+          "postUrl": "https://www.instagram.com/p/De0cBHEEXQd/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0249,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261023020244",
+          "postId": "18028282769871354",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/De0cCzuislu",
+          "mediaType": "IMAGE",
+          "score": 0.0249,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-family-old-object",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261007154524",
+          "postId": "4002774082772265069_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeMtdIXx-ht/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0136,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261007154808",
+          "postId": "17987156687878610",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92",
+          "mediaType": "IMAGE",
+          "score": 0.0136,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-quiet-work",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0058,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0058,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-dayoff-cook",
+      "title": "放假在家，你會想慢慢準備一餐嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260916053117",
+          "postId": "17959243467209123",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg",
+          "mediaType": "IMAGE",
+          "score": 0.016,
+          "excerpt": "今天不用把日常安排得太複雜。\n\n工作空檔，或回到家之後，留一點時間喝杯溫熱的飲品，把生活節奏慢下來。仙加味想做的，就是把傳統漢方飲食文化整理成更貼近日常的方式。"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0132,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-gift-choice",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260920043102",
+          "postId": "3990113706378054665_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0212,
+          "excerpt": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0186,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-picture-or-text",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260911040209",
+          "postId": "18118653349731629",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+          "mediaType": "TEXT_POST",
+          "score": 0.009,
+          "excerpt": "最近最常被問到的，其實不是『哪個最好』，而是『哪一個比較適合我的生活方式？』\n\n有人喜歡龜鹿膏的小匙取用，有人覺得龜鹿飲直接喝比較方便；30cc 小玻璃罐跟 1"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261013081541",
+          "postId": "4006896749331148648_78424002938",
+          "postUrl": "https://www.instagram.com/p/DebW10zjO9o/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0065,
+          "excerpt": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-photo-size",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260806041532",
+          "postId": "3957491164539558820_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0338,
+          "excerpt": "龜鹿飲試喝組｜先試喝，再決定\n\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\n\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260909113124",
+          "postId": "18098217644144885",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdEKJwxCJbn",
+          "mediaType": "TEXT_POST",
+          "score": 0.0236,
+          "excerpt": "第一次來到仙加味，可以先認識我們。\n\n我們從台北萬華開始，延續四代家族鹿角與龜鹿相關原料、工序與熬製經驗，現在把這些老經驗整理成比較容易理解、也更貼近日常的方式"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-luerong-intro",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261009050336",
+          "postId": "4003900963899413608_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeQtraNEZRo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0222,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261009050417",
+          "postId": "18112632515469532",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeQtsveDe2B",
+          "mediaType": "IMAGE",
+          "score": 0.0222,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260911040209",
+          "postId": "18118653349731629",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+          "mediaType": "TEXT_POST",
+          "score": 0.0755,
+          "excerpt": "最近最常被問到的，其實不是『哪個最好』，而是『哪一個比較適合我的生活方式？』\n\n有人喜歡龜鹿膏的小匙取用，有人覺得龜鹿飲直接喝比較方便；30cc 小玻璃罐跟 1"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260913030203",
+          "postId": "17957985588234021",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+          "mediaType": "TEXT_POST",
+          "score": 0.0682,
+          "excerpt": "龜鹿飲是仙加味裡適合『想省時間』的人認識的一種。\n\n有 30cc 小玻璃罐，也有 180cc 鋁袋，都是接單後製作，約 5～7 個工作天出貨。\n\n平常可溫熱飲用"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review",
+      "editorialRisk": {
+        "source": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+        "reason": "已發布Threads比較玻璃罐與鋁袋生活選擇，需避免同主題換句話重發",
+        "kind": "potential_angle_or_historical_overlap",
+        "notAProvenDuplicate": true
+      }
+    },
+    {
+      "postId": "XJW-CONV-chat-30-vs-180",
+      "title": "30cc跟180cc，怎麼選？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260806041532",
+          "postId": "3957491164539558820_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0571,
+          "excerpt": "龜鹿飲試喝組｜先試喝，再決定\n\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\n\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260913030203",
+          "postId": "17957985588234021",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+          "mediaType": "TEXT_POST",
+          "score": 0.0556,
+          "excerpt": "龜鹿飲是仙加味裡適合『想省時間』的人認識的一種。\n\n有 30cc 小玻璃罐，也有 180cc 鋁袋，都是接單後製作，約 5～7 個工作天出貨。\n\n平常可溫熱飲用"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-30-bare-jar",
+      "title": "今天只看一個小細節：裸罐",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260806041532",
+          "postId": "3957491164539558820_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.046,
+          "excerpt": "龜鹿飲試喝組｜先試喝，再決定\n\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\n\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261013081541",
+          "postId": "4006896749331148648_78424002938",
+          "postUrl": "https://www.instagram.com/p/DebW10zjO9o/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0427,
+          "excerpt": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-new-year-slow-start",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.029,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.029,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-year-end-keep-habit",
+      "title": "如果今年只能留下一個習慣，你會留哪個？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260920043102",
+          "postId": "3990113706378054665_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0169,
+          "excerpt": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260806041532",
+          "postId": "3957491164539558820_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.012,
+          "excerpt": "龜鹿飲試喝組｜先試喝，再決定\n\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\n\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review",
+      "editorialRisk": {
+        "source": null,
+        "reason": "過往AI紀錄指出語意重複風險；這批IG/Threads資料不足以確認或排除所有Facebook往年相關主題",
+        "kind": "potential_angle_or_historical_overlap",
+        "notAProvenDuplicate": true
+      }
+    },
+    {
+      "postId": "XJW-CONV-chat-drink-made-to-order",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260913030203",
+          "postId": "17957985588234021",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+          "mediaType": "TEXT_POST",
+          "score": 0.0811,
+          "excerpt": "龜鹿飲是仙加味裡適合『想省時間』的人認識的一種。\n\n有 30cc 小玻璃罐，也有 180cc 鋁袋，都是接單後製作，約 5～7 個工作天出貨。\n\n平常可溫熱飲用"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260916114532",
+          "postId": "3987433427959660289_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdWNZOPDb8B/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0576,
+          "excerpt": "30cc 小玻璃罐之外，仙加味也有 180cc 鋁袋。\n\n龜鹿飲180cc正式規格為180cc／包（鋁袋），採狹長直立包裝。撕開即可飲用，也可以將未開封鋁袋隔水"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review",
+      "editorialRisk": {
+        "source": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+        "reason": "已發布Threads介紹龜鹿飲30cc／180cc及接單後5–7工作天，需比較不同主題角度",
+        "kind": "potential_angle_or_historical_overlap",
+        "notAProvenDuplicate": true
+      }
+    },
+    {
+      "postId": "XJW-CONV-chat-soup-day",
+      "title": "你家有固定的煮湯日嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261023020158",
+          "postId": "4013956389500187677_78424002938",
+          "postUrl": "https://www.instagram.com/p/De0cBHEEXQd/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0156,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261023020244",
+          "postId": "18028282769871354",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/De0cCzuislu",
+          "mediaType": "IMAGE",
+          "score": 0.0156,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-first-soup",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260715123007",
+          "postId": "3941794959217857454_78424002938",
+          "postUrl": "https://www.instagram.com/p/Da0EaGBmxOu/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0147,
+          "excerpt": "龜鹿膏只能冬天吃嗎？產品型態只是不同的呈現方式，不能單靠外觀判斷適合哪個季節。比季節更重要的是：實際使用的原料、配料比例、每次份量，以及自己的飲食習慣。天氣較熱"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260924122040",
+          "postId": "3993249314092726006_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddq3xgSEbb2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0104,
+          "excerpt": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-brand-not-only-product",
+      "title": "為什麼有些貼文不放產品？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0316,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0316,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-craft-years",
+      "title": "一件事情做久了，還會覺得新鮮嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261007154524",
+          "postId": "4002774082772265069_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeMtdIXx-ht/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0271,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261007154808",
+          "postId": "17987156687878610",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92",
+          "mediaType": "IMAGE",
+          "score": 0.0271,
+          "excerpt": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-elder-kitchen-habit",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261009020147",
+          "postId": "4003809463882866913_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeQY36LFeDh/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0071,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261009020230",
+          "postId": "18099186008387083",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW",
+          "mediaType": "IMAGE",
+          "score": 0.0071,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-no-standard-answer",
+      "title": "有些問題，其實沒有標準答案",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260924122040",
+          "postId": "3993249314092726006_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddq3xgSEbb2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0175,
+          "excerpt": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260924122124",
+          "postId": "18245410135310948",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Ddq3yyginm7",
+          "mediaType": "IMAGE",
+          "score": 0.0175,
+          "excerpt": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-old-methods",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260911040209",
+          "postId": "18118653349731629",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+          "mediaType": "TEXT_POST",
+          "score": 0.009,
+          "excerpt": "最近最常被問到的，其實不是『哪個最好』，而是『哪一個比較適合我的生活方式？』\n\n有人喜歡龜鹿膏的小匙取用，有人覺得龜鹿飲直接喝比較方便；30cc 小玻璃罐跟 1"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260904103557",
+          "postId": "3978701086983039955_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dc3L479FavT/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0071,
+          "excerpt": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-pantry-memory",
+      "title": "你家以前最常看到哪一種食材？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260715123007",
+          "postId": "3941794959217857454_78424002938",
+          "postUrl": "https://www.instagram.com/p/Da0EaGBmxOu/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0136,
+          "excerpt": "龜鹿膏只能冬天吃嗎？產品型態只是不同的呈現方式，不能單靠外觀判斷適合哪個季節。比季節更重要的是：實際使用的原料、配料比例、每次份量，以及自己的飲食習慣。天氣較熱"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261103125307",
+          "postId": "4022256683183285942_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfR7SR8lKa2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0093,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-shop-organizing",
+      "title": "小老闆今天在整理什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0162,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0162,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-traditional-image",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0154,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260925020240",
+          "postId": "18635160391019476",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdsVx35Cv_9",
+          "mediaType": "IMAGE",
+          "score": 0.0154,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-fridge-clean",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261009020147",
+          "postId": "4003809463882866913_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeQY36LFeDh/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0205,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261009020230",
+          "postId": "18099186008387083",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW",
+          "mediaType": "IMAGE",
+          "score": 0.0205,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261009020147",
+          "postId": "4003809463882866913_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeQY36LFeDh/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0081,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261009020230",
+          "postId": "18099186008387083",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW",
+          "mediaType": "IMAGE",
+          "score": 0.0081,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-pre-clean",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260904103557",
+          "postId": "3978701086983039955_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dc3L479FavT/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0061,
+          "excerpt": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0056,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-reopen",
+      "title": "開工第一天，小老闆先做一件小事",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0114,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0114,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-weather-rain-chat",
+      "title": "下雨天，你會想喝什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260904103557",
+          "postId": "3978701086983039955_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dc3L479FavT/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0263,
+          "excerpt": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0219,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261009050336",
+          "postId": "4003900963899413608_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeQtraNEZRo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0461,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261009050417",
+          "postId": "18112632515469532",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeQtsveDe2B",
+          "mediaType": "IMAGE",
+          "score": 0.0461,
+          "excerpt": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-care-before-home-message",
+      "title": "回家前，你會先打一通電話，還是先傳一句問候？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260920043102",
+          "postId": "3990113706378054665_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0169,
+          "excerpt": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260924122040",
+          "postId": "3993249314092726006_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddq3xgSEbb2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0162,
+          "excerpt": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260916053117",
+          "postId": "17959243467209123",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg",
+          "mediaType": "IMAGE",
+          "score": 0.0289,
+          "excerpt": "今天不用把日常安排得太複雜。\n\n工作空檔，或回到家之後，留一點時間喝杯溫熱的飲品，把生活節奏慢下來。仙加味想做的，就是把傳統漢方飲食文化整理成更貼近日常的方式。"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0217,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-last-day-reset",
+      "title": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0552,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260925020240",
+          "postId": "18635160391019476",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdsVx35Cv_9",
+          "mediaType": "IMAGE",
+          "score": 0.0552,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-new-year-warm-cup-share",
+      "title": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260916053117",
+          "postId": "17959243467209123",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg",
+          "mediaType": "IMAGE",
+          "score": 0.0457,
+          "excerpt": "今天不用把日常安排得太複雜。\n\n工作空檔，或回到家之後，留一點時間喝杯溫熱的飲品，把生活節奏慢下來。仙加味想做的，就是把傳統漢方飲食文化整理成更貼近日常的方式。"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20260904103557",
+          "postId": "3978701086983039955_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dc3L479FavT/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0253,
+          "excerpt": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-small-things-work",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0168,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0168,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-gao-vs-drink",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260920043102",
+          "postId": "3990113706378054665_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0378,
+          "excerpt": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261013081541",
+          "postId": "4006896749331148648_78424002938",
+          "postUrl": "https://www.instagram.com/p/DebW10zjO9o/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0335,
+          "excerpt": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review",
+      "editorialRisk": {
+        "source": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+        "reason": "已發布IG有龜鹿膏與龜鹿飲選擇角度相近，需判別是否僅改寫相同互動問題",
+        "kind": "potential_angle_or_historical_overlap",
+        "notAProvenDuplicate": true
+      }
+    },
+    {
+      "postId": "XJW-CONV-chat-fixed-storage",
+      "title": "你的廚房，最常用木匙還是長筷？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260920043102",
+          "postId": "3990113706378054665_78424002938",
+          "postUrl": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0096,
+          "excerpt": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261023020158",
+          "postId": "4013956389500187677_78424002938",
+          "postUrl": "https://www.instagram.com/p/De0cBHEEXQd/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0069,
+          "excerpt": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-simple-soup",
+      "title": "一鍋湯，其實不用放得很複雜",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261103125307",
+          "postId": "4022256683183285942_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfR7SR8lKa2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0202,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261103125349",
+          "postId": "18081864071382931",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfR7TWWiG9q",
+          "mediaType": "IMAGE",
+          "score": 0.0202,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "title": "今天讓小鹿跟小烏龜來選",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Threads",
+          "dateRaw": "20260910123119",
+          "postId": "17861434386689511",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdG1zfxiMpf",
+          "mediaType": "TEXT_POST",
+          "score": 0.0134,
+          "excerpt": "🌿 仙加味開了一個新的日常交流空間。\n\n「仙加味・龜鹿｜日常交流」不會只放產品廣告，我們想在裡面聊一些更貼近日常的內容：龜鹿怎麼融入生活、溫熱飲用、家常料理、"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0094,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-ask-boss-topic",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0066,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0066,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-season-more-soup",
+      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261028130549",
+          "postId": "4017914296176781377_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfCf8O5lKhB/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0188,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261028130632",
+          "postId": "18148202098570237",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfCf_EyiD1_",
+          "mediaType": "IMAGE",
+          "score": 0.0188,
+          "excerpt": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-year-end-clean",
+      "title": "年底整理時，最常翻出什麼忘記的東西？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0115,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0115,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-chat-last-bowl",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0056,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0056,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-FEST-2027-newyear-breakfast",
+      "title": "元旦早上，先把早餐留給一起生活的人",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261103125307",
+          "postId": "4022256683183285942_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfR7SR8lKa2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0146,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261103125349",
+          "postId": "18081864071382931",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfR7TWWiG9q",
+          "mediaType": "IMAGE",
+          "score": 0.0146,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-childhood-now",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261003020147",
+          "postId": "3999460802859708577_78424002938",
+          "postUrl": "https://www.instagram.com/p/DeA8Gj_jTCh/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0133,
+          "excerpt": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261003020233",
+          "postId": "18383749882226989",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DeA8IE8CPKB",
+          "mediaType": "IMAGE",
+          "score": 0.0133,
+          "excerpt": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-FEST-2027-eve-welcome-home",
+      "title": "除夕，先替回家的人留一個位置",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260925020155",
+          "postId": "3993662653541048499_78424002938",
+          "postUrl": "https://www.instagram.com/p/DdsVwYpDuCz/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0131,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20260925020240",
+          "postId": "18635160391019476",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DdsVx35Cv_9",
+          "mediaType": "IMAGE",
+          "score": 0.0131,
+          "excerpt": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-CONV-cny-family-choice",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20260803134209",
+          "postId": "3955602027175741270_78424002938",
+          "postUrl": "https://www.instagram.com/p/DblHxYGoAdW/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0117,
+          "excerpt": "仙加味，從萬華開始。\n\n我們家在萬華一路傳承至今已經四代。2008 年，「仙加味」品牌完成註冊，希望把多年累積的經驗，以更貼近日常的方式分享給更多人。\n\n如果剛"
+        },
+        {
+          "network": "Instagram",
+          "dateRaw": "20261021020202",
+          "postId": "4012506875442008598_78424002938",
+          "postUrl": "https://www.instagram.com/p/DevSb55iJIW/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0095,
+          "excerpt": "重新認識仙加味。\n\n我們從台北萬華起家，承接四代家族與鹿角、熬膠工藝的故事。這些年，我們持續學習把傳統漢方飲食文化，用更清楚、方便、貼近日常的方式分享給大家。\n"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-FEST-2027-spring-walk",
+      "title": "走春不用趕行程，陪家人慢慢走一段",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261001043054",
+          "postId": "3998086186707227112_78424002938",
+          "postUrl": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.0447,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261001043132",
+          "postId": "17945204499076604",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+          "mediaType": "IMAGE",
+          "score": 0.0447,
+          "excerpt": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    },
+    {
+      "postId": "XJW-FEST-2027-lantern-riceballs",
+      "title": "元宵，一起把小小的湯圓搓好",
+      "postStatus": "pending_review",
+      "rankedPublicCaptionMatches": [
+        {
+          "network": "Instagram",
+          "dateRaw": "20261103125307",
+          "postId": "4022256683183285942_78424002938",
+          "postUrl": "https://www.instagram.com/p/DfR7SR8lKa2/",
+          "mediaType": "FEED_IMAGE",
+          "score": 0.014,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        },
+        {
+          "network": "Threads",
+          "dateRaw": "20261103125349",
+          "postId": "18081864071382931",
+          "postUrl": "https://www.threads.com/@xianjiawei.tw/post/DfR7TWWiG9q",
+          "mediaType": "IMAGE",
+          "score": 0.014,
+          "excerpt": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜"
+        }
+      ],
+      "exactNormalizedCopyMatch": false,
+      "historyEvidenceComplete": false,
+      "aiDecision": "DEFER",
+      "reason": "Partial media evidence and caption similarity alone cannot clear 16-item AI quality duplicate review"
+    }
+  ]
+}
