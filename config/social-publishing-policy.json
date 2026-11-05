@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-28-social-traffic-knowledge-demand-led",
+  "version": "2026-11-05-human-approval-before-scheduling",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -29,12 +29,12 @@
       "metricoolBrandId": "6889683",
       "account": "xianjiawei.tw",
       "directGraphApiFormalRoute": false,
-      "draftUntilImageAndApproval": false
+      "draftUntilImageAndApproval": true
     }
   },
   "imagePolicy": {
-    "imageRequiredForEveryPublicPost": false,
-    "blankImageUrlAllowed": true,
+    "imageRequiredForEveryPublicPost": true,
+    "blankImageUrlAllowed": false,
     "singleIntegratedScene": true,
     "forbidCollage": true,
     "forbidCutAndPaste": true,
@@ -71,8 +71,8 @@
       "小玻璃裸罐於店內展示",
       "居家介紹180cc鋁袋成分的情境"
     ],
-    "reviewDistinction": "純生活情境不強制露出產品，文案也不必提及仙加味、商品或 LINE；若提及品牌或產品，須自然且正確；涉及產品者須另核對正式實物照片、外觀及比例。截圖中可接受的畫風不等於逐篇正式核准，舊版圖片品質標記可重新評估但不可直接忽略其他風險。 使用者2026-11-02確認部分文案可無圖，依平台審核，不因缺圖直接退件。",
-    "textOnlyPolicy": "僅Facebook與Threads可依平台實際支援採純文字；Instagram一般貼文須具備有效圖片或影片。缺圖不等於不合格，但有圖時仍須完成圖像來源、角色、產品、圖文一致及去重審核；不得藉移除圖片掩蓋已知違規。"
+    "reviewDistinction": "生活內容必須自然連結仙加味或正式產品並有對應情境圖；不強制展示商品本體。正常立體光影不構成退件理由。小老闆為主要角色，小鹿及小烏龜可依構圖擇一，但不得融合。",
+    "textOnlyPolicy": "本輪三平台共用內容皆須合格情境媒體；保留歷史已發布內容，不追溯修改。"
   },
   "productImagePolicy": {
     "formalAssetsOnly": true,
@@ -91,7 +91,7 @@
   "copyPolicy": {
     "traditionalChinese": true,
     "topicFree": true,
-    "mustLinkToBrandOrProduct": false,
+    "mustLinkToBrandOrProduct": true,
     "lifestylePostNeedsConcreteScene": true,
     "forbidPublishedDuplicate": true,
     "forbidMedicalClaims": true,
@@ -99,13 +99,13 @@
     "publicBrandOnly": "仙加味"
   },
   "reviewFlow": {
-    "manualApprovalRequired": false,
+    "manualApprovalRequired": true,
     "regeneratedImageReturnsTo": "pending_review",
     "unapprovedContentMayPublish": false,
     "immediatePublishRequiresApproval": true,
     "scheduledPublishRequiresApproval": true,
     "automaticApprovalEnabled": true,
-    "automaticApprovalRule": "使用者 2026-10-28 最新明確授權：低風險內容可由正式 AI 審核產生 AI_APPROVED；必須逐篇具備 16 項 PASS 與可稽核證據、真實圖片與原圖雜湊、品牌產品權威、圖文一致、去重、平台授權及免費額度證明。任何缺項或高風險回待人工審核，不得冒充 HUMAN_APPROVED；正式端對端驗收前不可啟用外部自動發送。 純文字候選須有平台適配及文字版16項可適用檢查的正式證據；圖像相關檢查須明確標示不適用，不得偽造PASS。"
+    "automaticApprovalRule": "AI僅記錄16項證據完整的AI_APPROVED；之後仍須使用者對目前圖文版本及平台人工核准，才可建立會對外發送的排程。defer及reject不得排程；不得冒充人工核准。"
   },
   "autoPublish": {
     "enabled": false,
@@ -131,7 +131,8 @@
     ],
     "approvalRequired": true,
     "automaticApprovalAfterAllChecks": true,
-    "afterManualApproval": "正式 AI_APPROVED 或 HUMAN_APPROVED 均可成為排程候選；必須保留審核身分與有效證據、逐平台發布前重查狀態及去重、實際免費額度與外部回執。AI 審核證據過期須重新審核；未通過正式端對端驗收仍保持不發送。 本次純文字跨平台規則變更期間暫停自動發布，待端對端測試與平台驗收後另行啟用。"
+    "afterManualApproval": "只有目前圖文版本已取得使用者人工核准，且平台權限、免費額度、歷史去重、媒體及回查均驗證成功，才能設定正式Metricool排程；人工核准前autoPublish=false。",
+    "humanApprovalRequired": true
   },
   "crossPlatformPublishing": {
     "mode": "same_day_same_post",
@@ -149,7 +150,7 @@
   "liveLifeInsert": {
     "enabled": true,
     "freshnessWindowHours": "24-72",
-    "humanApprovalRequired": false,
+    "humanApprovalRequired": true,
     "replaceEvergreenSlot": true,
     "shiftReplacedEvergreenForward": true,
     "preserveRealScene": true,
@@ -164,7 +165,23 @@
     "insertRule": "突發天氣、節日、萬華實拍或有時效生活內容優先替換當週常青時段；若當週已有3篇，原常青內容順延下週，不額外超量。",
     "storyRule": "限時動態不計入每週2～3篇主貼文；但仍需圖文品質及平台額度驗證。",
     "qualityRule": "少而精，不為湊篇數發文；每篇必須圖文一致、主題不重複、品牌一致。完整16項AI審核、正式圖片來源、當前文圖雜湊及低風險證據全部通過可標記AI_APPROVED；有任何疑義則留待人工審核，未核准不得發布。",
-    "optionalThirdPost": true
+    "optionalThirdPost": true,
+    "preferredSlots": [
+      {
+        "weekday": "Tuesday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Friday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Sunday",
+        "time": "10:00",
+        "optional": true
+      }
+    ],
+    "timezone": "Asia/Taipei"
   },
   "profileLinkPolicy": {
     "label": "仙加味｜連結入口",
@@ -177,9 +194,9 @@
     "rule": "平台個人檔案／Bio統一使用此入口；貼文內若為產品詢問、試喝、價格、下單、配送、售後，仍直接導LINE OA。"
   },
   "automationTransition": {
-    "authorizedAt": "2026-10-28",
-    "authorization": "使用者最新明確授權 AI 自動產文、製圖、16項審核、低風險 AI_APPROVED、自動排程及正式發布；高風險或無法驗證者必須人工確認，禁止冒充人工審核。",
-    "targetMode": "evidence_bound_ai_or_human_approval_then_verified_scheduled_publish",
+    "authorizedAt": "2026-11-05",
+    "authorization": "AI自動製作文案、圖片及16項品質審核；使用者人工核准目前版本後才可自動排程發布，未核准不得排程或發送。",
+    "targetMode": "ai_production_and_review_then_version_bound_human_approval_then_verified_metricool_schedule",
     "currentEnforcement": "typed_ai_or_human_evidence_gate",
     "aiReviewMustNotImpersonateHuman": true,
     "requiredEvidence": [
@@ -199,16 +216,16 @@
       "龜鹿飲試喝：暫停，使用者另行指定日期前不得自動排程或發布"
     ],
     "officialWebsiteProductImageRule": "官網main目前正式使用的產品原圖為最高圖像權威；禁止AI重畫、覆蓋、變形或用舊ZIP取代；貼文產品圖須核對正式圖檔及實際外觀。",
-    "latestInstruction": "2026-10-28：使用者要求先完成貼文系統，合格低風險貼文可由 AI 自動審核、自動排程、自動發文；必須先完成正式平台、媒體、配額、防重複、端對端安全驗收。高風險、資料不足、證據過期、未知發送結果保持待審核／人工處理。"
+    "latestInstruction": "AI自動製作文案、圖片及16項品質審核；使用者人工核准目前版本後才可自動排程發布，未核准不得排程或發送。"
   },
   "contentRotation": {
     "enabled": true,
     "goal": "社群以吸引流量、互動與追蹤為主，日常分享、食材知識、茶飲、料理、生活趣事與正式產品自然交錯；每週通常2篇，品質合格時最多3篇，不為湊量發文。",
     "guidance": "不固定推二珍寶、四珍寶或其他商品，不連續硬廣、不重複題材；知識貼文不必提品牌或商品，也不強制導購。品牌識別由帳號與視覺呈現。",
     "wellnessScope": "只談一般飲食文化、食材風味、溫熱飲用、家常料理、保存與日常習慣；不提供疾病治療、預防或特定食品功效宣稱。",
-    "brandConnection": "日常知識與聊天貼文可不提品牌、產品或LINE；只有正式產品介紹、品牌故事及實際客戶需求才自然導向官網或LINE OA。",
+    "brandConnection": "每篇自然連結仙加味或目前有效產品，避免硬銷；生活內容需有具體情境。",
     "imageRequirements": "依主題與平台決定是否附圖；Facebook及Threads允許純文字，Instagram一般貼文必須有合格圖片或影片。有圖片時須查來源、授權、圖文一致；產品正式原圖不得重畫或變形。純文字不要求吉祥物或產品原照來源，但仍須完成文案、法規、版本與歷史重複比對。",
-    "reviewAndPublish": "每篇仍須通過完整16項審核、去重、圖片來源與當前版本證據；低風險可AI_APPROVED，有疑義回待人工審核；正式發送仍受平台回執、配額、去重及端對端安全驗收限制。",
+    "reviewAndPublish": "只有目前圖文版本已取得使用者人工核准，且平台權限、免費額度、歷史去重、媒體及回查均驗證成功，才能設定正式Metricool排程；人工核准前autoPublish=false。",
     "seasonalAdjustment": "季節、天氣、節慶主題必須符合實際日期與情境；有時效內容可替換既有常青時段，避免同日擠發。",
     "teaAndIngredientTopics": "可從公開社群與可靠食譜蒐集靈感，涵蓋單方及多食材茶飲、認識／分辨食材、常用搭配、泡煮與保存；重新查證及原創編寫，不搬運他人圖文、不暗示療效；一般茶飲分享不代表已販售。",
     "channelRoles": "官網展示正式品牌與產品；LINE OA負責正式銷售與詢問；FB/IG/Threads主要吸引流量與互動。",
