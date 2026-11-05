@@ -1,0 +1,109 @@
+{
+  "schema": "xjw-d1-ai-review-blocker-inventory-v1",
+  "brand": "仙加味",
+  "capturedAt": "2026-11-05T11:42:24Z",
+  "timezone": "Asia/Taipei",
+  "source": {
+    "githubActionsRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42021066970",
+    "artifact": "current-social-posts-42021066970",
+    "snapshots": "ops/social-schedule-candidates-current.json",
+    "operation": "read_only_no_d1_mutation"
+  },
+  "d1": {
+    "total": 138,
+    "byStatus": {
+      "pending_review": 58,
+      "archived": 76,
+      "published": 4,
+      "approved": 0,
+      "scheduled": 0
+    },
+    "pendingImages": {
+      "totalUrlsPresent": 58,
+      "quality": {
+        "needs_review": 53,
+        "clear": 4,
+        "passed": 1
+      }
+    },
+    "pendingLatestAiDecision": {
+      "NEEDS_HUMAN_REVIEW": 58,
+      "AI_APPROVED": 0
+    },
+    "qualityReviewHistory": {
+      "total": 325,
+      "needsHuman": 318,
+      "aiApprovedHistorical": 4,
+      "rejectedHistorical": 3
+    },
+    "reviewGateRows": 3,
+    "metricoolLinksByState": {
+      "pending_review": 15,
+      "published": 1
+    },
+    "foreignKeyViolations": 0
+  },
+  "blockerGroups": [
+    {
+      "code": "external_history_media_incomplete",
+      "count": 44,
+      "action": "Only recover original historical published platform media and carousel children; do not repeat previous 58 image examinations"
+    },
+    {
+      "code": "three_platform_full_history_dedup_missing",
+      "count": 8,
+      "action": "Check missing original Facebook, Instagram, Threads historical media; do not treat partial Metricool manifest as exhaustive"
+    },
+    {
+      "code": "external_semantic_duplicate_history",
+      "count": 2,
+      "ids": [
+        "XJW-CONV-chat-gao-vs-drink",
+        "XJW-CONV-year-end-keep-habit"
+      ],
+      "action": "Reconcile exact original published post URLs, captions, media and timestamps; preserve defer until proven distinct"
+    },
+    {
+      "code": "soup_food_and_mascot_and_carousel",
+      "count": 1,
+      "ids": [
+        "XJW-CONV-chat-home-soup"
+      ],
+      "action": "Separate raw versus cooked food in scene, verify fixed mascot and original carousel mapping before image revision"
+    },
+    {
+      "code": "fixed_mascot_and_platform_history",
+      "count": 1,
+      "ids": [
+        "XJW-CONV-chat-fixed-storage"
+      ],
+      "action": "Verify reference mascot identity and full three-platform history"
+    },
+    {
+      "code": "new_year_mascot_and_platform_history",
+      "count": 1,
+      "ids": [
+        "XJW-CONV-new-year-slow-start"
+      ],
+      "action": "Verify fixed mascot against current visual authority, then historical media"
+    },
+    {
+      "code": "180cc_label_version_and_history",
+      "count": 1,
+      "ids": [
+        "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425"
+      ],
+      "action": "Compare actual packaging label photo to current website product master; retain current version conflict until packaging provenance is verified"
+    }
+  ],
+  "rollout": {
+    "existingPublishedMustBePreserved": true,
+    "doNotDeleteArchiveOrRepublish": true,
+    "aiApprovedDoesNotGrantHumanApproval": true,
+    "d1WriteAndReadbackRequiredForChanges": true,
+    "metricoolExistingDraftsStayDraft": true,
+    "externalHistoryPartialEvidence": "ops/published-image-history-dedup-proof-20261104.json",
+    "release": "no automatic approvals on this evidence summary alone"
+  },
+  "notes": "58 latest pending reviews are all NEEDS_HUMAN_REVIEW; image presence or clear/passed tag does not supply complete 16-point evidence or historical carousel media."
+}
