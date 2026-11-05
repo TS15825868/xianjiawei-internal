@@ -1,0 +1,605 @@
+{
+  "version": "2026-11-05-metricool-published-ig-threads-firstparty-analytics",
+  "brand": "仙加味",
+  "brandId": "6889683",
+  "source": "Metricool connected brand published-post analytics (Instagram feed posts and Threads posts)",
+  "capturedOn": "2026-11-05",
+  "requestedRange": "2022-01-01 through 2026-11-05 Asia/Taipei",
+  "readOnly": true,
+  "notes": [
+    "Rows are published-post analytics, not scheduled drafts; separate from existing 11 Metricool unpublished drafts",
+    "Each metric offers a cover image only, not a complete authenticated carousel children gallery; do not certify all historical media as recovered",
+    "Media CDN links may expire. Preserve permalink and post ID for verified original mapping.",
+    "Do not use these records as AI_APPROVED, human approval, or publish receipts for D1 posts."
+  ],
+  "counts": {
+    "instagram": 35,
+    "threads": 23
+  },
+  "records": {
+    "instagram": [
+      {
+        "dateRaw": "20261103125307",
+        "postId": "4022256683183285942_78424002938",
+        "content": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜歡的味道。紅棗與枸杞可以依口味少量搭配，不用一次放很多種。\n\n這週你想煮香菇雞湯、蘿蔔排骨湯，還是家裡拿手的那一道？留言一起交換晚餐靈感。\n\n#仙加味 #家常料理 #一鍋湯的日常",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/887068682_17898923595610939_8255142662569387970_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=DtG0dr0YCyQQ7kNvwEZncWl&_nc_oc=AdoIVdNJYWOH6wkS_4ooOnSUNLcnYypvA4TrYH68U4Hz1IIrhQwDNOhbodOIHKAYDsc&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSrWJzSDd0o211rfTW9e38Jbk1TNKkOghBt_kKjmII5Uw&oe=6AF1D1E0",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261028130549",
+        "postId": "4017914296176781377_78424002938",
+        "content": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依原廠標示搭配家常燉湯。紫色盒裝，每盒600g±15g，共64塊；實際使用方式與用量請以原廠包裝標示為準。\n\n想了解產品資訊與訂購方式，歡迎洽詢仙加味官方 LINE：https://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #二珍寶 #家常料理 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/870435468_17897865933610939_9136227485183689974_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=rYQjOxwpDX8Q7kNvwGUr_rt&_nc_oc=AdqYrParQzbBEDMZKZtBvl8rICdWoElB5MaP3HSP4DaTNqqni-gYSD-b7YJWMAe3XGo&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQT8nYfBt5mQla6la4LwpQVSdxJMDkz7Z5brBjnEUhTxRQ&oe=6AF1DB20",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261023020158",
+        "postId": "4013956389500187677_78424002938",
+        "content": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不是讓大家面對一堆看不懂的產品名稱。\n\n挑選時可以先想三件事：\n・你想搭配家常料理，還是單純準備飲品？\n・習慣自己沖泡，還是偏好方便的形式？\n・產品標示的食用與保存方式，是否符合自己的生活安排？\n\n想了解仙加味有哪些選擇，可以從官方 LINE 詢問，我們會協助介紹產品形式與使用資訊。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n仙加味｜補養，是一種節奏。\n#仙加味 #日常飲食 #家常料理 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/864285284_17896901190610939_8706944845173440668_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=ECfFB8_VhEoQ7kNvwEH8u8v&_nc_oc=Adp1CuWIbClfuEdZ-csee0IFIVcLEZtUDqjXU9Ym5zNh-tEKUySOGwe8bRvFdJY4wUI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQS7aMS6TIp5BTOwjw0J94Lil-teJwO6GvezsAnk7HUf5w&oe=6AF1E1F8",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/De0cBHEEXQd/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261022162318",
+        "postId": "4013665158958507616_78424002938",
+        "content": "🌧️ 風雨來了，平安最重要。\n\n仙加味想提醒大家：\n\n記得關好門窗、收好陽台物品，準備好飲水、食物與必要用品。\n\n風雨期間盡量避免外出，也別忘了關心家中的長輩，以及獨自居住的親友。\n\n希望大家都能平平安安地待在家裡。\n\n願風雨平息，大家一切安好。❤️\n\n仙加味｜補養，是一種節奏。\n\n#仙加味 #颱風天注意安全 #平安最重要",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/863750519_17896848546610939_7757271752586524082_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=0beGLnjs0HEQ7kNvwH2F8sy&_nc_oc=AdozcERbiLR_qz64VuXpFiFXysTP1RY3gtZLPicZP-Epqbr5EgJZatherU50WpMAmUo&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQR3PVbVQ-DMLTby9iiaEsQewUcivAVXLVnfewxDeSZydg&oe=6AF1BE8B",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DezZzJfFWZg/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261021062533",
+        "postId": "4012639510524863731_78424002938",
+        "content": "龜鹿膏 100g｜日常食補的小罐安排\n\n成分：鹿角萃取物、龜板萃取物、枸杞、紅棗、黃耆、粉光蔘。\n\n・100g／罐，六角玻璃罐\n・初次可先從半匙開始\n・可直接取用或以約100～300mL溫熱水化開\n・食用時間可依個人使用習慣與作息時間安排\n\n商品諮詢、試喝、訂購及合作洽詢，歡迎加入仙加味官方 LINE：https://lin.ee/sHZW7NkR\n商品資訊：https://ts15825868.github.io/xianjiawei/product-guilu-gao.html\n\n仙加味｜補養，是一種節奏。\n#仙加味 #龜鹿膏 #漢方飲食文化 #日常食補",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/856514358_17896638411610939_7877197720164800727_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=zTVPKU558ysQ7kNvwEGyzBR&_nc_oc=AdofQ9Qjg9iYy5Im6rqSZbysPvKUg8RZFo_6dtHHuJxdVUgmL_Q5pJ-PVDPf9C17t-0&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSD_i6k2r5zP-syBbFDm96x5iaa6iFjrq2uWpOdBNvMbQ&oe=6AF1C3BF",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Devwl_8iCTz/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261021061031",
+        "postId": "4012631933330130714_78424002938",
+        "content": "仙加味試喝資訊｜先試喝，再決定\n\n第一次認識龜鹿飲，可以先從30cc玻璃罐試喝組開始。\n\n・試喝組：30cc × 3罐\n・3罐試喝品免費，運費自付\n・7-11店到店60元／郵局宅配100元\n・每位顧客、電話及地址限申請一次\n・接單後安排製作，約5～7個工作天出貨，物流配送時間另計\n\n加入仙加味官方 LINE，留言「申請試喝」，我們會協助確認收件資料與配送方式。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n完整試喝資訊：https://ts15825868.github.io/xianjiawei/trial.html\n\n仙加味｜補養，是一種節奏。\n#仙加味 #龜鹿飲 #試喝資訊 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t51.82787-15/858799203_17896637331610939_5211637675253890527_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=iPUsAV-a0LgQ7kNvwEL3Hr3&_nc_oc=AdoixhmpBV3Iet6XLTfrgCaBKtH9gE8JG73p7GTKqAdjutZMuOTg5uY7uv7vp8oRuyU&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTBxKx6Ab3VZ5EzQBpB7O41cQe3oW5Mg4dbFdd-XzpU7A&oe=6AF1C892",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Devu3vIiAca/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261021020202",
+        "postId": "4012506875442008598_78424002938",
+        "content": "重新認識仙加味。\n\n我們從台北萬華起家，承接四代家族與鹿角、熬膠工藝的故事。這些年，我們持續學習把傳統漢方飲食文化，用更清楚、方便、貼近日常的方式分享給大家。\n\n仙加味不只有龜鹿系列，也分享日常飲食、料理搭配，以及不同產品的選擇方式。無論是想了解產品內容、使用方式，或洽詢合作，都歡迎從官方 LINE 與我們聯繫。\n\n補養，是一種節奏。\n\n仙加味官方連結：https://ts15825868.github.io/xianjiawei/links.html\n\n#仙加味 #現代漢方生活品牌 #品牌故事 #萬華 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/857246864_17896612326610939_4086789667228003088_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Fsfr4tpxmTkQ7kNvwEKMpQN&_nc_oc=AdqbspmICVloK63zCYo9ivVlXvmN5ZYSbCxaVsuVBksoVWKcjHjoP9Nu2ddHWyktmZ4&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTw93oDmYFLcDxPp0rrUHJ6FuWNBrMhyl7kCxVmVTarYw&oe=6AF1D59F",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DevSb55iJIW/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261013081541",
+        "postId": "4006896749331148648_78424002938",
+        "content": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡單。\n\n有個別問題，再到官方 LINE OA @762jybnm 一對一問我們。\n\n#仙加味 #龜鹿日常 #怎麼選 #漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/847745371_17895359415610939_832983669372365835_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=VytsUHU9uaYQ7kNvwHC95Zk&_nc_oc=Adp68dhi3BQ_wAgNMELolmXHQLwgwSAWGKQuRJ6VJmYjQrXQU5cNo4jQMX9J9UENAPg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSnLpBnrHLMQoTDlgPJ59KuXQZiQjadDCriyiyRd_ImlQ&oe=6AF1BB34",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DebW10zjO9o/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261009050336",
+        "postId": "4003900963899413608_78424002938",
+        "content": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單的保存習慣，讓日常使用更順手。\n\n補養，是一種節奏。\n\n#仙加味 #龜鹿膏 #冷藏保存 #漢方生活 #日常補養",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/843224426_17894742048610939_3889443229474493713_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=uFI-UVN2cQEQ7kNvwGjmYGD&_nc_oc=AdrsmDb3Ze8-xuPCR-ydOpK1J1uvVl45zwE1yBsQVg9wQeMloiCIwd6_dd4WuRTJUHU&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AM6HXa8EAAAA&_nc_gid=F28DZ4i8X0uIoe0fJj82Eg&oh=00_AQOSPedfLTSVlDDQpo_LHmT2LZYg7AJt9DKhr1BFu8V3rg&oe=6ADE1A27",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DeQtraNEZRo/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261009020147",
+        "postId": "4003809463882866913_78424002938",
+        "content": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/840189617_17894724966610939_3323270475554370832_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=ENfBLsdYejwQ7kNvwHUjA7l&_nc_oc=Adrqmzpwh-tqc9pkI1d6DXSFo6gqPTyVEzIdTL2KmSF4emSVeT4pyv-v3ICDAmm4yYk&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AM6HXa8EAAAA&_nc_gid=dw-YfCDCEyrJVxmZxsRA6A&oh=00_AQMiThbkXqSdhSX6n8rgXCVZqSTGY4REyZCEZ85SJXkblA&oe=6ACE36C4",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DeQY36LFeDh/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261007154524",
+        "postId": "4002774082772265069_78424002938",
+        "content": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表性產品線，也會持續帶來更多不同形式的日常漢方選擇。\n\n這裡會分享品牌故事、產品資訊、日常使用、料理搭配，以及我們在萬華一路走來的生活。\n\n想認識仙加味、查看產品，或有試喝、價格、下單與配送問題，都可以從連結入口找到我們。\n\n補養，是一種節奏。\n\n仙加味｜連結入口\n\nhttps://ts15825868.github.io/xianjiawei/links.html\n\n官方 LINE｜@762jybnm\n\n#仙加味 #現代漢方生活品牌 #萬華 #漢方日常",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/839490492_17894541240610939_2913299189161230496_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=N0Q5tBO4tWUQ7kNvwHN0n6c&_nc_oc=AdrC4RnVXPVNJFZAhWkya99rElqK_BikSI3DR94S36gHp7SFt4wFfRRyV5dUU3xaMNk&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQ2MnSVTF5jMdXEjdjsRPFCyOLe9sTH6PwY2JFka52Vsg&oe=6AF1C60F",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DeMtdIXx-ht/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261003020147",
+        "postId": "3999460802859708577_78424002938",
+        "content": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一買就是很多年。\n\n現在大家生活都不容易，買東西之前先看看價格、比較一下，其實很正常，我們也完全能理解。\n\n只是做了這麼多年，有些地方還是捨不得省。\n\n原料怎麼挑、工序怎麼做、哪些地方需要時間，都是上一代和老師傅一點一點留下來的經驗。\n\n龜鹿膠這項老工藝做到今天，對仙加味來說，早就不只是賣一樣東西，而是把該做好的事情繼續做好。\n\n這條路不一定好走，但只要還有人記得、還有人願意相信，我們就想繼續把這份做事的方法留下來。\n\n也想問問一路支持仙加味的老朋友：\n你還記得第一次認識我們，是什麼時候嗎？\n\n不用買東西，留言跟我們聊幾句也很好。\n\n謝謝一路沒有忘記我們的人。\n\n——仙加味",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/830966653_17893884153610939_2860062295376301846_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=j9G9TkWd4ZEQ7kNvwFNYKMI&_nc_oc=AdrArRYC9vCGK52EesmyFaD4NPsNq46G53zNK6huKStvIp2o0-CGrly0WbMclxJN7U8&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQRJSVU3eP9-5PXYq1Dyy7rV7PqLC48D8GJkH1jE_q-Qw&oe=6AF1D9E7",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DeA8Gj_jTCh/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261001043054",
+        "postId": "3998086186707227112_78424002938",
+        "content": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步這些很普通卻很珍貴的時刻。\n\n補養，是一種節奏。你最近有沒有也帶家人出去走走？",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/830934679_17893594269610939_6842415723024774504_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=TgOCFAR-L7oQ7kNvwGHzVLS&_nc_oc=AdohMK6VSDQOpJ9A_m64hD4FE_aM7uymZbfZv-f4KfzwMmCx-B6mCkY9gNwXVmuWZwM&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQT-ZNC_VtBJbK3AFTK_NABnpFKcMseQrETwBPIMV6Nh-g&oe=6AF1B58E",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Dd8DjQ8FJHo/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260925020155",
+        "postId": "3993662653541048499_78424002938",
+        "content": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養，是一種節奏。\n\n#仙加味 #中秋節 #中秋連假 #生活節奏 #現代漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/795553984_17892701235610939_2797494003749938224_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Too6hVpV4xQQ7kNvwGz9VEC&_nc_oc=AdqoohmCt95bxYSwM5llqc-Ry3PBzwsB11Yea2ZBmJvP-wA25Hz51Nl34eNIU5mt0zs&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQKs1ZQ4FbhBrQdH9CheR9HiggOXp_V-XJsKnDD_96pjQ&oe=6AF1BD6A",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DdsVwYpDuCz/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260924122040",
+        "postId": "3993249314092726006_78424002938",
+        "content": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜，找到自己舒服的方式就好。\n\n想了解龜鹿膏、龜鹿飲，或不知道怎麼選，再到官方 LINE OA 問我們：@762jybnm\n\n#仙加味 #日常補養 #生活節奏 #漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/820085152_17892616167610939_6681570762245737802_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=P1lNzfNqbLAQ7kNvwE-m0AA&_nc_oc=Ado6Hp4fMc9FJxfFopzOtqojbMOpxmS1UPJEu3TWS6p_7WNxznp0B9Tufi04Sr_lb_k&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTBprrZnI0pJfqGaSNQGy4GCSw7XQFIHO-uNxg0OwvSiA&oe=6AF1B36D",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Ddq3xgSEbb2/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260920043102",
+        "postId": "3990113706378054665_78424002938",
+        "content": "第一次接觸仙加味，不用先背一堆產品名稱。\n\n先看你比較習慣哪一種方式：\n・想小匙取用、慢慢安排 → 龜鹿膏\n・想直接飲用、方便一點 → 龜鹿飲\n\n如果還是不確定，就把你的生活習慣告訴我們，我們再幫你整理。\n\n價格、試喝、下單與個別問題，再到官方 LINE OA：@762jybnm\n\n#仙加味 #龜鹿膏 #龜鹿飲 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/818517310_17892016938610939_8443267128440837880_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=l3b_PIlA5eoQ7kNvwFvKT-R&_nc_oc=AdrA2mwy1TuBC_IehLdimv8aJ-6YlE9xAqdt2qobP0MpuvfBFV0ynHLoAZq4Vzbu5jg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTfwpRFmLUYGMnj9l3mEnKQkWC6yVc2sEvvgTHlyixDRg&oe=6AF1D4CB",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Ddfu0aCFMwJ/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260919080355",
+        "postId": "3989496223409399275_78424002938",
+        "content": "鹿角整理釋出｜實物實拍\n\n目前整理出一批不同尺寸、重量與造型的鹿角，皆為實物實拍，整支出售。\n\n售價：$1,500／台斤\n依每件實際重量計價，價格可小議。\n\n有興趣可直接截圖私訊詢問，會提供該件重量、尺寸及整件價格。\n\n因每件鹿角的外觀、尺寸與天然狀況皆不同，建議先至萬華現場看實品，確認外觀、重量及價格後再購買。\n\n大型鹿角體積較大，以現場自取／面交為主；如已完成付款但不便載運，可再私訊討論協助運送。\n\n📩 有興趣歡迎私訊仙加味\n\n#仙加味 #鹿角 #鹿角老件 #萬華",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/817297680_17891884770610939_4982751225371431037_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=LPSGVtEB6WMQ7kNvwGKG69m&_nc_oc=AdoCNNJGtxEfEPiGFPTaUv9el_Yjj8f8XzRtkQAYEbLcUqc-SRou3s63XU0yrw52D3g&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQUct3fuq1MYVDL6QO3do8YNXGZLywacODCpvHanK2ikw&oe=6AF1E076",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Dddia2NFGXr/",
+        "mediaType": "FEED_CAROUSEL_ALBUM",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260916114532",
+        "postId": "3987433427959660289_78424002938",
+        "content": "30cc 小玻璃罐之外，仙加味也有 180cc 鋁袋。\n\n龜鹿飲180cc正式規格為180cc／包（鋁袋），採狹長直立包裝。撕開即可飲用，也可以將未開封鋁袋隔水溫熱後飲用。\n\n龜鹿飲為接單後安排製作，約5～7個工作天出貨。\n\n完整規格可從個人檔案連結進官網；想問30cc與180cc怎麼選、價格或購買，統一到官方 LINE OA @762jybnm。\n\n#仙加味 #龜鹿飲 #漢方飲食文化 #日常補養",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/795430663_17891482914610939_4089076754265850418_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=CgLPUbIH0gcQ7kNvwFDLLZr&_nc_oc=Adr17_O1bNVXoHWKqtw66wkymy0cB9Cc8l3Qehav2x0Lo9cMNRTuY3dQWzMKJ7JWMx4&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQ07inim4TlnG88yJ5bKgUmrg6e65Sby5YTQERy4jfVKQ&oe=6AF1C622",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DdWNZOPDb8B/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260904103557",
+        "postId": "3978701086983039955_78424002938",
+        "content": "週五早上，先把今天想問的整理好\n\n週五早上，把今天想問仙加味的事先記在手機裡。出門前或早上有空時，再從 LINE 找我們慢慢聊；從不同產品型態、攜帶方式到日常安排，都可以依自己的生活節奏慢慢確認。補養，是一種節奏。",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/782644790_17889754125610939_7194853195027712185_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=cOOCudL33TsQ7kNvwF4wLIa&_nc_oc=AdoPC5TXV36VkvT_KKqcP86_NkmUVyKodESlo67Q1DrkbldndwyZyWKS3lCsddtHR7M&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTC6CBRhktssewurP27GSCehqbjAKvP4gnSREW2rc536A&oe=6AF1B6C8",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Dc3L479FavT/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260806041532",
+        "postId": "3957491164539558820_78424002938",
+        "content": "龜鹿飲試喝組｜先試喝，再決定\n\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\n\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、電話及地址限申請一次。\n\n龜鹿飲30cc玻璃罐採小玻璃裸罐、無貼紙；另有180cc鋁袋，可依自己的生活習慣選擇。\n\n龜鹿飲接單後製作，約5～7個工作天出貨。試喝申請、商品價格、供貨及配送細節，由官方LINE協助確認。\n\n本篇原活動圖的價格資訊已停止適用，請以官方LINE當下回覆為準。\n官方LINE：@762jybnm\nhttps://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n#仙加味 #龜鹿飲 #龜鹿飲試喝組 #小玻璃罐 #日常補養",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t39.30808-6/763018714_1446376590845892_1211783420409640167_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Nuv-TcHxRGEQ7kNvwHVicJY&_nc_oc=Adq6R9ixNiOBWacLZOatTCjGOUw-x4mBigKzkZjNVhZiuLZgmlkjr5ANUOGtIxMdfoc&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=AM6HXa8EAAAA&_nc_gid=F28DZ4i8X0uIoe0fJj82Eg&oh=00_AQMalk5bKYkrZVbme67n0i7Nn0cnW6FYfeGmSLgyt1n8WA&oe=6ADE1C02",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260803134209",
+        "postId": "3955602027175741270_78424002938",
+        "content": "仙加味，從萬華開始。\n\n我們家在萬華一路傳承至今已經四代。2008 年，「仙加味」品牌完成註冊，希望把多年累積的經驗，以更貼近日常的方式分享給更多人。\n\n如果剛好經過西昌街，歡迎來店走走、看看，也認識這個來自萬華的品牌。\n\n仙加味\n補養，是一種節奏。",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t39.30808-6/762796852_1444084037741814_9019059279423434834_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=KwNiw6ssOEMQ7kNvwGVBW4B&_nc_oc=AdoWlSQOvkfvYQ6xOyJZX-QF6XGdOCcD9w28ua0xdd9hgBIYrBb1yLuECMB60GCqUsI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQS0oihV9U8V9EsjW71su0FzXWCE5zc3FgPGu4LQk0K5jw&oe=6AF1D93D",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DblHxYGoAdW/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260719120201",
+        "postId": "3944679925123219099_78424002938",
+        "content": "龜鹿膏 100g｜固定日常的小罐安排\n\n龜鹿膏把鹿角、龜板與枸杞、紅棗、黃耆、粉光蔘整理成方便取用的膏狀型態，適合想建立固定日常食補節奏的人。\n\n1. 100g小罐設計\n2. 可直接取用或用熱水化開\n3. 可依作息安排於早上或下午\n\n補養，是一種節奏。\n\n想了解適合的型態、規格或購買方式，歡迎私訊或加入官方 LINE：@762jybnm。\n\n#仙加味 #仙加味龜鹿 #龜鹿膏 #龜鹿飲 #龜鹿湯塊 #龜鹿膠 #鹿茸粉 #日常食補 #補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/750585867_17882550270610939_87980115429624029_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=b9Hbg3F24PMQ7kNvwETRU-7&_nc_oc=AdqZ3e2tsy3aLxzDFxXTsw8kFk35_n3MFGA3SqvrEwnx2_KG9dvg9HEpRuuv5AwZt4o&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AM6HXa8EAAAA&_nc_gid=F28DZ4i8X0uIoe0fJj82Eg&oh=00_AQPeZmAZtjseB3uotNKRrSNURIQYqNAuCg2vv7SQb19u3g&oe=6ADE03F4",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Da-UX35lX6b/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260715123007",
+        "postId": "3941794959217857454_78424002938",
+        "content": "龜鹿膏只能冬天吃嗎？產品型態只是不同的呈現方式，不能單靠外觀判斷適合哪個季節。比季節更重要的是：實際使用的原料、配料比例、每次份量，以及自己的飲食習慣。天氣較熱時，可以從少量開始，安排在早上或下午；天氣較冷時，也可依平常習慣安排。看清楚成分，找到適合自己的份量與節奏。仙加味・龜鹿補養，是一種節奏。#仙加味 #龜鹿膏 #龜鹿 #日常補養 #補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t51.82787-15/735050852_17881889049610939_4292808203747352165_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=fPS4FtWkWfEQ7kNvwGU96NK&_nc_oc=Adr-AAKhv9WjAZn-0a7NZv4zYmtn3aExbWBFi2854SYLaHcs4yi0B_53kvCN09a4zUI&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQZhvSukEuSpHLZ4LKfk12M9jfv7oV0iDCxisbjN5xFTA&oe=6AF1D4C4",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/Da0EaGBmxOu/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260713110058",
+        "postId": "3940300608301256144_78424002938",
+        "content": "仙加味｜官網\nhttps://ts15825868.github.io/xianjiawei/index.html\n\n#仙加味\n#龜鹿膏\n#龜鹿湯塊\n#龜鹿膠\n#鹿茸粉\n#養生飲食\n#日常補養\n#補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t39.30808-6/721082607_1402809888535896_4829789342161872620_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=ZIup48NfgHQQ7kNvwGDDMEd&_nc_oc=AdoyQ5o9qRG0ryRCyBxEpyoswGaPxC-aHC0eLEqrIinWQjuQdO097USwX1sqPg_-68o&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQuM5IJF8_RXcIT_H2bjvy4dKyaqPhVNH1Z39DswIHRsA&oe=6AF1BF71",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DauwobSDU3Q/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260706110051",
+        "postId": "3935227118447546252_78424002938",
+        "content": "仙加味｜官網\nhttps://ts15825868.github.io/xianjiawei/index.html\n\n#仙加味\n#龜鹿膏\n#龜鹿湯塊\n#龜鹿膠\n#鹿茸粉\n#養生飲食\n#日常補養\n#補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t39.30808-6/724114131_1402809091869309_4926705932969079542_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=2ubj4I0SmlAQ7kNvwGSe2lE&_nc_oc=AdrTl5XZpAcPBGYGE1TvNVkwFo9sM3q0JNqa7hIotRhX6f21ZtFO5BGFnbvV8Tm9g9Q&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQRe4JMqOND7qvFqFR2h25HNZNgwOuV9vz_wW8UadvGgOQ&oe=6AF1DBA7",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DacvDbpjM-M/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260629110004",
+        "postId": "3920730009748524799_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/724148226_17877017034610939_6569835603740714859_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=LeqAmhzk1yoQ7kNvwFQaxnX&_nc_oc=AdobmbJaZZLeOJKHKecCf0j-_QZ-5hpnxy-6m7oG9UiYw5-kJFMZqij6a-3N60VUgWM&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQRbBFXXYvdCBA2Fo-6WDFFVMh2Sjl1ehcZZwtni5vwXJQ&oe=6AF1D495",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZpOyvDRk7_/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260626030659",
+        "postId": "3927740814939548979_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/729517971_17878576404610939_1254149230385577513_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=PFEEZxpVfvIQ7kNvwEc0Vxi&_nc_oc=Adq68cZOMOFzp3-cDHRT0vNZTI8ielTA0Q5bpbZB82JSvzpkHgGEAskFQQo2AEJZbtI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTI5wSw7EeBO_KFjxoEJ1uH1IZB-Idt8Ms2XnmJ0wZMFg&oe=6AF1B83A",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DaCI3YMRm0z/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260625054303",
+        "postId": "3927094635882672696_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t39.30808-6/731094512_1410333601116858_6735772993014482933_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=-lZIAne4LaIQ7kNvwEdJIUf&_nc_oc=AdpwRMvMkBBRr-UCNxeqrNfEQ124gjhoiqv9dkKZbZloqe346hblI2Gndt6BYwk96kI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQTdtH6EimgSpC8x_vDdkuqxdvt8CldOJ3pky8dCW-2CIA&oe=6AF1E472",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZ_18PDIPI4/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260622110121",
+        "postId": "3925080517947213339_78424002938",
+        "content": "仙加味｜官網\nhttps://ts15825868.github.io/xianjiawei/index.html\n\n#仙加味\n#龜鹿膏\n#龜鹿湯塊\n#龜鹿膠\n#鹿茸粉\n#養生飲食\n#日常補養\n#補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t39.30808-6/721441315_1402807665202785_3825129571113272161_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=t_iK-_xzCeMQ7kNvwECv90z&_nc_oc=Adp9Yb-AsAU1jqjbhWsJaLWEJRZxl53vrGDjLSRzG27r5Wwq5zmSc91IyvywdxvQbHw&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQQoUSrWsws0BUmvVZQU58-lSfeQJmOEUlgV_HP4vaky7w&oe=6AF1D0C2",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZ4r-9jDMYb/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260619143225",
+        "postId": "3923012418902430130_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t39.30808-6/727497553_1405531544930397_7013830099315517448_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=MmTu4zBB270Q7kNvwGqyAfg&_nc_oc=AdoKoDR6x8jW27JOMBySguyb-JsHB2BaskzdIsaUTFdPov1FqVreryeEai8ssEny-0k&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQS0maCtYchF0OWICvEY5Ahkx7jBx25tR12FYj4mgCNNlw&oe=6AF1C00F",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZxVwKOIBGy/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260616085148",
+        "postId": "3920666070016628175_78424002938",
+        "content": "仙加味｜官網\nhttps://ts15825868.github.io/xianjiawei/index.html\n\n#仙加味\n#龜鹿膏\n#龜鹿湯塊\n#龜鹿膠\n#鹿茸粉\n養生飲食\n日常補養\n補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/724500444_17877002877610939_902448657224208526_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=m1C02973NmQQ7kNvwGwcxma&_nc_oc=Adr8bG30-4Rv2bMyeyykplmZa0EOMHDJ863mmf3Slwy46x2OwZUHnHYxw289QUohbdg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSTrbmHCICrz5Y0odmIzqpa6ofyV66gz1i2Jb4hhjB71w&oe=6AF1BD01",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZpAQSiRJXP/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260616080014",
+        "postId": "3920640554706633402_78424002938",
+        "content": "仙加味｜官網⁠￼\nhttps://ts15825868.github.io/xianjiawei/index.html\n\n#仙加味\n#龜鹿膏\n#龜鹿湯塊\n#龜鹿膠\n#鹿茸粉\n養生飲食\n日常補養\n補養是一種節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/724459774_17876995791610939_7658328350526555768_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=cbNpZv4MB9QQ7kNvwFAT2UT&_nc_oc=AdpqNYSW8GfZI3lmBHiyES3IgOT1tVgpXj-ytR_rin54Hyqq4ZYaAXrvPfgwURpG4Zg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQRyZmhK4TgLeGX-Jxd2jIc_vHxFwrilSIsveSAvc1vv7Q&oe=6AF1EB7B",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZo6c_jR4K6/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260601021236",
+        "postId": "3909594089139513614_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t39.30808-6/709844826_1388991279917757_1442997166137505137_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=BGcNEhgshoAQ7kNvwGxwQzF&_nc_oc=AdomLsjTTn85jwEb4kv87VLawsIaBQz_Dmdw11K-5jbnsV7A1JGU3FUZptkzNZjPGd4&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSpPMErQqpcduQuxYKZkXIU1Ve7qZvm8vXxr1exm_rcJw&oe=6AF1C087",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DZBqxwzIKkO/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260511062357",
+        "postId": "3894500319577819666_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/695793399_17871287523610939_2291606894686801158_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=fcKpJZj7LqAQ7kNvwEAnF9b&_nc_oc=AdqXdHIu9PAq1aHq8pDrISJmxlXDU9Q-LkW9ERUSIsVzSCZMZOIza-83VHV_LEflWh4&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQSqv7nsNi9xJk9l_kcX-IKCl8jBun2YRLV8Ln-tj7C6sg&oe=6AF1C372",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DYMC2geFMoS/",
+        "mediaType": "FEED_CAROUSEL_ALBUM",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260419062432",
+        "postId": "3878555295694266507_78424002938",
+        "content": "",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/672401896_17867652435610939_4013541012633772049_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=PCHrqvXOtb8Q7kNvwE95boC&_nc_oc=AdoLMXUcX7pzi1ZSBu8S-o9-YXGxsVcvcopYzwjP8MRYj7sTGemUUe85z_KRe2AtJPs&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=AFF3FJ0EAAAA&_nc_gid=iaJ3eBNEdi1k4B2a6KlaOA&oh=00_AQR5bifcOsgs1fmcbs_ApfoQCdDvBW9NdQqA184Zc859hw&oe=6AF1E731",
+        "mediaPath": "",
+        "permalink": "https://www.instagram.com/p/DXTZX3xkSCL/",
+        "mediaType": "FEED_IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      }
+    ],
+    "threads": [
+      {
+        "dateRaw": "20261103125349",
+        "postId": "18081864071382931",
+        "content": "下班回家，把雞腿、香菇和紅蘿蔔放進湯鍋，等食材煮熟、香氣慢慢散開，再盛一碗配晚餐。\n\n仙加味想分享的漢方飲食文化，也從家裡這一鍋開始：用熟悉的食材，煮出一家人喜歡的味道。紅棗與枸杞可以依口味少量搭配，不用一次放很多種。\n\n這週你想煮香菇雞湯、蘿蔔排骨湯，還是家裡拿手的那一道？留言一起交換晚餐靈感。\n\n仙加味 #家常料理 #一鍋湯的日常",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/883413826_18126934261877989_7736567398561524894_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=B_OjCZLP_Y0Q7kNvwG7pFJi&_nc_oc=Adppdq5qMOrhpHbiwVmnlEgBcJgkoFUcIzH2Yjfq-Vm_5rwJKa17hxAswfoWeLdYDtA&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQLLfb1Y4tKiXWMcywEB6SKwU2NIK40yKgovzj3WSUcAhHM-dZaUjRPFf3aFlLccRGj2aX_D85Qi3Q&oh=00_AQTYI1zHCAo61iEz1_d3XoCPeOFAWoxjv--v11GXr46e_g&oe=6AF19D26",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DfR7TWWiG9q",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261028130632",
+        "postId": "18148202098570237",
+        "content": "下班回到家，晚餐想煮一鍋熱湯嗎？\n\n從備料、燉煮到端上餐桌，家常料理的溫度，藏在每天熟悉的小細節裡。\n\n仙加味精選「二珍寶精華膏湯塊」，延續漢方飲食文化，也可依原廠標示搭配家常燉湯。紫色盒裝，每盒600g±15g，共64塊；實際使用方式與用量請以原廠包裝標示為準。\n\n想了解產品資訊與訂購方式，歡迎洽詢仙加味官方 LINE：https://lin.ee/sHZW7NkR\n\n仙加味｜補養，是一種節奏。\n\n仙加味 #二珍寶 #家常料理 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/874399943_18125441722877989_2677207637214779626_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=8X8338NySNIQ7kNvwFGGoQw&_nc_oc=AdrPuj3Zta5qdbg6hljc5Yj8U-yJxDCxXcARp8rZAQBZaI2nk698JB6iDoBhp6lajG8&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQKHefcVq6ZDJgKDc1-IH5If1WVO8BR9dIBRX_S5lEGeHGD8_LQAUUsjSHMMMHCpOJUiezUv1dcnCg&oh=00_AQSSzimi0b7PV95Cjy3KX5nyIzxjvpFjbBLgYnXClNj3tQ&oe=6AF19C0C",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DfCf_EyiD1_",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261023020244",
+        "postId": "18028282769871354",
+        "content": "週五早上，想想今晚在家要準備什麼，你比較習慣哪一種搭配？\n\n有時是煮一鍋家常湯，有時是餐後準備一杯溫熱飲品。仙加味希望把漢方飲食文化帶進這些具體的日常時刻，而不是讓大家面對一堆看不懂的產品名稱。\n\n挑選時可以先想三件事：\n・你想搭配家常料理，還是單純準備飲品？\n・習慣自己沖泡，還是偏好方便的形式？\n・產品標示的食用與保存方式，是否符合自己的生活安排？\n\n想了解仙加味有哪些選擇，可以從官方 LINE 詢問，我們會協助介紹產品形式與使用資訊。\n\n官方 LINE：https://lin.ee/sHZW7NkR\n仙加味｜補養，是一種節奏。\n仙加味 #日常飲食 #家常料理 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t51.82787-15/863289623_18124030042877989_4439616386221657304_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=9rgxISBNohUQ7kNvwEC9_SI&_nc_oc=Adr6pH1YhhkNfcy221M4YBs39xjLOU1SYE-h8q3zCnrlpgnPngeLloLZ7IwWYaRTxnU&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQKu5J-5eCFUizsmXArCwFfTrUeMElQDlrcAqa6eMds8OmS2SdAk4zTARUMkbJ0xJ5oj2THH385n3g&oh=00_AQQXHAZLC7tAoZJ9EkoFAf-_ZVvefcX8jc6Wv0PXCuvK5Q&oe=6AF1C640",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/De0cCzuislu",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261022162401",
+        "postId": "17914139262285776",
+        "content": "🌧️ 風雨來了，平安最重要。\n\n仙加味想提醒大家：\n\n記得關好門窗、收好陽台物品，準備好飲水、食物與必要用品。\n\n風雨期間盡量避免外出，也別忘了關心家中的長輩，以及獨自居住的親友。\n\n希望大家都能平平安安地待在家裡。\n\n願風雨平息，大家一切安好。❤️\n\n仙加味｜補養，是一種節奏。\n\n仙加味 #颱風天注意安全 #平安最重要",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/863700290_18123950647877989_4933421458879038465_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=H9t5d-HPtVsQ7kNvwHsoz1_&_nc_oc=AdqtizvX6rFQmZVjztW9nUhuyf_WAKm2VvacCmyRjvXl9qR_FUueqcUnlTLK701YhVk&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQLgvbev_xFWgp9Re4Oa_1TOIXjn7ReHJebyIR9NMSnZDsIr-tq05oMRq_gGl7a2iIoyIBDDO62xoA&oh=00_AQQ6ayLbVsfCR9jM4F-1Z-RECYzJ2C0nTVuUvTRe9l8FWQ&oe=6AF1A707",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DezZ0VBipjq",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261021020251",
+        "postId": "18103848701022389",
+        "content": "重新認識仙加味。\n\n我們從台北萬華起家，承接四代家族與鹿角、熬膠工藝的故事。這些年，我們持續學習把傳統漢方飲食文化，用更清楚、方便、貼近日常的方式分享給大家。\n\n仙加味不只有龜鹿系列，也分享日常飲食、料理搭配，以及不同產品的選擇方式。無論是想了解產品內容、使用方式，或洽詢合作，都歡迎從官方 LINE 與我們聯繫。\n\n補養，是一種節奏。\n\n仙加味官方連結：https://ts15825868.github.io/xianjiawei/links.html\n\n仙加味 #現代漢方生活品牌 #品牌故事 #萬華 #漢方飲食文化",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/858181246_18123558967877989_6641600297561613434_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=c9ASYwlD7O4Q7kNvwGtnAcH&_nc_oc=AdqSj4W9aggTjmR7pv7N82tngcStFOAxLDt89SsaUFabqn4LotaHRp1sEyUjrYKxa84&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQKzXVXPWPdiEWNzsIXn6VqVgvYNYzJDeUqXaDFGGnSUur8qg9i9YZtYGijPQP1nrWnzGQoNxrQPVw&oh=00_AQQACAPEzDjZnuXjdjVbdetUNttDDy366TIjN9RF3bDhUQ&oe=6AF1903E",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DevSdwxisRi",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261014043200",
+        "postId": "18134578774670909",
+        "content": "",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DediDBZmRpo",
+        "mediaType": "REPOST_FACADE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261014043142",
+        "postId": "17943975108090377",
+        "content": "",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DediA0nGRmL",
+        "mediaType": "REPOST_FACADE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261014043122",
+        "postId": "18118587503057312",
+        "content": "",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dedh-abGZER",
+        "mediaType": "REPOST_FACADE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261014043118",
+        "postId": "18067710335609465",
+        "content": "",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dedh90wmT0S",
+        "mediaType": "REPOST_FACADE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261013081627",
+        "postId": "18078440909399328",
+        "content": "第一次接觸龜鹿系列，不用一次把所有產品都記住。\n\n先想一件事就好：你平常比較習慣小匙取用、直接飲用，還是料理搭配？\n\n從生活方式開始看，通常會比先背產品名稱更簡單。\n\n有個別問題，再到官方 LINE OA @762jybnm 一對一問我們。\n\n仙加味 #龜鹿日常 #怎麼選 #漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/846449694_18121664068877989_1746642166718630021_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=uKRTzIZp7cwQ7kNvwFJYvwZ&_nc_oc=AdpHDo2fPXDHLL0N_xTkGBdXKsgHGqIJX9hRV4M63QTFLAduRaHwq_ooP6MMshB_sS0&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQJ4oamutDfnJcE7noiZS4twsKZNg1EYG8s23qPhdNQb-CJvwObtnsEjKltnHoazKHg_cg0Xg3OxzQ&oh=00_AQQ1zcm5LfI70q8LhVa-wZZJaHh3y_ydOkFhb2Y0dPtg3A&oe=6AF1B3A5",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DebW3NECBgu",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261009050417",
+        "postId": "18112632515469532",
+        "content": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單的保存習慣，讓日常使用更順手。\n\n補養，是一種節奏。\n\n仙加味 #龜鹿膏 #冷藏保存 #漢方生活 #日常補養",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/842143203_18120633250877989_5362241533004234993_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Ly3KeyvYnvUQ7kNvwFh23r2&_nc_oc=AdoyeUK14QLBS2ck-8USVChHVDS_2uboA9f-ldP7Vwj5635h4SWCiO3q3_MFLEvPtHw&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=U9A6xDJzEgFc_izPbffeZA&_nc_tpa=Q5bMBQLeiKmIKWdqhumOkpN-FxN2woDnOslckgOruETV0C_PqyaqQQf4C-RCr9PFOnuSrGIWFii4HUYKZg&oh=00_AQOVez6ogYc29vbZtTaO6dseRxGc3TA1QHHjsojYG2i1EQ&oe=6ADE13F9",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeQtsveDe2B",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261009020230",
+        "postId": "18099186008387083",
+        "content": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/839766211_18120600094877989_6086208030432041402_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Kexv2kHLRiwQ7kNvwGPLndX&_nc_oc=Adqu7auzqmOHaRj5GAvCyUn_jOgqUwkNorHEhWPkq3VIxAE5_qggg9uk4L9YVLUns8M&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=J9PpIGFKNvTlEsUxkRHtkg&_nc_tpa=Q5bMBQIYByCS6MqknnUJjR3poGo5jyMxzkfHQFOarrxl1pnj8GlGIGGgDeA6GaroV6NQLscRvoxQqAd_hQ&oh=00_AQNVl0ul4eZSajxk8Mku2E4Y7zD0ZD7QTukxb1qV9CtxIQ&oe=6ACE4780",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261007154808",
+        "postId": "17987156687878610",
+        "content": "歡迎來到仙加味。\n\n我們從台北萬華出發，延續四代家族累積的鹿角與熬膠工藝，也把熟悉的漢方飲食文化，整理成更貼近今天生活的方式。\n\n現在的仙加味，以龜鹿系列為代表性產品線，也會持續帶來更多不同形式的日常漢方選擇。\n\n這裡會分享品牌故事、產品資訊、日常使用、料理搭配，以及我們在萬華一路走來的生活。\n\n想認識仙加味、查看產品，或有試喝、價格、下單與配送問題，都可以從連結入口找到我們。\n\n補養，是一種節奏。\n\n仙加味｜連結入口\nhttps://ts15825868.github.io/xianjiawei/links.html\n\n官方 LINE｜@762jybnm\n\n#仙加味 #現代漢方生活品牌 #萬華 #漢方日常",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/839663699_18120223657877989_8442175644773174535_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=nHiUmtl06J4Q7kNvwEpxR7G&_nc_oc=AdqN9IuS3OS1xDvH3QzvZ_WUBsuoScbNeRHsU2n_pQ27Nzwb4a6C5fwOcrhjjfN5aZI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=U9A6xDJzEgFc_izPbffeZA&_nc_tpa=Q5bMBQIcUC76p-QVKe3rvDDu0cRkT3jqCG4luBozsQVFtA9kZBFlMr5ItnhAM0_SEdJ8cebTs0kU66KkaQ&oh=00_AQMKUxAW5a7kX2VFIMr5mmek967ySVXhYo3W3BmHePg8Mg&oe=6ADDFF12",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261003020233",
+        "postId": "18383749882226989",
+        "content": "做這一行這麼多年，有時候回頭想想，真的會覺得時代變得很快。\n\n以前做生意，東西好不好，客人吃過、用過，時間久了，自然就知道。老客人也常常是一個介紹一個，有些人一買就是很多年。\n\n現在大家生活都不容易，買東西之前先看看價格、比較一下，其實很正常，我們也完全能理解。\n\n只是做了這麼多年，有些地方還是捨不得省。\n\n原料怎麼挑、工序怎麼做、哪些地方需要時間，都是上一代和老師傅一點一點留下來的經驗。\n\n龜鹿膠這項老工藝做到今天，對仙加味來說，早就不只是賣一樣東西，而是把該做好的事情繼續做好。\n\n這條路不一定好走，但只要還有人記得、還有人願意相信，我們就想繼續把這份做事的方法留下來。\n\n也想問問一路支持仙加味的老朋友：\n你還記得第一次認識我們，是什麼時候嗎？\n\n不用買東西，留言跟我們聊幾句也很好。\n\n謝謝一路沒有忘記我們的人。\n\n——仙加味",
+        "mediaCoverUrl": "https://scontent-lhr6-2.cdninstagram.com/v/t51.82787-15/831167046_18118634461877989_4032145319093504528_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=JM6G6_VBzGQQ7kNvwG9rSy3&_nc_oc=Adpxv7AAMCY4sz2-b7mDYQxFF5uEgVcFZLhJRPdQqgAcvuhvTkUT238ZGCzCSCYJvF8&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQJJRHZ9FH8GlBZ4B4vtXjJURquKXdI4MiXDt7gLieETQzjHEOwlvyoeZ_GpNnUkBaOWCkDAkWS45Q&oh=00_AQSZNTPCPzSg4arCg025OTdwAxWse4GFm6DLMsW3jQ5zSQ&oe=6AF1B712",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeA8IE8CPKB",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20261001043132",
+        "postId": "17945204499076604",
+        "content": "昨天帶小老闆到烘爐地拜拜、走走。沒有特別趕行程，站在高處看看城市、吹吹風，就覺得一天慢了下來。\n\n仙加味想留下的，不只是在店裡的日常，也有陪家人出門、拜拜、散步這些很普通卻很珍貴的時刻。\n\n補養，是一種節奏。你最近有沒有也帶家人出去走走？",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/828280757_18117964813877989_2410576420097565386_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=7h5-G2go4wQQ7kNvwHLjzzP&_nc_oc=AdofW68FmCjLZqstuJ8Z6vgCBkHCD746FDUkm4Gxy_OXlRbZenj_UVXcDRW9xZkAjlg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQJIVSeGUR_nj9D_Tvl9ii1dZC1tPi2PSV47yw5HC90aJQnwQXaDjd6s1-yZlK4Vkx1mGoonWZ8vmg&oh=00_AQQB7OB5d4a_CiwkmM-K6s0HDCTByzGKXBZWHH90BZCbYQ&oe=6AF1AD8A",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dd8Dl9iDQF9",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260925020240",
+        "postId": "18635160391019476",
+        "content": "中秋連假開始了。\n\n有人準備回家吃飯，有人想把行程放慢一點。團聚也好、休息也好，都別忘了把自己的生活節奏照顧好。\n\n仙加味祝大家中秋愉快，連假平安順心。\n\n補養，是一種節奏。\n\n仙加味 #中秋節 #中秋連假 #生活節奏 #現代漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/819286890_18115968148877989_6213337938037937007_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=XR8dO_D38vIQ7kNvwGYX28a&_nc_oc=AdqtfBcJD1bB-kZd6ukEwPSfn74aYwNf0OOlMxRvu_gPHr2ZygCzTu3Oew9wOk7YnzA&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQJBL1v-FU_bjcWku6vx9MPlJ7YKCny6LNagplBlMXvFQjQiI8qxytV3m8wP-1Z25RjJkCFlmTOTpw&oh=00_AQQyYkVzltKcAxQy8RrbUzZQDXI4Yf8vbzy2nUA00twIBw&oe=6AF1AB0B",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdsVx35Cv_9",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260924122124",
+        "postId": "18245410135310948",
+        "content": "忙了一天，不一定要再安排很多事。\n\n有時候只是把桌面整理一下、喝口溫熱的、把節奏慢慢收回來，就已經很夠。\n\n仙加味想分享的，也一直是這種做得到的日常：不用很複雜，找到自己舒服的方式就好。\n\n想了解龜鹿膏、龜鹿飲，或不知道怎麼選，再到官方 LINE OA 問我們：@762jybnm\n\n仙加味 #日常補養 #生活節奏 #漢方生活",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/819995312_18115780615877989_604839759455276796_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=83ETLOcyrIEQ7kNvwHZlwGQ&_nc_oc=AdoPBf9jJ4EgiA5t37WSak1ybDffJ-6fJGCt1uo9HniGV63kHBzdpRvgmn3u7dNd8Jg&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQIJx4nEwOV_EkRLwok7zk-qZyeSYLzRJQrNrV_ZCpDV1ZgoM_baX-J7JkR5zTobEedFZGjzsKZ3Cw&oh=00_AQRgPNQVMDr63QhzoxS3RvQicIcsyabpbJlkw4Rg8hax9Q&oe=6AF1AA14",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/Ddq3yyginm7",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260919080609",
+        "postId": "18428277010150275",
+        "content": "鹿角整理釋出｜實物實拍\n\n目前整理出一批不同尺寸、重量與造型的鹿角，皆為實物實拍，整支出售。\n\n售價：$1,500／台斤\n依每件實際重量計價，價格可小議。\n\n有興趣可直接截圖私訊詢問，會提供該件重量、尺寸及整件價格。\n\n因每件鹿角的外觀、尺寸與天然狀況皆不同，建議先至萬華現場看實品，確認外觀、重量及價格後再購買。\n\n大型鹿角體積較大，以現場自取／面交為主；如已完成付款但不便載運，可再私訊討論協助運送。\n\n📩 有興趣歡迎私訊仙加味\n\n#仙加味 #鹿角 #鹿角老件 #萬華",
+        "mediaCoverUrl": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/818010931_18114120718877989_3908116702105586170_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Spxwsnzz7bkQ7kNvwFsRqk0&_nc_oc=AdpcDbgihsQq8aMVLVtjzqb7IOPV2E7VKEx-nkx7AOh1vYP8gAs-2uF33l_iU3Zfg8s&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQJcLXgD3YwVBmUb_Y3vrvWIF_3BgLLDBAD-yY86cqMY-se1rVD5SiTYQNPVcxaHHtfuuhV0uI0Gkg&oh=00_AQQqZkfRhWWPM1IGm5K3DhOqgj5DNQhlF3T_J-YwLcXSEg&oe=6AF1AEB2",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "mediaType": "CAROUSEL_ALBUM",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260916053117",
+        "postId": "17959243467209123",
+        "content": "今天不用把日常安排得太複雜。\n\n工作空檔，或回到家之後，留一點時間喝杯溫熱的飲品，把生活節奏慢下來。仙加味想做的，就是把傳統漢方飲食文化整理成更貼近日常的方式。\n\n補養，是一種節奏。\n\n想了解產品怎麼選、試喝、價格或下單，可以到仙加味官方 LINE OA @762jybnm 詢問。\n\n仙加味 #漢方飲食文化 #日常補養 #生活節奏",
+        "mediaCoverUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/802435532_18113179174877989_1471359682387680249_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=zQ6fIfcl10UQ7kNvwFzBjjz&_nc_oc=Adq0oLh2fpn2I4oI4KYNMb6IBRGPkR6SxA0CfH0ELqev5D3UgHUU0Rn7BrI83DddxuM&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ACx9VUEEAAAA&_nc_gid=GOHBehPV9vtuyIb_zKL8vA&_nc_tpa=Q5bMBQI9sFdsuiHB6Dpc8Ek8MkEU2snLuLEl3ERIEM0Z9nAZ4EgrjoAHCqr1-q-A2KOomh9kg7ArkenkJQ&oh=00_AQQk5VLFq-5EC1UjgG7C6OrohNtRtrZ5oZoyztqtSplVyg&oe=6AF1BFBA",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg",
+        "mediaType": "IMAGE",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260913030203",
+        "postId": "17957985588234021",
+        "content": "龜鹿飲是仙加味裡適合『想省時間』的人認識的一種。\n\n有 30cc 小玻璃罐，也有 180cc 鋁袋，都是接單後製作，約 5～7 個工作天出貨。\n\n平常可溫熱飲用，飲用時間可依個人使用習慣與作息安排。\n\n如果你第一次接觸龜鹿系列，不確定從哪個開始，可以到官方 LINE OA @762jybnm，我們會依你的生活方式幫你整理。",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+        "mediaType": "TEXT_POST",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260911040209",
+        "postId": "18118653349731629",
+        "content": "最近最常被問到的，其實不是『哪個最好』，而是『哪一個比較適合我的生活方式？』\n\n有人喜歡龜鹿膏的小匙取用，有人覺得龜鹿飲直接喝比較方便；30cc 小玻璃罐跟 180cc 鋁袋，也只是不同份量與使用情境。\n\n我們會把這些差異慢慢整理清楚，不用一次記一堆名詞。\n\n如果你第一次接觸，你比較偏好：小匙取用、直接喝，還是料理搭配？\n\n有進一步選購、試喝、價格或個別問題，再到仙加味官方 LINE OA 一對一詢問：@762jybnm",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+        "mediaType": "TEXT_POST",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260910123119",
+        "postId": "17861434386689511",
+        "content": "🌿 仙加味開了一個新的日常交流空間。\n\n「仙加味・龜鹿｜日常交流」不會只放產品廣告，我們想在裡面聊一些更貼近日常的內容：龜鹿怎麼融入生活、溫熱飲用、家常料理、萬華店裡的小事，以及大家平常最常問的問題。\n\n想一起交流，可以直接加入 LINE 社群：\nhttps://line.me/ti/g2/xZwHrwnQH968Ck1KavysQK9JH7l6FxNNlRKw3g?utm_source=invitation&utm_medium=link_copy&utm_campaign=default\n\n如果是試喝、怎麼選、價格、下單、配送、售後或其他個別問題，直接到仙加味官方 LINE OA：\nhttps://lin.ee/sHZW7NkR\nLINE ID：@762jybnm\n\n仙加味｜補養，是一種節奏。",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdG1zfxiMpf",
+        "mediaType": "TEXT_POST",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      },
+      {
+        "dateRaw": "20260909113124",
+        "postId": "18098217644144885",
+        "content": "第一次來到仙加味，可以先認識我們。\n\n我們從台北萬華開始，延續四代家族鹿角與龜鹿相關原料、工序與熬製經驗，現在把這些老經驗整理成比較容易理解、也更貼近日常的方式。\n\n目前公開產品有龜鹿膏、龜鹿飲30cc玻璃罐、龜鹿飲180cc鋁袋、龜鹿湯塊、龜鹿膠與鹿茸粉。\n\n這裡會分享產品差異、怎麼使用、料理搭配、品牌故事與店裡日常。\n\n補養，是一種節奏。\n你最想先了解哪一種？",
+        "mediaCoverUrl": "",
+        "mediaPath": "",
+        "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdEKJwxCJbn",
+        "mediaType": "TEXT_POST",
+        "carouselChildren": "not_in_metricool_analytics_api"
+      }
+    ]
+  }
+}
