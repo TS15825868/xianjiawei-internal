@@ -1,6 +1,7 @@
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
+import {socialContentDraft} from './social-content-draft.js';
 import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {lineHandoffApi} from './line-handoff.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
@@ -220,6 +221,7 @@ export default{
     if(path==='/api/ai-ops/readiness')return aiOperationsReadiness(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/line-handoff'||path.startsWith('/api/line-handoff/'))return lineHandoffApi(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-ai/draft')return socialAiDraft(request,env,{authenticate:verifyFastAccess});
+    if(path==='/api/social-content/draft')return socialContentDraft(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-facts/suggest')return socialFactSuggestion(request,env,{authenticate:verifyFastAccess});
     if(request.method==='GET'&&path==='/api/ai-quality-reviews'){
       const auth=await productionApp.fetch(new Request(new URL('/api/me',request.url),{headers:request.headers}),env,ctx);if(!auth.ok)return auth;
