@@ -98,6 +98,66 @@ jobs:
           if(invalid.length) throw new Error(`scheduled posts fail publication gate: ${JSON.stringify(invalid)}`);
           console.log('PASS scheduled human approval',scheduled.map(p=>p.id));
           NODE
+      - name: Categorize every live social post without skipping hidden or archived rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const rows=name=>{
+            const raw=JSON.parse(fs.readFileSync(name,'utf8'));
+            return (Array.isArray(raw)?raw[0]?.results:raw.results)||[];
+          };
+          const posts=rows('current-social-posts.json');
+          const counts=Object.fromEntries(rows('current-social-post-counts.json').map(x=>[x.status,Number(x.count)]));
+          const total=Object.values(counts).reduce((n,x)=>n+x,0);
+          if(posts.length!==total||new Set(posts.map(x=>x.id)).size!==total)
+            throw Error('Incomplete or duplicate D1 full-inventory rows: '+posts.length+' vs '+total);
+          const gates=new Map(rows('current-review-gates.json').map(x=>[x.post_id,x]));
+          const ai=new Map();
+          for(const item of rows('current-ai-reviews.json'))if(!ai.has(item.post_id))ai.set(item.post_id,item);
+          const blockedProduct=/龜鹿膠|龜鹿湯塊|柒玄茶|guilu-tangkuai|guilu-jiao|qixuan-tea/i;
+          const dangerousCopy=/治療|治癒|預防疾病|改善疾病|保證療效|補氣|生津|膠原蛋白|鈣質/i;
+          const group=x=>['archived','published'].includes(x.status)?'preserve_historical_record':
+            x.status==='draft'?'draft_needs_scene_and_quality_review':
+            x.status==='pending_review'?'pending_image_16_checks_and_historical_dedup':
+            x.status==='scheduled'?'verify_human_gate_and_remote_delivery':
+            x.status==='approved'?'verify_version_bound_human_approval_before_slot':
+            ['failed','manual_required'].includes(x.status)?'verify_external_receipt_before_retry':
+            'requires_manual_status_examination';
+          const actionable=posts.map(p=>{
+            const violations=[];
+            const content=[p.title,p.headline,p.copy,p.image_alt].filter(Boolean).join(' ');
+            if(blockedProduct.test(content))violations.push('retired_product_in_public_candidate');
+            if(dangerousCopy.test(content))violations.push('public_copy_legal_review');
+            if(!p.image_url)violations.push('image_missing');
+            if(!p.image_alt)violations.push('image_alt_missing');
+            if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing'].includes(String(p.image_quality_status||'').toLowerCase()))
+              violations.push('image_quality_evidence_not_clear');
+            if(!p.approved_by||!p.approved_at)violations.push('human_approval_not_recorded');
+            if(!gates.has(p.id))violations.push('current_review_gate_missing');
+            if(p.proposed_scheduled_at&&!p.scheduled_at)violations.push('proposed_time_is_not_external_schedule');
+            return {id:p.id,status:p.status,actionGroup:group(p),
+              proposedAt:p.proposed_scheduled_at||null,hasImage:!!p.image_url,
+              imageQuality:p.image_quality_status||'',evidenceProblems:violations,
+              latestAiDecision:ai.get(p.id)?.decision||'not_recorded',humanGatePresent:gates.has(p.id)};
+          });
+          const byAction={};const byIssue={};const active=actionable.filter(x=>!['archived','published'].includes(x.status));
+          for(const row of actionable){
+            byAction[row.actionGroup]=(byAction[row.actionGroup]||0)+1;
+            if(active.includes(row))for(const issue of row.evidenceProblems)byIssue[issue]=(byIssue[issue]||0)+1;
+          }
+          const output={schema:'xjw-all-status-post-queue-v1',capturedAt:new Date().toISOString(),
+            source:'direct D1 full table readonly remote',total,counts,
+            activeToProcess:active.length,
+            byAction,byIssue,
+            flags:{noApprovalsGranted:true,noPostsDeleted:true,noMediaGenerated:true,
+              noExternalPublicationPerformed:true,reviewerMustBeRealHuman:true,
+              archivedAndPublishedExcludedFromNewQueue:true},
+            records:actionable};
+          fs.writeFileSync('all-social-posts-action-queue.json',JSON.stringify(output,null,2)+'\n');
+          console.log('FULL_D1_QUEUE',JSON.stringify({total,counts,activeToProcess:active.length,byAction,byIssue}));
+          NODE
       - name: Upload read-only evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -105,6 +165,7 @@ jobs:
           name: current-social-posts-${{ github.run_id }}
           path: |
             current-social-posts.json
+            all-social-posts-action-queue.json
             current-social-post-counts.json
             current-social-image-states.json
             current-review-gates.json
