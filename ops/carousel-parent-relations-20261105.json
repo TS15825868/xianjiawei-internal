@@ -1,0 +1,66 @@
+{
+  "schema": "xjw-three-platform-carousel-parent-map-partial-v1",
+  "date": "2026-11-05",
+  "sources": {
+    "facebook": "Cloudflare D1 social_meta_history_readonly XJW-META-HISTORY-20261105-V1; official Meta API; GitHub Actions 42027078251",
+    "instagramThreads": "Metricool analytics connected brand 6889683, ops/metricool-instagram-threads-published-history-20261105.json",
+    "scope": "read-only published media parent relations; not authorizing any draft"
+  },
+  "relationships": [
+    {
+      "key": "2026-09-19-deer-antler-sale",
+      "relationConfidence": "verified_same_published_caption",
+      "captionAnchor": "鹿角整理釋出｜實物實拍",
+      "facebook": {
+        "postUrl": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+        "date": "2026-09-19",
+        "distinctAttachmentFiles": 9
+      },
+      "instagram": {
+        "postUrl": "https://www.instagram.com/p/Dddia2NFGXr/",
+        "postId": "3989496223409399275_78424002938",
+        "mediaType": "FEED_CAROUSEL_ALBUM",
+        "childrenProof": "not_exhaustive"
+      },
+      "threads": {
+        "postUrl": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "postId": "18428277010150275",
+        "mediaType": "CAROUSEL_ALBUM",
+        "childrenProof": "not_exhaustive"
+      },
+      "status": "parent_links_grounded_children_need_platform_originals"
+    },
+    {
+      "key": "2026-05-11-uncaptioned-carousel",
+      "relationConfidence": "date_and_parent_type_only_NOT_VERIFIED",
+      "facebook": {
+        "postUrl": "https://www.facebook.com/1531256482357902/posts/1370780828405469",
+        "date": "2026-05-11",
+        "distinctAttachmentFiles": 2,
+        "captionAvailable": false
+      },
+      "instagram": {
+        "postUrl": "https://www.instagram.com/p/DYMC2geFMoS/",
+        "postId": "3894500319577819666_78424002938",
+        "mediaType": "FEED_CAROUSEL_ALBUM",
+        "captionAvailable": false,
+        "childrenProof": "not_exhaustive"
+      },
+      "threads": null,
+      "status": "candidate_link_only_no_proven_crossplatform_identity"
+    }
+  ],
+  "requirements": [
+    "For Sep19 Instagram and Threads, inspect original carousel children and compare contents to Facebook parent; do not assign FB nine images automatically as IG or Threads children",
+    "For May11, verify photo hashes or original post media before treating as same cross-platform carousel",
+    "Keep already-published posts and historical prices only as internal proof, not new campaign content",
+    "Do not clear duplicate DEFER until all relevant missing original media and complete 16-point checks are verified",
+    "Human approval remains independent and mandatory; no autoPublish change"
+  ],
+  "safety": {
+    "socialPostsWrites": 0,
+    "metricoolChanges": 0,
+    "newPublicPosts": 0,
+    "automatedApprovals": 0
+  }
+}
