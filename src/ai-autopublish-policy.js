@@ -1,6 +1,6 @@
 // 仙加味 AI 自動發布決策：預設拒絕，僅允許具備完整驗證的非敏感內容。
 // 本模組不直接發送訊息、不改變現有審核狀態；供正式排程入口整合。
-export const AUTOPUBLISH_POLICY_VERSION = '2026-10-27-owner-authorized-v1';
+export const AUTOPUBLISH_POLICY_VERSION = '2026-11-05-human-gate-required-v2';
 const BANNED = /(治療|根治|預防疾病|改善疾病|降血壓|降血糖|降血脂|冠心病|糖尿病|高血壓|關節|卡卡|疲勞|精神不濟|補氣|生津|膠原蛋白|鈣質|保證功效|台興山產)/;
 const HIGH_RISK = /(價格|售價|優惠|折扣|特價|促銷|免運|贈送|買一送一|預購|現貨|新品上市|藥品|醫療|許可證|颱風|豪雨|即時天氣)/;
 const ACTIVE = new Set(['approved','scheduled']);
@@ -9,11 +9,12 @@ export function assessAutopublishCandidate(post, checks = {}) {
   const reasons = [];
   const content = [post?.title,post?.headline,post?.copy,post?.image_alt].filter(Boolean).join(' ');
   if (!post || !ACTIVE.has(post.status)) reasons.push('未完成有效核准的貼文不可進入自動排程');
-  // Keep the real approving user in profiles.email to honor D1 foreign keys.
-  // The immutable AI review record, not approved_by alone, proves AI origin.
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(post?.approved_by||''))||
-      !String(post?.review_note||'').startsWith('AI審核：AI_APPROVED；'))
-    reasons.push('缺少正式管理者身分及已驗證的AI核准註記');
+  // AI quality evidence and a human version-bound approval are distinct proofs.
+  const humanSigner=String(post?.approved_by||'');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(humanSigner) || /^(?:ai|bot|chatgpt|assistant)[:\-]/i.test(humanSigner))
+    reasons.push('缺少可驗證的使用者人工核准身分');
+  if (checks.humanApprovalValid!==true||checks.humanGateValid!==true)
+    reasons.push('缺少目前圖文版本的人工作業核准與16項人工檢查證據');
   if (Number(post?.image_approved||0)!==1) reasons.push('正式圖片尚未核准');
   if (post?.published_at || post?.publishedAt) reasons.push('已有發布紀錄，不得重複發送');
   if (post?.externalStatus && ['unknown','published','awaiting_verification','cancel_required'].includes(post.externalStatus)) reasons.push('外部平台狀態未釐清或已發布');
