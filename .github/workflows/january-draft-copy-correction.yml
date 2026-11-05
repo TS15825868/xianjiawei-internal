@@ -1,0 +1,109 @@
+name: 仙加味一月貼文文案時序修正（只更新無圖草稿）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/january-draft-copy-correction-request.json'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-january-two-draft-copy-correction
+  cancel-in-progress: false
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Verify exact two items and zero public actions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const assert=require('node:assert/strict'),m=require('./ops/correct-jan-draft-copy-20261105.json');
+          const r=require('./ops/january-draft-copy-correction-request.json');
+          assert.equal(r.action,'correct_existing_d1_draft_copy_only');assert.equal(r.approve,false);
+          assert.equal(r.publish,false);assert.equal(r.schedule,false);
+          assert.equal(m.items.length,2);
+          assert.deepEqual(m.items.map(x=>x.id).sort(),['XJW-CAND-20270108','XJW-CAND-20270112'].sort());
+          assert.ok(m.items.every(x=>x.newCopy!==x.oldCopy));
+          assert.ok(m.guard.requireStatus==='draft'&&m.guard.imageUrlMustBeEmpty===true);
+          console.log('PASS: only two unapproved January drafts allowed');
+          NODE
+      - name: Install existing Wrangler without builds
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read exact live D1 rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url,image_approved,approved_by,approved_at,scheduled_at,published_at,proposed_scheduled_at FROM social_posts WHERE id IN ('XJW-CAND-20270108','XJW-CAND-20270112')" > /tmp/xjw-january-before.json
+      - name: Build compare-and-swap draft-only patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const data=JSON.parse(fs.readFileSync('/tmp/xjw-january-before.json','utf8'));
+          const rows=(Array.isArray(data)?data[0]?.results:data.results)||[];
+          const m=require('./ops/correct-jan-draft-copy-20261105.json');
+          assert.equal(rows.length,2);const byId=new Map(rows.map(x=>[x.id,x]));
+          const q=v=>"'"+String(v??'').replaceAll("'","''")+"'";
+          const sql=[];
+          for(const target of m.items){
+            const x=byId.get(target.id);assert.ok(x);
+            assert.equal(x.status,'draft');assert.equal(x.image_url,'');assert.equal(Number(x.image_approved),0);
+            assert.equal(x.approved_by,null);assert.equal(x.approved_at,null);
+            assert.equal(x.scheduled_at,null);assert.equal(x.published_at,null);
+            assert.equal(x.proposed_scheduled_at,target.date+'T10:00:00+08:00');
+            assert.equal(x.title,target.oldTitle);assert.equal(x.copy,target.oldCopy);
+            sql.push("UPDATE social_posts SET title="+q(target.newTitle)+", copy="+q(target.newCopy)+", updated_at=CURRENT_TIMESTAMP WHERE id="+q(target.id)+" AND status='draft' AND title="+q(target.oldTitle)+" AND copy="+q(target.oldCopy)+" AND image_url='' AND image_approved=0 AND approved_by IS NULL AND approved_at IS NULL AND scheduled_at IS NULL AND published_at IS NULL;");
+          }
+          fs.writeFileSync('/tmp/xjw-january-cas-only.sql',sql.join('\n')+'\n');
+          NODE
+      - name: Update exactly two unapproved D1 drafts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --file /tmp/xjw-january-cas-only.sql > /tmp/xjw-january-write.json
+      - name: Read back and verify unchanged review and publishing status
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url,image_approved,approved_by,approved_at,scheduled_at,published_at,proposed_scheduled_at FROM social_posts WHERE id IN ('XJW-CAND-20270108','XJW-CAND-20270112')" > /tmp/xjw-january-after.json
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const m=require('./ops/correct-jan-draft-copy-20261105.json');
+          const read=p=>{const d=JSON.parse(fs.readFileSync(p,'utf8'));return(Array.isArray(d)?d[0]?.results:d.results)||[]};
+          const after=read('/tmp/xjw-january-after.json');
+          assert.equal(after.length,2);
+          for(const target of m.items){
+            const row=after.find(x=>x.id===target.id);
+            assert.ok(row);assert.equal(row.title,target.newTitle);assert.equal(row.copy,target.newCopy);
+            assert.equal(row.status,'draft');assert.equal(row.image_url,'');assert.equal(Number(row.image_approved),0);
+            assert.equal(row.approved_by,null);assert.equal(row.approved_at,null);
+            assert.equal(row.scheduled_at,null);assert.equal(row.published_at,null);
+            assert.equal(row.proposed_scheduled_at,target.date+'T10:00:00+08:00');
+          }
+          const receipt={schema:'xjw-january-two-d1-draft-corrections-readback-v1',verifiedAt:new Date().toISOString(),
+            ids:m.items.map(x=>x.id),updated:2,unchangedStatus:'draft',newImages:0,newApprovals:0,newSchedules:0,newPublishes:0,
+            dates:m.items.map(x=>x.date),allMediaStillMissing:true};
+          fs.writeFileSync('january-two-draft-corrections-receipt.json',JSON.stringify(receipt,null,2)+'\n');
+          console.log('JAN_DRAFT_CORRECTION_RECEIPT '+JSON.stringify(receipt));
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-jan-two-draft-copy-fix-${{ github.run_id }}
+          path: january-two-draft-corrections-receipt.json
+          retention-days: 3
+          if-no-files-found: warn
