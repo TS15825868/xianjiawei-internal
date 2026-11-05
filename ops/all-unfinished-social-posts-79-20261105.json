@@ -1,0 +1,1722 @@
+{
+  "schema": "xjw-all-unfinished-social-posts-full-coverage-v1",
+  "brand": "仙加味",
+  "capturedEvidenceDate": "2026-11-05",
+  "source": {
+    "fullD1Audit": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42064229021",
+    "verifiedD1Counts": {
+      "archived": 78,
+      "draft": 23,
+      "pending_review": 56,
+      "published": 4
+    },
+    "fullD1Total": 161,
+    "confirmedArchivedAndPublishedUntouched": 82,
+    "pendingSnapshot": "ops/social-schedule-candidates-current.json",
+    "newDraftSource": "ops/social-scene-image-production-queue-20261105.json",
+    "visualAuthority": "ops/formal-visual-asset-authority-20261105.json"
+  },
+  "queuePolicy": {
+    "noFixedPostCountCap": true,
+    "allUnfinishedIncluded": true,
+    "priority": "old pending with existing image and clear provenance first; new drafts need genuine unique image before review; independent items proceed when another blocked",
+    "archiveOnlyWhenEvidenceProvesUnusable": true,
+    "neverClearStatusByFakeHumanApproval": true,
+    "noExternalPublishWithoutOwnerVersionApproval": true,
+    "noNewCosts": true,
+    "preserveERPAndPublishedHistory": true,
+    "doNotForceIncorrectProductPackshotOrInventAnimalAppearance": true
+  },
+  "totalUnfinished": 79,
+  "byStatus": {
+    "pending_review": 56,
+    "draft": 23
+  },
+  "newImagesVerified": 0,
+  "realHumanApprovals": 0,
+  "actualExternalSchedules": 0,
+  "actualExternalPublications": 0,
+  "records": [
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "status": "pending_review",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "category": "品牌文化",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-16T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-home-soup",
+      "status": "pending_review",
+      "title": "你家煮湯，最常放什麼？",
+      "category": "料理聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-04/candidates/XJW-CONV-chat-home-soup-unique-poll-v2.png",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-17T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-wanhua-morning",
+      "status": "pending_review",
+      "title": "萬華的早上，你第一個想到什麼聲音？",
+      "category": "萬華生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-19T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-trial-first",
+      "status": "pending_review",
+      "title": "想先了解，再決定也可以",
+      "category": "客人聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-trial-first-scene-v1.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": "2026-10-20T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "status": "pending_review",
+      "title": "買東西時，你第一個看什麼？",
+      "category": "客人互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-21T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "status": "pending_review",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "category": "客人互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-22T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "status": "pending_review",
+      "title": "開店前，小老闆先做哪一件事？",
+      "category": "小老闆日常",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-26T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "status": "pending_review",
+      "title": "你煮東西是照食譜，還是憑感覺？",
+      "category": "料理聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-27T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "status": "pending_review",
+      "title": "龜鹿飲180cc鋁袋裡，有哪些成分？",
+      "category": "產品知識",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-14/formal-production/XJW-drink180-ingredients.png",
+      "requiredProducts": [
+        "guilu-drink-180"
+      ],
+      "plannedAt": "2026-10-28T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "status": "pending_review",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "category": "即時天氣",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-30T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "status": "pending_review",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "category": "生活故事",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-10-31T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "status": "pending_review",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "category": "小老闆日常",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-02T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "status": "pending_review",
+      "title": "放假在家，你會想慢慢準備一餐嗎？",
+      "category": "生活料理",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-02T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "status": "pending_review",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "category": "年節互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "status": "pending_review",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "category": "社群互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "status": "pending_review",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "category": "產品知識",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "status": "pending_review",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "category": "產品認識",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "requiredProducts": [
+        "luerong-fen"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "status": "pending_review",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "category": "生活產品",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-30-vs-180",
+      "status": "pending_review",
+      "title": "30cc跟180cc，怎麼選？",
+      "category": "輕鬆問答",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-vs-180-scene-v1.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-30-bare-jar",
+      "status": "pending_review",
+      "title": "今天只看一個小細節：裸罐",
+      "category": "產品認識",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-bare-jar-scene-v1.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "status": "pending_review",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "category": "新年聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "status": "pending_review",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "category": "常見問題",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+      "requiredProducts": [
+        "guilu-drink-30",
+        "guilu-drink-180"
+      ],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-soup-day",
+      "status": "pending_review",
+      "title": "你家有固定的煮湯日嗎？",
+      "category": "料理互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-soup-day-safety-v1.png",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-first-soup",
+      "status": "pending_review",
+      "title": "年假後第一鍋湯，你會選雞還是排骨？",
+      "category": "年後料理",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-cny-first-soup-safety-v1.png",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-brand-not-only-product",
+      "status": "pending_review",
+      "title": "為什麼有些貼文不放產品？",
+      "category": "品牌聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-brand-not-only-product.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-craft-years",
+      "status": "pending_review",
+      "title": "一件事情做久了，還會覺得新鮮嗎？",
+      "category": "工藝故事",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "status": "pending_review",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "category": "飲食文化",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "status": "pending_review",
+      "title": "有些問題，其實沒有標準答案",
+      "category": "客人聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-old-methods",
+      "status": "pending_review",
+      "title": "有些老方法，為什麼到現在還有人在做？",
+      "category": "工藝故事",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-old-methods-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "status": "pending_review",
+      "title": "你家以前最常看到哪一種食材？",
+      "category": "飲食文化",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "status": "pending_review",
+      "title": "小老闆今天在整理什麼？",
+      "category": "小老闆日常",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-shop-organizing-scene-v5.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "status": "pending_review",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "category": "文化互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-traditional-image-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "status": "pending_review",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "category": "年前生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "status": "pending_review",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "category": "年節料理",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "status": "pending_review",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "category": "年前生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "status": "pending_review",
+      "title": "開工第一天，小老闆先做一件小事",
+      "category": "年後日常",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "status": "pending_review",
+      "title": "下雨天，你會想喝什麼？",
+      "category": "即時天氣",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "status": "pending_review",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "category": "年末互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-care-before-home-message",
+      "status": "pending_review",
+      "title": "回家前，你會先打一通電話，還是先傳一句問候？",
+      "category": "生活關心",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "status": "pending_review",
+      "title": "一句問候，也是一種關心",
+      "category": "生活關心",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-last-day-reset",
+      "status": "pending_review",
+      "title": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "category": "年後生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-last-day-reset-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "status": "pending_review",
+      "title": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "category": "新年生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": null,
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "status": "pending_review",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "category": "小老闆日常",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-04T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "status": "pending_review",
+      "title": "你的廚房，最常用木匙還是長筷？",
+      "category": "廚房工具聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-fixed-storage-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-20T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-simple-soup",
+      "status": "pending_review",
+      "title": "一鍋湯，其實不用放得很複雜",
+      "category": "料理聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-26T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "status": "pending_review",
+      "title": "今天讓小鹿跟小烏龜來選",
+      "category": "輕鬆互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-deer-turtle-soup-choice-safety-v1.png",
+      "requiredProducts": [],
+      "plannedAt": "2026-11-30T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-ask-boss-topic",
+      "status": "pending_review",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "category": "自由聊天",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-12-04T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "status": "pending_review",
+      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
+      "category": "季節料理",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png",
+      "requiredProducts": [],
+      "plannedAt": "2026-12-18T12:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-year-end-clean",
+      "status": "pending_review",
+      "title": "年底整理時，最常翻出什麼忘記的東西？",
+      "category": "年末生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-clean-audit-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-12-20T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "status": "pending_review",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "category": "輕鬆生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2026-12-24T10:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "status": "pending_review",
+      "title": "元旦早上，先把早餐留給一起生活的人",
+      "category": "元旦生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-01-01T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "status": "pending_review",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "category": "年節文化",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-02-03T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "status": "pending_review",
+      "title": "除夕，先替回家的人留一個位置",
+      "category": "除夕生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-02-05T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "status": "pending_review",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "category": "年節互動",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-CONV-cny-family-choice-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-02-06T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-spring-walk",
+      "status": "pending_review",
+      "title": "走春不用趕行程，陪家人慢慢走一段",
+      "category": "走春生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-02-08T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "status": "pending_review",
+      "title": "元宵，一起把小小的湯圓搓好",
+      "category": "元宵生活",
+      "photoPresent": true,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+      "requiredProducts": [],
+      "plannedAt": "2027-02-20T09:00:00+08:00",
+      "evidenceStatus": "unverified_current_16_checks",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "verify_real_scene_image_binary_and_fixed_mascot",
+        "check_formal_product_media_if_mentioned",
+        "compare_FB_IG_Threads_original_post_and_carousel_history",
+        "run_16_quality_checks_with_actual_evidence",
+        "leave_for_owner_version_bound_human_approval_before_any_schedule"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261208",
+      "status": "draft",
+      "title": "萬華街角的早晨，先從開門開始",
+      "category": "品牌",
+      "photoPresent": false,
+      "plannedAt": "2026-12-08T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261211",
+      "status": "draft",
+      "title": "桌邊的小筆記，你習慣怎麼分類",
+      "category": "生活",
+      "photoPresent": false,
+      "plannedAt": "2026-12-11T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "status": "draft",
+      "title": "冬至餐桌上的甜湯圓與鹹湯圓",
+      "category": "節慶",
+      "photoPresent": false,
+      "plannedAt": "2026-12-22T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer",
+        "turtle"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "status": "draft",
+      "title": "聖誕節的小小聚會，誰負責準備點心",
+      "category": "節慶",
+      "photoPresent": false,
+      "plannedAt": "2026-12-25T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "status": "draft",
+      "title": "認識食材，不一定要從複雜配方開始",
+      "category": "食材",
+      "photoPresent": false,
+      "plannedAt": "2027-01-05T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270108",
+      "status": "draft",
+      "title": "一月的週五，換一枝花給窗邊",
+      "category": "生活",
+      "photoPresent": false,
+      "plannedAt": "2027-01-08T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270112",
+      "status": "draft",
+      "title": "親友來家裡，你會先拿出哪一個杯子",
+      "category": "閒聊",
+      "photoPresent": false,
+      "plannedAt": "2027-01-12T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "status": "draft",
+      "title": "紅棗入甜湯，整顆還是切開",
+      "category": "食材",
+      "photoPresent": false,
+      "plannedAt": "2027-01-15T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "status": "draft",
+      "title": "年菜菜單先留一道蔬菜",
+      "category": "料理",
+      "photoPresent": false,
+      "plannedAt": "2027-01-19T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270122",
+      "status": "draft",
+      "title": "過年舊照片，最想重看哪一張",
+      "category": "閒聊",
+      "photoPresent": false,
+      "plannedAt": "2027-01-22T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "status": "draft",
+      "title": "市場買菜的路上，也有萬華的味道",
+      "category": "品牌",
+      "photoPresent": false,
+      "plannedAt": "2027-01-26T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "status": "draft",
+      "title": "年前整理餐具，先把常用的放前面",
+      "category": "生活",
+      "photoPresent": false,
+      "plannedAt": "2027-01-29T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270223",
+      "status": "draft",
+      "title": "年後早晨，不必把事情一次排滿",
+      "category": "關心",
+      "photoPresent": false,
+      "plannedAt": "2027-02-23T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270226",
+      "status": "draft",
+      "title": "週末想去河邊走走，還是在家看書",
+      "category": "閒聊",
+      "photoPresent": false,
+      "plannedAt": "2027-02-26T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer",
+        "turtle"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270302",
+      "status": "draft",
+      "title": "春天早餐桌，一杯水與一份簡單早餐",
+      "category": "生活",
+      "photoPresent": false,
+      "plannedAt": "2027-03-02T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "status": "draft",
+      "title": "萬華春日早晨，老街的新風景",
+      "category": "品牌",
+      "photoPresent": false,
+      "plannedAt": "2027-03-05T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot",
+        "deer"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270309",
+      "status": "draft",
+      "title": "在家整理龜鹿膏，先看看保存標示",
+      "category": "產品",
+      "photoPresent": false,
+      "plannedAt": "2027-03-09T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [
+        "guilu-gao"
+      ],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "status": "draft",
+      "title": "春天煮湯，菇類先洗還是先切",
+      "category": "料理",
+      "photoPresent": false,
+      "plannedAt": "2027-03-12T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270316",
+      "status": "draft",
+      "title": "出門前看一下預報，再決定帶什麼",
+      "category": "關心",
+      "photoPresent": false,
+      "plannedAt": "2027-03-16T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270319",
+      "status": "draft",
+      "title": "一樣是喝水，你最喜歡哪種杯子",
+      "category": "閒聊",
+      "photoPresent": false,
+      "plannedAt": "2027-03-19T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "status": "draft",
+      "title": "從老手藝到現代日常，記錄一個工序",
+      "category": "品牌",
+      "photoPresent": false,
+      "plannedAt": "2027-03-23T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270326",
+      "status": "draft",
+      "title": "春天的玄關，雨傘和外套放哪裡",
+      "category": "季節",
+      "photoPresent": false,
+      "plannedAt": "2027-03-26T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "status": "draft",
+      "title": "春季整理食品櫃，先看保存標示",
+      "category": "關心",
+      "photoPresent": false,
+      "plannedAt": "2027-03-30T10:00:00+08:00",
+      "currentImageUrl": null,
+      "requiredProducts": [],
+      "requiredCharacters": [
+        "mascot"
+      ],
+      "evidenceStatus": "needs_original_scene_image",
+      "humanApproval": false,
+      "externalSchedule": false,
+      "nextActions": [
+        "recheck_current_formal_character_and_product_sources",
+        "create_unique_complete_scene_without_inventing_character_or_package",
+        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
+        "run_16_quality_checks_and_history_dedup",
+        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
+      ]
+    }
+  ]
+}
