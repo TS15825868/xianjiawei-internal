@@ -1,7 +1,7 @@
 {
   "schema": "xjw-scene-candidate-binding-v1",
   "authorized_by": "tung314069@gmail.com",
-  "source_main": "cb6b4f4a9cb96e9fe82b34deac3982f221dcdf31",
+  "source_main": "8087717b05f20c1a4412ee94f7e7bba4f8a57a28",
   "humanApproval": false,
   "items": [
     {
@@ -15,7 +15,76 @@
       "expectedCopy": "準備招待來家裡坐坐的親友時，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
       "alt": "居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20261211",
@@ -28,7 +97,76 @@
       "expectedCopy": "週五早上，小老闆在仙加味店裡把料理點子與待辦事項分別記在不同筆記本，翻找資料時比較清楚。你習慣用一本筆記本，還是分開記不同事情？",
       "alt": "週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20261222",
@@ -41,7 +179,76 @@
       "expectedCopy": "冬至這天，小老闆端出兩碗不同口味的湯圓，和小鹿、小烏龜一起討論最喜歡哪一種。仙加味祝大家冬至餐桌溫暖熱鬧。",
       "alt": "冬至餐桌上擺著甜、鹹兩碗湯圓，小老闆與分開的小鹿、小烏龜一起討論口味。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：冬至餐桌上擺著甜、鹹兩碗湯圓，小老闆與分開的小鹿、小烏龜一起討論口味。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：冬至餐桌上擺著甜、鹹兩碗湯圓，小老闆與分開的小鹿、小烏龜一起討論口味。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：冬至餐桌上擺著甜、鹹兩碗湯圓，小老闆與分開的小鹿、小烏龜一起討論口味。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20261225",
@@ -54,7 +261,76 @@
       "expectedCopy": "聖誕節這天，小老闆在桌上擺好杯盤，等朋友來聊聊近況。仙加味覺得，節日裡最開心的是大家能坐下來好好說話。",
       "alt": "聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270105",
@@ -67,7 +343,76 @@
       "expectedCopy": "在仙加味店裡，小老闆把幾種乾燥食材分開擺放，先記住各自的外形與香氣。你會先注意食材的顏色，還是味道？",
       "alt": "仙加味店內，小老闆介紹分碗擺放的常見乾燥食材，小鹿與小烏龜在桌旁陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：仙加味店內，小老闆介紹分碗擺放的常見乾燥食材，小鹿與小烏龜在桌旁陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：仙加味店內，小老闆介紹分碗擺放的常見乾燥食材，小鹿與小烏龜在桌旁陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：仙加味店內，小老闆介紹分碗擺放的常見乾燥食材，小鹿與小烏龜在桌旁陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270115",
@@ -80,7 +425,76 @@
       "expectedCopy": "週五早上，小老闆在家準備紅棗甜湯的材料，先把紅棗沖洗、看看大小，再想要整顆放入還是切開。仙加味喜歡聊這些餐桌上的小習慣。你家煮甜湯會怎麼放紅棗？",
       "alt": "冬日早晨，小老闆在居家餐桌前拿起紅棗，桌上分碗擺放紅棗與甜湯食材，小鹿和小烏龜在旁觀看。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：冬日早晨，小老闆在居家餐桌前拿起紅棗，桌上分碗擺放紅棗與甜湯食材，小鹿和小烏龜在旁觀看。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：冬日早晨，小老闆在居家餐桌前拿起紅棗，桌上分碗擺放紅棗與甜湯食材，小鹿和小烏龜在旁觀看。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：冬日早晨，小老闆在居家餐桌前拿起紅棗，桌上分碗擺放紅棗與甜湯食材，小鹿和小烏龜在旁觀看。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270119",
@@ -93,7 +507,76 @@
       "expectedCopy": "開始討論年菜時，小老闆拿出紙張，把家人愛吃的青菜料理先排進菜單。仙加味也很好奇，你家的年菜一定會出現哪道蔬菜？",
       "alt": "年前討論年菜時，小老闆拿出素面紙張，桌上擺著幾道青菜料理，小鹿和小烏龜分開陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：年前討論年菜時，小老闆拿出素面紙張，桌上擺著幾道青菜料理，小鹿和小烏龜分開陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：年前討論年菜時，小老闆拿出素面紙張，桌上擺著幾道青菜料理，小鹿和小烏龜分開陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：年前討論年菜時，小老闆拿出素面紙張，桌上擺著幾道青菜料理，小鹿和小烏龜分開陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270122",
@@ -106,7 +589,76 @@
       "expectedCopy": "翻看手機裡以前的過年照片，小老闆發現最難忘的總是大家擠在同一張桌邊。仙加味想聽聽，你最喜歡哪種過年回憶？",
       "alt": "家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270126",
@@ -119,7 +671,76 @@
       "expectedCopy": "年前走進萬華市場，小老闆看見一攤攤準備年節食材的店家。仙加味的故事，也和這些熟悉的街道與飲食文化一起延續。",
       "alt": "年前的萬華傳統市場，小老闆提著裝有青菜的購物籃走過攤位，小鹿和小烏龜分開同行。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：年前的萬華傳統市場，小老闆提著裝有青菜的購物籃走過攤位，小鹿和小烏龜分開同行。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：年前的萬華傳統市場，小老闆提著裝有青菜的購物籃走過攤位，小鹿和小烏龜分開同行。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：年前的萬華傳統市場，小老闆提著裝有青菜的購物籃走過攤位，小鹿和小烏龜分開同行。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270129",
@@ -132,7 +753,76 @@
       "expectedCopy": "要迎接家人聚餐，小老闆把常用碗盤擦乾、收好，再留出餐桌空間。仙加味想問：你家年前第一個整理的是哪裡？",
       "alt": "年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270223",
@@ -145,20 +835,76 @@
       "expectedCopy": "開工後的早晨，小老闆先打開窗戶、喝杯水，再把今天的事情寫在紙上。仙加味希望大家都能找到舒服的生活步調。",
       "alt": "年後早晨，小老闆坐在窗邊，拿著水杯並在筆記本寫下今日事情，小鹿和小烏龜分開陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
-    },
-    {
-      "postId": "XJW-CAND-20270226",
-      "path": "media/social-candidates/20261106/XJW-CAND-20270226.webp",
-      "sha256": "80fbcf8b671aa29d25b85b70d3d964b230ad4e779ff7ebff4972f980cfe7c356",
-      "bytes": 609196,
-      "width": 1254,
-      "height": 1254,
-      "expectedTitle": "週末想去河邊走走，還是在家看書",
-      "expectedCopy": "週五早上，小老闆和小鹿、小烏龜聊起週末計畫：天氣適合就去河邊散步，不然在家看書也很好。仙加味想問大家，這週末你比較想出門走走，還是留在家裡？",
-      "alt": "週五上午，店內窗邊的小老闆與分開的小鹿和小烏龜討論週末散步或居家閱讀，桌上有素面書本",
-      "bind": false,
-      "qc": "reject_thought_bubble_panels"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：年後早晨，小老闆坐在窗邊，拿著水杯並在筆記本寫下今日事情，小鹿和小烏龜分開陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：年後早晨，小老闆坐在窗邊，拿著水杯並在筆記本寫下今日事情，小鹿和小烏龜分開陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：年後早晨，小老闆坐在窗邊，拿著水杯並在筆記本寫下今日事情，小鹿和小烏龜分開陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270302",
@@ -171,7 +917,76 @@
       "expectedCopy": "春季早晨，小老闆把吐司、蛋與水杯放上桌，準備開始一天。仙加味相信日常的節奏，常藏在這些普通又熟悉的片刻。",
       "alt": "春日居家早餐桌，小老闆將吐司與雞蛋放上桌，旁邊擺著水杯，小鹿和小烏龜分開陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春日居家早餐桌，小老闆將吐司與雞蛋放上桌，旁邊擺著水杯，小鹿和小烏龜分開陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春日居家早餐桌，小老闆將吐司與雞蛋放上桌，旁邊擺著水杯，小鹿和小烏龜分開陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：春日居家早餐桌，小老闆將吐司與雞蛋放上桌，旁邊擺著水杯，小鹿和小烏龜分開陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270305",
@@ -184,7 +999,76 @@
       "expectedCopy": "春天早上，小老闆走過萬華熟悉的街角，發現店家門口有新的花草布置。仙加味從這片街區起家，也喜歡記錄現在的日常風景。你有經常走過的老街嗎？",
       "alt": "春日早晨，小老闆走過萬華老街，觀看店家門口的花草，小鹿和小烏龜分開同行。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春日早晨，小老闆走過萬華老街，觀看店家門口的花草，小鹿和小烏龜分開同行。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春日早晨，小老闆走過萬華老街，觀看店家門口的花草，小鹿和小烏龜分開同行。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：春日早晨，小老闆走過萬華老街，觀看店家門口的花草，小鹿和小烏龜分開同行。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270312",
@@ -197,8 +1081,77 @@
       "expectedCopy": "週五早上想到下班後想煮一鍋菇類蔬菜湯，小老闆先把需要的食材記進清單。仙加味想問大家：準備家常料理時，你習慣先決定湯底還是先選蔬菜？",
       "alt": "春季週五上午，小老闆在家看著分開擺放的菇類、蔬菜與紙本清單，規劃晚餐湯品，小鹿和小烏龜在旁陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required",
-      "newTitle": "春天煮湯，你會先選湯底還是蔬菜？"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "newTitle": "春天煮湯，你會先選湯底還是蔬菜？",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春季週五上午，小老闆在家看著分開擺放的菇類、蔬菜與紙本清單，規劃晚餐湯品，小鹿和小烏龜在旁陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春季週五上午，小老闆在家看著分開擺放的菇類、蔬菜與紙本清單，規劃晚餐湯品，小鹿和小烏龜在旁陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：春季週五上午，小老闆在家看著分開擺放的菇類、蔬菜與紙本清單，規劃晚餐湯品，小鹿和小烏龜在旁陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270316",
@@ -211,7 +1164,76 @@
       "expectedCopy": "春季出門前，小老闆先看看當天預報，再決定是否放入外套或雨具。仙加味也想提醒大家，外出準備依當地實際天氣調整就好。",
       "alt": "春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270319",
@@ -224,7 +1246,76 @@
       "expectedCopy": "店裡忙完一個段落，小老闆拿出玻璃杯與陶杯，想了想今天選哪一個。仙加味想聽聽大家平常最常用什麼杯子。",
       "alt": "工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270323",
@@ -237,7 +1328,76 @@
       "expectedCopy": "整理家族留下的製作筆記時，小老闆把每一道傳統工序重新記下。仙加味希望讓萬華起家的飲食文化，用現代方式繼續被認識。",
       "alt": "萬華工作間裡，小老闆整理舊製作筆記並重新記錄，桌邊有傳統工藝器具，小鹿和小烏龜分開陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：萬華工作間裡，小老闆整理舊製作筆記並重新記錄，桌邊有傳統工藝器具，小鹿和小烏龜分開陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：萬華工作間裡，小老闆整理舊製作筆記並重新記錄，桌邊有傳統工藝器具，小鹿和小烏龜分開陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：萬華工作間裡，小老闆整理舊製作筆記並重新記錄，桌邊有傳統工藝器具，小鹿和小烏龜分開陪伴。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270326",
@@ -250,7 +1410,76 @@
       "expectedCopy": "春天出門前，小老闆把雨傘和薄外套放在玄關固定位置，依當天實際天氣決定要不要帶著走。仙加味想問：你家玄關最容易找不到的是雨傘、鑰匙，還是外套？",
       "alt": "春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270330",
@@ -263,7 +1492,77 @@
       "expectedCopy": "三月底整理食品櫃，小老闆先把食品依標示分類，看看保存期限與存放位置。仙加味也想問：你多久會整理一次家裡的食品櫃？",
       "alt": "春季居家食品櫃前，小老闆將乾燥食材分類收納，小鹿和小烏龜分開陪伴。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過",
+        "食品整理圖未清楚呈現保存標示，需補對應動作證據"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春季居家食品櫃前，小老闆將乾燥食材分類收納，小鹿和小烏龜分開陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春季居家食品櫃前，小老闆將乾燥食材分類收納，小鹿和小烏龜分開陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "DEFER",
+          "evidence": "原尺寸可見小老闆指向透明食材袋，但畫面沒有清楚保存期限標示可供核對；文案提到先看保存標示，此動作證據仍不足。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
     },
     {
       "postId": "XJW-CAND-20270108",
@@ -276,7 +1575,345 @@
       "expectedCopy": "一月的週五早上，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？",
       "alt": "冬日週五早晨，小老闆在仙加味店內窗邊插上一枝小花，小鹿在旁好奇觀看，窗外是沒有積雪的萬華街景。",
       "bind": true,
-      "qc": "scene_preflight_only_full_visual_and_history_review_required"
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：冬日週五早晨，小老闆在仙加味店內窗邊插上一枝小花，小鹿在旁好奇觀看，窗外是沒有積雪的萬華街景。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：冬日週五早晨，小老闆在仙加味店內窗邊插上一枝小花，小鹿在旁好奇觀看，窗外是沒有積雪的萬華街景。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：冬日週五早晨，小老闆在仙加味店內窗邊插上一枝小花，小鹿在旁好奇觀看，窗外是沒有積雪的萬華街景。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與正式來源逐張比對小男孩短黑髮、大眼、米白中式衣、綠圍裙紅直章及小鹿綠領巾；本篇場景只要求小鹿，未任意新增烏龜。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      }
+    },
+    {
+      "postId": "XJW-CAND-20261208",
+      "path": "media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
+      "sha256": "d89140cbb20452cce81497b0353d82bc9c2d577f1f593c7d6e3066c4e10fcc2d",
+      "bytes": 516156,
+      "width": 1254,
+      "height": 1254,
+      "expectedTitle": "萬華街角的早晨，先從開門開始",
+      "expectedCopy": "清晨走過萬華熟悉的街道，再回店裡準備一天的工作，是仙加味延續多年的日常片段。你也有一條走不膩的老街嗎？",
+      "bind": true,
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "alt": "清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      },
+      "expectedAlt": "萬華老街清晨，小老闆提包步行回到店門口"
+    },
+    {
+      "postId": "XJW-CAND-20270226",
+      "path": "media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
+      "sha256": "79b6691482ec42248f01f1bb484b70a84640e624c40232c8d1669bfa33cadf11",
+      "bytes": 542924,
+      "width": 1254,
+      "height": 1254,
+      "expectedTitle": "週末想去河邊走走，還是在家看書",
+      "expectedCopy": "週五早上，小老闆和小鹿、小烏龜聊起週末計畫：天氣適合就去河邊散步，不然在家看書也很好。仙加味想問大家，這週末你比較想出門走走，還是留在家裡？",
+      "bind": true,
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "alt": "週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。",
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，畫面為生活器物、餐具或普通食材，沒有仙加味商品包裝，不把一般罐器冒稱品牌產品。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "本篇圖文沒有商品容量、重量、份數或成分順序，沒有引用舊產品規格。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "PASS",
+          "evidence": "已獨立看圖核對人物手部與道具互動：週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "原尺寸已實看，無品牌商品本體，人物、夥伴與生活道具比例可理解，沒有30cc大瓶或巨大鋁袋。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      },
+      "expectedAlt": "週五上午，店內窗邊的小老闆與分開的小鹿和小烏龜討論週末散步或居家閱讀，桌上有素面書本"
+    },
+    {
+      "postId": "XJW-CAND-20270309",
+      "path": "media/social-candidates/20261106/XJW-CAND-20270309-v2.webp",
+      "sha256": "c19e4fcd03799606b29d1e4745bebca9088e5fde471c3a536c498778b06bdac7",
+      "bytes": 415218,
+      "width": 1254,
+      "height": 1254,
+      "expectedTitle": "在家整理龜鹿膏，先看看保存標示",
+      "expectedCopy": "春天在家整理食品櫃，小老闆先看包裝上的保存方式，再把每樣食材放回適當位置。仙加味龜鹿膏是100g／罐，保存及食用前也記得依實際產品標示確認。你多久會整理一次食品櫃？",
+      "bind": true,
+      "qc": "full_resolution_visually_inspected_history_dedup_deferred",
+      "alt": "春日居家收納櫃前，小老闆指向桌上的仙加味龜鹿膏100g實物罐身，介紹依標示確認保存方式，小鹿和小烏龜分開在後方陪伴。",
+      "productsVisible": true,
+      "productAssets": [
+        {
+          "product": "龜鹿膏100g",
+          "source": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/guilu-gao.jpg",
+          "source_sha256": "110aa1abe5d80e6ce7e15cb4247466583406d62144bc5ac8abc82241bf1d8e58",
+          "cutout_path": "assets/product-photo-cutouts/2026-10-11/gao.png",
+          "cutout_sha256": "2c6776f1327691e3c567277d5775c3b3439a3cbd9999a893d574dfc87356a410",
+          "method": "existing official photo alpha cutout; uniform resize to height245; x960 y860; no recolor, repaint, relabel or deformation",
+          "opaque_product_pixels_verified_unchanged_before_final_encoding": 34243,
+          "finalEncoding": "WebP quality95 at unchanged 1254x1254"
+        }
+      ],
+      "uncertainties": [
+        "歷史輪播子圖與跨平台原文關係尚未完整驗證，歷史去重未通過",
+        "須補明確閱讀罐身保存標示的動作證據"
+      ],
+      "checks": {
+        "brand": {
+          "result": "PASS",
+          "evidence": "逐字檢視文案與原尺寸圖片，只以仙加味作品牌連結；胸前紅色直式仙加味可辨識，未另加內部公司名稱。"
+        },
+        "product": {
+          "result": "PASS",
+          "evidence": "龜鹿膏為正式實物照片去背後等比例置入；已核對官網原圖SHA256，未交由AI重畫、換標籤或改罐型。"
+        },
+        "specification": {
+          "result": "PASS",
+          "evidence": "實物罐正面100g與本篇文案100g／罐一致；不引用其他產品規格或出貨交期。"
+        },
+        "pricing_activity": {
+          "result": "PASS",
+          "evidence": "本篇文案與原尺寸圖片沒有售價、優惠、試喝份數、出貨交期或活動承諾。"
+        },
+        "season": {
+          "result": "PASS",
+          "evidence": "已對照本篇文案指定時節與原尺寸圖片，台灣常綠街景、花木或節慶道具沒有相反季節，也未出現積雪。"
+        },
+        "weather": {
+          "result": "PASS",
+          "evidence": "本篇並非即時天氣實測或預報；原尺寸沒有雪、冰或虛構天氣數字，生活準備語句未被當作實際發布日天候。"
+        },
+        "occasion": {
+          "result": "PASS",
+          "evidence": "已依本篇文案對照原尺寸人物與道具，居家、工作、年前或節慶場合一致：春日居家收納櫃前，小老闆指向桌上的仙加味龜鹿膏100g實物罐身，介紹依標示確認保存方式，小鹿和小烏龜分開在後方陪伴。"
+        },
+        "location": {
+          "result": "PASS",
+          "evidence": "已實看為插畫居家、店內或萬華風格街景，沒有虛構門市地址，也沒有冒稱實景照片。"
+        },
+        "scene_environment": {
+          "result": "PASS",
+          "evidence": "1254方圖已獨立開啟，為單一完整環境，沒有海報格、思想泡泡、佔位框、拼圖或空白商品區：春日居家收納櫃前，小老闆指向桌上的仙加味龜鹿膏100g實物罐身，介紹依標示確認保存方式，小鹿和小烏龜分開在後方陪伴。"
+        },
+        "temperature": {
+          "result": "PASS",
+          "evidence": "原尺寸已檢視，圖文沒有把冷飲呈現成冒熱氣的商品；餐飲與場合未出現明確冷熱相反敘述。"
+        },
+        "expression": {
+          "result": "PASS",
+          "evidence": "原尺寸可見小老闆與夥伴自然友善的表情，對應本篇輕鬆生活分享與提問語氣，沒有不合情境表情。"
+        },
+        "action": {
+          "result": "DEFER",
+          "evidence": "原尺寸可見小老闆手掌朝向桌上實物罐並介紹，但沒有清楚閱讀罐身側面保存標示的動作；產品正確，閱讀動作仍須覆核。"
+        },
+        "mascot_companions": {
+          "result": "PASS",
+          "evidence": "已與官網first-post-work-rest-qmascot.webp逐張對照：短黑髮、大深色眼、米白中式上衣、深綠圍裙及紅直章辨識一致；鹿綠領巾、龜圓框眼鏡且各自獨立，非融合角色。"
+        },
+        "physical_scale": {
+          "result": "PASS",
+          "evidence": "實物原圖825x1280等比例縮至高245，完整置於前景桌面；未拉伸、裁去包裝文字或放大為飲料瓶，PNG合成驗證34243個不透明產品像素未重畫。"
+        },
+        "duplicate": {
+          "result": "DEFER",
+          "evidence": "本輪為本篇獨立新構圖且檔案雜湊分開；部分歷史輪播子圖與跨平台原文關係仍未驗證，不能把新生成當成歷史去重通過。"
+        },
+        "compliance_final": {
+          "result": "DEFER",
+          "evidence": "已逐字與原尺寸檢視，未見錯字、內部指令或療效承諾；歷史去重證據仍不足，因此本篇最終可公開狀態尚未通過。"
+        }
+      },
+      "expectedAlt": "春日居家食品櫃，小老闆查看仙加味龜鹿膏100g罐身的保存標示，並整理食品的存放位置。"
     }
-  ]
+  ],
+  "reviewScope": "20261106-full-resolution-visual-review-v2",
+  "formalCharacterReference": {
+    "source": "https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+    "sha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+    "use": "character identity reference only; original published poster not reused"
+  }
 }
