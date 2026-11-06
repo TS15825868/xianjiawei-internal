@@ -122,3 +122,15 @@ test('fails on simulated fabricated characters, old packaging, or synthetic appr
  fakeApproved.humanApproved=true;
  assert.throws(()=>validateScene(fakeApproved));
 });
+
+test('real mascot identity reference is a decoded public brand image, not corrupt 11KB JPG or already published scene reuse',()=>{
+ const ref=registry.verifiedReference;
+ assert.equal(ref.testedTrueDecode,true);
+ assert.equal(ref.mediaPath,'images/posts/formal-v20260904/first-post-work-rest-qmascot.webp');
+ assert.equal(ref.githubBlobSha,registry.assets.mascot.gitBlobSha);
+ assert.equal(registry.assets.deer.gitBlobSha,registry.assets.mascot.gitBlobSha);
+ assert.equal(registry.assets.turtle.gitBlobSha,registry.assets.mascot.gitBlobSha);
+ assert.equal(ref.cannotRepublishImage,true);
+ assert.ok(registry.assets.mascot.originalWebsiteReferenceInvalid.includes('mascot-primary-v20260818.jpg'));
+ for(const role of ['mascot','deer','turtle'])assert.equal(registry.assets[role].path,ref.mediaPath);
+});

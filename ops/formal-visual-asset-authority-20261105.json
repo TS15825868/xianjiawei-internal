@@ -4,13 +4,13 @@
   "capturedAt": "2026-11-05",
   "websiteRepo": "TS15825868/xianjiawei",
   "websiteMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
-  "sourceMethod": "GitHub connector fetched exact file blobs from main, with content SHA per asset",
+  "sourceMethod": "Official website GitHub main original image verified by GitHub Actions full Pillow decode and local visual inspection; Git blob SHA retained",
   "assets": {
     "mascot": {
-      "role": "character-identity-reference_not_ready-made_scene",
+      "role": "decoded_published_brand_post_character_identity_reference_only",
       "repository": "TS15825868/xianjiawei",
-      "path": "assets/reference/heygen/mascot-primary-v20260818.jpg",
-      "gitBlobSha": "61516d7563b26fe0cfd88ec576e3aabf61348710",
+      "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
       "expectedAppearance": [
         "短黑髮",
         "圓臉",
@@ -20,30 +20,45 @@
         "胸前紅色直式仙加味印章"
       ],
       "noTextOrStampInvention": true,
-      "note": "網站現存人物參考圖；必須逐張目視核對造型，不得因AI文字描述就當成正式角色像素符合。"
+      "note": "從仙加味官網已發布貼文內實際檢視Q版小老闆：短黑髮、大眼睛、米白中式上衣、深橄欖綠圍裙、胸前紅色仙加味直式印章；只作角色造型對照，不得把已發布貼文圖再當新貼文圖。原指定11KB JPG已證實解碼失敗。",
+      "sourceDecodeProof": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+      "pixelVerifiedDimensions": [
+        1080,
+        1080
+      ],
+      "sourceSha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+      "originalWebsiteReferenceInvalid": "assets/reference/heygen/mascot-primary-v20260818.jpg"
     },
     "deer": {
-      "role": "site-decoration_reference_only_not_scene_character_approved",
+      "role": "decoded_published_brand_post_separate_character_reference_only",
       "repository": "TS15825868/xianjiawei",
-      "path": "images/brand/decor-v20261003/deer-right.webp",
-      "gitBlobSha": "57a2bf99fdde2513569f2f18f87e0c77d87fa93c",
+      "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
       "fullBodySceneApproved": false,
-      "note": "裝飾用小鹿圖不足以證明完整姿態角色；要新增獨立角色須先取得最新正式原圖並人工核對"
+      "note": "仙加味已發布原圖清晰呈現獨立小鹿Q版參考造型；不可與另一角色融合；已發布整張圖不得再作新貼文素材。新場景仍需逐張目視比對。",
+      "sourceDecodeProof": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+      "sourceSha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+      "fullBodyReferenceVisible": true
     },
     "turtle": {
-      "role": "site-decoration_reference_only_not_scene_character_approved",
+      "role": "decoded_published_brand_post_separate_character_reference_only",
       "repository": "TS15825868/xianjiawei",
-      "path": "images/brand/decor-v20261003/turtle-bottom.webp",
-      "gitBlobSha": "0bdcaa9eafcb219fa9fea199e1af3db87b28f08e",
+      "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
       "fullBodySceneApproved": false,
-      "note": "裝飾用小烏龜圖不足以證明完整姿態角色；不能與小鹿融合；要新增獨立角色須先取得最新正式原圖並人工核對"
+      "note": "仙加味已發布原圖清晰呈現獨立小烏龜Q版參考造型；不可與另一角色融合；已發布整張圖不得再作新貼文素材。新場景仍需逐張目視比對。",
+      "sourceDecodeProof": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+      "sourceSha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+      "fullBodyReferenceVisible": true
     },
     "sceneStyleReference": {
       "role": "existing-post-only_for-style-comparison_never_reuse_as-new-post-image",
       "repository": "TS15825868/xianjiawei",
       "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
       "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
-      "copyAsFinalImageAllowed": false
+      "copyAsFinalImageAllowed": false,
+      "sourceDecodeProof": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+      "sourceSha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2"
     }
   },
   "products": [
@@ -170,5 +185,28 @@
     "If newest official main changes, compare and update reference assets; never fail simply because an obsolete historical hash differs",
     "A Git blob SHA is Git object identity (not SHA-256); verify against current GitHub main before publication",
     "No product or character image has been newly created or approved by this manifest"
-  ]
+  ],
+  "updatedAt": "2026-11-06",
+  "verifiedReference": {
+    "role": "published_post_for_character_identities_only",
+    "websiteMainAtCheck": "98a389ff59e592175de765e0029611cb64720f5c",
+    "mediaPath": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+    "githubBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
+    "sourceSha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+    "fullPixels": [
+      1080,
+      1080
+    ],
+    "testedTrueDecode": true,
+    "visibleRoles": [
+      "mascot",
+      "deer",
+      "turtle"
+    ],
+    "readBackProof": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+    "cannotRepublishImage": true,
+    "needsIndependentNewSceneVerification": true,
+    "invalidLegacyReference": "assets/reference/heygen/mascot-primary-v20260818.jpg",
+    "previousTwoDecorImages": "kept at website, not deleted or substituted as ready-made full body characters"
+  }
 }

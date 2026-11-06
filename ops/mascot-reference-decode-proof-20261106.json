@@ -1,0 +1,57 @@
+{
+  "schema": "xjw-mascot-source-decode-and-visual-hold-v1",
+  "checkedAt": "2026-11-06",
+  "workflowRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42151704093",
+  "referencePolicy": "Read-only visual identity reference; not approved for new-publication asset re-use",
+  "verifiedGood": {
+    "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+    "gitBlobSha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
+    "sha256": "0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2",
+    "format": "WEBP",
+    "width": 1080,
+    "height": 1080,
+    "decoded": true,
+    "visualFound": [
+      "Q boss",
+      "distinct young deer",
+      "distinct turtle"
+    ],
+    "publishedImageReuseForbidden": true
+  },
+  "rejected": [
+    {
+      "path": "assets/reference/heygen/mascot-primary-v20260818.jpg",
+      "sha256": "7978994d36d29382d832d299aebe5a6b18f22fcf8ccea8b7501e4ffe73a05a81",
+      "size": 11024,
+      "decoded": false,
+      "reason": "11 KB GitHub main JPG fails full Pillow decode"
+    },
+    {
+      "path": "images/customer-display-v20260812/trial-small-boss.png",
+      "sha256": "4c0aa7e176ccb5572c8364e625227f93db0c26c8ae41bfd5caf5ebb219566e00",
+      "decoded": true,
+      "visuallyUsable": false,
+      "reason": "full decode succeeds but visual graphic is severely corrupted"
+    },
+    {
+      "path": "TS-LINE/public/mascot/brand.jpg",
+      "sha256": "4bf76daedb1d2cd7f6e3b71dd402ec222313df47b8851660ff21651842ec2036",
+      "decoded": true,
+      "visuallyUsableForNewPost": false,
+      "reason": "contains discontinued product graphic and is already published"
+    }
+  ],
+  "userProvidedReferenceAdditional": {
+    "zip": "網站專用小老闆圖(10).zip",
+    "testedPngCount": 15,
+    "allPngsFullyDecoded": true,
+    "role": "historical supplemental visual style only, do not override current official main"
+  },
+  "production": {
+    "newImageFiles": 0,
+    "approvedImageFiles": 0,
+    "approved16Checks": 0,
+    "approvedForRelease": 0
+  },
+  "note": "This evidence closes the invalid reference path; it does not approve any new scene or substitute for user human publication approval."
+}
