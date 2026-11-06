@@ -1,0 +1,115 @@
+name: 仙加味封存舊稿 Metricool 遺留草稿安全待刪鎖（不外發）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/metricool-archived-draft-hold-request.json'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-archived-metricool-413610864-hold
+  cancel-in-progress: false
+jobs:
+  hold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify exact one-post cancellation hold scope
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const assert=require('node:assert/strict');
+          const x=require('./ops/metricool-archived-draft-cancel-hold-20261106.json');
+          const y=require('./ops/metricool-archived-draft-hold-request.json');
+          assert.equal(x.postId,'XJW-CONV-chat-gao-vs-drink');
+          assert.equal(x.remoteMetricoolId,413610864);
+          assert.equal(x.remoteUuid,'-3743061634977870369');
+          assert.equal(x.targetLinkState,'cancel_required');
+          assert.equal(x.noExternalMetricoolMutation,true);
+          assert.equal(y.action,'hold_archived_remote_draft_in_d1_only');
+          assert.equal(y.publish,false);assert.equal(y.approve,false);
+          console.log('PASS one exact archived post remote-draft D1 hold; no new posts');
+          NODE
+      - name: Install existing Wrangler
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Read live archived post and exact remote UUID link
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,published_at,approved_by,scheduled_at FROM social_posts WHERE id='XJW-CONV-chat-gao-vs-drink'" > /tmp/xjw-post-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,metricool_id,uuid,state,last_error,updated_at FROM social_metricool_sync WHERE post_id='XJW-CONV-chat-gao-vs-drink'" > /tmp/xjw-link-before.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS n FROM social_posts GROUP BY status" > /tmp/xjw-count-before.json
+      - name: Compare-and-swap only the D1 remote draft status
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const read=p=>{const a=JSON.parse(fs.readFileSync(p,'utf8'));return(Array.isArray(a)?a[0]?.results:a.results)||[]};
+          const p=read('/tmp/xjw-post-before.json'),l=read('/tmp/xjw-link-before.json');
+          const m=require('./ops/metricool-archived-draft-cancel-hold-20261106.json');
+          assert.equal(p.length,1);assert.equal(l.length,1);
+          assert.equal(p[0].id,m.postId);assert.equal(p[0].status,'archived');
+          assert.equal(p[0].published_at,null);assert.equal(p[0].approved_by,null);assert.equal(p[0].scheduled_at,null);
+          assert.equal(l[0].post_id,m.postId);assert.equal(l[0].metricool_id,m.remoteMetricoolId);
+          assert.equal(l[0].uuid,m.remoteUuid);assert.equal(l[0].state,'pending_review');
+          const q=s=>"'"+String(s??'').replaceAll("'","''")+"'";
+          const note='正式原稿已封存；Metricool草稿413610864仍在遠端，待外部合法刪除；禁止自動排程或發布';
+          const sql=[
+            "UPDATE social_metricool_sync SET state='cancel_required',last_error="+q(note)+",updated_at=CURRENT_TIMESTAMP WHERE post_id="+q(m.postId)+" AND metricool_id="+m.remoteMetricoolId+" AND uuid="+q(m.remoteUuid)+" AND state='pending_review' AND EXISTS (SELECT 1 FROM social_posts WHERE id="+q(m.postId)+" AND status='archived' AND published_at IS NULL AND scheduled_at IS NULL);",
+            "INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT "+[
+              q('AUD-XJW-ARCHIVED-METRICOOL-HOLD-20261106-413610864'),
+              q('system:remote-draft-cancellation-hold'),q('封存貼文外部Metricool草稿需刪除，先鎖定cancel_required'),q('貼文'),q(m.postId),
+              q(JSON.stringify({metricool_id:m.remoteMetricoolId,state:'pending_review'})),
+              q(JSON.stringify({metricool_id:m.remoteMetricoolId,state:'cancel_required',deletedExternal:false,published:false})),q('')
+            ].join(',')+" WHERE changes()=1;"
+          ];
+          fs.writeFileSync('/tmp/xjw-one-draft-hold.sql',sql.join('\n')+'\n');
+          console.log('PASS live CAS preflight on D1 archived post, untouched remote Metricool draft');
+          NODE
+      - name: Write D1 one-link hold only
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --file /tmp/xjw-one-draft-hold.sql > /tmp/xjw-link-update-response.json
+      - name: Verify no post was changed and exact link is held
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,published_at,scheduled_at FROM social_posts WHERE id='XJW-CONV-chat-gao-vs-drink'" > /tmp/xjw-post-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT post_id,metricool_id,uuid,state,last_error FROM social_metricool_sync WHERE post_id='XJW-CONV-chat-gao-vs-drink'" > /tmp/xjw-link-after.json
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS n FROM social_posts GROUP BY status" > /tmp/xjw-count-after.json
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const read=p=>{const a=JSON.parse(fs.readFileSync(p,'utf8'));return(Array.isArray(a)?a[0]?.results:a.results)||[]};
+          const p=read('/tmp/xjw-post-after.json'),l=read('/tmp/xjw-link-after.json');
+          assert.equal(p.length,1);assert.equal(p[0].status,'archived');assert.equal(p[0].published_at,null);assert.equal(p[0].scheduled_at,null);
+          assert.equal(l.length,1);assert.equal(l[0].metricool_id,413610864);assert.equal(l[0].uuid,'-3743061634977870369');
+          assert.equal(l[0].state,'cancel_required');assert.match(l[0].last_error,/待外部合法刪除/);
+          const toCounts=rows=>Object.fromEntries(rows.map(x=>[x.status,Number(x.n)]));
+          const before=toCounts(read('/tmp/xjw-count-before.json')),after=toCounts(read('/tmp/xjw-count-after.json'));
+          assert.deepEqual(after,before);
+          const report={schema:'xjw-one-remote-draft-held-d1-v1',timestamp:new Date().toISOString(),postId:p[0].id,
+            remoteId:413610864,externalDraftStillExists:true,externalDeleted:false,changes:{d1LinkState:'cancel_required',d1PostState:'archived',newApprovals:0,newPosts:0,newSchedules:0,newPublications:0},
+            totalSocialPosts:Object.values(after).reduce((a,b)=>a+b,0),statusCounts:after};
+          fs.writeFileSync('metricool-archived-draft-hold-proof.json',JSON.stringify(report,null,2)+'\n');
+          console.log('XJW_ONE_DRAFT_HOLD_RECEIPT '+JSON.stringify(report));
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-remote-draft-hold-${{ github.run_id }}
+          path: metricool-archived-draft-hold-proof.json
+          retention-days: 3
+          if-no-files-found: warn
