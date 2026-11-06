@@ -50,3 +50,12 @@ test('newer independently authorized product sources are not blocked only becaus
  assert.equal(result.action,'use');
  assert.equal(result.candidate.id,newer.id);
 });
+
+test('corrupt original primary jpg and visually unusable trial PNG are not publishable media',()=>{
+ const p=loadPolicy();
+ for(const img of ['https://ts15825868.github.io/xianjiawei/assets/reference/heygen/mascot-primary-v20260818.jpg','https://ts15825868.github.io/xianjiawei/images/customer-display-v20260812/trial-small-boss.png']){
+  const candidate={id:'bad-original',public_url:img,binary_ready:true,approved:true,source:'user-zip',keywords:['仙加味'],scene:'仙加味'};
+  assert.equal(p.chooseBestCandidate('仙加味',[candidate]),null);
+  assert.equal(p.resolveMedia('仙加味',[candidate]).action,'regenerate');
+ }
+});
