@@ -83,7 +83,13 @@
   }
   async function auditIds(ids){
     const unique=[...new Set(ids.filter(Boolean))];if(!unique.length)return{items:[],problem_count:0,total:0};
-    return validateAudit(await api(`/posts/content-audit?ids=${encodeURIComponent(unique.join(','))}`,{timeout:15000}),unique);
+    const items=[];
+    for(let offset=0;offset<unique.length;offset+=4){
+      const batch=unique.slice(offset,offset+4);
+      const result=validateAudit(await api(`/posts/content-audit?ids=${encodeURIComponent(batch.join(','))}`,{timeout:15000}),batch);
+      items.push(...result.items);
+    }
+    return validateAudit({items,total:items.length,problem_count:items.filter(item=>!item.ok).length},unique);
   }
   let auditRun=0;
   let auditTimer=null;
@@ -93,7 +99,19 @@
   const maintenanceReadonly=()=>document.documentElement.dataset.maintenanceReadonly==='true';
   async function fullAudit(){
     if(fullAuditCache.result&&Date.now()-fullAuditCache.at<60000)return fullAuditCache.result;
-    const result=validateAudit(await api('/posts/content-audit?all=1',{timeout:12000}),[]);
+    const items=[];let offset=0,libraryTotal=null;
+    while(true){
+      const page=validateAudit(await api(`/posts/content-audit?all=1&limit=4&offset=${offset}`,{timeout:15000}),[]);
+      if(!Number.isInteger(page.library_total)||page.library_total<0||page.offset!==offset||
+        (libraryTotal!==null&&page.library_total!==libraryTotal))throw new Error('圖文檢查清單已變更，請重新檢查');
+      libraryTotal=page.library_total;items.push(...page.items);
+      if(page.next_offset===null)break;
+      if(!Number.isInteger(page.next_offset)||page.next_offset!==offset+page.items.length||page.next_offset<=offset)
+        throw new Error('圖文檢查分頁不完整，請重新檢查');
+      offset=page.next_offset;
+    }
+    if(items.length!==libraryTotal)throw new Error('圖文檢查結果不完整，請重新檢查');
+    const result=validateAudit({items,total:items.length,problem_count:items.filter(item=>!item.ok).length},[]);
     fullAuditCache={at:Date.now(),result};
     return result;
   }
@@ -108,7 +126,9 @@
     const signature=cards.map(card=>[card.querySelector('[data-post-view]')?.dataset?.postView||'',card.dataset.status||'',card.querySelector('.xjw-copy')?.textContent||'',card.querySelector('img')?.getAttribute('src')||''].join('|')).join('||');
     if(signature===lastAuditSignature&&Date.now()-lastAuditAt<60000)return;
     try{
-      const [visibleResult,allResult]=await Promise.all([auditIds(ids),fullAudit()]);
+      const allResult=await fullAudit();
+      const visibleResult=validateAudit({...allResult,items:allResult.items.filter(item=>ids.includes(item.id)),total:ids.length,
+        problem_count:allResult.items.filter(item=>ids.includes(item.id)&&!item.ok).length},ids);
       lastAuditSignature=signature;lastAuditAt=Date.now();
       if(run!==auditRun)return;
       rootRemoveAuditError();

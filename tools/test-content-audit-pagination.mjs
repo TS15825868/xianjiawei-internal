@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const source=fs.readFileSync(new URL('../assets/js/publishing-review-gate.js',import.meta.url),'utf8');
+const isolate=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start)));
+const functions=isolate('  function validateAudit(', '  function cardId(')+isolate('  async function auditIds(', '  function scheduleAudit(');
+const rows=Array.from({length:83},(_,i)=>({id:`post-${i}`,ok:i%3!==0,errors:i%3===0?['image review required']:[]}));
+let mode='normal',calls=[];
+const ctx={Date,Set,Number,Error,encodeURIComponent,api:async path=>{
+ calls.push(path); const u=new URL('https://example.test'+path);const offset=Number(u.searchParams.get('offset')||0);
+ const ids=u.searchParams.get('ids');let items=ids?rows.filter(r=>ids.split(',').includes(r.id)):rows.slice(offset,offset+4);
+ if(mode==='truncate')items=items.slice(0,1);
+ const next=offset+items.length<rows.length?offset+items.length:null;
+ return{items,total:items.length,problem_count:items.filter(r=>!r.ok).length,offset,library_total:rows.length,next_offset:mode==='stuck'?offset:next};
+}};
+vm.createContext(ctx);vm.runInContext(functions+';this.auditIds=auditIds;this.fullAudit=fullAudit;this.clearCache=()=>{fullAuditCache={at:0,result:null}}',ctx);
+let result=await ctx.auditIds(rows.map(r=>r.id));assert.equal(result.total,83);assert.equal(calls.length,21);
+assert.ok(calls.every(p=>new URL('https://example.test'+p).searchParams.get('ids').split(',').length<=4));
+calls=[];result=await ctx.fullAudit();assert.equal(result.total,83);assert.equal(calls.length,21);assert.equal(result.problem_count,28);
+await ctx.fullAudit();assert.equal(calls.length,21,'complete scan is cached without duplicate full-library calls');
+ctx.clearCache();mode='stuck';await assert.rejects(()=>ctx.fullAudit(),/分頁不完整/);
+mode='truncate';await assert.rejects(()=>ctx.auditIds(rows.slice(0,4).map(r=>r.id)),/結果不完整/);
+console.log('PASS 83 posts across 21 bounded batches; complete cache; truncated and non-progressing responses fail closed');
