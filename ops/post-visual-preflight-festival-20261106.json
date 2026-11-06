@@ -1,0 +1,134 @@
+{
+  "schema": "xjw-new-festival-visual-original-pixel-preflight-v1",
+  "brand": "仙加味",
+  "date": "2026-11-06",
+  "sourceGitHead": "bf777e9debaf7ad936342ae43698c3029eba0c07",
+  "sourceImageAudit": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42223191210",
+  "basis": "Original 1254×1254 JPEG opened individually via GitHub binary/base64 after 56-image contact sheet inspection; hash cross-check against source official GitHub Action audit; caption from 2026-11-05 schedule candidate snapshot",
+  "scope": "Four later festival posts that were not present in 2026-10-31 visual review batch",
+  "counts": {
+    "imagesIndividuallyOpened": 4,
+    "sceneMatchPreliminary": 3,
+    "sceneFramingDeferred": 1,
+    "complete16Approved": 0,
+    "productImagesApproved": 0,
+    "realHumanApprovals": 0,
+    "metricoolSchedules": 0
+  },
+  "policy": "Read-only visual evidence. No status changes, no fake approvals, no automated publication. Current live D1 and current copy fingerprint must be revalidated before any formal review.",
+  "items": [
+    {
+      "postId": "XJW-FEST-2027-newyear-breakfast",
+      "title": "元旦早上，先把早餐留給一起生活的人",
+      "proposedAt": "2027-01-01T09:00:00+08:00",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+      "imageSha256": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "gitBlobSha": "10cf52bded2d5c2533718a727e1cfad4c17e56ba",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "captionSource": "ops/social-schedule-candidates-current.json",
+      "imageAlt": "元旦清晨的居家早餐情境，仙加味小老闆將熱粥與饅頭放上餐桌，小鹿與小烏龜陪在旁邊，家人在桌邊等著一起吃早餐。",
+      "visualFinding": "元旦清晨、熱粥與饅頭，桌邊有家人、小鹿及小烏龜分開陪伴",
+      "preliminarySceneVerdict": "SCENE_MATCH_PRELIMINARY",
+      "productPackagingPresent": false,
+      "mascotIdentityExactMatchConfirmed": false,
+      "current16ChecksPassed": false,
+      "humanApproved": false,
+      "externalScheduled": false,
+      "externalPublished": false,
+      "remaining": [
+        "獨立比對官方角色原圖與配角比例",
+        "查實三平台歷史原文與輪播圖片以排除重複",
+        "逐項完成當前文案版本的16項圖文審核",
+        "取得本人登入後對當前圖文及平台的人工核准"
+      ]
+    },
+    {
+      "postId": "XJW-FEST-2027-eve-welcome-home",
+      "title": "除夕，先替回家的人留一個位置",
+      "proposedAt": "2027-02-05T09:00:00+08:00",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+      "imageSha256": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "gitBlobSha": "cc5c755e7c49323a4df4800e996a2fcd8cc7b4b4",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "captionSource": "ops/social-schedule-candidates-current.json",
+      "imageAlt": "除夕傍晚，仙加味小老闆替剛回家的家人拉開餐桌旁的椅子，小鹿與小烏龜在安全位置陪伴，屋內亮著溫暖燈光。",
+      "visualFinding": "除夕傍晚，小老闆雙手拉開餐椅迎接家人，小鹿與小烏龜分開在遠離餐桌的矮凳",
+      "preliminarySceneVerdict": "SCENE_MATCH_PRELIMINARY",
+      "productPackagingPresent": false,
+      "mascotIdentityExactMatchConfirmed": false,
+      "current16ChecksPassed": false,
+      "humanApproved": false,
+      "externalScheduled": false,
+      "externalPublished": false,
+      "remaining": [
+        "獨立比對官方角色原圖與配角比例",
+        "查實三平台歷史原文與輪播圖片以排除重複",
+        "逐項完成當前文案版本的16項圖文審核",
+        "取得本人登入後對當前圖文及平台的人工核准"
+      ]
+    },
+    {
+      "postId": "XJW-FEST-2027-lantern-riceballs",
+      "title": "元宵，一起把小小的湯圓搓好",
+      "proposedAt": "2027-02-20T09:00:00+08:00",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+      "imageSha256": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "gitBlobSha": "ec1d73c1cfb17baaca827c6ee04cec7ceefd289d",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "captionSource": "ops/social-schedule-candidates-current.json",
+      "imageAlt": "元宵夜的家常廚房，仙加味小老闆和家人一起搓小顆白色湯圓，小鹿與小烏龜在旁陪伴，窗外可見素面燈籠與月光。",
+      "visualFinding": "元宵晚間室內與月亮燈籠，小老闆和家人搓白色湯圓，動物各自獨立、未接觸食材",
+      "preliminarySceneVerdict": "SCENE_MATCH_PRELIMINARY",
+      "productPackagingPresent": false,
+      "mascotIdentityExactMatchConfirmed": false,
+      "current16ChecksPassed": false,
+      "humanApproved": false,
+      "externalScheduled": false,
+      "externalPublished": false,
+      "remaining": [
+        "獨立比對官方角色原圖與配角比例",
+        "查實三平台歷史原文與輪播圖片以排除重複",
+        "逐項完成當前文案版本的16項圖文審核",
+        "取得本人登入後對當前圖文及平台的人工核准"
+      ]
+    },
+    {
+      "postId": "XJW-FEST-2027-spring-walk",
+      "title": "走春不用趕行程，陪家人慢慢走一段",
+      "proposedAt": "2027-02-08T09:00:00+08:00",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
+      "imageSha256": "6bc35f1ba7f8cd60849b0b264395a1fa40664ec33812e8da65c0019cfc353e31",
+      "gitBlobSha": "a3dcf2ebd1960b336898de00aee56218c983ec1b",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "captionSource": "ops/social-schedule-candidates-current.json",
+      "imageAlt": "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。",
+      "visualFinding": "春節街道、紅燈籠與花木，小老闆牽家人散步，小鹿與小烏龜分開，家人上半身被畫面右上裁切",
+      "preliminarySceneVerdict": "DEFER_COMPANION_FRAMING",
+      "productPackagingPresent": false,
+      "mascotIdentityExactMatchConfirmed": false,
+      "current16ChecksPassed": false,
+      "humanApproved": false,
+      "externalScheduled": false,
+      "externalPublished": false,
+      "remaining": [
+        "獨立比對官方角色原圖與配角比例",
+        "查實三平台歷史原文與輪播圖片以排除重複",
+        "逐項完成當前文案版本的16項圖文審核",
+        "取得本人登入後對當前圖文及平台的人工核准",
+        "重新確認家人被裁切是否符合完整構圖與角色規範"
+      ]
+    }
+  ]
+}
