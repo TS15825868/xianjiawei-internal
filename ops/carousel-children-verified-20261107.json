@@ -1,0 +1,358 @@
+{
+  "schema": "xjw-carousel-child-binary-verification-v1",
+  "capturedAt": "2026-11-07",
+  "sources": {
+    "instagramSep19": [
+      {
+        "index": 1,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=1",
+        "sha256": "b166c793c706d2aeaa051f17aaf640d2c71b841629e8e857de1d8526203896b0",
+        "pixels_sha256": "77999a5bad3aed44841a30ac60d1038de4a7d5a30d6f04a87db558f361cf3517",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 499894
+      },
+      {
+        "index": 2,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=2",
+        "sha256": "b32259b3430db7b197bf6a6afcb14f6841e475185af4204998ae1910f90ec431",
+        "pixels_sha256": "a949b2fb24b80b1fdf96fddeb7f31f57e796c580556f337adea29bf084ecf0dd",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 548008
+      },
+      {
+        "index": 3,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=3",
+        "sha256": "510ffde6dde641704477ff0cb6fdea261cfaaa6264ec681314c58e9e46bd28ce",
+        "pixels_sha256": "5ef1ae68046d19ef2be5a3754041c68723bb85c22e6a2c36a46ebf5f909bad2d",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 556467
+      },
+      {
+        "index": 4,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=4",
+        "sha256": "0c5919c80a78d21c26a3d21caf83325834d57705dcf54c984461b8f4efc58559",
+        "pixels_sha256": "316205402bd95bc5fdbae983da7957909ea0609d50969dec01ecd9daf8a14aa8",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 528727
+      },
+      {
+        "index": 5,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=5",
+        "sha256": "a5004f023209c0b22ec275ef4d034af63f09ce5e8b9c01c39d43b5d66ceb3f99",
+        "pixels_sha256": "6b401d1c4a44fbb5043da5a997ec6421279a42c523d277ee7fd092d11c6c8702",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 526500
+      },
+      {
+        "index": 6,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=6",
+        "sha256": "af11cee5d7c7a3f29ba39b3b91ca919beebe429fc750cb0a2f88978abb36dc86",
+        "pixels_sha256": "e014aaaf545088c455be7800d42a7c30b242bde326218a7b074d1f431ef1330c",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 540711
+      },
+      {
+        "index": 7,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=7",
+        "sha256": "c685c8a53ca08262682fe77cba23f33b18830ed03d8ff85c51d087286249df2f",
+        "pixels_sha256": "6991e53454181be173b34328b2d36896872e684caa57f75ea9ee0d22d74d6a96",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 473644
+      },
+      {
+        "index": 8,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=8",
+        "sha256": "f6838e5eccd34d7e2a6c2dfdcd20fdc784da0024602e9d2ff8afaca349132970",
+        "pixels_sha256": "7e052a2142cba36b8bc1c4d495ccbb886a7ff274d44a8e2d488fe68fa91bee9f",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 564761
+      },
+      {
+        "index": 9,
+        "post": "https://www.instagram.com/p/Dddia2NFGXr/?img_index=9",
+        "sha256": "9d880c65c0c95b4eeb19083bfcad068332ebf3ce66aa17a297375d8e1ef6905d",
+        "pixels_sha256": "6661310f879cd19ce84e904a615fcbc95f927d2cc322db2c0e6831771122b1cf",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 517898
+      }
+    ],
+    "threadsSep19": [
+      {
+        "index": 1,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "b166c793c706d2aeaa051f17aaf640d2c71b841629e8e857de1d8526203896b0",
+        "pixels_sha256": "77999a5bad3aed44841a30ac60d1038de4a7d5a30d6f04a87db558f361cf3517",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 499894
+      },
+      {
+        "index": 2,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "b32259b3430db7b197bf6a6afcb14f6841e475185af4204998ae1910f90ec431",
+        "pixels_sha256": "a949b2fb24b80b1fdf96fddeb7f31f57e796c580556f337adea29bf084ecf0dd",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 548008
+      },
+      {
+        "index": 3,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "510ffde6dde641704477ff0cb6fdea261cfaaa6264ec681314c58e9e46bd28ce",
+        "pixels_sha256": "5ef1ae68046d19ef2be5a3754041c68723bb85c22e6a2c36a46ebf5f909bad2d",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 556467
+      },
+      {
+        "index": 4,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "0c5919c80a78d21c26a3d21caf83325834d57705dcf54c984461b8f4efc58559",
+        "pixels_sha256": "316205402bd95bc5fdbae983da7957909ea0609d50969dec01ecd9daf8a14aa8",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 528727
+      },
+      {
+        "index": 5,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "a5004f023209c0b22ec275ef4d034af63f09ce5e8b9c01c39d43b5d66ceb3f99",
+        "pixels_sha256": "6b401d1c4a44fbb5043da5a997ec6421279a42c523d277ee7fd092d11c6c8702",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 526500
+      },
+      {
+        "index": 6,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "af11cee5d7c7a3f29ba39b3b91ca919beebe429fc750cb0a2f88978abb36dc86",
+        "pixels_sha256": "e014aaaf545088c455be7800d42a7c30b242bde326218a7b074d1f431ef1330c",
+        "width": 1440,
+        "height": 1080,
+        "bytes": 540711
+      },
+      {
+        "index": 7,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "c685c8a53ca08262682fe77cba23f33b18830ed03d8ff85c51d087286249df2f",
+        "pixels_sha256": "6991e53454181be173b34328b2d36896872e684caa57f75ea9ee0d22d74d6a96",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 473644
+      },
+      {
+        "index": 8,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "f6838e5eccd34d7e2a6c2dfdcd20fdc784da0024602e9d2ff8afaca349132970",
+        "pixels_sha256": "7e052a2142cba36b8bc1c4d495ccbb886a7ff274d44a8e2d488fe68fa91bee9f",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 564761
+      },
+      {
+        "index": 9,
+        "post": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+        "sha256": "9d880c65c0c95b4eeb19083bfcad068332ebf3ce66aa17a297375d8e1ef6905d",
+        "pixels_sha256": "6661310f879cd19ce84e904a615fcbc95f927d2cc322db2c0e6831771122b1cf",
+        "width": 1079,
+        "height": 1439,
+        "bytes": 517898
+      }
+    ],
+    "instagramMay": [
+      {
+        "index": 1,
+        "post": "https://www.instagram.com/p/DYMC2geFMoS/?img_index=1",
+        "sha256": "2f5c8c4d1a5083626e62e1e20dd0ffe0af1804edea3d67b6f94e9b023d338593",
+        "pixels_sha256": "f318e5f89857b263d5d481708cb590a5748f08829ca0007aeb1f28798b0bb944",
+        "width": 2304,
+        "height": 1296,
+        "bytes": 253811
+      },
+      {
+        "index": 2,
+        "post": "https://www.instagram.com/p/DYMC2geFMoS/?img_index=2",
+        "sha256": "daaed828fe455fa6a74f3d169e3c90e51c37ce2b5bcaaef0812840e3fa88d80a",
+        "pixels_sha256": "8779321c5d743a3e917282b84f6bfa5af09a8597c1a1bd01a6c6e96413711437",
+        "width": 1080,
+        "height": 1350,
+        "bytes": 145413
+      }
+    ]
+  },
+  "facebookChildren": [
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 1,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/814310427_1484865260330358_3163960632129077737_n.jpg",
+      "bytes": 156483,
+      "sha256": "f54fad12d39fb1a3970b4c824d4f5c375bb78d150d933630a14fdde16928338d",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "a367588ebd3cb533f4144d64254ca3d280517d1537d099c02a2cbd357a61e8bb",
+      "ok": true,
+      "instagramMatch": 1,
+      "normalizedMae": 0.363
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 2,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/814324780_1484865300330354_6617008284647468176_n.jpg",
+      "bytes": 170318,
+      "sha256": "f54dbec781abc21ba1f2e8966b1c53e87a2cc91ceeea1bfa7818788355b8893a",
+      "width": 960,
+      "height": 720,
+      "pixels_sha256": "52bb3a9fc354cf60129e6bca1f4f9a13ffcb1a1726063e7e7bdcd4e9a896a137",
+      "ok": true,
+      "instagramMatch": 2,
+      "normalizedMae": 0.373
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 3,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/800882489_1484865330330351_2329192315611065799_n.jpg",
+      "bytes": 171484,
+      "sha256": "2d13b0b48d0806c0ce90fb84c869875b142be86bd14d2122bda3a8a01d11773d",
+      "width": 960,
+      "height": 720,
+      "pixels_sha256": "f40170c9f75be1d6f25fcbd66110d414a7a89ae1467085e660cdd51562351af0",
+      "ok": true,
+      "instagramMatch": 3,
+      "normalizedMae": 0.371
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 4,
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/814651445_1484865366997014_7777658650141583140_n.jpg",
+      "bytes": 165800,
+      "sha256": "7599ad2f621b0afcd8ce7d7578e31cd82e5ebc8e6d306243845d92cebd34c427",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "c3170a08120b03671865da95bc6910f5d2e9c1896866a6f0958d5d17de5a936a",
+      "ok": true,
+      "instagramMatch": 4,
+      "normalizedMae": 0.356
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 5,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/814831887_1484865406997010_4703784603441037500_n.jpg",
+      "bytes": 161961,
+      "sha256": "9233017dc69902faad6317263dd962712c8845d414798c43f16187308c338c51",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "83d7a1d7f0fcad6aebaba72958e0970ed30aaacf65084a1d5c2f7dcbdcd1d0e8",
+      "ok": true,
+      "instagramMatch": 5,
+      "normalizedMae": 0.363
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 6,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/814535326_1484865446997006_8337504350571967933_n.jpg",
+      "bytes": 169816,
+      "sha256": "324930171afcba37ab96ab65363486ff34767b5c80eefea027a3c71c03dc0881",
+      "width": 960,
+      "height": 720,
+      "pixels_sha256": "7221382fa405cea5441e3ca98a4977887dcc4d02ff6d7d9c2f2f69bd654b0378",
+      "ok": true,
+      "instagramMatch": 6,
+      "normalizedMae": 0.377
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 7,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/814769442_1484865486997002_8368399439884053407_n.jpg",
+      "bytes": 146830,
+      "sha256": "dbfe33b8b7b1e15dbc6ba450f3bdb51956c2f26f60bcc8f9b47f75a4f97cf81b",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "7c707010bae550a2239520b775dd3a1014df4ab5e7b9d1a62c42a0c8a852e72d",
+      "ok": true,
+      "instagramMatch": 7,
+      "normalizedMae": 0.352
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 8,
+      "url": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-6/797694771_1484865526996998_2781983101007481815_n.jpg",
+      "bytes": 178642,
+      "sha256": "8acaa2f2cd159b73ce49ed7d8c5f198be36ed526d40e9da92e5ad585507b92b6",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "2a745db269a91ce2f13288281e7470feed2884a36eac9ea12ce8ce1a7d76f4c5",
+      "ok": true,
+      "instagramMatch": 8,
+      "normalizedMae": 0.377
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1484865580330326",
+      "id": "411869648852531_1484865580330326",
+      "index": 9,
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/814561044_1484865556996995_5984608849535297810_n.jpg",
+      "bytes": 162770,
+      "sha256": "a152bafcf3aa3d9394145581b15a79639733a51b5b074813a4d9b6ff16aae159",
+      "width": 720,
+      "height": 960,
+      "pixels_sha256": "d41cfc99df91cce5669eb8d775122f1762a1851dd3e7f828ac74d123d11221ed",
+      "ok": true,
+      "instagramMatch": 9,
+      "normalizedMae": 0.369
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1370780828405469",
+      "id": "411869648852531_1370780828405469",
+      "index": 1,
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/696235718_1370780978405454_2210879316167431889_n.jpg",
+      "bytes": 91650,
+      "sha256": "bae3a866d1cbcf4e96a26b3ee9310e3d8243203d22d5c95176980896c3ccb019",
+      "width": 1280,
+      "height": 720,
+      "pixels_sha256": "617c04d9765aaf37cf3b7e3cb0368fc966279fd777b45e142ad48e8b7ffc5984",
+      "ok": true,
+      "instagramMatch": 1,
+      "normalizedMae": 3.355
+    },
+    {
+      "post": "https://www.facebook.com/1531256482357902/posts/1370780828405469",
+      "id": "411869648852531_1370780828405469",
+      "index": 2,
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/705127890_1381403124009906_3629131422657294697_n.jpg",
+      "bytes": 108145,
+      "sha256": "dff12355b7efbb0a96916e4f259ed287d776b641c8463b36513cb1519385607e",
+      "width": 743,
+      "height": 720,
+      "pixels_sha256": "df5f81654985dd9205f9d9ef18a56ff012fb8ef1fc483372f685c93113494c4f",
+      "ok": true,
+      "instagramMatch": 1,
+      "normalizedMae": 80.158
+    }
+  ],
+  "findings": {
+    "septemberInstagramThreadsChildren": 9,
+    "septemberExactDecodedPixelPairs": 9,
+    "septemberFacebookResizedMatches": 9,
+    "mayInstagramChildren": 2,
+    "mayFacebookChildren": 2,
+    "mayWarning": "May10 Instagram and May11 Facebook are not assumed identical: second child differs. Keep both in dedup corpus.",
+    "scopeWarning": "These child gaps are resolved; this does not establish complete historical coverage or AI approval for all pending posts."
+  },
+  "method": "Browser current full-resolution child downloads; SHA256 encoded and RGB decoded pixels. FB resized comparison mean absolute RGB error on 64x64: September 0.352–0.377/255; May mismatch preserved."
+}

@@ -1,7 +1,7 @@
 {
   "schema": "xjw-all-unfinished-social-posts-full-coverage-v1",
   "brand": "仙加味",
-  "capturedEvidenceDate": "2026-11-05",
+  "capturedEvidenceDate": "2026-11-07",
   "source": {
     "fullD1Audit": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42064229021",
     "verifiedD1Counts": {
@@ -29,8 +29,7 @@
   },
   "totalUnfinished": 79,
   "byStatus": {
-    "pending_review": 56,
-    "draft": 23
+    "pending_review": 79
   },
   "newImagesVerified": 0,
   "realHumanApprovals": 0,
@@ -1181,542 +1180,544 @@
     },
     {
       "id": "XJW-CAND-20261208",
-      "status": "draft",
+      "status": "pending_review",
       "title": "萬華街角的早晨，先從開門開始",
       "category": "品牌",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2026-12-08T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "d89140cbb20452cce81497b0353d82bc9c2d577f1f593c7d6e3066c4e10fcc2d",
+      "reviewId": "AI-DEFER-4dac7bc2b0245b33a5cdd32a6e0c701e558aecaa6d2dd35845641ddf7ca20107"
     },
     {
       "id": "XJW-CAND-20261211",
-      "status": "draft",
+      "status": "pending_review",
       "title": "桌邊的小筆記，你習慣怎麼分類",
       "category": "生活",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2026-12-11T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "reviewId": "AI-DEFER-03d49ffd6988c993cd1487d72f35f690dbd4304fc48a49f868c2eb5174a7706f"
     },
     {
       "id": "XJW-CAND-20261222",
-      "status": "draft",
+      "status": "pending_review",
       "title": "冬至餐桌上的甜湯圓與鹹湯圓",
       "category": "節慶",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2026-12-22T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261222.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer",
         "turtle"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "reviewId": "AI-DEFER-793c97357665a84af9e32c089102024b6a0bcabb101c5c1bba75be5fe0d19bfb"
     },
     {
       "id": "XJW-CAND-20261225",
-      "status": "draft",
+      "status": "pending_review",
       "title": "聖誕節的小小聚會，誰負責準備點心",
       "category": "節慶",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2026-12-25T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261225.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "reviewId": "AI-DEFER-d32ce40a1ae2bfc6a37e535f4b62b1be6415d786bc68d10e7e0d6f9a695da71c"
     },
     {
       "id": "XJW-CAND-20270105",
-      "status": "draft",
+      "status": "pending_review",
       "title": "認識食材，不一定要從複雜配方開始",
       "category": "食材",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-05T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270105.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "reviewId": "AI-DEFER-41ff0cdcb56ba2ef11ab2391466b9d7402ff9777225e61d3fa18d209474dbf47"
     },
     {
       "id": "XJW-CAND-20270108",
-      "status": "draft",
+      "status": "pending_review",
       "title": "一月的週五，換一枝花給窗邊",
       "category": "生活",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-08T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270108.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "6e7a72a101a7c155ed98642652d08fa4714d1801beb2db1388304ea7d6b199c3",
+      "reviewId": "AI-DEFER-8c2cb78ed0ccadece4a848d5c34dbe1c24749d269035938359a23a0891ab09d1"
     },
     {
       "id": "XJW-CAND-20270112",
-      "status": "draft",
+      "status": "pending_review",
       "title": "親友來家裡，你會先拿出哪一個杯子",
       "category": "閒聊",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-12T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270112.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "454640b31f4b3ea3925adaa17cfaac35600f8d27abde33953300986b2e736c78",
+      "reviewId": "AI-DEFER-351f779d22c1ec0b7d573028a8d491dc6da087ec8063eb1766dc4aad346bd4b2"
     },
     {
       "id": "XJW-CAND-20270115",
-      "status": "draft",
+      "status": "pending_review",
       "title": "紅棗入甜湯，整顆還是切開",
       "category": "食材",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-15T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270115.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "reviewId": "AI-DEFER-863486ac539f83b388c298679889b5b4881f2b1ae338866e8d0a744e6ce923f2"
     },
     {
       "id": "XJW-CAND-20270119",
-      "status": "draft",
+      "status": "pending_review",
       "title": "年菜菜單先留一道蔬菜",
       "category": "料理",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-19T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270119.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "reviewId": "AI-DEFER-84d8f95edf01c4703cc4b82783f143de91c71c1d104da68df5c964b8e7a9fb43"
     },
     {
       "id": "XJW-CAND-20270122",
-      "status": "draft",
+      "status": "pending_review",
       "title": "過年舊照片，最想重看哪一張",
       "category": "閒聊",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-22T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270122.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "16d16a00ec5291e5f581ea9009c448e42612868135fee1438fa1d0ea5048569d",
+      "reviewId": "AI-DEFER-ad70f98f8cf02c68a2956e15464c39a9b81e1054c6fcbe72e47b087cd74a652a"
     },
     {
       "id": "XJW-CAND-20270126",
-      "status": "draft",
+      "status": "pending_review",
       "title": "市場買菜的路上，也有萬華的味道",
       "category": "品牌",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-26T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270126.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "reviewId": "AI-DEFER-e684303b6bd60c0baf3ef9a1fb471dee8b9604e01b5d167afd36c1f3810062e1"
     },
     {
       "id": "XJW-CAND-20270129",
-      "status": "draft",
+      "status": "pending_review",
       "title": "年前整理餐具，先把常用的放前面",
       "category": "生活",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-01-29T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270129.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "reviewId": "AI-DEFER-311bdc24a4f09c88bf0e6687e71282ab25a42c8730ac9d5300ddb01184667971"
     },
     {
       "id": "XJW-CAND-20270223",
-      "status": "draft",
+      "status": "pending_review",
       "title": "年後早晨，不必把事情一次排滿",
       "category": "關心",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-02-23T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270223.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "6d136cf15c366b7deef82de62198eb1a737164bad54883faa2026ae4e2375b28",
+      "reviewId": "AI-DEFER-8004b7a88ba93e9222bd7aa95d5ca74efabbb58348251f00bac4f0f8d709f4fa"
     },
     {
       "id": "XJW-CAND-20270226",
-      "status": "draft",
+      "status": "pending_review",
       "title": "週末想去河邊走走，還是在家看書",
       "category": "閒聊",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-02-26T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer",
         "turtle"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "79b6691482ec42248f01f1bb484b70a84640e624c40232c8d1669bfa33cadf11",
+      "reviewId": "AI-DEFER-9b1ffd4c38bb988dffbc82c596d1192f44a9f258c2088ddfbb78216f34d4e3e8"
     },
     {
       "id": "XJW-CAND-20270302",
-      "status": "draft",
+      "status": "pending_review",
       "title": "春天早餐桌，一杯水與一份簡單早餐",
       "category": "生活",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-02T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270302.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "8d9610b6fb0aba9c766128ed80a9115ddd10fdd14847361b05d01a69e9ceec52",
+      "reviewId": "AI-DEFER-ae2631dd4c71aaa9aa49539b72f8eaf58d960b05cf3f0fb043bd365a9b81839f"
     },
     {
       "id": "XJW-CAND-20270305",
-      "status": "draft",
+      "status": "pending_review",
       "title": "萬華春日早晨，老街的新風景",
       "category": "品牌",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-05T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270305.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot",
         "deer"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "reviewId": "AI-DEFER-da29727d7509bd25783817a92c1a680ca65f9e514ea8d6c9802e92f1b7f59f21"
     },
     {
       "id": "XJW-CAND-20270309",
-      "status": "draft",
+      "status": "pending_review",
       "title": "在家整理龜鹿膏，先看看保存標示",
       "category": "產品",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-09T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270309-v2.webp",
       "requiredProducts": [
         "guilu-gao"
       ],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "c19e4fcd03799606b29d1e4745bebca9088e5fde471c3a536c498778b06bdac7",
+      "reviewId": "AI-DEFER-b9d6869f685d6fafa8fbbf70a0973635a54e177612ef854cda09ad730cc842e8"
     },
     {
       "id": "XJW-CAND-20270312",
-      "status": "draft",
+      "status": "pending_review",
       "title": "春天煮湯，菇類先洗還是先切",
       "category": "料理",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-12T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270312.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "reviewId": "AI-DEFER-8f4acbc12962999028dc6fb392238939bcea784bbb668ebebe9e7ed4eec3f396"
     },
     {
       "id": "XJW-CAND-20270316",
-      "status": "draft",
+      "status": "pending_review",
       "title": "出門前看一下預報，再決定帶什麼",
       "category": "關心",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-16T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270316.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "39ddbd73d9412fbd004c147ae8b805777d106b3b116a7e5abe95c85414ede23f",
+      "reviewId": "AI-DEFER-01bf065e73481a1e3ad06c5a466dbea31442e517f8668d661bf85858be82f9e7"
     },
     {
       "id": "XJW-CAND-20270319",
-      "status": "draft",
+      "status": "pending_review",
       "title": "一樣是喝水，你最喜歡哪種杯子",
       "category": "閒聊",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-19T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270319.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "3a66792badd11e0fb20e8a886c3a3f0cc811630c40e4ac2ab3ac357edf4c4dd0",
+      "reviewId": "AI-DEFER-f9fa39a930cf2e3db47f042a36f170cec16a2c7e16014611ead58602c966351e"
     },
     {
       "id": "XJW-CAND-20270323",
-      "status": "draft",
+      "status": "pending_review",
       "title": "從老手藝到現代日常，記錄一個工序",
       "category": "品牌",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-23T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270323.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "reviewId": "AI-DEFER-40be66e6d4f5fcda0226bb3055a52f9e49c948d29255ab6ab72f310531906712"
     },
     {
       "id": "XJW-CAND-20270326",
-      "status": "draft",
+      "status": "pending_review",
       "title": "春天的玄關，雨傘和外套放哪裡",
       "category": "季節",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-26T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270326.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "e39a4feb1736465343794e38c6312308a8f078e63d62cafdb07c3d0221c3c71b",
+      "reviewId": "AI-DEFER-6cc940a1a6f4b206a06798684a7e2232e85d6bf5ec4e1337a47af717b59aeca1"
     },
     {
       "id": "XJW-CAND-20270330",
-      "status": "draft",
+      "status": "pending_review",
       "title": "春季整理食品櫃，先看保存標示",
       "category": "關心",
-      "photoPresent": false,
+      "photoPresent": true,
       "plannedAt": "2027-03-30T10:00:00+08:00",
-      "currentImageUrl": null,
+      "currentImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270330.webp",
       "requiredProducts": [],
       "requiredCharacters": [
         "mascot"
       ],
-      "evidenceStatus": "needs_original_scene_image",
+      "evidenceStatus": "16_check_full_resolution_defer_read_back",
       "humanApproval": false,
       "externalSchedule": false,
       "nextActions": [
-        "recheck_current_formal_character_and_product_sources",
-        "create_unique_complete_scene_without_inventing_character_or_package",
-        "visually_compare_new_scene_to_formal_mascot_deer_turtle_and_products",
-        "run_16_quality_checks_and_history_dedup",
-        "write_image_to_exact_D1_draft_and_read_back_before_owner_human_approval"
-      ]
+        "complete_remaining_history_dedup_evidence",
+        "resolve_any_action_or_storage_label_visual_gap",
+        "owner_version_bound_human_approval_after_AI_review"
+      ],
+      "imageSha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "reviewId": "AI-DEFER-467ed15bdd859aea1a4f904eadeaefb4362c16bffdd8b6c7469ec4030ac0871f"
     }
-  ]
+  ],
+  "newCandidateImagesBound": 23,
+  "sourceReadback": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42260290413"
 }

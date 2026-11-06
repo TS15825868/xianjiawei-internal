@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/audit-current-social-posts.yml'
+      - 'ops/social-full-audit-request.json'
       - 'src/ai-quality-review.js'
       - 'src/metricool-sync.js'
       - 'tools/metricool-free-evidence.cjs'

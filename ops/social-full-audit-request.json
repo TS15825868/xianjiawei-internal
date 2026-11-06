@@ -1,0 +1,6 @@
+{
+  "requestedAt": "2026-11-07",
+  "reason": "Fresh all-row D1 readback after 23 candidate bindings and version-bound 16-check deferrals",
+  "bindingReceipt": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42260290413",
+  "mode": "read_only_no_publish"
+}
