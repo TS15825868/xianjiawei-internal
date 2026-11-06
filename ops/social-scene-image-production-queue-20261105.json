@@ -1185,7 +1185,7 @@
     "withTurtle": 2,
     "withProduct": 1,
     "sourceVerifiedButScenesNotApproved": 23,
-    "AIImagesActuallyGenerated": 0,
+    "AIImagesActuallyGenerated": 23,
     "AIQualityApproved": 0,
     "humanApproved": 0,
     "scheduled": 0,

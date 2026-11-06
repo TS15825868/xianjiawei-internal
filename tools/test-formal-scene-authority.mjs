@@ -5,6 +5,8 @@ import fs from 'node:fs';
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const registry=read('ops/formal-visual-asset-authority-20261105.json');
 const queue=read('ops/social-scene-image-production-queue-20261105.json');
+const binding=read('ops/scene-candidate-binding-readback-20261107.json');
+const receipts=new Map(binding.results.map(x=>[x.id,x]));
 const calendar=read('ops/social-calendar-2026-11-to-2027-03-candidates.json');
 const currentProductGuard=fs.readFileSync('assets/js/product-authority-guard.js','utf8');
 const expectedIds=['mascot','deer','turtle'];
@@ -33,9 +35,20 @@ function validateScene(x){
  assert.ok(x.mediaPrompt.includes('不能讓模型亂寫漢字'));
  assert.ok(x.mediaPrompt.includes('禁止擅自加入')||x.mediaPrompt.includes('只可依正式產品原圖原比例'));
  assert.ok(x.mediaPrompt.includes(x.sceneBrief));
- assert.equal(x.status,'needs_image_generation_reference_first_no_approval');
- for(const [key,expected] of Object.entries({imagePath:null,imageSha256:null,imageApproved:false,ai16Status:'not_run',humanApproved:false,externalScheduled:false,externalPublished:false}))
-   assert.equal(x[key],expected);
+ if(x.status==='bound_pending_review'){
+   const receipt=receipts.get(x.id);
+   assert.equal(receipt?.state,'candidate_bound_and_defer_read_back');
+   assert.equal(x.imagePath,receipt.image_url.split('/main/')[1]);
+   assert.equal(x.imageSha256,receipt.sha256);
+   assert.match(x.imageSha256,/^[0-9a-f]{64}$/);
+   assert.equal(x.reviewId,receipt.review_id);
+   assert.equal(x.ai16Status,'defer_16_checks_read_back');
+   assert.equal(x.bindingReadback,binding.workflowRun);
+ }else{
+   assert.equal(x.status,'needs_image_generation_reference_first_no_approval');
+   assert.equal(x.imagePath,null);assert.equal(x.imageSha256,null);assert.equal(x.ai16Status,'not_run');
+ }
+ for(const key of ['imageApproved','humanApproved','externalScheduled','externalPublished'])assert.equal(x[key],false);
  if(!x.productRefs.length)assert.deepEqual(x.productOriginalEvidence,[]);
  else{
    assert.equal(x.productRefs.length,x.productOriginalEvidence.length);
@@ -83,7 +96,7 @@ test('23 D1 scene jobs have exact allowed character list and matching image refe
  assert.equal(queue.summary.withDeer,queue.items.filter(x=>x.requiredCharacterIds.includes('deer')).length);
  assert.equal(queue.summary.withTurtle,queue.items.filter(x=>x.requiredCharacterIds.includes('turtle')).length);
  assert.equal(queue.summary.withProduct,queue.items.filter(x=>x.productRefs.length).length);
- assert.equal(queue.summary.AIImagesActuallyGenerated,0);
+ assert.equal(queue.summary.AIImagesActuallyGenerated,queue.items.filter(x=>x.status==='bound_pending_review').length);
 });
 test('calendared D1 copies and dates match photo briefs, without changing human approval or schedule',()=>{
  const staged=calendar.slots.filter(x=>x.status==='staged_d1_draft_needs_scene_and_16_checks');
