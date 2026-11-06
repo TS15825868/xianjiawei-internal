@@ -102,6 +102,21 @@ const quotaBlocked=await enqueueMetricool({DB:quotaDB},
  new Date('2026-10-23T00:00:00Z'));
 assert.equal(quotaBlocked.ok,false);assert.equal(quotaBlocked.code,'local_free_quota_exceeded');
 assert.equal(quotaTests.filter(q=>q.includes('INSERT INTO social_metricool_sync')).length,0);
+// Expired proposed slots must not strand a human-approved evergreen post when
+// the current month is full. Only a new month with local headroom may be queued;
+// the external Metricool counter is still mandatory at the Work handoff.
+const rollover=await enqueueMetricool({DB:quotaDB},
+ {...row,id:'quota-rolling',status:'approved',scheduled_at:null,proposed_scheduled_at:null},
+ {gateState:async()=>({ok:true,reviewer_type:'HUMAN',reviewed_at:'2026-11-15T00:00:00Z'}),fingerprint:async()=> 'safe-fp'},
+ new Date('2026-11-16T00:00:00Z'));
+assert.equal(rollover.ok,true);
+assert.equal(rollover.externalScheduled,false);
+assert.equal(rollover.scheduledAt,'2026-12-01T02:00:00.000Z');
+assert.equal(quotaTests.filter(q=>q.includes('INSERT INTO social_metricool_sync')).length,1);
+assert.equal(nextMetricoolSlot(new Date('2026-11-16T00:00:00Z'),
+ quotaLinks.map(x=>x.publication_at),{
+ canUseSlot:at=>metricoolScheduleCapacity(quotaLinks,at,{postCost:3}).ok
+}), '2026-12-01T02:00:00.000Z');
 console.log('PASS Metricool: 20 published platform slots maximum, multi-network slots counted, same-day collisions detectable and fail closed; external counter must be verified');
 
 const immediateWrites=[];

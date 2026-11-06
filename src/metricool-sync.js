@@ -12,7 +12,7 @@ export async function ensureMetricoolSchema(env){
 export async function metricoolOwns(env,id){
   try{return Boolean(await env.DB.prepare('SELECT post_id FROM social_metricool_sync WHERE post_id=?').bind(id).first())}catch(error){if(/no such table/.test(String(error)))return false;throw error}
 }
-export function nextMetricoolSlot(now=new Date(),reserved=[]){
+export function nextMetricoolSlot(now=new Date(),reserved=[],{canUseSlot}={}){
   const occupied=new Set(reserved.filter(x=>Number.isFinite(Date.parse(x))).map(x=>new Date(Date.parse(x)+8*3600000).toISOString().slice(0,10)));
   const local=new Date(now.getTime()+8*3600000);
   for(let d=0;d<366;d++){
@@ -20,9 +20,11 @@ export function nextMetricoolSlot(now=new Date(),reserved=[]){
     // subtract eight hours below exactly once to obtain 02:00 UTC / 10:00 Taiwan.
     const day=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()+d,10));
     const date=day.toISOString().slice(0,10),at=new Date(day.getTime()-8*3600000);
-    if([2,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date))return at.toISOString();
+    const candidate=at.toISOString();
+    if([2,5].includes(day.getUTCDay())&&at>now&&!occupied.has(date)&&
+       (typeof canUseSlot!=='function'||canUseSlot(candidate)))return candidate;
   }
-  throw new Error('找不到可用正式時段');
+  throw new Error('找不到未來一年內符合免費額度與時段規則的可用正式時段');
 }
 // Metricool Free counts one publication PER connected network; 3-network posts
 // cost three slots, and uncertain states reserve quota until verified.
@@ -126,8 +128,24 @@ export async function enqueueMetricool(env,row,{gateState,fingerprint},now=new D
   const reserved=await env.DB.prepare("SELECT publication_at,state FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','scheduled','blocked_config','awaiting_verification','published','unknown','cancel_required') AND post_id<>?").bind(row.id).all();
   const linked=reserved.results||[];
   const preferred=row.scheduled_at||row.proposed_scheduled_at||link?.publication_at;
-  const at=immediate?new Date(now.getTime()+60000).toISOString():
-    Date.parse(preferred)>now.getTime()?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at));
+  // Keep explicit future dates unchanged (especially holidays). For an expired
+  // or absent preferred time, skip locally exhausted free-plan months rather
+  // than returning a permanent quota block on the first Tuesday/Friday.
+  // This is only a local reservation: Work must independently verify the real
+  // Metricool plan quota and remote UUID before creating an external schedule.
+  const futurePreferred=Date.parse(preferred)>now.getTime();
+  let at;
+  try{
+    at=immediate?new Date(now.getTime()+60000).toISOString():
+      futurePreferred?preferred:nextMetricoolSlot(now,linked.map(x=>x.publication_at),{
+        canUseSlot:candidate=>metricoolScheduleCapacity(linked,candidate,{
+          postCost:metricoolChannels(row).length
+        }).ok
+      });
+  }catch(error){
+    return{ok:false,code:'no_free_slot_in_next_year',error:String(error?.message||error),
+      externalScheduled:false};
+  }
   const freshness=aiScheduleFresh(row,gate.reviewed_at,at,{reviewerType:gate.reviewer_type});
   if(!freshness.ok)return{ok:false,code:'AI_REVIEW_WILL_EXPIRE',error:freshness.reason};
   // Reserve only the candidate's authorized networks. Keep unknown historical
