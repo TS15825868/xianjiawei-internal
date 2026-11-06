@@ -1,0 +1,565 @@
+{
+  "capturedOn": "2026-11-07",
+  "recoveredHistoricalFiles": 178,
+  "sourceCandidates": 193,
+  "unavailable": 15,
+  "comparedPending": 79,
+  "exactMatches": 0,
+  "noApprovalGranted": true,
+  "records": [
+    {
+      "id": "XJW-CAND-20270309",
+      "sha256": "c19e4fcd03799606b29d1e4745bebca9088e5fde471c3a536c498778b06bdac7",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270226",
+      "sha256": "79b6691482ec42248f01f1bb484b70a84640e624c40232c8d1669bfa33cadf11",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20261208",
+      "sha256": "d89140cbb20452cce81497b0353d82bc9c2d577f1f593c7d6e3066c4e10fcc2d",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270108",
+      "sha256": "6e7a72a101a7c155ed98642652d08fa4714d1801beb2db1388304ea7d6b199c3",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "sha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270326",
+      "sha256": "e39a4feb1736465343794e38c6312308a8f078e63d62cafdb07c3d0221c3c71b",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "sha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270319",
+      "sha256": "3a66792badd11e0fb20e8a886c3a3f0cc811630c40e4ac2ab3ac357edf4c4dd0",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270316",
+      "sha256": "39ddbd73d9412fbd004c147ae8b805777d106b3b116a7e5abe95c85414ede23f",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "sha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "sha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270302",
+      "sha256": "8d9610b6fb0aba9c766128ed80a9115ddd10fdd14847361b05d01a69e9ceec52",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270223",
+      "sha256": "6d136cf15c366b7deef82de62198eb1a737164bad54883faa2026ae4e2375b28",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "sha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "sha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270122",
+      "sha256": "16d16a00ec5291e5f581ea9009c448e42612868135fee1438fa1d0ea5048569d",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "sha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "sha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "sha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "sha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "sha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20261211",
+      "sha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CAND-20270112",
+      "sha256": "454640b31f4b3ea3925adaa17cfaac35600f8d27abde33953300986b2e736c78",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-home-soup",
+      "sha256": "64bae2fc141179eb291c5bd5491591e4d8621ed96fb2f19dbd04f7b79e1e3dd3",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "sha256": "d35515ad1c0ed02dad9865decfb10f41aa6dc27a626dd99e9872f5a2a82af7b8",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+      "sha256": "9f116a7f1a991676a462b8ecc82a261f9b4b9236e391ad26fb7a3de34f8c4f0d",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-FEST-2027-spring-walk",
+      "sha256": "6bc35f1ba7f8cd60849b0b264395a1fa40664ec33812e8da65c0019cfc353e31",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "sha256": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "sha256": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "sha256": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "sha256": "1da90695f31d6129086c0945f4760226a67fd3029ee24bffaf1f933ac1ccc532",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-last-day-reset",
+      "sha256": "069b2e0d9b096904d97424502bfa463b1ffb56fa8e72d29853663b9c73eba9be",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "sha256": "7ff37b482e1876251753ed157485290b2cac418a521be532214d221c9517cda0",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-care-before-home-message",
+      "sha256": "19fe92c1df87a8c7598d5a7991473f1b6845c7d3b2bdb029d8729968e7c37925",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "sha256": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-year-end-clean",
+      "sha256": "4a81e9c17fd802a5aca83b95426b324e887cda7cedb1deea27795cc3ccae3dd8",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "sha256": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "sha256": "d8702b0d1546026cb7175d5792a89f1ce4e98b1a350163d03e51cd19507dbfbf",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "sha256": "9790f1ca7766b43b99de629872fa8b6e79a19f2a5b919e108ca746849d35b836",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "sha256": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "sha256": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "sha256": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "sha256": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-wanhua-morning",
+      "sha256": "006575db65cf806cf76677f71238575ecab72c3701e487ca66d9779dd4711587",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "sha256": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "sha256": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "sha256": "7fa4563e0290a539e321f72fce5189463b44d6cd6359b93b253d1d3898904a99",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-simple-soup",
+      "sha256": "aeee6148d25dc04e8ca0f07d1dddcd0b6b7c42a215e86f6866fae35fbd569fe9",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "sha256": "ac23cb985a1d80c9dda4ff8fd758dedd9f7c3aec674df6ad662388a754c37a4e",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "sha256": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "sha256": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-old-methods",
+      "sha256": "1bdee3f0a396a8928196ffd57996fcc581479ca2d77154a3fb22e02bd63be105",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "sha256": "4991b10381f397522363d42772f902806833810270ae33ec844af28638676000",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "sha256": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "sha256": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "sha256": "dd30eaea035ef2b57b5eede9eb150b926501a76a99f1b9a522b73f9290a27589",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "sha256": "8d8a7274b619a155ea6d1ce8aafcbf67bab025a5e86f0363d6b482e663d177a6",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-craft-years",
+      "sha256": "504c4a3873aef3f7a18b513f01179e495e8000e3f2954a17d8c24425da4165d0",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "sha256": "9c933fa3e74daa6e200b03ae9f48cc8707d6543483811a0a872de6da6d5b242d",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-brand-not-only-product",
+      "sha256": "a148b548444905e5b8f10b45680cd8c99462f7440baeb72741d4ac3fede6938e",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-ask-boss-topic",
+      "sha256": "a7ac0e6b871ad2fa7abca873b2db8f289f58b22ba87b8a965317cb1f1ed494f9",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "sha256": "caa172f0d85559667c1420008a09ce2c6331759bd75ae335ada4b55fbe4fa17f",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "sha256": "db76be5d7368af28baec5fc66748dba6a8c6b171a5a17be8a326dd1ea911b83a",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-first-soup",
+      "sha256": "ca1aa0dbc6f4cc4d2935cb8cd2ef7e1a0a8792a4318ab01f4fcd05ca41962eb7",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-soup-day",
+      "sha256": "393497c64bb68740697fdc44d3597140878d8ab34675d2feab1e27f73c195ed6",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "sha256": "d408c94c75c61e56f95a378937a22fdd592e41b001cd52c00c05df0c9ef046fd",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "sha256": "be6c09f2537a703a255e9f82de511c70ce233d7c5403d4cd42f222e3e02e4a52",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "sha256": "22b5ec499b3b45156cb450ff44ad3d283fd8fe781cd067a851cd8b66627bc808",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-30-bare-jar",
+      "sha256": "6d2400848e25ab014b02ffacf8d4857c9e01878d4ea1963c2061c32ca67ece02",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-30-vs-180",
+      "sha256": "823e2833d9826e6d1bede2c8612ade6473ef9cd5aa695094fcf02ab6154dac32",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "sha256": "999299089281471e22275f10d191e193e1a133cebcb5539ca615b1055868cb31",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "sha256": "bd8b79ef016b267e373fd5b144d8ac033e26a4eb272da81e18fe40509c580b82",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "sha256": "999a1f294191d1e6a1a1a4443d1e63c2f312637e192aebf2b5153d2ab59767d1",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "sha256": "faa4bb0d9194152141d3d8133901f4f63c0eeade5f29935428f4ca38d9cf46f7",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-chat-trial-first",
+      "sha256": "47fad428d814e3c20cdce1e4c617793c1977b30038ccaef88d4ff729f4464954",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "sha256": "731f9c57d53cf23fb773ffc042eda516c779effd87a0ca2cfa8445b0827d542a",
+      "exactHistoricalMatch": false,
+      "matchedPosts": [],
+      "scope": "encoded file hash only; semantic and resized-image review not certified"
+    }
+  ],
+  "limitations": "No exact hash match is not a complete historical visual or semantic dedup PASS. Interrupted download recovered from existing cache without redownloading successful files."
+}
