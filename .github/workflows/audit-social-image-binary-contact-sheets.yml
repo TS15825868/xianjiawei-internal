@@ -94,10 +94,23 @@ jobs:
               else:
                 d.text((x+12,y+75),str(info['problem'])[:34],font=font,fill=(200,35,25))
             sheet.save('social-image-audit-sheets/sheet-'+str(start//16+1).zfill(2)+'.jpg',quality=87)
-          report={'schema':'xjw-social-images-raw-binary-and-montage-audit-v1','total':len(reports),'pendingCount':len(pending),
-            'decoded':sum(x['decoded'] for x in reports),'unreadable':sum(not x['decoded'] for x in reports),
-            'exactDuplicateGroups':exactDuplicates,'notAnAI16Review':True,'notHumanApproved':True,'noWritesPerformed':True,
-            'items':reports}
+          pendingReports=[x for x in reports if x['status']=='pending_review']
+          publishedReports=[x for x in reports if x['status']=='published']
+          # Published records may link to protected/external historical media. Source-policy
+          # blocks are NOT failed decodes and must never contaminate active-review counts.
+          report={'schema':'xjw-social-images-raw-binary-and-montage-audit-v2-status-separated',
+            'total':len(reports),'pendingCount':len(pendingReports),'publishedCount':len(publishedReports),
+            'decoded':sum(x['decoded'] for x in reports),
+            'unreadable':sum(not x['decoded'] for x in reports),
+            'pendingDecoded':sum(x['decoded'] for x in pendingReports),
+            'pendingUnverified':sum(not x['decoded'] for x in pendingReports),
+            'publishedDecoded':sum(x['decoded'] for x in publishedReports),
+            'publishedUnverified':sum(not x['decoded'] for x in publishedReports),
+            'sourcePolicyBlocked':sum(x['problem']=='unexpected_image_host_or_path' for x in reports),
+            'sourcePolicyBlockedPendingIds':[x['id'] for x in pendingReports if x['problem']=='unexpected_image_host_or_path'],
+            'sourcePolicyBlockedPublishedIds':[x['id'] for x in publishedReports if x['problem']=='unexpected_image_host_or_path'],
+            'exactDuplicateGroups':exactDuplicates,'notAnAI16Review':True,'notHumanApproved':True,
+            'noWritesPerformed':True,'items':reports}
           with open('social-image-audit-sheets/image-binary-audit.json','w') as f:json.dump(report,f,ensure_ascii=False,indent=2)
           print('XJW_SOCIAL_IMAGE_DECODE '+json.dumps({k:v for k,v in report.items() if k!='items'},ensure_ascii=False))
           PY
