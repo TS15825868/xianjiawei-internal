@@ -1,0 +1,18 @@
+{
+  "schema": "xjw-exact-archived-remote-draft-cancel-hold-v1",
+  "createdOn": "2026-11-06",
+  "sourceEvidence": "Metricool connected getScheduledPosts for brand 6889683 returned id 413610864, UUID -3743061634977870369, draft true autoPublish false, three providers, 2026-11-06T10:00:00 Asia/Taipei",
+  "sourceArchiveRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42046761560",
+  "postId": "XJW-CONV-chat-gao-vs-drink",
+  "remoteMetricoolId": 413610864,
+  "remoteUuid": "-3743061634977870369",
+  "requiredD1PostStatus": "archived",
+  "requiredCurrentLinkState": "pending_review",
+  "targetLinkState": "cancel_required",
+  "externalDeletePerformed": false,
+  "noPublish": true,
+  "noExternalMetricoolMutation": true,
+  "requiresExternalDeleteLater": true,
+  "why": "The already archived duplicate-angle post must never be treated as an active Metricool candidate; retain exact UUID for later lawful external deletion.",
+  "cost": "NT$0"
+}
