@@ -1,0 +1,110 @@
+name: 仙加味現行貼文圖片全庫縮圖與二進位驗收（唯讀）
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-social-image-binary-contact-sheets.yml'
+permissions:
+  contents: read
+jobs:
+  photo-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Install readonly tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          python3 -m venv /tmp/xjw-visual-audit
+          /tmp/xjw-visual-audit/bin/pip install --quiet Pillow
+      - name: Fetch live D1 visible image metadata (no content changes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,status,image_url,image_quality_status FROM social_posts WHERE status IN ('pending_review','published') ORDER BY CASE status WHEN 'pending_review' THEN 0 ELSE 1 END,id" > /tmp/xjw-live-images.json
+      - name: Validate each real image and render low-res review contact sheets
+        shell: bash
+        run: |
+          set -euo pipefail
+          /tmp/xjw-visual-audit/bin/python - <<'PY'
+          import os,json,io,hashlib,urllib.request,collections
+          from concurrent.futures import ThreadPoolExecutor
+          from PIL import Image,ImageDraw,ImageFont
+          raw=json.load(open('/tmp/xjw-live-images.json'))
+          rows=raw[0]['results'] if isinstance(raw,list) else raw.get('results',[])
+          assert 20<len(rows)<500,('unexpected D1 image rows',len(rows))
+          ids=[r['id'] for r in rows]
+          assert len(set(ids))==len(ids),'duplicate active post ID'
+          os.makedirs('social-image-audit-sheets',exist_ok=True)
+          fontpath='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          try:font=ImageFont.truetype(fontpath,15)
+          except Exception:font=ImageFont.load_default()
+          def one(pair):
+            i,r=pair
+            u=str(r.get('image_url') or '')
+            info={'index':i,'id':r['id'],'title':r.get('title'),'status':r['status'],'imageQualityStatus':r.get('image_quality_status'),'url':u,'decoded':False,'width':0,'height':0,'sha256':None,'dhash':None,'problem':None}
+            if not u.startswith('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/'):
+              info['problem']='unexpected_image_host_or_path';return info,None
+            try:
+              with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'xjw-visual-readonly-check/1.0'}),timeout=28) as response:
+                b=response.read(5500000)
+              if len(b)<1000 or len(b)>=5500000:raise ValueError('suspicious image size')
+              with Image.open(io.BytesIO(b)) as im:
+                im.load()
+                if im.width<250 or im.height<250:raise ValueError('too small: '+str(im.size))
+                info['decoded']=True
+                info['width']=im.width;info['height']=im.height
+                info['sha256']=hashlib.sha256(b).hexdigest()
+                pix=im.convert('L').resize((9,8))
+                bits=''.join('1' if pix.getpixel((x,y))>pix.getpixel((x+1,y)) else '0' for y in range(8) for x in range(8))
+                info['dhash']=hex(int(bits,2))[2:].zfill(16)
+                im=im.convert('RGB')
+                im.thumbnail((330,290),Image.Resampling.LANCZOS)
+                return info,im.copy()
+            except Exception as e:
+              info['problem']=str(e)[:260];return info,None
+          with ThreadPoolExecutor(max_workers=7) as pool:
+            results=list(pool.map(one,enumerate(rows)))
+          reports=[r[0] for r in results]
+          bySha=collections.defaultdict(list)
+          for x in reports:
+            if x['sha256']:bySha[x['sha256']].append(x['id'])
+          exactDuplicates=[ids for ids in bySha.values() if len(ids)>1]
+          pending=[x for x in results if x[0]['status']=='pending_review']
+          for start in range(0,len(pending),16):
+            selected=pending[start:start+16]
+            sheet=Image.new('RGB',(1440,1320),(246,242,235))
+            d=ImageDraw.Draw(sheet)
+            for pos,(info,im) in enumerate(selected):
+              x=(pos%4)*360;y=(pos//4)*330
+              d.rectangle((x,y,x+359,y+329),outline=(140,126,106),width=2)
+              d.text((x+7,y+7),str(start+pos+1)+' '+info['id'][:29],font=font,fill=(17,33,50))
+              d.text((x+7,y+29),str(info['imageQualityStatus']),font=font,fill=(80,76,74))
+              if im:
+                sheet.paste(im,(x+(360-im.width)//2,y+37+(290-im.height)//2))
+              else:
+                d.text((x+12,y+75),str(info['problem'])[:34],font=font,fill=(200,35,25))
+            sheet.save('social-image-audit-sheets/sheet-'+str(start//16+1).zfill(2)+'.jpg',quality=87)
+          report={'schema':'xjw-social-images-raw-binary-and-montage-audit-v1','total':len(reports),'pendingCount':len(pending),
+            'decoded':sum(x['decoded'] for x in reports),'unreadable':sum(not x['decoded'] for x in reports),
+            'exactDuplicateGroups':exactDuplicates,'notAnAI16Review':True,'notHumanApproved':True,'noWritesPerformed':True,
+            'items':reports}
+          with open('social-image-audit-sheets/image-binary-audit.json','w') as f:json.dump(report,f,ensure_ascii=False,indent=2)
+          print('XJW_SOCIAL_IMAGE_DECODE '+json.dumps({k:v for k,v in report.items() if k!='items'},ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-social-image-binary-review-${{ github.run_id }}
+          path: social-image-audit-sheets/
+          retention-days: 2
+          if-no-files-found: warn
