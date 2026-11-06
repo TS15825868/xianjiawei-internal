@@ -1,0 +1,70 @@
+name: 仙加味小老闆角色參考圖實際解碼驗證（唯讀）
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-mascot-source-decode.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reference-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - name: Read exact latest public source images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/xjw-reference
+          BASE='https://raw.githubusercontent.com/TS15825868/xianjiawei/main'
+          LINE='https://raw.githubusercontent.com/TS15825868/TS-LINE/main'
+          curl -fsSL --retry 2 --max-time 30 "$BASE/assets/reference/heygen/mascot-primary-v20260818.jpg" -o /tmp/xjw-reference/site-original-primary.jpg
+          curl -fsSL --retry 2 --max-time 30 "$BASE/images/customer-display-v20260812/trial-small-boss.png" -o /tmp/xjw-reference/site-trial-small-boss.png
+          curl -fsSL --retry 2 --max-time 30 "$BASE/images/posts/formal-v20260904/first-post-work-rest-qmascot.webp" -o /tmp/xjw-reference/site-first-post-character.webp
+          curl -fsSL --retry 2 --max-time 30 "$LINE/public/mascot/brand.jpg" -o /tmp/xjw-reference/line-brand-mascot.jpg
+      - name: Full image frame decoding (not only extension or magic bytes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,subprocess,json,hashlib
+          base='/tmp/xjw-reference'
+          results=[]
+          for name in sorted(os.listdir(base)):
+            path=os.path.join(base,name)
+            probe=subprocess.run(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width,height,codec_name','-of','json',path],capture_output=True,text=True)
+            good=probe.returncode==0
+            metadata={}
+            if good:
+              try:
+                streams=json.loads(probe.stdout).get('streams',[])
+                if streams:
+                  metadata=streams[0];good=metadata.get('width',0)>=64 and metadata.get('height',0)>=64
+                else:good=False
+              except Exception:good=False
+            if good:
+              decode=subprocess.run(['ffmpeg','-v','error','-xerror','-i',path,'-frames:v','1','-f','null','-'],capture_output=True,text=True,timeout=20)
+              good=decode.returncode==0
+              decodeError=decode.stderr[-350:] if not good else ''
+            else:decodeError=probe.stderr[-350:]
+            data=open(path,'rb').read()
+            results.append({'file':name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'decoded':bool(good),'metadata':metadata,'error':decodeError})
+          with open('mascot-source-decode-proof.json','w') as f:json.dump({'schema':'xjw-mascot-reference-binary-verification-v1','results':results,'finalImageApproval':False,'doesNotBypassHumanReview':True},f,ensure_ascii=False,indent=2)
+          print('MASCOT_IMAGE_DECODE '+json.dumps([{k:x[k] for k in ['file','bytes','decoded','metadata']} for x in results],ensure_ascii=False))
+          if not any(x['decoded'] for x in results):raise SystemExit('ERROR: no actual decoded character reference')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-owner-mascot-source-decoding-${{ github.run_id }}
+          path: |
+            mascot-source-decode-proof.json
+            /tmp/xjw-reference/*.jpg
+            /tmp/xjw-reference/*.png
+            /tmp/xjw-reference/*.webp
+          retention-days: 2
+          if-no-files-found: warn
