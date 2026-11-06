@@ -1,0 +1,12 @@
+{
+  "schema": "xjw-one-archived-metricool-hold-request-v1",
+  "action": "hold_archived_remote_draft_in_d1_only",
+  "postId": "XJW-CONV-chat-gao-vs-drink",
+  "remoteId": 413610864,
+  "requireRemoteD1LiveRead": true,
+  "requireReadback": true,
+  "publish": false,
+  "approve": false,
+  "deleteExternal": false,
+  "cost": "NT$0"
+}
