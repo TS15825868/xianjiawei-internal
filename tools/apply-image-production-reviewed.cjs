@@ -8,13 +8,21 @@ const quote = text => "'" + String(text ?? '').replaceAll("'", "''") + "'";
 const url = item => 'https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/' + item.path;
 if (!manifest.items.length || manifest.items.length > 33) throw Error('Invalid batch size');
 const ids = new Set(), hashes = new Set();
+const modernBatch = manifest.items.some(item => String(item.path || '').split('/')[2] > '2026-10-31');
+const activeQueue = modernBatch || manifest.requireActiveQueue === true
+  ? JSON.parse(fs.readFileSync('ops/post-image-production-queue-current.json', 'utf8'))
+  : null;
+if (activeQueue && (activeQueue.status !== 'production-queue' || !Array.isArray(activeQueue.items))) {
+  throw Error('Current production queue is not valid');
+}
+const queueById = new Map((activeQueue?.items || []).map(item => [item.postId, item]));
 for (const item of manifest.items) {
   if (ids.has(item.postId) || hashes.has(item.sha256)) throw Error('Duplicate post/image');
   ids.add(item.postId); hashes.add(item.sha256);
-  if (!/^assets\/post-images\/2026-10-(?:10|11)\/formal-production\/[A-Za-z0-9-]+\.jpg$/.test(item.path)) throw Error('Unsafe image path');
+  if (!/^assets\/post-images\/20\d{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])\/formal-production\/[A-Za-z0-9][A-Za-z0-9-]*\.jpg$/.test(item.path)) throw Error('Unsafe image path');
   const bytes = fs.readFileSync(item.path);
-  if (bytes.length !== item.bytes || bytes.length < 250000 || hash(bytes) !== item.sha256) throw Error('Image bytes/hash mismatch: ' + item.postId);
-  if (item.visualCheck !== 'pass' || item.width !== 1254 || item.height !== 1254) throw Error('Uninspected image: ' + item.postId);
+  if (bytes.length !== item.bytes || bytes.length < 250000 || bytes[0] !== 0xff || bytes[1] !== 0xd8 || bytes[bytes.length - 2] !== 0xff || bytes[bytes.length - 1] !== 0xd9 || hash(bytes) !== item.sha256) throw Error('Image JPEG bytes/hash mismatch: ' + item.postId);
+  if (item.visualCheck !== 'pass' || item.width !== 1254 || item.height !== 1254 || !String(item.visualReview || '').trim()) throw Error('Uninspected image: ' + item.postId);
   if ((item.productsShown || []).length && !item.productPhotoProvenance?.length) throw Error('Missing real photo provenance');
 }
 if (mode === 'prepare') {
@@ -23,9 +31,15 @@ if (mode === 'prepare') {
   for (const item of manifest.items) {
     const post = live.find(r => r.id === item.postId);
     if (!post || hash(post.copy).slice(0, 16) !== item.copyHash) throw Error('Live copy changed: ' + item.postId);
+    if (activeQueue && post.status === 'draft') {
+      const queued = queueById.get(item.postId);
+      if (!queued || queued.copyHash !== item.copyHash || queued.imageId !== item.imageId || queued.title !== item.title) {
+        throw Error('New image does not match current D1 production queue: ' + item.postId);
+      }
+    }
     if (post.image_url === url(item) && post.status === 'pending_review' && Number(post.image_approved) === 0) continue;
     if (post.status !== 'draft' || String(post.image_url || '').trim()) throw Error('Post is no longer an empty-image draft: ' + item.postId);
-    sql.push(`UPDATE social_posts SET image_url=${quote(url(item))},media_id=NULL,image_alt=${quote(item.alt)},image_source='ChatGPT重新生成｜2026-10-11正式原照後製｜GitHub main｜人工待審核',image_width=1254,image_height=1254,image_bytes=${item.bytes},image_quality_status='clear',image_approved=0,status='pending_review',approved_by=NULL,approved_at=NULL,scheduled_at=NULL,rejection_reason='',updated_at=datetime('now') WHERE id=${quote(item.postId)} AND status='draft' AND TRIM(COALESCE(image_url,''))='' AND copy=${quote(post.copy)};`);
+    sql.push(`UPDATE social_posts SET image_url=${quote(url(item))},media_id=NULL,image_alt=${quote(item.alt)},image_source=${quote('ChatGPT重新生成｜' + manifest.version + '｜GitHub main｜人工待審核')},image_width=1254,image_height=1254,image_bytes=${item.bytes},image_quality_status='clear',image_approved=0,status='pending_review',approved_by=NULL,approved_at=NULL,scheduled_at=NULL,rejection_reason='',updated_at=datetime('now') WHERE id=${quote(item.postId)} AND status='draft' AND TRIM(COALESCE(image_url,''))='' AND copy=${quote(post.copy)};`);
   }
   fs.writeFileSync('/tmp/image-production-apply.sql', sql.join('\n'));
   console.log('Validated exact live copies and empty-image drafts:', sql.length);
