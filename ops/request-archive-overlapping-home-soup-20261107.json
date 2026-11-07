@@ -1,0 +1,12 @@
+{
+  "scope": "single-verified-published-editorial-overlap",
+  "pending": "XJW-CONV-chat-home-soup",
+  "published": "XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa",
+  "evidence": "Same editorial question: household soup ingredient/flavor preferences with chicken/pork and red dates/goji; already answered in published 2026-11-03 family soup 3-platform post. Earlier safe image already published on that post. Current replacement image has unresolved raw/cooked separation concern.",
+  "publishedReceipt": "2026-11-03T12:52:00.000Z",
+  "currentQuality": "needs_review",
+  "authorizeArchive": true,
+  "authorizePublish": false,
+  "keepHistoricalOriginalImage": true,
+  "keepAuditAndAiEvidence": true
+}
