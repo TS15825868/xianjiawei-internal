@@ -1,0 +1,549 @@
+{
+  "schema": "xjw-original-scene-cast-visual-audit-v1",
+  "capturedOn": "2026-11-07",
+  "repo": "TS15825868/xianjiawei-internal",
+  "commitBaseline": "6c4e853ed5c9510e0415ebc83b4de7ab20d8847d",
+  "source": "ops/social-scene-image-production-queue-20261105.json",
+  "method": "Manual visual inspection of the 23 GitHub-hosted original square candidate images through the connected repository; compare depicted characters with each scene's exact authorized cast in source mediaPrompt",
+  "counts": {
+    "viewed": 23,
+    "castMatched": 2,
+    "additionalUnauthorizedCompanions": 21,
+    "onlyMascotExpected": 17,
+    "mascotPlusDeerExpected": 4,
+    "allThreeExpected": 2
+  },
+  "imageVersionNote": "The GitHub manifest imagePath/sourceSha256 is an existing source reference, NOT a fresh D1 database readback. Reverify current D1 image_url and SHA before applying review changes.",
+  "noBulkRegeneration": true,
+  "noCopyChange": true,
+  "noApproval": true,
+  "noHumanApproval": true,
+  "noPublication": true,
+  "priorityPairChecks": [
+    {
+      "postIds": [
+        "XJW-CAND-20261208",
+        "XJW-CAND-20270305"
+      ],
+      "result": "VISUALLY_DISTINCT_ACTIONS_WITH_SHARED_WANHUA_THEME",
+      "evidence": "20261208 presents a mascot holding a bag and using a store door handle; 20270305 presents a street walk viewing flower arrangements. Both use old-street brickwork, hence background-style overlap remains. Cast on both exceeds their individual briefs.",
+      "limitations": "Not a certification of complete prior platform history or duplicate release."
+    },
+    {
+      "postIds": [
+        "XJW-CAND-20270316",
+        "XJW-CAND-20270326"
+      ],
+      "result": "VISUALLY_DISTINCT_ACTIONS_WITH_SHARED_ENTRYWAY_PROPS",
+      "evidence": "20270316 holds a smartphone with umbrellas and jacket nearby; phone display is not independently readable as a forecast. 20270326 is hanging/sorting a jacket while holding an umbrella. The main actions differ, but both include unauthorized companions.",
+      "limitations": "Not a certification of full historical duplicate review or readable phone display."
+    }
+  ],
+  "findings": [
+    {
+      "postId": "XJW-CAND-20261208",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
+      "sourceSha256": "d89140cbb20452cce81497b0353d82bc9c2d577f1f593c7d6e3066c4e10fcc2d",
+      "brief": "萬華老街清晨，小老闆提包步行回到店門口",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20261211",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20261211.webp",
+      "sourceSha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "brief": "週五上午萬華店內書桌，小老闆把素面筆記本分成兩疊並整理，沒有可讀虛構文字",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20261222",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20261222.webp",
+      "sourceSha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "brief": "冬至家中餐桌，兩碗湯圓，三個角色一起討論",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [],
+      "roleScopeResult": "MATCHES_SPECIFIED_CAST",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20261225",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20261225.webp",
+      "sourceSha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "brief": "聖誕節居家小型聚會，溫和節慶佈置、杯盤與聊天情境",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270105",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270105.webp",
+      "sourceSha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "brief": "店內分類展示常見乾燥食材，無效能暗示、無虛構標籤",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270108",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270108.webp",
+      "sourceSha256": "6e7a72a101a7c155ed98642652d08fa4714d1801beb2db1388304ea7d6b199c3",
+      "brief": "冬日週五上午，仙加味店內窗邊，小老闆將一枝花插入素雅花瓶，旁邊小鹿好奇觀看",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270112",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270112.webp",
+      "sourceSha256": "454640b31f4b3ea3925adaa17cfaac35600f8d27abde33953300986b2e736c78",
+      "brief": "居家杯架前小老闆挑杯子，小鹿望向茶几",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270115",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270115.webp",
+      "sourceSha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "brief": "冬天早晨居家廚房，小老闆準備紅棗與甜湯食材，小碗分開擺放，無產品包裝",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270119",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270119.webp",
+      "sourceSha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "brief": "年菜準備桌，菜單紙張留空、青菜盤與小老闆",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270122",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270122.webp",
+      "sourceSha256": "16d16a00ec5291e5f581ea9009c448e42612868135fee1438fa1d0ea5048569d",
+      "brief": "家中沙發看手機舊照片，畫面不呈現可辨識個資",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270126",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270126.webp",
+      "sourceSha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "brief": "萬華傳統市場買菜生活場景，人群不呈現真實可識別人士",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270129",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270129.webp",
+      "sourceSha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "brief": "年節前廚房櫥櫃整理餐具，獨立小鹿在旁",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270223",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270223.webp",
+      "sourceSha256": "6d136cf15c366b7deef82de62198eb1a737164bad54883faa2026ae4e2375b28",
+      "brief": "年後早晨窗邊，小老闆寫待辦與喝水",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270226",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
+      "sourceSha256": "79b6691482ec42248f01f1bb484b70a84640e624c40232c8d1669bfa33cadf11",
+      "brief": "週五上午，店內窗邊的小老闆與分開的小鹿和小烏龜討論週末散步或居家閱讀，桌上有素面書本",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [],
+      "roleScopeResult": "MATCHES_SPECIFIED_CAST",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270302",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270302.webp",
+      "sourceSha256": "8d9610b6fb0aba9c766128ed80a9115ddd10fdd14847361b05d01a69e9ceec52",
+      "brief": "春日居家早餐桌有吐司、蛋與水杯",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270305",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270305.webp",
+      "sourceSha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "brief": "萬華春日早晨，光線柔和的老街角，小老闆散步觀看花草布置，小鹿同行",
+      "allowedCharacters": [
+        "仙加味小老闆",
+        "小鹿"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270309",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270309-v2.webp",
+      "sourceSha256": "c19e4fcd03799606b29d1e4745bebca9088e5fde471c3a536c498778b06bdac7",
+      "brief": "春日居家食品櫃，正式仙加味龜鹿膏100g產品原圖按比例放置；小老闆查看保存資訊但不重畫產品標示",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270312",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270312.webp",
+      "sourceSha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "brief": "春季週五上午小老闆在家查看菇類、蔬菜與紙本清單，規劃晚上煮湯",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270316",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270316.webp",
+      "sourceSha256": "39ddbd73d9412fbd004c147ae8b805777d106b3b116a7e5abe95c85414ede23f",
+      "brief": "春季玄關看手機天氣預報但不顯示虛構數值，旁邊放雨具",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270319",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270319.webp",
+      "sourceSha256": "3a66792badd11e0fb20e8a886c3a3f0cc811630c40e4ac2ab3ac357edf4c4dd0",
+      "brief": "店內玻璃杯和陶杯，小老闆比較握感",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270323",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270323.webp",
+      "sourceSha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "brief": "萬華店內展示舊製作筆記與工藝器具，不捏造可讀手寫內容",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270326",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270326.webp",
+      "sourceSha256": "e39a4feb1736465343794e38c6312308a8f078e63d62cafdb07c3d0221c3c71b",
+      "brief": "春日週五上午，居家玄關小老闆整理雨傘、薄外套與鑰匙，不顯示虛構天氣數字",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    },
+    {
+      "postId": "XJW-CAND-20270330",
+      "imagePath": "media/social-candidates/20261106/XJW-CAND-20270330.webp",
+      "sourceSha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "brief": "春季米白色居家食品櫃整理，食品包裝不展示虛構標示",
+      "allowedCharacters": [
+        "仙加味小老闆"
+      ],
+      "visuallyObservedCharacters": [
+        "仙加味小老闆",
+        "小鹿",
+        "小烏龜"
+      ],
+      "unexpectedCharacters": [
+        "小鹿",
+        "小烏龜"
+      ],
+      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
+      "statusChange": "NONE",
+      "publicationAllowed": false
+    }
+  ],
+  "remediation": "Keep every affected post pending_review/defer. Preserve original image and photo evidence; correct the scene image to comply with the current brief (avoid arbitrary crop/character swap), and re-review impacted mascot_companions, action, scene_environment, duplicate and content fingerprint before changing any AI decision. Never treat this source-only audit as an AI approval."
+}
