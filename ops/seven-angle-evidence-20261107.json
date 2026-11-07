@@ -1,0 +1,46 @@
+{
+  "scope": "seven-current-editorial-angle-independence-with-historical-media-gaps",
+  "sourceRun": 42382305294,
+  "sourceCommit": "48cd18081484a02238acc2dcb022995568e0a219",
+  "reviewedBy": "assistant independent visual scene comparison and current text semantics; no full historic pixel certification",
+  "historicVisualGaps": 15,
+  "records": [
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "verdict": "distinct_order_qa",
+      "detail": "本篇核心是接單後才安排製作及5–7工作天，而已發布2026/08試喝、09/16容量包裝帖僅將交期列為附帶資訊；目前圖像為工作檯寫單與日曆，非同一開瓶或包裝陳列構圖。保留2026/08/06試喝及2026/09/16容量歷史為已發布，完整不可取得歷史媒體仍另列限制。"
+    },
+    {
+      "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+      "verdict": "distinct_ingredients_but_label_conflict",
+      "detail": "這篇詢問180cc鋁袋成分順序，不同於已發布2026/09/16的容量、形式及交期介紹；已有配方版本衝突：2026/08正式實拍標示與當前產品主檔列示順序不同，規格檢查繼續DEFER，不得因本輪主題角度獨立而發布。"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "verdict": "distinct_storage_not_format_choice",
+      "detail": "歷史2026/09/16介紹30cc玻璃罐與180cc鋁袋規格及選擇，這篇是買回家後把包裝放進固定櫃格，影像明確有伸手指向櫃格及木抽屜；已另封存『30cc/180cc怎麼選』重複稿，不能只因相同包裝物件而退件。"
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "verdict": "distinct_pre_purchase_stage",
+      "detail": "本篇為購買前拿放大鏡查看說明卡、先比價格/規格/標示的行為，畫面與收到包裹後開箱不相同；僅有資訊查閱的共同概念，不等於重發同一生活階段。"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "verdict": "distinct_after_delivery_stage",
+      "detail": "本篇實際畫面是打開紙箱從包裹拿出資料卡，屬已收貨後先核對外觀、規格及保存資訊；不同於購買前用放大鏡閱讀產品資訊，角色動作、使用場景及流程先後各異。"
+    },
+    {
+      "id": "XJW-CAND-20261208",
+      "verdict": "distinct_wanhua_shop_entry",
+      "detail": "2026/12/08圖中小老闆提袋站於萬華老街，伸手握店門把準備開店；與2027/03/05春季街角花草觀察的實際動作不同，雖共享老街磚牆景別但畫面主題並非相同。"
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "verdict": "distinct_wanhua_flower_walk",
+      "detail": "2027/03/05圖像呈現春日萬華老街花草布置、步行路過觀察；與2026/12/08提袋回店抓門把並準備開門場景動作不同；共用街景不等於同圖重發。"
+    }
+  ],
+  "allowApproval": false,
+  "allowPublish": false
+}
