@@ -1,0 +1,10 @@
+{
+  "scope": "check-only-60-planner-historical-media-URLs",
+  "sourceInventory": "ops/metricool-planner-url-inventory-20261108.json",
+  "olderPublicAuditRun": 42391189211,
+  "reason": "Locate additional known historical source URL failures without touching the prior 136 Facebook/Instagram URL checks or redownloading 178 recovered files",
+  "noRemoteMutation": true,
+  "downloadMedia": false,
+  "requireD1Writes": false,
+  "noFees": true
+}

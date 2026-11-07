@@ -9,9 +9,11 @@
     "raw": 72,
     "unique": 72,
     "drafts": 41,
-    "schedules": 3,
+    "currentlyUnpublishedScheduled": 0,
     "previousPublished": 28,
-    "autoPublishEnabledUnpublished": 3
+    "historicalErrorRecords": 3,
+    "historicalErrorAutoPublishFlagTrue": 3,
+    "draftsWithAutoPublishTrue": 0
   },
   "records": [
     {
@@ -1477,5 +1479,6 @@
         }
       ]
     }
-  ]
+  ],
+  "note": "Three September 2026 non-draft ERROR historical records retain autoPublish=true metadata; they are NOT active future scheduled posts or currently running automatic publication. All 41 current drafts are draft=true and autoPublish=false. Treat errors as historical, do not auto-retry."
 }

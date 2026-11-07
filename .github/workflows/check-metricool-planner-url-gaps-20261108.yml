@@ -1,0 +1,26 @@
+name: 仙加味Metricool歷史草稿與已發布媒體來源缺口唯讀比對
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-metricool-planner-url-gap-check-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-historical-source-availability-readonly
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Check only Metricool planner source URLs with HEAD or one-byte range
+        run: node ops/check-metricool-planner-url-gaps-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: planner-history-url-gaps-${{ github.run_id }}
+          path: planner-historical-url-gap-results.json
+          retention-days: 7
