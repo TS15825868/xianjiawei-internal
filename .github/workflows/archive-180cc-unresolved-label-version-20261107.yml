@@ -1,0 +1,29 @@
+name: 仙加味180cc標示版本衝突候選安全封存
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-hold-180cc-label-conflict-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  hold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Preserve unverifiable ingredient claim and lock its Metricool draft
+        run: node ops/archive-180cc-unresolved-label-version-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unresolved-180cc-hold-${{ github.run_id }}
+          path: 180cc-conflict-safe-archive-result.json
+          retention-days: 7
