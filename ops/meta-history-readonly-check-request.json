@@ -7,5 +7,6 @@
   "approve": false,
   "mutateSocialPosts": false,
   "checkpoint": "after-first-Worker-cron-run",
-  "requestRevision": 2
+  "requestRevision": 3,
+  "context": "2026-11-07 audit pending 75 vs official Facebook published history; read-only, preserve all approved/archived"
 }
