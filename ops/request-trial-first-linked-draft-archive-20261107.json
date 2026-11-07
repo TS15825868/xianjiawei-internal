@@ -1,0 +1,10 @@
+{
+  "scope": "archive-repeated-trial-angle-with-safe-remote-draft-hold",
+  "target": "XJW-CONV-chat-trial-first",
+  "remoteId": 413607595,
+  "uuid": "5662205195050239362",
+  "source": "Confirmed Metricool getScheduledPosts 2026-10-19..21 id413607595 is draft=true autoPublish=false all three providers PENDING. Prior Instagram 2026-08-06 already published first trial sampling. Preserve remote draft without deletion, D1 mark cancel_required.",
+  "archiveAuthorized": true,
+  "publishAuthorized": false,
+  "deleteRemoteAuthorized": false
+}
