@@ -1,0 +1,29 @@
+name: 仙加味兩篇角色核心補證修復（不核准不發布）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-last-two-quality-evidence-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Verify the same 2 current images and role reference, then CAS-write D1 deferrals
+        run: node ops/apply-last-two-quality-evidence-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: last-two-quality-${{ github.run_id }}
+          path: last-two-quality-results.json
+          retention-days: 7
