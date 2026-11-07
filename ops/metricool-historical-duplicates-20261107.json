@@ -1,0 +1,179 @@
+{
+  "schema": "xjw-metricool-historical-duplicate-crossplatform-evidence-v1",
+  "capturedOn": "2026-11-07",
+  "brandId": "6889683",
+  "repoBaseline": "6d6f3ee0b3f47966ccca25279ec317f3f85bedd5",
+  "source": "Connected Metricool live planned-post query, Asia/Taipei, September and October 2026; per-post actual provider status compared",
+  "scope": "Historical published duplicate detection and held-draft safety; not a full semantic audit, no D1 writes, no publication action",
+  "priorFullRangeBaseline": {
+    "plannerRecords": 72,
+    "draft": 41,
+    "publishedPlannerRecords": 28,
+    "platformErrorRecords": 3
+  },
+  "findings": [
+    {
+      "category": "CONFIRMED_SAME_COPY_REPUBLISHED",
+      "ids": [
+        374250281,
+        381321224
+      ],
+      "rows": [
+        {
+          "id": 374250281,
+          "publicationDate": "2026-09-24T19:45:00",
+          "draft": false,
+          "autoPublish": true,
+          "providerStates": [
+            {
+              "network": "instagram",
+              "status": "PUBLISHED"
+            }
+          ],
+          "mediaDistinct": "https://static.metricool.com/planner/202609/6889683-file-5238920486714089918.webp"
+        },
+        {
+          "id": 381321224,
+          "publicationDate": "2026-09-24T20:20:00",
+          "draft": false,
+          "autoPublish": true,
+          "providerStates": [
+            {
+              "network": "facebook",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "instagram",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "threads",
+              "status": "PUBLISHED"
+            }
+          ],
+          "mediaDistinct": "https://static.metricool.com/planner/202609/6889683-file-15678998739789605911.png"
+        }
+      ],
+      "allRowsPresent": true,
+      "copyExact": true,
+      "publishedNetworksDuplicated": [
+        "instagram"
+      ]
+    },
+    {
+      "category": "CONFIRMED_SAME_COPY_REPUBLISHED",
+      "ids": [
+        403318046,
+        403326277
+      ],
+      "rows": [
+        {
+          "id": 403318046,
+          "publicationDate": "2026-10-23T00:13:00",
+          "draft": false,
+          "autoPublish": true,
+          "providerStates": [
+            {
+              "network": "facebook",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "instagram",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "threads",
+              "status": "PUBLISHED"
+            }
+          ],
+          "mediaDistinct": "https://static.metricool.com/planner/202610/6889683-file-1507786455130171658.png"
+        },
+        {
+          "id": 403326277,
+          "publicationDate": "2026-10-23T00:23:00",
+          "draft": false,
+          "autoPublish": true,
+          "providerStates": [
+            {
+              "network": "facebook",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "instagram",
+              "status": "PUBLISHED"
+            },
+            {
+              "network": "threads",
+              "status": "PUBLISHED"
+            }
+          ],
+          "mediaDistinct": "https://static.metricool.com/planner/202610/6889683-file-10549660693804258593.png"
+        }
+      ],
+      "allRowsPresent": true,
+      "copyExact": true,
+      "publishedNetworksDuplicated": [
+        "facebook",
+        "instagram",
+        "threads"
+      ]
+    },
+    {
+      "category": "DISABLED_DRAFT_PLACEHOLDER_DUPLICATE_NONPUBLISHED",
+      "ids": [
+        393055111,
+        393055149,
+        393055161
+      ],
+      "rows": [
+        {
+          "id": 393055111,
+          "publicationDate": "2026-09-12T10:30:00",
+          "draft": true,
+          "autoPublish": false,
+          "providerStates": [
+            {
+              "network": "threads",
+              "status": "PENDING"
+            }
+          ],
+          "mediaDistinct": ""
+        },
+        {
+          "id": 393055149,
+          "publicationDate": "2026-09-14T19:30:00",
+          "draft": true,
+          "autoPublish": false,
+          "providerStates": [
+            {
+              "network": "facebook",
+              "status": "PENDING"
+            }
+          ],
+          "mediaDistinct": ""
+        },
+        {
+          "id": 393055161,
+          "publicationDate": "2026-09-17T12:30:00",
+          "draft": true,
+          "autoPublish": false,
+          "providerStates": [
+            {
+              "network": "threads",
+              "status": "PENDING"
+            }
+          ],
+          "mediaDistinct": ""
+        }
+      ],
+      "allRowsPresent": true,
+      "copyExact": true,
+      "publishedNetworksDuplicated": []
+    }
+  ],
+  "conclusion": "Two groups of previously published identical captions repeated on at least one same platform: September 24 Instagram duplication and October 23 Facebook/Instagram/Threads duplication. Different media URLs do not make an identical caption a new editorial angle. Three disabled drafts share an intentional stop-placeholder, all autoPublish=false; they are not published duplicates and should not be released. Previous planned time collision of draft vs published is not an actual double schedule.",
+  "action": "Prevent reposting already-published identical/near-identical editorial concepts; preserve published receipts. Keep disabled drafts on hold. Reconcile candidate 79 only against actual source data and latest D1 version, never auto-archive without evidence and never approve/schedule/publish without owner approval.",
+  "noDeletion": true,
+  "noApproval": true,
+  "noPublish": true
+}
