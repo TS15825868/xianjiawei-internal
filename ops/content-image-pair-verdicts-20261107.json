@@ -1,0 +1,86 @@
+{
+  "schema": "xjw-source-based-content-image-pair-verdicts-v1",
+  "date": "2026-11-07",
+  "mainBaseline": "deb2745f7d21a3158a342da617e9b9bc7f84f9d2",
+  "liveD1StatusLatestReadback": {
+    "pending_review": 78,
+    "archived": 79,
+    "published": 4,
+    "needs_review": 0
+  },
+  "imagesSource": "GitHub Actions workflow 42223191210 image-binary-audit contact sheets of active posts plus earlier 23 directly inspected candidate originals",
+  "copySource": "GitHub Actions D1 full read-only 42346948071, copy unchanged for compared records except separately processed home soup",
+  "nature": "Editorial evidence supplement; not a full historic cross-platform certification; no AI/human approval and no automatic publication",
+  "findings": [
+    {
+      "ids": [
+        "XJW-CONV-chat-receive-package",
+        "XJW-CONV-chat-buy-first-look"
+      ],
+      "verdict": "DIFFERENT_REAL_LIFE_STAGE",
+      "text": "收到貨開箱後先檢查包裝/規格 vs 購買前先比較價格/規格；所處流程不同。",
+      "visual": "一張是打開紙箱拿說明卡，另一張是使用放大鏡檢視資訊紙卡；不同道具與動作。",
+      "action": "保留獨立題目角度，只需與已發布歷史另行完整比對，勿因候選分數一律退件。"
+    },
+    {
+      "ids": [
+        "XJW-CONV-chat-30-vs-180",
+        "XJW-CONV-chat-glass-vs-pouch-storage"
+      ],
+      "verdict": "DISTINCT_TEXT_ANGLE_SIMILAR_PACKAGING_PRESENTATION",
+      "text": "選擇容量/攜帶形式 vs 家中櫃位收納，文案題目不同。",
+      "visual": "同一類小裸罐與灰色鋁袋陳列；第一張在工作桌介紹，第二張為收納櫃前伸手指向櫃格，視覺物件與構圖相似。",
+      "action": "要核對兩張的正式產品原圖、包裝大小及角色；不要只以換背景就解除整體重複阻擋。"
+    },
+    {
+      "ids": [
+        "XJW-CONV-chat-trial-first",
+        "XJW-CONV-chat-30-vs-180"
+      ],
+      "verdict": "NEAR_COMPOSITION_RISK",
+      "text": "第一次想了解/試喝 vs 30cc與180cc規格形式比較。",
+      "visual": "兩張同為木質櫃台、男孩俯身指向小杯、左小鹿右小龜，杯子與櫃台的位置非常接近；僅後者多一包鋁袋。",
+      "action": "確保正式試喝篇另有申請流程且圖片呈現獨立動作，必要時精準重製其中一張，不能只替換文案。"
+    },
+    {
+      "ids": [
+        "XJW-CONV-weather-cool-drink",
+        "XJW-CONV-new-year-warm-cup-share"
+      ],
+      "verdict": "DISTINCT_SEASON_AND_ACTION",
+      "text": "天氣轉涼在家拿溫杯 vs 新年在餐桌把杯子遞給家人。",
+      "visual": "前者為秋冬室內窗邊暖杯，後者有紅燈籠及與他人遞杯的節慶動作；可辨識情境不同。",
+      "action": "保留差異判定，但仍需完整跨平台已發布歷史去重；未取得證據不得核准。"
+    },
+    {
+      "ids": [
+        "XJW-CONV-chat-soup-day",
+        "XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa"
+      ],
+      "verdict": "DISTINCT_QUESTION_BUT_SHARED_SOUP_COOKING_SCENE",
+      "text": "待審問家裡多久固定煮湯 vs 11/03已發布詢問想煮哪道家常湯，問句焦點不同。",
+      "visual": "兩張都為煮熟的湯鍋與小老闆、小鹿、小烏龜，存在可感知的料理視覺主題重複。",
+      "action": "不得把不同問句當作全新視覺；需核對歷史畫面後再決定保留或另配更獨立的煮湯日規劃情境。"
+    },
+    {
+      "ids": [
+        "XJW-CONV-cny-reopen",
+        "XJW-CONV-new-year-open-door"
+      ],
+      "verdict": "OLD_ARCHIVED_3D_VERSION_OVERLAP_ONLY",
+      "text": "兩篇均談年節開店開門整理，主題實質相近。",
+      "visual": "待審有開店門與晨光，小鹿抹布陪伴；另一篇已封存、非已發布，原封存原因為舊3D視覺規格。",
+      "action": "保留封存舊版本，不復活；待審版需另和實際已發布開工內容比對，不因封存舊稿自動宣稱歷史重複發布。"
+    }
+  ],
+  "noPostsChanged": true,
+  "noNewExternalMedia": true,
+  "noApprovalGranted": true,
+  "noPublishingTriggered": true,
+  "knownArchivedResolution": {
+    "pending": "XJW-CONV-chat-home-soup",
+    "published": "XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa",
+    "runId": 42374456182,
+    "result": "archived_and_read_back"
+  }
+}
