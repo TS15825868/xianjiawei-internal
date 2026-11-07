@@ -1,0 +1,42 @@
+name: 仙加味保留兩張已核對的IG歷史影像原始鏡像
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-persist-two-historical-ig-mirrors-20261108.json']
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-historical-mirror-persistence
+  cancel-in-progress: false
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Read archived verification artifact, verify hash and preserve two historical images
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api repos/TS15825868/xianjiawei-internal/actions/artifacts/13586583107/zip > /tmp/xjw-verified-historical-mirrors.zip
+          unzip -t /tmp/xjw-verified-historical-mirrors.zip
+          mkdir -p /tmp/xjw-verified-historical-mirrors assets/historical-published/instagram/2026-10-09
+          unzip -q /tmp/xjw-verified-historical-mirrors.zip -d /tmp/xjw-verified-historical-mirrors
+          test -f /tmp/xjw-verified-historical-mirrors/verification-report.json
+          test ! -e assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg
+          test ! -e assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg
+          cp /tmp/xjw-verified-historical-mirrors/4003809463882866913_78424002938.image assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg
+          cp /tmp/xjw-verified-historical-mirrors/4003900963899413608_78424002938.image assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg
+          printf '%s\n' 'b25f76805c3637883769d514a3e0428f87f2e0032902c311c86ae27ecdceeb90  assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg' '151266c7d292d9d50e1bd13568781d5a9f0c8dbc3c7227be0d6056e0ba55594a  assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg' | sha256sum --check --status
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg
+          git diff --cached --quiet && { echo "No image changes to preserve"; exit 1; }
+          git commit -m "media: preserve two SHA-verified published Instagram original-source mirrors"
+          git push origin HEAD:main
+          echo "HISTORICAL_MIRRORS_PERSISTED=2"

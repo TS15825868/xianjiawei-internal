@@ -1,0 +1,24 @@
+{
+  "schema": "xjw-persist-verified-two-historical-instagram-source-bytes-v1",
+  "originVerificationRun": 42403837983,
+  "originArtifactId": 13586583107,
+  "assetPurpose": "read-only duplicate-check historical published reference assets",
+  "allowPublish": false,
+  "allowD1Writes": false,
+  "expectedFiles": [
+    {
+      "source": "4003809463882866913_78424002938.image",
+      "dest": "assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg",
+      "sha256": "b25f76805c3637883769d514a3e0428f87f2e0032902c311c86ae27ecdceeb90",
+      "ig": "https://www.instagram.com/p/DeQY36LFeDh/",
+      "metricoolId": 390408055
+    },
+    {
+      "source": "4003900963899413608_78424002938.image",
+      "dest": "assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg",
+      "sha256": "151266c7d292d9d50e1bd13568781d5a9f0c8dbc3c7227be0d6056e0ba55594a",
+      "ig": "https://www.instagram.com/p/DeQtraNEZRo/",
+      "metricoolId": 391749052
+    }
+  ]
+}
