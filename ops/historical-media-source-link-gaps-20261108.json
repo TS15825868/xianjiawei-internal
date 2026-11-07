@@ -1,0 +1,93 @@
+{
+  "schema": "xjw-published-media-unreachable-links-evidence-v1",
+  "capturedOn": "2026-11-08",
+  "scope": "Only source URL reachability (HEAD or one-byte range), not image duplication or publication approval",
+  "actionRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42391189211",
+  "originalMediaPreviouslyRecovered": 178,
+  "previousPrivateCacheUnavailable": 15,
+  "previousPrivateCacheMissingIdsRecorded": false,
+  "knownSourceCheck": {
+    "facebook": {
+      "total": 101,
+      "reachable": 100,
+      "unreachable": 1
+    },
+    "instagram": {
+      "total": 35,
+      "reachable": 31,
+      "unreachable": 4
+    },
+    "checkedTotal": 136,
+    "reachable": 131,
+    "unreachable": 5
+  },
+  "limitations": [
+    "These 136 source URLs are NOT an identity-matched replacement list for the previously reported 193 image candidates and 15 unavailable files.",
+    "Currently working signed CDN URLs may expire later and HEAD may reject some images; a 403 does not mean the underlying post has been deleted.",
+    "No Meta IG carousel-child completeness or Threads media pixel audit is certified.",
+    "The existing 72 pending posts are not AI-approved or published by this report; full historical visual composition and thematic review still remains pending."
+  ],
+  "missing": [
+    {
+      "platform": "facebook",
+      "postId": "411869648852531_1446376627512555",
+      "publishedPost": "https://www.facebook.com/1531256482357902/posts/1446376627512555",
+      "httpStatus": 403,
+      "topic": "2026-08-06 龜鹿飲30cc試喝／小玻璃罐",
+      "independentSameTopicMirror": "Instagram 3957491164539558820_78424002938 is also unreachable",
+      "priorityCheck": [
+        "XJW-CONV-chat-drink-made-to-order",
+        "XJW-CONV-chat-glass-vs-pouch-storage"
+      ]
+    },
+    {
+      "platform": "instagram",
+      "postId": "4003900963899413608_78424002938",
+      "publishedPost": "https://www.instagram.com/p/DeQtraNEZRo/",
+      "httpStatus": 403,
+      "topic": "2026-10-09 龜鹿膏開罐冷藏與冰箱固定位置",
+      "priorityCheck": [
+        "XJW-CONV-cny-fridge-clean",
+        "XJW-CAND-20270309"
+      ]
+    },
+    {
+      "platform": "instagram",
+      "postId": "4003809463882866913_78424002938",
+      "publishedPost": "https://www.instagram.com/p/DeQY36LFeDh/",
+      "httpStatus": 403,
+      "topic": "2026-10-09 冰箱及櫃子整理、龜鹿膏冷藏",
+      "priorityCheck": [
+        "XJW-CONV-cny-fridge-clean"
+      ]
+    },
+    {
+      "platform": "instagram",
+      "postId": "3957491164539558820_78424002938",
+      "publishedPost": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+      "httpStatus": 403,
+      "topic": "2026-08-06 龜鹿飲試喝與容量選擇",
+      "independentSameTopicMirror": "Facebook 411869648852531_1446376627512555 is also unreachable",
+      "priorityCheck": [
+        "XJW-CONV-chat-drink-made-to-order",
+        "XJW-CONV-chat-glass-vs-pouch-storage"
+      ]
+    },
+    {
+      "platform": "instagram",
+      "postId": "3944679925123219099_78424002938",
+      "publishedPost": "https://www.instagram.com/p/Da-UX35lX6b/",
+      "httpStatus": 403,
+      "topic": "2026-07-19 龜鹿膏100g日常取用及型態",
+      "priorityCheck": [
+        "XJW-CAND-20270309"
+      ]
+    }
+  ],
+  "noD1Writes": true,
+  "noAIApproval": true,
+  "noHumanApproval": true,
+  "noExternalMutation": true,
+  "noPublishing": true,
+  "next": "First compare each current post in priorityCheck to the published copy and any existing valid media mirror; only when the image itself is actually available and reviewed can a pixel-level duplicate conclusion be made. Do not repeat the 178 recovered image downloads or automatically reject/archive posts only because their topic appears in this risk list."
+}
