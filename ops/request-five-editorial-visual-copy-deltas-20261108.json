@@ -1,0 +1,65 @@
+{
+  "scope": "five-current-exact-visual-grounded-editorial-copy-updates",
+  "capturedOn": "2026-11-08",
+  "reviewedOriginalImages": "Four formal legacy images in 2026-11-07 contact sheets, plus direct full-resolution view of both candidate manuscript images; original product references remain immutable",
+  "allowCopyChange": true,
+  "allowApproval": false,
+  "allowPublication": false,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "copy": "下午整理萬華店裡的老相簿，小老闆把早年老街的照片一張張翻出來，看看街屋與店門口的模樣。\n\n仙加味從萬華起家，也想把這些老街景、鹿角與熬膠工藝的故事整理下來，讓今天的人看得懂。\n\n你翻看老照片時，最想找的是老招牌、街景，還是當年的穿著？",
+      "evidence": "實際原圖可見小老闆正在翻看老相簿，舉起有舊街屋的照片；新文案聚焦萬華老街影像及品牌工藝紀錄，與另一篇保留家中長輩舊物的提問區分，不假稱照片有可讀店名。",
+      "differentFrom": "XJW-CONV-chat-family-old-object",
+      "expectedCopy": "有人想到老街，有人想到家裡的木櫃，也有人第一個想到的是小時候熟悉的味道。\n\n對仙加味來說，傳統比較像是一段延續的生活經驗。\n\n如果說到傳統，你腦中第一個出現的是什麼畫面？",
+      "expectedTitle": "看到「傳統」兩個字，你第一個想到什麼？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-traditional-image-scene-v1.jpg",
+      "expectedImageSha": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352"
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "copy": "午休或工作空檔，小老闆拿起手機，想傳訊息問家人今天午餐吃了什麼，有沒有坐下來好好吃飯。\n\n仙加味喜歡記錄家常餐桌的飲食文化，這樣簡單的午間問候也很貼近日常。\n\n你會和家人分享今天吃了哪一道午餐嗎？",
+      "evidence": "原圖呈現室內桌邊拿起手機確認訊息，沒有顯示可讀的通話或訊息畫面；新文案用想傳訊息的午餐互動，與另一篇下班回家前打電話或告知到家時間的角度不同。",
+      "differentFrom": "XJW-CONV-care-before-home-message",
+      "expectedCopy": "忙的時候，關心不一定要做很大的事。午休或工作空檔，傳一句「今天好嗎？」給家人，也提醒自己有沒有好好吃飯、喝點溫熱的。\n\n仙加味想說的生活節奏，很多時候就是這些小小的照顧。\n\n你今天最想問候誰？",
+      "expectedTitle": "一句問候，也是一種關心",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
+      "expectedImageSha": "7ff37b482e1876251753ed157485290b2cac418a521be532214d221c9517cda0"
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "copy": "過年準備一桌熟悉的家常菜時，小老闆把料理擺上餐桌，想到以前長輩總會準備的那一道菜。\n\n仙加味想記錄萬華家族年節裡的飲食文化：有沒有一道料理，是你從小看到長輩準備、現在也想保留下來的？",
+      "evidence": "原圖是年節餐桌多道已完成料理與正在整理盤飾的小老闆；新文案專注家傳料理記憶，不再與另一篇年菜菜單要先加入哪道蔬菜重複提問。",
+      "differentFrom": "XJW-CAND-20270119",
+      "expectedCopy": "過年餐桌每一家都不太一樣，但常常會有一道菜是少了就覺得不像過年。\n\n仙加味想聊的漢方飲食文化，也包括每個家庭年節餐桌上熟悉的料理。\n\n如果只能選一道，你家一定不能少的是什麼？",
+      "expectedTitle": "過年煮一桌菜，你家一定不能少哪一道？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
+      "expectedImageSha": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512"
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "title": "春天煮湯，你會先選湯底還是蔬菜？",
+      "copy": "週五早上，小老闆看著桌上的菇類與蔬菜，拿起筆在空白紙上準備列出晚餐湯鍋要用的材料。\n\n仙加味想問：煮家常蔬菜湯時，你習慣先決定湯底，還是先想今天要用哪些蔬菜？",
+      "evidence": "完整原圖可見桌前菇類、白菜與蘿蔔、小老闆手拿筆筆尖接近空白夾板；新文案只說準備列材料，修正舊稿已把材料寫進清單但畫面沒有文字的動作落差。",
+      "differentFrom": "XJW-CONV-chat-soup-day",
+      "expectedCopy": "週五早上想到下班後想煮一鍋菇類蔬菜湯，小老闆先把需要的食材記進清單。仙加味想問大家：準備家常料理時，你習慣先決定湯底還是先選蔬菜？",
+      "expectedTitle": "春天煮湯，你會先選湯底還是蔬菜？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270312.webp",
+      "expectedImageSha": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac"
+    },
+    {
+      "id": "XJW-CAND-20270223",
+      "title": "年後早晨，不必把事情一次排滿",
+      "copy": "年後回到熟悉的早晨，小老闆打開窗，坐在桌前拿著水杯與筆，想想今天先把哪個工作安排好。\n\n仙加味喜歡從整理周圍環境開始自己的節奏。你早上會先開窗看看街景，還是先坐下來規劃一天？",
+      "evidence": "完整原圖已有窗扇打開、小老闆手持水杯和筆，桌上紙張仍空白；新文案不再宣稱已將待辦完成寫在紙上，並把焦點改為開窗與晨間環境選擇，區隔其他年後開門做一件小事的內容。",
+      "differentFrom": "XJW-CONV-cny-reopen",
+      "expectedCopy": "開工後的早晨，小老闆先打開窗戶、喝杯水，再把今天的事情寫在紙上。仙加味希望大家都能找到舒服的生活步調。",
+      "expectedTitle": "年後早晨，不必把事情一次排滿",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270223.webp",
+      "expectedImageSha": "6d136cf15c366b7deef82de62198eb1a737164bad54883faa2026ae4e2375b28"
+    }
+  ]
+}
