@@ -24,7 +24,7 @@ for(const p of posts){
   if(e.content_fingerprint!==r.content_fingerprint||e.image_sha256!==r.image_sha256||e.checks?.duplicate?.result!=='DEFER')throw Error('Duplicate review not safely held');
   if(e.checks?.compliance_final?.result!=='DEFER'){outcome.skipped='not_compliance_defer';results.push(outcome);continue;}
   if(checkKeys.some(k=>e.checks?.[k]?.result!=='PASS'))throw Error('Other independent review check incomplete');
-  if(!String(e.checks.compliance_final.evidence||'').includes('未見')||!String(e.checks.compliance_final.evidence||'').includes('療效'))throw Error('Prior independent medical-claim review does not explicitly say no claims');
+  if(!String(e.checks.compliance_final.evidence||'').includes('未見')||(!String(e.checks.compliance_final.evidence||'').includes('療效')&&!String(e.checks.compliance_final.evidence||'').includes('食品生理功效')))throw Error('Prior independent medical-claim review does not explicitly say no claims');
   if(deny.some(w=>(p.title+' '+p.copy).includes(w)))throw Error('Needs manual examination of potentially prohibited wording');
   const actor=await one('SELECT email,role,active FROM profiles WHERE email=?',r.authorized_by);
   if(!actor?.active||!['admin','owner'].includes(actor.role))throw Error('AI evidence author no longer authorized');
