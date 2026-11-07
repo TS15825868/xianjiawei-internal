@@ -1,0 +1,29 @@
+name: 仙加味50篇既有完整視覺證據安全增量解除（不核准不發布）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-quality-clear-batch-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Apply strictly version-matched safe D1 quality rebind, no publication
+        run: node ops/apply-safe-quality-clear-batch-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: safe-quality-clear-${{ github.run_id }}
+          path: safe-quality-clear-batch-results.json
+          retention-days: 7
