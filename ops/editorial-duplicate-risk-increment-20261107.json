@@ -1,0 +1,120 @@
+{
+  "schema": "xjw-editorial-duplicate-risk-increment-v1",
+  "capturedOn": "2026-11-07",
+  "baseMain": "a7b5dad49ab85bcaeb590d8eab33e27bd4989b78",
+  "scope": "textual/editorial candidate triage only, NOT visual certification, AI approval, D1 writeback or full dedup closure",
+  "sourceFiles": [
+    "ops/visual-text-neighbors-20261107.json",
+    "ops/all-unfinished-social-posts-79-20261105.json",
+    "ops/verified-historical-editorial-overlap-20261105.json",
+    "ops/scene-copy-increment-20261107.json"
+  ],
+  "stillUnresolved": {
+    "pendingPosts": 79,
+    "qualityPending": 53,
+    "historySourcesUnavailable": 15
+  },
+  "exclusions": [
+    "XJW-CAND-20270309 and XJW-CAND-20270330 had their overlapping copy angles revised already; the old similarity score is stale. Current versions still require final visual and historical dedup verification."
+  ],
+  "humanApprovalGranted": false,
+  "aiApprovalGranted": false,
+  "publishingTriggered": false,
+  "entries": [
+    {
+      "group": "receive_vs_buy_first",
+      "ids": [
+        "XJW-CONV-chat-receive-package",
+        "XJW-CONV-chat-buy-first-look"
+      ],
+      "textNeighborScore": 0.192,
+      "reason": "兩篇都以購買或收到食品後首先查看什麼為核心互動，若兩者只是比較價格/規格/標示的問法不同，屬實質重複風險。",
+      "next": "對照最新版完整文案及原圖場景，保留最清楚版本；另一篇改成具體不同的開箱檢查步驟或其他真實情境，修改後重新驗圖。"
+    },
+    {
+      "group": "drink_made_order",
+      "ids": [
+        "XJW-CONV-chat-drink-made-to-order",
+        "XJW-GUILU-drink180-made-order",
+        "XJW-GUILU-drink30-made-order",
+        "XJW-SOCIAL-20260815-02-drink-made-to-order"
+      ],
+      "textNeighborScore": 0.24,
+      "reason": "多篇都以龜鹿飲接單後製作、5至7個工作天出貨為主要資訊，僅換容量與生活例子可能不足以形成獨立主題。",
+      "next": "先確認各篇是否已發布及歷史媒體狀態，不得再次發布同一教學角度；未發布者選擇真正不同且可用原圖支持的問題。"
+    },
+    {
+      "group": "drink_packaging_choice",
+      "ids": [
+        "XJW-CONV-chat-30-vs-180",
+        "XJW-CONV-chat-glass-vs-pouch-storage",
+        "XJW-SOCIAL-20260815-02-drink-30-vs-180"
+      ],
+      "textNeighborScore": 0.173,
+      "reason": "30cc玻璃裸罐與180cc鋁袋的型態/選擇被反覆描述；『選容量』與『收納方式』可能獨立但需檢查是否實際做出不同動作。",
+      "next": "比對原圖是否真呈現容量選擇或收納位置；如只有相同包裝陳列，不能只換標題當作獨立新圖。"
+    },
+    {
+      "group": "wanhua_street",
+      "ids": [
+        "XJW-CAND-20261208",
+        "XJW-CAND-20270305"
+      ],
+      "textNeighborScore": 0.158,
+      "reason": "兩篇都以小老闆清晨走過萬華街角為場景。『回店開門』與『注意花草』可為不同角度，但須檢視原圖構圖與動作差異。",
+      "next": "確認圖中一張為回店/開門，另一張為街角花草；若兩圖動作構圖重複，需改場景或重新配合文案。"
+    },
+    {
+      "group": "spring_outerwear",
+      "ids": [
+        "XJW-CAND-20270316",
+        "XJW-CAND-20270326"
+      ],
+      "textNeighborScore": 0.109,
+      "reason": "兩篇均以春季外出、外套與雨傘為核心，差別在看預報與玄關收納；須判定畫面中行為是否足以區分。",
+      "next": "逐張看是否呈現手機/天氣查詢、或玄關固定位置的收納動作；不足則精準修正文案或圖片。"
+    },
+    {
+      "group": "reopen_shop",
+      "ids": [
+        "XJW-CONV-cny-reopen",
+        "XJW-CONV-new-year-open-door"
+      ],
+      "textNeighborScore": 0.096,
+      "reason": "同樣敘述年節後開門、整理桌面、接回工作節奏，存在換時間措辭重發的風險。",
+      "next": "比對已發布狀態，選一個確實獨立的操作焦點；不得將同一開門整理故事換句話重發。"
+    },
+    {
+      "group": "soup_habit",
+      "ids": [
+        "XJW-CONV-chat-home-soup",
+        "XJW-CONV-chat-soup-day"
+      ],
+      "textNeighborScore": 0.099,
+      "reason": "兩篇都詢問家庭煮湯習慣。食材選擇與固定煮湯日可以區分，但應避免以相同湯鍋畫面和籠統結尾提問重複發布。",
+      "next": "檢查原圖是否各自呈現食材選擇與每週料理準備的不同情境，並確認與家常湯已發布文案的實質差異。"
+    },
+    {
+      "group": "trial_against_published",
+      "ids": [
+        "XJW-CONV-chat-trial-first",
+        "411869648852531_1507731638043720",
+        "4006896749331148648_78424002938",
+        "18078440909399328"
+      ],
+      "textNeighborScore": 0.116,
+      "reason": "歷史候選顯示跨平台已發布的初次認識龜鹿系列、依小匙/直接飲用/料理選擇內容；未發布試喝介紹需避免重述相同入門選擇問題。",
+      "next": "核對已發布原文與媒體後，只保留真正新增的試喝申請步驟或其他獨立內容，價格、試喝與交期需採正式當前規格。"
+    },
+    {
+      "group": "new_year_warm_drink",
+      "ids": [
+        "XJW-CONV-weather-cool-drink",
+        "XJW-CONV-new-year-warm-cup-share"
+      ],
+      "textNeighborScore": 0.108,
+      "reason": "兩篇均以溫熱飲品與生活節奏為核心，但新年共飲與換季飲食可能區分；仍需比對畫面動作及主題重複程度。",
+      "next": "明確核對節慶時點、角色動作與是否出現正式產品連結，無具體產品/品牌情境者不得清除審核阻擋。"
+    }
+  ]
+}
