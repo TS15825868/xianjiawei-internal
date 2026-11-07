@@ -1,0 +1,29 @@
+name: 仙加味三篇當前圖片動作文案修正及安全補證
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-three-action-copy-repairs-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Repair exactly three currently version-matched captions with current image SHA and D1 readback
+        run: node ops/repair-three-action-captions-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: three-action-copy-fixes-${{ github.run_id }}
+          path: three-action-copy-fix-results.json
+          retention-days: 7

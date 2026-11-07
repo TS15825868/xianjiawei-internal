@@ -1,0 +1,33 @@
+{
+  "scope": "three-actual-visual-action-copy-corrections",
+  "sources": "Three original 1254px current image binaries directly inspected; pre-existing ops/social-calendar-2026-11-to-2027-03-candidates.json prior captions; live D1 immutable editions CAS checked",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "items": [
+    {
+      "id": "XJW-CAND-20270119",
+      "copy": "開始討論年菜時，小老闆拿起一張空白紙，準備把家人愛吃的青菜料理列進菜單。桌上已有幾道蔬菜料理，仙加味想問：你家的年菜一定會出現哪道蔬菜？",
+      "evidence": "目前原圖中小老闆手持空白紙、用手指著紙，桌上可見幾盤已完成的蔬菜料理；圖中並未呈現菜單已填寫完成。新文案改成準備列入菜單，保留年菜蔬菜主題。",
+      "expectedCopy": "開始討論年菜時，小老闆拿出紙張，把家人愛吃的青菜料理先排進菜單。仙加味也很好奇，你家的年菜一定會出現哪道蔬菜？",
+      "expectedTitle": "年菜菜單先留一道蔬菜",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270119.webp"
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "copy": "整理家族留下的製作筆記時，小老闆在桌上翻開筆記本，拿著筆準備梳理鹿角與熬膠工序的老經驗。仙加味想把萬華累積的漢方飲食文化整理成更容易理解的內容。你會怎麼保存家裡傳下來的做法？",
+      "evidence": "目前原圖中小老闆手拿筆，筆尖朝向翻開的筆記本，旁有老冊、研磨器具及食材；書頁沒有可讀的完整工序文字。新文案描述準備梳理，不再宣稱每道工序已經寫完。",
+      "expectedCopy": "整理家族留下的製作筆記時，小老闆把每一道傳統工序重新記下。仙加味希望讓萬華起家的飲食文化，用現代方式繼續被認識。",
+      "expectedTitle": "從老手藝到現代日常，記錄一個工序",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270323.webp"
+    },
+    {
+      "id": "XJW-CAND-20261211",
+      "copy": "週五早上，小老闆在仙加味店裡把綠色與米白色的兩本筆記本分開放：一本準備記料理點子，另一本留給待辦事項。你習慣用一本筆記本，還是把不同事情分開記？",
+      "evidence": "目前原圖中小老闆雙手分別扶著綠色與米白色兩本合起來的筆記本，沒有已寫好的分類標籤或可讀內容。新文案以分本準備紀錄為動作，符合畫面。",
+      "expectedCopy": "週五早上，小老闆在仙加味店裡把料理點子與待辦事項分別記在不同筆記本，翻找資料時比較清楚。你習慣用一本筆記本，還是分開記不同事情？",
+      "expectedTitle": "桌邊的小筆記，你習慣怎麼分類",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp"
+    }
+  ]
+}
