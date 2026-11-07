@@ -26,7 +26,7 @@ for(const [id,policy] of Object.entries(expected)){try{
  const prior=await one('SELECT * FROM social_post_quality_reviews WHERE id=? AND post_id=?',policy.priorId,id);
  if(!prior||prior.decision!=='NEEDS_HUMAN_REVIEW'||prior.reviewer_type!=='AI'||prior.content_fingerprint!==fingerprint(post)||prior.image_url!==post.image_url||prior.image_sha256!==policy.sha)throw Error('Current bound AI review absent or mismatched');
  const e=JSON.parse(prior.evidence_json||'{}');
- if(e.review_scope!==policy.scope||e.content_fingerprint!==fingerprint(post)||e.image_sha256!==policy.sha||e.visual?.image_sha256!==policy.sha)throw Error('Unverified visual evidence version');
+ if(e.review_scope!==policy.scope||e.content_fingerprint!==fingerprint(post)||e.image_sha256!==policy.sha||(e.visual?.image_sha256&&e.visual.image_sha256!==policy.sha))throw Error('Unverified visual evidence version');
  if(e.checks?.mascot_companions?.result!=='DEFER'||e.checks?.duplicate?.result!=='DEFER'||keys.some(k=>e.checks?.[k]?.result!=='PASS'))throw Error('Not eligible for companion-only evidence delta');
  const profile=await one('SELECT email,role,active FROM profiles WHERE email=?',prior.authorized_by);
  if(!profile?.active||!['admin','owner'].includes(profile.role))throw Error('Reviewer role cannot anchor AI evidence');
