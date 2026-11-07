@@ -11,7 +11,8 @@
     "additionalUnauthorizedCompanions": 21,
     "onlyMascotExpected": 17,
     "mascotPlusDeerExpected": 4,
-    "allThreeExpected": 2
+    "allThreeExpected": 2,
+    "extraRelativeToOriginalSceneBrief": 21
   },
   "imageVersionNote": "The GitHub manifest imagePath/sourceSha256 is an existing source reference, NOT a fresh D1 database readback. Reverify current D1 image_url and SHA before applying review changes.",
   "noBulkRegeneration": true,
@@ -57,10 +58,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20261211",
@@ -79,10 +81,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20261222",
@@ -100,10 +103,11 @@
         "小烏龜"
       ],
       "unexpectedCharacters": [],
-      "roleScopeResult": "MATCHES_SPECIFIED_CAST",
+      "roleScopeResult": "MATCHES_SOURCE_BRIEF",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20261225",
@@ -122,10 +126,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270105",
@@ -144,10 +149,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270108",
@@ -166,10 +172,11 @@
       "unexpectedCharacters": [
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270112",
@@ -188,10 +195,11 @@
       "unexpectedCharacters": [
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270115",
@@ -210,10 +218,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270119",
@@ -232,10 +241,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270122",
@@ -254,10 +264,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270126",
@@ -276,10 +287,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270129",
@@ -298,10 +310,11 @@
       "unexpectedCharacters": [
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270223",
@@ -320,10 +333,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270226",
@@ -341,10 +355,11 @@
         "小烏龜"
       ],
       "unexpectedCharacters": [],
-      "roleScopeResult": "MATCHES_SPECIFIED_CAST",
+      "roleScopeResult": "MATCHES_SOURCE_BRIEF",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270302",
@@ -363,10 +378,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270305",
@@ -385,10 +401,11 @@
       "unexpectedCharacters": [
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270309",
@@ -407,10 +424,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270312",
@@ -429,10 +447,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270316",
@@ -451,10 +470,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270319",
@@ -473,10 +493,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270323",
@@ -495,10 +516,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270326",
@@ -517,10 +539,11 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     },
     {
       "postId": "XJW-CAND-20270330",
@@ -539,11 +562,13 @@
         "小鹿",
         "小烏龜"
       ],
-      "roleScopeResult": "REQUIRES_REMEDIATION",
+      "roleScopeResult": "EXTRA_RELATIVE_TO_SOURCE_BRIEF_NEEDS_POLICY_RECONCILIATION",
       "reviewMethod": "Viewed repository image pixels and compared to the exact per-post mediaPrompt; not inferred from hashes",
       "statusChange": "NONE",
-      "publicationAllowed": false
+      "publicationAllowed": false,
+      "imageMustRegenerate": false
     }
   ],
-  "remediation": "Keep every affected post pending_review/defer. Preserve original image and photo evidence; correct the scene image to comply with the current brief (avoid arbitrary crop/character swap), and re-review impacted mascot_companions, action, scene_environment, duplicate and content fingerprint before changing any AI decision. Never treat this source-only audit as an AI approval."
+  "remediation": "Do NOT bulk regenerate, auto-reject, or override latest owner-approved mascot style. Assess whether each scene's old no-companions prompt remains binding. If these are accepted fixed brand companions and the scene/characters otherwise match the copy, preserve the original pixels and correct stale generator-only constraints with evidence. If a specific per-post prohibition still binds, require a new matching scene/image and affected-check review. Keep pending/defer until full history dedup and 16-item review; no approval/scheduling/publication.",
+  "policyCaveat": "原始mediaPrompt限制角色組合，不必然等同最新品牌最終規格：使用者已認可固定小老闆、小鹿、小烏龜生活插畫風格。多出夥伴先列需核對，不自動判為不合格或全數重製；如新版品牌規範允許且圖文一致，應保存原圖並修正過時的單篇製圖限制。"
 }
