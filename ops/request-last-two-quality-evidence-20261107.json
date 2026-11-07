@@ -1,0 +1,14 @@
+{
+  "scope": "two-current-visual-checks-safe-rebind",
+  "ids": [
+    "XJW-CONV-chat-fixed-storage",
+    "XJW-CONV-new-year-slow-start"
+  ],
+  "reviewBasis": "independently viewed original 1254px images, actual same-version AI review, and formal mascot reference; cosmetics do not define character identity",
+  "expectedFinalQuality": "clear for eligible two only, home soup remains hold due raw/cooked separation",
+  "keepHistoricalDuplicateDefer": true,
+  "allowApproval": false,
+  "allowPublication": false,
+  "allowSchedule": false,
+  "noNewCost": true
+}
