@@ -1,0 +1,29 @@
+{
+  "schema": "xjw-two-ig-unreachable-media-planner-mirror-recovery-v1",
+  "purpose": "Restore only two known IG original CDN 403 images from independently published Metricool stored originals with same caption and publication time",
+  "originalIgCdnUnavailableRun": 42391189211,
+  "verifiedPlannerReachabilityRun": 42403514233,
+  "records": [
+    {
+      "originalIGPostId": "4003809463882866913_78424002938",
+      "originalIGUrl": "https://www.instagram.com/p/DeQY36LFeDh/",
+      "originalIGUtcTimestamp": "20261009020147",
+      "originalIGCaption": "週末前順手整理一下冰箱和櫃子，常常會發現很多日常其實只差一個小習慣。\n\n像龜鹿膏開罐後記得冷藏，這種簡單的事情先做好，後面就輕鬆很多。",
+      "metricoolPlannerId": 390408055,
+      "metricoolPlannedLocalTime": "2026-10-09T10:00:00",
+      "verifiedPublishedPlannerImage": "https://static.metricool.com/planner/202609/6889683-file-16822007336739654727.jpeg"
+    },
+    {
+      "originalIGPostId": "4003900963899413608_78424002938",
+      "originalIGUrl": "https://www.instagram.com/p/DeQtraNEZRo/",
+      "originalIGUtcTimestamp": "20261009050336",
+      "originalIGCaption": "週末前順手整理一下冰箱和櫃子，常常會發現，很多日常其實只差一個小習慣。\n\n像仙加味龜鹿膏，開罐後記得冷藏，固定放在冰箱同一格，下次取用時也比較容易找到。\n\n簡單的保存習慣，讓日常使用更順手。\n\n補養，是一種節奏。\n\n#仙加味 #龜鹿膏 #冷藏保存 #漢方生活 #日常補養",
+      "metricoolPlannerId": 391749052,
+      "metricoolPlannedLocalTime": "2026-10-09T13:03:00",
+      "verifiedPublishedPlannerImage": "https://static.metricool.com/planner/202610/6889683-file-10474567675227870038.jpeg"
+    }
+  ],
+  "noStatusMutations": true,
+  "noPublication": true,
+  "readOnlyExceptTemporaryCIArtifact": true
+}

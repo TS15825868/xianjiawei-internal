@@ -1,0 +1,26 @@
+name: 仙加味兩筆IG舊連結失效媒體精準鏡像復原
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-recover-two-instagram-planner-mirrors-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-historical-source-availability-readonly
+  cancel-in-progress: false
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Recover exactly two inaccessible IG published images from matching Metricool copies
+        run: node ops/recover-two-instagram-planner-mirrors-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-ig-mirror-${{ github.run_id }}
+          path: verified-two-historical-instagram-mirrors/
+          retention-days: 7
