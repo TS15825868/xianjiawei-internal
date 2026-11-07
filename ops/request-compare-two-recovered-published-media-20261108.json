@@ -1,0 +1,14 @@
+{
+  "schema": "xjw-current-pending-vs-two-recovered-published-v1",
+  "bases": [
+    42391189211,
+    42403837983,
+    42404159496
+  ],
+  "subject": "2026-10-09 published IG fridge storage images",
+  "expectedPending": 68,
+  "allowD1Writes": false,
+  "allowPublishing": false,
+  "noNewExpenses": true,
+  "doNotRepeatExisting178Recoveries": true
+}

@@ -1,0 +1,31 @@
+name: 仙加味68篇現圖與兩張已復原IG歷史圖逐張雜湊及感知去重（唯讀）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-compare-two-recovered-published-media-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-history-current-image-dedup-readonly
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet Pillow
+      - name: Verify source SHA and all 68 live pending original images locally against two published mirrors
+        run: python ops/compare-two-recovered-published-vs-current-20261108.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: two-recovered-vs-live-68-${{ github.run_id }}
+          path: compare-two-published-vs-current-report.json
+          retention-days: 7
