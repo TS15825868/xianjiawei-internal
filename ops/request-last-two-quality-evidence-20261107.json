@@ -10,5 +10,8 @@
   "allowApproval": false,
   "allowPublication": false,
   "allowSchedule": false,
-  "noNewCost": true
+  "noNewCost": true,
+  "retryAfterSourceCompatibilityFix": true,
+  "retryReason": "20261107 audit run 42374028257 cleared fixed-storage and blocked new-year solely due absent legacy visual.image_sha256; raw image hash and prior top-level SHA still mandatory; do not reprocess successful row",
+  "retryFromRun": 42374028257
 }
