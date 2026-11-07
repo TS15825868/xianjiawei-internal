@@ -10,5 +10,7 @@
   ],
   "reason": "Compare exact present captions and image scenes: duplicate of four-gen traditional-method message, and duplicate why-nonproduct-content message. Preserve more actionable, specific counterpart. Keep all original source versions.",
   "allowArchive": true,
-  "allowPublication": false
+  "allowPublication": false,
+  "retryFromRun": 42393044071,
+  "retryReason": "Prior action stopped before any D1 read/write due script request filename typo; corrected path; no prior successful work to repeat."
 }
