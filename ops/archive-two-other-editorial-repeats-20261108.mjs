@@ -33,7 +33,7 @@ for(const spec of items){
    if(published?.status!=='published'||!published.published_at||!['雞腿','香菇','排骨湯'].every(w=>published.copy.includes(w)))throw Error('Published soup source not verifiable');
   }else{
    const published=historic.records.instagram.find(x=>x.postId===spec.publishedId);
-   if(!published||!published.permalink?.startsWith('https://www.instagram.com/p/')||!published.content.includes('龜鹿膏')||!published.content.includes('100g')||!published.content.includes('保存'))throw Error('Published 100g jar source not verifiable');
+   if(!published||!published.permalink?.startsWith('https://www.instagram.com/p/')||!published.content.includes('龜鹿膏')||!published.content.includes('100g')||!published.content.includes('罐'))throw Error('Published 100g jar source not verifiable');
    sourceURL=published.permalink;
   }
   const p=await one('SELECT * FROM social_posts WHERE id=?',spec.id);
