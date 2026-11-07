@@ -1,0 +1,10 @@
+{
+  "scope": "only-decouple-content-compliance-from-history-duplicate",
+  "lawSource": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=L0040001",
+  "regulations": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=L0040140",
+  "legalCheckedOn": "2026-11-07",
+  "currentReviewMethod": "Preserve original review, hash-check original images and bind current D1 version; PASS only standalone no-efficacy-claim wording test, keep duplicate DEFER and no publishing approval",
+  "allowAIApproval": false,
+  "allowHumanApproval": false,
+  "allowPublish": false
+}

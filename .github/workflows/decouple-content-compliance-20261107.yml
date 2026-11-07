@@ -1,0 +1,28 @@
+name: 仙加味剩餘貼文合規與歷史去重舊阻擋拆分（不核准）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-decouple-compliance-review-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node ops/decouple-content-compliance-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: independent-compliance-${{ github.run_id }}
+          path: independent-compliance-review-results.json
+          retention-days: 7
