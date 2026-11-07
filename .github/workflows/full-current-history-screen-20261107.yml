@@ -1,0 +1,29 @@
+name: 仙加味全部剩餘貼文跨平台歷史去重完整掃描
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-all-active-dedup-audit-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-all-pending-dedup-readonly
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Audit all current active posts against FB, IG, Threads published history without modification
+        run: node ops/full-current-history-screen-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-active-dedup-${{ github.run_id }}
+          path: all-active-history-dedup-screen.json
+          retention-days: 7
