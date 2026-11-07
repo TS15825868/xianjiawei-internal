@@ -1,0 +1,29 @@
+name: 仙加味家常湯同角度兩篇安全去重封存
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-soup-choice-dedup-batch-20261107.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Verify original captions/photos and published D1 receipt before CAS archival
+        run: node ops/archive-soup-choice-duplicates-20261107.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: soup-choice-dedup-${{ github.run_id }}
+          path: two-soup-poll-dedup-results.json
+          retention-days: 7
