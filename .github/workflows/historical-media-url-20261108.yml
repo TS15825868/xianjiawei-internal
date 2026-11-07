@@ -1,0 +1,28 @@
+name: 仙加味歷史來源定位與連結可讀性唯讀驗證
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-history-source-gap-inspection-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-historical-source-availability-readonly
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node ops/inspect-historical-media-urls-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-url-audit-${{ github.run_id }}
+          path: historical-original-source-head-audit.json
+          retention-days: 7

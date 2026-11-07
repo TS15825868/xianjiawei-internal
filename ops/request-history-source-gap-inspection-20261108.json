@@ -1,0 +1,8 @@
+{
+  "scope": "original-source-reachability-without-media-downloads",
+  "previouslyRecoveredHistoricalAssets": 178,
+  "previouslyUnidentifiedUnavailableCount": 15,
+  "method": "Check original FB/IG known source URL HEAD and 1-byte range only, preserving 178 recovered history files and all D1 evidence; identify exact post/permalink-level missing URLs",
+  "mutateD1": false,
+  "publish": false
+}
