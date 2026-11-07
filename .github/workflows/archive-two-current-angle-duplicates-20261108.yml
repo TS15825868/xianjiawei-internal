@@ -1,0 +1,28 @@
+name: 仙加味兩篇實質重複角度安全封存（不發文）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-two-current-angle-duplicates-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node ops/archive-two-current-angle-duplicates-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: two-current-angle-archives-${{ github.run_id }}
+          path: two-current-angle-duplicates-results.json
+          retention-days: 7
