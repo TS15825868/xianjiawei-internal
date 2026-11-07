@@ -1,0 +1,95 @@
+{
+  "schema": "xjw-two-historical-ig-mirrors-vs-current-68-dedup-readback-v1",
+  "checkedAt": "2026-11-08",
+  "sourceAction": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42404585314",
+  "currentMain": "0f10d22cc5011b8f64ab0390e8c8fda85f38e529",
+  "sourcePhotos": [
+    {
+      "igId": "4003809463882866913_78424002938",
+      "metricoolId": 390408055,
+      "sha256": "b25f76805c3637883769d514a3e0428f87f2e0032902c311c86ae27ecdceeb90",
+      "gitPath": "assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg",
+      "topic": "龜鹿膏開罐後冷藏與固定位置"
+    },
+    {
+      "igId": "4003900963899413608_78424002938",
+      "metricoolId": 391749052,
+      "sha256": "151266c7d292d9d50e1bd13568781d5a9f0c8dbc3c7227be0d6056e0ba55594a",
+      "gitPath": "assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg",
+      "topic": "龜鹿膏100g與冰箱收納位置"
+    }
+  ],
+  "liveD1Baseline": {
+    "total": 161,
+    "pending_review": 68,
+    "archived": 89,
+    "published": 4
+  },
+  "audit": {
+    "livePendingLoaded": 68,
+    "originalImageByteSHAVerifiedAgainstCurrentAIReview": 68,
+    "missingOrMismatchedCurrentImages": 0,
+    "exactPublishedImageDuplicates": 0,
+    "nearDuplicateAtHamming12": 0,
+    "nearDuplicateAtHamming16": 0,
+    "minimumHammingDistance": 18
+  },
+  "closestPairs": [
+    {
+      "pending": "XJW-CONV-new-year-slow-start",
+      "distance": 18,
+      "ig": "4003900963899413608_78424002938"
+    },
+    {
+      "pending": "XJW-CONV-cny-childhood-now",
+      "distance": 20,
+      "ig": "4003809463882866913_78424002938"
+    },
+    {
+      "pending": "XJW-CONV-chat-no-standard-answer",
+      "distance": 21,
+      "ig": "4003809463882866913_78424002938"
+    },
+    {
+      "pending": "XJW-CONV-chat-opening-prep",
+      "distance": 21,
+      "ig": "4003809463882866913_78424002938"
+    },
+    {
+      "pending": "XJW-CONV-chat-traditional-image",
+      "distance": 21,
+      "ig": "4003809463882866913_78424002938"
+    }
+  ],
+  "editorialContext": {
+    "subject": "XJW-CONV-cny-fridge-clean",
+    "currentCaptionAngle": "過年前整理冰箱，打開後發現遺忘的醬料或食材",
+    "currentScene": "Q版小老闆拿透明食材保鮮盒放入開啟的冰箱，旁有分開小鹿小烏龜",
+    "historicPublishedCaptionAngle": "龜鹿膏100g開罐後冷藏、固定冰箱同一格便於取用",
+    "historicalVisual": "兩張已發布舊圖一張為商品及保存提醒的圖卡，另一張是小老闆指向冰箱內龜鹿膏100g的教學圖；不是同一畫面",
+    "narrowFinding": "新稿側重年前整理遺忘食材而非龜鹿膏收納保存教學；屬可區分生活角度，但仍不可宣稱對全部歷史已完成去重",
+    "finalDuplicateDecision": "DEFER"
+  },
+  "remainingHistoricSourceLimits": {
+    "priorPrivateRecoveryCandidates": 193,
+    "priorPrivateRecovered": 178,
+    "priorPrivateUnavailableWithoutIdCrosswalk": 15,
+    "publicSourceURL404or403": 5,
+    "verifiedIndependentPublishedMirrorsRestored": 2,
+    "publicOriginalURLMissingAfterTwoMirrors": 3,
+    "instagramChildrenAndThreadsHistoryCoverage": "not complete"
+  },
+  "permissions": {
+    "d1Mutation": false,
+    "aiApproved": false,
+    "humanApproved": false,
+    "scheduled": false,
+    "published": false,
+    "noAdditionalFees": true
+  },
+  "limitations": [
+    "64-bit perceptual difference hash with threshold 16 is an image screening heuristic; it cannot certify semantic distinctness.",
+    "The two recovered 2026-10-09 images are only two published historical images, not the full recovered 178 plus unreachable 15.",
+    "No broad duplicate PASS granted. Each pending post retains current evidence and human review/publication safeguards."
+  ]
+}
