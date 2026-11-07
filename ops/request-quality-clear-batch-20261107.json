@@ -1,0 +1,17 @@
+{
+  "scope": "clear-only-current-evidenced-visual-holds",
+  "basedOnLiveD1Audit": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42346948071",
+  "requestedOn": "2026-11-07",
+  "target": "all current pending_review image_quality_status=needs_review eligible for 13 current visual PASS, full image SHA check, immutable post fingerprint and CAS update",
+  "expectedUpperBound": 50,
+  "exclusions": [
+    "XJW-CONV-chat-home-soup",
+    "XJW-CONV-chat-fixed-storage",
+    "XJW-CONV-new-year-slow-start"
+  ],
+  "allowApproval": false,
+  "allowPublication": false,
+  "allowSchedule": false,
+  "unknownHistoricalDedup": "defer",
+  "budget": "NT$0 / US$0"
+}
