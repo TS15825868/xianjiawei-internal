@@ -6,5 +6,7 @@
   "currentReviewMethod": "Preserve original review, hash-check original images and bind current D1 version; PASS only standalone no-efficacy-claim wording test, keep duplicate DEFER and no publishing approval",
   "allowAIApproval": false,
   "allowHumanApproval": false,
-  "allowPublish": false
+  "allowPublish": false,
+  "retryAfterPreviousRun": 42387970081,
+  "retryReason": "24/25 successfully re-bound/read back; only XJW-CONV-chat-fixed-storage previous text said '未見疾病或食品生理功效承諾' rather than literal '療效'. Code now accepts exact valid legacy wording; successful 24 remain immutable skipped."
 }
