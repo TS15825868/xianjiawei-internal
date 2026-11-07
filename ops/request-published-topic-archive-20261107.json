@@ -13,5 +13,7 @@
   "basis": "Published Instagram official 2026-09-16 30cc/180cc comparison and 2026-08-06 first trial sampling content; avoid essentially identical angle repeated. Images and source records remain immutable.",
   "archiveAuthorization": true,
   "approve": false,
-  "publish": false
+  "publish": false,
+  "retryFromRun": 42376599884,
+  "retryReason": "First post successfully archived/read back; second trial-first blocked by over-strict lexical anchor '再決定'. Corrected to actual immutable D1 phrasing '不一定要馬上決定'; all SHA, statuses, historical proof and CAS unchanged."
 }
