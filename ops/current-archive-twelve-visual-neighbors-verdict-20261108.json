@@ -1,0 +1,155 @@
+{
+  "schema": "xjw-manually-reviewed-twelve-live-nearhash-pairs-v1",
+  "reviewedOn": "2026-11-08",
+  "mainAtReview": "7cf91f0f150a4021d79bc936e815863ee86c38b1",
+  "source": {
+    "freshLiveD1ReadRun": 42479953206,
+    "computerVisionPairReport": 42479318932,
+    "originalPhotoContactSheetArtifact": "xjw-12-visual-pairs-42479953206",
+    "sourceCurrentImageD1": true,
+    "actualImageBytesFromGitMain": true,
+    "editorialCompareUsesSameRunD1Copy": true
+  },
+  "summary": {
+    "pairCount": 12,
+    "currentVsCurrent": 8,
+    "currentVsArchived": 4,
+    "exactSameOriginalFile": 0,
+    "fullyDistinctSceneOrActionPairs": 11,
+    "currentVsArchivedSharedDoorActionButDifferentVersion": 1,
+    "pendingArchivedDeleted": 0,
+    "aiApprovals": 0,
+    "d1Writes": 0,
+    "publications": 0
+  },
+  "conclusions": [
+    {
+      "index": 1,
+      "current": "XJW-CONV-care-simple-checkin",
+      "reference": "XJW-CONV-cny-gift-choice",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "午休使用手機與紙張詢問家人午餐；另一張過年前寫心意卡並放提袋，具有紅燈籠、歲時和包裝主題",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 2,
+      "current": "XJW-CAND-20270115",
+      "reference": "XJW-CAND-20270326",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "窗邊紅棗食材辨識與甜湯準備；另一張玄關掛外套、整理雨傘及鑰匙，季節及動作不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 3,
+      "current": "XJW-CONV-chat-family-old-object",
+      "reference": "XJW-CONV-brand-third-generation-note",
+      "classification": "CURRENT_VS_ARCHIVED_DIFFERENT_ACTION",
+      "evidence": "老物件旁查看家族照片與石臼；已封存另一張在桌上翻看祖輩工藝照片，題材相近但動作及道具布局不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 4,
+      "current": "XJW-CONV-care-simple-checkin",
+      "reference": "XJW-CONV-chat-brand-not-only-product",
+      "classification": "CURRENT_VS_ARCHIVED_DIFFERENT_ACTION",
+      "evidence": "使用手機傳家人訊息；已封存圖為翻看相簿與品牌故事，不同情境與主要手部動作",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 5,
+      "current": "XJW-CAND-20261208",
+      "reference": "XJW-CONV-new-year-open-door",
+      "classification": "CURRENT_VS_ARCHIVED_SHARED_ACTION_KEEP_CURRENT",
+      "evidence": "兩張同為打開萬華木門，當前稿有提袋、街角及普通早晨；舊版是新年紅梅節慶開門且已封存。不是相同圖檔，仍記錄開門構圖重疊風險，不復活舊稿",
+      "internalVisualDecision": "RETAIN_WITH_EDITORIAL_OVERLAP_NOTE",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 6,
+      "current": "XJW-CONV-chat-no-standard-answer",
+      "reference": "XJW-CONV-cny-childhood-now",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "與來訪者一起看食材圖卡討論料理；另一張在年節店內翻看家族照片，人物、道具、節日重點不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 7,
+      "current": "XJW-CONV-chat-last-bowl",
+      "reference": "XJW-CONV-cny-gift-choice",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "家中餐桌端著最後一碗熟食湯並享用；另一張年節店內準備心意卡與提袋，完全不同動作",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 8,
+      "current": "XJW-CONV-chat-pantry-memory",
+      "reference": "XJW-CONV-chat-photo-size",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "透明乾貨罐分類紅棗與枸杞；另一張用手機及腳架拍攝30cc小玻璃罐，主體不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 9,
+      "current": "XJW-CAND-20261225",
+      "reference": "XJW-CONV-chat-luerong-intro",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "聖誕節圍桌擺點心；另一張小老闆以尺展示鹿茸粉75g原罐大小，場景及產品動作不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 10,
+      "current": "XJW-CONV-chat-buy-first-look",
+      "reference": "XJW-CONV-chat-family-old-object",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "用放大鏡查看空白資訊卡；另一張查看家族舊照片與石臼，意圖、器具與視覺不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 11,
+      "current": "XJW-CONV-care-before-home-message",
+      "reference": "XJW-CONV-new-year-open-door",
+      "classification": "CURRENT_VS_ARCHIVED_DIFFERENT_ACTION",
+      "evidence": "傍晚店外用手機報平安；封存新年圖是開門迎客，景深與動作不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    },
+    {
+      "index": 12,
+      "current": "XJW-CAND-20261211",
+      "reference": "XJW-CONV-chat-luerong-intro",
+      "classification": "BOTH_CURRENT_DIFFERENT_ACTION",
+      "evidence": "上午將兩本素面筆記本分類；另一張用尺展示鹿茸粉75g原罐，品項與動作不同",
+      "internalVisualDecision": "DISTINCT_CURRENT_SOURCE_VISUAL",
+      "notHistoryUniquenessPass": true
+    }
+  ],
+  "blockingHistoryStillMissing": {
+    "unidentifiedPrivateHistoricalCacheCount": 15,
+    "unverifiedPublishedSourceCount": 3,
+    "oldCarouselChildrenComplete": false,
+    "fullCrossPlatformUniqueCertified": false
+  },
+  "limitations": [
+    "This adjudicates only the twelve image perceptual-neighbor pairs that triggered the GitHub/main current-versus-archive scan; it is not complete published Meta/Instagram/Threads historical image uniqueness.",
+    "Archived source frames are not previously published duplicates. The one same-door action overlaps with an archived, not published, older candidate.",
+    "No AI_APPROVED and no release was granted. D1 duplicate DEFER remains pending broader platform historical source proofs."
+  ],
+  "controls": {
+    "humanApprovalNotImpersonated": true,
+    "approve": false,
+    "publish": false,
+    "schedule": false,
+    "noDeletionOfCurrentImages": true,
+    "noChangeOfD1History": true,
+    "noNewFees": true
+  }
+}
