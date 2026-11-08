@@ -56,10 +56,7 @@
     "forbidPosterWithinPoster": true,
     "requireSceneMatchesCaption": true,
     "requireSameStableChildBossAndSeparateDeerTurtle": true,
-    "retiredProductIdBlockList": [
-      "guilu-jiao",
-      "guilu-tangkuai"
-    ],
+    "retiredProductIdBlockList": [],
     "failedImageStatus": "draft_until_regenerated_then_pending_review",
     "qualityLabelDoesNotReplaceEvidenceVisualReview": true,
     "userApprovedVisualDirectionAt": "2026-10-28",
@@ -81,11 +78,8 @@
     "guiluDrink30cc": "30cc／罐，小玻璃裸罐無貼紙，正式原圖等比例",
     "guiluDrink180cc": "180cc／包，正式鋁袋原圖等比例",
     "luerongFen75g": "75g／罐，正式原罐及貼紙原圖等比例",
-    "retiredPublicProductIds": [
-      "guilu-jiao",
-      "guilu-tangkuai"
-    ],
-    "historicalErpData": "保留歷史訂單、成本、庫存與內部紀錄；禁止公開貼文重新推薦或自動復活",
+    "retiredPublicProductIds": [],
+    "historicalErpData": "龜鹿湯塊與龜鹿膠均為現行正式品項，僅能使用已核對的正式原圖與規格；其他ERP歷史訂單、成本、庫存與內部紀錄照常保留，不能因公開品項調整而刪除。",
     "qixuanTea": "暫停所有公開內容與圖片"
   },
   "copyPolicy": {

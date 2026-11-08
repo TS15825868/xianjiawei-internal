@@ -1,0 +1,29 @@
+name: 仙加味官方 LINE OA 導流用語精準修復
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-one-line-oa-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Repair one current LINE OA terminology with image SHA, D1 CAS, DEFER and readback
+        run: node ops/repair-one-line-oa-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: one-line-oa-${{ github.run_id }}
+          path: one-line-oa-copy-results.json
+          retention-days: 7
