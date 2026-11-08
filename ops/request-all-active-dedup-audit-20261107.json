@@ -1,8 +1,9 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-07",
-  "reason": "Review all remaining posts in one pass, compare current D1 latest edition against first-party FB/IG/Threads published captions and prior nearest-image evidence; preserve any missing 15 image source limitations",
+  "reason": "Current pending posts paginated with live count integrity; all AI human approvals and publishing remain disabled",
   "allowApproval": false,
   "allowPublication": false,
-  "mutateD1": false
+  "mutateD1": false,
+  "lastRerun": "2026-11-08"
 }

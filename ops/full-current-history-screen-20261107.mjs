@@ -14,9 +14,19 @@ async function query(s){
  const j=await r.json();if(!r.ok||!j.success||!Array.isArray(j.result)||j.result.some(x=>x.success===false))throw Error('D1 read failed '+JSON.stringify(j.errors||[]).slice(0,180));
  return j.result[0]?.results||[];
 }
-const pending=await query("SELECT * FROM social_posts WHERE status='pending_review' ORDER BY id LIMIT 100");
+async function queryAllPages(sql,pageSize=100){
+ const rows=[];
+ for(let offset=0;;offset+=pageSize){
+  if(offset>20000)throw Error('Unexpectedly large D1 pagination; stop rather than return partial data');
+  const batch=await query(`${sql} LIMIT ${pageSize} OFFSET ${offset}`);
+  if(!Array.isArray(batch)||batch.length>pageSize)throw Error('D1 paged query shape invalid');
+  rows.push(...batch);
+  if(batch.length<pageSize)return rows;
+ }
+}
+const pending=await queryAllPages("SELECT * FROM social_posts WHERE status='pending_review' ORDER BY id");
 const allCounts=await query("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status");
-const latest=await query("SELECT q.* FROM social_post_quality_reviews q WHERE q.post_id IN (SELECT id FROM social_posts WHERE status='pending_review') AND q.reviewed_at=(SELECT MAX(t.reviewed_at) FROM social_post_quality_reviews t WHERE t.post_id=q.post_id) ORDER BY q.post_id LIMIT 120");
+const latest=await queryAllPages("SELECT q.* FROM social_post_quality_reviews q WHERE q.post_id IN (SELECT id FROM social_posts WHERE status='pending_review') AND q.reviewed_at=(SELECT MAX(t.reviewed_at) FROM social_post_quality_reviews t WHERE t.post_id=q.post_id) ORDER BY q.post_id,q.reviewed_at,q.id");
 const ai=new Map(latest.map(x=>[x.post_id,x]));
 const metaRows=await query("SELECT status,result_json FROM social_meta_history_readonly WHERE run_id='XJW-META-HISTORY-20261105-V1' LIMIT 1");
 const meta=metaRows[0]?JSON.parse(metaRows[0].result_json||'{}'):{};
@@ -41,7 +51,11 @@ const rows=pending.map(p=>{
  const max=scores[0]?.score||0,maxIn=within[0]?.score||0;
  return{id:p.id,title:p.title,status:p.status,copySHA256:crypto.createHash('sha256').update(String(p.copy||'')).digest('hex'),imageUrl:p.image_url,imageQualityStatus:p.image_quality_status,copyImageFingerprint:fingerprint(p),currentAIReviewId:ar?.id||null,latestAIContentCurrent:!!eCur,latestAIDecision:ar?.decision||null,checks:checked,highestPublishedSimilarity:max,highestPendingSimilarity:maxIn,publishedCandidates:scores.slice(0,5),pendingCandidates:within.slice(0,4),previousVisualNeighbors:existing?.visualNearest?.slice(0,3)||[],oldCopySimilarityStale:revised.has(p.id),alert:max>=.16||maxIn>=.16?'MANUAL_EDITORIAL_ANGLE_CHECK':'NO_STRONG_CAPTION_COLLISION_IN_RETRIEVED_HISTORY',dedup:'DEFER_until_independent_visual_history_conclusion',mayBeScheduled:false,mayBePublished:false};
 });
-if(pending.length+Number(allCounts.find(x=>x.status==='archived')?.count||0)+Number(allCounts.find(x=>x.status==='published')?.count||0)!==161)throw Error('Unexpected total D1 count; do not report stale summary');
+const pendingCount=Number(allCounts.find(x=>x.status==='pending_review')?.count||0);
+const totalCount=allCounts.reduce((sum,row)=>sum+Number(row.count||0),0);
+if(!Number.isSafeInteger(totalCount)||totalCount<0||!Number.isSafeInteger(pendingCount)||pending.length!==pendingCount||new Set(pending.map(x=>x.id)).size!==pending.length)throw Error('Incomplete or duplicated live D1 pending snapshot; do not report truncated results');
+const endCounts=await query("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status");
+if(JSON.stringify(endCounts)!==JSON.stringify(allCounts))throw Error('Concurrent D1 status changes during audit; retry readonly snapshot');
 const output={schema:'xjw-all-active-version-bound-history-dedup-screen-v1',checkedAt:new Date().toISOString(),source:{d1:'direct Cloudflare D1 live read',facebook:'Meta official stored one-shot 74 Page posts',instagram:'Metricool first party 35 posts',threads:'Metricool first party 23 posts',visualNeighbors:'existing 79 perceptual hash and text-similarity outputs',historicalMediaRecovered:178,historicalMediaUnavailable:15},scope:'All current pending posts, no status or approvals modified; per-row latest evidence checked; numerical similarity is a screening signal, not a completed visual judgment',counts:allCounts,activePosts:pending.length,historyRows:history.length,historyByPlatform:{facebook:fb.length,instagram:other.filter(x=>x.platform==='instagram').length,threads:other.filter(x=>x.platform==='threads').length},alerts:rows.filter(x=>x.alert==='MANUAL_EDITORIAL_ANGLE_CHECK').length,copyExactPublished:rows.filter(x=>x.publishedCandidates.some(y=>y.score===1)).length,imageQualityUnresolved:rows.filter(x=>x.imageQualityStatus==='needs_review').length,currentVersionEvidence:rows.filter(x=>x.latestAIContentCurrent).length,aiApprovals:0,humanApprovals:0,d1Mutations:0,metricoolMutations:0,publications:0,limitations:['15 historical media bytes remain inaccessible, so pixel-level uniqueness across all prior posts is not certified','Older Instagram/Threads carousel children may be missing','Image nearest matches from 20261107 may use old copy versions for two corrected candidate texts','No numerical threshold grants a PASS; all ambiguity requires substantive current-image checks'],rows};
 fs.writeFileSync('all-active-history-dedup-screen.json',JSON.stringify(output,null,2)+'\n');
 console.log('ACTIVE_FULL_HISTORY_SCREEN',JSON.stringify({counts:output.counts,pending:output.activePosts,history:output.historyByPlatform,alerts:output.alerts,qualityUnresolved:output.imageQualityUnresolved,currentVersionEvidence:output.currentVersionEvidence,copyExactPublished:output.copyExactPublished,zeroApprovals:true,topAlerts:rows.filter(x=>x.alert==='MANUAL_EDITORIAL_ANGLE_CHECK').sort((a,b)=>Math.max(b.highestPublishedSimilarity,b.highestPendingSimilarity)-Math.max(a.highestPublishedSimilarity,a.highestPendingSimilarity)).slice(0,20).map(x=>({id:x.id,publishedScore:x.highestPublishedSimilarity,pendingScore:x.highestPendingSimilarity}))}));
