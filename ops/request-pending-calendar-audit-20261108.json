@@ -1,0 +1,8 @@
+{
+  "scope": "pending-calendar-readonly-20261108",
+  "noWrites": true,
+  "preserveHumanApproval": true,
+  "publish": false,
+  "schedule": false,
+  "reason": "Read current 68 pending records and exact proposed dates, no stale 11/07 snapshot."
+}
