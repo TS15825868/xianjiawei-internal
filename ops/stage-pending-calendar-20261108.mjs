@@ -10,7 +10,7 @@ const qt=x=>x==null?'NULL':"'"+String(x).replaceAll("'","''")+"'";
 const sql=(s,...a)=>{let i=0;const v=s.replace(/\?/g,()=>qt(a[i++]));if(i!==a.length)throw Error('Bind count');return v};
 async function query(s){const r=await fetch('https://api.cloudflare.com/client/v4/accounts/'+acct+'/d1/database/'+db+'/query',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({sql:s}),signal:AbortSignal.timeout(40000)});const j=await r.json();if(!r.ok||!j.success||!Array.isArray(j.result)||j.result.some(x=>x.success===false))throw Error('D1 response '+JSON.stringify(j.errors||[]).slice(0,240));return j.result}
 async function rows(s){return(await query(s)).flatMap(x=>x.results||[])}
-const posts=await rows("SELECT id,title,copy,image_url,status,proposed_scheduled_at,scheduled_at,published_at,approved_by,approved_at,updated_at,image_quality_status FROM social_posts WHERE status IN ('pending_review','approved','scheduled') ORDER BY id");
+const posts=await rows("SELECT * FROM social_posts WHERE status IN ('pending_review','approved','scheduled') ORDER BY id");
 const reviews=await rows("SELECT r.post_id,r.decision,r.content_fingerprint,r.image_url FROM social_post_quality_reviews r JOIN (SELECT post_id,MAX(reviewed_at) AS mx FROM social_post_quality_reviews GROUP BY post_id) m ON m.post_id=r.post_id AND m.mx=r.reviewed_at");
 const byId=new Map(posts.map(x=>[x.id,x])), byReview=new Map(reviews.map(x=>[x.post_id,x]));
 const day=s=>String(s||'').slice(0,10),wk=d=>{const t=new Date(d+'T00:00:00Z');t.setUTCDate(t.getUTCDate()-(t.getUTCDay()+6)%7);return t.toISOString().slice(0,10)};
@@ -37,7 +37,7 @@ for(const item of req.items){
  }catch(e){blocked.push({id:item.id,reason:String(e.message||e).slice(0,220)})}
 }
 const counts=await rows("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status");
-const props=await rows("SELECT COUNT(*) AS future, SUM(CASE WHEN proposed_scheduled_at<'2026-11-09' AND TRIM(COALESCE(proposed_scheduled_at,''))<>'' THEN 1 ELSE 0 END) AS stale FROM social_posts WHERE status='pending_review' AND (proposed_scheduled_at>='2026-11-09' OR proposed_scheduled_at<'2026-11-09')");
+const props=await rows("SELECT SUM(CASE WHEN proposed_scheduled_at>='2026-11-09' THEN 1 ELSE 0 END) AS future, SUM(CASE WHEN proposed_scheduled_at<'2026-11-09' AND TRIM(COALESCE(proposed_scheduled_at,''))<>'' THEN 1 ELSE 0 END) AS stale FROM social_posts WHERE status='pending_review'");
 const out={totalChanges:done.length,done,blocked,held:req.holds,counts,proposals:props[0]||{},AI_APPROVED:0,scheduled:0,publishedNew:0,noPublicSend:true};
 fs.writeFileSync('stage-pending-calendar-result.json',JSON.stringify(out,null,2)+'\n');
 console.log('XJW_STAGE_PENDING_CALENDAR '+JSON.stringify(out));

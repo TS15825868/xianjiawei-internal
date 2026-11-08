@@ -320,5 +320,7 @@
       "title": "過年煮一桌菜，你家一定不能少哪一道？",
       "reason": "seasonal_slots_at_capacity"
     }
-  ]
+  ],
+  "schemaRetry": 2,
+  "previousFailedRun": 42490794040
 }
