@@ -1,8 +1,8 @@
 {
   "schema": "xjw-operational-verifiable-open-issues-20261108-v1",
-  "capturedAt": "2026-11-08T17:56:00+08:00",
+  "capturedAt": "2026-11-08T18:47:00+08:00",
   "mode": "non-publishing operational status; records only tested external evidence; no approvals inferred",
-  "expectedMainParent": "686a741b0a0ea07331dc76112179ff2129056fb9",
+  "expectedMainParent": "697b80fd398cf3d54f915c9fd66c987b45b54f3a",
   "currentPending": {
     "d1SourceRun": 42466109404,
     "statusCounts": {
@@ -120,14 +120,15 @@
         "freePlan": true,
         "suspended": false,
         "lastDeploy": {
-          "id": "dep-dbk9mdijnfac73a0pdm0",
+          "id": "dep-dbo50vs9v7es73ea86g0",
           "status": "live",
-          "date": "2026-11-02"
+          "date": "2026-11-08",
+          "commit": "1fdd1ffac4fe6668486f3eb687381989b55dfe4f"
         },
-        "runtime": "BLOCKED_BY_RENDER_FREE_NPM_BUILD_HEAP_OOM_AFTER_GITHUB_DI_FIX",
+        "runtime": "LIVE_VERIFIED_POST_REPAIR_THREE_GET_ONLY_MONITORS",
         "logDate": "2026-11-04",
-        "error": "Legacy runtime DataSource mismatch confirmed: duplicated @n8n/typeorm class. New code pins singleton, but Render free npm build crashes before new runtime can start.",
-        "mitigation": "Do not wake or redeploy failing free service without a verified fix; independent GitHub GET-only fallback remains in place",
+        "error": "Previous DataSource / EventDestinationsRepository startup error no longer observed in new live logs; Python internal runner venv absent and optional MCP registry loader still warn.",
+        "mitigation": "Existing three read-only n8n monitor webhooks directly returned ok=true after Render readiness; keep all publishing and comment replies disabled and preserve independent hourly GitHub GET-only fallback.",
         "fix": {
           "validatedFixCommit": "bdd73abf48c75652594e54c1cfab43c29ab41a72",
           "pinNodeCommit": "1758db8e913d49e066d874b62a5c84d386b86d9a",
@@ -164,11 +165,33 @@
               "id": "dep-dbo4d1e7bikc73fueat0",
               "result": "build_failed_after_restoring_safe_256mb_environment",
               "reason": "Safe 256MB environment restored; follow-on Render npm build also failed with OOM, production readiness still unverified."
+            },
+            {
+              "id": "dep-dbo4juu7bikc73fuukr0",
+              "result": "build_failed",
+              "reason": "Stale Render cache, missing webidl-conversions during Kafka node-pre-gyp native install"
+            },
+            {
+              "id": "dep-dbo4l93l550s738nbebg",
+              "result": "build_failed",
+              "reason": "Cache cleared, Kafka fallback source builds required GitHub openssl/zstd downloads returning HTTP 504"
+            },
+            {
+              "id": "dep-dbo4vm95efls73cslpv0",
+              "result": "build_failed",
+              "reason": "Lifecycle scripts disabled but cached npm dependency graph exceeded 384MiB JS heap"
+            },
+            {
+              "id": "dep-dbo50vs9v7es73ea86g0",
+              "result": "live",
+              "reason": "Cold cache with install lifecycle scripts disabled, 2027 packages installed, verified read-only monitor source gate on startup, npm start succeeded"
             }
           ],
           "renderSafeEnvironmentRestored": {
-            "NODE_OPTIONS": "--max-old-space-size=256",
-            "XJW_N8N_SEPARATE_BUILD_HEAP": "0",
+            "NODE_OPTIONS": "--max-old-space-size=384 (npm build only)",
+            "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+            "NPM_CONFIG_IGNORE_SCRIPTS": "true",
+            "XJW_N8N_SEPARATE_BUILD_HEAP": "1",
             "XJW_N8N_RUNTIME_NODE_OPTIONS": "--max-old-space-size=256"
           },
           "noMigrationWrites": true,
@@ -179,9 +202,33 @@
             "credentialRows": 2,
             "migrations": 243
           },
-          "buildHeapTrial": "npm install OOM both at ~320 MiB and ~400 MiB despite CI validated TypeORM singleton",
-          "renderLiveValidated": false,
-          "liveServiceRecovered": false
+          "buildHeapTrial": "Resolved for deployment: 384MiB npm heap and fresh Render cache with lifecycle scripts disabled; upstream native Kafka compilation omitted; isolated-vm and n8n CLI tested in CI",
+          "renderLiveValidated": true,
+          "liveServiceRecovered": true,
+          "recoveryVerification": {
+            "deploymentId": "dep-dbo50vs9v7es73ea86g0",
+            "deployStatus": "live",
+            "buildSucceeded": true,
+            "readyLog": "n8n ready on ::, port 10000",
+            "runnerLog": "Registered runner JS Task Runner",
+            "readinessStatus": "ok",
+            "readOnlyMonitoringRun": 42472763488,
+            "readOnlyMonitorsPassed": [
+              "xjw-line-health-a7f8c2",
+              "xjw-ai-geo-9c3f75",
+              "xjw-system-health-d4b6e1"
+            ],
+            "n8nFirstRunDataPreserved": {
+              "workflows": 7,
+              "activeMonitors": 3,
+              "credentials": 2,
+              "executions": 103,
+              "migrations": 243
+            },
+            "userMessagesSent": 0,
+            "publicationCalls": 0,
+            "newFee": "0"
+          }
         }
       },
       "line": {
@@ -220,9 +267,8 @@
     "Three source-bound published media remain unverified after a targeted non-invasive retrieval.",
     "Older published carousel child coverage is not demonstrated complete.",
     "Latest 68 candidates all retain duplicate=DEFER until full source-image and editorial angle verification.",
-    "n8n Render free service has application DI crash despite last deploy status live; source of missing DataSource has not been proven.",
-    "n8n code-level singleton DataSource mismatch corrected and CI-proven, but Render Free npm install build OOM at 320–400MB prevents deployment; do not claim readiness or recommend paid plan.",
-    "Fresh official Metricool IG image source URLs for two old published posts still returned HTTP 403; public-source visual recovery unresolved."
+    "Fresh official Metricool IG image source URLs for two old published posts still returned HTTP 403; public-source visual recovery unresolved.",
+    "n8n Free service now live and three read-only GET monitor webhooks have passed, but optional Python internal task-runner virtualenv and MCP registry base-node warnings remain; these are not proven to affect the three current JS-only monitors."
   ],
   "noNewPaidServices": true,
   "noAutomatedPublication": true,
