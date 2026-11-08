@@ -6,5 +6,6 @@
   "expectedN8n": "2.35.7",
   "expectedTypeORM": "0.7.0",
   "runSourceGuardsExplicitly": true,
-  "why": "Confluent Kafka native binary dependency install fails on Render GitHub release 504. Test skipping package install lifecycle while checking n8n core and isolated-vm before any production change."
+  "why": "Confluent Kafka native binary dependency install fails on Render GitHub release 504. Test skipping package install lifecycle while checking n8n core and isolated-vm before any production change.",
+  "recheck": "Verify CLI executable n8n --version and explicit source guard before enabling lifecycle scripts bypass on Render"
 }

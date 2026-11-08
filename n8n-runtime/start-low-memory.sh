@@ -27,4 +27,8 @@ else
   : "${NODE_OPTIONS:=--max-old-space-size=256}"
 fi
 export NODE_OPTIONS N8N_CONCURRENCY_PRODUCTION_LIMIT N8N_RUNNERS_MAX_CONCURRENCY N8N_RUNNERS_MAX_OLD_SPACE_SIZE N8N_RUNNERS_GRANT_TOKEN_TTL
+# npm install may intentionally disable all dependency lifecycle scripts on Free
+# to avoid unrelated Kafka native compilation. Always enforce the same source
+# policy before n8n starts, including after cold restarts.
+node verify-monitor-sources.cjs
 exec n8n start

@@ -24,6 +24,23 @@ jobs:
         run: npm install --no-audit --no-fund --no-package-lock
       - name: Check native isolated-vm binding, singleton DI, and three monitor policies without DB
         run: node ops/check-n8n-ignore-scripts-20261108.cjs
+      - name: Verify n8n CLI loads and guarded start script syntax without DB
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh -n n8n-runtime/start-low-memory.sh
+          grep -q '^node verify-monitor-sources.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: n8n-ignore-scripts-ci-${{ github.run_id }}
+          path: n8n-ignore-scripts-ci-report.json
+          if-no-files-found: warn
+          retention-days: 7
+ n8n-runtime/start-low-memory.sh
+          n8n-runtime/node_modules/.bin/n8n --version
+          node n8n-runtime/verify-monitor-sources.cjs
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
