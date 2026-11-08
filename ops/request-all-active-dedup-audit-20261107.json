@@ -1,10 +1,10 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-07",
-  "reason": "Refresh all 68 pending versions after 8 D1 exact-current source-image grounded copy corrections (run 42464470805), 0 published or approved; keep actual visual historical uniqueness unresolved",
+  "reason": "Re-run all 68 current edited D1 drafts following image-bound CAS fixes 42465803840; detect remaining textual overlap without granting historical uniqueness or AI PASS",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-08",
-  "afterCopyRepairRun": 42464470805
+  "lastRerun": "2026-11-08T17:30:00+08:00",
+  "afterCopyRepairRun": 42465803840
 }
