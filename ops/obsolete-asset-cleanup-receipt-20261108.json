@@ -1,0 +1,56 @@
+{
+  "schema": "xjw-confirmed-obsolete-media-cleanup-receipt-v1",
+  "verifiedAt": "2026-11-08",
+  "repository": "TS15825868/xianjiawei-internal",
+  "basis": "Read-only GitHub Actions cross-checked complete repository path references, Cloudflare D1 current and historical social/post media columns, and existing newer-image versions. No owner approval needed for confirmed unreferenced files.",
+  "d1LastReadCounts": {
+    "archived": 89,
+    "pending_review": 68,
+    "published": 4
+  },
+  "deletionProofs": [
+    {
+      "path": "media/social-candidates/20261106/XJW-CAND-20270226.webp",
+      "kept": "media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
+      "auditRun": 42476506054,
+      "gitPathRefs": 0,
+      "d1PathRefs": 0,
+      "queryErrors": 0,
+      "gitDeletionCommit": "019484098905a883e8d175e1c4d0d2ca984f9325"
+    },
+    {
+      "path": "assets/post-images/2026-09-29/batch5/XJW-CONV-chat-opening-prep.jpg",
+      "kept": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "auditRun": 42477015902,
+      "gitPathRefs": 0,
+      "d1PathRefs": 0,
+      "queryErrors": 0,
+      "gitDeletionCommit": "f978d10c77423fc63214e805c6218b49a0930d4f"
+    }
+  ],
+  "retainedBecauseReferencedOrUncertain": [
+    "assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+    "assets/post-images/2026-09-30/fixes/XJW-CONV-chat-old-methods.jpg",
+    "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-opening-prep.jpg"
+  ],
+  "doneWorkflows": [
+    "read-only audit old February image",
+    "read-only audit historical/experimental image aliases",
+    "read-only exact-path audit old 15KB scene"
+  ],
+  "cleanupOfTemporaryOneShotAuditor": [
+    ".github/workflows/audit-orphaned-old-candidate-20261108.yml",
+    "ops/audit-orphaned-old-candidate-20261108.mjs",
+    "ops/request-orphaned-old-candidate-audit-20261108.json"
+  ],
+  "notes": [
+    "This receipt retains evidence of deleted files and safe replacement source paths; GitHub commit history also preserves all previous versions.",
+    "No social_posts or review history records were deleted. Valid product images, published assets, Metricool drafts and user customer data remain unchanged.",
+    "68 D1 pending posts still need full historical visual comparison before AI approval. Historical missing source evidence was not fabricated."
+  ],
+  "noD1Mutations": true,
+  "noAutoApprovals": true,
+  "noScheduled": true,
+  "noPublications": true,
+  "newExpenses": 0
+}
