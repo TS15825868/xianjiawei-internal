@@ -7,9 +7,25 @@
   "allowPublication": false,
   "candidates": [
     {
-      "path": "media/social-candidates/20261106/XJW-CAND-20270226.webp",
-      "newerPath": "media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
-      "reason": "Old same-ID image version coexists with newer v2; delete only if both live and historical D1 plus Git references prove no uses"
+      "path": "assets/post-images/2026-09-29/batch5/XJW-CONV-chat-opening-prep.jpg",
+      "newerPath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "reason": "15KB old candidate version; later formal image exists. Check full references before removing."
+    },
+    {
+      "path": "assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+      "newerPath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-quiet-work-audit-v1.jpg",
+      "reason": "Unused experimental 2D candidate stored after formal approved-image replacement; remove only if no D1 or git references."
+    },
+    {
+      "path": "assets/post-images/2026-09-30/fixes/XJW-CONV-chat-old-methods.jpg",
+      "newerPath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-old-methods-audit-v1.jpg",
+      "reason": "Superseded image for an already archived repetitive editorial angle; preserve if any D1 historical review references it."
+    },
+    {
+      "path": "assets/post-images/2026-09-30/batch6/XJW-CONV-chat-opening-prep.jpg",
+      "newerPath": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "reason": "Older opening prep version; newer formal image present, remove only if D1 and source references absent."
     }
-  ]
+  ],
+  "auditRun": "2026-11-08 cleanup second batch"
 }

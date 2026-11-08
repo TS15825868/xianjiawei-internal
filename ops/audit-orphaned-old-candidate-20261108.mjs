@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 const req=JSON.parse(fs.readFileSync('ops/request-orphaned-old-candidate-audit-20261108.json','utf8'));
-if(req.schema!=='xjw-orphaned-old-candidate-audit-v1'||req.mode!=='read-only'||req.mutateD1!==false||req.allowDeletion!==false||req.allowApproval!==false||req.allowPublication!==false||req.candidates?.length!==1)throw Error('Unsafe deletion audit request');
+if(req.schema!=='xjw-orphaned-old-candidate-audit-v1'||req.mode!=='read-only'||req.mutateD1!==false||req.allowDeletion!==false||req.allowApproval!==false||req.allowPublication!==false||(!Array.isArray(req.candidates)||req.candidates.length<1||req.candidates.length>5))throw Error('Unsafe deletion audit request');
 const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN;
 const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
 if(!account||!token||!db)throw Error('Missing live D1 credentials');
@@ -20,7 +20,7 @@ const scanColumns=['image','media','url','asset','path','photo','attachment','pa
 const results=[];
 for(const cand of req.candidates){
  const file=path.resolve(cand.path),newer=path.resolve(cand.newerPath);
- if(!file.startsWith(process.cwd()+path.sep)||!newer.startsWith(process.cwd()+path.sep)||!fs.existsSync(file)||!fs.existsSync(newer)||!cand.path.endsWith('.webp'))throw Error('Candidate or replacement invalid');
+ if(!file.startsWith(process.cwd()+path.sep)||!newer.startsWith(process.cwd()+path.sep)||!fs.existsSync(file)||!fs.existsSync(newer)||!/\.(?:webp|jpe?g|png)$/i.test(cand.path))throw Error('Candidate or replacement invalid');
  const filename=path.basename(file);
  let gitRefs=[];
  try{
