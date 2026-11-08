@@ -44,9 +44,8 @@ jobs:
           font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',20)
           for i,r in enumerate(rows,1):
             entry={'index':i,'id':r.get('id'),'title':r.get('title'),'status':r.get('status'),'image_url':r.get('image_url'),'flags':[]}
-            combined=' '.join(str(r.get(k) or '') for k in ('title','copy','image_alt'))
-            if any(x in combined for x in ('龜鹿膠','龜鹿湯塊')):
-              entry['flags'].append('retired_product_public')
+            # 龜鹿膠、龜鹿湯塊皆為仙加味正式產品；不可使用舊「retired」黑名單阻止新版正確內容。
+            # 產品圖仍需依當前正式主檔與包裝原圖核對，不能僅憑名稱自動通過圖片驗收。
             url=str(r.get('image_url') or '')
             rel=unquote(url[len(base):]) if url.startswith(base) else None
             entry['repo_path']=rel
