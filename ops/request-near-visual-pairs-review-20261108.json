@@ -1,0 +1,9 @@
+{
+  "schema": "xjw-inspect-12-near-perceptual-pairs-v1",
+  "readOnly": true,
+  "sourceRun": 42479318932,
+  "allowReviewDecisionWrite": false,
+  "allowDelete": false,
+  "allowPublish": false,
+  "reason": "Review all 12 current near-hash pairs visually against their source files and up-to-date D1 captions, without mutating either."
+}
