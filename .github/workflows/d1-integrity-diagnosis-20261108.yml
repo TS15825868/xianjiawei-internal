@@ -34,7 +34,7 @@ jobs:
             ['invalid_status',"SELECT COUNT(*) AS bad FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')"],
             ['missing_image',"SELECT COUNT(*) AS bad FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') AND TRIM(COALESCE(image_url,''))=''"],
             ['missing_schedule',"SELECT COUNT(*) AS bad FROM social_posts WHERE status='scheduled' AND (scheduled_at IS NULL OR TRIM(scheduled_at)='')"],
-            ['broken_media',"SELECT p.id,p.status,p.image_url FROM social_posts p LEFT JOIN media_assets m ON m.id=substr(p.image_url,instr(p.image_url,'/media/')+7) WHERE p.status IN ('draft','pending_review','approved','scheduled') AND (p.image_url LIKE '/media/%' OR p.image_url LIKE 'https://xianjiawei-internal.tung314069.workers.dev/media/%') AND (m.id IS NULL OR TRIM(COALESCE(m.data_base64,''))='')"],
+            ['broken_media',"SELECT p.id,p.status,p.image_url FROM social_posts p LEFT JOIN media_assets m ON m.id=substr(p.image_url,instr(p.image_url,'/media/')+7) WHERE p.status IN ('draft','pending_review','approved','scheduled') AND (substr(p.image_url,1,7)='/media/' OR substr(p.image_url,1,length('https://xianjiawei-internal.tung314069.workers.dev/media/'))='https://xianjiawei-internal.tung314069.workers.dev/media/') AND (m.id IS NULL OR TRIM(COALESCE(m.data_base64,''))='')"],
             ['active_refs',"SELECT id,status,image_url FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND TRIM(COALESCE(image_url,''))<>'' ORDER BY status,id"],
             ['foreign_keys','PRAGMA foreign_key_check']
           ];
