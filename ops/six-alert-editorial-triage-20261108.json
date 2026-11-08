@@ -1,0 +1,51 @@
+{
+  "schema": "xjw-six-alert-targeted-editorial-triage-v1",
+  "at": "2026-11-08",
+  "source": {
+    "currentD1Run": 42453743083,
+    "fullPending": 68,
+    "historyComparisons": 132,
+    "visuals": "five direct-original visual inspections; one PNG unavailable for decoding via GitHub binary connector"
+  },
+  "claims": {
+    "all6DuplicatePASS": false,
+    "autoApproval": false,
+    "publication": false
+  },
+  "alerts": [
+    {
+      "id": "XJW-CAND-20261208",
+      "result": "distinct_opening_shop_action_vs_spring_flower_walk",
+      "action": "copy_fix_with_version_CAS; keep duplicate DEFER"
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "result": "distinct_spring_flower_street_walk",
+      "action": "preserve original, keep duplicate DEFER until full history"
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "result": "ordering_lead_time distinct angle from old trials; existing caption not image-specific",
+      "action": "copy_fix_with_version_CAS; keep duplicate DEFER"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "result": "packaging storage vs published 180cc specification; image shows shop shelf plus product",
+      "action": "hold for authoritative formal product-photo provenance, keep duplicate DEFER"
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "result": "generic purchasing criteria vs parcel-receipt angle; original PNG binary not decodable by connected GitHub media read",
+      "action": "hold until direct original image review, keep duplicate DEFER"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "result": "opened parcel and blank card seen; original caption generic; D1 remote metricool sync exists",
+      "action": "hold for coordinated remote Metricool draft check and CAS, keep duplicate DEFER"
+    }
+  ],
+  "warnings": [
+    "15 historical media items and older IG/Threads carousel children remain unverified",
+    "These are editorial pair distinctions, not comprehensive historical-image uniqueness or publish approvals"
+  ]
+}

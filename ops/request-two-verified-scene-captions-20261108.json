@@ -1,0 +1,25 @@
+{
+  "scope": "two-verified-scene-caption-remediations-20261108",
+  "source": "2026-11-08 current D1 full snapshot and exact original GitHub media visually inspected",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "items": [
+    {
+      "id": "XJW-CAND-20261208",
+      "expectedTitle": "萬華街角的早晨，先從開門開始",
+      "expectedCopy": "清晨走過萬華熟悉的街道，再回店裡準備一天的工作，是仙加味延續多年的日常片段。你也有一條走不膩的老街嗎？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
+      "copy": "清晨，小老闆走到仙加味萬華店門口，手握門把準備開門，另一手提著提袋。小鹿和小烏龜跟在旁邊，街角的紅磚老屋與燈籠就在眼前。\n\n開店前先把門打開、看一眼熟悉的街景，是一天開始的小動作。你上工前通常會先做什麼？",
+      "evidence": "原圖直接核對：短髮米白上衣、綠圍裙紅章小老闆右手握木門把手，左手提袋；小鹿小烏龜分開站立，旁有萬華風格紅磚、燈籠，與20270305的花卉春日街景動作不同。未宣稱歷史所有圖片唯一。"
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "expectedTitle": "龜鹿飲是先做好放著嗎？",
+      "expectedCopy": "有人會問龜鹿飲是不是平常就先做好放著。\n\n仙加味龜鹿飲目前是接單後製作，約5～7個工作天出貨。這個交期是龜鹿飲專用，不會套到其他產品。\n\n如果有預計使用的時間，記得把製作時間一起算進去。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+      "copy": "在仙加味萬華店內，小老闆翻開筆記本、拿起筆，桌邊擺著月曆；小鹿在食材架旁，小烏龜陪著看日期。\n\n有人問龜鹿飲是不是現貨。仙加味龜鹿飲採接單後製作，約5～7個工作天出貨；這個交期僅適用龜鹿飲。預計使用前，可以先把製作與寄送安排的時間算進去。\n\n訂購食品時，你習慣先確認交期，還是先看包裝規格？",
+      "evidence": "原圖直接核對：小老闆於桌前握筆寫在打開的筆記本上，旁有直立月曆；小鹿站左側食材架，小烏龜在右側月曆後。文案不宣稱圖片中已有實際訂單；重點為交期安排而非既有龜鹿飲試喝促銷。"
+    }
+  ]
+}

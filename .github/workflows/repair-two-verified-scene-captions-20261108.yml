@@ -1,0 +1,29 @@
+name: 仙加味兩篇當前圖文與歷史主題精準修正（不核准不發布）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-two-verified-scene-captions-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Repair exactly two version-matched, visually verified captions with image SHA checks and D1 readback
+        run: node ops/repair-two-verified-scene-captions-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: two-verified-scene-fixes-${{ github.run_id }}
+          path: two-scene-copy-fix-results.json
+          retention-days: 7
