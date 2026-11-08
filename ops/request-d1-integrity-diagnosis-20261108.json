@@ -7,5 +7,6 @@
   "publish": false,
   "correctedPredicate": "substr-prefix-no-like",
   "priorDiagnosticRun": 42489566865,
-  "reason": "D1 read-only 7/8 passed and broken_media failed LIKE or GLOB pattern too complex; replacing LIKE with equivalent exact prefix substr in same 8 queries."
+  "reason": "Refresh live D1 status and integrity for owner-authorized three-system release verification; preserve all completed evidence.",
+  "requestId": "20261108-three-system-release-c955820c"
 }
