@@ -14,7 +14,7 @@ function inspectStart(overrides={}){
   writeFileSync(stub,'#!/bin/sh\nprintf "%s|%s|%s|%s|%s|%s" "$N8N_CONCURRENCY_PRODUCTION_LIMIT" "$N8N_RUNNERS_MAX_CONCURRENCY" "$N8N_RUNNERS_MAX_OLD_SPACE_SIZE" "$NODE_OPTIONS" "$N8N_RUNNERS_GRANT_TOKEN_TTL" "$1"\n');
   chmodSync(stub,0o700);
   const env={...process.env,PATH:stubDir+path.delimiter+(process.env.PATH||'')};
-  for(const key of ['N8N_CONCURRENCY_PRODUCTION_LIMIT','N8N_RUNNERS_MAX_CONCURRENCY','N8N_RUNNERS_MAX_OLD_SPACE_SIZE','NODE_OPTIONS','N8N_RUNNERS_GRANT_TOKEN_TTL'])delete env[key];
+  for(const key of ['N8N_CONCURRENCY_PRODUCTION_LIMIT','N8N_RUNNERS_MAX_CONCURRENCY','N8N_RUNNERS_MAX_OLD_SPACE_SIZE','NODE_OPTIONS','N8N_RUNNERS_GRANT_TOKEN_TTL','XJW_N8N_SEPARATE_BUILD_HEAP','XJW_N8N_RUNTIME_NODE_OPTIONS'])delete env[key];
   Object.assign(env,overrides);
   const result=spawnSync('sh',['start-low-memory.sh'],{
    cwd:__dirname,env,encoding:'utf8',timeout:3000
@@ -45,4 +45,12 @@ test('empty configured limits receive safe defaults',()=>{
   NODE_OPTIONS:'',
   N8N_RUNNERS_GRANT_TOKEN_TTL:'',
  }),'1|1|128|--max-old-space-size=256|480|start');
+});
+
+
+test('separate npm build heap cannot inflate the running n8n heap',()=>{
+ assert.equal(inspectStart({XJW_N8N_SEPARATE_BUILD_HEAP:'1',NODE_OPTIONS:'--max-old-space-size=400',XJW_N8N_RUNTIME_NODE_OPTIONS:'--max-old-space-size=256'}),'1|1|128|--max-old-space-size=256|480|start');
+});
+test('separate runtime setting remains operator adjustable without changing send flags',()=>{
+ assert.equal(inspectStart({XJW_N8N_SEPARATE_BUILD_HEAP:'1',NODE_OPTIONS:'--max-old-space-size=400',XJW_N8N_RUNTIME_NODE_OPTIONS:'--max-old-space-size=224'}),'1|1|128|--max-old-space-size=224|480|start');
 });

@@ -18,7 +18,13 @@ set -eu
 # n8n itself is a separate Node.js process. On a 512 MiB free instance,
 # constrain its old-space heap independently of task-runner limits. This cannot
 # bound native/child-process RSS and is NOT proof of OOM recovery.
-# Explicit NODE_OPTIONS supplied by an operator always wins.
-: "${NODE_OPTIONS:=--max-old-space-size=256}"
+# A separate opt-in build heap may be set for npm install on a low-RAM Render build.
+# NEVER apply that build heap to the running n8n process. Without the opt-in,
+# retain operator-provided NODE_OPTIONS unchanged for backward compatibility.
+if [ "${XJW_N8N_SEPARATE_BUILD_HEAP:-}" = "1" ]; then
+  NODE_OPTIONS="${XJW_N8N_RUNTIME_NODE_OPTIONS:---max-old-space-size=256}"
+else
+  : "${NODE_OPTIONS:=--max-old-space-size=256}"
+fi
 export NODE_OPTIONS N8N_CONCURRENCY_PRODUCTION_LIMIT N8N_RUNNERS_MAX_CONCURRENCY N8N_RUNNERS_MAX_OLD_SPACE_SIZE N8N_RUNNERS_GRANT_TOKEN_TTL
 exec n8n start
