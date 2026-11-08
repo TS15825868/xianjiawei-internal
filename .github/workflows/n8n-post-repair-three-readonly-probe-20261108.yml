@@ -1,0 +1,40 @@
+name: 仙加味 n8n 修復後三條唯讀監控實連驗收
+on:
+  push:
+    branches: [main]
+    paths:
+      - ops/request-n8n-post-repair-live-probe-20261108.json
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify request and fail closed without any publication permissions
+        run: |
+          node - <<'NODE'
+          const r=require('./ops/request-n8n-post-repair-live-probe-20261108.json');
+          if(r.scope!=='three-previously-active-n8n-readonly-monitors-post-repair'||r.testedDeployId!=='dep-dbo50vs9v7es73ea86g0'||r.allowApproval!==false||r.allowPublishing!==false||r.allowCommentReply!==false||r.allowDatabaseWrites!==false||r.onlyGet!==true||r.activeWorkflowNames?.length!==3)throw Error('Unexpected monitor probe request');
+          console.log('N8N_POST_REPAIR_PROBE_POLICY_PASS',JSON.stringify({onlyGet:true,monitorCount:3,deploy:r.testedDeployId}));
+          NODE
+      - name: Confirm actual n8n readiness without bypassing health check
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 0 --connect-timeout 12 --max-time 40 "https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness" -o /tmp/xjw-n8n-ready.json
+          node -e "const r=require('/tmp/xjw-n8n-ready.json');if(r.status!=='ok')process.exit(1);console.log('N8N_READINESS_VERIFIED',r.status)"
+      - name: Check all three existing read-only monitors by safe GET only
+        shell: bash
+        run: |
+          set -euo pipefail
+          for route in xjw-line-health-a7f8c2 xjw-ai-geo-9c3f75 xjw-system-health-d4b6e1; do
+            echo "Probing previously verified GET-only monitor: $route"
+            curl -fsS --retry 0 --connect-timeout 15 --max-time 60 "https://xianjiawei-n8n-longterm.onrender.com/webhook/$route" -o /tmp/xjw-monitor-result.json
+            node -e "const r=require('/tmp/xjw-monitor-result.json');if(r.ok!==true)throw Error('Monitor reported non-success');console.log('N8N_MONITOR_PASSED', '$route')"
+          done
+          echo "N8N_ALL_THREE_MONITORS_PASS"
