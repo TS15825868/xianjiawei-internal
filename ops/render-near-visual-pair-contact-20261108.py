@@ -11,7 +11,7 @@ acct=os.environ.get('CLOUDFLARE_ACCOUNT_ID');token=os.environ.get('CLOUDFLARE_AP
 db=re.search(r'"database_id"\s*:\s*"([a-f0-9-]+)"',pathlib.Path('wrangler.jsonc').read_text()).group(1)
 if not acct or not token:raise RuntimeError('D1 credentials missing')
 dburl=f'https://api.cloudflare.com/client/v4/accounts/{acct}/d1/database/{db}/query'
-sql='SELECT id,title,copy,status,image_url FROM social_posts WHERE status IN (\\'pending_review\\',\\'archived\\',\\'published\\') ORDER BY id'
+sql="SELECT id,title,copy,status,image_url FROM social_posts WHERE status IN ('pending_review','archived','published') ORDER BY id"
 req=urllib.request.Request(dburl,data=json.dumps({'sql':sql}).encode(),method='POST',headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'})
 with urllib.request.urlopen(req,timeout=45) as resp:payload=json.load(resp)
 if payload.get('success') is not True or payload['result'][0].get('success') is not True:raise RuntimeError('D1 query failed')
