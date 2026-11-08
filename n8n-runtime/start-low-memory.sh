@@ -30,5 +30,5 @@ export NODE_OPTIONS N8N_CONCURRENCY_PRODUCTION_LIMIT N8N_RUNNERS_MAX_CONCURRENCY
 # npm install may intentionally disable all dependency lifecycle scripts on Free
 # to avoid unrelated Kafka native compilation. Always enforce the same source
 # policy before n8n starts, including after cold restarts.
-node verify-monitor-sources.cjs
+node verify-monitor-sources.cjs >&2
 exec n8n start
