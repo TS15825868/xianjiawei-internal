@@ -1,0 +1,7 @@
+{
+  "scope": "all-current-pending-image-sha-readonly",
+  "mutateD1": false,
+  "allowApproval": false,
+  "allowPublication": false,
+  "reason": "Verify image byte integrity for each current pending D1 row against latest AI evidence and current main; no historical media re-download; do not grant dedup PASS"
+}
