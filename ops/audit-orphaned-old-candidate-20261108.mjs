@@ -24,7 +24,7 @@ for(const cand of req.candidates){
  const filename=path.basename(file);
  let gitRefs=[];
  try{
- const hits=execFileSync('git',['grep','-n','-F',filename,'--','.',':!ops/request-orphaned-old-candidate-audit-20261108.json'],{encoding:'utf8',maxBuffer:1024*1024});
+ const hits=execFileSync('git',['grep','-n','-F',cand.path,'--','.',':!ops/request-orphaned-old-candidate-audit-20261108.json'],{encoding:'utf8',maxBuffer:1024*1024});
  gitRefs=hits.trim().split('\n').filter(Boolean);
  }catch(e){if(e.status!==1)throw e}
  const dbRefs=[];const skipped=[];
@@ -35,7 +35,7 @@ for(const cand of req.candidates){
    if(!/^[a-zA-Z0-9_]+$/.test(col.name)||!scanColumns.some(w=>col.name.toLowerCase().includes(w)))continue;
    if(!/CHAR|TEXT|JSON|CLOB|VARCHAR|^$/i.test(col.type||''))continue;
    try{
-    const found=await query('SELECT COUNT(*) AS n FROM "'+tab.name+'" WHERE CAST("'+col.name+'" AS TEXT) LIKE '+quote('%'+filename+'%'));
+    const found=await query('SELECT COUNT(*) AS n FROM "'+tab.name+'" WHERE instr(CAST("'+col.name+'" AS TEXT), '+quote(cand.path)+')>0');
     const count=Number(found[0]?.n||0);
     if(count>0)dbRefs.push({table:tab.name,column:col.name,count});
    }catch(e){skipped.push(tab.name+'.'+col.name+':'+String(e.message||e).slice(0,120))}
