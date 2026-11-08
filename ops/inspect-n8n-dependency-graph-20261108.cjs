@@ -33,4 +33,4 @@ const report={schema:req.scope,checkedAt:new Date().toISOString(),node:process.v
  databaseMutations:0,deployments:0,externalNetworkWrites:0,aiApprovals:0,publications:0};
 fs.writeFileSync('n8n-dependency-di-report.json',JSON.stringify(report,null,2)+'\n');
 console.log('N8N_DI_DEPENDENCY',JSON.stringify({node:process.version,expected:runtime.dependencies.n8n,installed:n8nVersion,match:packageMatches,root:resolved.runtime,withinN8n:resolved.n8n,withinDb:resolved.db,classIdentity}));
-if(!packageMatches)process.exitCode=1;
+if(!packageMatches||!classIdentity.sameDataSourceType||!classIdentity.sameDIContainer)process.exitCode=1;

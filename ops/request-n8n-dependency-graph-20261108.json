@@ -1,9 +1,9 @@
 {
   "scope": "n8n-dependency-graph-only-20261108",
-  "sourceCommit": "d903dcee309042f7af71921dc5a8d576012e7928",
+  "sourceCommit": "097cd1aa54c45f7a263b7cff27f6098448886b16",
   "allowDeployment": false,
   "allowDatabaseAccess": false,
   "allowPublication": false,
   "reason": "Read-only package dependency resolution on fresh runner to triage EventDestinationsRepository DataSource/DI undefined manager without touching live database",
-  "stage": "compare typeorm DataSource class token and DI container identity inside n8n vs @n8n/db"
+  "stage": "pin matching @n8n/typeorm 0.7.0 at runtime root and verify singleton DataSource across both n8n and @n8n/db"
 }
