@@ -1,0 +1,42 @@
+{
+  "scope": "four-scene-grounded-copy-remediation",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "reason": "Four source images directly inspected: original generic or mismatched copy corrected to depicted objects, action, time and brand; original media unchanged. Keep historical duplicate DEFER and artificial approval disabled.",
+  "basedOnMain": "26d607b37898dbfe234848f1444cd00ee6d63a6f",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "copy": "在仙加味萬華店裡，小老闆把幾張畫著不同食材的圖卡攤在桌上，和來訪的朋友一起看。有的卡片畫著紅棗，有的畫著植物，先認識外形，再聊聊日常料理會怎麼使用。\n\n你第一次看到陌生的漢方食材時，最想先知道它的名稱、料理搭配，還是保存方式？",
+      "evidence": "原圖的小老闆指向桌上的多張食材圖卡，面前坐著一位來訪女性，旁邊分立小鹿和小烏龜。",
+      "expectedTitle": "有些問題，其實沒有標準答案",
+      "expectedCopy": "客人有時候會問：「我到底應該選哪一個？」\n\n但很多生活上的選擇，本來就不一定只有一個答案。有人喜歡方便，有人喜歡慢慢準備。仙加味更想先知道的是：你的日常是怎麼過的？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "copy": "下雨的午後，小老闆坐在仙加味萬華店裡的窗邊，手裡捧著一杯飲品，桌上擺著紅棗和乾燥食材。雨滴落在窗上，小鹿和小烏龜也留在室內陪著。\n\n這樣的天氣，準備一杯溫熱飲品或一鍋家常湯，都是熟悉的飲食日常。你遇到雨天會先想喝熱茶，還是煮點熱湯？",
+      "evidence": "原圖窗外明顯下雨，桌邊小老闆持杯，桌上有紅棗與乾食材、小鹿、小烏龜及窗邊雨傘；不宣稱杯內飲品或溫度。",
+      "expectedTitle": "下雨天，你會想喝什麼？",
+      "expectedCopy": "下雨的時候，把手邊的事情整理好，坐到窗邊看一會兒雨，也是很平常的片刻。\n\n仙加味想記錄的生活節奏，不只在產品裡，也在萬華店裡這些安靜的小事裡。\n\n雨天，你比較想喝熱茶、咖啡、湯，還是其他的？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "copy": "年底傍晚，小老闆在仙加味萬華店裡打開食材木櫃，一邊看看抽屜裡的紅棗與乾貨，一邊拿著小紙卡準備記下接下來要整理的事。小鹿和小烏龜在旁邊看著。\n\n這些不顯眼的小事，也是日常工作的一部分。你今年有哪一件看似很小、做完卻特別有成就感的事？",
+      "evidence": "原圖呈現傍晚、小老闆手拉食材木櫃抽屜把手，另一手拿空白紙卡，前景紅棗與乾貨，兩夥伴分開；不得宣稱已填妥卡片或完成全部收納。",
+      "expectedTitle": "今年有沒有一件小事，你很慶幸自己做了？",
+      "expectedCopy": "一年快走到尾聲時，很容易只想到還沒做完的事。換個方向想，今年有沒有一件很小、但你很慶幸自己有做的事情？\n\n仙加味小老闆也準備把今年在萬華店裡做過的事慢慢整理一下。補養，是一種節奏。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-cny-last-day-reset",
+      "copy": "年假最後一天的傍晚，小老闆坐在門邊，翻開筆記本，旁邊放著隔天要帶的背包和鞋子，準備想想開工後先做哪一件事。小鹿和小烏龜在一旁陪著。\n\n仙加味的日常也從收好物品、準備隔天要用的東西，慢慢接回熟悉的工作節奏。你收假前習慣先整理背包，還是先看隔天的待辦？",
+      "evidence": "原圖夜色燈籠與門口、背包及鞋子可見，小老闆翻開空白筆記本、兩夥伴分開；新文案不冒充筆記已完成。",
+      "expectedTitle": "年假最後一天，你會先整理房間，還是先準備明天？",
+      "expectedCopy": "年假最後一天，想到明天要回到原本的生活節奏，有人會先整理房間，有人先把明天要用的東西準備好。\n\n不用一次做很多，先完成一件小事就好。仙加味的「補養，是一種節奏」，也想留在這種慢慢收心的日常裡。\n\n你會先整理房間，還是先準備明天？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-last-day-reset-audit-v1.jpg"
+    }
+  ]
+}

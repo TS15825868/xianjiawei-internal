@@ -1,0 +1,29 @@
+name: 仙加味四篇情境圖文精準修復與D1讀回
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-four-scene-copy-remediation-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: 修正四篇實際圖文動作並維持歷史去重DEFER
+        run: node ops/repair-four-scene-copy-remediation-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-scene-repair-${{ github.run_id }}
+          path: four-scene-copy-fix-results.json
+          retention-days: 7
