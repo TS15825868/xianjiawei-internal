@@ -1,0 +1,10 @@
+{
+  "scope": "n8n-low-heap-npm-alternative-ci-only-20261108",
+  "maxOldSpaceMiB": 384,
+  "legacyPeerDeps": true,
+  "runPostinstallReadOnly": true,
+  "allowRenderDeployment": false,
+  "allowDatabaseAccess": false,
+  "allowExternalPublication": false,
+  "reason": "Check whether a leaner npm dependency resolution resolves under under 400 MiB V8 heap while retaining same @n8n/typeorm DataSource class identity. CI only; no Render deploy."
+}

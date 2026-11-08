@@ -1,0 +1,54 @@
+name: 仙加味 n8n 低記憶體 npm 相依解法隔離驗證
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/request-n8n-low-heap-ci-20261108.json'
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      NODE_OPTIONS: "--max-old-space-size=384"
+      npm_config_legacy_peer_deps: "true"
+      npm_config_progress: "false"
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.23.4
+      - name: Preflight exact read-only installation request
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const req=require('./ops/request-n8n-low-heap-ci-20261108.json');
+          if(req.scope!=='n8n-low-heap-npm-alternative-ci-only-20261108'||req.allowRenderDeployment!==false||req.allowDatabaseAccess!==false||req.allowExternalPublication!==false||req.maxOldSpaceMiB!==384||req.legacyPeerDeps!==true)throw Error('Unsafe request');
+          console.log('LOW_HEAP_CI_PREFLIGHT PASS',JSON.stringify({heap:384,legacyPeerDeps:true,noDeploy:true}));
+          NODE
+      - name: Test n8n install using legacy peer resolver in 384 MiB JS heap (CI only)
+        working-directory: n8n-runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund --no-package-lock
+      - name: Verify n8n data source and DI identity after low-memory install
+        shell: bash
+        run: |
+          set -euo pipefail
+          node ops/inspect-n8n-dependency-graph-20261108.cjs
+          cp n8n-dependency-di-report.json n8n-low-heap-ci-evidence.json
+          node - <<'NODE'
+          const r=require('./n8n-low-heap-ci-evidence.json');
+          if(!r.packageMatches||!r.classIdentity.sameDataSourceType||!r.classIdentity.sameDIContainer)throw Error('n8n DI regression');
+          console.log('LOW_HEAP_CI_PASS',JSON.stringify({node:r.node,n8n:r.installedN8n,sharedTypeorm:r.classIdentity.sameDataSourceType,sharedDI:r.classIdentity.sameDIContainer,productionDeploy:false}));
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: n8n-low-heap-ci-${{ github.run_id }}
+          path: n8n-low-heap-ci-evidence.json
+          if-no-files-found: warn
+          retention-days: 7
