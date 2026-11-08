@@ -1,0 +1,28 @@
+{
+  "schema": "xjw-three-public-historical-post-media-recovery-20261108-v1",
+  "noD1Writes": true,
+  "noGitHubMediaOverwrite": true,
+  "noApproval": true,
+  "noPublication": true,
+  "targets": [
+    {
+      "platform": "instagram",
+      "postId": "3957491164539558820_78424002938",
+      "url": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+      "topic": "2026-08-06 龜鹿飲試喝"
+    },
+    {
+      "platform": "instagram",
+      "postId": "3944679925123219099_78424002938",
+      "url": "https://www.instagram.com/p/Da-UX35lX6b/",
+      "topic": "2026-07-19 龜鹿膏100g"
+    },
+    {
+      "platform": "facebook",
+      "postId": "411869648852531_1446376627512555",
+      "url": "https://www.facebook.com/1531256482357902/posts/1446376627512555",
+      "topic": "2026-08-06 龜鹿飲試喝"
+    }
+  ],
+  "notes": "Only known three outstanding public permalink sources. Two 2026-10-09 IG mirrors already recovered and excluded; 15 unmatched private history cache entries cannot be inferred from this."
+}
