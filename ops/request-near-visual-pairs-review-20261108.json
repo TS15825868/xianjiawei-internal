@@ -5,5 +5,7 @@
   "allowReviewDecisionWrite": false,
   "allowDelete": false,
   "allowPublish": false,
-  "reason": "Review all 12 current near-hash pairs visually against their source files and up-to-date D1 captions, without mutating either."
+  "reason": "Review all 12 current near-hash pairs visually against their source files and up-to-date D1 captions, without mutating either.",
+  "retryFromFailedRun": 42479838189,
+  "retryReason": "Fixed Python SQL string quoting before D1 query; previous run made no external writes"
 }
