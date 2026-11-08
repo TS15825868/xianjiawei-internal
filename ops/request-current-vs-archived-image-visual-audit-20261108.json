@@ -1,0 +1,13 @@
+{
+  "schema": "xjw-all-current-local-images-versus-archived-and-published-20261108-v1",
+  "readOnly": true,
+  "allowApproval": false,
+  "allowPublication": false,
+  "deleteNothing": true,
+  "source": "Latest D1 status/urls + actual checked out repo source PNG/JPG/WebP files + two previously SHA-verified historical IG originals",
+  "thresholds": {
+    "dhash64": 12,
+    "averageHash64": 12
+  },
+  "reason": "Narrow independent in-repository visual duplicate check of all live pending vs pending, archived, published and two verified historic IG mirror images; do not conflate with unavailable external 15 or 3"
+}
