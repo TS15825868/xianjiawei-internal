@@ -1,9 +1,9 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-07",
-  "reason": "Current pending posts paginated with live count integrity; all AI human approvals and publishing remain disabled",
+  "reason": "Recheck all 68 current D1 captions after two exact image-sha CAS updates on run 42459607511 (succeeded=2), no approvals or remote publication",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-08"
+  "lastRerun": "2026-11-08T15:40:00+08:00"
 }
