@@ -1,0 +1,56 @@
+name: 仙加味D1完整性八項SQL單點診斷（唯讀）
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-d1-integrity-diagnosis-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-d1-integrity-readonly-diagnosis
+  cancel-in-progress: true
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Read-only diagnose eight official integrity queries one by one without exposing row content
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const req=JSON.parse(fs.readFileSync('ops/request-d1-integrity-diagnosis-20261108.json','utf8'));
+          if(req.scope!=='readonly-d1-integrity-query-diagnosis-20261108'||req.noWrite!==true||req.approve!==false||req.schedule!==false||req.publish!==false)throw Error('Invalid readonly intent');
+          const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN;
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          if(!account||!token||!db)throw Error('Missing read credentials');
+          const queries=[
+            ['status','SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status'],
+            ['total','SELECT COUNT(*) AS total FROM social_posts'],
+            ['invalid_status',"SELECT COUNT(*) AS bad FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')"],
+            ['missing_image',"SELECT COUNT(*) AS bad FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') AND TRIM(COALESCE(image_url,''))=''"],
+            ['missing_schedule',"SELECT COUNT(*) AS bad FROM social_posts WHERE status='scheduled' AND (scheduled_at IS NULL OR TRIM(scheduled_at)='')"],
+            ['broken_media',"SELECT p.id,p.status,p.image_url FROM social_posts p LEFT JOIN media_assets m ON m.id=substr(p.image_url,instr(p.image_url,'/media/')+7) WHERE p.status IN ('draft','pending_review','approved','scheduled') AND (p.image_url LIKE '/media/%' OR p.image_url LIKE 'https://xianjiawei-internal.tung314069.workers.dev/media/%') AND (m.id IS NULL OR TRIM(COALESCE(m.data_base64,''))='')"],
+            ['active_refs',"SELECT id,status,image_url FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND TRIM(COALESCE(image_url,''))<>'' ORDER BY status,id"],
+            ['foreign_keys','PRAGMA foreign_key_check']
+          ];
+          let failures=0;const result={};
+          for(const [name,sql] of queries){
+            try{
+              const r=await fetch('https://api.cloudflare.com/client/v4/accounts/'+account+'/d1/database/'+db+'/query',{method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify({sql}),signal:AbortSignal.timeout(30000)});
+              const j=await r.json();const ok=r.ok&&j.success&&Array.isArray(j.result)&&j.result.every(x=>x.success!==false);
+              if(!ok)throw Error('http='+r.status+' errors='+JSON.stringify(j.errors||j.messages||[]).slice(0,450));
+              const rows=j.result.flatMap(x=>x.results||[]);
+              result[name]={ok:true,rows:rows.length};
+              if(name==='status')result[name].counts=rows;
+              if(['total','invalid_status','missing_image','missing_schedule'].includes(name))result[name].value=rows[0]?.total??rows[0]?.bad??null;
+              if(['broken_media','foreign_keys'].includes(name))result[name].badRows=rows.length;
+            }catch(e){result[name]={ok:false,reason:String(e.message||e).slice(0,500)};failures++;}
+          }
+          console.log('D1_INTEGRITY_QUERY_DIAGNOSIS',JSON.stringify({result,failures,noWrites:true,noApproval:true,noPublish:true}));
+          if(failures)process.exitCode=1;
+          NODE
