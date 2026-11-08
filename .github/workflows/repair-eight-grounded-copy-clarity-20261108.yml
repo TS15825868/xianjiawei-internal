@@ -1,0 +1,29 @@
+name: 仙加味八篇生活情境文案與原圖動作精準補正
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-eight-grounded-copy-clarity-20261108.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: 嚴格比對八篇目前 D1 原圖與文案版號，精準補正生活情境，仍維持歷史去重 DEFER
+        run: node ops/repair-eight-grounded-copy-clarity-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eight-grounded-copy-clarity-${{ github.run_id }}
+          path: eight-grounded-copy-fix-results.json
+          retention-days: 7

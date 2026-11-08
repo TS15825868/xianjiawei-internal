@@ -1,0 +1,73 @@
+{
+  "scope": "eight-grounded-life-scene-copy-clarity-20261108",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "source": "Current D1 68 pending snapshot and existing source-image contact sheets; all eight no Metricool mapping on latest read; exact-current CAS, verify physical image SHA before write",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "expectedTitle": "買東西時，你第一個看什麼？",
+      "expectedCopySHA256": "27563fd236fb10e756fbb5db18898479e338e613c811e2336729cc2979824221",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "copy": "在仙加味萬華店的工作桌前，小老闆拿起放大鏡，對著一張沒有文字的資訊卡仔細看，小鹿和小烏龜坐在旁邊。\n\n買食品之前，有人先問容量，有人想了解包裝、保存與食用方式。仙加味也希望讓正式產品資訊容易找到，讓大家在下單前可以慢慢比較。\n\n你通常會先問容量，還是保存方式？",
+      "evidence": "原圖直接比對：小老闆持放大鏡看素面空白資訊卡，左右小鹿、小烏龜分開；屬購買前查資料，與收到包裹後打開紙箱的另一篇不同。新稿不宣稱卡片上已寫好規格。"
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "expectedTitle": "放假在家，你會想慢慢準備一餐嗎？",
+      "expectedCopySHA256": "dc53c44e7169e3fbe7c6ec62b16471e06b10121438f6df46c9fecae93cb78182",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+      "copy": "放假的午後，仙加味小老闆在家中廚房把麵糰放到桌上慢慢揉，旁邊擺著蔬菜和備料的碗；小鹿和小烏龜也在旁邊。\n\n今天不必急著開火，先把家常料理的材料一步一步準備好，再想想這餐要怎麼搭配。你放假在家比較想揉麵做麵食，還是慢慢煮一鍋湯？",
+      "evidence": "原圖直接比對：桌中央小老闆雙手揉麵糰，前景有蔬菜與碗，小鹿、小龜分開；原稿只談洗切煮，未呈現畫面最主要揉麵動作。"
+    },
+    {
+      "id": "XJW-CONV-chat-craft-years",
+      "expectedTitle": "一件事情做久了，還會覺得新鮮嗎？",
+      "expectedCopySHA256": "b67fc553b8a6b75a1ad4be572381bdd58027e44e4ff1e025cb277cb5666c33d5",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg",
+      "copy": "下午在仙加味萬華工作間，小老闆把老照片與工藝工具擺在木桌上，拿起其中一件仔細端詳，小鹿和小烏龜在旁邊陪著。\n\n仙加味家族從鹿角與熬膠工藝走來。回頭看看長輩留下的工具與紀錄，能把傳統飲食文化的故事一點一點整理清楚。\n\n你家有沒有一件老工具，看到就會想起以前的人怎麼做事？",
+      "evidence": "原圖直接比對：小老闆手持老工具，桌上可見家族照片與小物件；沒有實際熬膠製程，故僅談工具、紀錄及文化，不冒充當下正在生產。"
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "expectedTitle": "你會保留家裡長輩以前的東西嗎？",
+      "expectedCopySHA256": "5223015dc252da212928a9f88fefe46c11fae0b6d84c12b7478012d9008fa497",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+      "copy": "午後整理仙加味萬華工作間，小老闆坐在老木桌旁翻看家族舊照片，旁邊還放著一只石臼，小鹿和小烏龜也跟著看。\n\n有些老物件看起來平凡，卻記錄著以前的生活。仙加味想把萬華家族留下的漢方飲食文化與日常故事慢慢整理下來。\n\n你家有沒有一件捨不得丟的老工具或老照片？",
+      "evidence": "原圖直接比對：桌面舊照片與石臼，小老闆低頭查看，旁有小鹿、小龜；原稿未具體連結畫面中的老照片與工具。"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "expectedTitle": "你比較喜歡看圖，還是慢慢看文字？",
+      "expectedCopySHA256": "c277d427e5f93c8106db557c739a125e92cf93bca4e9256e36427da5b4dae65f",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "copy": "在仙加味萬華店裡，小老闆和來訪的朋友坐在桌前，一起翻看打開的筆記本，旁邊還放著手機，小鹿與小烏龜也在。\n\n認識一款食品時，有人想先看圖片了解實際大小，有人想把文字規格逐項看清楚。仙加味希望把正式資訊整理得容易閱讀，也讓大家有問題可以直接詢問。\n\n你比較習慣先看圖片，還是先讀文字說明？",
+      "evidence": "原圖直接比對：小老闆坐桌前展示打開的筆記本，對面有來訪者、旁有手機；沒有假稱筆記本寫有可讀規格文字，不聲稱旁邊罐體的未核驗標籤。"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "expectedTitle": "一張產品照，為什麼尺寸看起來會差很多？",
+      "expectedCopySHA256": "6e1c193912920c67bfd408c23f741ada37cc587282fa33dd066685fdef4af614",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "copy": "在仙加味萬華店的窗邊，小老闆把手機架好，準備拍攝桌上的龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在旁邊觀看。\n\n30cc本來就是小小一罐，商品照片如果沒有適當的大小參考，很容易讓人誤以為是一般飲料瓶。仙加味呈現產品時會維持真實包裝與比例，不任意加標籤或放大瓶身。\n\n你看商品照片時，會想看見一個可以比對實際大小的物件嗎？",
+      "evidence": "原圖直接比對：小老闆架手機對著桌上小玻璃裸罐拍攝；維持30cc小罐與無標籤規則，文案對應實際拍照動作。"
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "expectedTitle": "你家以前最常看到哪一種食材？",
+      "expectedCopySHA256": "b19096624c1dcae87068e296bdff8d920c3cd45d92953b1095c103be7638d693",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+      "copy": "早上在仙加味萬華工作間，小老闆把紅棗和其他乾燥食材分開整理，準備收進透明罐，小鹿與小烏龜在旁邊看著。\n\n以前家裡廚房常備著紅棗、枸杞或熟悉的乾貨。從分辨食材、整理收納的小動作出發，也能聊聊一代一代留下的漢方飲食文化。\n\n你小時候最常在家裡看到紅棗、枸杞，還是其他食材？",
+      "evidence": "原圖直接比對：桌上數個透明罐與紅棗乾貨，小老闆正在分類食材，小鹿及小龜各自站立；新文案對應整理動作而非空泛回憶。"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "expectedTitle": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "expectedCopySHA256": "5056fad2113fc95f4699a4e8a769a8424d1915498eba485f30e12ea5c51d6f07",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "copy": "過年前的午後，小老闆坐在仙加味萬華店裡的桌邊，手上拿著一張準備寫給家人的心意卡，旁邊放著提袋和筆記本；小鹿、小烏龜也一起想點子。\n\n準備送禮時，除了包裝好不好看，也可以先確認對方平常是否用得上、食品標示是否清楚。仙加味希望把正式產品資訊說清楚，讓選擇更貼近生活。\n\n你會先寫心意卡，還是先了解對方需要什麼？",
+      "evidence": "原圖直接比對：店內桌上提袋、紙卡與筆記本，小老闆拿起空白卡片、兩夥伴分開；沒有虛構任何未核驗的產品禮盒包裝或價格。"
+    }
+  ]
+}
