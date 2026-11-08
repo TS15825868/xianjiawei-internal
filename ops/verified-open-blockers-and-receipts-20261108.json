@@ -163,7 +163,7 @@
             {
               "id": "dep-dbo4d1e7bikc73fueat0",
               "result": "build_failed_after_restoring_safe_256mb_environment",
-              "reason": "Restored 256 MB runtime heap after build failure; status pending, do not assume live"
+              "reason": "Safe 256MB environment restored; follow-on Render npm build also failed with OOM, production readiness still unverified."
             }
           ],
           "renderSafeEnvironmentRestored": {
