@@ -2,7 +2,7 @@
 import fs from 'node:fs';import crypto from 'node:crypto';import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {fingerprint}=require('../tools/metricool-free-evidence.cjs');
-const req=JSON.parse(fs.readFileSync('ops/request-request-two-verified-scene-captions-20261108.json','utf8'));
+const req=JSON.parse(fs.readFileSync('ops/request-two-verified-scene-captions-20261108.json','utf8'));
 if(req.scope!=='two-verified-scene-caption-remediations-20261108'||req.authorizeCopyFix!==true||req.authorizeApproval!==false||req.authorizePublish!==false||req.items?.length!==2)throw Error('Unsafe copy patch request');
 const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN,db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];if(!account||!token||!db)throw Error('Missing D1 credentials');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
