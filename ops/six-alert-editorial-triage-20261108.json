@@ -5,28 +5,40 @@
     "currentD1Run": 42453743083,
     "fullPending": 68,
     "historyComparisons": 132,
-    "visuals": "five direct-original visual inspections; one PNG unavailable for decoding via GitHub binary connector"
+    "visuals": "five direct-original visual inspections; one PNG unavailable for decoding via GitHub binary connector",
+    "latestLiveDedupRun": 42459712802,
+    "latestCaptionCASRun": 42459607511,
+    "originalPNGPreviewRun": 42459886423,
+    "originalMediaPreviewSHA256": {
+      "XJW-ACTIVE-IMG-004.png": "9c933fa3e74daa6e200b03ae9f48cc8707d6543483811a0a872de6da6d5b242d",
+      "XJW-ACTIVE-IMG-036.png": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179"
+    }
   },
   "claims": {
     "all6DuplicatePASS": false,
     "autoApproval": false,
-    "publication": false
+    "publication": false,
+    "latestCurrentEvidenceCount": 68,
+    "latestStrongCaptionSimilarityAlerts": 4,
+    "imageQualityUnresolved": 0,
+    "d1CopyFixesReadBack": 2,
+    "humanApprovalsAdded": 0
   },
   "alerts": [
     {
       "id": "XJW-CAND-20261208",
-      "result": "distinct_opening_shop_action_vs_spring_flower_walk",
-      "action": "copy_fix_with_version_CAS; keep duplicate DEFER"
+      "result": "distinct shop-door-opening vs spring flower walk, improved caption CAS verified",
+      "action": "copy fixed and D1 readback success; not in latest strong similarity alerts; keep duplicate DEFER"
     },
     {
       "id": "XJW-CAND-20270305",
-      "result": "distinct_spring_flower_street_walk",
+      "result": "spring flower market stroll differs from shop-door-opening, no longer in strong caption similarity alerts",
       "action": "preserve original, keep duplicate DEFER until full history"
     },
     {
       "id": "XJW-CONV-chat-drink-made-to-order",
-      "result": "ordering_lead_time distinct angle from old trials; existing caption not image-specific",
-      "action": "copy_fix_with_version_CAS; keep duplicate DEFER"
+      "result": "calendar and notebook picture matched new lead-time copy, D1 CAS success; published trial explanation overlap still flagged",
+      "action": "copy fixed and read back; still in 4-alert set; keep duplicate DEFER"
     },
     {
       "id": "XJW-CONV-chat-glass-vs-pouch-storage",
@@ -35,17 +47,19 @@
     },
     {
       "id": "XJW-CONV-chat-buy-first-look",
-      "result": "generic purchasing criteria vs parcel-receipt angle; original PNG binary not decodable by connected GitHub media read",
-      "action": "hold until direct original image review, keep duplicate DEFER"
+      "result": "original 2116210-byte PNG SHA verified by GitHub runner, preview directly inspected: small boss holds magnifying glass and a blank card, before-purchase information comparison differs from after-receipt parcel opening",
+      "action": "source image verified and editorial distinction logged; keep duplicate DEFER due incomplete historical media; do not assert text on blank card"
     },
     {
       "id": "XJW-CONV-chat-receive-package",
-      "result": "opened parcel and blank card seen; original caption generic; D1 remote metricool sync exists",
-      "action": "hold for coordinated remote Metricool draft check and CAS, keep duplicate DEFER"
+      "result": "opened parcel and card; remains distinct after-receipt scene vs pre-purchase magnifying lens; D1 legacy Metricool link exists",
+      "action": "no unsafe D1-only copy mutation; keep duplicate DEFER"
     }
   ],
   "warnings": [
-    "15 historical media items and older IG/Threads carousel children remain unverified",
-    "These are editorial pair distinctions, not comprehensive historical-image uniqueness or publish approvals"
-  ]
+    "After revised captions, 4 of 68 remain numerical caption collision alerts, not 4 confirmed duplicate posts",
+    "15 inaccessible historic media and older IG/Threads carousel children still cannot support comprehensive visual uniqueness",
+    "No AI_APPROVED or human approval or scheduling performed; do not promote a row based on similarity score alone"
+  ],
+  "lastEvidenceUpdate": "2026-11-08T15:44:00+08:00"
 }
