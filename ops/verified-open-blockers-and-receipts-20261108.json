@@ -1,6 +1,6 @@
 {
   "schema": "xjw-operational-verifiable-open-issues-20261108-v1",
-  "capturedAt": "2026-11-08T17:55:00+08:00",
+  "capturedAt": "2026-11-08T17:56:00+08:00",
   "mode": "non-publishing operational status; records only tested external evidence; no approvals inferred",
   "expectedMainParent": "686a741b0a0ea07331dc76112179ff2129056fb9",
   "currentPending": {
@@ -162,7 +162,7 @@
             },
             {
               "id": "dep-dbo4d1e7bikc73fueat0",
-              "result": "auto_triggered_by_safe_env_restore",
+              "result": "build_failed_after_restoring_safe_256mb_environment",
               "reason": "Restored 256 MB runtime heap after build failure; status pending, do not assume live"
             }
           ],
@@ -178,7 +178,10 @@
             "executions": 103,
             "credentialRows": 2,
             "migrations": 243
-          }
+          },
+          "buildHeapTrial": "npm install OOM both at ~320 MiB and ~400 MiB despite CI validated TypeORM singleton",
+          "renderLiveValidated": false,
+          "liveServiceRecovered": false
         }
       },
       "line": {
