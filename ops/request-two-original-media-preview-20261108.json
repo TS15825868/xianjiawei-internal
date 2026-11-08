@@ -1,0 +1,11 @@
+{
+  "scope": "readonly-two-oversize-original-image-previews-20261108",
+  "approval": false,
+  "publishing": false,
+  "mutateD1": false,
+  "files": [
+    "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+    "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png"
+  ],
+  "reason": "Inspect existing over-2MiB original PNG media that GitHub REST contents omits; preserve exact originals and produce smaller visual review copies only"
+}

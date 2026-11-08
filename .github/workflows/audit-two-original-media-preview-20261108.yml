@@ -1,0 +1,55 @@
+name: 仙加味超大原圖唯讀縮圖檢查
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-two-original-media-preview-20261108.json']
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Prepare local image reader without mutating existing files
+        run: python -m pip install --disable-pip-version-check --quiet Pillow==11.3.0
+      - name: Verify original GitHub bytes, render review thumbnails
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,hashlib,pathlib
+          from PIL import Image,ImageOps
+          req=json.loads(pathlib.Path('ops/request-two-original-media-preview-20261108.json').read_text())
+          if req.get('scope')!='readonly-two-oversize-original-image-previews-20261108' or req.get('approval') is not False or req.get('publishing') is not False or req.get('mutateD1') is not False or len(req.get('files',[]))!=2:
+              raise RuntimeError('Unsafe preview request')
+          out=pathlib.Path('preview-artifacts');out.mkdir(exist_ok=True)
+          rows=[]
+          for f in req['files']:
+              p=pathlib.Path(f)
+              if not p.is_file() or 'XJW-ACTIVE-IMG-' not in p.name or p.suffix.lower()!='.png':
+                  raise RuntimeError('Invalid original asset path')
+              src=p.read_bytes()
+              with Image.open(p) as im:
+                  im.verify()
+              with Image.open(p) as im:
+                  im=ImageOps.exif_transpose(im)
+                  size=im.size
+                  thumbnail=im.convert('RGB')
+                  thumbnail.thumbnail((1150,1150))
+                  target=out/(p.stem+'.jpg')
+                  thumbnail.save(target,'JPEG',quality=88,optimize=True)
+              rows.append({'path':f,'sizeBytes':len(src),'sha256':hashlib.sha256(src).hexdigest(),'sizePixels':size,'preview':str(target)})
+          (out/'manifest.json').write_text(json.dumps({'scope':req['scope'],'images':rows,'d1Mutations':0,'approvals':0,'publications':0},indent=2)+'\n',encoding='utf-8')
+          print('PREVIEW_SHA_INSPECT',json.dumps(rows))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-original-media-preview-${{ github.run_id }}
+          path: preview-artifacts/
+          retention-days: 7
+          if-no-files-found: warn
