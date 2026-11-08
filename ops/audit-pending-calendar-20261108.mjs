@@ -2,7 +2,7 @@ import fs from 'node:fs';
 const req=JSON.parse(fs.readFileSync('ops/request-pending-calendar-audit-20261108.json','utf8'));
 if(req.scope!=='pending-calendar-readonly-20261108'||req.noWrites!==true)throw Error('read-only only');
 const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN;
-const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\\s*:\\s*"([a-f0-9-]+)"/)?.[1];
+const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
 if(!account||!token||!db)throw Error('missing Cloudflare access');
 async function query(sql){
  const r=await fetch('https://api.cloudflare.com/client/v4/accounts/'+account+'/d1/database/'+db+'/query',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({sql}),signal:AbortSignal.timeout(40000)});
