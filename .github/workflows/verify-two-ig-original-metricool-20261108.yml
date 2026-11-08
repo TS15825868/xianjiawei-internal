@@ -1,0 +1,22 @@
+name: 仙加味兩張IG歷史原圖正式來源精準核對
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-two-ig-original-metricool-20261108.json']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: node ops/verify-two-ig-original-metricool-20261108.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-two-ig-historical-originals-${{ github.run_id }}
+          path: two-ig-historical-originals/
+          retention-days: 7
