@@ -1,0 +1,33 @@
+name: 仙加味 n8n 安裝腳本隔離與必要原生模組測試
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-n8n-ignore-scripts-ci-20261108.json']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    env:
+      NODE_OPTIONS: "--max-old-space-size=384"
+      npm_config_legacy_peer_deps: "true"
+      npm_config_ignore_scripts: "true"
+      npm_config_progress: "false"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.23.4
+      - name: Install n8n without ANY dependency lifecycle scripts, CI only
+        working-directory: n8n-runtime
+        run: npm install --no-audit --no-fund --no-package-lock
+      - name: Check native isolated-vm binding, singleton DI, and three monitor policies without DB
+        run: node ops/check-n8n-ignore-scripts-20261108.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: n8n-ignore-scripts-ci-${{ github.run_id }}
+          path: n8n-ignore-scripts-ci-report.json
+          if-no-files-found: warn
+          retention-days: 7

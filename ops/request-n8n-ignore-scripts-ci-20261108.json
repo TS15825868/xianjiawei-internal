@@ -1,0 +1,10 @@
+{
+  "scope": "n8n-ignore-lifecycle-scripts-ci-only-20261108",
+  "allowDeployment": false,
+  "allowDatabaseConnection": false,
+  "allowAutoPublish": false,
+  "expectedN8n": "2.35.7",
+  "expectedTypeORM": "0.7.0",
+  "runSourceGuardsExplicitly": true,
+  "why": "Confluent Kafka native binary dependency install fails on Render GitHub release 504. Test skipping package install lifecycle while checking n8n core and isolated-vm before any production change."
+}
