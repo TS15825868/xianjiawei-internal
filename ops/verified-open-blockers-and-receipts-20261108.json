@@ -1,0 +1,160 @@
+{
+  "schema": "xjw-operational-verifiable-open-issues-20261108-v1",
+  "capturedAt": "2026-11-08T17:15:00+08:00",
+  "mode": "non-publishing operational status; records only tested external evidence; no approvals inferred",
+  "expectedMainParent": "686a741b0a0ea07331dc76112179ff2129056fb9",
+  "currentPending": {
+    "d1SourceRun": 42466109404,
+    "statusCounts": {
+      "pending_review": 68,
+      "archived": 89,
+      "published": 4
+    },
+    "currentVersionEvidence": 68,
+    "imageShaVerified": {
+      "checked": 68,
+      "passed": 68,
+      "failed": 0,
+      "exactSameCurrentFileGroups": 0,
+      "run": 42464099357
+    },
+    "formalChecks": {
+      "passPerPost": 15,
+      "duplicate": "DEFER",
+      "aiApproved": 0,
+      "humanApproved": 0
+    },
+    "strongCaptionSimilarityNotDedupPass": [
+      {
+        "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+        "publishedScore": 0.181,
+        "pendingScore": 0.144
+      },
+      {
+        "id": "XJW-CONV-chat-drink-made-to-order",
+        "publishedScore": 0.1747,
+        "pendingScore": 0.0462
+      }
+    ]
+  },
+  "successfulLiveEdits": [
+    {
+      "run": 42465803840,
+      "posts": [
+        "XJW-CONV-chat-drink-made-to-order",
+        "XJW-CONV-chat-glass-vs-pouch-storage"
+      ],
+      "d1CasUpdated": 2,
+      "d1ReadbackVerified": 2,
+      "aiApproved": 0,
+      "humanApproved": 0,
+      "schedules": 0,
+      "publications": 0
+    }
+  ],
+  "historicalMedia": {
+    "reportedRecoveredPreviously": 178,
+    "historicPrivateCacheUnretrievedPreviously": 15,
+    "missingPrivateCacheIdentityMapping": false,
+    "missingPrivateCacheNamesCannotBeInferred": true,
+    "knownFailedPublicSourceIds": [
+      "3957491164539558820_78424002938",
+      "3944679925123219099_78424002938",
+      "411869648852531_1446376627512555"
+    ],
+    "publicThreeRescan": {
+      "run": 42465428966,
+      "permalinkReadableInstagram": 2,
+      "facebookHttpStatus": 400,
+      "newVerifiedMedia": 0,
+      "source": "public permalink metadata only"
+    },
+    "previouslyRecoveredOtherTwoInstagram": [
+      "4003809463882866913_78424002938",
+      "4003900963899413608_78424002938"
+    ],
+    "warning": "The known three public source failures are not identity-mapped to the 15 private cache misses; neither these nor the two recovered historical mirrors certify full cross-platform visual uniqueness."
+  },
+  "socialPlatforms": {
+    "metricool": {
+      "brandId": 6889683,
+      "window": "2026-11-01..2027-04-01",
+      "plannerRows": 15,
+      "unpublishedDrafts": 14,
+      "draftsAutoPublishOn": 0,
+      "onePreviouslyPublishedRecord": 415226845
+    },
+    "supabaseSocial": {
+      "projectStatus": "ACTIVE_HEALTHY",
+      "platforms": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "allEnabled": false,
+      "allE2eVerified": false,
+      "allOverlapVerified": false,
+      "commentLedgerRows": 0,
+      "replyLedgerRows": 0,
+      "publicAutoRepliesEnabled": false
+    }
+  },
+  "services": {
+    "render": {
+      "n8nLongterm": {
+        "serviceId": "srv-da8s2r49v7es73cefob0",
+        "freePlan": true,
+        "suspended": false,
+        "lastDeploy": {
+          "id": "dep-dbk9mdijnfac73a0pdm0",
+          "status": "live",
+          "date": "2026-11-02"
+        },
+        "runtime": "UNVERIFIED_and_known_crash_in_logs",
+        "logDate": "2026-11-04",
+        "error": "EventDestinationsRepository TypeError: Cannot read properties of undefined (reading 'manager')",
+        "mitigation": "Do not wake or redeploy failing free service without a verified fix; independent GitHub GET-only fallback remains in place"
+      },
+      "line": {
+        "serviceId": "srv-d4rddeidbo4c73cabnug",
+        "lastDeployStatus": "live",
+        "commit": "700a34ca68771f32d6726c1799f763ee3b495c74"
+      }
+    }
+  },
+  "security": {
+    "supabaseSecurityAdvisories": [
+      {
+        "name": "rls_enabled_no_policy",
+        "schema": "public",
+        "object": "xjw_app_state",
+        "level": "INFO",
+        "action": "preserve default deny until access model proven"
+      },
+      {
+        "name": "function_search_path_mutable",
+        "schema": "n8n",
+        "object": "increment_workflow_version",
+        "level": "WARN",
+        "action": "do not alter upstream n8n-owned function without validated migration and verified backup"
+      }
+    ],
+    "performanceN8nSystemIndices": {
+      "unindexedForeignKeys": 56,
+      "unusedIndices": 93,
+      "duplicateIndices": 5
+    },
+    "policy": "Do not modify n8n vendor tables/indexes or activate public policies based solely on lint results"
+  },
+  "openBlockers": [
+    "The fifteen originally missing private-cache historical media have no exact per-file ID/canonical mapping; no evidence-based complete history uniqueness claim can be made.",
+    "Three source-bound published media remain unverified after a targeted non-invasive retrieval.",
+    "Older published carousel child coverage is not demonstrated complete.",
+    "Latest 68 candidates all retain duplicate=DEFER until full source-image and editorial angle verification.",
+    "n8n Render free service has application DI crash despite last deploy status live; source of missing DataSource has not been proven."
+  ],
+  "noNewPaidServices": true,
+  "noAutomatedPublication": true,
+  "noHumanApprovalImpersonation": true,
+  "noUnreviewedSourceDeletion": true
+}
