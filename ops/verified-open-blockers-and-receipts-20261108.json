@@ -1,8 +1,8 @@
 {
   "schema": "xjw-operational-verifiable-open-issues-20261108-v1",
-  "capturedAt": "2026-11-08T18:47:00+08:00",
+  "capturedAt": "2026-11-08T18:49:00+08:00",
   "mode": "non-publishing operational status; records only tested external evidence; no approvals inferred",
-  "expectedMainParent": "697b80fd398cf3d54f915c9fd66c987b45b54f3a",
+  "expectedMainParent": "d4902ba2481691d1970c358680bc604f521d5dd3",
   "currentPending": {
     "d1SourceRun": 42466109404,
     "statusCounts": {
@@ -227,7 +227,18 @@
             },
             "userMessagesSent": 0,
             "publicationCalls": 0,
-            "newFee": "0"
+            "newFee": "0",
+            "afterMonitorExecutionVerification": {
+              "supabaseN8nExecutionsBefore": 103,
+              "supabaseN8nExecutionsAfter": 106,
+              "successBefore": 92,
+              "successAfter": 95,
+              "newSuccessfulExecutions": 3,
+              "readbackSource": "direct Supabase read-only SQL",
+              "checkedOn": "2026-11-08",
+              "newFailures": 0,
+              "noApprovalOrPublication": true
+            }
           }
         }
       },
