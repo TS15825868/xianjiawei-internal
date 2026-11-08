@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-09",
+  "scope": "12 saved near-visual pairs only; not full history clearance",
+  "sourceLibraryFile": "libfile_749a1c352524819196874a2d7263eb4e",
+  "sourceRun": 42479318932,
+  "visualInspectionCompleted": true,
+  "findings": [
+    {
+      "pair": 1,
+      "decision": "distinct",
+      "reason": "手機問候與送禮心意卡，動作與道具不同"
+    },
+    {
+      "pair": 2,
+      "decision": "distinct",
+      "reason": "紅棗料理與玄關取外套，場景及動作不同"
+    },
+    {
+      "pair": 3,
+      "decision": "editorial_review",
+      "reason": "同為老工作桌、舊照片與石臼，構圖和家族記憶角度相近"
+    },
+    {
+      "pair": 4,
+      "decision": "distinct",
+      "reason": "手機問候與翻閱相簿不同"
+    },
+    {
+      "pair": 5,
+      "decision": "editorial_review",
+      "reason": "均為店門口開門，年節裝飾不同不足以單獨證明角度不重複"
+    },
+    {
+      "pair": 6,
+      "decision": "distinct",
+      "reason": "與訪客看食材圖卡和獨自看家庭照片不同"
+    },
+    {
+      "pair": 7,
+      "decision": "distinct",
+      "reason": "餐桌喝湯與送禮卡片不同"
+    },
+    {
+      "pair": 8,
+      "decision": "distinct",
+      "reason": "整理食材罐與拍攝30cc不同"
+    },
+    {
+      "pair": 9,
+      "decision": "distinct",
+      "reason": "節日茶點聚會與75g罐規格介紹不同"
+    },
+    {
+      "pair": 10,
+      "decision": "distinct",
+      "reason": "放大鏡看資訊卡與看舊照片不同"
+    },
+    {
+      "pair": 11,
+      "decision": "distinct",
+      "reason": "黃昏手機報平安與白天開門不同"
+    },
+    {
+      "pair": 12,
+      "decision": "distinct",
+      "reason": "筆記本整理與75g規格示意不同"
+    }
+  ],
+  "limitations": [
+    "Images are saved contact sheets, not freshly bound D1 image bytes.",
+    "Product authenticity, all 16 checks and full historical coverage are not approved by this comparison.",
+    "Pairs 3 and 5 remain editorial_review; remaining distinct findings apply only to each pictured pair."
+  ],
+  "d1Writes": 0,
+  "aiApprovals": 0,
+  "schedules": 0,
+  "published": 0
+}
