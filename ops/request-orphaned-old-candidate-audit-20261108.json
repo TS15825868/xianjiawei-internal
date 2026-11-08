@@ -1,0 +1,15 @@
+{
+  "schema": "xjw-orphaned-old-candidate-audit-v1",
+  "mode": "read-only",
+  "mutateD1": false,
+  "allowDeletion": false,
+  "allowApproval": false,
+  "allowPublication": false,
+  "candidates": [
+    {
+      "path": "media/social-candidates/20261106/XJW-CAND-20270226.webp",
+      "newerPath": "media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
+      "reason": "Old same-ID image version coexists with newer v2; delete only if both live and historical D1 plus Git references prove no uses"
+    }
+  ]
+}
