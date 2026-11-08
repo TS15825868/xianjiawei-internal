@@ -185,7 +185,7 @@ function card(post){
       <div><p class="eyebrow">${esc(post.category||'貼文')}</p><h3>${esc(post.title||'未命名貼文')}</h3></div>
       <span class="status-pill ${esc(aiNeedsHuman?'pending_review':post.status)}">${esc(aiNeedsHuman?'AI 預審完成・待人工核准':statusLabel(post.status))}</span>
     </div>
-    <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:''}</div>
+    <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:(post.proposed_scheduled_at?`<span>候選時段（尚未排程）：${esc(fmt(post.proposed_scheduled_at))}</span>`:'')}</div>
     ${post.headline?`<h4>${esc(post.headline)}</h4>`:''}
     <div class="public-copy-label">客戶實際會看到的文案</div><div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
     ${post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:''}

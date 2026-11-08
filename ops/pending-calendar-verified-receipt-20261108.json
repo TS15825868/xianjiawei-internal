@@ -1,0 +1,44 @@
+{
+  "schema": "xjw-20261108-candidate-calendar-live-receipt-v1",
+  "sourceRun": 42490894774,
+  "qualityHistoryScreenRun": 42490944061,
+  "sourceMainAtCandidateWrite": "852284afb455dd9bf817f75ad6bf5419339051c6",
+  "d1": {
+    "total": 161,
+    "pending_review": 68,
+    "archived": 89,
+    "published": 4
+  },
+  "candidateCalendar": {
+    "futureProposals": 61,
+    "pastProposals": 0,
+    "conditionalHolds": 7,
+    "updatedRowsWithReadback": 29,
+    "newTimes": 28,
+    "staleWeatherTimeCleared": 1,
+    "assignedNotPublished": true
+  },
+  "history": {
+    "crossPlatformCompared": {
+      "facebook": 74,
+      "instagram": 35,
+      "threads": 23
+    },
+    "textExactPublishedDuplicates": 0,
+    "editorialSimilarityAlerts": 2,
+    "fullMissingHistoricalMediaUnresolved": true,
+    "AI_APPROVED": 0
+  },
+  "publication": {
+    "humanApproved": 0,
+    "scheduled": 0,
+    "newPublications": 0,
+    "autoPublishNotActivated": true
+  },
+  "holdReasons": {
+    "weather": "2 即時天氣稿，須到時查證天氣",
+    "lunarHoliday": "2 年假收心與開工稿，需匹配實際假期／店家開工日期",
+    "seasonalCapacity": "3 春節類型稿先保留以避免同週超量"
+  },
+  "note": "This is the verified readback from a candidate-only CAS workflow. Proposed times do not constitute formal schedule or owner review of each version."
+}
