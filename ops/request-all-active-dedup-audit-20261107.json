@@ -1,10 +1,11 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-07",
-  "reason": "Re-run all 68 current edited D1 drafts following image-bound CAS fixes 42465803840; detect remaining textual overlap without granting historical uniqueness or AI PASS",
+  "reason": "User requested execute now: check every active post for duplicate copy, theme and published cross-platform history; read-only evidence before evidence-backed archive; no inferred PASS or deletion.",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-08T17:30:00+08:00",
-  "afterCopyRepairRun": 42465803840
+  "lastRerun": "2026-11-08T22:45:00+08:00",
+  "afterCopyRepairRun": 42465803840,
+  "requestedBy": "owner"
 }
