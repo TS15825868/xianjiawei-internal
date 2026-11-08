@@ -1,0 +1,19 @@
+{
+  "schema": "xjw-owner-standing-ai-publishing-authorization-v1",
+  "authorizedAt": "2026-11-08",
+  "scope": "仙加味貼文中心 Facebook Instagram Threads",
+  "ownerInstruction": "同意AI完成全部16項審核、正式產品與角色視覺驗證、歷史去重及平台檢查後，無須逐篇人工核准，自動排程並到點發布。",
+  "mode": "conditional_standing_authorization",
+  "conditions": [
+    "當前文案與圖片版本完整16項均PASS且有可讀回的版本綁定證據",
+    "歷史圖片及文案跨平台去重PASS，DEFER或缺來源不可放行",
+    "產品原圖、角色、尺寸、季節、廣告法規及平台規範全部PASS",
+    "免費平台額度、授權、排程衝突、重複發送及正式發布回執機制完成驗證",
+    "每週原則二篇，週二及週五10:00 Asia/Taipei，特殊週最多三篇",
+    "修改文案或圖片必須使舊審核失效並重新完整驗證"
+  ],
+  "exceptions": "任何REJECT、DEFER、無法查證或平台失敗都停送交人工；不得偽造PASS、批准者身分或發布回執。",
+  "deploymentState": "authorization_recorded_only_runtime_not_yet_enabled",
+  "safety": "此授權不等於現有68篇自動合格；不得直接把pending_review批次改成approved；須先完成端對端測試及版本化自動審核閘門，並確認真正平台排程通道可用。",
+  "cost": "NT$0 / US$0"
+}
