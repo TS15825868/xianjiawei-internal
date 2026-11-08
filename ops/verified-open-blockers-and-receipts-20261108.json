@@ -1,6 +1,6 @@
 {
   "schema": "xjw-operational-verifiable-open-issues-20261108-v1",
-  "capturedAt": "2026-11-08T17:15:00+08:00",
+  "capturedAt": "2026-11-08T17:55:00+08:00",
   "mode": "non-publishing operational status; records only tested external evidence; no approvals inferred",
   "expectedMainParent": "686a741b0a0ea07331dc76112179ff2129056fb9",
   "currentPending": {
@@ -73,7 +73,21 @@
       "4003809463882866913_78424002938",
       "4003900963899413608_78424002938"
     ],
-    "warning": "The known three public source failures are not identity-mapped to the 15 private cache misses; neither these nor the two recovered historical mirrors certify full cross-platform visual uniqueness."
+    "warning": "The known three public source failures are not identity-mapped to the 15 private cache misses; neither these nor the two recovered historical mirrors certify full cross-platform visual uniqueness.",
+    "firstPartyIgJulyAugustRetry": {
+      "run": 42468652552,
+      "officialPostIds": [
+        "3957491164539558820_78424002938",
+        "3944679925123219099_78424002938"
+      ],
+      "idDateCaptionVerifiedAgainstMetricool": true,
+      "originalCDNBytesRecovered": 0,
+      "codes": [
+        403,
+        403
+      ],
+      "notes": "Original-first-party image URL signed links inaccessible; do not substitute another image or mark dedup PASS"
+    }
   },
   "socialPlatforms": {
     "metricool": {
@@ -110,10 +124,62 @@
           "status": "live",
           "date": "2026-11-02"
         },
-        "runtime": "UNVERIFIED_and_known_crash_in_logs",
+        "runtime": "BLOCKED_BY_RENDER_FREE_NPM_BUILD_HEAP_OOM_AFTER_GITHUB_DI_FIX",
         "logDate": "2026-11-04",
-        "error": "EventDestinationsRepository TypeError: Cannot read properties of undefined (reading 'manager')",
-        "mitigation": "Do not wake or redeploy failing free service without a verified fix; independent GitHub GET-only fallback remains in place"
+        "error": "Legacy runtime DataSource mismatch confirmed: duplicated @n8n/typeorm class. New code pins singleton, but Render free npm build crashes before new runtime can start.",
+        "mitigation": "Do not wake or redeploy failing free service without a verified fix; independent GitHub GET-only fallback remains in place",
+        "fix": {
+          "validatedFixCommit": "bdd73abf48c75652594e54c1cfab43c29ab41a72",
+          "pinNodeCommit": "1758db8e913d49e066d874b62a5c84d386b86d9a",
+          "runtimeSafetyCommit": "564d0f7e751e3b120cad13b7767606502365ec86",
+          "dependencyInspectionRun": 42467898660,
+          "safetyTestsRun": 42468787678,
+          "versions": {
+            "node": "22.23.4",
+            "n8n": "2.35.7",
+            "typeORM": "0.7.0",
+            "pg": "8.23.1"
+          },
+          "classIdentity": {
+            "sameDataSourceType": true,
+            "sameDIContainer": true
+          },
+          "renderDeploys": [
+            {
+              "id": "dep-dbo467p5efls73cquvj0",
+              "result": "build_failed",
+              "reason": "npm install JS heap OOM near 320MB"
+            },
+            {
+              "id": "dep-dbo48cu417fc73f7vcog",
+              "result": "build_failed",
+              "reason": "npm install JS heap OOM near 320MB"
+            },
+            {
+              "id": "dep-dbo4beajnfac73ds8phg",
+              "result": "build_failed",
+              "reason": "npm install JS heap OOM near 400MB"
+            },
+            {
+              "id": "dep-dbo4d1e7bikc73fueat0",
+              "result": "auto_triggered_by_safe_env_restore",
+              "reason": "Restored 256 MB runtime heap after build failure; status pending, do not assume live"
+            }
+          ],
+          "renderSafeEnvironmentRestored": {
+            "NODE_OPTIONS": "--max-old-space-size=256",
+            "XJW_N8N_SEPARATE_BUILD_HEAP": "0",
+            "XJW_N8N_RUNTIME_NODE_OPTIONS": "--max-old-space-size=256"
+          },
+          "noMigrationWrites": true,
+          "noWorkflowMutations": true,
+          "existingSupabaseN8nData": {
+            "workflows": 7,
+            "executions": 103,
+            "credentialRows": 2,
+            "migrations": 243
+          }
+        }
       },
       "line": {
         "serviceId": "srv-d4rddeidbo4c73cabnug",
@@ -151,7 +217,9 @@
     "Three source-bound published media remain unverified after a targeted non-invasive retrieval.",
     "Older published carousel child coverage is not demonstrated complete.",
     "Latest 68 candidates all retain duplicate=DEFER until full source-image and editorial angle verification.",
-    "n8n Render free service has application DI crash despite last deploy status live; source of missing DataSource has not been proven."
+    "n8n Render free service has application DI crash despite last deploy status live; source of missing DataSource has not been proven.",
+    "n8n code-level singleton DataSource mismatch corrected and CI-proven, but Render Free npm install build OOM at 320–400MB prevents deployment; do not claim readiness or recommend paid plan.",
+    "Fresh official Metricool IG image source URLs for two old published posts still returned HTTP 403; public-source visual recovery unresolved."
   ],
   "noNewPaidServices": true,
   "noAutomatedPublication": true,
