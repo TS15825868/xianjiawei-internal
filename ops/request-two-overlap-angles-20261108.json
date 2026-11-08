@@ -1,0 +1,25 @@
+{
+  "scope": "two-current-published-overlap-editorial-differentiation-20261108",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "reason": "Current 68-post screen found two previously published caption-overlap warnings. Reframe original images as specific scheduling and shelf-sorting scenes; preserve actual product specs and historical dedup DEFER; no imitation of approval.",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "expectedTitle": "龜鹿飲是先做好放著嗎？",
+      "expectedCopy": "在仙加味萬華店內，小老闆翻開筆記本、拿起筆，桌邊擺著月曆；小鹿在食材架旁，小烏龜陪著看日期。\n\n有人問龜鹿飲是不是現貨。仙加味龜鹿飲採接單後製作，約5～7個工作天出貨；這個交期僅適用龜鹿飲。預計使用前，可以先把製作與寄送安排的時間算進去。\n\n訂購食品時，你習慣先確認交期，還是先看包裝規格？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+      "copy": "在仙加味萬華店裡，小老闆拿著筆翻開筆記本，桌邊擺著小月曆；小鹿在乾貨架旁，小烏龜陪著看日期。\n\n要訂購仙加味龜鹿飲，可以先想想哪一天需要，再到官方 LINE 告訴我們預計使用的時間，確認製作和寄送能否配合。龜鹿飲採接單後製作，約5～7個工作天出貨，這個交期不套用到其他商品。\n\n你安排預先訂購的食品時，會先記在月曆上，還是手機備忘錄？",
+      "evidence": "原圖驗證：店內木桌有翻開的筆記本、筆、小月曆；小老闆在寫筆記，小鹿在左側乾貨架、小烏龜在月曆旁。新稿的核心是如何提前確認使用日期並利用 LINE 詢問，非重新發布8月試喝活動。交期只限龜鹿飲，保留全部歷史去重DEFER。"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "expectedTitle": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "expectedCopy": "今天換個生活角度來聊仙加味龜鹿飲：30cc小玻璃罐和180cc鋁袋，你家比較好收哪一種？\n\n有人喜歡一罐一罐排好，有人覺得鋁袋比較容易整理。你是哪一派？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "copy": "在仙加味萬華店的木架前，小老闆伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐，以及180cc鋁袋，小鹿和小烏龜在旁邊看。\n\n整理不同形態的食品包裝時，先核對各自的正式保存標示，再依實際空間安排位置，不必把小罐與袋裝食品全部擠在同一格。\n\n你整理家裡的食品櫃時，習慣按包裝形式分類，還是按使用頻率擺放？",
+      "evidence": "原圖驗證：小老闆在木櫃前伸手指向上方籃盒與櫃格，桌面有小金蓋裸玻璃罐及銀色鋁袋；兩夥伴分開。核心是分類收納行動，不是重複介紹180cc鋁袋規格或試喝活動。原圖包裝文字來源仍需正式實物覆核，去重繼續DEFER，絕不宣稱完整合格。"
+    }
+  ]
+}
