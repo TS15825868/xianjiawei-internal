@@ -5,5 +5,5 @@
   "allowDatabaseAccess": false,
   "allowPublication": false,
   "reason": "Read-only package dependency resolution on fresh runner to triage EventDestinationsRepository DataSource/DI undefined manager without touching live database",
-  "stage": "pin matching @n8n/typeorm 0.7.0 at runtime root and verify singleton DataSource across both n8n and @n8n/db"
+  "stage": "align pg 8.23.1 with @n8n/typeorm@0.7.0 peer constraint and enforce singleton TypeORM across n8n/db"
 }
