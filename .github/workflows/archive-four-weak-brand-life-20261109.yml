@@ -1,0 +1,32 @@
+name: 仙加味四篇無明確漢方生活連結貼文安全退件
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-four-weak-brand-life-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Preflight exact-version four-post archive
+        run: node --check ops/archive-four-weak-brand-life-20261109.mjs
+      - name: Archive four visually inspected off-topic lifestyle posts and verify D1 readback
+        run: node ops/archive-four-weak-brand-life-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-weak-brand-life-${{ github.run_id }}
+          path: four-weak-brand-life-readback.json
+          if-no-files-found: warn
+          retention-days: 7
