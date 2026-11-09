@@ -1,0 +1,32 @@
+name: 仙加味兩篇節日餐桌飲食文化文案精準補正
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-two-food-culture-life-copy-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Validate two source-bound food-life copy corrections
+        run: node --check ops/repair-two-food-culture-life-copy-20261109.mjs
+      - name: D1 CAS copy revision and new AI DEFER version-bound evidence readback
+        run: node ops/repair-two-food-culture-life-copy-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: two-food-culture-copy-${{ github.run_id }}
+          path: two-food-culture-copy-fix-results.json
+          if-no-files-found: warn
+          retention-days: 7
