@@ -1,35 +1,23 @@
 {
   "scope": "xjw-evidence-guarded-editorial-batch-v1",
-  "requestId": "xjw-20261109-offbrand-2-unique-01",
+  "requestId": "xjw-20261109-spring-walk-offbrand-unique-02",
   "allowArchive": true,
   "allowApproval": false,
   "allowPublish": false,
   "allowDelete": false,
-  "sourceSnapshotGeneratedAt": "2026-11-09T12:04:53.754Z",
-  "sourceMainAtReview": "6708ea5220f754419e6972d5b1bbd6b65377592d",
-  "description": "Actual original images and latest content directly reviewed; archive two standalone off-topic articles only. Preserve all historical records and continue 16-item duplicate DEFER for all other posts.",
+  "sourceSnapshotGeneratedAt": "2026-11-09T12:17:49.040Z",
+  "description": "Direct image review finds generic holiday sightseeing, without a factual product, dietary culture, craft, food or brand-history narrative link. Retain complete original while withdrawing from publish candidate pool.",
   "items": [
     {
-      "id": "XJW-CONV-chat-small-things-work",
-      "title": "小老闆今天忙的，都是一些很小的事",
-      "copy": "有時候一天忙完，回頭看好像都不是什麼大事：開燈、整理桌子、回幾個訊息、把東西放回去。\n\n仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。\n\n但店裡的日常就是這些小事情慢慢堆起來的。你今天完成了哪一件小事？",
-      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
-      "imageAlt": "萬華店內的日常工作桌，小老闆擦拭桌面並把鉛筆收回筆筒，小鹿整理空白紙張，小烏龜守著收納籃，呈現小事歸位的動作。",
+      "id": "XJW-FEST-2027-spring-walk",
+      "title": "走春不用趕行程，陪家人慢慢走一段",
+      "copy": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
+      "imageAlt": "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。",
       "category": "offbrand_lifestyle",
       "verifiedOriginalScene": true,
-      "reason": "本篇只列出開燈、擦桌子、放回鉛筆、回訊息等一般店務瑣事，沒有呈現任何仙加味漢方食材、食品、食用、家常料理、保存方式或鹿角工藝；品牌名稱單獨出現，不等於有具體品牌生活內容。正式原圖亦只有辦公文具與桌面整理，不應以無關情境包裝成漢方飲食貼文。",
-      "imageInspectionDetails": "直接看正式照片：小老闆一手握布擦桌、另一手放鉛筆到筆筒；小鹿旁是白紙疊，小烏龜旁是空收納籃，場景沒有正式產品、料理或漢方食材操作。"
-    },
-    {
-      "id": "XJW-CONV-chat-ask-boss-topic",
-      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
-      "copy": "仙加味不想每一篇都只是產品介紹。可以聊吃的、聊萬華、聊以前家裡的習慣，也可以回答大家真的好奇的事。\n\n如果下一篇讓你指定，你最想跟小老闆聊什麼？",
-      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
-      "imageAlt": "仙加味溫暖室內聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起等大家出題，桌面為一般生活與書寫小物，無產品",
-      "category": "offbrand_lifestyle",
-      "verifiedOriginalScene": true,
-      "reason": "文案只問下篇想聊甚麼，沒有具體料理、飲食文化、產品特色、工藝或食用情境，也沒有在文內描述照片上的具體動作；使用『今天如果不聊產品』與『可以聊吃的』僅作泛泛主題徵求，未達仙加味生活文案的實質品牌連結及圖文一致標準。避免將泛互動題當作正式生活貼文重複發布。",
-      "imageInspectionDetails": "直接看正式照片：小老闆坐木桌前單手托腮並張開另一手，小鹿小烏龜陪坐，桌上是空白紙張、杯子與書寫用品；沒有任何具體產品、料理動作、食品資訊指示物。"
+      "reason": "這篇只描述春節出門散步、看花木、親子牽手與年節相伴，雖提到仙加味萬華及標語，但沒有特定鹿角工藝、漢方飲食、家常料理、產品或食用保存資訊；不符合仙加味生活文案必須具有具體品牌飲食文化或產品連結的正式規範，因此編輯退件封存，不作為生活貼文對外發布。",
+      "imageInspectionDetails": "已直接檢視正式原圖：春節紅燈籠與櫻花街道，小老闆牽著成年人手走在石板路，小鹿小烏龜跟隨；畫面只有人行街景及花木，沒有食品原料、料理、正式產品、工序或可識別家族品牌故事實物。"
     }
   ]
 }
