@@ -7,6 +7,6 @@
   "publish": false,
   "correctedPredicate": "substr-prefix-no-like",
   "priorDiagnosticRun": 42489566865,
-  "reason": "Refresh live D1 status and integrity for owner-authorized three-system release verification; preserve all completed evidence.",
-  "requestId": "20261108-three-system-release-c955820c"
+  "reason": "One-time verify existing corrected substr-prefix SQL against official D1 after failed LIKE query; read-only, no content changes, approvals, schedules or publishing.",
+  "requestId": "20261109-1000-readonly-substr-prefix-verification"
 }
