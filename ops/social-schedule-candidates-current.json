@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T10:03:56.613Z",
+  "generatedAt": "2026-11-09T10:09:12.639Z",
   "counts": {
-    "pending_review": 65
+    "pending_review": 60
   },
   "items": [
     {
@@ -513,28 +513,6 @@
       ]
     },
     {
-      "id": "XJW-CAND-20270112",
-      "title": "親友來家裡，你會先拿出哪一個杯子",
-      "copy": "準備招待來家裡坐坐的親友時，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
-      "category": "閒聊",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-01-12T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270112.webp",
-      "image_alt": "居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜454640b31f4b3ea3925adaa17cfaac35600f8d27abde33953300986b2e736c78｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:11:03.742Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
       "id": "XJW-CAND-20270115",
       "title": "紅棗入甜湯，整顆還是切開",
       "copy": "週五早上，小老闆在家準備紅棗甜湯的材料，先把紅棗沖洗、看看大小，再想要整顆放入還是切開。仙加味喜歡聊這些餐桌上的小習慣。你家煮甜湯會怎麼放紅棗？",
@@ -777,28 +755,6 @@
       ]
     },
     {
-      "id": "XJW-CAND-20270226",
-      "title": "週末想去河邊走走，還是在家看書",
-      "copy": "週五早上，小老闆和小鹿、小烏龜聊起週末計畫：天氣適合就去河邊散步，不然在家看書也很好。仙加味想問大家，這週末你比較想出門走走，還是留在家裡？",
-      "category": "閒聊",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-02-26T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
-      "image_alt": "週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜79b6691482ec42248f01f1bb484b70a84640e624c40232c8d1669bfa33cadf11｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:12:22.848Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
       "id": "XJW-CAND-20270302",
       "title": "春天早餐桌，一杯水與一份簡單早餐",
       "copy": "春季早晨，小老闆把吐司、蛋與水杯放上桌，準備開始一天。仙加味相信日常的節奏，常藏在這些普通又熟悉的片刻。",
@@ -887,50 +843,6 @@
       ]
     },
     {
-      "id": "XJW-CAND-20270316",
-      "title": "出門前看一下預報，再決定帶什麼",
-      "copy": "春季出門前，小老闆先看看當天預報，再決定是否放入外套或雨具。仙加味也想提醒大家，外出準備依當地實際天氣調整就好。",
-      "category": "關心",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-03-16T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270316.webp",
-      "image_alt": "春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜39ddbd73d9412fbd004c147ae8b805777d106b3b116a7e5abe95c85414ede23f｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:11:58.911Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20270319",
-      "title": "一樣是喝水，你最喜歡哪種杯子",
-      "copy": "店裡忙完一個段落，小老闆拿出玻璃杯與陶杯，想了想今天選哪一個。仙加味想聽聽大家平常最常用什麼杯子。",
-      "category": "閒聊",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-03-19T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270319.webp",
-      "image_alt": "工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜3a66792badd11e0fb20e8a886c3a3f0cc811630c40e4ac2ab3ac357edf4c4dd0｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:12:02.613Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
       "id": "XJW-CAND-20270323",
       "title": "從老手藝到現代日常，記錄一個工序",
       "copy": "整理家族留下的製作筆記時，小老闆在桌上翻開筆記本，拿著筆準備梳理鹿角與熬膠工序的老經驗。仙加味想把萬華累積的漢方飲食文化整理成更容易理解的內容。你會怎麼保存家裡傳下來的做法？",
@@ -946,28 +858,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T17:31:59.816Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20270326",
-      "title": "春天的玄關，雨傘和外套放哪裡",
-      "copy": "春天出門前，小老闆把雨傘和薄外套放在玄關固定位置，依當天實際天氣決定要不要帶著走。仙加味想問：你家玄關最容易找不到的是雨傘、鑰匙，還是外套？",
-      "category": "季節",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-03-26T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270326.webp",
-      "image_alt": "春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜e39a4feb1736465343794e38c6312308a8f078e63d62cafdb07c3d0221c3c71b｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:12:10.151Z",
       "platforms": [
         "Facebook",
         "Instagram",
