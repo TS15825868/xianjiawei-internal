@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T19:07:00+08:00",
-  "reason": "Read-only live D1 candidate refresh after exact-image comparison and successful archive of redundant XJW-CONV-year-end-clean (Action 42606312753). Preserve current source for retained family stone-mill and Wanhua street album posts; do not backfill/archive more.",
-  "reviewScope": "Only export current pending/approved/scheduled from live D1; last readback 55 pending, 102 archived, 4 published (161 total), count again from D1 before writing GitHub snapshot.",
+  "requestedAt": "2026-11-09T20:04:00+08:00",
+  "reason": "Refresh GitHub read-only candidate snapshot from actual Cloudflare D1 after source-bound archival of XJW-CONV-cny-last-day-reset (Action 42613319872) and successful updated current copy plus current AI-DEFER evidence for XJW-CAND-20261225 and XJW-CAND-20270129 (Action 42613850239). Never backfill old 55/56 copies.",
+  "reviewScope": "Read actual pending_review,approved,scheduled only; D1 last verified 54 pending, 103 archived, 4 published, total161; source changes only, do not alter D1, statuses, approvals or publication.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42606312753",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42613850239",
   "publish": false,
   "approval": false,
   "mutateD1": false,
