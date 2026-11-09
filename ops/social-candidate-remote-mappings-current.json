@@ -1,10 +1,10 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-09T13:18:26.322Z",
+  "generatedAt": "2026-11-09T13:22:35.551Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-09T13:18:25.020Z",
+  "postSnapshotAt": "2026-11-09T13:22:34.207Z",
   "counts": {
     "pending": 53,
     "linked": 12,

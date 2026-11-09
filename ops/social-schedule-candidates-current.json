@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T13:18:25.020Z",
+  "generatedAt": "2026-11-09T13:22:34.207Z",
   "counts": {
     "pending_review": 53
   },
@@ -955,7 +955,7 @@
     {
       "id": "XJW-CONV-chat-elder-kitchen-habit",
       "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
-      "copy": "有人從家裡學會食材怎麼收，有人記得湯要怎麼慢慢煮，也有人只是習慣沿用長輩的某個小動作。\n\n仙加味整理家常飲食文化時，也會留意長輩教過的備料與保存小習慣。\n\n你現在還保留哪一個以前家裡教你的廚房習慣？",
+      "copy": "午後在家中廚房，仙加味小老闆雙手端著裝有紅棗和枸杞的竹篩，把洗過的食材瀝乾；小鹿拿著空竹籃，小烏龜在桌邊陪伴，旁邊還有蔬菜和備料用的大碗。\n\n以前家裡的大人常常一邊備餐，一邊教我們先把食材挑好、洗淨、瀝乾，再依料理需求準備下一步。仙加味分享的漢方飲食文化，也包含這些家常料理裡留下的小習慣；實際處理食材時仍以來源及包裝說明為準。\n\n你現在還保留哪一個長輩教過的廚房備料習慣？",
       "category": "飲食文化",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -967,7 +967,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T07:27:50.654Z",
+      "updated_at": "2026-11-09T13:21:41.890Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -999,7 +999,7 @@
     {
       "id": "XJW-CONV-chat-luerong-intro",
       "title": "今天認識一個比較少聊到的：鹿茸粉",
-      "copy": "仙加味平常聊龜鹿系列比較多，鹿茸粉反而比較少出現在貼文裡。\n\n今天先從最基本的開始：仙加味鹿茸粉是75g／罐。一次只認識一件事，也比較容易記住。",
+      "copy": "仙加味平常比較常介紹龜鹿系列，鹿茸粉反而比較少出現在日常貼文裡。\n\n這次小老闆在萬華工作間的木桌旁，用木尺和桌上的小罐子比一比大小；旁邊的小鹿、小烏龜也在看。這款仙加味鹿茸粉是75g／罐，先認識正式包裝的外觀、品名、規格，再依產品標示了解食用與保存方式。\n\n認識漢方食材與飲食文化，不用一次背下所有資料。你看到粉狀食品，會先確認重量、原料，還是保存標示？",
       "category": "產品認識",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -1011,7 +1011,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T07:28:02.569Z",
+      "updated_at": "2026-11-09T13:21:38.052Z",
       "platforms": [
         "Facebook",
         "Instagram",
