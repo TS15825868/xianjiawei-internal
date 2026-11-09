@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T20:04:00+08:00",
-  "reason": "Refresh GitHub read-only candidate snapshot from actual Cloudflare D1 after source-bound archival of XJW-CONV-cny-last-day-reset (Action 42613319872) and successful updated current copy plus current AI-DEFER evidence for XJW-CAND-20261225 and XJW-CAND-20270129 (Action 42613850239). Never backfill old 55/56 copies.",
-  "reviewScope": "Read actual pending_review,approved,scheduled only; D1 last verified 54 pending, 103 archived, 4 published, total161; source changes only, do not alter D1, statuses, approvals or publication.",
+  "requestedAt": "2026-11-09T20:25:00+08:00",
+  "reason": "Read-only live D1 refresh after partial guarded editorial batch Action 42615359572. XJW-CONV-chat-ask-boss-topic archived and read back successfully, while XJW-CONV-chat-small-things-work was explicitly blocked due to existing Metricool draft mapping (Metricool remote id 413610813, draft true, autoPublish false). Do not claim two successes or backfill archived post.",
+  "reviewScope": "Current true D1 state verified from per-post receipt: 161 total, pending_review 53, archived 104, published 4. Export current pending only; no D1 import, approval or publish.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42613850239",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42615359572",
   "publish": false,
   "approval": false,
   "mutateD1": false,
