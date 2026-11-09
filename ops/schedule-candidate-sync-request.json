@@ -1,8 +1,11 @@
 {
-  "requestedAt": "2026-11-05T22:38:00+08:00",
-  "reason": "Refresh D1 live published queue snapshot after verified archival of two overlapping pending posts; do not modify any social_posts, D1 media, approvals, or publishing",
-  "reviewScope": "All approved, scheduled, pending_review rows; compare only 56 pending after verified run 42046761560",
+  "requestedAt": "2026-11-09T06:26:26.470Z",
+  "reason": "Refresh GitHub social-schedule-candidates-current.json as a READ-ONLY snapshot of actual live D1 after verified 2026-11-08 four-scene repairs and 2026-11-09 stone-mill correction; previous snapshot generated 2026-11-05 14:39Z has 56 pending and stale copy. Never write back old snapshot to D1, change approvals, media, schedules or publish.",
+  "reviewScope": "Only export current approved, scheduled, pending_review rows from Cloudflare D1 and preserve latest copy/title/image/status; count at read time, not assumed 68. Persist to GitHub snapshot only.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42046761560",
-  "publish": false
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42568419203",
+  "publish": false,
+  "approval": false,
+  "mutateD1": false,
+  "preventStaleBackfill": true
 }
