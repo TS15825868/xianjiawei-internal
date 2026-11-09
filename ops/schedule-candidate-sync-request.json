@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T20:49:00+08:00",
-  "reason": "Read-only D1 candidate snapshot PLUS newly added per-post Metricool mapping presence inventory, after guarded editorial Action 42619036531 was prewrite-blocked on XJW-FEST-2027-spring-walk by external Metricool draft. Do not retry mapped posts; preserve existing 53 pending,104 archived,4 published unless live D1 differs. No D1 import or publish.",
-  "reviewScope": "Export current candidate data and mapping counts only; classify each pending post by existing D1 social_metricool_sync link presence, to prioritize safe unlinked editorial fixes; do not change remote Metricool drafts or approve posts.",
+  "requestedAt": "2026-11-09T20:55:00+08:00",
+  "reason": "Read-only D1 candidate and Metricool mapping-presence refresh after verified two current-image-bound copy repairs in Action 42619630664 (XJW-CAND-20261211, XJW-CONV-new-year-warm-cup-share). Preserve current D1 and no old copy backfill.",
+  "reviewScope": "Export 53 pending current copies and remote mapping counts in read-only mode; D1 previously 53 pending,104 archived,4 published; do not write to D1, AI approve or publish.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42619036531",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42619630664",
   "publish": false,
   "approval": false,
   "mutateD1": false,
