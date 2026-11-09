@@ -1,0 +1,17 @@
+{
+  "scope": "spring-walk-offbrand-linked-draft-safe-hold-v1",
+  "id": "XJW-FEST-2027-spring-walk",
+  "expectedTitle": "走春不用趕行程，陪家人慢慢走一段",
+  "expectedCopy": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
+  "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
+  "expectedImageAlt": "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。",
+  "remoteId": 395780855,
+  "uuid": "7059549514727835567",
+  "sourceSnapshotAt": "2026-11-09T14:58:01.426Z",
+  "archiveAuthorized": true,
+  "publishAuthorized": false,
+  "approveAuthorized": false,
+  "deleteRemoteAuthorized": false,
+  "reason": "春節走春散步、花木與家人慢走的文字和圖片，未提供具體漢方食材辨識、家常備餐、傳統熬膠工藝、正式產品、食用保存資訊；僅用仙加味品牌名及標語聯想慢步調，不具備正式生活貼文所要求的有實質內容的品牌飲食文化連結。保留既有正式媒體與歷史，為避免對外重複且離題的泛生活素材，將此版安全封存，遠端草稿仍停發。",
+  "imageInspectionDetails": "既有直接檢視證據顯示圖中仙加味小老闆牽成年人走在春節街道上，背景紅燈籠與花木，小鹿小烏龜分開跟隨，沒有漢方食材、食品包裝、工作器具、料理或工藝動作。已透過正式Metricool連接器獨立查核遠端草稿395780855（UUID 7059549514727835567）仍draft=true、autoPublish=false、三平台均PENDING，與D1目前文案及ALT相符。"
+}
