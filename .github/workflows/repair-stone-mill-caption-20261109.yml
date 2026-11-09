@@ -1,0 +1,29 @@
+name: 仙加味石磨圖文不符精準更正與D1驗證
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-stone-mill-caption-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Correct one image-grounded noun only with latest D1 CAS, DEFER and readback
+        run: node ops/repair-stone-mill-caption-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stone-mill-caption-${{ github.run_id }}
+          path: stone-mill-caption-results.json
+          retention-days: 7

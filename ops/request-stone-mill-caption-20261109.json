@@ -1,0 +1,18 @@
+{
+  "scope": "stone-mill-caption-visual-consistency-20261109",
+  "authorizeCopyFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "reason": "Existing verified image scene shows stone hand mill (石磨), matching image_alt; current pending D1 copy incorrectly uses 石臼. Fix only the noun, preserve original image SHA and dedup DEFER.",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "expectedTitle": "你會保留家裡長輩以前的東西嗎？",
+      "expectedCopy": "午後整理仙加味萬華工作間，小老闆坐在老木桌旁翻看家族舊照片，旁邊還放著一只石臼，小鹿和小烏龜也跟著看。\n\n有些老物件看起來平凡，卻記錄著以前的生活。仙加味想把萬華家族留下的漢方飲食文化與日常故事慢慢整理下來。\n\n你家有沒有一件捨不得丟的老工具或老照片？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+      "expectedImageAlt": "仙加味小老闆在老木櫃旁翻看舊照片與石磨，小鹿和小烏龜陪著回想家中老物件。",
+      "evidence": "比對正式原圖的桌面圓形石磨、原圖既有 image_alt『石磨』及最新文案用語；僅更正石臼→石磨，既有已封存類似題材仍保留人工編輯覆核與歷史去重 DEFER，不觸發核准、排程或發文。",
+      "copy": "午後整理仙加味萬華工作間，小老闆坐在老木桌旁翻看家族舊照片，旁邊還放著一座石磨，小鹿和小烏龜也跟著看。\n\n有些老物件看起來平凡，卻記錄著以前的生活。仙加味想把萬華家族留下的漢方飲食文化與日常故事慢慢整理下來。\n\n你家有沒有一件捨不得丟的老工具或老照片？"
+    }
+  ]
+}
