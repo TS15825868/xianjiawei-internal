@@ -7,7 +7,7 @@ const { fingerprint }=require('../tools/metricool-free-evidence.cjs');
 const req=JSON.parse(fs.readFileSync('ops/request-one-grounded-image-alt-20261109.json','utf8'));
 if(req.scope!=='one-grounded-image-alt-correction-20261109'||req.authorizeAltFix!==true||req.authorizeApproval!==false||req.authorizePublish!==false||req.items?.length!==1)throw Error('Unsafe request');
 const fix=req.items[0];
-if(fix.id!=='XJW-CONV-year-end-small-win'||!fix.expectedImageAlt.includes('關上整理好的食材抽屜')||!fix.imageAlt.includes('拉開食材抽屜')||fix.expectedImageAlt===fix.imageAlt)throw Error('Only verified original-drawer alt is allowed');
+if(fix.id!=='XJW-CONV-year-end-small-win'||!fix.expectedImageAlt.includes('關上整理好的食材抽屜')||!fix.imageAlt.includes('拉開木製食材抽屜')||fix.expectedImageAlt===fix.imageAlt)throw Error('Only verified original-drawer alt is allowed');
 const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN,db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
 if(!account||!token||!db)throw Error('Missing D1 credentials');
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
