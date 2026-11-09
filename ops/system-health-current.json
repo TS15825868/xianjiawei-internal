@@ -1,70 +1,136 @@
 {
-  "version": "2026-09-11T01:05+08:00",
-  "authority": "observed-current-state",
+  "version": "2026-11-09-current-verified-receipts",
+  "authority": "latest-live-connector-and-successful-GitHub-D1-readback",
   "principle": "資料正確｜圖文一致｜品牌一致｜功能正常｜正式可上線",
   "website": {
     "repository": "TS15825868/xianjiawei@main",
-    "latestObservedCommit": "b9d3e87401955601ebcb0eb86c6fbe48909a1838",
-    "latestChange": "更新 sitemap 首頁 lastmod，反映 2026-09-10 LINE社群漏斗首頁正式更新",
-    "githubPagesRun": 34505625235,
+    "latestObservedCommit": "d7507538fb21b4a247488129cf5ff3273536e7a9",
+    "githubPagesRun": 42563241828,
     "githubPagesConclusion": "success",
-    "publicProductScope": 6,
+    "chromiumWebkitReadabilityRun": 42563242204,
+    "chromiumWebkitReadabilityConclusion": "success",
+    "responsiveFunctionRun": 42563242203,
+    "responsiveFunctionConclusion": "success",
+    "siteLinkAuditRun": 42563242223,
+    "siteLinkAuditConclusion": "success",
+    "publicProductScope": {
+      "ownApproved": 4,
+      "selectedApproved": 5,
+      "totalPublicCards": 9
+    },
     "qixuanPublic": false,
-    "seoIndexingNote": "目前公開搜尋仍可能看到舊 /TaiShing/ 快照；現行正式網址與權威一律為 /xianjiawei/。下一步需透過Google Search Console做URL Inspection與索引確認。"
+    "knownWebsiteIssuesAtVerification": 0,
+    "seoIndexingNote": "GitHub Pages正式部署與網站驗收成功；Google Search Console私人索引/URL Inspection未完成，GSC Wizard本回合回傳payment_required，依新增費用0原則不訂閱。"
   },
   "lineOA": {
     "repository": "TS15825868/TS-LINE@main",
-    "dependencyFixCommit": "f636392b51408e0fef8f108ea3e06521e7a405ce",
-    "dependencyLockCommit": "d6dea0b10fe83dd6e9cf7fc56635629566828ca3",
+    "latestObservedCommit": "b938cb92180b2cebf7f6bb6c1e795c0814e1eabd",
+    "documentationUpdate": "README產品公開範圍已與官網四項核心與五項精選公開商品同步；產品執行程式未改，沒有重部署",
     "renderService": "TS-LINE",
-    "renderDeploy": "dep-dahds4dq7rac73dsg44g",
-    "renderStatus": "live",
-    "npmVulnerabilitiesObservedAfterFix": 0,
-    "readiness": "pass",
+    "renderServiceSuspended": false,
+    "productAuthority": "官網public-product-master.json四項公開核心商品及partner-catalog.json已核准選品",
     "richMenuAuthority": "oa-manager",
-    "publicProductScope": 6,
+    "richMenuActualVisualVerified": false,
+    "lastCheckedErrorWindowStart": "2026-11-09T00:00:00Z",
+    "renderErrorFatalCountInCheckedWindow": 0,
     "qixuanPublic": false,
-    "drink30Usage": "每日 1–2 罐"
+    "drink30Usage": "每日 1–2 罐，可依個人需求調整",
+    "customerWebhookEndToEndVerifiedInThisRun": false
   },
   "internalErp": {
     "repository": "TS15825868/xianjiawei-internal@main",
-    "cloudflareLastVerifiedSuccessfulBuildRecordCommit": "60b036ef8a9508b4fbeb22672a7cfc7572ab0858",
-    "fullLoggedInLiveValidation": "pending-tool-access",
-    "blockingContentImageGuard": "paused-until-full-live-validation",
-    "dataRetentionRule": "正常ERP、歷史營運、成本、庫存、客戶、合作商等內部資料不得因公開端不使用而刪除"
+    "latestObservedCommit": "9193d00d024efa84cba48379259a28c24d8f5323",
+    "verifiedD1CorrectionRun": 42568419203,
+    "verifiedD1CorrectionResult": "XJW-CONV-chat-family-old-object圖文石臼→石磨精準修復，D1 CAS及新DEFER證據讀回成功",
+    "d1Counts": {
+      "total": 161,
+      "archived": 89,
+      "pending_review": 68,
+      "published": 4,
+      "scheduled": 0
+    },
+    "d1StatusSource": "2026-11-09 Action 42568419203 正式讀回",
+    "pendingReviewReason": "68篇未取得正式圖像核准及完整歷史去重PASS，維持DEFER，不得視為已人工核准",
+    "dataRetentionRule": "完整保留正常ERP、歷史媒體、客戶、成本、庫存、訂單與合作商資料，不因公開端不使用而刪除",
+    "autoPublishingChanged": false
   },
   "n8n": {
     "formalRenderService": "xianjiawei-n8n-longterm",
     "formalDatabase": "Supabase xianjiawei PostgreSQL",
     "legacyRenderService": "xianjiawei-n8n",
     "legacyIsFormal": false,
-    "latestKnownLongtermDeployStatus": "live",
-    "schedulerRecheck": "scheduled-one-time-follow-up",
-    "note": "若GitHub schedule短暫延遲，先復驗再修；不得切到legacy。"
+    "legacyServiceSuspended": true,
+    "formalServiceSuspended": false,
+    "lastCheckedErrorWindowStart": "2026-11-09T00:00:00Z",
+    "appErrorFatalCountInCheckedWindow": 0,
+    "meta": "服務未暫停且近期無error/fatal記錄不等於端到端工作流程全部成功；不重啟正常服務"
   },
   "supabase": {
     "project": "xianjiawei",
     "projectRef": "iphexhvjhsmelbgwzhhr",
     "status": "ACTIVE_HEALTHY",
-    "postgres": "17",
-    "publicSchemaTables": 1,
-    "xjwAppStateRls": true,
-    "xjwAppStatePublicClientPrivileges": false,
-    "n8nMutableSearchPathWarning": "deferred-to-n8n-runtime-owner",
-    "performanceAdvisorPolicy": "不因advisor提示任意刪除或重建n8n管理索引"
+    "securityAdvisors": {
+      "function_search_path_mutable": "WARN:n8n.increment_workflow_version()，執行帳號不是function owner，不能強行ALTER",
+      "rls_enabled_no_policy": "INFO，需依實際訪問需求分辨；不得任意放寬權限"
+    },
+    "policy": "不因advisor提示任意改owner、添加SECURITY DEFINER或刪除n8n管理索引"
   },
   "social": {
     "metricoolBrandId": "6889683",
-    "networks": ["facebook", "instagram", "threads"],
-    "futureQueueCheckedThrough": "2026-09-25",
-    "primaryProducts": ["龜鹿膏", "龜鹿飲30cc", "龜鹿飲180cc"],
-    "commercialHandoff": "LINE OA @762jybnm",
-    "lineCommunity": "仙加味・龜鹿｜日常交流",
-    "draftPostsAutoPublish": false
+    "networks": [
+      "facebook",
+      "instagram",
+      "threads"
+    ],
+    "currentDraftAuditWindow": [
+      "2026-11-09",
+      "2026-12-09"
+    ],
+    "upcomingMetricoolDrafts": [
+      {
+        "id": 409115861,
+        "date": "2026-11-11"
+      },
+      {
+        "id": 409189881,
+        "date": "2026-11-16"
+      },
+      {
+        "id": 415295632,
+        "date": "2026-11-25"
+      },
+      {
+        "id": 409190019,
+        "date": "2026-11-28"
+      }
+    ],
+    "upcomingDraftsAutoPublish": false,
+    "pendingD1Posts": 68,
+    "pendingD1ImageApprovals": 0,
+    "historicalMediaPreviouslyRecovered": 178,
+    "remainingEditorialPairs": [
+      3,
+      5
+    ],
+    "historicalImageGap": "舊15張私有快取缺檔身份不全；部分Meta舊CDN 403並非照片不存在；不可僅以不同SHA放行",
+    "humanApprovalsThisRun": 0,
+    "aiApprovalsThisRun": 0,
+    "schedulesThisRun": 0,
+    "publicationsThisRun": 0,
+    "commercialHandoff": "LINE OA @762jybnm"
   },
   "manualOrExternalFollowUps": [
-    "Google Search Console尚未連接；需連接後才能直接做URL Inspection與舊索引追蹤",
-    "Cloudflare Access登入後的ERP／貼文中心／D1完整live驗收目前缺少Cloudflare管理連接工具",
-    "Supabase n8n.increment_workflow_version search_path 警告需由n8n_runtime owner路徑處理，不強制改owner"
-  ]
+    "68篇待審D1：完成歷史已發布FB/IG/Threads圖片及輪播子圖的逐篇比對，2組相近場景需編輯判斷；目前維持DEFER",
+    "Google Search Console索引及舊站URL Inspection：GSC Wizard目前payment_required，依零新增費用限制不訂閱，待能免費使用既有帳戶時處理",
+    "Supabase n8n.increment_workflow_version search_path設定：需由n8n資料庫函式擁有者/有權限安全變更，不強行改權限",
+    "LINE OA Rich Menu真實手機畫面及顧客訊息端到端流程需具備實際OA帳號可驗證存取時確認；目前僅正式程式與服務狀態已驗證"
+  ],
+  "observedAtTaipei": "2026-11-09",
+  "auditSources": {
+    "website": "https://github.com/TS15825868/xianjiawei/actions/runs/42563242204",
+    "d1CopyFix": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42568419203",
+    "d1Integrity": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42548493427",
+    "previousMediaPairEvidence": "ops/near-visual-pairs-inspection-20261109.json",
+    "sourceGapEvidence": "ops/historical-media-source-link-gaps-20261108.json"
+  }
 }
