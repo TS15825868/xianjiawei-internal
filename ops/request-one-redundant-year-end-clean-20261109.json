@@ -1,0 +1,24 @@
+{
+  "scope": "one-verified-old-photo-editorial-duplicate-20261109-v1",
+  "allowArchive": true,
+  "allowApproval": false,
+  "allowPublish": false,
+  "deleteAssets": false,
+  "currentSnapshot": "2026-11-09T10:59:09.547Z",
+  "retainedPostIds": [
+    "XJW-CONV-chat-family-old-object",
+    "XJW-CONV-chat-traditional-image"
+  ],
+  "editorialBasis": "Direct inspection of all three GitHub original images (year-end drawer, stone-mill family memory, old Wanhua street album) and the latest content; no hypothetical hash-only duplicate claim",
+  "items": [
+    {
+      "id": "XJW-CONV-year-end-clean",
+      "title": "年底整理時，最常翻出什麼忘記的東西？",
+      "copy": "每到年底整理櫃子，總會翻出一些「原來它在這裡」的東西。\n\n仙加味在萬華整理老照片和工作器具時，也常翻出以前留下來的記憶。\n\n小老闆今天也在慢慢整理，該放回去的放回去，該留下的好好收著。你年底整理最常翻出什麼？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-clean-audit-v1.jpg",
+      "imageAlt": "年末整理回憶的情境插畫，仙加味小老闆從木抽屜翻看風景照片與工作木匙，小鹿和小烏龜陪在旁邊。",
+      "originalImageViewed": true,
+      "reason": "經核對現行原圖：小老闆從木抽屜拿出舊照片與木匙，與仍待審之『你會保留家裡長輩以前的東西嗎？』同樣以萬華木桌、家族老照片與老工具為核心、同樣向讀者詢問值得留下的老物件；後者保留石磨等更具體的家族工藝連結，另外已有萬華老街相簿稿。為免同系列舊照片與工具記憶重複發文，保留較明確的兩篇，本篇編輯封存並保存完整原始稿件及原圖。"
+    }
+  ]
+}
