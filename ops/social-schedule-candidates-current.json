@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T12:46:16.122Z",
+  "generatedAt": "2026-11-09T13:18:25.020Z",
   "counts": {
     "pending_review": 53
   },
@@ -119,7 +119,7 @@
     {
       "id": "XJW-CONV-cny-gift-choice",
       "title": "送禮時，你比較在意包裝還是對方用不用得到？",
-      "copy": "過年前的午後，小老闆坐在仙加味萬華店裡的桌邊，手上拿著一張準備寫給家人的心意卡，旁邊放著提袋和筆記本；小鹿、小烏龜也一起想點子。\n\n準備送禮時，除了包裝好不好看，也可以先確認對方平常是否用得上、食品標示是否清楚。仙加味希望把正式產品資訊說清楚，讓選擇更貼近生活。\n\n你會先寫心意卡，還是先了解對方需要什麼？",
+      "copy": "過年前的午後，小老闆在仙加味萬華店裡拿著一張空白心意卡，桌上放著紙提袋、筆記本與一罐龜鹿膏100g，小鹿、小烏龜也在旁邊陪著想點子。\n\n準備漢方食品當禮物時，除了包裝與卡片，也可以先確認對方是否習慣這種食品形式，再把容量、正式包裝標示、保存與使用方式說明清楚。仙加味想分享漢方飲食文化，也希望大家選擇禮物時有完整資訊。\n\n你送禮前會先了解對方的飲食習慣，還是先寫一張心意卡？",
       "category": "年節互動",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -131,7 +131,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-08T08:48:51.871Z",
+      "updated_at": "2026-11-09T13:17:28.199Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1028,12 +1028,12 @@
       "scheduled_at": null,
       "proposed_scheduled_at": "2027-05-21T10:00:00+08:00",
       "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
-      "image_alt": "仙加味店內的諮詢桌旁，小老闆傾聽顧客的使用習慣，桌上有兩只杯子和選擇卡，小鹿與小烏龜陪在一旁。",
+      "image_alt": "仙加味萬華店的木桌前，小老闆與來訪朋友一起看畫著紅棗、綠葉、根莖、種子與花朵的食材圖卡，桌邊放著兩只素面杯子；小鹿和小烏龜分開陪在一旁。",
       "image_source": "仙加味品牌與漢方生活情境",
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-08T01:50:06.504Z",
+      "updated_at": "2026-11-09T13:15:40.552Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1087,7 +1087,7 @@
     {
       "id": "XJW-CONV-chat-picture-or-text",
       "title": "你比較喜歡看圖，還是慢慢看文字？",
-      "copy": "在仙加味萬華店裡，小老闆和來訪的朋友坐在桌前，一起翻看打開的筆記本，旁邊還放著手機，小鹿與小烏龜也在。\n\n認識一款食品時，有人想先看圖片了解實際大小，有人想把文字規格逐項看清楚。仙加味希望把正式資訊整理得容易閱讀，也讓大家有問題可以直接詢問。\n\n你比較習慣先看圖片，還是先讀文字說明？",
+      "copy": "在仙加味萬華店的木桌前，小老闆和來訪的朋友一起看攤開的素面筆記本，旁邊放著手機，桌緣還擺著一罐龜鹿膏100g，小鹿、小烏龜也一起聽著。\n\n認識一款漢方食品時，實物照片可以先看包裝外觀與大小，文字則能逐項確認規格、食材、保存和使用說明。仙加味整理產品資訊時，會把正式包裝圖片與文字資訊搭配呈現，讓大家不必單憑圖片猜容量。\n\n你選購食品時，習慣先看實物照片，還是先讀文字規格？",
       "category": "社群互動",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -1099,7 +1099,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-08T08:48:42.226Z",
+      "updated_at": "2026-11-09T13:17:32.215Z",
       "platforms": [
         "Facebook",
         "Instagram",
