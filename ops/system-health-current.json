@@ -123,7 +123,8 @@
     "68篇待審D1：完成歷史已發布FB/IG/Threads圖片及輪播子圖的逐篇比對，2組相近場景需編輯判斷；目前維持DEFER",
     "Google Search Console索引及舊站URL Inspection：GSC Wizard目前payment_required，依零新增費用限制不訂閱，待能免費使用既有帳戶時處理",
     "Supabase n8n.increment_workflow_version search_path設定：需由n8n資料庫函式擁有者/有權限安全變更，不強行改權限",
-    "LINE OA Rich Menu真實手機畫面及顧客訊息端到端流程需具備實際OA帳號可驗證存取時確認；目前僅正式程式與服務狀態已驗證"
+    "LINE OA Rich Menu真實手機畫面及顧客訊息端到端流程需具備實際OA帳號可驗證存取時確認；目前僅正式程式與服務狀態已驗證",
+    "Google 商家公開顯示名稱仍含公司登記名稱，應由已授權的 Google Business Profile 管理入口改為「仙加味」；目前無Google商家管理連接，不擅自宣稱已修改。"
   ],
   "observedAtTaipei": "2026-11-09",
   "auditSources": {
@@ -132,5 +133,19 @@
     "d1Integrity": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42548493427",
     "previousMediaPairEvidence": "ops/near-visual-pairs-inspection-20261109.json",
     "sourceGapEvidence": "ops/historical-media-source-link-gaps-20261108.json"
+  },
+  "googleBusiness": {
+    "observedOn": "2026-11-09",
+    "publicBusinessDisplayName": "仙加味｜台興山產有限公司",
+    "desiredPublicDisplayName": "仙加味",
+    "weekdayBusinessHoursObserved": "10:00–20:00",
+    "weekdayHoursMatchWebsite": true,
+    "saturdaySundayHoursVerification": "週六預約與週日休息仍需登入商家主檔核對",
+    "businessListingProviderRef": "turn255617business0",
+    "publicNameNeedsCorrection": true,
+    "hasConnectedGoogleBusinessManagement": false,
+    "updateApplied": false,
+    "zeroAdditionalFees": true,
+    "notes": "目前公開商家名稱混入公司法定名稱；遵循品牌對外名稱僅『仙加味』。已核對現有Windsor.ai連接帳戶只有Meta Facebook，未連Google Business Profile，無法直接執行商家名稱寫入。"
   }
 }
