@@ -1,0 +1,19 @@
+{
+  "scope": "one-grounded-image-alt-correction-20261109",
+  "authorizeAltFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "basedOnSnapshot": "2026-11-09T06:26:48.145Z",
+  "evidenceSource": "Original 1254px image bytes visually inspected from formal GitHub main; original drawer is open and mascot is holding a blank paper card; old image_alt incorrectly describes closing the drawer. Preserve current copy and original image, current-version DEFER remains.",
+  "items": [
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "expectedTitle": "今年有沒有一件小事，你很慶幸自己做了？",
+      "expectedCopy": "年底傍晚，小老闆在仙加味萬華店裡打開食材木櫃，一邊看看抽屜裡的紅棗與乾貨，一邊拿著小紙卡準備記下接下來要整理的事。小鹿和小烏龜在旁邊看著。\n\n這些不顯眼的小事，也是日常工作的一部分。你今年有哪一件看似很小、做完卻特別有成就感的事？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
+      "expectedImageAlt": "年末收工時，仙加味小老闆關上整理好的食材抽屜，露出完成一件小事的笑容，小鹿和小烏龜在工作桌旁陪伴。",
+      "imageAlt": "年底傍晚的仙加味萬華工作間，小老闆拉開木製食材抽屜查看紅棗與乾貨，另一手拿著空白紙卡；小鹿和小烏龜在工作桌旁陪伴。",
+      "evidence": "直接檢視現行正式原圖：小老闆左手握著已拉開的木抽屜把手，抽屜內可見乾貨，前景有紅棗；右手持空白紙卡，兩位夥伴分開。原 image_alt 的「關上整理好的抽屜」與原圖動作相反。只更正圖片說明，不更新照片或文案，歷史去重仍DEFER。"
+    }
+  ]
+}
