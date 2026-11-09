@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T10:59:09.547Z",
+  "generatedAt": "2026-11-09T11:07:29.127Z",
   "counts": {
-    "pending_review": 56
+    "pending_review": 55
   },
   "items": [
     {
@@ -308,28 +308,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-04T10:03:52.992Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-year-end-clean",
-      "title": "年底整理時，最常翻出什麼忘記的東西？",
-      "copy": "每到年底整理櫃子，總會翻出一些「原來它在這裡」的東西。\n\n仙加味在萬華整理老照片和工作器具時，也常翻出以前留下來的記憶。\n\n小老闆今天也在慢慢整理，該放回去的放回去，該留下的好好收著。你年底整理最常翻出什麼？",
-      "category": "年末生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2026-12-20T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-clean-audit-v1.jpg",
-      "image_alt": "年末整理回憶的情境插畫，仙加味小老闆從木抽屜翻看風景照片與工作木匙，小鹿和小烏龜陪在旁邊。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T07:29:18.187Z",
       "platforms": [
         "Facebook",
         "Instagram",
