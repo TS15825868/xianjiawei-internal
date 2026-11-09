@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T06:47:44.763Z",
+  "generatedAt": "2026-11-09T10:03:56.613Z",
   "counts": {
-    "pending_review": 68
+    "pending_review": 65
   },
   "items": [
     {
@@ -242,28 +242,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T07:27:34.538Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20261208",
-      "title": "萬華街角的早晨，先從開門開始",
-      "copy": "清晨，小老闆走到仙加味萬華店門口，手握門把準備開門，另一手提著提袋。小鹿和小烏龜跟在旁邊，街角的紅磚老屋與燈籠就在眼前。\n\n開店前先把門打開、看一眼熟悉的街景，是一天開始的小動作。你上工前通常會先做什麼？",
-      "category": "品牌",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2026-12-08T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
-      "image_alt": "清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜d89140cbb20452cce81497b0353d82bc9c2d577f1f593c7d6e3066c4e10fcc2d｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-08T07:38:28.806Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -594,28 +572,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T17:31:56.694Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20270122",
-      "title": "過年舊照片，最想重看哪一張",
-      "copy": "翻看手機裡以前的過年照片，小老闆發現最難忘的總是大家擠在同一張桌邊。仙加味想聽聽，你最喜歡哪種過年回憶？",
-      "category": "閒聊",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-01-22T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270122.webp",
-      "image_alt": "家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜16d16a00ec5291e5f581ea9009c448e42612868135fee1438fa1d0ea5048569d｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:11:31.581Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1232,28 +1188,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T18:47:23.538Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-chat-craft-years",
-      "title": "一件事情做久了，還會覺得新鮮嗎？",
-      "copy": "下午在仙加味萬華工作間，小老闆把老照片與工藝工具擺在木桌上，拿起其中一件仔細端詳，小鹿和小烏龜在旁邊陪著。\n\n仙加味家族從鹿角與熬膠工藝走來。回頭看看長輩留下的工具與紀錄，能把傳統飲食文化的故事一點一點整理清楚。\n\n你家有沒有一件老工具，看到就會想起以前的人怎麼做事？",
-      "category": "工藝故事",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-05-04T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg",
-      "image_alt": "仙加味小老闆在萬華工作間整理熬膠工藝紀錄、家族照片與老工具，小鹿和小烏龜陪在木桌旁。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-08T08:48:35.648Z",
       "platforms": [
         "Facebook",
         "Instagram",
