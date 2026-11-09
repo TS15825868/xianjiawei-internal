@@ -1,0 +1,19 @@
+{
+  "scope": "one-food-card-image-alt-correction-20261109",
+  "authorizeAltFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "basedOnSnapshot": "2026-11-09T12:46:16.122Z",
+  "evidenceSource": "Directly viewed GitHub original JPG scene: mascot facing visitor across table with five illustrated botanical ingredient cards (red dates, green leaves, roots, seeds and white flower), two simple cups; original alt misleadingly describes generic choice cards, while version-bound copy already says illustrated ingredients. Retain copy, image and DEFER historical dedup.",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "expectedTitle": "有些問題，其實沒有標準答案",
+      "expectedCopy": "在仙加味萬華店裡，小老闆把幾張畫著不同食材的圖卡攤在桌上，和來訪的朋友一起看。有的卡片畫著紅棗，有的畫著植物，先認識外形，再聊聊日常料理會怎麼使用。\n\n你第一次看到陌生的漢方食材時，最想先知道它的名稱、料理搭配，還是保存方式？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+      "expectedImageAlt": "仙加味店內的諮詢桌旁，小老闆傾聽顧客的使用習慣，桌上有兩只杯子和選擇卡，小鹿與小烏龜陪在一旁。",
+      "imageAlt": "仙加味萬華店的木桌前，小老闆與來訪朋友一起看畫著紅棗、綠葉、根莖、種子與花朵的食材圖卡，桌邊放著兩只素面杯子；小鹿和小烏龜分開陪在一旁。",
+      "evidence": "已親自直接檢視現版正式圖：小老闆指著桌上植物食材圖卡，與前景的訪客面對面，圖卡含紅棗、綠葉、根莖、種子和花朵，兩只杯子在桌面前緣，小鹿小烏龜分開陪伴。此次只讓圖片說明精確對應圖卡與現版文案，照片和文案不變，duplicate仍DEFER。"
+    }
+  ]
+}
