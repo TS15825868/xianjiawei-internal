@@ -1,0 +1,35 @@
+{
+  "scope": "xjw-evidence-guarded-editorial-batch-v1",
+  "requestId": "xjw-20261109-offbrand-2-unique-01",
+  "allowArchive": true,
+  "allowApproval": false,
+  "allowPublish": false,
+  "allowDelete": false,
+  "sourceSnapshotGeneratedAt": "2026-11-09T12:04:53.754Z",
+  "sourceMainAtReview": "6708ea5220f754419e6972d5b1bbd6b65377592d",
+  "description": "Actual original images and latest content directly reviewed; archive two standalone off-topic articles only. Preserve all historical records and continue 16-item duplicate DEFER for all other posts.",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "copy": "有時候一天忙完，回頭看好像都不是什麼大事：開燈、整理桌子、回幾個訊息、把東西放回去。\n\n仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。\n\n但店裡的日常就是這些小事情慢慢堆起來的。你今天完成了哪一件小事？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
+      "imageAlt": "萬華店內的日常工作桌，小老闆擦拭桌面並把鉛筆收回筆筒，小鹿整理空白紙張，小烏龜守著收納籃，呈現小事歸位的動作。",
+      "category": "offbrand_lifestyle",
+      "verifiedOriginalScene": true,
+      "reason": "本篇只列出開燈、擦桌子、放回鉛筆、回訊息等一般店務瑣事，沒有呈現任何仙加味漢方食材、食品、食用、家常料理、保存方式或鹿角工藝；品牌名稱單獨出現，不等於有具體品牌生活內容。正式原圖亦只有辦公文具與桌面整理，不應以無關情境包裝成漢方飲食貼文。",
+      "imageInspectionDetails": "直接看正式照片：小老闆一手握布擦桌、另一手放鉛筆到筆筒；小鹿旁是白紙疊，小烏龜旁是空收納籃，場景沒有正式產品、料理或漢方食材操作。"
+    },
+    {
+      "id": "XJW-CONV-chat-ask-boss-topic",
+      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
+      "copy": "仙加味不想每一篇都只是產品介紹。可以聊吃的、聊萬華、聊以前家裡的習慣，也可以回答大家真的好奇的事。\n\n如果下一篇讓你指定，你最想跟小老闆聊什麼？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
+      "imageAlt": "仙加味溫暖室內聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起等大家出題，桌面為一般生活與書寫小物，無產品",
+      "category": "offbrand_lifestyle",
+      "verifiedOriginalScene": true,
+      "reason": "文案只問下篇想聊甚麼，沒有具體料理、飲食文化、產品特色、工藝或食用情境，也沒有在文內描述照片上的具體動作；使用『今天如果不聊產品』與『可以聊吃的』僅作泛泛主題徵求，未達仙加味生活文案的實質品牌連結及圖文一致標準。避免將泛互動題當作正式生活貼文重複發布。",
+      "imageInspectionDetails": "直接看正式照片：小老闆坐木桌前單手托腮並張開另一手，小鹿小烏龜陪坐，桌上是空白紙張、杯子與書寫用品；沒有任何具體產品、料理動作、食品資訊指示物。"
+    }
+  ]
+}
