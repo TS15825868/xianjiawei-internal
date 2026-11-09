@@ -8,11 +8,11 @@ const req=JSON.parse(fs.readFileSync('ops/request-one-grounded-image-alt-2026110
 if(req.scope!=='one-grounded-image-alt-correction-20261109'||req.authorizeAltFix!==true||req.authorizeApproval!==false||req.authorizePublish!==false||req.items?.length!==1)throw Error('Unsafe request');
 const fix=req.items[0];
 if(fix.id!=='XJW-CONV-year-end-small-win'||!fix.expectedImageAlt.includes('關上整理好的食材抽屜')||!fix.imageAlt.includes('拉開食材抽屜')||fix.expectedImageAlt===fix.imageAlt)throw Error('Only verified original-drawer alt is allowed');
-const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN,db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\\s*:\\s*"([a-f0-9-]+)"/)?.[1];
+const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN,db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
 if(!account||!token||!db)throw Error('Missing D1 credentials');
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const quote=x=>x==null?'NULL':typeof x==='number'?String(x):"'"+String(x).replaceAll("'","''")+"'";
-const sql=(s,...v)=>{let i=0;const out=s.replace(/\\?/g,()=>quote(v[i++]));if(i!==v.length)throw Error('SQL bind mismatch');return out};
+const sql=(s,...v)=>{let i=0;const out=s.replace(/\?/g,()=>quote(v[i++]));if(i!==v.length)throw Error('SQL bind mismatch');return out};
 async function query(s){
   const r=await fetch('https://api.cloudflare.com/client/v4/accounts/'+account+'/d1/database/'+db+'/query',{
     method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify({sql:s}),signal:AbortSignal.timeout(45000)
@@ -49,7 +49,7 @@ try{
   const update=sql("UPDATE social_posts SET image_alt=?,updated_at=? WHERE id=? AND status='pending_review' AND updated_at=? AND title=? AND copy=? AND image_url=? AND image_alt=? AND image_quality_status IN ('clear','passed') AND approved_by IS NULL AND approved_at IS NULL AND scheduled_at IS NULL AND published_at IS NULL AND COALESCE(image_approved,0)=0",fix.imageAlt,now,post.id,post.updated_at,post.title,post.copy,post.image_url,post.image_alt);
   const insert=sql("INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status) SELECT ?,?,'AI','NEEDS_HUMAN_REVIEW',?,?,?,?,?,?,?,?, 'pending_review','pending_review' WHERE changes()=1 AND EXISTS(SELECT 1 FROM social_posts WHERE id=? AND status='pending_review' AND updated_at=? AND image_alt=? AND approved_by IS NULL AND approved_at IS NULL)",reviewId,post.id,newFingerprint,post.image_url,prior.image_sha256,reviewBody,prior.model||'ChatGPT','2026-10-31-ai-deferral-only-v1',actor.email,now,post.id,now,fix.imageAlt);
   const audit=sql("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT ?,'chatgpt-work:AI','依正式原圖修正抽屜動作圖片說明（不核准發布）','貼文',?,?,?,'' WHERE changes()=1",auditId,post.id,JSON.stringify({imageAltSHA256:hash(post.image_alt),imageSha256:prior.image_sha256,reviewId:prior.id}),JSON.stringify({imageAltSHA256:hash(fix.imageAlt),imageSha256:prior.image_sha256,reviewId,duplicate:'DEFER',approved:false}));
-  const writes=await query([update,insert,audit].join(';\\n'));
+  const writes=await query([update,insert,audit].join(';\n'));
   if(writes.some(w=>w.meta?.changes!==1))throw Error('CAS or audit changes not exactly one');
   const [back,reviewBack]=await Promise.all([
     first('SELECT status,title,copy,image_url,image_alt,approved_at,approved_by,scheduled_at,published_at,image_quality_status,updated_at FROM social_posts WHERE id=?',post.id),
@@ -60,6 +60,6 @@ try{
   Object.assign(out,{altUpdated:true,readback:true,reviewId,imageSha256:prior.image_sha256});
 }catch(error){out.blocker=String(error?.message||error).slice(0,350)}
 out.counts=(await query('SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status'))[0]?.results||[];
-fs.writeFileSync('grounded-image-alt-readback.json',JSON.stringify(out,null,2)+'\\n');
+fs.writeFileSync('grounded-image-alt-readback.json',JSON.stringify(out,null,2)+'\n');
 console.log('GROUNDED_IMAGE_ALT_READBACK '+JSON.stringify(out));
 if(!out.altUpdated||!out.readback)process.exitCode=1;
