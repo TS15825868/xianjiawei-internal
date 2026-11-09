@@ -49,11 +49,40 @@ jobs:
           };
           fs.writeFileSync('ops/social-schedule-candidates-current.json',JSON.stringify(out,null,2)+'\n');
           NODE
+      - name: Read-only classify active candidates by existing Metricool link presence
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.id,COUNT(s.post_id) AS mapping_count FROM social_posts p LEFT JOIN social_metricool_sync s ON s.post_id=p.id WHERE p.status='pending_review' GROUP BY p.id ORDER BY p.id" > /tmp/current-review-link-counts.json
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const data=JSON.parse(fs.readFileSync('/tmp/current-review-link-counts.json','utf8'));
+          const rows=(Array.isArray(data)?data[0]?.results:data?.results)||[];
+          const posts=JSON.parse(fs.readFileSync('ops/social-schedule-candidates-current.json','utf8'));
+          const current=posts.items.filter(p=>p.status==='pending_review');
+          const byId=new Map(rows.map(r=>[r.id,Number(r.mapping_count||0)]));
+          if(rows.length!==current.length||new Set(rows.map(r=>r.id)).size!==rows.length||current.some(p=>!byId.has(p.id)))throw Error('D1 pending snapshot and remote mapping inventory differ: abort rather than publish stale link guesses');
+          const result={
+            schema:'xjw-review-remote-mapping-presence-v1',
+            generatedAt:new Date().toISOString(),
+            source:'Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)',
+            noD1Mutation:true,
+            noRemoteChange:true,
+            postSnapshotAt:posts.generatedAt,
+            counts:{pending:current.length,linked:0,unlinked:0},
+            items:current.map(p=>{
+              const count=byId.get(p.id);
+              if(count>0)result.counts.linked++; else result.counts.unlinked++;
+              return{id:p.id,linked:count>0,mappingCount:count};
+            })
+          };
+          fs.writeFileSync('ops/social-candidate-remote-mappings-current.json',JSON.stringify(result,null,2)+'\n');
+          console.log('PENDING_METRICOOL_MAPPING_COUNTS',JSON.stringify(result.counts));
+          NODE
       - name: Commit current schedule candidates
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ops/social-schedule-candidates-current.json
+          git add ops/social-schedule-candidates-current.json ops/social-candidate-remote-mappings-current.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'sync: refresh social schedule candidates'
           for attempt in 1 2 3 4; do
