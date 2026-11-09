@@ -1,11 +1,12 @@
 {
   "scope": "full-current-active-20261107-readonly",
-  "on": "2026-11-07",
-  "reason": "User requested execute now: check every active post for duplicate copy, theme and published cross-platform history; read-only evidence before evidence-backed archive; no inferred PASS or deletion.",
+  "on": "2026-11-09",
+  "reason": "User instructs finish all pending: rerun 52 current D1 candidate post versions after 5 copy/alt repairs and evidence-backed soup archive. Readonly screen of 74 FB + 35 IG + 23 Threads known published summaries and saved historical visual neighbors. Do not mistake unavailable 15 private cached media or missing carousel children as cleared. Never approve/schedule/publish.",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-08T22:45:00+08:00",
+  "lastRerun": "2026-11-09T23:00:00+08:00",
   "afterCopyRepairRun": 42465803840,
-  "requestedBy": "owner"
+  "requestedBy": "owner",
+  "afterArchiveRun": 42638949585
 }
