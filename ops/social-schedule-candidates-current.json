@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T12:04:53.754Z",
+  "generatedAt": "2026-11-09T12:17:49.040Z",
   "counts": {
-    "pending_review": 54
+    "pending_review": 53
   },
   "items": [
     {
@@ -198,28 +198,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T07:28:37.655Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-chat-ask-boss-topic",
-      "title": "今天如果不聊產品，你想跟小老闆聊什麼？",
-      "copy": "仙加味不想每一篇都只是產品介紹。可以聊吃的、聊萬華、聊以前家裡的習慣，也可以回答大家真的好奇的事。\n\n如果下一篇讓你指定，你最想跟小老闆聊什麼？",
-      "category": "自由聊天",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2026-12-04T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg",
-      "image_alt": "仙加味溫暖室內聊天情境，小老闆坐在木桌前與小鹿、小烏龜一起等大家出題，桌面為一般生活與書寫小物，無產品",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T07:27:34.538Z",
       "platforms": [
         "Facebook",
         "Instagram",
