@@ -1,0 +1,32 @@
+name: 仙加味年底老照片重複角度精準封存
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-one-redundant-year-end-clean-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Preflight exact-source D1 archive
+        run: node --check ops/archive-one-redundant-year-end-clean-20261109.mjs
+      - name: Archive one visually compared year-end old photo duplicate and read back D1
+        run: node ops/archive-one-redundant-year-end-clean-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: one-redundant-year-end-clean-${{ github.run_id }}
+          path: one-redundant-year-end-clean-readback.json
+          if-no-files-found: warn
+          retention-days: 7
