@@ -1,0 +1,32 @@
+name: 仙加味三篇實際主題重複稿安全封存與D1讀回
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-three-editorial-overlaps-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Validate exact three-pair archive preflight
+        run: node --check ops/archive-three-editorial-overlaps-20261109.mjs
+      - name: Archive only three redundant scene angles with live D1 version CAS and readback
+        run: node ops/archive-three-editorial-overlaps-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: three-editorial-archive-${{ github.run_id }}
+          path: three-editorial-archive-readback.json
+          if-no-files-found: warn
+          retention-days: 7
