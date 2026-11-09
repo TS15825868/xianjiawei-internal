@@ -1,0 +1,56 @@
+{
+  "scope": "five-nonbrand-lifestyle-editorial-archive-20261109",
+  "allowArchive": true,
+  "allowApproval": false,
+  "allowPublish": false,
+  "deleteOriginals": false,
+  "snapshot": "2026-11-09T10:03:56.613Z",
+  "source": "Images directly viewed as GitHub original, not only alt; explicit brand-context requirements of 仙加味",
+  "items": [
+    {
+      "id": "XJW-CAND-20270226",
+      "title": "週末想去河邊走走，還是在家看書",
+      "copy": "週五早上，小老闆和小鹿、小烏龜聊起週末計畫：天氣適合就去河邊散步，不然在家看書也很好。仙加味想問大家，這週末你比較想出門走走，還是留在家裡？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270226-v2.webp",
+      "imageAlt": "週五上午，小老闆和小鹿、小烏龜在窗邊聊天，桌上放著素面書本與杯子，一起討論週末安排。",
+      "reason": "正式原圖為小老闆與小鹿、小烏龜在木桌談論書本與週末散步，文案僅問河邊散步或看書；除提到仙加味外沒有實際漢方飲食、產品、料理或品牌工藝連結，不符合生活文案必須實質連回品牌內容的規則。",
+      "verifiedOriginalScene": true
+    },
+    {
+      "id": "XJW-CAND-20270316",
+      "title": "出門前看一下預報，再決定帶什麼",
+      "copy": "春季出門前，小老闆先看看當天預報，再決定是否放入外套或雨具。仙加味也想提醒大家，外出準備依當地實際天氣調整就好。",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270316.webp",
+      "imageAlt": "春季出門前，小老闆在玄關查看手機，旁邊放著雨傘和薄外套，小鹿與小烏龜分開站在地墊旁。",
+      "reason": "原圖為玄關看手機預報、雨傘和外套；文案僅提醒查預報並帶衣物，沒有仙加味食品／飲食文化／工藝場景，且和另一篇玄關整理雨傘外套角度高度重複；不作為仙加味正式生活貼文。",
+      "verifiedOriginalScene": true
+    },
+    {
+      "id": "XJW-CAND-20270326",
+      "title": "春天的玄關，雨傘和外套放哪裡",
+      "copy": "春天出門前，小老闆把雨傘和薄外套放在玄關固定位置，依當天實際天氣決定要不要帶著走。仙加味想問：你家玄關最容易找不到的是雨傘、鑰匙，還是外套？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270326.webp",
+      "imageAlt": "春日居家玄關，小老闆整理雨傘、薄外套與鑰匙，小鹿與小烏龜分開站在旁邊。",
+      "reason": "原圖為玄關掛薄外套並收納雨傘與鑰匙，文案重複一般春日出門雨具安排，未連結仙加味產品、料理、漢方飲食或品牌故事，與同組查預報稿高度重疊；編輯退件保存。",
+      "verifiedOriginalScene": true
+    },
+    {
+      "id": "XJW-CAND-20270112",
+      "title": "親友來家裡，你會先拿出哪一個杯子",
+      "copy": "準備招待來家裡坐坐的親友時，小老闆從櫃子拿出幾款杯子，最後還是選了最順手的那個。仙加味想問：你家也有專門招待朋友的杯子嗎？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270112.webp",
+      "imageAlt": "居家杯架前，小老闆拿起兩只不同花色的杯子，小鹿和小烏龜分開在茶几旁陪伴。",
+      "reason": "原圖僅居家杯架拿兩款普通杯子，文案只問朋友來家裡會拿哪個杯子；未提仙加味龜鹿飲、漢方料理、溫熱飲用等實際品牌內容，與店內比較玻璃杯、陶杯投稿同屬一般杯型偏好重複題材。",
+      "verifiedOriginalScene": true
+    },
+    {
+      "id": "XJW-CAND-20270319",
+      "title": "一樣是喝水，你最喜歡哪種杯子",
+      "copy": "店裡忙完一個段落，小老闆拿出玻璃杯與陶杯，想了想今天選哪一個。仙加味想聽聽大家平常最常用什麼杯子。",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270319.webp",
+      "imageAlt": "工作空檔，小老闆在店內拿著玻璃杯與陶杯比較握感，小鹿和小烏龜分開坐在桌旁。",
+      "reason": "原圖僅店內並排拿普通玻璃杯和陶杯，文案只問偏好哪種杯子；沒有帶出正式飲用方式、產品或漢方飲食文化，與另一篇招待親友杯子主題重複，僅品牌角色不足以成為可正式發布的品牌生活文案。",
+      "verifiedOriginalScene": true
+    }
+  ]
+}
