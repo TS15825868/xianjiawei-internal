@@ -1,0 +1,63 @@
+{
+  "scope": "three-independently-reviewed-editorial-overlaps-20261109",
+  "snapshotGeneratedAt": "2026-11-09T06:47:44.763Z",
+  "archive": true,
+  "approve": false,
+  "publish": false,
+  "deleteFiles": false,
+  "expectedPending": 68,
+  "reason": "Owner asks to actually clear duplicate review backlog; selected only three evidence-backed repeated editorial angles based on direct inspection of both original images and version-bound captions; preserve originals and rest of queue.",
+  "items": [
+    {
+      "archive": {
+        "id": "XJW-CONV-chat-craft-years",
+        "title": "一件事情做久了，還會覺得新鮮嗎？",
+        "copy": "下午在仙加味萬華工作間，小老闆把老照片與工藝工具擺在木桌上，拿起其中一件仔細端詳，小鹿和小烏龜在旁邊陪著。\n\n仙加味家族從鹿角與熬膠工藝走來。回頭看看長輩留下的工具與紀錄，能把傳統飲食文化的故事一點一點整理清楚。\n\n你家有沒有一件老工具，看到就會想起以前的人怎麼做事？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg",
+        "imageAlt": "仙加味小老闆在萬華工作間整理熬膠工藝紀錄、家族照片與老工具，小鹿和小烏龜陪在木桌旁。"
+      },
+      "keep": {
+        "id": "XJW-CONV-chat-family-old-object",
+        "title": "你會保留家裡長輩以前的東西嗎？",
+        "copy": "午後整理仙加味萬華工作間，小老闆坐在老木桌旁翻看家族舊照片，旁邊還放著一座石磨，小鹿和小烏龜也跟著看。\n\n有些老物件看起來平凡，卻記錄著以前的生活。仙加味想把萬華家族留下的漢方飲食文化與日常故事慢慢整理下來。\n\n你家有沒有一件捨不得丟的老工具或老照片？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+        "imageAlt": "仙加味小老闆在老木櫃旁翻看舊照片與石磨，小鹿和小烏龜陪著回想家中老物件。"
+      },
+      "reason": "兩篇皆在萬華老工作桌把家族舊照片和工具放在一起，主軸都是長輩老工具與工藝記憶、結尾都問家裡是否有老工具。保留更具體可識別石磨實物與家族照片提問的版本；泛問老工具的這篇為編輯角度重複，原圖及歷史保留不發。"
+    },
+    {
+      "archive": {
+        "id": "XJW-CAND-20270122",
+        "title": "過年舊照片，最想重看哪一張",
+        "copy": "翻看手機裡以前的過年照片，小老闆發現最難忘的總是大家擠在同一張桌邊。仙加味想聽聽，你最喜歡哪種過年回憶？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270122.webp",
+        "imageAlt": "家中沙發上，小老闆和小鹿、小烏龜一起翻看手機裡的年節照片，手機背面朝向畫面。"
+      },
+      "keep": {
+        "id": "XJW-CONV-cny-childhood-now",
+        "title": "小時候過年跟現在，哪裡最不一樣？",
+        "copy": "小時候期待過年，跟長大後期待的事情常常完全不一樣。有人記得的是年夜飯，有人記得長輩家，也有人現在最期待的是終於可以休息。\n\n仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。\n\n你覺得自己家過年最大的改變是什麼？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+        "imageAlt": "年節回憶的情境插畫，仙加味小老闆與小鹿、小烏龜一起翻看家庭聚餐照片道具，聊聊小時候與現在的過年記憶。"
+      },
+      "reason": "兩篇同在年節情境翻看以前家庭過年聚餐照片，聚焦年節家庭回憶並問最喜歡的往年記憶；手機或實體相片媒介不同，但主要主題和社群問題實質重疊。保留敘述家庭年節代際變化更完整的一篇，將短版重複角度封存。"
+    },
+    {
+      "archive": {
+        "id": "XJW-CAND-20261208",
+        "title": "萬華街角的早晨，先從開門開始",
+        "copy": "清晨，小老闆走到仙加味萬華店門口，手握門把準備開門，另一手提著提袋。小鹿和小烏龜跟在旁邊，街角的紅磚老屋與燈籠就在眼前。\n\n開店前先把門打開、看一眼熟悉的街景，是一天開始的小動作。你上工前通常會先做什麼？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp",
+        "imageAlt": "清晨的萬華老街，小老闆提著布袋打開木門，小鹿與戴圓框眼鏡的小烏龜各自分開跟在旁邊。"
+      },
+      "keep": {
+        "id": "XJW-CONV-cny-reopen",
+        "title": "開工第一天，小老闆先做一件小事",
+        "copy": "年假結束，開工第一天不用急著一下子把所有事情做完。小老闆先把店門打開、整理桌子，再看看今天最重要的是哪一件。\n\n仙加味萬華工作間也從開門、擦桌這些小動作，慢慢接回熟悉的日常。\n\n你開工第一天最想先完成什麼？",
+        "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
+        "imageAlt": "年假後開工第一天，小老闆打開仙加味木門迎接晨光，小鹿拿著抹布，小烏龜在門邊陪伴。"
+      },
+      "reason": "多篇萬華店晨間開門動作相近。此篇描繪小老闆提袋握木門把，實際視覺與開工第一天木門迎晨光的主要動作高度重疊，且與現行另篇開店前竹簾整理稿近似；保留具有明確開工節令及工作內容的稿，將較泛用的再度開門提問稿封存，避免同類動作重發。"
+    }
+  ]
+}
