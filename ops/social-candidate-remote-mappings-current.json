@@ -1,14 +1,14 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-09T13:22:35.551Z",
+  "generatedAt": "2026-11-09T14:58:02.519Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-09T13:22:34.207Z",
+  "postSnapshotAt": "2026-11-09T14:58:01.426Z",
   "counts": {
-    "pending": 53,
+    "pending": 52,
     "linked": 12,
-    "unlinked": 41
+    "unlinked": 40
   },
   "items": [
     {
@@ -263,11 +263,6 @@
     },
     {
       "id": "XJW-CONV-chat-shop-organizing",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-soup-day",
       "linked": false,
       "mappingCount": 0
     },

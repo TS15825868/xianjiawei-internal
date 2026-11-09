@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T13:22:34.207Z",
+  "generatedAt": "2026-11-09T14:58:01.426Z",
   "counts": {
-    "pending_review": 53
+    "pending_review": 52
   },
   "items": [
     {
@@ -1122,28 +1122,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T07:28:29.413Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-chat-soup-day",
-      "title": "你家有固定的煮湯日嗎？",
-      "copy": "有些家庭週末比較有空，就會慢慢煮一鍋；有些則完全不固定，想到就煮。\n\n仙加味平常分享家常料理時，也常想到每個家庭都有自己習慣的一鍋湯。\n\n你家有自己的煮湯習慣嗎？還是看當天想吃什麼再決定？",
-      "category": "料理互動",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-06-08T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-soup-day-safety-v1.png",
-      "image_alt": "仙加味家常廚房，小老闆用長柄木勺攪拌熟雞湯，另一手戴乾燥隔熱手套握鍋柄；電磁爐沒有明火，備料桌只有分碗洗淨蔬菜，未接觸生肉，小鹿與小烏龜各坐在爐台外的矮凳。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-04T10:03:49.841Z",
       "platforms": [
         "Facebook",
         "Instagram",
