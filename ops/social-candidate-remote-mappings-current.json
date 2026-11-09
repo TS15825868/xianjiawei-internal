@@ -1,13 +1,13 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-09T14:58:02.519Z",
+  "generatedAt": "2026-11-09T15:05:42.980Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-09T14:58:01.426Z",
+  "postSnapshotAt": "2026-11-09T15:05:41.592Z",
   "counts": {
-    "pending": 52,
-    "linked": 12,
+    "pending": 51,
+    "linked": 11,
     "unlinked": 40
   },
   "items": [
@@ -143,11 +143,6 @@
     },
     {
       "id": "XJW-CONV-cny-family-choice",
-      "linked": true,
-      "mappingCount": 1
-    },
-    {
-      "id": "XJW-FEST-2027-spring-walk",
       "linked": true,
       "mappingCount": 1
     },

@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T14:58:01.426Z",
+  "generatedAt": "2026-11-09T15:05:41.592Z",
   "counts": {
-    "pending_review": 52
+    "pending_review": 51
   },
   "items": [
     {
@@ -594,28 +594,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T07:28:51.168Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-FEST-2027-spring-walk",
-      "title": "走春不用趕行程，陪家人慢慢走一段",
-      "copy": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
-      "category": "走春生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-02-08T09:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
-      "image_alt": "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。",
-      "image_source": "仙加味節慶生活情境插畫",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T07:29:31.901Z",
       "platforms": [
         "Facebook",
         "Instagram",
