@@ -1,0 +1,280 @@
+{
+  "schema": "xjw-review-remote-mapping-presence-v1",
+  "generatedAt": "2026-11-09T12:43:40.812Z",
+  "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
+  "noD1Mutation": true,
+  "noRemoteChange": true,
+  "postSnapshotAt": "2026-11-09T12:43:39.379Z",
+  "counts": {
+    "pending": 53,
+    "linked": 12,
+    "unlinked": 41
+  },
+  "items": [
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-wanhua-morning",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CAND-20261211",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-FEST-2027-spring-walk",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-soup-day",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "linked": false,
+      "mappingCount": 0
+    }
+  ]
+}
