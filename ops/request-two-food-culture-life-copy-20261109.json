@@ -24,5 +24,6 @@
       "copy": "年前準備家人聚餐時，仙加味小老闆在萬華店裡拿著布巾擦乾青花碗，將常用的碗盤整齊放回木櫃，小鹿、小烏龜在旁邊看著。\n\n煮家常菜或準備一鍋湯前，先把盛菜、分湯用的碗盤放在順手的位置，等大家坐下來吃飯也比較方便。仙加味分享漢方飲食文化，也喜歡記錄這些料理前的準備小事。\n\n你家年前會先整理碗盤，還是先討論年菜菜單？",
       "evidence": "已實際檢視原圖：小老闆手持布巾擦青花碗，旁邊是裝有碗盤的開放木櫥櫃，桌上留出空位，年節紅燈籠、小鹿與小烏龜皆可見。新版連結備餐與家常料理，不冒充照片出現湯鍋、產品或已完成擺桌。"
     }
-  ]
+  ],
+  "retryAfterPrewriteGuardCorrection": "Initial Action 42613683030 reached source validation but both items were blocked before any DB write by SQL bind count mismatch. Script fixed to include matching image_alt=? CAS guard, and now exits nonzero on blocked status. Reattempt identical two unchanged current-source posts only."
 }
