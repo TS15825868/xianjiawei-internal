@@ -159,6 +159,8 @@ jobs:
           fs.writeFileSync('all-social-posts-action-queue.json',JSON.stringify(output,null,2)+'\n');
           console.log('FULL_D1_QUEUE',JSON.stringify({total,counts,activeToProcess:active.length,byAction,byIssue}));
           NODE
+      - name: Triage every current pending post using existing 16-check evidence and actual version binding
+        run: node tools/report-pending-review-actual-checks.cjs
       - name: Upload read-only evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -167,6 +169,7 @@ jobs:
           path: |
             current-social-posts.json
             all-social-posts-action-queue.json
+            pending-review-full-inventory.json
             current-social-post-counts.json
             current-social-image-states.json
             current-review-gates.json
