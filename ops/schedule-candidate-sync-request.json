@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T14:47:00+08:00",
-  "reason": "Incremental read-only D1 snapshot after verified image-alt CAS correction XJW-CONV-year-end-small-win on Action 42575107296; update only ops/social-schedule-candidates-current.json and retain entire current D1 copy, image, alt, status, no D1 import/backfill.",
-  "reviewScope": "Current 68 pending only; D1 snapshot must carry the corrected open-drawer image_alt and all prior copy fixes; do not alter posts or release state.",
+  "requestedAt": "2026-11-09T18:03:00+08:00",
+  "reason": "Refresh current D1 candidate snapshot after guarded editor-reviewed archival of 3 genuinely redundant caption-and-scene pairs on successful Action 42597693861. These 3 are archived and must not re-enter pending queue. Refresh only from live D1, never backfill archived/published records.",
+  "reviewScope": "Read current status IN ('pending_review','approved','scheduled'); last verified current D1 has 65 pending, 92 archived, 4 published (161 total). Count again from actual D1.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42575107296",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42597693861",
   "publish": false,
   "approval": false,
   "mutateD1": false,
