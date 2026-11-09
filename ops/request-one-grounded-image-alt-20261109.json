@@ -15,5 +15,6 @@
       "imageAlt": "年底傍晚的仙加味萬華工作間，小老闆拉開木製食材抽屜查看紅棗與乾貨，另一手拿著空白紙卡；小鹿和小烏龜在工作桌旁陪伴。",
       "evidence": "直接檢視現行正式原圖：小老闆左手握著已拉開的木抽屜把手，抽屜內可見乾貨，前景有紅棗；右手持空白紙卡，兩位夥伴分開。原 image_alt 的「關上整理好的抽屜」與原圖動作相反。只更正圖片說明，不更新照片或文案，歷史去重仍DEFER。"
     }
-  ]
+  ],
+  "retryAfterStaticGuardFix": "2026-11-09: prior run 42574991732 aborted before D1 network because guard expected contiguous phrase; script guard now matches exact actual '拉開木製食材抽屜'. No D1 mutation on previous run."
 }
