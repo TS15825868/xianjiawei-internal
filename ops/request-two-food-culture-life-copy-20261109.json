@@ -3,27 +3,27 @@
   "authorizeCopyFix": true,
   "authorizeApproval": false,
   "authorizePublish": false,
-  "reason": "Batch2 two unlinked 53 pending, source-image-grounded material brand food-culture improvements, retain present media and DEFER historical dedup.",
-  "sourceSnapshot": "2026-11-09T12:43:39.379Z",
-  "sourceMappingSnapshot": "2026-11-09T12:43:40.812Z",
+  "reason": "Directly inspected true original package shape and revised exact packaging/information context in two previously unlinked 53-pending posts. Keep images intact and 16th historic duplicate=DEFER.",
+  "sourceSnapshot": "2026-11-09T12:46:16.122Z",
+  "sourceMappingSnapshot": "2026-11-09T12:46:17.443Z",
   "items": [
     {
-      "id": "XJW-CAND-20261211",
-      "expectedTitle": "桌邊的小筆記，你習慣怎麼分類",
-      "expectedCopy": "週五早上，小老闆在仙加味店裡把綠色與米白色的兩本筆記本分開放：一本準備記料理點子，另一本留給待辦事項。你習慣用一本筆記本，還是把不同事情分開記？",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp",
-      "expectedImageAlt": "週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。",
-      "copy": "週五早上，仙加味小老闆在萬華工作間把綠色與米白色兩本素面筆記本分開放，後方木架上擺著乾燥食材罐；小鹿、小烏龜在桌旁陪著。\n\n準備家常湯之前，可以先記下想搭配的食材、料理步驟，再另外列出要確認的保存標示與備料清單。仙加味分享漢方飲食文化，也喜歡從這些料理前的小整理開始。\n\n你記錄煮湯點子時，習慣獨立一本，還是和日常待辦寫在一起？",
-      "evidence": "直接檢視最新正式原圖：小老闆正在將左側綠色與右側米白色兩本未書寫筆記本分開，後方確實有乾燥食材罐，小鹿與小烏龜分別在兩側，桌面沒有實際備料或文字；文案只寫『可以記下』，沒有假稱已在紙上寫好。"
+      "id": "XJW-CONV-cny-gift-choice",
+      "expectedTitle": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "expectedCopy": "過年前的午後，小老闆坐在仙加味萬華店裡的桌邊，手上拿著一張準備寫給家人的心意卡，旁邊放著提袋和筆記本；小鹿、小烏龜也一起想點子。\n\n準備送禮時，除了包裝好不好看，也可以先確認對方平常是否用得上、食品標示是否清楚。仙加味希望把正式產品資訊說清楚，讓選擇更貼近生活。\n\n你會先寫心意卡，還是先了解對方需要什麼？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "expectedImageAlt": "年節前，仙加味小老闆準備給家人的心意卡，桌上放著龜鹿膏100g罐，小鹿與小烏龜陪著想想對方的日常需要。",
+      "copy": "過年前的午後，小老闆在仙加味萬華店裡拿著一張空白心意卡，桌上放著紙提袋、筆記本與一罐龜鹿膏100g，小鹿、小烏龜也在旁邊陪著想點子。\n\n準備漢方食品當禮物時，除了包裝與卡片，也可以先確認對方是否習慣這種食品形式，再把容量、正式包裝標示、保存與使用方式說明清楚。仙加味想分享漢方飲食文化，也希望大家選擇禮物時有完整資訊。\n\n你送禮前會先了解對方的飲食習慣，還是先寫一張心意卡？",
+      "evidence": "正式原圖直接檢視：小老闆手持空白卡片托腮思考，桌上有提袋、開本筆記與前景的龜鹿膏100g六角罐，小鹿小烏龜分開陪伴。前景瓶罐與官網正式龜鹿膏100g盒罐詳細原圖的金色蓋、白色標籤與六角外形一致。新版僅提正式規格及送禮前查看標示，無療效、價格或不存在的產品動作。"
     },
     {
-      "id": "XJW-CONV-new-year-warm-cup-share",
-      "expectedTitle": "新年第一杯溫熱的，你想留給自己還是家人？",
-      "expectedCopy": "新的一年不用一開始就排滿很多目標。早上先倒一杯溫熱的，自己慢慢喝，或順手替家人也準備一杯。\n\n仙加味一直想做的，就是把補養放進這些簡單、做得到的生活節奏裡。\n\n新年第一杯，你會先留給自己還是家人？",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
-      "expectedImageAlt": "新年晨光中的餐桌旁，仙加味小老闆將溫熱飲品遞給家人，小鹿與小烏龜陪在桌邊。",
-      "copy": "新年早晨，仙加味小老闆在掛著紅燈籠的家中餐桌旁，雙手端起一杯冒著熱氣的飲品遞給家人，桌上擺著家常飯菜與水果，小鹿和小烏龜也在旁邊陪伴。\n\n仙加味喜歡記錄漢方飲食文化與家常餐桌的生活情境。從把熱飲和早餐準備好、和家人一起坐下來吃飯開始，就是新年值得保留的小習慣；杯中內容仍依實際飲品與食品標示確認，不把圖片中的飲品當成特定商品。\n\n新年第一杯溫熱的，你會先替自己準備，還是遞給家人？",
-      "evidence": "直接檢視正式原圖：小老闆在新年燈籠和花枝裝飾的餐桌旁，把有熱氣的素面白杯遞向前景穿紅衣的家人；桌上有蔬菜、點心與水果，小鹿和小烏龜分開陪伴。杯中具體品項不可辨識，因此文案不自創任何龜鹿食品。"
+      "id": "XJW-CONV-chat-picture-or-text",
+      "expectedTitle": "你比較喜歡看圖，還是慢慢看文字？",
+      "expectedCopy": "在仙加味萬華店裡，小老闆和來訪的朋友坐在桌前，一起翻看打開的筆記本，旁邊還放著手機，小鹿與小烏龜也在。\n\n認識一款食品時，有人想先看圖片了解實際大小，有人想把文字規格逐項看清楚。仙加味希望把正式資訊整理得容易閱讀，也讓大家有問題可以直接詢問。\n\n你比較習慣先看圖片，還是先讀文字說明？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "expectedImageAlt": "仙加味小老闆與顧客一起查看產品資訊筆記，桌前擺著龜鹿膏100g罐，小鹿和小烏龜陪在旁邊。",
+      "copy": "在仙加味萬華店的木桌前，小老闆和來訪的朋友一起看攤開的素面筆記本，旁邊放著手機，桌緣還擺著一罐龜鹿膏100g，小鹿、小烏龜也一起聽著。\n\n認識一款漢方食品時，實物照片可以先看包裝外觀與大小，文字則能逐項確認規格、食材、保存和使用說明。仙加味整理產品資訊時，會把正式包裝圖片與文字資訊搭配呈現，讓大家不必單憑圖片猜容量。\n\n你選購食品時，習慣先看實物照片，還是先讀文字規格？",
+      "evidence": "正式原圖直接檢視：小老闆指向打開的素面筆記本，來訪朋友坐在對面，右側有手機；桌子前景可見龜鹿膏100g正式六角罐，與官網現行正式盒罐原圖外形、金蓋和標籤一致，小鹿小烏龜分開陪伴。新版不聲稱筆記本已有可辨識字體。"
     }
   ]
 }
