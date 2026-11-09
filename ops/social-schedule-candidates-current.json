@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T10:09:12.639Z",
+  "generatedAt": "2026-11-09T10:59:09.547Z",
   "counts": {
-    "pending_review": 60
+    "pending_review": 56
   },
   "items": [
     {
@@ -491,28 +491,6 @@
       ]
     },
     {
-      "id": "XJW-CAND-20270108",
-      "title": "一月的週五，換一枝花給窗邊",
-      "copy": "一月的週五早上，小老闆在仙加味店裡整理窗台，找個乾淨花瓶插上一枝小花。你喜歡把花放在書桌、餐桌，還是玄關？",
-      "category": "生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-01-08T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270108.webp",
-      "image_alt": "冬日週五早晨，小老闆在仙加味店內窗邊插上一枝小花，小鹿在旁好奇觀看，窗外是沒有積雪的萬華街景。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜6e7a72a101a7c155ed98642652d08fa4714d1801beb2db1388304ea7d6b199c3｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:12:14.997Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
       "id": "XJW-CAND-20270115",
       "title": "紅棗入甜湯，整顆還是切開",
       "copy": "週五早上，小老闆在家準備紅棗甜湯的材料，先把紅棗沖洗、看看大小，再想要整顆放入還是切開。仙加味喜歡聊這些餐桌上的小習慣。你家煮甜湯會怎麼放紅棗？",
@@ -726,50 +704,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-07T07:29:26.436Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20270223",
-      "title": "年後早晨，不必把事情一次排滿",
-      "copy": "年後回到熟悉的早晨，小老闆打開窗，坐在桌前拿著水杯與筆，想想今天先把哪個工作安排好。\n\n仙加味喜歡從整理周圍環境開始自己的節奏。你早上會先開窗看看街景，還是先坐下來規劃一天？",
-      "category": "關心",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-02-23T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270223.webp",
-      "image_alt": "年後早晨，小老闆坐在窗邊，拿著水杯並在筆記本寫下今日事情，小鹿和小烏龜分開陪伴。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜6d136cf15c366b7deef82de62198eb1a737164bad54883faa2026ae4e2375b28｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T18:47:36.662Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CAND-20270302",
-      "title": "春天早餐桌，一杯水與一份簡單早餐",
-      "copy": "春季早晨，小老闆把吐司、蛋與水杯放上桌，準備開始一天。仙加味相信日常的節奏，常藏在這些普通又熟悉的片刻。",
-      "category": "生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-03-02T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270302.webp",
-      "image_alt": "春日居家早餐桌，小老闆將吐司與雞蛋放上桌，旁邊擺著水杯，小鹿和小烏龜分開陪伴。",
-      "image_source": "ChatGPT Work 獨立情境候選｜正式角色參考 first-post-work-rest-qmascot.webp｜8d9610b6fb0aba9c766128ed80a9115ddd10fdd14847361b05d01a69e9ceec52｜待原尺寸角色核對及歷史去重；未人工核准",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T04:11:46.252Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1034,28 +968,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-08T08:48:29.066Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-care-before-home-message",
-      "title": "回家前，你會先打一通電話，還是先傳一句問候？",
-      "copy": "下班、收店或準備回家的路上，有時候一通電話、一句「等等回去」，就能讓家裡的人知道你平安。\n\n仙加味想把補養放回日常，不一定每次都要很正式，先從關心身邊的人開始。\n\n你比較習慣打電話，還是先傳訊息？",
-      "category": "生活關心",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2027-04-27T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg",
-      "image_alt": "傍晚收店時，小老闆站在萬華店門口拿起手機準備聯絡家人，小鹿和小烏龜陪著他，街道映著夕陽。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-07T07:27:23.759Z",
       "platforms": [
         "Facebook",
         "Instagram",
