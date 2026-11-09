@@ -61,6 +61,10 @@ jobs:
           const current=posts.items.filter(p=>p.status==='pending_review');
           const byId=new Map(rows.map(r=>[r.id,Number(r.mapping_count||0)]));
           if(rows.length!==current.length||new Set(rows.map(r=>r.id)).size!==rows.length||current.some(p=>!byId.has(p.id)))throw Error('D1 pending snapshot and remote mapping inventory differ: abort rather than publish stale link guesses');
+          const items=current.map(p=>{
+            const count=byId.get(p.id);
+            return{id:p.id,linked:count>0,mappingCount:count};
+          });
           const result={
             schema:'xjw-review-remote-mapping-presence-v1',
             generatedAt:new Date().toISOString(),
@@ -68,12 +72,8 @@ jobs:
             noD1Mutation:true,
             noRemoteChange:true,
             postSnapshotAt:posts.generatedAt,
-            counts:{pending:current.length,linked:0,unlinked:0},
-            items:current.map(p=>{
-              const count=byId.get(p.id);
-              if(count>0)result.counts.linked++; else result.counts.unlinked++;
-              return{id:p.id,linked:count>0,mappingCount:count};
-            })
+            counts:{pending:current.length,linked:items.filter(p=>p.linked).length,unlinked:items.filter(p=>!p.linked).length},
+            items
           };
           fs.writeFileSync('ops/social-candidate-remote-mappings-current.json',JSON.stringify(result,null,2)+'\n');
           console.log('PENDING_METRICOOL_MAPPING_COUNTS',JSON.stringify(result.counts));
