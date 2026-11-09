@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T20:25:00+08:00",
-  "reason": "Read-only live D1 refresh after partial guarded editorial batch Action 42615359572. XJW-CONV-chat-ask-boss-topic archived and read back successfully, while XJW-CONV-chat-small-things-work was explicitly blocked due to existing Metricool draft mapping (Metricool remote id 413610813, draft true, autoPublish false). Do not claim two successes or backfill archived post.",
-  "reviewScope": "Current true D1 state verified from per-post receipt: 161 total, pending_review 53, archived 104, published 4. Export current pending only; no D1 import, approval or publish.",
+  "requestedAt": "2026-11-09T20:49:00+08:00",
+  "reason": "Read-only D1 candidate snapshot PLUS newly added per-post Metricool mapping presence inventory, after guarded editorial Action 42619036531 was prewrite-blocked on XJW-FEST-2027-spring-walk by external Metricool draft. Do not retry mapped posts; preserve existing 53 pending,104 archived,4 published unless live D1 differs. No D1 import or publish.",
+  "reviewScope": "Export current candidate data and mapping counts only; classify each pending post by existing D1 social_metricool_sync link presence, to prioritize safe unlinked editorial fixes; do not change remote Metricool drafts or approve posts.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42615359572",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42619036531",
   "publish": false,
   "approval": false,
   "mutateD1": false,
