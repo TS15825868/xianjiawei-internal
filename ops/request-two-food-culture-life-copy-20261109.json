@@ -3,27 +3,27 @@
   "authorizeCopyFix": true,
   "authorizeApproval": false,
   "authorizePublish": false,
-  "sourceSnapshot": "2026-11-09T11:07:29.127Z",
-  "reason": "Original visual scenes directly inspected; preserve original image bytes and correct brand-food lifestyle specificity. Retain original historical dedup=DEFER and require new version-bound AI evidence.",
+  "reason": "Batch2 two unlinked 53 pending, source-image-grounded material brand food-culture improvements, retain present media and DEFER historical dedup.",
+  "sourceSnapshot": "2026-11-09T12:43:39.379Z",
+  "sourceMappingSnapshot": "2026-11-09T12:43:40.812Z",
   "items": [
     {
-      "id": "XJW-CAND-20261225",
-      "expectedTitle": "聖誕節的小小聚會，誰負責準備點心",
-      "expectedCopy": "聖誕節這天，小老闆在桌上擺好杯盤，等朋友來聊聊近況。仙加味覺得，節日裡最開心的是大家能坐下來好好說話。",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261225.webp",
-      "expectedImageAlt": "聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。",
-      "copy": "聖誕節的午後，仙加味小老闆在萬華工作間的木桌上擺好杯盤、餅乾與蛋糕，等朋友來坐一會兒；小鹿和小烏龜也圍在桌邊。\n\n仙加味除了分享漢方食品，也喜歡記錄家常點心、杯盤安排這些飲食小習慣。節日聚會不用把餐桌塞滿，先準備幾樣大家願意一起分享的小點心，就能慢慢聊天。\n\n你準備節日小聚時，最先擺上桌的是茶飲、餅乾，還是蛋糕？",
-      "evidence": "已實際檢視原圖：室內有聖誕花圈及小樹，木桌上有花紋杯盤、多種餅乾與切片蛋糕，小老闆、小鹿、小烏龜分開坐在桌邊。新版只描述實際可見食物與備餐動作，連結仙加味的日常飲食內容，不影射杯內是某款特定產品或有療效。"
+      "id": "XJW-CAND-20261211",
+      "expectedTitle": "桌邊的小筆記，你習慣怎麼分類",
+      "expectedCopy": "週五早上，小老闆在仙加味店裡把綠色與米白色的兩本筆記本分開放：一本準備記料理點子，另一本留給待辦事項。你習慣用一本筆記本，還是把不同事情分開記？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp",
+      "expectedImageAlt": "週五上午，小老闆在萬華工作間將素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。",
+      "copy": "週五早上，仙加味小老闆在萬華工作間把綠色與米白色兩本素面筆記本分開放，後方木架上擺著乾燥食材罐；小鹿、小烏龜在桌旁陪著。\n\n準備家常湯之前，可以先記下想搭配的食材、料理步驟，再另外列出要確認的保存標示與備料清單。仙加味分享漢方飲食文化，也喜歡從這些料理前的小整理開始。\n\n你記錄煮湯點子時，習慣獨立一本，還是和日常待辦寫在一起？",
+      "evidence": "直接檢視最新正式原圖：小老闆正在將左側綠色與右側米白色兩本未書寫筆記本分開，後方確實有乾燥食材罐，小鹿與小烏龜分別在兩側，桌面沒有實際備料或文字；文案只寫『可以記下』，沒有假稱已在紙上寫好。"
     },
     {
-      "id": "XJW-CAND-20270129",
-      "expectedTitle": "年前整理餐具，先把常用的放前面",
-      "expectedCopy": "要迎接家人聚餐，小老闆把常用碗盤擦乾、收好，再留出餐桌空間。仙加味想問：你家年前第一個整理的是哪裡？",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270129.webp",
-      "expectedImageAlt": "年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。",
-      "copy": "年前準備家人聚餐時，仙加味小老闆在萬華店裡拿著布巾擦乾青花碗，將常用的碗盤整齊放回木櫃，小鹿、小烏龜在旁邊看著。\n\n煮家常菜或準備一鍋湯前，先把盛菜、分湯用的碗盤放在順手的位置，等大家坐下來吃飯也比較方便。仙加味分享漢方飲食文化，也喜歡記錄這些料理前的準備小事。\n\n你家年前會先整理碗盤，還是先討論年菜菜單？",
-      "evidence": "已實際檢視原圖：小老闆手持布巾擦青花碗，旁邊是裝有碗盤的開放木櫥櫃，桌上留出空位，年節紅燈籠、小鹿與小烏龜皆可見。新版連結備餐與家常料理，不冒充照片出現湯鍋、產品或已完成擺桌。"
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "expectedTitle": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "expectedCopy": "新的一年不用一開始就排滿很多目標。早上先倒一杯溫熱的，自己慢慢喝，或順手替家人也準備一杯。\n\n仙加味一直想做的，就是把補養放進這些簡單、做得到的生活節奏裡。\n\n新年第一杯，你會先留給自己還是家人？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+      "expectedImageAlt": "新年晨光中的餐桌旁，仙加味小老闆將溫熱飲品遞給家人，小鹿與小烏龜陪在桌邊。",
+      "copy": "新年早晨，仙加味小老闆在掛著紅燈籠的家中餐桌旁，雙手端起一杯冒著熱氣的飲品遞給家人，桌上擺著家常飯菜與水果，小鹿和小烏龜也在旁邊陪伴。\n\n仙加味喜歡記錄漢方飲食文化與家常餐桌的生活情境。從把熱飲和早餐準備好、和家人一起坐下來吃飯開始，就是新年值得保留的小習慣；杯中內容仍依實際飲品與食品標示確認，不把圖片中的飲品當成特定商品。\n\n新年第一杯溫熱的，你會先替自己準備，還是遞給家人？",
+      "evidence": "直接檢視正式原圖：小老闆在新年燈籠和花枝裝飾的餐桌旁，把有熱氣的素面白杯遞向前景穿紅衣的家人；桌上有蔬菜、點心與水果，小鹿和小烏龜分開陪伴。杯中具體品項不可辨識，因此文案不自創任何龜鹿食品。"
     }
-  ],
-  "retryAfterPrewriteGuardCorrection": "Initial Action 42613683030 reached source validation but both items were blocked before any DB write by SQL bind count mismatch. Script fixed to include matching image_alt=? CAS guard, and now exits nonzero on blocked status. Reattempt identical two unchanged current-source posts only."
+  ]
 }
