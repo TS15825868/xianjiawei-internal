@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T18:09:00+08:00",
-  "reason": "Read-only live D1 export after Action 42598623386 successfully archived five verified off-brand/overlapping scenes. Preserve 8 total archived this turn, no reimport of old 68/65 snapshots. Update GitHub-only current candidate list.",
-  "reviewScope": "Read current approved/scheduled/pending_review from D1; last successful archive receipt was 60 pending, 97 archived, 4 published, 161 total; never assume count without fresh read.",
+  "requestedAt": "2026-11-09T18:59:00+08:00",
+  "reason": "Refresh read-only live D1 pending candidate snapshot after Action 42605111970 archived four source-inspected weak brand life posts (D1 verified: archived101, pending56, published4, total161). Do not backfill these four from old snapshot or alter D1 approvals.",
+  "reviewScope": "Read only current approved/scheduled/pending_review; preserve newest copy+image+alt+status. Do not assume last verified 56 is a fixed target.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42598623386",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42605111970",
   "publish": false,
   "approval": false,
   "mutateD1": false,
