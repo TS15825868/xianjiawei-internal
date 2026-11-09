@@ -1,23 +1,23 @@
 {
   "scope": "xjw-evidence-guarded-editorial-batch-v1",
-  "requestId": "xjw-20261109-spring-walk-offbrand-unique-02",
+  "requestId": "xjw-20261109-posted-home-soup-near-scene-archive-01",
   "allowArchive": true,
   "allowApproval": false,
   "allowPublish": false,
   "allowDelete": false,
-  "sourceSnapshotGeneratedAt": "2026-11-09T12:17:49.040Z",
-  "description": "Direct image review finds generic holiday sightseeing, without a factual product, dietary culture, craft, food or brand-history narrative link. Retain complete original while withdrawing from publish candidate pool.",
+  "sourceSnapshotGeneratedAt": "2026-11-09T13:22:34.207Z",
+  "description": "One evidence-grounded editorial near-duplicate of already published November 3 home soup scene. Preserve post/image and prior successful receipts. Do not approve, schedule or publish.",
   "items": [
     {
-      "id": "XJW-FEST-2027-spring-walk",
-      "title": "走春不用趕行程，陪家人慢慢走一段",
-      "copy": "春節出門走春，不一定要跑很多地方。選一段好走的路，陪家人看看街角的花、聊聊最近的小事，就很有年節的感覺。\n\n仙加味從萬華的日常出發，也想把這種不急著趕路的相伴留下來。補養，是一種節奏。\n\n你走春比較喜歡熱鬧拜訪，還是安靜散步？",
-      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg",
-      "imageAlt": "春節走春的街道情境插畫，仙加味小老闆與家人在行人步道慢慢散步，小鹿與小烏龜分開同行，街角有花木與少量年節裝飾。",
-      "category": "offbrand_lifestyle",
+      "id": "XJW-CONV-chat-soup-day",
+      "title": "你家有固定的煮湯日嗎？",
+      "copy": "有些家庭週末比較有空，就會慢慢煮一鍋；有些則完全不固定，想到就煮。\n\n仙加味平常分享家常料理時，也常想到每個家庭都有自己習慣的一鍋湯。\n\n你家有自己的煮湯習慣嗎？還是看當天想吃什麼再決定？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-soup-day-safety-v1.png",
+      "imageAlt": "仙加味家常廚房，小老闆用長柄木勺攪拌熟雞湯，另一手戴乾燥隔熱手套握鍋柄；電磁爐沒有明火，備料桌只有分碗洗淨蔬菜，未接觸生肉，小鹿與小烏龜各坐在爐台外的矮凳。",
+      "category": "substantive_editorial_duplicate",
       "verifiedOriginalScene": true,
-      "reason": "這篇只描述春節出門散步、看花木、親子牽手與年節相伴，雖提到仙加味萬華及標語，但沒有特定鹿角工藝、漢方飲食、家常料理、產品或食用保存資訊；不符合仙加味生活文案必須具有具體品牌飲食文化或產品連結的正式規範，因此編輯退件封存，不作為生活貼文對外發布。",
-      "imageInspectionDetails": "已直接檢視正式原圖：春節紅燈籠與櫻花街道，小老闆牽著成年人手走在石板路，小鹿小烏龜跟隨；畫面只有人行街景及花木，沒有食品原料、料理、正式產品、工序或可識別家族品牌故事實物。"
+      "reason": "2026-11-03家常湯已在Facebook、Instagram、Threads完成發布，現篇雖改成詢問每週固定煮湯日，但同樣由小老闆在家常廚房操作熟雞湯鍋，並以家庭湯鍋習慣為主題。2026-11-07逐圖圖文覆核明確記錄SHARED_SOUP_COOKING_SCENE，歷史感知鄰近紀錄亦把已發Metricool 415226845列為16距離候選；主題角度不足以抵銷已發視覺高度近似。依品牌不重複發圖與已發主題規則，編輯性安全封存此未發版本，保留已發布稿及原檔。",
+      "imageInspectionDetails": "已引用正式來源ops/content-image-pair-verdicts-20261107.json逐圖覆核：待審圖為小老闆使用長柄木勺在電磁爐旁攪拌熟雞湯，另手戴隔熱手套握鍋柄，小鹿小烏龜坐在廚房爐台外；已發布11/03圖亦呈現小老闆及兩夥伴伴隨熟湯鍋的家常煮湯場景。另見ops/visual-text-neighbors-20261107.json的415226845視覺近鄰候選。兩圖不宣稱像素完全相同，判定為重複編輯角度與料理動作近似，而不是全面歷史去重PASS。"
     }
   ]
 }
