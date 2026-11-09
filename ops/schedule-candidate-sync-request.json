@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T21:19:00+08:00",
-  "reason": "Read-only D1 candidate and Metricool mapping-presence refresh after two verified editorial copy CAS+DEFER readbacks (Action42624140122) and single image-alt accurate food-card CAS+DEFER readback (Action42623865591). Keep all three current-version changes; do not backfill old copies or old alt and do not change D1 statuses.",
-  "reviewScope": "Export current pending/approved/scheduled and remote mapping presence only. Previous D1 counts 53 pending,104 archived,4 published, 161 total; count from D1 on sync. No schedule/approve/publish.",
+  "requestedAt": "2026-11-09T21:24:00+08:00",
+  "reason": "Read-only D1 plus remote mapping-presence snapshot after Action 42624753143: 2 current-version food culture copy CAS and AI-DEFER evidence successful for XJW-CONV-chat-luerong-intro and XJW-CONV-chat-elder-kitchen-habit. Also retain earlier same-turn 2 copy and 1 alt fixes. Never overwrite current copy with old snapshot.",
+  "reviewScope": "Export current D1 pending_review/approved/scheduled and remote mapping presence only. Previous D1 53 pending,104 archived,4 published; do not mutate posts or approvals; dedup remains DEFER.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42624140122",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42624753143",
   "publish": false,
   "approval": false,
   "mutateD1": false,
