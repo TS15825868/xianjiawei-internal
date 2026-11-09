@@ -1,0 +1,32 @@
+name: 仙加味五篇非品牌生活稿編輯退件安全封存
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-five-offbrand-life-20261109.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Validate strict archive script
+        run: node --check ops/archive-five-offbrand-life-20261109.mjs
+      - name: Archive only five source-bound poor-brand-link captions with D1 CAS and readback
+        run: node ops/archive-five-offbrand-life-20261109.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: five-offbrand-archive-${{ github.run_id }}
+          path: five-offbrand-archive-readback.json
+          if-no-files-found: warn
+          retention-days: 7
