@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T12:43:39.379Z",
+  "generatedAt": "2026-11-09T12:46:16.122Z",
   "counts": {
     "pending_review": 53
   },
@@ -207,7 +207,7 @@
     {
       "id": "XJW-CAND-20261211",
       "title": "桌邊的小筆記，你習慣怎麼分類",
-      "copy": "週五早上，小老闆在仙加味店裡把綠色與米白色的兩本筆記本分開放：一本準備記料理點子，另一本留給待辦事項。你習慣用一本筆記本，還是把不同事情分開記？",
+      "copy": "週五早上，仙加味小老闆在萬華工作間把綠色與米白色兩本素面筆記本分開放，後方木架上擺著乾燥食材罐；小鹿、小烏龜在桌旁陪著。\n\n準備家常湯之前，可以先記下想搭配的食材、料理步驟，再另外列出要確認的保存標示與備料清單。仙加味分享漢方飲食文化，也喜歡從這些料理前的小整理開始。\n\n你記錄煮湯點子時，習慣獨立一本，還是和日常待辦寫在一起？",
       "category": "生活",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -219,7 +219,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T17:32:02.942Z",
+      "updated_at": "2026-11-09T12:45:31.264Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -383,7 +383,7 @@
     {
       "id": "XJW-CONV-new-year-warm-cup-share",
       "title": "新年第一杯溫熱的，你想留給自己還是家人？",
-      "copy": "新的一年不用一開始就排滿很多目標。早上先倒一杯溫熱的，自己慢慢喝，或順手替家人也準備一杯。\n\n仙加味一直想做的，就是把補養放進這些簡單、做得到的生活節奏裡。\n\n新年第一杯，你會先留給自己還是家人？",
+      "copy": "新年早晨，仙加味小老闆在掛著紅燈籠的家中餐桌旁，雙手端起一杯冒著熱氣的飲品遞給家人，桌上擺著家常飯菜與水果，小鹿和小烏龜也在旁邊陪伴。\n\n仙加味喜歡記錄漢方飲食文化與家常餐桌的生活情境。從把熱飲和早餐準備好、和家人一起坐下來吃飯開始，就是新年值得保留的小習慣；杯中內容仍依實際飲品與食品標示確認，不把圖片中的飲品當成特定商品。\n\n新年第一杯溫熱的，你會先替自己準備，還是遞給家人？",
       "category": "新年生活",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -395,7 +395,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T07:29:10.172Z",
+      "updated_at": "2026-11-09T12:45:34.333Z",
       "platforms": [
         "Facebook",
         "Instagram",
