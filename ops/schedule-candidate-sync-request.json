@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T18:59:00+08:00",
-  "reason": "Refresh read-only live D1 pending candidate snapshot after Action 42605111970 archived four source-inspected weak brand life posts (D1 verified: archived101, pending56, published4, total161). Do not backfill these four from old snapshot or alter D1 approvals.",
-  "reviewScope": "Read only current approved/scheduled/pending_review; preserve newest copy+image+alt+status. Do not assume last verified 56 is a fixed target.",
+  "requestedAt": "2026-11-09T19:07:00+08:00",
+  "reason": "Read-only live D1 candidate refresh after exact-image comparison and successful archive of redundant XJW-CONV-year-end-clean (Action 42606312753). Preserve current source for retained family stone-mill and Wanhua street album posts; do not backfill/archive more.",
+  "reviewScope": "Only export current pending/approved/scheduled from live D1; last readback 55 pending, 102 archived, 4 published (161 total), count again from D1 before writing GitHub snapshot.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42605111970",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42606312753",
   "publish": false,
   "approval": false,
   "mutateD1": false,
