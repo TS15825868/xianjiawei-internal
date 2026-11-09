@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T11:07:29.127Z",
+  "generatedAt": "2026-11-09T12:04:53.754Z",
   "counts": {
-    "pending_review": 55
+    "pending_review": 54
   },
   "items": [
     {
@@ -110,28 +110,6 @@
       "approved_at": null,
       "published_at": null,
       "updated_at": "2026-11-08T01:50:10.328Z",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-cny-last-day-reset",
-      "title": "年假最後一天，你會先整理房間，還是先準備明天？",
-      "copy": "年假最後一天的傍晚，小老闆坐在門邊，翻開筆記本，旁邊放著隔天要帶的背包和鞋子，準備想想開工後先做哪一件事。小鹿和小烏龜在一旁陪著。\n\n仙加味的日常也從收好物品、準備隔天要用的東西，慢慢接回熟悉的工作節奏。你收假前習慣先整理背包，還是先看隔天的待辦？",
-      "category": "年後生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": null,
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-last-day-reset-audit-v1.jpg",
-      "image_alt": "年假最後一天的居家玄關，仙加味小老闆放好隔天要用的隨身包，翻看生活筆記，小鹿與小烏龜在門邊陪伴。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-08T01:50:17.008Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -361,7 +339,7 @@
     {
       "id": "XJW-CAND-20261225",
       "title": "聖誕節的小小聚會，誰負責準備點心",
-      "copy": "聖誕節這天，小老闆在桌上擺好杯盤，等朋友來聊聊近況。仙加味覺得，節日裡最開心的是大家能坐下來好好說話。",
+      "copy": "聖誕節的午後，仙加味小老闆在萬華工作間的木桌上擺好杯盤、餅乾與蛋糕，等朋友來坐一會兒；小鹿和小烏龜也圍在桌邊。\n\n仙加味除了分享漢方食品，也喜歡記錄家常點心、杯盤安排這些飲食小習慣。節日聚會不用把餐桌塞滿，先準備幾樣大家願意一起分享的小點心，就能慢慢聊天。\n\n你準備節日小聚時，最先擺上桌的是茶飲、餅乾，還是蛋糕？",
       "category": "節慶",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -373,7 +351,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T04:11:16.677Z",
+      "updated_at": "2026-11-09T12:03:41.731Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -559,7 +537,7 @@
     {
       "id": "XJW-CAND-20270129",
       "title": "年前整理餐具，先把常用的放前面",
-      "copy": "要迎接家人聚餐，小老闆把常用碗盤擦乾、收好，再留出餐桌空間。仙加味想問：你家年前第一個整理的是哪裡？",
+      "copy": "年前準備家人聚餐時，仙加味小老闆在萬華店裡拿著布巾擦乾青花碗，將常用的碗盤整齊放回木櫃，小鹿、小烏龜在旁邊看著。\n\n煮家常菜或準備一鍋湯前，先把盛菜、分湯用的碗盤放在順手的位置，等大家坐下來吃飯也比較方便。仙加味分享漢方飲食文化，也喜歡記錄這些料理前的準備小事。\n\n你家年前會先整理碗盤，還是先討論年菜菜單？",
       "category": "生活",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -571,7 +549,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-07T04:11:38.983Z",
+      "updated_at": "2026-11-09T12:03:45.104Z",
       "platforms": [
         "Facebook",
         "Instagram",
