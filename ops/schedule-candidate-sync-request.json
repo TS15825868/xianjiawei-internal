@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T20:55:00+08:00",
-  "reason": "Read-only D1 candidate and Metricool mapping-presence refresh after verified two current-image-bound copy repairs in Action 42619630664 (XJW-CAND-20261211, XJW-CONV-new-year-warm-cup-share). Preserve current D1 and no old copy backfill.",
-  "reviewScope": "Export 53 pending current copies and remote mapping counts in read-only mode; D1 previously 53 pending,104 archived,4 published; do not write to D1, AI approve or publish.",
+  "requestedAt": "2026-11-09T21:19:00+08:00",
+  "reason": "Read-only D1 candidate and Metricool mapping-presence refresh after two verified editorial copy CAS+DEFER readbacks (Action42624140122) and single image-alt accurate food-card CAS+DEFER readback (Action42623865591). Keep all three current-version changes; do not backfill old copies or old alt and do not change D1 statuses.",
+  "reviewScope": "Export current pending/approved/scheduled and remote mapping presence only. Previous D1 counts 53 pending,104 archived,4 published, 161 total; count from D1 on sync. No schedule/approve/publish.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42619630664",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42624140122",
   "publish": false,
   "approval": false,
   "mutateD1": false,
