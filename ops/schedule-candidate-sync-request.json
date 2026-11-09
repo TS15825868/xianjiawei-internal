@@ -1,9 +1,9 @@
 {
-  "requestedAt": "2026-11-09T06:26:26.470Z",
-  "reason": "Refresh GitHub social-schedule-candidates-current.json as a READ-ONLY snapshot of actual live D1 after verified 2026-11-08 four-scene repairs and 2026-11-09 stone-mill correction; previous snapshot generated 2026-11-05 14:39Z has 56 pending and stale copy. Never write back old snapshot to D1, change approvals, media, schedules or publish.",
-  "reviewScope": "Only export current approved, scheduled, pending_review rows from Cloudflare D1 and preserve latest copy/title/image/status; count at read time, not assumed 68. Persist to GitHub snapshot only.",
+  "requestedAt": "2026-11-09T14:47:00+08:00",
+  "reason": "Incremental read-only D1 snapshot after verified image-alt CAS correction XJW-CONV-year-end-small-win on Action 42575107296; update only ops/social-schedule-candidates-current.json and retain entire current D1 copy, image, alt, status, no D1 import/backfill.",
+  "reviewScope": "Current 68 pending only; D1 snapshot must carry the corrected open-drawer image_alt and all prior copy fixes; do not alter posts or release state.",
   "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42568419203",
+  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42575107296",
   "publish": false,
   "approval": false,
   "mutateD1": false,
