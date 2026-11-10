@@ -30,10 +30,10 @@ jobs:
           m=json.loads((base/'manifest.json').read_text())
           assert m['status']=='draft-only-needs-human-visual-inspection'
           assert m['D1Writes']==m['approvals']==m['scheduled']==m['publications']==0
-          assert len(m['previews'])==10
-          assert len(set((x['id'],x['approach']) for x in m['previews']))==10
+          assert len(m['previews'])==15
+          assert len(set((x['id'],x['approach']) for x in m['previews']))==15
           assert all((Path(x['previewPath']).exists() and x['imageNotYetApproved']) for x in m['previews'])
-          print('Ten draft-only source-bound A/B previews verified')
+          print('Fifteen draft-only source-bound A/B/C previews verified')
           PY
       - name: Save previews only (never modify official production images or D1)
         shell: bash
