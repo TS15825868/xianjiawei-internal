@@ -12,33 +12,11 @@
       "expectedCopy": "有些人煮東西一定要量得很準，有些人則是看一看、聞一聞，覺得差不多就可以。\n\n家常料理有趣的地方，常常就是每一家都有自己的做法。\n\n仙加味聊料理搭配時，也喜歡聽大家分享自己家裡最順手的煮法。\n\n你是照食譜派，還是憑感覺派？",
       "expectedImageAlt": "仙加味小老闆在家常廚房翻看料理筆記，一旁放著蔬菜和菇類，小鹿與小烏龜等待開始備料。",
       "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg",
-      "nextValue": "在家常廚房，仙加味小老闆翻開料理筆記，桌邊放著蔬菜和菇類，想著今天這道菜要照食譜準備，還是依家裡的習慣搭配。\n\n有些人煮東西一定要量得很準，有些人則是看一看、聞一聞，覺得差不多就可以。\n\n家常料理有趣的地方，常常就是每一家都有自己的做法。\n\n仙加味聊料理搭配時，也喜歡聽大家分享自己家裡最順手的煮法。\n\n你是照食譜派，還是憑感覺派？",
+      "nextValue": "在家常廚房，仙加味小老闆翻開料理筆記，桌邊放著蔬菜和菇類，想著今天這道菜要照食譜準備，還是依家裡的習慣搭配；小鹿和小烏龜分開在一旁陪著。\n\n有些人煮東西一定要量得很準，有些人則是看一看、聞一聞，覺得差不多就可以。\n\n家常料理有趣的地方，常常就是每一家都有自己的做法。\n\n仙加味聊料理搭配時，也喜歡聽大家分享自己家裡最順手的煮法。\n\n你是照食譜派，還是憑感覺派？",
       "check": "scene_environment",
       "evidence": "原圖AI圖文存證描述小老闆在家常廚房翻看料理筆記，桌上有蔬菜與菇類、小鹿小烏龜分開陪伴。原文僅泛論照食譜或靠經驗，缺少可識別的畫面與動作。本次只補足畫面已明確描述的廚房、筆記、蔬菜菇類與角色，保留料理討論和完整原圖。"
-    },
-    {
-      "id": "XJW-CONV-cny-fridge-clean",
-      "field": "copy",
-      "expectedTitle": "過年前整理冰箱，最常找到什麼？",
-      "expectedCopy": "過年前整理家裡，冰箱通常也是重點之一。打開一看，常常會發現幾樣自己都忘記放進去的東西。\n\n仙加味整理保存資訊時，也會提醒先確認食材的收納位置與保存方式。\n\n你整理冰箱時最常遇到的是剩一點點的醬料、食材，還是忘記的飲料？",
-      "expectedImageAlt": "過年前小老闆打開冰箱分類食材與收納盒，小鹿看著水果籃，小烏龜在旁陪著整理。",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
-      "nextValue": "過年前，仙加味小老闆打開家裡冰箱，先把收納盒與食材分開整理，小鹿和小烏龜在旁邊陪著。\n\n過年前整理家裡，冰箱通常也是重點之一。打開一看，常常會發現幾樣自己都忘記放進去的東西。\n\n仙加味整理保存資訊時，也會提醒先確認食材的收納位置與保存方式。\n\n你整理冰箱時最常遇到的是剩一點點的醬料、食材，還是忘記的飲料？",
-      "check": "scene_environment",
-      "evidence": "原圖AI圖文存證描述年前小老闆打開家用冰箱，分類保鮮盒與食材，小鹿在水果籃旁、小烏龜陪同。原文泛論過年前整理冰箱，卻沒有對應小老闆畫面動作。僅補足已明示動作與場景，不提未見產品包裝、不改原圖或既有保存資訊。"
-    },
-    {
-      "id": "XJW-CONV-chat-last-bowl",
-      "field": "copy",
-      "expectedTitle": "家裡煮湯，最後一口是誰喝掉的？",
-      "expectedCopy": "有些家庭一鍋湯很快就喝完，有些最後總會剩一小碗，大家互相問：「你要不要喝掉？」\n\n仙加味喜歡記錄這些餐桌小事情，因為飲食文化最後還是回到一家人的日常。\n\n這種小事情，反而很有家的感覺。你家最後一碗通常是誰負責？",
-      "expectedImageAlt": "家常晚餐將結束時，仙加味小老闆拿起最後一碗熱湯，小鹿和小烏龜在餐桌旁笑著陪伴。",
-      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
-      "nextValue": "晚餐快結束時，仙加味小老闆端起餐桌上最後一碗熱湯，小鹿和小烏龜在一旁笑著陪伴。\n\n有些家庭一鍋湯很快就喝完，有些最後總會剩一小碗，大家互相問：「你要不要喝掉？」\n\n仙加味喜歡記錄這些餐桌小事情，因為飲食文化最後還是回到一家人的日常。\n\n這種小事情，反而很有家的感覺。你家最後一碗通常是誰負責？",
-      "check": "scene_environment",
-      "evidence": "原圖AI圖文存證描述晚餐尾聲，小老闆端起最後一碗湯，小鹿與小烏龜陪在餐桌旁。原文只談別人喝最後一碗，未與這張生活動作畫面建立對應。本次補上具體餐桌與角色動作，不重複11/03家庭煮湯食材及烹煮構圖，不改原圖。"
     }
   ],
-  "retryReason": "Correct false-negative validation: prior one used literal backslash-n characters rather than true blank paragraph separator; no D1 mutations occurred in failed Action42744016425. All original expected version hashes unchanged; CAS protects concurrent edits.",
-  "retryAt": "2026-11-10T10:40:00+08:00"
+  "retryReason": "2/3 exact D1 CAS readback succeeded Action42744142339: XJW-CONV-cny-fridge-clean and XJW-CONV-chat-last-bowl. They are intentionally excluded from the retry, preserving D1 versions. Only XJW-CONV-chat-recipe-or-feel remains, fixing missing explicit companion description before single-source-version CAS.",
+  "retryAt": "2026-11-10T10:43:00+08:00"
 }

@@ -4,10 +4,10 @@ import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
 const {fingerprint}=createRequire(import.meta.url)('../tools/metricool-free-evidence.cjs');
 const req=JSON.parse(fs.readFileSync('ops/request-three-grounded-scene-clarity-20261110.json','utf8'));
-const ids=["XJW-CONV-chat-recipe-or-feel","XJW-CONV-cny-fridge-clean","XJW-CONV-chat-last-bowl"];
+const ids=['XJW-CONV-chat-recipe-or-feel'];
 if(req.scope!=='xjw-three-grounded-current-scene-clarity-20261110-v1'||
  req.authorizeFix!==true||req.authorizeApproval!==false||req.authorizePublish!==false||
- req.items?.length!==3||req.items.some((x,i)=>x.id!==ids[i]||!['copy','image_alt'].includes(x.field)||!x.evidence||x.evidence.length<90))throw Error('Unsafe scope');
+ req.items?.length!==1||req.items.some((x,i)=>x.id!==ids[i]||!['copy','image_alt'].includes(x.field)||!x.evidence||x.evidence.length<90))throw Error('Unsafe scope');
 const token=process.env.CLOUDFLARE_API_TOKEN,account=process.env.CLOUDFLARE_ACCOUNT_ID;
 const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
 if(!token||!account||!db)throw Error('Missing Cloudflare credentials');
