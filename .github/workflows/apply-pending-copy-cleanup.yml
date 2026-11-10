@@ -1,0 +1,60 @@
+name: 仙加味待審文案批次修正（僅無外部映射，CAS＋讀回）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/post-copy-cleanup-batches/*.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-copy-correction
+  cancel-in-progress: false
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Confirm exactly one current request file
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(git diff --name-only HEAD^ HEAD -- 'ops/post-copy-cleanup-batches/')
+          test "${#files[@]}" -eq 1
+          [[ "${files[0]}" =~ ^ops/post-copy-cleanup-batches/[a-zA-Z0-9_-]+\.json$ ]]
+          echo "CLEANUP_REQUEST_FILE=${files[0]}" >> "$GITHUB_ENV"
+      - name: Verify syntax and D1 no-retry protocol
+        run: |
+          node --check tools/apply-pending-copy-cleanup.mjs
+          node --check tools/apply-ai-quality-evidence.mjs
+          node --test tools/test-d1-http-transport.mjs
+      - name: Apply source-bound pending-only corrections and independently read D1 back
+        run: node tools/apply-pending-copy-cleanup.mjs
+      - name: Preserve verified D1 receipt in main without force push
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          receipt="ops/receipts/${CLEANUP_REQUEST_FILE##*/}"
+          cp /tmp/pending-copy-cleanup-result.json "$receipt"
+          node -e "const r=require('./'+process.argv[1]);if(r.complete!==true||r.verified!==r.attempted||r.approved!==0||r.published!==0||r.scheduled!==0)process.exit(1)" "$receipt"
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$receipt"
+          git commit -m 'audit: save D1 readback for protected pending copy cleanups'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pending-copy-cleanup-${{ github.run_id }}
+          path: /tmp/pending-copy-cleanup-result.json
+          if-no-files-found: warn
+          retention-days: 7
