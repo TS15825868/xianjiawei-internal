@@ -1,8 +1,8 @@
 {
-  "version": "2026-10-02-v11-weekly-3-posts",
+  "version": "2026-11-10-owner-confirmed-two-three-weekly-conditional-v12",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
-  "rule": "只保留發佈候選時段，不越過人工審核；pending_review 只寫 proposed_scheduled_at，不改 approved/scheduled，不自動發布。人工核准後，同一篇貼文 Facebook、Instagram、Threads 同一天發布並共用同一張正式圖。時段以目前Metricool Facebook最佳時段為基準，正式發布日前7天內再校正一次。",
+  "rule": "正式規則：每週固定台灣時間週二與週五10:00，每週2篇；有完整合格不重複的新內容，週日10:00可增加第3篇。使用者已授權條件式AI代審及自動排程／發文，不需逐篇再請人工確認；但只有現版16/16 PASS、真實產品/角色來源、完整跨平台歷史去重、平台/額度/遠端一致性及真正發布閘門驗收通過的稿件才能進入正式排程。pending_review和proposed_scheduled_at僅為候選，絕不是正式排程；Metricool draft=true不會自動發布。缺證據一律停送，不能假PASS或冒稱正式排程。",
   "slots": [
     {
       "postId": "XJW-CONV-care-simple-checkin",
@@ -205,7 +205,7 @@
       "proposed_scheduled_at": "2027-02-13T10:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-10-02T18:25:00+08:00",
+  "updatedAt": "2026-11-10T10:08:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -214,14 +214,15 @@
   ],
   "crossPlatformImageRule": "同一篇貼文三平台使用同一張正式貼文圖；不同篇貼文不得重複使用同一張圖。",
   "crossPlatformTextRule": "同一主題同一天發布；平台文字只允許格式與字數微調，不改主題、不換圖。",
-  "note": "2026-10-02已依Metricool目前受眾資料把長期候選時段由晚間為主調整成10:00／週三12:00；這些仍是待審核候選，不代表自動發布。季節、天氣與臨時生活內容仍可依最新情況插播，常青內容順延。",
+  "note": "當前proposed時段、legacy slots及Metricool draft都不是正式發布排程；待現版審核與來源完整驗證後，才通過既有免費服務工具建立正式排程並逐平台查真實回執。",
   "liveLifeInsertPolicy": {
     "freshnessWindowHours": "24-72",
     "sameDayCrossPlatform": true,
     "replaceEvergreenSlot": true,
     "shiftReplacedEvergreenForward": true,
     "requirePendingReviewBeforePublish": true,
-    "noAutoPublishBeforeHumanApproval": true
+    "noAutoPublishBeforeHumanApproval": false,
+    "noAutoPublishBeforeVersionBoundStandingOwnerApprovalAndComplete16Checks": true
   },
   "latestFreshInsert": {
     "postId": "XJW-CONV-live-hongludi-outing-20260929",
@@ -316,14 +317,53 @@
     "weekdayCookingTime": "12:00",
     "rationale": "仙加味目前Facebook受眾在多數星期的10:00最強；星期三12:00略高於10:00。舊19:45／20:30／21:00時段普遍低於上午與中午。",
     "recheckRule": "正式發布日前7天內再次讀取Metricool最新最佳時段；若受眾分布改變，可調整候選時間，但人工審核規則不變。",
-    "noAutoPublishBeforeHumanApproval": true
+    "noAutoPublishBeforeHumanApproval": false,
+    "noAutoPublishBeforeProofOfVersionBoundStandingOwnerApproval": true
   },
   "weeklyCadence": {
-    "normalPostsPerWeek": 3,
-    "specialWeekMaxPosts": 4,
-    "spacing": "2-3 days",
-    "principle": "少而精；品牌／產品知識／料理或互動自然穿插。",
-    "liveInsert": "即時天氣、節日、萬華實拍等時效內容可插播，原常青貼文順延。",
-    "noForcedVolume": true
+    "normalPostsPerWeek": 2,
+    "specialWeekMaxPosts": 3,
+    "spacing": "2-3 days (optional third can be Sunday)",
+    "principle": "正式每週2篇，經完整驗證有優質素材方可3篇；不重複、不同圖，三平台同步。",
+    "liveInsert": "時效內容先完成完整版本化查核再可替換原槽；不能因候選時間已過而未審先發。",
+    "noForcedVolume": true,
+    "slots": [
+      {
+        "weekday": "Tuesday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Friday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Sunday",
+        "time": "10:00",
+        "optional": true
+      }
+    ],
+    "timezone": "Asia/Taipei"
+  },
+  "slotAuthority": {
+    "updatedAt": "2026-11-10T10:08:00+08:00",
+    "previousSlotsArray": "legacy_historical_candidates_only__never_formal_schedule",
+    "nextTargetSlots": [
+      {
+        "dateTime": "2026-11-13T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Await fully verified 16/16 and independent cross-platform evidence"
+      },
+      {
+        "dateTime": "2026-11-15T10:00:00+08:00",
+        "status": "OPTIONAL_TARGET_NOT_SCHEDULED",
+        "reason": "Third post only if eligible and not duplicate"
+      },
+      {
+        "dateTime": "2026-11-17T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Await fully verified evidence"
+      }
+    ],
+    "doNotBackfillMissedToday": "2026-11-10 10:00 proposed candidate was not approved or published. Never falsely record published or schedule to past time."
   }
 }

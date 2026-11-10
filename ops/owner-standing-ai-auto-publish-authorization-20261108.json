@@ -9,11 +9,63 @@
     "歷史圖片及文案跨平台去重PASS，DEFER或缺來源不可放行",
     "產品原圖、角色、尺寸、季節、廣告法規及平台規範全部PASS",
     "免費平台額度、授權、排程衝突、重複發送及正式發布回執機制完成驗證",
-    "每週原則二篇，週二及週五10:00 Asia/Taipei，特殊週最多三篇",
+    "每週以星期二與星期五10:00固定2篇，品質合格可於星期日10:00增加第3篇；台灣時間，無合格內容不得湊數或偽造已排程",
     "修改文案或圖片必須使舊審核失效並重新完整驗證"
   ],
   "exceptions": "任何REJECT、DEFER、無法查證或平台失敗都停送交人工；不得偽造PASS、批准者身分或發布回執。",
-  "deploymentState": "authorization_recorded_only_runtime_not_yet_enabled",
+  "deploymentState": "owner_standing_authorized__existing_runtime_fail_closed_until_e2e_eligibility_verified",
   "safety": "此授權不等於現有68篇自動合格；不得直接把pending_review批次改成approved；須先完成端對端測試及版本化自動審核閘門，並確認真正平台排程通道可用。",
-  "cost": "NT$0 / US$0"
+  "cost": "NT$0 / US$0",
+  "reconfirmedAt": "2026-11-10T10:08:00+08:00",
+  "latestOwnerInstruction": "使用者明確同意照AI建議發布時間，未來社群貼文由AI自動處理並正式排程；每週原則2至3篇；可使用先前已核准的持續授權，不需逐篇再詢問。每篇仍需以可驗證的完整16項、正式商品/角色原圖、歷史去重及平台回執取得正式可發資格；證據不足停送，不假冒人工核准。",
+  "cadence": {
+    "timezone": "Asia/Taipei",
+    "weeklyTargetMin": 2,
+    "weeklyTargetMax": 3,
+    "regularSlots": [
+      {
+        "weekday": "Tuesday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Friday",
+        "time": "10:00"
+      }
+    ],
+    "optionalThirdSlot": {
+      "weekday": "Sunday",
+      "time": "10:00",
+      "requireApprovedContent": true
+    },
+    "crossPlatform": [
+      "facebook",
+      "instagram",
+      "threads"
+    ],
+    "preserveNormalHistory": true
+  },
+  "lastVerified": {
+    "at": "2026-11-10T10:08:00+08:00",
+    "d1Snapshot": {
+      "total": 161,
+      "pending_review": 51,
+      "archived": 106,
+      "published": 4,
+      "approved": 0,
+      "scheduled": 0
+    },
+    "currentDuplicates": "51 pending items all duplicate=DEFER (not PASS)",
+    "metricoolNearestDraft": {
+      "id": 409115861,
+      "date": "2026-11-11T10:00:00+08:00",
+      "draft": true,
+      "autoPublish": false,
+      "publication": false
+    },
+    "lastPublishedThreePlatform": {
+      "metricoolId": 415226845,
+      "date": "2026-11-03T20:52:00+08:00"
+    },
+    "notReadyForNewAutoPublish": true
+  }
 }

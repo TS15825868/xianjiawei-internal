@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-08-owner-authorized-conditional-ai-publishing-preflight",
+  "version": "2026-11-10-owner-reconfirmed-conditional-2-to-3-weekly",
   "brand": "仙加味",
   "timezone": "Asia/Taipei",
   "contentMode": "mixed-topic-non-repeating",
@@ -177,7 +177,24 @@
         "optional": true
       }
     ],
-    "timezone": "Asia/Taipei"
+    "timezone": "Asia/Taipei",
+    "maxPostsPerWeek": 3,
+    "slots": [
+      {
+        "weekday": "Tuesday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Friday",
+        "time": "10:00"
+      },
+      {
+        "weekday": "Sunday",
+        "time": "10:00",
+        "optional": true
+      }
+    ],
+    "source": "2026-11-10 user explicit instruction"
   },
   "profileLinkPolicy": {
     "label": "仙加味｜連結入口",
@@ -207,12 +224,13 @@
     "unsafeOrUncertainAction": "hold_for_human_review",
     "existingScheduledPostAction": "保留既有外部已發／已排紀錄，先查即時 Metricool，禁止複製或重送；目前候選草稿不代表正式排程。",
     "freeMetricoolConstraint": "免費方案不提供可靠無人值守 REST 發文通道；僅在可驗證的正式連接器／排程與免費額度條件滿足後啟用，否則保持 fail-closed。",
-    "rolloutState": "owner_authorized_runtime_gate_not_yet_implemented_or_e2e_verified_fail_closed",
+    "rolloutState": "owner_confirmed__E2E_verification_still_required_before_unattended_publication",
     "pausedTopics": [
       "龜鹿飲試喝：暫停，使用者另行指定日期前不得自動排程或發布"
     ],
     "officialWebsiteProductImageRule": "官網main目前正式使用的產品原圖為最高圖像權威；禁止AI重畫、覆蓋、變形或用舊ZIP取代；貼文產品圖須核對正式圖檔及實際外觀。",
-    "latestInstruction": "使用者已明確同意完整16項AI審核合格、歷史去重及平台檢查PASS後，免逐篇人工核准，AI自動排程並到點發布；有疑義停送交人工。"
+    "latestInstruction": "2026/11/10使用者再次明確授權：以建議時段週二、週五10:00固定每週2篇；若有第三篇合格獨立內容則週日10:00。AI自動完成稿件審核、合格正式排程及三平台發布，不需逐篇要求人工確認；但所有16項均需當前圖文版本可驗證PASS、歷史媒體去重PASS、合法品牌/產品原圖和免費額度及實際排程回執，DEFER與不完整證據保留停發，禁止假冒人審或把草稿當已排程。",
+    "latestConfirmedAt": "2026-11-10T10:08:00+08:00"
   },
   "contentRotation": {
     "enabled": true,
@@ -255,6 +273,8 @@
       "platform_publication_receipts"
     ],
     "status": "hold_until_evidence_verified",
-    "publishedHistoryDedup": "2026-10-29 巡檢發現 2026-10-23 00:13 與 00:23 有兩篇全文相同的風雨提醒，FB/IG/Threads 均有各自發布回執；兩筆都必須保留在已發布去重比對資料範圍，不可因一筆存在而忽略另一筆、不可重發補檔或擅自刪除歷史。每次排程或立即發布前，以正式資料庫+Metricool+三平台已發布回執跨來源比對正規化文案、媒體雜湊、主題與日期；相同文案或實質重複內容一律阻擋並留待人工核對。"
+    "publishedHistoryDedup": "2026-10-29 巡檢發現 2026-10-23 00:13 與 00:23 有兩篇全文相同的風雨提醒，FB/IG/Threads 均有各自發布回執；兩筆都必須保留在已發布去重比對資料範圍，不可因一筆存在而忽略另一筆、不可重發補檔或擅自刪除歷史。每次排程或立即發布前，以正式資料庫+Metricool+三平台已發布回執跨來源比對正規化文案、媒體雜湊、主題與日期；相同文案或實質重複內容一律阻擋並留待人工核對。",
+    "lastCheckedAt": "2026-11-10T10:08:00+08:00",
+    "currentNearTermObservation": "11/10 10:00 D1 XJW-CONV-chat-wanhua-morning only pending_review+proposed time; 11/11 Metricool draft 409115861 still draft=true autoPublish=false. No certified formal schedule or new published receipt."
   }
 }
