@@ -1,0 +1,31 @@
+name: 仙加味三篇現有待審情境畫面文案精準補正
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-three-grounded-scene-clarity-20261110.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Check current bound script
+        run: node --check ops/repair-three-grounded-scene-clarity-20261110.mjs
+      - name: Live D1 CAS and per-post AI-DEFER readback
+        run: node ops/repair-three-grounded-scene-clarity-20261110.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scene-location-clarity-${{ github.run_id }}
+          path: three-grounded-scene-clarity-result.json
+          retention-days: 7
