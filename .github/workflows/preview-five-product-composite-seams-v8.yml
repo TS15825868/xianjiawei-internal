@@ -1,0 +1,54 @@
+name: 仙加味5篇商品情境圖修補痕跡A-B預覽（無對客動作）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/request-five-product-seam-preview-v8.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-image-composite-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install existing no-fee image tools
+        run: python -m pip install -q pillow opencv-python-headless
+      - name: Validate and render five exact source-bound previews
+        run: |
+          python -m py_compile ops/preview-five-product-composite-seams-v8.py
+          python ops/preview-five-product-composite-seams-v8.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('ops/visual-previews/20261110-official-source-composite-v8')
+          m=json.loads((base/'manifest.json').read_text())
+          assert m['status']=='draft-only-needs-human-visual-inspection'
+          assert m['D1Writes']==m['approvals']==m['scheduled']==m['publications']==0
+          assert len(m['previews'])==10
+          assert len(set((x['id'],x['approach']) for x in m['previews']))==10
+          assert all((Path(x['previewPath']).exists() and x['imageNotYetApproved']) for x in m['previews'])
+          print('Ten draft-only source-bound A/B previews verified')
+          PY
+      - name: Save previews only (never modify official production images or D1)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/visual-previews/20261110-official-source-composite-v8/
+          git commit -m 'review: preserve five product-scene blend previews for inspection'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-five-scene-blend-ab-v8-${{ github.run_id }}
+          path: ops/visual-previews/20261110-official-source-composite-v8/
+          retention-days: 7
