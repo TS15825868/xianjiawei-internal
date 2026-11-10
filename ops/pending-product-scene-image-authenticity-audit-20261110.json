@@ -1,0 +1,64 @@
+{
+  "schema": "xjw-current-50-pending-product-image-audit-v1",
+  "checkedAt": "2026-11-10T11:12:00+08:00",
+  "source": "Original pending image GitHub main base64 visual preview, compared directly with official website main product photos and preserved prior D1 current source-bound review. No generative replacements.",
+  "sourceD1": "161 total, 50 pending_review, 106 archived, 5 published. Post XJW-CONV-chat-wanhua-morning actually published at 11:00 across 3 providers and reconciled Action42747526266.",
+  "productMentioningPending": 6,
+  "physicalProductVisibleAndInaccurate": 5,
+  "productDiscussedButNoProductDrawingVisible": 1,
+  "reworkStatus": "needs_rework",
+  "reworks": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "issue": "AI描繪鹿茸粉罐標籤與官網正式75g商品實物原圖不同；有不清楚字形",
+      "officialMain": "images/catalog-owner-final-v20261017/luerong-fen-main.webp",
+      "proofAction": 42746592498
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "issue": "30cc小玻璃裸罐為AI重畫，非正式真實原圖合成",
+      "officialMain": "images/catalog-owner-final-v20261017/guilu-drink-30-main.webp",
+      "proofAction": 42746592498
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "issue": "AI自創龜鹿膏小罐與標籤，不符正式實物包裝",
+      "officialMain": "images/catalog-owner-final-v20261017/guilu-gao-main.webp",
+      "proofAction": 42747417762
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "issue": "桌前AI重畫龜鹿膏罐標籤錯誤，正式產品原圖未合成",
+      "officialMain": "images/catalog-owner-final-v20261017/guilu-gao-main.webp",
+      "proofAction": 42747417762
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "issue": "180cc鋁袋被AI畫成比例錯誤巨大銀色方袋且有錯誤文字、30cc也非實物原圖",
+      "officialMain": [
+        "images/catalog-owner-final-v20261017/guilu-drink-180-main.webp",
+        "images/catalog-owner-final-v20261017/guilu-drink-30-main.webp"
+      ],
+      "proofAction": 42747417762
+    }
+  ],
+  "notFlagged": {
+    "id": "XJW-CONV-chat-drink-made-to-order",
+    "reason": "原圖已直接檢視：小老闆記錄工作日程、旁有小鹿小烏龜和月曆，沒有任何可見正式產品瓶、罐、袋、標籤，也沒有自造包裝；文案提到龜鹿飲接單製作與約5～7工作天但沒有虛構商品外觀。仍須完整歷史去重等16項審核，不等於正式可發。",
+    "image": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+    "imageBlobSha": "47072329739cae4d2c1f4bf022bb9d4f1f638e36",
+    "status": "pending_review",
+    "duplicate": "DEFER",
+    "autoApprove": false
+  },
+  "safety": {
+    "keepCurrentOfficialProductOriginals": true,
+    "reuseOldAIProductDrawings": false,
+    "imageReplacementRequiresExactOfficialPhotoCompositing": true,
+    "noMaterialCommercialClaims": true,
+    "doNotRepostPreviouslyPublished": true,
+    "noChangesToApprovalOrSchedule": true,
+    "noAdditionalCost": true
+  },
+  "backlog": "50 pending includes 5 needs_rework; do not accidentally mark all 50 as clear. 1 direct exception published today is no longer in pending list."
+}
