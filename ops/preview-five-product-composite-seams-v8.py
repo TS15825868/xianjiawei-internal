@@ -17,7 +17,7 @@ SCENES=[
 ]
 # Five current pending posts; preview both erasure strategies, no D1 changes.
 TIGHT_MASKS={
-"XJW-CONV-chat-luerong-intro":(266,374,329,458),
+"XJW-CONV-chat-luerong-intro":(266,373,330,473),
 "XJW-CONV-chat-photo-size":(205,338,267,411),
 "XJW-CONV-cny-gift-choice":(240,372,310,482),
 "XJW-CONV-chat-picture-or-text":(241,366,319,486),
