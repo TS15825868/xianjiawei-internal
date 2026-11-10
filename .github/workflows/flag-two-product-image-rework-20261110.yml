@@ -1,0 +1,30 @@
+name: 仙加味兩篇商品原圖錯誤安全退件
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/request-two-product-image-rework-20261110.json'
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node --check ops/flag-two-product-image-rework-20261110.mjs
+      - run: node ops/flag-two-product-image-rework-20261110.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: product-image-rework-${{ github.run_id }}
+          path: product-image-visual-rework-result.json
+          retention-days: 10

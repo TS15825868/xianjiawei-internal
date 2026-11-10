@@ -1,0 +1,39 @@
+{
+  "scope": "xjw-two-direct-visual-product-rework-v1",
+  "ownerAuthorized": "繼續完成待審：先找同類問題並確定正式產品原圖",
+  "sourceSnapshotAt": "2026-11-10T02:40:33.872Z",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "expectedTitle": "今天認識一個比較少聊到的：鹿茸粉",
+      "expectedCopy": "仙加味平常比較常介紹龜鹿系列，鹿茸粉反而比較少出現在日常貼文裡。\n\n這次小老闆在萬華工作間的木桌旁，用木尺和桌上的小罐子比一比大小；旁邊的小鹿、小烏龜也在看。這款仙加味鹿茸粉是75g／罐，先認識正式包裝的外觀、品名、規格，再依產品標示了解食用與保存方式。\n\n認識漢方食材與飲食文化，不用一次背下所有資料。你看到粉狀食品，會先確認重量、原料，還是保存標示？",
+      "expectedAlt": "仙加味小老闆在木質工作桌旁介紹鹿茸粉75g罐，小鹿專心觀看，小烏龜陪在規格筆記旁。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "officialAsset": {
+        "repo": "TS15825868/xianjiawei",
+        "path": "images/catalog-owner-final-v20261017/luerong-fen-main.webp",
+        "gitBlobSha": "10dbb36a86f0247f564e015a2538effb9996b99b"
+      },
+      "visualFinding": "目前AI場景圖中桌上小銀色鹿茸粉罐的標籤與官網正式商品原圖不一致：官網白蓋、上方金邊及鹿角雪景背景、中央『鹿茸粉』大字與兩側標示，場景圖縮小灰罐文字模糊且呈不正確字形。正式產品不可由AI隨意重畫或生成假的標籤。已直接比對原圖後判定需替換產品區為正式原圖合成。",
+      "scope": "mark_for_authentic_product_image_rework_only"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "expectedTitle": "一張產品照，為什麼尺寸看起來會差很多？",
+      "expectedCopy": "在仙加味萬華店的窗邊，小老闆把手機架好，準備拍攝桌上的龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在旁邊觀看。\n\n30cc本來就是小小一罐，商品照片如果沒有適當的大小參考，很容易讓人誤以為是一般飲料瓶。仙加味呈現產品時會維持真實包裝與比例，不任意加標籤或放大瓶身。\n\n你看商品照片時，會想看見一個可以比對實際大小的物件嗎？",
+      "expectedAlt": "仙加味小老闆在窗邊架設手機拍攝桌上的龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在旁觀看產品的實際大小。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "officialAsset": {
+        "repo": "TS15825868/xianjiawei",
+        "path": "images/catalog-owner-final-v20261017/guilu-drink-30-main.webp",
+        "gitBlobSha": "b2d7cd7f2f5b93bb449f6a4d0e45c5de938c3391"
+      },
+      "visualFinding": "目前AI場景圖桌上龜鹿飲30cc裸玻璃罐雖為小罐且有金色蓋，但AI重新描繪了罐身及液面，不是官網最新正式30cc玻璃裸罐等比例原圖；品牌規則要求所有商品本體使用正式實物原圖合成、不可AI任意重畫。保留人物與生活情境背景，需改用正式原圖合成並校正實際比例。",
+      "scope": "mark_for_authentic_product_image_rework_only"
+    }
+  ],
+  "doNotApprove": true,
+  "doNotSchedule": true,
+  "doNotPublish": true,
+  "keepOriginalImage": true
+}
