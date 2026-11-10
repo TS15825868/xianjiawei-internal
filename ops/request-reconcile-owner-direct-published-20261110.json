@@ -1,0 +1,47 @@
+{
+  "schema": "xjw-single-owner-direct-live-published-reconcile-v1",
+  "id": "XJW-CONV-chat-wanhua-morning",
+  "expectedTitle": "萬華的早上，你第一個想到什麼聲音？",
+  "expectedCopy": "萬華的早上有自己的節奏。店家開門、路上的聲音、人慢慢多起來，一天就這樣開始。\n\n仙加味從這裡一路走來。你對萬華早晨最有印象的是什麼？",
+  "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg",
+  "expectedImageAlt": "以萬華晨間街道為靈感的情境插畫，仙加味小老闆站在門口聽街上的聲音，小鹿與小烏龜陪在腳邊。",
+  "expectedImageStatus": "clear",
+  "ownerInstruction": "2026-11-10: 今天的先發佈；然後繼續完成待審。指定此單篇優先發佈，其他待審稿不適用例外。",
+  "ownerDirectExceptionOnly": true,
+  "noClaimAll16Pass": true,
+  "duplicateStillDeferred": true,
+  "noFurtherExternalPublish": true,
+  "metricool": {
+    "brandId": "6889683",
+    "postId": 422664301,
+    "uuid": "2843164329541847045",
+    "scheduledAt": "2026-11-10T11:00:00+08:00",
+    "draft": false,
+    "autoPublish": true,
+    "mediaUrl": "https://static.metricool.com/planner/202611/6889683-file-5143291935238117334.jpeg",
+    "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=6889683&openWithPostUuid=2843164329541847045",
+    "receipts": [
+      {
+        "platform": "facebook",
+        "url": "https://facebook.com/1475619177921633/posts/1536234965193387",
+        "remoteId": "1536234965193387",
+        "status": "PUBLISHED"
+      },
+      {
+        "platform": "instagram",
+        "url": "https://www.instagram.com/p/Dfi5QThiIer/",
+        "remoteId": "Dfi5QThiIer",
+        "status": "PUBLISHED"
+      },
+      {
+        "platform": "threads",
+        "url": "https://www.threads.com/@xianjiawei.tw/post/Dfi5SZkiq8u",
+        "remoteId": "Dfi5SZkiq8u",
+        "status": "PUBLISHED"
+      }
+    ]
+  },
+  "observedStatus": "all_three_PUBLISHED_with_provider_url",
+  "originalD1Review": "NEEDS_HUMAN_REVIEW",
+  "historicalVisualGap": "15 private + 3 inaccessible + carousel child coverage"
+}
