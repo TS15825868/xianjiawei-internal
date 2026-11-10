@@ -3,5 +3,6 @@
   "mutateD1": false,
   "allowApproval": false,
   "allowPublication": false,
-  "reason": "Verify image byte integrity for each current pending D1 row against latest AI evidence and current main; no historical media re-download; do not grant dedup PASS"
+  "reason": "New genuine formal product image D1 CAS repaired all five originally invalid AI product labels Actions42762724270,42763619233,42792513198; exact original image files and source-bound review SHAs changed. Another confirmed repeated 30/180 made-order FAQ archived Action42793204993, current pending49. Audit actual bytes, reviewed SHA and stored D1 image_bytes for all current pending now; 5 current metadata sizes may remain old and need safe minimal-diff correction. Do not treat copy-only historical DEFER as pass; do not mutate D1, approve or publish.",
+  "requestedAt": "2026-11-10T17:48:00+08:00"
 }
