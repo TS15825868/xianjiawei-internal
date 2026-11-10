@@ -11,8 +11,8 @@ RAW="https://raw.githubusercontent.com/"
 SCENES=[
 {"id":"XJW-CONV-chat-luerong-intro","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg","blob":"3892582fecf8e701ba790961af04abc6c640c3cb","mask":[(255,365,335,473)],"objects":[("luerong",(267,370,323,464))]},
 {"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(201,330,268,406)],"objects":[("drink30",(210,331,251,398))]},
-{"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(232,365,309,477)],"objects":[("gao",(243,374,297,466))]},
-{"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(245,364,313,480)],"objects":[("gao",(256,374,307,473))]},
+{"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(248,377,303,480)],"objects":[("gao",(239,369,313,484))]},
+{"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(253,378,308,481)],"objects":[("gao",(244,366,316,485))]},
 {"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(157,344,226,428),(251,277,349,450)],"objects":[("drink30",(165,351,212,416)),("drink180",(251,294,346,449))]}
 ]
 SCENES=[s for s in SCENES if s["id"] in ("XJW-CONV-cny-gift-choice","XJW-CONV-chat-picture-or-text")]
@@ -68,10 +68,10 @@ products={}
 stats={}
 for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
-outdir=Path("ops/visual-previews/20261110-official-source-composite-v4")
+outdir=Path("ops/visual-previews/20261110-official-source-composite-v5")
 outdir.mkdir(parents=True,exist_ok=True)
 side=512;sheet=Image.new("RGB",(side*2,side*len(SCENES)),(250,248,244))
-report={"schema":"xjw-two-gao-owner-selected-photo-preview-v4","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
+report={"schema":"xjw-two-gao-owner-selected-photo-preview-v5","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
 for row,s in enumerate(SCENES):
  content=source(s["source"])
  if gitblob(content)!=s["blob"]:raise RuntimeError("Current official candidate image changed: "+s["id"])
