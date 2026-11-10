@@ -1,0 +1,37 @@
+{
+  "schema": "xjw-unlinked-pending-copy-cleanup-v1",
+  "batch_id": "XJW-COPY-20261110-THREE-PUBLIC-TERMS",
+  "source": "Cloudflare D1 social_posts",
+  "snapshotAt": "2026-11-10T09:51:13.263Z",
+  "sourceRemoteMapAt": "2026-11-10T09:51:14.420Z",
+  "reason": "Correct literal CUSTOMER_INTERNAL_TERMS blocker from current published-copy guard; preserve images, pending state and every existing review evidence record",
+  "allowHumanApproval": false,
+  "allowSchedule": false,
+  "allowPublication": false,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "old_phrase": "先認識正式包裝的外觀、品名、規格",
+      "replacement": "先看看罐身的外觀、品名與規格",
+      "expected_copy": "仙加味平常比較常介紹龜鹿系列，鹿茸粉反而比較少出現在日常貼文裡。\n\n這次小老闆在萬華工作間的木桌旁，用木尺和桌上的小罐子比一比大小；旁邊的小鹿、小烏龜也在看。這款仙加味鹿茸粉是75g／罐，先認識正式包裝的外觀、品名、規格，再依產品標示了解食用與保存方式。\n\n認識漢方食材與飲食文化，不用一次背下所有資料。你看到粉狀食品，會先確認重量、原料，還是保存標示？",
+      "expected_updated_at": "2026-11-10T05:32:13.965Z",
+      "expected_image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "old_phrase": "會把正式包裝圖片與文字資訊搭配呈現",
+      "replacement": "會把實物照片與文字資訊搭配呈現",
+      "expected_copy": "在仙加味萬華店的木桌前，小老闆和來訪的朋友一起看攤開的素面筆記本，旁邊放著手機，桌緣還擺著一罐龜鹿膏100g，小鹿、小烏龜也一起聽著。\n\n認識一款漢方食品時，實物照片可以先看包裝外觀與大小，文字則能逐項確認規格、食材、保存和使用說明。仙加味整理產品資訊時，會把正式包裝圖片與文字資訊搭配呈現，讓大家不必單憑圖片猜容量。\n\n你選購食品時，習慣先看實物照片，還是先讀文字規格？",
+      "expected_updated_at": "2026-11-10T05:40:57.372Z",
+      "expected_image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-picture-or-text-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "old_phrase": "再把容量、正式包裝標示、保存與使用方式說明清楚",
+      "replacement": "再把容量、包裝標示、保存與使用方式說明清楚",
+      "expected_copy": "過年前的午後，小老闆在仙加味萬華店裡拿著一張空白心意卡，桌上放著紙提袋、筆記本與一罐龜鹿膏100g，小鹿、小烏龜也在旁邊陪著想點子。\n\n準備漢方食品當禮物時，除了包裝與卡片，也可以先確認對方是否習慣這種食品形式，再把容量、正式包裝標示、保存與使用方式說明清楚。仙加味想分享漢方飲食文化，也希望大家選擇禮物時有完整資訊。\n\n你送禮前會先了解對方的飲食習慣，還是先寫一張心意卡？",
+      "expected_updated_at": "2026-11-10T05:40:54.137Z",
+      "expected_image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg"
+    }
+  ]
+}
