@@ -18,7 +18,7 @@ SCENES=[
 # Five current pending posts; preview both erasure strategies, no D1 changes.
 TIGHT_MASKS={
 "XJW-CONV-chat-luerong-intro":(266,373,330,473),
-"XJW-CONV-chat-photo-size":(205,338,267,411),
+"XJW-CONV-chat-photo-size":(202,334,269,427),
 "XJW-CONV-cny-gift-choice":(240,372,310,482),
 "XJW-CONV-chat-picture-or-text":(241,366,319,486),
 "XJW-CONV-chat-glass-vs-pouch-storage":(169,349,214,422),
@@ -115,7 +115,7 @@ for key,official in products.items():
  diag.alpha_composite(official)
  diag.convert("RGB").save(outdir/("official-photo-alpha-"+key+".jpg"),"JPEG",quality=90)
 
-side=420;sheet=Image.new("RGB",(side*3,side*len(SCENES)),(250,248,244))
+side=360;sheet=Image.new("RGB",(side*4,side*len(SCENES)),(250,248,244))
 report={"schema":"xjw-five-original-product-blending-AB-preview-v8","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
 for row,s in enumerate(SCENES):
  content=source(s["source"])
@@ -142,13 +142,25 @@ for row,s in enumerate(SCENES):
  cv2.rectangle(clone_mask,(margin,margin),(mw-1-margin,mh-1-margin),255,-1)
  center=((xx1+xx2)//2,(yy1+yy2)//2)
  clean_b=cv2.seamlessClone(patch,arr,clone_mask,center,cv2.NORMAL_CLONE)
+ # Approach C: copy real unoccupied table grain and feather only the border.
+ # This preserves the wooden texture that Poisson cloning can smooth away.
+ clean_c=arr.copy()
+ yy,xx=np.mgrid[0:mh,0:mw]
+ feather=max(8,round(min(mh,mw)*.15))
+ edge=np.minimum.reduce((xx,mw-1-xx,yy,mh-1-yy))
+ weight=np.clip(edge.astype(np.float32)/feather,0,1)
+ weight=weight[...,None]
+ original_roi=arr[yy1:yy2+1,xx1:xx2+1].astype(np.float32)
+ blend=original_roi*(1-weight)+patch.astype(np.float32)*weight
+ clean_c[yy1:yy2+1,xx1:xx2+1]=np.clip(blend,0,255).astype(np.uint8)
+
  sheet.paste(original.resize((side,side),Image.Resampling.LANCZOS),(0,row*side))
- for col,(approach,background) in enumerate((("tight_inpaint",clean_a),("texture_clone",clean_b)),start=1):
+ for col,(approach,background) in enumerate((("tight_inpaint",clean_a),("texture_clone",clean_b),("wood_patch",clean_c)),start=1):
   if s["id"] in ("XJW-CONV-chat-luerong-intro","XJW-CONV-cny-gift-choice"):
    Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).save(outdir/(s["id"]+"-"+approach+"-background-only.jpg"),"JPEG",quality=92)
   canvas=Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).convert("RGBA")
   for key,(ox1,oy1,ox2,oy2) in s["objects"]:
-   official=refined_products[key] if approach=="texture_clone" else products[key]
+   official=refined_products[key] if approach in ("texture_clone","wood_patch") else products[key]
    tw0=round((ox2-ox1)*scale_x);th0=round((oy2-oy1)*scale_y)
    ratio=min(tw0/official.width,th0/official.height)
    tw=max(1,int(official.width*ratio));th=max(1,int(official.height*ratio))
