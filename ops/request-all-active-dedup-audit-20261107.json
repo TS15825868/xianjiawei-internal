@@ -1,11 +1,11 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-09",
-  "reason": "Current D1 four real original-product-photo repairs changed 4 image_url, image_source, SHA256 and version-bound quality reviews; Action42762724270 and42763619233 both passed exact D1 CAS + readback. Recompute readonly 50 pending all active current fingerprints, decision evidence and cross-platform 74FB/35IG/23Threads historical text similarities. At most 1 image needs_rework: XJW-CONV-chat-glass-vs-pouch-storage remains blocked. Historical 15 inaccessible private images,3 public failures,old carousel children remain DEFER. User did not authorize falsely approving all 50. No D1 mutations, no approval, schedule or publish.",
+  "reason": "Now all five source-bound product image corrections succeeded (last Action42792513198) and image_quality_status clear on all five. Read-only current 50 candidate version fingerprints / AI decision / exact published-text collisions, historical Meta 74FB,35IG,23Threads; no repeated fetch of successful 178 media. Historic unlinked private 15 / public 3 / carousel still DEFER; do not pass full 16/16 from screening alone. Counts 161 (50 pending,5 published,106 archived).",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-10T13:45:00+08:00",
+  "lastRerun": "2026-11-10T17:42:00+08:00",
   "afterCopyRepairRun": 42465803840,
   "requestedBy": "owner",
   "afterArchiveRun": 42638949585,
@@ -19,6 +19,7 @@
   "afterScannerFix": "quality statuses all unsupported 6 flags counted",
   "afterImageRepairRuns": [
     42762724270,
-    42763619233
+    42763619233,
+    42792513198
   ]
 }

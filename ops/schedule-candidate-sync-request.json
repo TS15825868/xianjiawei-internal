@@ -1,10 +1,11 @@
 {
-  "requestedAt": "2026-11-10T13:43:00+08:00",
-  "reason": "Current D1 exact-version four confirmed real-product image corrections completed, prevent stale AI fake packaging in GitHub source candidate snapshot. XJW-CONV-chat-luerong-intro and XJW-CONV-chat-photo-size D1 CAS, new official image URL and new AI-DEFER reviewed SHA succeeded Action42762724270. XJW-CONV-cny-gift-choice and XJW-CONV-chat-picture-or-text succeeded Action42763619233 after direct user-selected true 100g jar image compositing. All still pending_review but image_quality_status='clear', duplicate remains DEFER and no approvals/remote sends. Fifth XJW-CONV-chat-glass-vs-pouch-storage remains needs_rework because original AI bag overwrites body and inpainted preview blurs torso; never auto replace with v1/v2 defective render. Same D1 count 161 total: pending50,published5,archived106.",
-  "reviewScope": "Only read current D1 pending50, archived106,published5 and Metricool current links; export current captions and new official image paths. Do not write D1, schedule or publish.",
+  "requestedAt": "2026-11-10T17:42:00+08:00",
+  "reason": "Five current 2026-11-10 original-product photo repairs now all passed exact D1 CAS + new version-bound AI-DEFER and readback: first four Actions42762724270/42763619233, final double-size original 30cc/180cc Action42792513198. Today owner-direct published post 422664301 FB/IG/Threads remains PUBLISHED with D1 receipt and must not be resurrected. Full D1 previous readback 161 total / 50 pending / 106 archived / 5 published. Refresh current 50 pending original image paths and remote mapping presence without changing D1.",
+  "reviewScope": "Read only; do not approve, publish, schedule, re-insert old AI fake product images or overwrite present D1.",
   "sourceRuns": [
     42762724270,
-    42763619233
+    42763619233,
+    42792513198
   ],
   "publish": false,
   "approval": false,
