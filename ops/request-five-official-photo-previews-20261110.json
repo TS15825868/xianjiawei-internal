@@ -3,8 +3,7 @@
   "createdAt": "2026-11-10T13:17:00+08:00",
   "productSourcesVerifiedAgainstWebsiteMain": true,
   "affected": [
-    "XJW-CONV-cny-gift-choice",
-    "XJW-CONV-chat-picture-or-text"
+    "XJW-CONV-chat-glass-vs-pouch-storage"
   ],
   "sourceD1Quality": "needs_rework",
   "doNotUpdateD1": true,
@@ -12,12 +11,12 @@
   "doNotPublish": true,
   "doNotChangeLiveImageUrl": true,
   "stage": "draft_preview_for_next_visual_inspection",
-  "version": 5,
-  "requestedAt": "2026-11-10T13:47:00+08:00",
+  "version": 6,
+  "requestedAt": "2026-11-10T13:49:00+08:00",
   "retryReason": "First five-image draft contact-sheet was NOT acceptable: old fake images persisted partially outside too-small removal masks and original guilu-gao cutout included two visible package instances. Keep v1 as evidence, generate separate v2 draft with corrected full-extent masks and tighter genuine jar crop. Never write D1/publish before direct visual approval.",
   "sourceRun": 42761707867,
   "retryAt": "2026-11-10T13:29:00+08:00",
   "fixReason": "First v2 preview generation succeeded but existing GitHub Action hardcoded git add of v1 directory. No v2 GitHub commit occurred. Correct staging target to v2 and rerun. Still draft-only; do not modify production D1.",
   "sourceProductAuthority": "Owner-selected 2026-10-17 latest website main genuine physical product image, jar polygon crop; preserve original label, no AI redrawing.",
-  "reason": "v4 direct pixel review: gift photo looks a true package but has oversized blurry inpaint patch; picture-or-text still shows part of fake container behind inserted authentic jar. To repair, shrink mask to real package dimensions and overlay the true original jar slightly larger in exactly the same footprint. Keeps formal product source unchanged. No D1 edits or promotions without inspection."
+  "reason": "Four other formal product image composites already safely CAS-written to D1, do not redo. Fifth scene: old AI bag physically occupies child's lower torso so large rectangular inpainting blurred apron. Test source-bound official 180cc pouch at exactly the old packaging footprint to fully occlude AI fake text without oversized background reconstruction; 30cc remains exact formal cutout. No D1 writes unless directly inspected authentic packaging, geometry and no old fake visible."
 }
