@@ -1,0 +1,48 @@
+{
+  "scope": "xjw-correct-five-product-image-bytes-metadata-v1",
+  "requestedAt": "2026-11-10T17:51:00+08:00",
+  "source": "2026-11-10 Action42793485466 49-current-image-sha audit verified 44, exactly 5 stored_image_byte_length_mismatch, all from current-turn true product photo replacements; current evidence SHA matches actual bytes. Correct ONLY byte length metadata not post/review/approval, preserve all 49 pending and 5 published, audit records.",
+  "expectedPendingCount": 49,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "imageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
+      "expectedUpdatedAt": "2026-11-10T05:32:13.965Z",
+      "imageSHA256": "24af3e0fcfad9006d2848da5176b2322a76e12008d0a47ef4ea066b84f0018ce",
+      "filePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "imageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
+      "expectedUpdatedAt": "2026-11-10T05:32:16.037Z",
+      "imageSHA256": "fa1f3a189397aea6d4d848b02498d3ccb7cc7a8f4f955df437900f749be77780",
+      "filePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "imageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg",
+      "expectedUpdatedAt": "2026-11-10T05:40:54.137Z",
+      "imageSHA256": "f438497ab9de970302ee1999b1fbecc874e184417887966a501e56b174b5eb64",
+      "filePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "imageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-picture-or-text-real-product-v1.jpg",
+      "expectedUpdatedAt": "2026-11-10T05:40:57.372Z",
+      "imageSHA256": "0bd9041c73aa900017a372dbf95b8c5f66a492c8c194b3ad4c98f8d4c06d7f79",
+      "filePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-picture-or-text-real-product-v1.jpg"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "imageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg",
+      "expectedUpdatedAt": "2026-11-10T09:39:27.276Z",
+      "imageSHA256": "1bfdfd28e6bfb8cdc0f607edbe34eaa8af1d13aba3159a7f57117ebc721b9cb5",
+      "filePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg"
+    }
+  ],
+  "allowPublish": false,
+  "allowApprove": false,
+  "allowDelete": false,
+  "allowImageURLChange": false,
+  "allowStatusChange": false
+}

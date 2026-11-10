@@ -1,0 +1,30 @@
+name: 仙加味五篇商品原圖實際圖片大小資料校正
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/repair-five-product-image-bytes-request-20261110.json'
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node --check ops/repair-five-product-image-bytes-20261110.mjs
+      - run: node ops/repair-five-product-image-bytes-20261110.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: five-image-metadata-${{ github.run_id }}
+          path: five-product-image-bytes-repair-result.json
+          retention-days: 7
