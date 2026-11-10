@@ -9,8 +9,9 @@ const issues=new Map();
 const items=data.records.map(r=>{
   const blockers=[...new Set(r.blockers||[])];
   const serious=blockers.filter(x=>/^(active_media_missing|pending_has_unexpected_release_metadata|invalid_review_json|external_remote_mapping_requires_reconcile|(?:brand|product|specification|pricing_activity|season|weather|occasion|location|scene_environment|temperature|expression|action|mascot_companions|physical_scale|compliance_final):(?:FAIL|REJECT))/.test(x));
-  const missing=blockers.filter(x=>x.startsWith('missing_')||x.includes('DEFER')||x.includes('MISSING')||x.includes('not_current_bound')||x.includes('sha_evidence_missing'));
-  const action=serious.length?'investigate_or_repair':missing.length?'recover_evidence':'verify_release_gate';
+  // 任何未能證明全部16項通過的候選都只能補證，不得誤列可發布。
+  const ready=blockers.length===1 && blockers[0]==='automatic_release_runtime_and_platform_not_e2e_verified' && r.currentBound===true && r.mediaShaEvidencePresent===true && r.decision==='AI_APPROVED' && Object.values(r.checks||{}).length===16 && Object.values(r.checks).every(v=>v==='PASS');
+  const action=serious.length?'investigate_or_repair':ready?'verify_release_gate':'recover_evidence';
   for(const b of blockers)issues.set(b,(issues.get(b)||0)+1);
   return {id:r.id,title:r.title||'',decision:r.decision,currentBound:r.currentBound===true,
     action,blockers,automaticallyApproved:false};
