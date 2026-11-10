@@ -13,6 +13,7 @@ on:
       - 'tools/metricool-free-evidence.cjs'
       - 'tools/ai-batch-triage.mjs'
       - 'tools/test-ai-batch-triage.mjs'
+      - 'ops/historical-media-source-link-gaps-20261108.json'
   schedule:
     # 每6小時一次；GitHub Actions 使用 UTC；亦可手動執行最新唯讀快照。
     - cron: '31 */6 * * *'
@@ -166,7 +167,7 @@ jobs:
       - name: Triage every current pending post using existing 16-check evidence and actual version binding
         run: node tools/report-pending-review-actual-checks.cjs
       - name: Run complete pending batch triage (read only, no automatic approval)
-        run: node tools/ai-batch-triage.mjs pending-review-full-inventory.json ai-batch-triage.json
+        run: node tools/ai-batch-triage.mjs pending-review-full-inventory.json ai-batch-triage.json ops/historical-media-source-link-gaps-20261108.json
       - name: Upload read-only evidence
         if: always()
         uses: actions/upload-artifact@v4
