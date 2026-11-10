@@ -1,7 +1,7 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-09T15:05:41.592Z",
+  "generatedAt": "2026-11-10T01:57:21.780Z",
   "counts": {
     "pending_review": 51
   },
@@ -962,12 +962,12 @@
       "scheduled_at": null,
       "proposed_scheduled_at": "2027-05-14T10:00:00+08:00",
       "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
-      "image_alt": "仙加味居家收納櫃前，小老闆介紹桌上的龜鹿飲30cc小玻璃裸罐與180cc鋁袋，小鹿和小烏龜一起看著收納位置。",
+      "image_alt": "仙加味小老闆站在木質收納櫃前，伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐及180cc鋁袋，小鹿與小烏龜分開在旁觀看。",
       "image_source": "仙加味品牌與漢方生活情境",
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-08T09:07:25.023Z",
+      "updated_at": "2026-11-10T01:53:42.212Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1021,7 +1021,7 @@
     {
       "id": "XJW-CONV-chat-pantry-memory",
       "title": "你家以前最常看到哪一種食材？",
-      "copy": "早上在仙加味萬華工作間，小老闆把紅棗和其他乾燥食材分開整理，準備收進透明罐，小鹿與小烏龜在旁邊看著。\n\n以前家裡廚房常備著紅棗、枸杞或熟悉的乾貨。從分辨食材、整理收納的小動作出發，也能聊聊一代一代留下的漢方飲食文化。\n\n你小時候最常在家裡看到紅棗、枸杞，還是其他食材？",
+      "copy": "早上整理乾燥食材時，仙加味小老闆在桌邊把紅棗和其他乾貨分開，準備收進透明罐；小鹿與小烏龜在旁邊看著。\n\n以前家裡廚房常備著紅棗、枸杞或熟悉的乾貨。從分辨食材、整理收納的小動作出發，也能聊聊一代一代留下的漢方飲食文化。\n\n你小時候最常在家裡看到紅棗、枸杞，還是其他食材？",
       "category": "飲食文化",
       "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
       "status": "pending_review",
@@ -1033,7 +1033,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-08T08:48:48.674Z",
+      "updated_at": "2026-11-10T01:53:38.293Z",
       "platforms": [
         "Facebook",
         "Instagram",
