@@ -1,0 +1,32 @@
+{
+  "schema": "xjw-one-off-owner-directed-external-schedule-receipt-v1",
+  "postId": "XJW-CONV-chat-wanhua-morning",
+  "title": "萬華的早上，你第一個想到什麼聲音？",
+  "ownerAuthorizedDate": "2026-11-10",
+  "ownerInstruction": "今天的先發佈；然後繼續完成待審。",
+  "exceptionScope": "this exact post only; never pass 16/16 quality for the 51 remaining D1 posts",
+  "historicalDedupAssessment": "previous evidence assessed copy not exact duplicate and visual nearest pHash Hamming>=20 among known corpus; historical private 15 unresolved and 3 external media inaccessible; explicit duplicate DEFER retained",
+  "content": "萬華的早上有自己的節奏。店家開門、路上的聲音、人慢慢多起來，一天就這樣開始。\n\n仙加味從這裡一路走來。你對萬華早晨最有印象的是什麼？",
+  "originalImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg",
+  "externalBrandId": "6889683",
+  "metricoolId": 422664301,
+  "uuid": "2843164329541847045",
+  "scheduledAt": "2026-11-10T11:00:00+08:00",
+  "remoteReadback": "2026-11-10T10:52+08:00",
+  "externalDraft": false,
+  "externalAutoPublish": true,
+  "externalMedia": "https://static.metricool.com/planner/202611/6889683-file-5143291935238117334.jpeg",
+  "networks": {
+    "facebook": "PENDING",
+    "instagram": "PENDING",
+    "threads": "PENDING"
+  },
+  "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=6889683&openWithPostUuid=2843164329541847045",
+  "d1StatusAtScheduling": "pending_review",
+  "sourceApproval": false,
+  "sourceReviewDecision": "NEEDS_HUMAN_REVIEW",
+  "mustNotMarkFormal16Pass": true,
+  "mustNotImpersonateOwnerIdentity": true,
+  "reconciliation": "Read exact external statuses after due time; if PUBLISHED with official per-network receipts, sync D1 social_metricool_sync, social_publish_deliveries and social_posts with explicit owner directive audit. Never blindly resend on ambiguous statuses.",
+  "cost": "NT$0 / US$0"
+}
