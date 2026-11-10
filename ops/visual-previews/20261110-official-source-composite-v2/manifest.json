@@ -1,0 +1,157 @@
+{
+  "schema": "xjw-five-product-official-photo-preview-v1",
+  "status": "draft-only-needs-human-visual-inspection",
+  "D1Writes": 0,
+  "approvals": 0,
+  "scheduled": 0,
+  "publications": 0,
+  "sourceAssetDetails": {
+    "luerong": {
+      "blob": "910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e",
+      "pixels": [
+        402,
+        645
+      ],
+      "crop": [
+        0,
+        0,
+        402,
+        645
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink30": {
+      "blob": "d46d1c788b2bd9edd6522e4524faaec5c478c880",
+      "pixels": [
+        500,
+        601
+      ],
+      "crop": [
+        0,
+        0,
+        500,
+        601
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink180": {
+      "blob": "82a167036b026247d1954d6a4491a3aa79e3b914",
+      "pixels": [
+        715,
+        1066
+      ],
+      "crop": [
+        0,
+        0,
+        715,
+        1066
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "gao": {
+      "blob": "21d97da98eafdf064ff72ee6396361b8de31af52",
+      "pixels": [
+        264,
+        1280
+      ],
+      "crop": [
+        0,
+        13,
+        264,
+        1280
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    }
+  },
+  "previews": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-luerong-intro-preview.jpg",
+      "previewSHA256": "24af3e0fcfad9006d2848da5176b2322a76e12008d0a47ef4ea066b84f0018ce",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "luerong"
+      ],
+      "pictureNotYetVerified": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-photo-size-preview.jpg",
+      "previewSHA256": "fa1f3a189397aea6d4d848b02498d3ccb7cc7a8f4f955df437900f749be77780",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "drink30"
+      ],
+      "pictureNotYetVerified": true
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "sourceBlob": "56e23eede90f33e6fe85e6c8ea25fa5453e085d4",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-cny-gift-choice-preview.jpg",
+      "previewSHA256": "66b199ca005ae7a322938c2b85a42008d03e9c0f6d24a54417e1f8dcd0c272cc",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "gao"
+      ],
+      "pictureNotYetVerified": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-picture-or-text-preview.jpg",
+      "previewSHA256": "b60c2d8f059c1da0222ceeba1857cd83788a99bbd7f9f004e2b2ff3d2d6a6d85",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "gao"
+      ],
+      "pictureNotYetVerified": true
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-glass-vs-pouch-storage-preview.jpg",
+      "previewSHA256": "b13fc0b122a77bc09241a942f2765f98547ba90c6f429800127886371fd30352",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "drink30",
+        "drink180"
+      ],
+      "pictureNotYetVerified": true
+    }
+  ],
+  "contactSheet": "ops/visual-previews/20261110-official-source-composite-v2/contact-sheet.jpg"
+}
