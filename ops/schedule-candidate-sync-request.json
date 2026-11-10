@@ -1,12 +1,13 @@
 {
-  "requestedAt": "2026-11-10T10:03:00+08:00",
-  "reason": "Export current D1 after 2026-11-10 four source-grounded fixes and per-post CAS+review-evidence readback: Action 42738936084 corrected XJW-CONV-chat-pantry-memory COPY and XJW-CONV-chat-glass-vs-pouch-storage ALT; Action 42739767589 corrected XJW-CAND-20261225 COPY for actual at-home Christmas food scene and XJW-CAND-20270129 COPY for kitchen cabinet dinnerware. Exactly 4 updated, all source images SHA unchanged, status pending_review with duplicate DEFER; zero approvals/schedules/published. Prior 51 pending /106 archived /4 published preserved. Do not silently restore old mistaken shop location text.",
-  "reviewScope": "Only D1 read-only export of 51 current pending_review, approved/scheduled if any, and Metricool D1 link presence. Preserve historical duplicate DEFER, original products and role media, and Cloudflare D1 without any edits.",
-  "authorizedBy": "standing project maintenance authorization",
-  "sourceRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42739767589",
-  "precedingRun": "https://github.com/TS15825868/xianjiawei-internal/actions/runs/42738936084",
+  "requestedAt": "2026-11-10T10:42:00+08:00",
+  "reason": "Read-only refresh of all 51 D1 current pending after 3 original-scene copy corrections. XJW-CONV-cny-fridge-clean and XJW-CONV-chat-last-bowl succeeded D1 CAS and review readback Action42744142339; XJW-CONV-chat-recipe-or-feel succeeded separate exact one-item retry Action42744271142. All image SHA unchanged and duplicate DEFER; no approvals, schedules or public posts. Prevent stale source copies reappearing. Today proposed XJW-CONV-chat-wanhua-morning was NOT published at 10:00; never treat expired proposal as a real schedule; user requests same-day release only if all valid gates pass.",
+  "reviewScope": "Read only D1 51 current pending and 11 Metricool mapping presence; no D1 writes and no publication.",
   "publish": false,
   "approval": false,
   "mutateD1": false,
+  "sourceRuns": [
+    42744142339,
+    42744271142
+  ],
   "preventStaleBackfill": true
 }
