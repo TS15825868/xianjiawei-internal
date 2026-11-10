@@ -8,5 +8,6 @@
   "approvals": 0,
   "scheduled": 0,
   "publications": 0,
-  "allowAutoDeployment": false
+  "allowAutoDeployment": false,
+  "diagnostic": "2026-11-10 alpha-channel background-only audit of all four official product source images; no promotion"
 }
