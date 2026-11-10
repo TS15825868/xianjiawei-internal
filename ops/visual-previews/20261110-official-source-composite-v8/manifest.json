@@ -21,6 +21,15 @@
       "alphaExtrema": [
         0,
         255
+      ],
+      "alphaTransparentPct": 14.58,
+      "alphaOpaquePct": 84.04,
+      "alphaSemiPct": 1.38,
+      "alphaCornerValues": [
+        0,
+        0,
+        0,
+        0
       ]
     },
     "drink30": {
@@ -38,6 +47,15 @@
       "alphaExtrema": [
         0,
         255
+      ],
+      "alphaTransparentPct": 19.9,
+      "alphaOpaquePct": 78.88,
+      "alphaSemiPct": 1.23,
+      "alphaCornerValues": [
+        0,
+        0,
+        0,
+        0
       ]
     },
     "drink180": {
@@ -55,6 +73,15 @@
       "alphaExtrema": [
         0,
         255
+      ],
+      "alphaTransparentPct": 11.14,
+      "alphaOpaquePct": 87.96,
+      "alphaSemiPct": 0.9,
+      "alphaCornerValues": [
+        0,
+        0,
+        0,
+        0
       ]
     },
     "gao": {
@@ -72,6 +99,15 @@
       "alphaExtrema": [
         0,
         255
+      ],
+      "alphaTransparentPct": 86.83,
+      "alphaOpaquePct": 12.75,
+      "alphaSemiPct": 0.43,
+      "alphaCornerValues": [
+        0,
+        0,
+        0,
+        0
       ]
     }
   },
@@ -121,7 +157,7 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
       "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-texture_clone-preview.jpg",
-      "previewSHA256": "a4fdd89425e51df9a5bb7df4e18b1964e0ec45f02871cf25f45ee2d09cd3f2a5",
+      "previewSHA256": "b6cc4f97eef61a02907469f0abc25fa08d8db4c0432828224baf95c93483474d",
       "productTypes": [
         "drink30"
       ],
@@ -200,7 +236,7 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
       "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-texture_clone-preview.jpg",
-      "previewSHA256": "5bb0ce6eb928e333dd8e6f1eef263aaf03168dbbe8bd0eb565b2f869698464ef",
+      "previewSHA256": "9e0c28e21d4f510816271c2bb99c40976cdb934ffa57add193bd6563cd8946a5",
       "productTypes": [
         "drink30",
         "drink180"
