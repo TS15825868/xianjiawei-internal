@@ -3,6 +3,7 @@
   "mutateD1": false,
   "allowApproval": false,
   "allowPublication": false,
-  "reason": "New genuine formal product image D1 CAS repaired all five originally invalid AI product labels Actions42762724270,42763619233,42792513198; exact original image files and source-bound review SHAs changed. Another confirmed repeated 30/180 made-order FAQ archived Action42793204993, current pending49. Audit actual bytes, reviewed SHA and stored D1 image_bytes for all current pending now; 5 current metadata sizes may remain old and need safe minimal-diff correction. Do not treat copy-only historical DEFER as pass; do not mutate D1, approve or publish.",
-  "requestedAt": "2026-11-10T17:48:00+08:00"
+  "reason": "All five exact 2026-11-10 official-product picture substitutions had stale image_bytes metadata; confirmed Action42793961783 corrected all five with exact D1 per-post CAS and audit, readback complete. Latest D1 161 total: pending49, archived107, published5 (FAQ substantive duplicate archived Action42793204993). Reverify all 49 actual main image SHA vs versioned current AI reviews, image bytes/width/height, no equal SHA candidates. No D1 mutations, no approval, no publish.",
+  "requestedAt": "2026-11-10T17:52:00+08:00",
+  "sourceAction": 42793961783
 }
