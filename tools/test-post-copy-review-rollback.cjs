@@ -93,7 +93,7 @@ test('both manually approved scheduling paths refuse previously published posts'
 test('post-image binding and proposal workflows never rewrite published history',()=>{
  for(const filename of [
   'apply-post-image-current-batch.yml','apply-post-image-external-batch.yml',
-  'apply-post-image-bindings-current.yml','apply-proposed-social-schedule.yml'
+  'apply-post-image-bindings-current.yml'
  ]){
   const source=fs.readFileSync(path.join(root,'.github/workflows',filename),'utf8');
   assert.match(source,/published_at IS NULL AND scheduled_at IS NULL/);
@@ -107,6 +107,12 @@ test('post-image binding and proposal workflows never rewrite published history'
   assert.match(source,/SELECT id,status,published_at,image_url/);
   assert.match(source,/r\.published_at!==null/);
  }
+ // Legacy candidate slots can include archived rows, so they must NOT be
+ // replayed as D1 updates after a cadence-only configuration change.
+ const calendar=fs.readFileSync(path.join(root,'.github/workflows','apply-proposed-social-schedule.yml'),'utf8');
+ assert.match(calendar,/LEGACY_CANDIDATE_HOLD/);
+ assert.match(calendar,/No D1 writes/);
+ assert.doesNotMatch(calendar,/UPDATE social_posts|DELETE FROM social_posts|INSERT INTO social_posts|--file \/tmp\/proposed-schedule\.sql/);
 });
 
 test('copy-only edit preserves image review quality; changed image re-evaluates',()=>{
