@@ -1,23 +1,18 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-10T02:40:35.067Z",
+  "generatedAt": "2026-11-10T03:10:18.897Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-10T02:40:33.872Z",
+  "postSnapshotAt": "2026-11-10T03:10:17.771Z",
   "counts": {
-    "pending": 51,
+    "pending": 50,
     "linked": 11,
-    "unlinked": 40
+    "unlinked": 39
   },
   "items": [
     {
       "id": "XJW-CONV-care-simple-checkin",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-wanhua-morning",
       "linked": false,
       "mappingCount": 0
     },

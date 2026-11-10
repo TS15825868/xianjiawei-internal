@@ -1,9 +1,9 @@
 {
   "version": "2026-09-30-live-d1",
   "source": "Cloudflare D1 social_posts",
-  "generatedAt": "2026-11-10T02:40:33.872Z",
+  "generatedAt": "2026-11-10T03:10:17.771Z",
   "counts": {
-    "pending_review": 51
+    "pending_review": 50
   },
   "items": [
     {
@@ -17,28 +17,6 @@
       "proposed_scheduled_at": "2026-10-15T10:00:00+08:00",
       "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
       "image_alt": "午後仙加味的木桌旁，小老闆用手機傳訊息問候家人，另一手拿著素面小卡，小鹿和小烏龜陪伴在桌旁。",
-      "image_source": "仙加味品牌與漢方生活情境",
-      "image_approved": 0,
-      "approved_at": null,
-      "published_at": null,
-      "updated_at": "2026-11-10 02:20:18",
-      "platforms": [
-        "Facebook",
-        "Instagram",
-        "Threads"
-      ]
-    },
-    {
-      "id": "XJW-CONV-chat-wanhua-morning",
-      "title": "萬華的早上，你第一個想到什麼聲音？",
-      "copy": "萬華的早上有自己的節奏。店家開門、路上的聲音、人慢慢多起來，一天就這樣開始。\n\n仙加味從這裡一路走來。你對萬華早晨最有印象的是什麼？",
-      "category": "萬華生活",
-      "platforms_json": "[\"Facebook\",\"Instagram\",\"Threads\"]",
-      "status": "pending_review",
-      "scheduled_at": null,
-      "proposed_scheduled_at": "2026-10-19T10:00:00+08:00",
-      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg",
-      "image_alt": "以萬華晨間街道為靈感的情境插畫，仙加味小老闆站在門口聽街上的聲音，小鹿與小烏龜陪在腳邊。",
       "image_source": "仙加味品牌與漢方生活情境",
       "image_approved": 0,
       "approved_at": null,
@@ -263,7 +241,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-10 02:20:18",
+      "updated_at": "2026-11-10T03:01:00.096Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -307,7 +285,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-10 02:20:18",
+      "updated_at": "2026-11-10T03:01:03.513Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -505,7 +483,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-10 02:20:18",
+      "updated_at": "2026-11-10T03:08:25.001Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -791,7 +769,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-10 02:20:18",
+      "updated_at": "2026-11-10T03:08:18.449Z",
       "platforms": [
         "Facebook",
         "Instagram",
@@ -1121,7 +1099,7 @@
       "image_approved": 0,
       "approved_at": null,
       "published_at": null,
-      "updated_at": "2026-11-09T13:17:32.215Z",
+      "updated_at": "2026-11-10T03:08:21.939Z",
       "platforms": [
         "Facebook",
         "Instagram",
