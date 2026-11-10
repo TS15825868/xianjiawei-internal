@@ -1,0 +1,28 @@
+{
+  "scope": "xjw-one-dual-size-original-glass-and-pouch-photo-repair-v1",
+  "sourceSnapshotAt": "2026-11-10T05:42:48.016Z",
+  "prohibitApproval": true,
+  "prohibitSchedule": true,
+  "prohibitPublish": true,
+  "retainPriorQualityHistory": true,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "expectedCopy": "在仙加味萬華店的木架前，小老闆伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐，以及180cc鋁袋，小鹿和小烏龜在旁邊看。\n\n整理不同形態的食品包裝時，先核對各自的正式保存標示，再依實際空間安排位置，不必把小罐與袋裝食品全部擠在同一格。\n\n你整理家裡的食品櫃時，習慣按包裝形式分類，還是按使用頻率擺放？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "expectedImageAlt": "仙加味小老闆站在木質收納櫃前，伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐及180cc鋁袋，小鹿與小烏龜分開在旁觀看。",
+      "expectedUpdatedAt": "2026-11-10T03:08:25.001Z",
+      "newImagePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg",
+      "newImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v7/XJW-CONV-chat-glass-vs-pouch-storage-preview.jpg",
+      "previewBlobSHA": "295a5fdc339ac621c739a80416d6f857eef887dd",
+      "newImageSHA256": "1bfdfd28e6bfb8cdc0f607edbe34eaa8af1d13aba3159a7f57117ebc721b9cb5",
+      "formalProductImageRepo": "TS15825868/xianjiawei",
+      "formalProductImagePath": "images/product-cutout-review/guilu-drink-30.png + images/product-main/guilu-drink-180.png",
+      "formalProductBlobSHA": "d46d1c788b2bd9edd6522e4524faaec5c478c880 + 82a167036b026247d1954d6a4491a3aa79e3b914",
+      "inspection": "已逐圖檢視v7 1254x1254對比原有假包裝：正式30cc無標籤小玻璃罐保持金色蓋、真實裸罐長寬比及小尺寸；180cc銀色鋁袋保持官網正式原圖標籤、封邊、長寬比，兩者自然置於同一木桌且小老闆、小鹿、小烏龜分開。原背景與角色未被裁切、不再使用AI偽造文字；v1/v2含模糊遮擋退件，僅採用v7已檢視原圖。",
+      "fullDuplicateNotCertified": true
+    }
+  ]
+}
