@@ -1,12 +1,19 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-09",
-  "reason": "User instructs finish all pending: rerun 52 current D1 candidate post versions after 5 copy/alt repairs and evidence-backed soup archive. Readonly screen of 74 FB + 35 IG + 23 Threads known published summaries and saved historical visual neighbors. Do not mistake unavailable 15 private cached media or missing carousel children as cleared. Never approve/schedule/publish.",
+  "reason": "Substantive D1 current set changed since last successful 52 scan: 11/10 one owner-direct FB/IG/Threads post now externally verified PUBLISHED and formally D1 reconciled Action42747526266; D1 active pending50, archived106, published5; 5 product-invalid AI illustrations now needs_rework with new REJECTED evidence Actions42746592498/42747417762. Run readonly text/public-history/visual neighbor screen of 50 current D1 rows, incorporate newest D1 published today and saved 74/35/23 external sources without redownloading successful historical 178 media. Treat 15 private cache, 3 inaccessible public media and carousel child gaps as DEFER until independently resolved. Never approve/publish/flip status or reclassify 5 rework product posts as clear.",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-09T23:00:00+08:00",
+  "lastRerun": "2026-11-10T11:14:00+08:00",
   "afterCopyRepairRun": 42465803840,
   "requestedBy": "owner",
-  "afterArchiveRun": 42638949585
+  "afterArchiveRun": 42638949585,
+  "currentPublishedD1": 5,
+  "currentPendingD1": 50,
+  "afterPublishRun": 42747526266,
+  "afterImageReworkRuns": [
+    42746592498,
+    42747417762
+  ]
 }
