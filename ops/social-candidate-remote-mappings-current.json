@@ -1,14 +1,14 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-10T09:41:24.189Z",
+  "generatedAt": "2026-11-10T09:51:14.420Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-10T09:41:22.999Z",
+  "postSnapshotAt": "2026-11-10T09:51:13.263Z",
   "counts": {
-    "pending": 50,
+    "pending": 49,
     "linked": 11,
-    "unlinked": 39
+    "unlinked": 38
   },
   "items": [
     {
@@ -73,11 +73,6 @@
     },
     {
       "id": "XJW-CONV-chat-photo-size",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-drink-made-to-order",
       "linked": false,
       "mappingCount": 0
     },
