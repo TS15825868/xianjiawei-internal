@@ -1,0 +1,30 @@
+name: 仙加味49篇待審源圖視覺初篩證據精準回寫
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/request-49-contact-scene-evidence-20261110.json'
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node --check ops/write-49-contact-scene-evidence-20261110.mjs
+      - run: node ops/write-49-contact-scene-evidence-20261110.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-49-first-pass-scene-evidence-${{ github.run_id }}
+          path: visual-contact-scene-49-result.json
+          retention-days: 7

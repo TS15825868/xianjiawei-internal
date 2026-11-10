@@ -1,0 +1,17 @@
+{
+  "schema": "xjw-stage49-source-bound-contact-scene-ai-evidence-v1",
+  "manifestPath": "ops/visual-review/20261110-49-pending/manifest.json",
+  "manifestGitBlob": "424913423d2529d3249cd3a700bf92f7906f82f0",
+  "sourceSnapshotAt": "2026-11-10T09:51:13.263Z",
+  "expectedPending": 49,
+  "ownerInstruction": "繼續執行待審，保留原始產品與圖片；不得假裝全部16項PASS或直接發布",
+  "scope": "append AI first-pass 360px contact sheet visual scene observations only; duplicate still DEFER",
+  "performedBy": "ChatGPT AI visual screen (not owner human approval)",
+  "fineTextNotVerified": true,
+  "historicalFullDedupNotVerified": true,
+  "noSocialPostChanges": true,
+  "noApproval": true,
+  "noSchedule": true,
+  "noPublishing": true,
+  "noReplaceImage": true
+}
