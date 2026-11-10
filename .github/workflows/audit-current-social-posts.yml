@@ -13,6 +13,7 @@ on:
       - 'tools/metricool-free-evidence.cjs'
       - 'tools/ai-batch-triage.mjs'
       - 'tools/test-ai-batch-triage.mjs'
+      - 'tools/report-pending-review-actual-checks.cjs'
       - 'ops/historical-media-source-link-gaps-20261108.json'
   schedule:
     # 每6小時一次；GitHub Actions 使用 UTC；亦可手動執行最新唯讀快照。
