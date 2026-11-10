@@ -38,5 +38,7 @@
       "check": "scene_environment",
       "evidence": "原圖AI圖文存證描述晚餐尾聲，小老闆端起最後一碗湯，小鹿與小烏龜陪在餐桌旁。原文只談別人喝最後一碗，未與這張生活動作畫面建立對應。本次補上具體餐桌與角色動作，不重複11/03家庭煮湯食材及烹煮構圖，不改原圖。"
     }
-  ]
+  ],
+  "retryReason": "Correct false-negative validation: prior one used literal backslash-n characters rather than true blank paragraph separator; no D1 mutations occurred in failed Action42744016425. All original expected version hashes unchanged; CAS protects concurrent edits.",
+  "retryAt": "2026-11-10T10:40:00+08:00"
 }

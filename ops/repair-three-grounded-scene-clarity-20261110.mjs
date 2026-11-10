@@ -45,7 +45,7 @@ for(const fix of req.items){
   const response=await fetch(p.image_url,{signal:AbortSignal.timeout(30000)});
   if(!response.ok||sha(Buffer.from(await response.arrayBuffer()))!==prior.image_sha256)throw Error('Original image bytes not as previously reviewed');
   if(p[fix.field]===fix.nextValue)throw Error('No actual change');
-  if(fix.field!=='copy'||!fix.nextValue.includes('仙加味小老闆')||!fix.nextValue.includes('小鹿和小烏龜')||!fix.nextValue.includes('\\n\\n')||fix.nextValue.length<fix.expectedCopy.length+36)throw Error('Copy is not grounded original-scene revision');
+  if(fix.field!=='copy'||!fix.nextValue.includes('仙加味小老闆')||!fix.nextValue.includes('小鹿和小烏龜')||!fix.nextValue.includes('\n\n')||fix.nextValue.length<fix.expectedCopy.length+36)throw Error('Copy is not grounded original-scene revision');
   if(fix.field==='image_alt'&&(!fix.nextValue.includes('木質收納櫃')||
     !fix.nextValue.includes('30cc小玻璃裸罐')||!fix.nextValue.includes('180cc鋁袋')||
     fix.nextValue.includes('居家收納櫃')))throw Error('ALT is not grounded revision');
