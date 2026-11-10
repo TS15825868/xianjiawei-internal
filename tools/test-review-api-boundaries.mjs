@@ -265,3 +265,15 @@ assert.equal(rejectedPublished.response.status,409);
 assert.equal(rejectedPublished.row.status,'manual_required');
 assert.equal(rejectedPublished.writes.length,0,'Published requires official remote proof, not a status button');
 console.log('PASS partial publication remains immutable, direct fake-published status rejected, unposted handoff may return to draft');
+
+for(const [name,id] of [['龜鹿膠','guilu-jiao'],['龜鹿湯塊','guilu-tangkuai']]){
+ const errors=productMatchErrors({...state.row,
+   title:'仙加味 '+name,
+   copy:'在家常料理桌介紹仙加味'+name+'的包裝與飲食文化。',
+   image_alt:'仙加味'+name+'的實物大小示意，待正式圖片覆核',
+   image_url:'https://example.invalid/'+id+'.jpg'
+ });
+ assert.equal(errors.some(message=>/已退出公開產品清單|禁止新貼文/.test(message)),false,
+   name+' is an active official product; keep image and content review separate');
+}
+console.log('PASS active 龜鹿膠／龜鹿湯塊 names do not fail an obsolete retirement guard');
