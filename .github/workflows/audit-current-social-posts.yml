@@ -14,6 +14,9 @@ on:
       - 'tools/ai-batch-triage.mjs'
       - 'tools/test-ai-batch-triage.mjs'
       - 'tools/report-pending-review-actual-checks.cjs'
+      - 'tools/apply-ai-quality-evidence.mjs'
+      - 'tools/d1-http-transport.mjs'
+      - 'tools/test-d1-http-transport.mjs'
       - 'ops/historical-media-source-link-gaps-20261108.json'
   schedule:
     # 每6小時一次；GitHub Actions 使用 UTC；亦可手動執行最新唯讀快照。
@@ -41,6 +44,10 @@ jobs:
           node-version: 22
       - name: Test fail-closed AI batch triage
         run: node --test tools/test-ai-batch-triage.mjs
+      - name: Test bounded D1 HTTP bulk evidence transport and importer syntax
+        run: |
+          node --check tools/apply-ai-quality-evidence.mjs
+          node --test tools/test-d1-http-transport.mjs
       - name: Require Cloudflare read credentials
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
