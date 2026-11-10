@@ -33,3 +33,6 @@ test('bad media is repair, missing checks are not release-ready',()=>{
  assert.equal(r.result.counts.investigate_or_repair,1);
 });
 test('incomplete D1 snapshot fails closed',()=>{assert.notEqual(run([{id:'1'}],49).status,0)});
+
+test('duplicate IDs in D1 evidence fail closed',()=>{assert.notEqual(run([{id:'same',blockers:[]},{id:'same',blockers:[]}]).status,0)});
+test('all pending posts appear exactly once in action queues',()=>{const r=run([{id:'a',blockers:['duplicate:DEFER']},{id:'b',blockers:['active_media_missing']}]);assert.equal(r.status,0,r.stderr);assert.deepEqual(r.result.queue.recover_evidence,['a']);assert.deepEqual(r.result.queue.investigate_or_repair,['b']);assert.equal(Object.values(r.result.queue).flat().length,2)});
