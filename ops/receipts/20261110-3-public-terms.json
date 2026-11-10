@@ -1,0 +1,35 @@
+{
+  "schema": "xjw-pending-copy-batch-receipt-v1",
+  "batch": "XJW-COPY-20261110-THREE-PUBLIC-TERMS",
+  "startedAt": "2026-11-10T15:09:47.839Z",
+  "attempted": 3,
+  "verified": 3,
+  "complete": true,
+  "approved": 0,
+  "scheduled": 0,
+  "published": 0,
+  "records": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "result": "changed_and_verified",
+      "priorFingerprint": "c97fb55ea1befcfdcb5e7b927a1ffb3441b7900a547afd0249a2987016cbab4e",
+      "currentFingerprint": "1dff986ab19701e30ba415e33edf4ad4fbeec2d6b17fef10547e0587a20e8743",
+      "updatedAt": "2026-11-10T15:09:47.839Z"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "result": "changed_and_verified",
+      "priorFingerprint": "441475cf0d6391697e189c9eb947ae5f5dbac92967973df6c3692bd0a7c22783",
+      "currentFingerprint": "eafa8b93be38ee8842da343430dc94a678f331785e595e44bfbd281cf117e8b2",
+      "updatedAt": "2026-11-10T15:09:48.753Z"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "result": "changed_and_verified",
+      "priorFingerprint": "0f3a86ae40a0abad9d18b1d99022e5d59f529f91a5de7e763c581bb0447c364e",
+      "currentFingerprint": "09bee26fe285821475cdfeffff1916f01177f4c549fdb4141da93a2b6fcbb800",
+      "updatedAt": "2026-11-10T15:09:49.805Z"
+    }
+  ],
+  "finishedAt": "2026-11-10T15:09:50.683Z"
+}
