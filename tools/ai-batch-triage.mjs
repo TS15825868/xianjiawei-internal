@@ -26,16 +26,17 @@ const items=data.records.map(r=>{
   const serious=blockers.filter(x=>/^(active_media_missing|pending_has_unexpected_release_metadata|invalid_review_json|external_remote_mapping_requires_reconcile|(?:brand|product|specification|pricing_activity|season|weather|occasion|location|scene_environment|temperature|expression|action|mascot_companions|physical_scale|compliance_final):(?:FAIL|REJECT))/.test(x));
   // 任何未能證明全部16項通過的候選都只能補證，不得誤列可發布。
   const ready=blockers.length===1 && blockers[0]==='automatic_release_runtime_and_platform_not_e2e_verified' && r.currentBound===true && r.mediaShaEvidencePresent===true && r.decision==='AI_APPROVED' && Object.values(r.checks||{}).length===16 && Object.values(r.checks).every(v=>v==='PASS');
-  const action=serious.length?'investigate_or_repair':ready?'verify_release_gate':'recover_evidence';
+  const complianceHold=blockers.includes('compliance_final:DEFER')||blockers.includes('compliance_final:MISSING');
+  const action=serious.length?'investigate_or_repair':complianceHold?'verify_compliance_evidence':ready?'verify_release_gate':'recover_evidence';
   for(const b of blockers)issues.set(b,(issues.get(b)||0)+1);
   return {id:r.id,title:r.title||'',decision:r.decision,currentBound:r.currentBound===true,
     action,blockers,sourceRecheckTargets:historicalTargets.get(r.id)||[],automaticallyApproved:false};
 });
-const counts={investigate_or_repair:0,recover_evidence:0,verify_release_gate:0};
+const counts={investigate_or_repair:0,verify_compliance_evidence:0,recover_evidence:0,verify_release_gate:0};
 for(const r of items)counts[r.action]++;
 const queue=Object.fromEntries(Object.keys(counts).map(action=>[action,items.filter(r=>r.action===action)
   .sort((a,b)=>b.sourceRecheckTargets.length-a.sourceRecheckTargets.length).map(r=>r.id)]));
-const result={schema:'xjw-safe-batch-triage-v4',generatedAt:new Date().toISOString(),
+const result={schema:'xjw-safe-batch-triage-v5',generatedAt:new Date().toISOString(),
 source:'existing 16-check current-version evidence inventory',mode:'read_only',
 pending:items.length,processed:items.length,counts,queue,
 historyGapContext:{snapshotDate:historical?.capturedOn||null,knownSourceCheckTargets:items.filter(r=>r.sourceRecheckTargets.length).length,
