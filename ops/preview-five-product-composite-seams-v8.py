@@ -88,6 +88,19 @@ products={}
 stats={}
 for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
+# Keep every genuine product label/body pixel. Remove only the photographed
+# tabletop underneath the gao jar, which is not part of the product package.
+refined_products=dict(products)
+gao=products["gao"].copy()
+a=np.array(gao.getchannel("A")).astype(np.float32)
+height,width=a.shape
+for y in range(height):
+ if y>=height*.91:
+  fade=max(0.,min(1.,(height*.955-y)/(height*.045)))
+  a[y,:]*=fade
+gao.putalpha(Image.fromarray(a.astype(np.uint8)))
+refined_products["gao"]=gao
+
 outdir=Path("ops/visual-previews/20261110-official-source-composite-v8")
 outdir.mkdir(parents=True,exist_ok=True)
 # Diagnostic reference previews only: show original alpha against an obvious colored
@@ -135,7 +148,7 @@ for row,s in enumerate(SCENES):
    Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).save(outdir/(s["id"]+"-"+approach+"-background-only.jpg"),"JPEG",quality=92)
   canvas=Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).convert("RGBA")
   for key,(ox1,oy1,ox2,oy2) in s["objects"]:
-   official=products[key]
+   official=refined_products[key] if approach=="texture_clone" else products[key]
    tw0=round((ox2-ox1)*scale_x);th0=round((oy2-oy1)*scale_y)
    ratio=min(tw0/official.width,th0/official.height)
    tw=max(1,int(official.width*ratio));th=max(1,int(official.height*ratio))
