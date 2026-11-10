@@ -1,0 +1,12 @@
+{
+  "schema": "xjw-product-scene-seams-preview-v8",
+  "scope": "all-five-current-photo-composites",
+  "sourcePolicy": "keep official product pixels and proportions; no generative redraw",
+  "goal": "Compare tight inpaint vs Poisson cloned table texture for visible rectangular patched regions around five products. Draft previews only.",
+  "newOutputs": "ops/visual-previews/20261110-official-source-composite-v8",
+  "D1Writes": 0,
+  "approvals": 0,
+  "scheduled": 0,
+  "publications": 0,
+  "allowAutoDeployment": false
+}
