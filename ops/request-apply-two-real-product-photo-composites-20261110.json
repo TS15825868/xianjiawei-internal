@@ -1,0 +1,47 @@
+{
+  "scope": "xjw-two-direct-verified-real-photo-composites-v1",
+  "sourceSnapshotAt": "2026-11-10T03:10:17.771Z",
+  "items": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "expectedCopy": "仙加味平常比較常介紹龜鹿系列，鹿茸粉反而比較少出現在日常貼文裡。\n\n這次小老闆在萬華工作間的木桌旁，用木尺和桌上的小罐子比一比大小；旁邊的小鹿、小烏龜也在看。這款仙加味鹿茸粉是75g／罐，先認識正式包裝的外觀、品名、規格，再依產品標示了解食用與保存方式。\n\n認識漢方食材與飲食文化，不用一次背下所有資料。你看到粉狀食品，會先確認重量、原料，還是保存標示？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "expectedImageAlt": "仙加味小老闆在木質工作桌旁介紹鹿茸粉75g罐，小鹿專心觀看，小烏龜陪在規格筆記旁。",
+      "expectedUpdatedAt": "2026-11-10T03:01:00.096Z",
+      "newImagePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
+      "newImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-luerong-intro-preview.jpg",
+      "previewBlobSHA": "94d42b00f783d843f0651224f43c7ccf5062d8ac",
+      "newImageSHA256": "24af3e0fcfad9006d2848da5176b2322a76e12008d0a47ef4ea066b84f0018ce",
+      "formalProductImageRepo": "TS15825868/xianjiawei",
+      "formalProductImagePath": "images/product-main/luerong-fen.png",
+      "formalProductBlobSHA": "910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e",
+      "inspection": "2026-11-10 v2 original-portrait scene direct side-by-side inspection: only one photographic official product at true small size, prior AI drawn incorrect product removed, red mascot seal and separate deer/turtle unaffected. No cropped labels; original official product pixel identity trace in manifest.",
+      "fullDuplicateNotCertified": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "expectedCopy": "在仙加味萬華店的窗邊，小老闆把手機架好，準備拍攝桌上的龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在旁邊觀看。\n\n30cc本來就是小小一罐，商品照片如果沒有適當的大小參考，很容易讓人誤以為是一般飲料瓶。仙加味呈現產品時會維持真實包裝與比例，不任意加標籤或放大瓶身。\n\n你看商品照片時，會想看見一個可以比對實際大小的物件嗎？",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "expectedImageAlt": "仙加味小老闆在窗邊架設手機拍攝桌上的龜鹿飲30cc小玻璃裸罐，小鹿和小烏龜在旁觀看產品的實際大小。",
+      "expectedUpdatedAt": "2026-11-10T03:01:03.513Z",
+      "newImagePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
+      "newImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v2/XJW-CONV-chat-photo-size-preview.jpg",
+      "previewBlobSHA": "a9bc0a6e5ad64927e709ddea10f70b732395b033",
+      "newImageSHA256": "fa1f3a189397aea6d4d848b02498d3ccb7cc7a8f4f955df437900f749be77780",
+      "formalProductImageRepo": "TS15825868/xianjiawei",
+      "formalProductImagePath": "images/product-cutout-review/guilu-drink-30.png",
+      "formalProductBlobSHA": "d46d1c788b2bd9edd6522e4524faaec5c478c880",
+      "inspection": "2026-11-10 v2 original-portrait scene direct side-by-side inspection: only one photographic official product at true small size, prior AI drawn incorrect product removed, red mascot seal and separate deer/turtle unaffected. No cropped labels; original official product pixel identity trace in manifest.",
+      "fullDuplicateNotCertified": true
+    }
+  ],
+  "prohibitApproval": true,
+  "prohibitSchedule": true,
+  "prohibitPublish": true,
+  "retainPriorQualityHistory": true,
+  "proof": "Preview original comparison and official website product source git blob SHA. Original backgrounds unchanged outside independently masked product areas. V1 previews rejected, only 2 visually acceptable V2 sources promoted."
+}
