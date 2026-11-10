@@ -1,11 +1,10 @@
 {
-  "requestedAt": "2026-11-10T11:10:00+08:00",
-  "reason": "Live official D1 three-network Metricool published receipt reconciliation Action42747526266 completed/success: XJW-CONV-chat-wanhua-morning now published, FB/IG/Threads provider urls persisted, prior quality NHR/duplicate DEFER preserved transparently under owner-specific one-shot exception, local unique Metricool link recorded. D1 counts 161 total, 50 pending_review, 106 archived, 5 published. Also product image quality rejection Actions42746592498 and42747417762 success: five AI-drawn incorrect product depictions marked needs_rework, retained pending and original scene bytes, must use current official website product originals before approval. Export latest exact 50 pending and 5 products flagged. Do not restore already published morning post to pending due stale snapshot.",
-  "reviewScope": "Read-only D1 pending and external mapping presence after successful post+image review writes. Do not edit D1, approve posts or send externally.",
+  "requestedAt": "2026-11-10T13:43:00+08:00",
+  "reason": "Current D1 exact-version four confirmed real-product image corrections completed, prevent stale AI fake packaging in GitHub source candidate snapshot. XJW-CONV-chat-luerong-intro and XJW-CONV-chat-photo-size D1 CAS, new official image URL and new AI-DEFER reviewed SHA succeeded Action42762724270. XJW-CONV-cny-gift-choice and XJW-CONV-chat-picture-or-text succeeded Action42763619233 after direct user-selected true 100g jar image compositing. All still pending_review but image_quality_status='clear', duplicate remains DEFER and no approvals/remote sends. Fifth XJW-CONV-chat-glass-vs-pouch-storage remains needs_rework because original AI bag overwrites body and inpainted preview blurs torso; never auto replace with v1/v2 defective render. Same D1 count 161 total: pending50,published5,archived106.",
+  "reviewScope": "Only read current D1 pending50, archived106,published5 and Metricool current links; export current captions and new official image paths. Do not write D1, schedule or publish.",
   "sourceRuns": [
-    42746592498,
-    42747417762,
-    42747526266
+    42762724270,
+    42763619233
   ],
   "publish": false,
   "approval": false,
