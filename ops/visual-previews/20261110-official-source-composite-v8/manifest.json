@@ -131,7 +131,20 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
       "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-texture_clone-preview.jpg",
-      "previewSHA256": "a21d14f0210337d10edc3228f81ed64293eca902eb79da2d13c872dac14239ef",
+      "previewSHA256": "f8311a7be0d7bac8e4ba27c632b47807179802e1a6c5c538862aa858b45975fb",
+      "productTypes": [
+        "luerong"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "approach": "wood_patch",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-wood_patch-preview.jpg",
+      "previewSHA256": "0b9d5f58e4ae969f168f9efb3af5f100db62582df112243a0e09cf74458a84de",
       "productTypes": [
         "luerong"
       ],
@@ -144,7 +157,7 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
       "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-tight_inpaint-preview.jpg",
-      "previewSHA256": "b0833c91a438dfe8a92abe117dc4be8e6d267fef1dfc504c037984606041cec9",
+      "previewSHA256": "861a28e1aeb40fa85b2a54c3ec70ac859f82edfd6701cfd70b72baedefc05633",
       "productTypes": [
         "drink30"
       ],
@@ -157,7 +170,20 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
       "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-texture_clone-preview.jpg",
-      "previewSHA256": "a4fdd89425e51df9a5bb7df4e18b1964e0ec45f02871cf25f45ee2d09cd3f2a5",
+      "previewSHA256": "ff1d47e3a18c83e667ddbd30ebd61e1f8d092b896baa03af2cab5d7dd4119dfb",
+      "productTypes": [
+        "drink30"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "approach": "wood_patch",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-wood_patch-preview.jpg",
+      "previewSHA256": "16181775aa74c876ebf10682735ebd6c1d7d76ee1c6dff8dfcb7922e10ec536e",
       "productTypes": [
         "drink30"
       ],
@@ -191,6 +217,19 @@
       "imageNotYetApproved": true
     },
     {
+      "id": "XJW-CONV-cny-gift-choice",
+      "approach": "wood_patch",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "sourceBlob": "56e23eede90f33e6fe85e6c8ea25fa5453e085d4",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-cny-gift-choice-wood_patch-preview.jpg",
+      "previewSHA256": "053754f4aa4390fc23c6fa9c3e511ab410e55786605fd1c0ed741c9b1bd18192",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
       "id": "XJW-CONV-chat-picture-or-text",
       "approach": "tight_inpaint",
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
@@ -209,7 +248,20 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
       "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-picture-or-text-texture_clone-preview.jpg",
-      "previewSHA256": "cfd68da3bee4a076c9c273845a5d338c1a042df2627b7ea465cf5d5fb808a5a9",
+      "previewSHA256": "77d3a36ccbe83bf0ce26f1868b0f77c5d16819a979210697563cf98919d9bd31",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "approach": "wood_patch",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-picture-or-text-wood_patch-preview.jpg",
+      "previewSHA256": "582bc681998483c86822965aaa8081bdd6681cf6f2788e9d542a7e46f835c87a",
       "productTypes": [
         "gao"
       ],
@@ -236,7 +288,21 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
       "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-texture_clone-preview.jpg",
-      "previewSHA256": "5bb0ce6eb928e333dd8e6f1eef263aaf03168dbbe8bd0eb565b2f869698464ef",
+      "previewSHA256": "9e0c28e21d4f510816271c2bb99c40976cdb934ffa57add193bd6563cd8946a5",
+      "productTypes": [
+        "drink30",
+        "drink180"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "approach": "wood_patch",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-wood_patch-preview.jpg",
+      "previewSHA256": "ce3bfb7d5fac786350170784fff1a345e3ef5a1371fcb5b049181a87178465f1",
       "productTypes": [
         "drink30",
         "drink180"
