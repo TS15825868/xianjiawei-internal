@@ -1,0 +1,59 @@
+name: 仙加味待審最新D1 16項證據總覽（唯讀）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/pending-audit-requests/*.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-pending-live-evidence-readonly
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Select exactly one read-only D1 request
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(git diff --name-only HEAD^ HEAD -- 'ops/pending-audit-requests/')
+          test "${#files[@]}" -eq 1
+          [[ "${files[0]}" =~ ^ops/pending-audit-requests/[a-zA-Z0-9_-]+\.json$ ]]
+          echo "PENDING_AUDIT_REQUEST=${files[0]}" >> "$GITHUB_ENV"
+      - name: Verify D1 transport and readonly audit parser
+        run: |
+          node --check tools/export-pending-live-audit.mjs
+          node --test tools/test-d1-http-transport.mjs
+      - name: Read all current pending D1 source-bound AI evidence
+        run: node tools/export-pending-live-audit.mjs
+      - name: Save sanitized exact D1 readback to latest main without force
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          receipt="ops/receipts/${PENDING_AUDIT_REQUEST##*/}"
+          cp /tmp/pending-live-audit.json "$receipt"
+          node -e "const r=require('./'+process.argv[1]);if(r.readOnly!==true||r.records.length!==r.pending||r.approvals!==0||r.scheduled!==0||r.published!==0)process.exit(1)" "$receipt"
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$receipt"
+          git commit -m 'audit: record current pending D1 16-check evidence summary'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pending-current-evidence-${{ github.run_id }}
+          path: /tmp/pending-live-audit.json
+          if-no-files-found: warn
+          retention-days: 7
