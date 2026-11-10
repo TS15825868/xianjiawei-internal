@@ -1,13 +1,14 @@
 {
-  "requestedAt": "2026-11-10T10:42:00+08:00",
-  "reason": "Read-only refresh of all 51 D1 current pending after 3 original-scene copy corrections. XJW-CONV-cny-fridge-clean and XJW-CONV-chat-last-bowl succeeded D1 CAS and review readback Action42744142339; XJW-CONV-chat-recipe-or-feel succeeded separate exact one-item retry Action42744271142. All image SHA unchanged and duplicate DEFER; no approvals, schedules or public posts. Prevent stale source copies reappearing. Today proposed XJW-CONV-chat-wanhua-morning was NOT published at 10:00; never treat expired proposal as a real schedule; user requests same-day release only if all valid gates pass.",
-  "reviewScope": "Read only D1 51 current pending and 11 Metricool mapping presence; no D1 writes and no publication.",
+  "requestedAt": "2026-11-10T11:10:00+08:00",
+  "reason": "Live official D1 three-network Metricool published receipt reconciliation Action42747526266 completed/success: XJW-CONV-chat-wanhua-morning now published, FB/IG/Threads provider urls persisted, prior quality NHR/duplicate DEFER preserved transparently under owner-specific one-shot exception, local unique Metricool link recorded. D1 counts 161 total, 50 pending_review, 106 archived, 5 published. Also product image quality rejection Actions42746592498 and42747417762 success: five AI-drawn incorrect product depictions marked needs_rework, retained pending and original scene bytes, must use current official website product originals before approval. Export latest exact 50 pending and 5 products flagged. Do not restore already published morning post to pending due stale snapshot.",
+  "reviewScope": "Read-only D1 pending and external mapping presence after successful post+image review writes. Do not edit D1, approve posts or send externally.",
+  "sourceRuns": [
+    42746592498,
+    42747417762,
+    42747526266
+  ],
   "publish": false,
   "approval": false,
   "mutateD1": false,
-  "sourceRuns": [
-    42744142339,
-    42744271142
-  ],
   "preventStaleBackfill": true
 }
