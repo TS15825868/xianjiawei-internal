@@ -18,5 +18,7 @@
   "version": 2,
   "requestedAt": "2026-11-10T13:25:00+08:00",
   "retryReason": "First five-image draft contact-sheet was NOT acceptable: old fake images persisted partially outside too-small removal masks and original guilu-gao cutout included two visible package instances. Keep v1 as evidence, generate separate v2 draft with corrected full-extent masks and tighter genuine jar crop. Never write D1/publish before direct visual approval.",
-  "sourceRun": 42761707867
+  "sourceRun": 42761707867,
+  "retryAt": "2026-11-10T13:29:00+08:00",
+  "fixReason": "First v2 preview generation succeeded but existing GitHub Action hardcoded git add of v1 directory. No v2 GitHub commit occurred. Correct staging target to v2 and rerun. Still draft-only; do not modify production D1."
 }
