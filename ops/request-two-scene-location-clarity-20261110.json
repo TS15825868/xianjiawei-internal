@@ -1,0 +1,31 @@
+{
+  "scope": "xjw-two-grounded-scene-location-clarity-20261110-v1",
+  "sourceSnapshotAt": "2026-11-09T15:05:41.592Z",
+  "authorizeFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "field": "copy",
+      "expectedTitle": "你家以前最常看到哪一種食材？",
+      "expectedCopy": "早上在仙加味萬華工作間，小老闆把紅棗和其他乾燥食材分開整理，準備收進透明罐，小鹿與小烏龜在旁邊看著。\n\n以前家裡廚房常備著紅棗、枸杞或熟悉的乾貨。從分辨食材、整理收納的小動作出發，也能聊聊一代一代留下的漢方飲食文化。\n\n你小時候最常在家裡看到紅棗、枸杞，還是其他食材？",
+      "expectedImageAlt": "仙加味小老闆在家中廚房分裝紅棗、枸杞與乾燥食材，小鹿和小烏龜陪著整理收納罐。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+      "nextValue": "早上整理乾燥食材時，仙加味小老闆在桌邊把紅棗和其他乾貨分開，準備收進透明罐；小鹿與小烏龜在旁邊看著。\n\n以前家裡廚房常備著紅棗、枸杞或熟悉的乾貨。從分辨食材、整理收納的小動作出發，也能聊聊一代一代留下的漢方飲食文化。\n\n你小時候最常在家裡看到紅棗、枸杞，還是其他食材？",
+      "check": "scene_environment",
+      "evidence": "既有11/08原圖檢視證據確認透明罐及紅棗乾貨分類、固定小老闆與分開小鹿小龜，但原畫面不足以確定是在萬華工作間。原文與現有圖片說明（家中廚房）位置相矛盾，現改為不指定店址的桌邊備料，保留實際動作。"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "field": "image_alt",
+      "expectedTitle": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "expectedCopy": "在仙加味萬華店的木架前，小老闆伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐，以及180cc鋁袋，小鹿和小烏龜在旁邊看。\n\n整理不同形態的食品包裝時，先核對各自的正式保存標示，再依實際空間安排位置，不必把小罐與袋裝食品全部擠在同一格。\n\n你整理家裡的食品櫃時，習慣按包裝形式分類，還是按使用頻率擺放？",
+      "expectedImageAlt": "仙加味居家收納櫃前，小老闆介紹桌上的龜鹿飲30cc小玻璃裸罐與180cc鋁袋，小鹿和小烏龜一起看著收納位置。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "nextValue": "仙加味小老闆站在木質收納櫃前，伸手指向櫃格與收納籃；桌上擺著龜鹿飲30cc小玻璃裸罐及180cc鋁袋，小鹿與小烏龜分開在旁觀看。",
+      "check": "action",
+      "evidence": "既有11/08原圖直接比對：小老闆在木架前伸手指向上方收納籃與櫃格，桌上有金蓋30cc裸玻璃小罐及銀色180cc鋁袋，小鹿小龜各自分開。原ALT稱居家收納櫃，原文稱萬華店；調整ALT僅描述可見木質收納櫃及操作，不捏造圖中不能獨立核對的精確地點或產品標籤。"
+    }
+  ]
+}
