@@ -24,13 +24,13 @@ test('official 2026/10/17 four products retain original role, no automatic fake 
  assert.ok(original.public_url.includes('images/catalog-owner-final-v20261017/guilu-gao-main.webp'));
  assert.equal(p.resolveMedia('仙加味龜鹿膏100g／罐',[]).authority,'formal_product_media');
 });
-test('retired jelly, soup blocks and paused qixuan cannot be promoted to fresh media source',()=>{
+test('current jelly, soup blocks and qixuan require independently verified product photos, not legacy hard retirement',()=>{
  const p=loadPolicy();
  for(const [id,copy] of [['guilu-jiao','龜鹿膠600g'],['guilu-tangkuai','龜鹿湯塊75g'],['qixuan-tea','柒玄茶調飲粉']]){
   assert.equal(p.mediaForProduct(id),null);
   assert.equal(p.dmForProduct(id),null);
   const result=p.resolveMedia('仙加味 '+copy,[]);
-  assert.equal(result.status,'blocked_retired_public_product');
+  assert.equal(result.status,'needs_current_media_verification');
   assert.equal(result.candidate,null);
   assert.equal(result.action,'hold_for_current_authority');
  }
@@ -41,8 +41,20 @@ test('retired media cannot reenter through generic ZIP ranking or explicit DM in
  const source={id:'guilu-jiao-dm',productId:'guilu-jiao',public_url:'https://ts15825868.github.io/xianjiawei/images/dm-final/06_guilu-jiao-600g-dm.jpg',source:'user-zip',approved:true,binary_ready:true,keywords:['仙加味','龜鹿膠']};
  assert.equal(p.chooseSourceCandidate('仙加味', [source]),null);
  assert.equal(p.chooseBestCandidate('仙加味', [source]),null);
- assert.equal(p.resolveMedia('仙加味 龜鹿膠 詳細DM',[source]).status,'blocked_retired_public_product');
+ assert.equal(p.resolveMedia('仙加味 龜鹿膠 詳細DM',[source]).status,'needs_current_media_verification');
 });
+test('explicit current-product original-photo provenance lifts only media hold, never review/publish gate',()=>{
+ const p=loadPolicy();
+ const verified={id:'guilu-tangkuai-owner-photo',productId:'guilu-tangkuai',
+  public_url:'https://ts15825868.github.io/xianjiawei/images/owner-approved-guilu-tangkuai.png',
+  keywords:['龜鹿湯塊'],approved:true,binary_ready:true,
+  currentProductAuthorityVerified:true,originalPhotoPixelsVerified:true};
+ const result=p.resolveMedia('仙加味 龜鹿湯塊75g日常料理',[verified]);
+ assert.equal(result.action,'use');
+ assert.equal(result.candidate.id,verified.id);
+ assert.equal(p.resolveMedia('仙加味 龜鹿湯塊75g日常料理',[{...verified,originalPhotoPixelsVerified:false}]).action,'hold_for_current_authority');
+});
+
 test('newer independently authorized product sources are not blocked only because not one of four old products',()=>{
  const p=loadPolicy();
  const newer={id:'royalherb-erzhenbao-64',public_url:'https://ts15825868.github.io/xianjiawei/images/catalog-owner-final-v20261017/royalherb-erzhenbao-64-main.webp',source:'user-verified',approved:true,binary_ready:true,keywords:['二珍寶']};
