@@ -110,6 +110,9 @@ jobs:
         run: |
           set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,headline,copy,category,status,image_url,image_alt,image_source,image_approved,image_width,image_height,image_bytes,image_quality_status,scheduled_at,published_at FROM social_posts ORDER BY id" > formal-post-quality.json
+          # One 11/10 user-directed post was actually published by Metricool.
+          # Read real provider deliveries; NEVER forge image_approved in D1.
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT s.post_id,s.metricool_id,s.uuid,s.state,d.platform,d.status,d.remote_id FROM social_metricool_sync s JOIN social_publish_deliveries d ON d.post_id=s.post_id WHERE s.post_id='XJW-CONV-chat-wanhua-morning' AND s.metricool_id=422664301 AND s.uuid='2843164329541847045'" > formal-owner-direct-deliveries.json
 
       - name: Verify every public copy, assigned image and status dynamically
         shell: bash
@@ -119,6 +122,34 @@ jobs:
           const d=JSON.parse(fs.readFileSync('formal-post-quality.json','utf8'));
           const posts=(Array.isArray(d)?d[0]?.results:d?.results)||[];
           if(!posts.length)throw new Error('D1沒有貼文資料');
+          // Strict audit exception: applies ONLY to 11/10 user's explicit single-post
+          // release, already verified PUBLISHED on Facebook/Instagram/Threads.
+          // Leaves image_approved=0 and historical 16-item review DEFER untouched.
+          const er=JSON.parse(fs.readFileSync('formal-owner-direct-deliveries.json','utf8'));
+          const providerReceipts=(Array.isArray(er)?er[0]?.results:er?.results)||[];
+          const ownerProof=JSON.parse(fs.readFileSync('ops/owner-directed-metricool-release-20261110.json','utf8'));
+          const officialUrls=new Map([
+            ['facebook','https://facebook.com/1475619177921633/posts/1536234965193387'],
+            ['instagram','https://www.instagram.com/p/Dfi5QThiIer/'],
+            ['threads','https://www.threads.com/@xianjiawei.tw/post/Dfi5SZkiq8u']
+          ]);
+          const exceptionIsVerified=
+            ownerProof?.postId==='XJW-CONV-chat-wanhua-morning' &&
+            ownerProof?.metricoolId===422664301 &&
+            ownerProof?.uuid==='2843164329541847045' &&
+            ownerProof?.mustNotMarkFormal16Pass===true &&
+            ownerProof?.sourceApproval===false &&
+            providerReceipts.length===3 &&
+            new Set(providerReceipts.map(r=>String(r.platform||'').toLowerCase())).size===3 &&
+            providerReceipts.every(r=>r.post_id==='XJW-CONV-chat-wanhua-morning' &&
+              Number(r.metricool_id)===422664301 &&
+              r.uuid==='2843164329541847045' &&
+              r.state==='published' && r.status==='published' &&
+              officialUrls.get(String(r.platform).toLowerCase())===r.remote_id);
+          const isOwnerDirectHistoricalReceipt=p=>exceptionIsVerified &&
+            p.id==='XJW-CONV-chat-wanhua-morning'&&p.status==='published'&&
+            Number(p.image_approved||0)===0;
+
           const allowedStatuses=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
           const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
           const imageRequiredStatuses=new Set(['pending_review','approved','scheduled','published']);
@@ -166,12 +197,15 @@ jobs:
             }
             if(imageRequiredStatuses.has(p.status)){
               if(!image)errors.push(`${p.id}: ${p.status}缺圖片，不得進入正式流程`);
-              if(imageApprovedStatuses.has(p.status)&&Number(p.image_approved)!==1)errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
+              if(imageApprovedStatuses.has(p.status)&&Number(p.image_approved)!==1&&!isOwnerDirectHistoricalReceipt(p))
+                errors.push(`${p.id}: ${p.status}圖片尚未正式核准`);
               if(Number(p.image_width||0)<=0||Number(p.image_height||0)<=0)errors.push(`${p.id}: ${p.status}缺圖片尺寸資料`);
               if(!String(p.image_alt||'').trim())errors.push(`${p.id}: ${p.status}缺圖片說明`);
             }
             if(p.status==='scheduled'&&!String(p.scheduled_at||'').trim())errors.push(`${p.id}: scheduled缺排程時間`);
           }
+          if(isOwnerDirectHistoricalReceipt(posts.find(p=>p.id==='XJW-CONV-chat-wanhua-morning')))
+            console.log('::warning title=11/10單篇使用者明確發布授權::三平台已由D1完整PUBLISHED回執證實；保留image_approved=0及原16項DEFER，僅豁免這一筆已發布歷史紀錄的格式檢查，未核准任何待審稿。');
           if(errors.length){console.error(errors.join('\n'));process.exit(1)}
           const counts=posts.reduce((m,p)=>(m[p.status]=(m[p.status]||0)+1,m),{});
           const rework=reworkByStatus.draft+reworkByStatus.pending_review;
