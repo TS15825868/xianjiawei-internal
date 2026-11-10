@@ -14,6 +14,8 @@ const PRODUCT_RULES=Object.freeze([
   {id:"guilu-gao",name:"龜鹿膏",terms:["龜鹿膏"],image:["guilu-gao","龜鹿膏"]},
   {id:"guilu-drink-30",name:"龜鹿飲30cc玻璃罐",terms:["30cc","龜鹿飲30"],image:["guilu-drink-30","30cc","龜鹿飲30"]},
   {id:"guilu-drink-180",name:"龜鹿飲180cc鋁袋",terms:["180cc","龜鹿飲180"],image:["guilu-drink-180","180cc","龜鹿飲180"]},
+  {id:"guilu-jiao",name:"龜鹿膠",terms:["龜鹿膠"],image:["guilu-jiao","龜鹿膠"]},
+  {id:"guilu-tangkuai",name:"龜鹿湯塊",terms:["龜鹿湯塊"],image:["guilu-tangkuai","龜鹿湯塊"]},
   {id:"luerong-fen",name:"鹿茸粉",terms:["鹿茸粉"],image:["luerong-fen","鹿茸粉"]},
   {id:"jinan-sisheng-siwuyin",name:"參仲四物飲",terms:["參仲四物飲"],image:["jinan-sisheng-siwuyin","參仲四物飲"]},
   {id:"guilu-vitality",name:"龜鹿活力飲",terms:["龜鹿活力飲"],image:["guilu-vitality","龜鹿活力飲"]},
@@ -26,7 +28,7 @@ const PRODUCT_RULES=Object.freeze([
   {id:"jianfeng-white-tea",name:"臺灣白茶丹參飲",terms:["白茶丹參飲"],image:["tea-white","白茶丹參飲"]},
   {id:"jianfeng-refresh-tea",name:"臺灣丹參舒活茶",terms:["丹參舒活茶"],image:["tea-refresh","丹參舒活茶"]},
 ]);
-const RETIRED_PUBLIC_PRODUCT_NAMES=Object.freeze(['龜鹿膠','龜鹿湯塊']);
+// Current 仙加味 products are not retired solely because an older guard lacks their media.
 const REGENERATION_ROLES=new Set(['owner','admin','content']);
 const CUSTOMER_INTERNAL_TERMS=Object.freeze([
   '待審核','人工審核','16項','核准','不自動排程','不自動發布','貼文中心','發布中心','ERP','products-v3','守門員','母庫','資料庫','D1','Worker','GitHub','Workflow','候選圖','回填','重新生成','ChatGPT','不重畫','圖片呈現時','看圖片時','產品圖片','版面效果','產品本體','誤畫','正式原圖','正式產品原圖','正式比例','正式包裝','目前正式','最新確認','此類貼文需確認','舊的300g','舊版','debug','TODO','placeholder','假資料','Cloudflare','API Token','Secret','Repository','Repo','commit','deploy','部署','快取版本','測試資料','內部檢查','客戶實際會看到的文案','產品原圖','正式資訊','正式說明'
@@ -112,7 +114,7 @@ function productMatchErrors(row){
     for(const rule of visual){if(mentioned.length&&!mentioned.some(m=>m.id===rule.id))errors.push(`圖片呈現「${rule.name}」，但文案沒有對應該產品`) }
   }
   if(/30\s*cc/i.test(combined)&&/(玻璃瓶|小玻璃瓶|30\s*cc\s*／\s*瓶|30\s*cc\s*瓶裝)/i.test(combined))errors.push('30cc正式名稱必須是小玻璃罐／30cc／罐，不得稱瓶');
-  if(RETIRED_PUBLIC_PRODUCT_NAMES.some(name=>text.includes(name)||image.includes(name)))errors.push('龜鹿膠與龜鹿湯塊已退出公開產品清單，禁止新貼文與新圖片；僅保留歷史資料');
+  // Names remain current; missing or incorrect formal photos are checked independently.
   for(const segment of reviewProductSegments(combined,'龜鹿膏'))if(/(一天一次一小匙|每日一次一小匙|早晚各一小匙|每日早上及下午各一小匙)/.test(segment))errors.push('龜鹿膏不設定固定早上／下午時段；食用時間可依個人使用習慣與作息時間安排');
   if(!clean(row?.image_url))errors.push('缺少圖片');
   if(!clean(row?.image_alt))errors.push('缺少圖片說明，無法完成圖文一致審核');
