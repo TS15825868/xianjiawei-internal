@@ -6,7 +6,10 @@ const data=JSON.parse(fs.readFileSync(input,'utf8'));
 if(!data.safeReadOnly||!Array.isArray(data.records)||!data.counts||data.records.length!==data.counts.pending)
   throw Error('Invalid or incomplete 16-check inventory; stop safely');
 const issues=new Map();
+const ids=new Set();
 const items=data.records.map(r=>{
+  if(typeof r.id!=='string'||!r.id.trim()||ids.has(r.id))throw Error('Missing or duplicate post ID in inventory');
+  ids.add(r.id);
   const blockers=[...new Set(r.blockers||[])];
   const serious=blockers.filter(x=>/^(active_media_missing|pending_has_unexpected_release_metadata|invalid_review_json|external_remote_mapping_requires_reconcile|(?:brand|product|specification|pricing_activity|season|weather|occasion|location|scene_environment|temperature|expression|action|mascot_companions|physical_scale|compliance_final):(?:FAIL|REJECT))/.test(x));
   // 任何未能證明全部16項通過的候選都只能補證，不得誤列可發布。
@@ -18,9 +21,10 @@ const items=data.records.map(r=>{
 });
 const counts={investigate_or_repair:0,recover_evidence:0,verify_release_gate:0};
 for(const r of items)counts[r.action]++;
-const result={schema:'xjw-safe-batch-triage-v2',generatedAt:new Date().toISOString(),
+const queue=Object.fromEntries(Object.keys(counts).map(action=>[action,items.filter(r=>r.action===action).map(r=>r.id)]));
+const result={schema:'xjw-safe-batch-triage-v3',generatedAt:new Date().toISOString(),
 source:'existing 16-check current-version evidence inventory',mode:'read_only',
-pending:items.length,processed:items.length,counts,
+pending:items.length,processed:items.length,counts,queue,
 blockers:Object.fromEntries([...issues].sort((a,b)=>b[1]-a[1])),
 items};
 fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');
