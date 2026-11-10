@@ -78,7 +78,12 @@ def unpack_product(key):
   im.putalpha(Image.fromarray(a))
  box=im.getchannel("A").getbbox()
  if not box:raise RuntimeError("No opaque product pixels: "+key)
- return im.crop(box),{"blob":expected,"pixels":list(im.size),"crop":list(box),"alphaExtrema":[amin,amax]}
+ mask_data=np.asarray(im.getchannel("A"))
+ return im.crop(box),{"blob":expected,"pixels":list(im.size),"crop":list(box),"alphaExtrema":[amin,amax],
+ "alphaTransparentPct":round(100*float(np.mean(mask_data<10)),2),
+ "alphaOpaquePct":round(100*float(np.mean(mask_data>245)),2),
+ "alphaSemiPct":round(100*float(np.mean((mask_data>=10)&(mask_data<=245))),2),
+ "alphaCornerValues":[int(mask_data[0,0]),int(mask_data[0,-1]),int(mask_data[-1,0]),int(mask_data[-1,-1])]}
 products={}
 stats={}
 for k in PRODUCTS:
@@ -114,6 +119,8 @@ for row,s in enumerate(SCENES):
  clean_b=cv2.seamlessClone(patch,arr,clone_mask,center,cv2.NORMAL_CLONE)
  sheet.paste(original.resize((side,side),Image.Resampling.LANCZOS),(0,row*side))
  for col,(approach,background) in enumerate((("tight_inpaint",clean_a),("texture_clone",clean_b)),start=1):
+  if s["id"] in ("XJW-CONV-chat-luerong-intro","XJW-CONV-cny-gift-choice"):
+   Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).save(outdir/(s["id"]+"-"+approach+"-background-only.jpg"),"JPEG",quality=92)
   canvas=Image.fromarray(cv2.cvtColor(background,cv2.COLOR_BGR2RGB)).convert("RGBA")
   for key,(ox1,oy1,ox2,oy2) in s["objects"]:
    official=products[key]
