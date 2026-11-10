@@ -90,6 +90,18 @@ for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
 outdir=Path("ops/visual-previews/20261110-official-source-composite-v8")
 outdir.mkdir(parents=True,exist_ok=True)
+# Diagnostic reference previews only: show original alpha against an obvious colored
+# checkerboard so nontransparent studio/background remnants cannot be mistaken for wood.
+for key,official in products.items():
+ diag=Image.new("RGBA",official.size,(255,0,180,255))
+ tile=max(8,round(min(official.size)/14))
+ draw=ImageDraw.Draw(diag)
+ for yy in range(0,official.height,tile):
+  for xx in range(0,official.width,tile):
+   if (xx//tile+yy//tile)%2==0:draw.rectangle((xx,yy,xx+tile,yy+tile),fill=(55,30,110,255))
+ diag.alpha_composite(official)
+ diag.convert("RGB").save(outdir/("official-photo-alpha-"+key+".jpg"),"JPEG",quality=90)
+
 side=420;sheet=Image.new("RGB",(side*3,side*len(SCENES)),(250,248,244))
 report={"schema":"xjw-five-original-product-blending-AB-preview-v8","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
 for row,s in enumerate(SCENES):
