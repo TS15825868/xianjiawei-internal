@@ -15,11 +15,12 @@ SCENES=[
 {"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(241,394,306,493)],"objects":[("gao",(251,401,300,488))]},
 {"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(157,344,226,428),(251,277,349,450)],"objects":[("drink30",(165,351,212,416)),("drink180",(251,294,346,449))]}
 ]
+SCENES=[s for s in SCENES if s["id"] in ("XJW-CONV-cny-gift-choice","XJW-CONV-chat-picture-or-text")]
 PRODUCTS={
 "luerong":("images/product-main/luerong-fen.png","910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e"),
 "drink30":("images/product-cutout-review/guilu-drink-30.png","d46d1c788b2bd9edd6522e4524faaec5c478c880"),
 "drink180":("images/product-main/guilu-drink-180.png","82a167036b026247d1954d6a4491a3aa79e3b914"),
-"gao":("images/product-main/guilu-gao.png","21d97da98eafdf064ff72ee6396361b8de31af52")
+"gao":("images/catalog-user-original-v20261017/guilu-gao-box-jar-owner-selected-detail-v20261017.webp","5c4fe52f1ed8b0f6f1b6569b6823cc369e2607c9")
 }
 def source(path,official=False):
  repo="xianjiawei" if official else "xianjiawei-internal"
@@ -32,9 +33,18 @@ def unpack_product(key):
  if gitblob(data)!=expected:raise RuntimeError("Current official product source changed: "+key)
  im=Image.open(io.BytesIO(data)).convert("RGBA")
  if key=="gao":
-  # Formal main shows original carton+100g hexagonal jar; isolate jar on the right,
-  # not an AI-redrawn imitation. Preserve all label pixels inside extracted jar.
-  w,h=im.size;im=im.crop((int(w*.68),0,w,h))
+  # Owner-selected real source photo: hand-isolate whole genuine hexagonal jar.
+  # No regeneration of labels/pixels; box remains only in historical reference.
+  w,h=im.size
+  perimeter=[(.587,.416),(.597,.394),(.631,.374),(.699,.364),(.807,.366),
+   (.868,.382),(.895,.399),(.903,.426),(.903,.444),(.891,.465),
+   (.904,.493),(.907,.725),(.897,.749),(.870,.767),(.831,.778),
+   (.644,.779),(.612,.769),(.587,.750),(.579,.718),(.579,.494),(.569,.463)]
+  matte=Image.new("L",(w,h),0)
+  draw=ImageDraw.Draw(matte)
+  draw.polygon([(int(x*w),int(y*h)) for x,y in perimeter],fill=255)
+  matte=matte.filter(ImageFilter.GaussianBlur(max(1,round(w/950))))
+  im.putalpha(matte)
  # Retain only true transparent product; if source is opaque white studio background,
  # use outer-connected light pixels, never edit product text/colored label.
  alpha=im.getchannel("A")
@@ -58,10 +68,10 @@ products={}
 stats={}
 for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
-outdir=Path("ops/visual-previews/20261110-official-source-composite-v2")
+outdir=Path("ops/visual-previews/20261110-official-source-composite-v3")
 outdir.mkdir(parents=True,exist_ok=True)
 side=512;sheet=Image.new("RGB",(side*2,side*len(SCENES)),(250,248,244))
-report={"schema":"xjw-five-product-official-photo-preview-v1","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
+report={"schema":"xjw-two-gao-owner-selected-photo-preview-v3","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
 for row,s in enumerate(SCENES):
  content=source(s["source"])
  if gitblob(content)!=s["blob"]:raise RuntimeError("Current official candidate image changed: "+s["id"])

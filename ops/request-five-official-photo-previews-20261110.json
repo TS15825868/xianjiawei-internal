@@ -3,11 +3,8 @@
   "createdAt": "2026-11-10T13:17:00+08:00",
   "productSourcesVerifiedAgainstWebsiteMain": true,
   "affected": [
-    "XJW-CONV-chat-luerong-intro",
-    "XJW-CONV-chat-photo-size",
     "XJW-CONV-cny-gift-choice",
-    "XJW-CONV-chat-picture-or-text",
-    "XJW-CONV-chat-glass-vs-pouch-storage"
+    "XJW-CONV-chat-picture-or-text"
   ],
   "sourceD1Quality": "needs_rework",
   "doNotUpdateD1": true,
@@ -15,10 +12,12 @@
   "doNotPublish": true,
   "doNotChangeLiveImageUrl": true,
   "stage": "draft_preview_for_next_visual_inspection",
-  "version": 2,
-  "requestedAt": "2026-11-10T13:25:00+08:00",
+  "version": 3,
+  "requestedAt": "2026-11-10T13:34:00+08:00",
   "retryReason": "First five-image draft contact-sheet was NOT acceptable: old fake images persisted partially outside too-small removal masks and original guilu-gao cutout included two visible package instances. Keep v1 as evidence, generate separate v2 draft with corrected full-extent masks and tighter genuine jar crop. Never write D1/publish before direct visual approval.",
   "sourceRun": 42761707867,
   "retryAt": "2026-11-10T13:29:00+08:00",
-  "fixReason": "First v2 preview generation succeeded but existing GitHub Action hardcoded git add of v1 directory. No v2 GitHub commit occurred. Correct staging target to v2 and rerun. Still draft-only; do not modify production D1."
+  "fixReason": "First v2 preview generation succeeded but existing GitHub Action hardcoded git add of v1 directory. No v2 GitHub commit occurred. Correct staging target to v2 and rerun. Still draft-only; do not modify production D1.",
+  "sourceProductAuthority": "Owner-selected 2026-10-17 latest website main genuine physical product image, jar polygon crop; preserve original label, no AI redrawing.",
+  "reason": "Two succeeded D1 live image fixes for luerong and drink30 remain untouched. Other two 100g jar previews v2 visibly clipped product. Create v3 genuine owner-selected 100g jar polygon photo composite, no D1 changes. The fifth glass vs pouch remains blocked by missing scene background behind original AI bag."
 }
