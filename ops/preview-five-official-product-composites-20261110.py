@@ -13,7 +13,7 @@ SCENES=[
 {"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(201,330,268,406)],"objects":[("drink30",(210,331,251,398))]},
 {"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(248,377,303,480)],"objects":[("gao",(239,369,313,484))]},
 {"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(253,378,308,481)],"objects":[("gao",(244,366,316,485))]},
-{"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(157,344,225,428)],"objects":[("drink30",(164,349,216,420)),("drink180",(241,283,347,441))]}
+{"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(172,354,210,417)],"objects":[("drink30",(162,346,216,417)),("drink180",(241,283,347,441))]}
 ]
 SCENES=[s for s in SCENES if s["id"]=="XJW-CONV-chat-glass-vs-pouch-storage"]
 PRODUCTS={
@@ -68,10 +68,10 @@ products={}
 stats={}
 for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
-outdir=Path("ops/visual-previews/20261110-official-source-composite-v6")
+outdir=Path("ops/visual-previews/20261110-official-source-composite-v7")
 outdir.mkdir(parents=True,exist_ok=True)
 side=512;sheet=Image.new("RGB",(side*2,side*len(SCENES)),(250,248,244))
-report={"schema":"xjw-one-dual-form-original-product-preview-v6","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
+report={"schema":"xjw-one-dual-form-original-product-preview-v7","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}
 for row,s in enumerate(SCENES):
  content=source(s["source"])
  if gitblob(content)!=s["blob"]:raise RuntimeError("Current official candidate image changed: "+s["id"])
