@@ -1,0 +1,18 @@
+{
+  "scope": "stage-five-current-product-photos-for-review-only",
+  "createdAt": "2026-11-10T13:17:00+08:00",
+  "productSourcesVerifiedAgainstWebsiteMain": true,
+  "affected": [
+    "XJW-CONV-chat-luerong-intro",
+    "XJW-CONV-chat-photo-size",
+    "XJW-CONV-cny-gift-choice",
+    "XJW-CONV-chat-picture-or-text",
+    "XJW-CONV-chat-glass-vs-pouch-storage"
+  ],
+  "sourceD1Quality": "needs_rework",
+  "doNotUpdateD1": true,
+  "doNotApprove": true,
+  "doNotPublish": true,
+  "doNotChangeLiveImageUrl": true,
+  "stage": "draft_preview_for_next_visual_inspection"
+}
