@@ -1,0 +1,213 @@
+{
+  "schema": "xjw-five-original-product-blending-AB-preview-v8",
+  "status": "draft-only-needs-human-visual-inspection",
+  "D1Writes": 0,
+  "approvals": 0,
+  "scheduled": 0,
+  "publications": 0,
+  "sourceAssetDetails": {
+    "luerong": {
+      "blob": "910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e",
+      "pixels": [
+        402,
+        645
+      ],
+      "crop": [
+        0,
+        0,
+        402,
+        645
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink30": {
+      "blob": "d46d1c788b2bd9edd6522e4524faaec5c478c880",
+      "pixels": [
+        500,
+        601
+      ],
+      "crop": [
+        0,
+        0,
+        500,
+        601
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink180": {
+      "blob": "82a167036b026247d1954d6a4491a3aa79e3b914",
+      "pixels": [
+        715,
+        1066
+      ],
+      "crop": [
+        0,
+        0,
+        715,
+        1066
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "gao": {
+      "blob": "5c4fe52f1ed8b0f6f1b6569b6823cc369e2607c9",
+      "pixels": [
+        1122,
+        1402
+      ],
+      "crop": [
+        635,
+        508,
+        1021,
+        1095
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    }
+  },
+  "previews": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "approach": "tight_inpaint",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-tight_inpaint-preview.jpg",
+      "previewSHA256": "ff6d35e3f4aaa0f25bedbc8ac1e81dcd019a30703c3ff53a120765b7398e3f3f",
+      "productTypes": [
+        "luerong"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "approach": "texture_clone",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
+      "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-texture_clone-preview.jpg",
+      "previewSHA256": "81968882a3a150172ce57891a4c087a77cc87611eccd9851806f5bb84c7e14c2",
+      "productTypes": [
+        "luerong"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "approach": "tight_inpaint",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-tight_inpaint-preview.jpg",
+      "previewSHA256": "b0833c91a438dfe8a92abe117dc4be8e6d267fef1dfc504c037984606041cec9",
+      "productTypes": [
+        "drink30"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "approach": "texture_clone",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
+      "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-texture_clone-preview.jpg",
+      "previewSHA256": "a4fdd89425e51df9a5bb7df4e18b1964e0ec45f02871cf25f45ee2d09cd3f2a5",
+      "productTypes": [
+        "drink30"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "approach": "tight_inpaint",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "sourceBlob": "56e23eede90f33e6fe85e6c8ea25fa5453e085d4",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-cny-gift-choice-tight_inpaint-preview.jpg",
+      "previewSHA256": "d7f78733b1c3b617169f7db208fd0af81cd44c1b4ff42eb088a64a250031f23f",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "approach": "texture_clone",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "sourceBlob": "56e23eede90f33e6fe85e6c8ea25fa5453e085d4",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-cny-gift-choice-texture_clone-preview.jpg",
+      "previewSHA256": "9c5258074aff3f13380b62cbc9901c9dd8b60fa6babdc58b00d0e72675d712b6",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "approach": "tight_inpaint",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-picture-or-text-tight_inpaint-preview.jpg",
+      "previewSHA256": "c971dd0d4e93a95b9546155454d899a0cf1fd48a5cadadabd52eff151c4848c7",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "approach": "texture_clone",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-picture-or-text-texture_clone-preview.jpg",
+      "previewSHA256": "83916dfe1af9269212a4e5d295c72bc29e699aecaacb7ee5f480ac335ccb6986",
+      "productTypes": [
+        "gao"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "approach": "tight_inpaint",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-tight_inpaint-preview.jpg",
+      "previewSHA256": "32fc0773cd79b8076ed2154abf9a689bb422fea8b5e819ff190f5fc0fc3dbda8",
+      "productTypes": [
+        "drink30",
+        "drink180"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "approach": "texture_clone",
+      "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
+      "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-texture_clone-preview.jpg",
+      "previewSHA256": "5bb0ce6eb928e333dd8e6f1eef263aaf03168dbbe8bd0eb565b2f869698464ef",
+      "productTypes": [
+        "drink30",
+        "drink180"
+      ],
+      "officialPixelsPreservedExceptGeometricScale": true,
+      "imageNotYetApproved": true
+    }
+  ],
+  "contactSheet": "ops/visual-previews/20261110-official-source-composite-v8/contact-sheet.jpg"
+}
