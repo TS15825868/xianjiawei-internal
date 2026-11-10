@@ -1,10 +1,10 @@
 {
   "schema": "xjw-review-remote-mapping-presence-v1",
-  "generatedAt": "2026-11-10T02:02:23.690Z",
+  "generatedAt": "2026-11-10T02:40:35.067Z",
   "source": "Cloudflare D1 social_posts LEFT JOIN social_metricool_sync (read-only)",
   "noD1Mutation": true,
   "noRemoteChange": true,
-  "postSnapshotAt": "2026-11-10T02:02:22.407Z",
+  "postSnapshotAt": "2026-11-10T02:40:33.872Z",
   "counts": {
     "pending": 51,
     "linked": 11,
@@ -12,32 +12,7 @@
   },
   "items": [
     {
-      "id": "XJW-CONV-cny-pre-clean",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-cny-reopen",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-weather-cool-drink",
-      "linked": true,
-      "mappingCount": 1
-    },
-    {
-      "id": "XJW-CONV-cny-must-have-dish",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-weather-rain-chat",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-cny-gift-choice",
+      "id": "XJW-CONV-care-simple-checkin",
       "linked": false,
       "mappingCount": 0
     },
@@ -47,7 +22,12 @@
       "mappingCount": 0
     },
     {
-      "id": "XJW-CONV-chat-fixed-storage",
+      "id": "XJW-CONV-chat-buy-first-look",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
       "linked": false,
       "mappingCount": 0
     },
@@ -57,12 +37,77 @@
       "mappingCount": 1
     },
     {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
       "id": "XJW-CAND-20261211",
       "linked": false,
       "mappingCount": 0
     },
     {
-      "id": "XJW-CONV-year-end-small-win",
+      "id": "XJW-CONV-chat-receive-package",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
       "linked": false,
       "mappingCount": 0
     },
@@ -77,12 +122,22 @@
       "mappingCount": 0
     },
     {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
       "id": "XJW-CONV-chat-last-bowl",
       "linked": false,
       "mappingCount": 0
     },
     {
       "id": "XJW-CAND-20261225",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
       "linked": false,
       "mappingCount": 0
     },
@@ -117,7 +172,7 @@
       "mappingCount": 0
     },
     {
-      "id": "XJW-CONV-cny-fridge-clean",
+      "id": "XJW-CONV-cny-pre-clean",
       "linked": false,
       "mappingCount": 0
     },
@@ -132,9 +187,14 @@
       "mappingCount": 0
     },
     {
-      "id": "XJW-CONV-cny-childhood-now",
-      "linked": true,
-      "mappingCount": 1
+      "id": "XJW-CONV-cny-gift-choice",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "linked": false,
+      "mappingCount": 0
     },
     {
       "id": "XJW-FEST-2027-eve-welcome-home",
@@ -142,9 +202,24 @@
       "mappingCount": 1
     },
     {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "linked": false,
+      "mappingCount": 0
+    },
+    {
       "id": "XJW-CONV-cny-family-choice",
       "linked": true,
       "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "linked": true,
+      "mappingCount": 1
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "linked": false,
+      "mappingCount": 0
     },
     {
       "id": "XJW-FEST-2027-lantern-riceballs",
@@ -177,16 +252,6 @@
       "mappingCount": 0
     },
     {
-      "id": "XJW-CONV-chat-recipe-or-feel",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-receive-package",
-      "linked": true,
-      "mappingCount": 1
-    },
-    {
       "id": "XJW-CONV-chat-quiet-work",
       "linked": true,
       "mappingCount": 1
@@ -197,72 +262,7 @@
       "mappingCount": 1
     },
     {
-      "id": "XJW-CONV-chat-family-old-object",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-dayoff-cook",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-buy-first-look",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-care-simple-checkin",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-drink-made-to-order",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-elder-kitchen-habit",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-luerong-intro",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-no-standard-answer",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-pantry-memory",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-photo-size",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
       "id": "XJW-CONV-chat-picture-or-text",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-shop-organizing",
-      "linked": false,
-      "mappingCount": 0
-    },
-    {
-      "id": "XJW-CONV-chat-traditional-image",
       "linked": false,
       "mappingCount": 0
     }
