@@ -1,0 +1,111 @@
+{
+  "schema": "xjw-two-gao-owner-selected-photo-preview-v4",
+  "status": "draft-only-needs-human-visual-inspection",
+  "D1Writes": 0,
+  "approvals": 0,
+  "scheduled": 0,
+  "publications": 0,
+  "sourceAssetDetails": {
+    "luerong": {
+      "blob": "910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e",
+      "pixels": [
+        402,
+        645
+      ],
+      "crop": [
+        0,
+        0,
+        402,
+        645
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink30": {
+      "blob": "d46d1c788b2bd9edd6522e4524faaec5c478c880",
+      "pixels": [
+        500,
+        601
+      ],
+      "crop": [
+        0,
+        0,
+        500,
+        601
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "drink180": {
+      "blob": "82a167036b026247d1954d6a4491a3aa79e3b914",
+      "pixels": [
+        715,
+        1066
+      ],
+      "crop": [
+        0,
+        0,
+        715,
+        1066
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    "gao": {
+      "blob": "5c4fe52f1ed8b0f6f1b6569b6823cc369e2607c9",
+      "pixels": [
+        1122,
+        1402
+      ],
+      "crop": [
+        635,
+        508,
+        1021,
+        1095
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    }
+  },
+  "previews": [
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg",
+      "sourceBlob": "56e23eede90f33e6fe85e6c8ea25fa5453e085d4",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v4/XJW-CONV-cny-gift-choice-preview.jpg",
+      "previewSHA256": "9ed5aae3716f45cec10e89c8a01c063e4961306da29747fcca2295e86b3b2d82",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "gao"
+      ],
+      "pictureNotYetVerified": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
+      "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v4/XJW-CONV-chat-picture-or-text-preview.jpg",
+      "previewSHA256": "9e7252ca37e4005225ede9305f67e22fe9abd86cd6571dc76a011ab476ea44f1",
+      "canvas": [
+        1254,
+        1254
+      ],
+      "productTypes": [
+        "gao"
+      ],
+      "pictureNotYetVerified": true
+    }
+  ],
+  "contactSheet": "ops/visual-previews/20261110-official-source-composite-v4/contact-sheet.jpg"
+}
