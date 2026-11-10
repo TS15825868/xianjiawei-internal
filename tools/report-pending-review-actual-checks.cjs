@@ -16,6 +16,8 @@ function status(v){
   return'MISSING';
 }
 const posts=rows('current-social-posts.json').filter(p=>p.status==='pending_review');
+const expectedCount=Number(rows('current-social-post-counts.json').find(x=>x.status==='pending_review')?.count??0);
+if(!Number.isSafeInteger(expectedCount)||expectedCount<0||posts.length!==expectedCount)throw Error('D1 pending review inventory count mismatch; refuse partial evidence report');
 const reviews=rows('current-ai-reviews.json');
 const links=rows('current-metricool-sync.json');
 const byPost=new Map();
@@ -69,4 +71,4 @@ fs.writeFileSync('pending-review-full-inventory.json',JSON.stringify(out,null,2)
 console.log('PENDING_REVIEW_CURRENT_EVIDENCE_COUNTS',JSON.stringify(out.counts));
 console.log('PENDING_REVIEW_16_CHECK_AGGREGATE',JSON.stringify(out.checks));
 console.log('PENDING_REVIEW_EVIDENCE_READY_IDS',JSON.stringify(out.records.filter(x=>x.blockers.length===1&&x.blockers[0]==='automatic_release_runtime_and_platform_not_e2e_verified').map(x=>x.id)));
-if(posts.length!==68)console.log('NOTICE pending count shifted from prior 68; live snapshot is authoritative');
+console.log('PENDING_REVIEW_CURRENT_LIVE_TOTAL',posts.length);
