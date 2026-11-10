@@ -35,7 +35,7 @@ const results=[];
 const checkpoint=(complete,error=null)=>fs.writeFileSync('ai-review-result.json',JSON.stringify({
   attempted:prepared.length,confirmed:results.length,complete,error,
   results,scheduledByImport:0,publishedByImport:0
-},null,2)+'\\n');
+},null,2)+'\n');
 checkpoint(false);
 for(const {row,proof} of prepared){
   const result=await recordAiReview(env,row,proof,profile,{fingerprint,productMatchErrors,duplicatePostErrors,isWeatherPost});
