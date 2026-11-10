@@ -9,11 +9,11 @@ from PIL import Image,ImageDraw,ImageFilter
 SCALE=512
 RAW="https://raw.githubusercontent.com/"
 SCENES=[
-{"id":"XJW-CONV-chat-luerong-intro","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg","blob":"3892582fecf8e701ba790961af04abc6c640c3cb","mask":[(254,397,311,488)],"objects":[("luerong",(260,403,309,480))]},
-{"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(219,322,282,401)],"objects":[("drink30",(233,323,274,390))]},
-{"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(230,419,291,491)],"objects":[("gao",(240,418,288,490))]},
-{"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(241,412,304,492)],"objects":[("gao",(254,413,300,489))]},
-{"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(156,347,219,420),(245,332,345,451)],"objects":[("drink30",(167,348,213,419)),("drink180",(263,334,331,452))]}
+{"id":"XJW-CONV-chat-luerong-intro","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg","blob":"3892582fecf8e701ba790961af04abc6c640c3cb","mask":[(255,365,335,473)],"objects":[("luerong",(267,370,323,464))]},
+{"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(201,330,268,406)],"objects":[("drink30",(210,331,251,398))]},
+{"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(227,401,300,492)],"objects":[("gao",(239,405,293,486))]},
+{"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(241,394,306,493)],"objects":[("gao",(251,401,300,488))]},
+{"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(157,344,226,428),(251,277,349,450)],"objects":[("drink30",(165,351,212,416)),("drink180",(251,294,346,449))]}
 ]
 PRODUCTS={
 "luerong":("images/product-main/luerong-fen.png","910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e"),
@@ -34,7 +34,7 @@ def unpack_product(key):
  if key=="gao":
   # Formal main shows original carton+100g hexagonal jar; isolate jar on the right,
   # not an AI-redrawn imitation. Preserve all label pixels inside extracted jar.
-  w,h=im.size;im=im.crop((int(w*.48),0,w,h))
+  w,h=im.size;im=im.crop((int(w*.68),0,w,h))
  # Retain only true transparent product; if source is opaque white studio background,
  # use outer-connected light pixels, never edit product text/colored label.
  alpha=im.getchannel("A")
@@ -58,7 +58,7 @@ products={}
 stats={}
 for k in PRODUCTS:
  products[k],stats[k]=unpack_product(k)
-outdir=Path("ops/visual-previews/20261110-official-source-composite")
+outdir=Path("ops/visual-previews/20261110-official-source-composite-v2")
 outdir.mkdir(parents=True,exist_ok=True)
 side=512;sheet=Image.new("RGB",(side*2,side*len(SCENES)),(250,248,244))
 report={"schema":"xjw-five-product-official-photo-preview-v1","status":"draft-only-needs-human-visual-inspection","D1Writes":0,"approvals":0,"scheduled":0,"publications":0,"sourceAssetDetails":stats,"previews":[]}

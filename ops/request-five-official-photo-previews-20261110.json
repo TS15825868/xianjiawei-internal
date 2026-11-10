@@ -14,5 +14,9 @@
   "doNotApprove": true,
   "doNotPublish": true,
   "doNotChangeLiveImageUrl": true,
-  "stage": "draft_preview_for_next_visual_inspection"
+  "stage": "draft_preview_for_next_visual_inspection",
+  "version": 2,
+  "requestedAt": "2026-11-10T13:25:00+08:00",
+  "retryReason": "First five-image draft contact-sheet was NOT acceptable: old fake images persisted partially outside too-small removal masks and original guilu-gao cutout included two visible package instances. Keep v1 as evidence, generate separate v2 draft with corrected full-extent masks and tighter genuine jar crop. Never write D1/publish before direct visual approval.",
+  "sourceRun": 42761707867
 }
