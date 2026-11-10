@@ -1,0 +1,31 @@
+{
+  "scope": "xjw-two-holiday-scene-location-clarity-20261110-v1",
+  "sourceSnapshotAt": "2026-11-10T01:57:21.780Z",
+  "authorizeFix": true,
+  "authorizeApproval": false,
+  "authorizePublish": false,
+  "items": [
+    {
+      "id": "XJW-CAND-20261225",
+      "field": "copy",
+      "expectedTitle": "聖誕節的小小聚會，誰負責準備點心",
+      "expectedCopy": "聖誕節的午後，仙加味小老闆在萬華工作間的木桌上擺好杯盤、餅乾與蛋糕，等朋友來坐一會兒；小鹿和小烏龜也圍在桌邊。\n\n仙加味除了分享漢方食品，也喜歡記錄家常點心、杯盤安排這些飲食小習慣。節日聚會不用把餐桌塞滿，先準備幾樣大家願意一起分享的小點心，就能慢慢聊天。\n\n你準備節日小聚時，最先擺上桌的是茶飲、餅乾，還是蛋糕？",
+      "expectedImageAlt": "聖誕節的小型居家聚會，小老闆和小鹿、小烏龜在擺著點心與杯盤的桌邊聊天。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261225.webp",
+      "nextValue": "聖誕節的午後，仙加味小老闆在家中木桌上擺好杯盤、餅乾與蛋糕，等朋友來坐一會兒；小鹿和小烏龜也圍在桌邊。\n\n仙加味除了分享漢方食品，也喜歡記錄家常點心、杯盤安排這些飲食小習慣。節日聚會不用把餐桌塞滿，先準備幾樣大家願意一起分享的小點心，就能慢慢聊天。\n\n你準備節日小聚時，最先擺上桌的是茶飲、餅乾，還是蛋糕？",
+      "check": "scene_environment",
+      "evidence": "正式原始情境媒體的2026-11-07逐圖來源記錄ops/scene-cast-visual-audit-20261107.json明示『聖誕節居家小型聚會、溫和節慶布置、杯盤與聊天情境』；現版ALT亦描述居家聚會，而原文把同場景誤寫為萬華工作間。僅移除錯誤店址並改為家中木桌，保留原圖及點心、杯盤、小老闆、小鹿小龜的動作描述。"
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "field": "copy",
+      "expectedTitle": "年前整理餐具，先把常用的放前面",
+      "expectedCopy": "年前準備家人聚餐時，仙加味小老闆在萬華店裡拿著布巾擦乾青花碗，將常用的碗盤整齊放回木櫃，小鹿、小烏龜在旁邊看著。\n\n煮家常菜或準備一鍋湯前，先把盛菜、分湯用的碗盤放在順手的位置，等大家坐下來吃飯也比較方便。仙加味分享漢方飲食文化，也喜歡記錄這些料理前的準備小事。\n\n你家年前會先整理碗盤，還是先討論年菜菜單？",
+      "expectedImageAlt": "年前整理廚房，小老闆擦乾碗盤並收進櫥櫃，小鹿和小烏龜分開在旁陪伴。",
+      "expectedImageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270129.webp",
+      "nextValue": "年前準備家人聚餐時，仙加味小老闆在廚房木櫃前拿著布巾擦乾青花碗，將常用的碗盤整齊放回木櫃，小鹿、小烏龜在旁邊看著。\n\n煮家常菜或準備一鍋湯前，先把盛菜、分湯用的碗盤放在順手的位置，等大家坐下來吃飯也比較方便。仙加味分享漢方飲食文化，也喜歡記錄這些料理前的準備小事。\n\n你家年前會先整理碗盤，還是先討論年菜菜單？",
+      "check": "scene_environment",
+      "evidence": "正式原始情境媒體的2026-11-07逐圖來源記錄ops/scene-cast-visual-audit-20261107.json明示『年節前廚房櫥櫃整理餐具』，現版ALT也描述年前整理廚房及碗盤；原文寫萬華店裡，對同場景位置造成矛盾。現以畫面可見廚房木櫃及布巾擦餐具動作替換店址，不假稱特定地址或店面；角色與圖片保持原樣。"
+    }
+  ]
+}
