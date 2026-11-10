@@ -1,0 +1,45 @@
+name: 仙加味49篇待審原圖可視化巡檢
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/request-forty-nine-current-visual-review-20261110.json'
+permissions:
+  contents: write
+concurrency:
+  group: xjw-contact-gallery-review
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Pillow free image layout
+        run: python -m pip install -q pillow
+      - name: Source-bound image montage and manifest; no D1 writes
+        run: python ops/create-forty-nine-pending-visual-gallery-20261110.py
+      - name: Save read-only gallery to main with safe fast-forward
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/visual-review/20261110-49-pending/
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "review: contact sheets for 49 source-bound pending posts (no approvals)"
+          for i in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-49-current-visual-audit-${{ github.run_id }}
+          path: ops/visual-review/20261110-49-pending/
+          retention-days: 7
