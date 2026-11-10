@@ -43,5 +43,7 @@
   },
   "observedStatus": "all_three_PUBLISHED_with_provider_url",
   "originalD1Review": "NEEDS_HUMAN_REVIEW",
-  "historicalVisualGap": "15 private + 3 inaccessible + carousel child coverage"
+  "historicalVisualGap": "15 private + 3 inaccessible + carousel child coverage",
+  "retryOf": 42747342953,
+  "retryReason": "Node preflight syntax error due invalid JS property name starting with number. Prior workflow failed before any D1 writes. Fix only syntax; preserve verified 3 platform PUBLISHED receipts."
 }

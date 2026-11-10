@@ -66,7 +66,7 @@ try{
  now,'使用者11/10明確單篇直接發布授權；Metricool三平台PUBLISHED實連回執，原AI歷史去重DEFER未改判、未冒充16/16核准。',now,p.id,p.updated_at,p.title,p.copy,p.image_url,p.image_alt,p.image_quality_status,ext.postId,ext.uuid);
  const audit=sql("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT ?,'chatgpt-assistant:owner-direct-instruction','單篇使用者明確發布後三平台正式回執對帳；不偽造AI或人工16項核准','貼文',?,?,?,'' WHERE changes()=1",
  'AUD-'+crypto.randomUUID(),p.id,JSON.stringify({status:p.status,review:prior.id,duplicate:'DEFER',sourceImageSha:prior.image_sha256}),
- JSON.stringify({status:'published',verifiedAt:now,metricoolId:ext.postId,uuid:ext.uuid,providerReceipts:ext.receipts,ownerDirectException:true,16checksNotPassed:true}));
+ JSON.stringify({status:'published',verifiedAt:now,metricoolId:ext.postId,uuid:ext.uuid,providerReceipts:ext.receipts,ownerDirectException:true,all16ChecksNotPassed:true}));
  const out=await query([insertLink,...inserts,published,audit].join(';\n'));
  if(out.length!==6||out.some((x,i)=>x.meta?.changes!==1))throw Error('Expected exactly one write per mapping, 3 providers, local publish and audit; observed '+JSON.stringify(out.map(x=>x.meta?.changes)));
  const [back,l,delivery]=await Promise.all([
