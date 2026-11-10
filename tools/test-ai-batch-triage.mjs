@@ -55,3 +55,12 @@ test('untrusted historical source snapshot fails closed',()=>{
  const r=run([{id:'a',blockers:['duplicate:DEFER']}],1,{schema:'unknown',missing:[]});
  assert.notEqual(r.status,0);
 });
+
+test('final compliance DEFER is isolated from duplicate-only backlog for batch review',()=>{
+ const r=run([{id:'product',decision:'NEEDS_HUMAN_REVIEW',checks:{compliance_final:'DEFER',duplicate:'DEFER'},blockers:['compliance_final:DEFER','duplicate:DEFER']},
+              {id:'history',decision:'NEEDS_HUMAN_REVIEW',checks:{compliance_final:'PASS',duplicate:'DEFER'},blockers:['duplicate:DEFER']}]);
+ assert.equal(r.status,0,r.stderr);
+ assert.deepEqual(r.result.queue.verify_compliance_evidence,['product']);
+ assert.deepEqual(r.result.queue.recover_evidence,['history']);
+ assert.equal(r.result.items[0].automaticallyApproved,false);
+});
