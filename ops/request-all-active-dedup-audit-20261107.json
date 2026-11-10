@@ -1,11 +1,11 @@
 {
   "scope": "full-current-active-20261107-readonly",
   "on": "2026-11-09",
-  "reason": "Substantive D1 current set changed since last successful 52 scan: 11/10 one owner-direct FB/IG/Threads post now externally verified PUBLISHED and formally D1 reconciled Action42747526266; D1 active pending50, archived106, published5; 5 product-invalid AI illustrations now needs_rework with new REJECTED evidence Actions42746592498/42747417762. Run readonly text/public-history/visual neighbor screen of 50 current D1 rows, incorporate newest D1 published today and saved 74/35/23 external sources without redownloading successful historical 178 media. Treat 15 private cache, 3 inaccessible public media and carousel child gaps as DEFER until independently resolved. Never approve/publish/flip status or reclassify 5 rework product posts as clear.",
+  "reason": "Fix a real audit reporting bug discovered after 2026-11-10 11:14 scan: old scanner only counted 'needs_review' as quality unresolved, falsely reported zero although five D1 product photo records were exact CAS flagged needs_rework and REJECTED by official product originals comparison Actions42746592498,42747417762. New read-only scanner must count needs_rework, needs_regeneration, rejected, low, missing AND needs_review, plus AI rejection proof counts, while retaining exact 50 pending and 5 published. Do not recalculate any historical photos, make any D1 writes, auto PASS, schedule or post.",
   "allowApproval": false,
   "allowPublication": false,
   "mutateD1": false,
-  "lastRerun": "2026-11-10T11:14:00+08:00",
+  "lastRerun": "2026-11-10T11:16:00+08:00",
   "afterCopyRepairRun": 42465803840,
   "requestedBy": "owner",
   "afterArchiveRun": 42638949585,
@@ -15,5 +15,6 @@
   "afterImageReworkRuns": [
     42746592498,
     42747417762
-  ]
+  ],
+  "afterScannerFix": "quality statuses all unsupported 6 flags counted"
 }
