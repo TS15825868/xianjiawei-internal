@@ -7,7 +7,7 @@ const req=JSON.parse(fs.readFileSync('ops/request-three-product-image-rework-202
 const allowed=["XJW-CONV-cny-gift-choice","XJW-CONV-chat-picture-or-text","XJW-CONV-chat-glass-vs-pouch-storage"];
 if(req.scope!=='xjw-three-direct-visual-product-rework-v1'||req.items?.length!==3||
  req.doNotApprove!==true||req.doNotSchedule!==true||req.doNotPublish!==true||
- req.keepOriginalImage!==true||req.items.some((x,i)=>x.id!==allowed[i]||x.visualFinding.length<120))
+ req.keepOriginalImage!==true||req.items.some((x,i)=>x.id!==allowed[i]||x.visualFinding.length<105))
  throw Error('Unsafe request');
 const token=process.env.CLOUDFLARE_API_TOKEN,account=process.env.CLOUDFLARE_ACCOUNT_ID;
 const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];

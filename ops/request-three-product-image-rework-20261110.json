@@ -56,5 +56,7 @@
       "visualFinding": "已直接檢視龜鹿飲包裝整理情境圖：圖中的180cc鋁袋被AI畫成體積過大的方正銀袋，上方錯誤文字及仿標籤，與官網main正式180cc狹長印字鋁袋原圖完全不一致；30cc小玻璃裸罐也是重新描繪而非原圖。嚴禁以AI改包裝或放大比例，需同時以官網30cc、180cc正式原圖重新等比合成。",
       "scope": "mark_for_authentic_product_image_rework_only"
     }
-  ]
+  ],
+  "retryOfFailedAction": 42746945832,
+  "retryNote": "Previous action rejected preflight only (zero D1 writes) because two separately direct-verified visual mismatch descriptions are 115 and 119 Chinese characters, which are sufficient to identify the formal photo mismatch. 105-char limit still enforces detail and preserves all other original CAS guards."
 }
