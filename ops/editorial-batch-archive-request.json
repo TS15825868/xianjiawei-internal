@@ -1,23 +1,23 @@
 {
   "scope": "xjw-evidence-guarded-editorial-batch-v1",
-  "requestId": "xjw-20261109-posted-home-soup-near-scene-archive-01",
+  "requestId": "xjw-20261110-drink-made-to-order-already-published-faq-overlap-01",
   "allowArchive": true,
   "allowApproval": false,
   "allowPublish": false,
   "allowDelete": false,
-  "sourceSnapshotGeneratedAt": "2026-11-09T13:22:34.207Z",
-  "description": "One evidence-grounded editorial near-duplicate of already published November 3 home soup scene. Preserve post/image and prior successful receipts. Do not approve, schedule or publish.",
+  "sourceSnapshotGeneratedAt": "2026-11-10T09:41:22.999Z",
+  "description": "Archive one near-duplicative drink made-to-order FAQ; already published official Threads post 2026-09-13 has the same production/lead-time answer. Preserves original image and copy, with D1 CAS/readback; do not affect 11/10 published social post or other pending review posts.",
   "items": [
     {
-      "id": "XJW-CONV-chat-soup-day",
-      "title": "你家有固定的煮湯日嗎？",
-      "copy": "有些家庭週末比較有空，就會慢慢煮一鍋；有些則完全不固定，想到就煮。\n\n仙加味平常分享家常料理時，也常想到每個家庭都有自己習慣的一鍋湯。\n\n你家有自己的煮湯習慣嗎？還是看當天想吃什麼再決定？",
-      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-soup-day-safety-v1.png",
-      "imageAlt": "仙加味家常廚房，小老闆用長柄木勺攪拌熟雞湯，另一手戴乾燥隔熱手套握鍋柄；電磁爐沒有明火，備料桌只有分碗洗淨蔬菜，未接觸生肉，小鹿與小烏龜各坐在爐台外的矮凳。",
+      "id": "XJW-CONV-chat-drink-made-to-order",
+      "title": "龜鹿飲是先做好放著嗎？",
+      "copy": "在仙加味萬華店裡，小老闆拿著筆翻開筆記本，桌邊擺著小月曆；小鹿在乾貨架旁，小烏龜陪著看日期。\n\n要訂購仙加味龜鹿飲，可以先想想哪一天需要，再到官方 LINE OA 告訴我們預計使用的時間，確認製作和寄送能否配合。龜鹿飲採接單後製作，約5～7個工作天出貨，這個交期不套用到其他商品。\n\n你安排預先訂購的食品時，會先記在月曆上，還是手機備忘錄？",
+      "imageUrl": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg",
+      "imageAlt": "仙加味小老闆在木桌上記錄龜鹿飲訂單與製作日程，小鹿整理食材，小烏龜陪在月曆旁。",
       "category": "substantive_editorial_duplicate",
       "verifiedOriginalScene": true,
-      "reason": "2026-11-03家常湯已在Facebook、Instagram、Threads完成發布，現篇雖改成詢問每週固定煮湯日，但同樣由小老闆在家常廚房操作熟雞湯鍋，並以家庭湯鍋習慣為主題。2026-11-07逐圖圖文覆核明確記錄SHARED_SOUP_COOKING_SCENE，歷史感知鄰近紀錄亦把已發Metricool 415226845列為16距離候選；主題角度不足以抵銷已發視覺高度近似。依品牌不重複發圖與已發主題規則，編輯性安全封存此未發版本，保留已發布稿及原檔。",
-      "imageInspectionDetails": "已引用正式來源ops/content-image-pair-verdicts-20261107.json逐圖覆核：待審圖為小老闆使用長柄木勺在電磁爐旁攪拌熟雞湯，另手戴隔熱手套握鍋柄，小鹿小烏龜坐在廚房爐台外；已發布11/03圖亦呈現小老闆及兩夥伴伴隨熟湯鍋的家常煮湯場景。另見ops/visual-text-neighbors-20261107.json的415226845視覺近鄰候選。兩圖不宣稱像素完全相同，判定為重複編輯角度與料理動作近似，而不是全面歷史去重PASS。"
+      "reason": "已發布Threads於2026-09-13（https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt）正式說明龜鹿飲30cc玻璃罐及180cc鋁袋皆採接單後製作、約5～7個工作天出貨；此待審稿標題「龜鹿飲是先做好放著嗎？」與內文重複相同核心問答及交期資訊，僅新增小老闆拿月曆預先訂購的畫面與LINE OA導流，屬相同產品問答角度換句話再發。品牌規則禁止已發布內容相同主題改寫重貼，故依實際出版史作編輯安全封存，不刪除原圖與既有紀錄、不發布。",
+      "imageInspectionDetails": "已親自查看GitHub正式來源assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-drink-made-to-order-scene-v2.jpg（Blob 47072329739cae4d2c1f4bf022bb9d4f1f638e36）：小老闆在木桌寫筆記、右方小烏龜拿月份月曆、小鹿在左邊整理紅棗與乾貨，畫面並未繪製正式龜鹿飲產品罐或鋁袋。原情境圖片畫面品質可保留但只做已發接單後製作交期FAQ的另一個視覺包裝；此案不是宣稱圖片位元重複，而是已發主題與交期答覆重複。參照ops/published-crossplatform-copy-overlap-20261105.json已發Threads特定來源與ops/visual-text-neighbors-20261107.json的0.24相似候選。"
     }
   ]
 }
