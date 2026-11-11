@@ -1,0 +1,9 @@
+{
+  "schema": "xjw-near-pair-visual-review-v1",
+  "source": "ops/receipts/20261112-current-vs-archived-all-49.json",
+  "scope": "10 image near pairs from 49 current pending vs 88 existing original files",
+  "readOnly": true,
+  "noD1Writes": true,
+  "noAIApprovals": true,
+  "noPublication": true
+}
