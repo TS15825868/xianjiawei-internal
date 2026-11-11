@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths: ['ops/request-all-active-dedup-audit-20261107.json']
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: xianjiawei-all-pending-dedup-readonly
   cancel-in-progress: false
@@ -21,6 +21,26 @@ jobs:
         with: { node-version: 22 }
       - name: Audit all current active posts against FB, IG, Threads published history without modification
         run: node ops/full-current-history-screen-20261107.mjs
+      - name: Save one verified current-version all-pending editorial-dedup evidence report
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          cp all-active-history-dedup-screen.json ops/receipts/20261111-current-all-pending-history-screen.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('ops/receipts/20261111-current-all-pending-history-screen.json','utf8'));
+          const n=Number(d.counts.find(r=>r.status==='pending_review')?.count||0);
+          if(d.activePosts!==n||d.rows.length!==n||d.d1Mutations!==0||d.aiApprovals!==0||d.humanApprovals!==0||d.publications!==0)throw Error('Snapshot incomplete or released');
+          console.log('Verified current D1 all-pending snapshot:',n,'published exact text duplicates:',d.copyExactPublished);
+          NODE
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261111-current-all-pending-history-screen.json
+          git commit -m 'audit: preserve 2026-11-11 current pending published-history comparison'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
       - uses: actions/upload-artifact@v4
         if: always()
         with:
