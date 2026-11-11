@@ -9,8 +9,8 @@ from PIL import Image,ImageDraw,ImageFilter
 SCALE=512
 RAW="https://raw.githubusercontent.com/"
 SCENES=[
-{"id":"XJW-CONV-chat-luerong-intro","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg","blob":"3892582fecf8e701ba790961af04abc6c640c3cb","mask":[(255,365,335,473)],"objects":[("luerong",(267,370,323,464))]},
-{"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(201,330,268,406)],"objects":[("drink30",(210,331,251,398))]},
+{"id":"XJW-CONV-chat-luerong-intro","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg","blob":"3892582fecf8e701ba790961af04abc6c640c3cb","mask":[(255,365,335,473)],"objects":[("luerong",(267,379,323,473))]},
+{"id":"XJW-CONV-chat-photo-size","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg","blob":"c24ccffa60a43cce852a7ed3633d06c03953ecce","mask":[(201,330,268,406)],"objects":[("drink30",(210,347,251,414))]},
 {"id":"XJW-CONV-cny-gift-choice","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg","blob":"56e23eede90f33e6fe85e6c8ea25fa5453e085d4","mask":[(248,377,303,480)],"objects":[("gao",(239,369,313,484))]},
 {"id":"XJW-CONV-chat-picture-or-text","source":"assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg","blob":"0de63ca21971c4775df6e038bfbf739a13b8b591","mask":[(253,378,308,481)],"objects":[("gao",(244,366,316,485))]},
 {"id":"XJW-CONV-chat-glass-vs-pouch-storage","source":"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg","blob":"5ab0df32d18c568482df77de23010f8829719870","mask":[(172,354,210,417)],"objects":[("drink30",(162,346,216,417)),("drink180",(241,283,347,441))]}
@@ -18,7 +18,7 @@ SCENES=[
 # Five current pending posts; preview both erasure strategies, no D1 changes.
 TIGHT_MASKS={
 "XJW-CONV-chat-luerong-intro":(266,373,330,473),
-"XJW-CONV-chat-photo-size":(202,334,269,427),
+"XJW-CONV-chat-photo-size":(202,334,269,415),
 "XJW-CONV-cny-gift-choice":(240,372,310,482),
 "XJW-CONV-chat-picture-or-text":(241,366,319,486),
 "XJW-CONV-chat-glass-vs-pouch-storage":(169,349,214,422),
