@@ -1,0 +1,34 @@
+{
+  "mode": "official_photo_pending_only",
+  "source": "2026-11-11 independently full-size visually inspected genuine product composites; source official Git blob provenance from GitHub main",
+  "noAIApproval": true,
+  "noHumanApproval": true,
+  "noSchedule": true,
+  "noPublication": true,
+  "items": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "productType": "luerong",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-wood_patch-preview.jpg",
+      "previewSHA256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "officialProductBlob": "910f7eee29bfdac73d3f9d4f1a05fc4b5fd9f78e",
+      "newImagePath": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+      "expectedImageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
+      "expectedImageSHA256": "24af3e0fcfad9006d2848da5176b2322a76e12008d0a47ef4ea066b84f0018ce",
+      "expectedUpdatedAt": "2026-11-10T15:09:47.839Z",
+      "visualInspection": "鹿茸粉75g真實實物罐身及原有文字，角色與比例經完整尺寸覆核，修除舊AI假罐殘影及桌面矩形陰影"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "productType": "drink30",
+      "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-wood_patch-preview.jpg",
+      "previewSHA256": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "officialProductBlob": "d46d1c788b2bd9edd6522e4524faaec5c478c880",
+      "newImagePath": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg",
+      "expectedImageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
+      "expectedImageSHA256": "fa1f3a189397aea6d4d848b02498d3ccb7cc7a8f4f955df437900f749be77780",
+      "expectedUpdatedAt": "2026-11-10T05:32:16.037Z",
+      "visualInspection": "龜鹿飲30cc小玻璃裸罐，無貼紙也沒有重新設計瓶型；與手機、桌面相對尺寸核對，原產品像素保留並移除舊陰影矩形"
+    }
+  ]
+}
