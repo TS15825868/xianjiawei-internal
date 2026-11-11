@@ -1,0 +1,78 @@
+name: 仙加味2篇真實產品圖正式修復及D1受保護讀回（無發布）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/pending-image-promotion-requests/*.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Lock one batch of source-bound inspected pending images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t requests < <(git diff --name-only HEAD^ HEAD -- ops/pending-image-promotion-requests/)
+          test "${#requests[@]}" -eq 1
+          [[ "${requests[0]}" =~ ^ops/pending-image-promotion-requests/[A-Za-z0-9_-]+\.json$ ]]
+          echo "PENDING_IMAGE_PROMOTION_REQUEST=${requests[0]}" >> "$GITHUB_ENV"
+      - name: Validate current preview source SHA and promote exact verified JPEG bytes to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tools/promote-source-bound-pending-photo.mjs
+          node --test tools/test-d1-http-transport.mjs
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const r=JSON.parse(fs.readFileSync(process.env.PENDING_IMAGE_PROMOTION_REQUEST,'utf8'));
+          const m=JSON.parse(fs.readFileSync('ops/visual-previews/20261110-official-source-composite-v8/manifest.json','utf8'));
+          if(r.mode!=='official_photo_pending_only'||r.noAIApproval!==true||r.noHumanApproval!==true||r.noSchedule!==true||r.noPublication!==true||r.items?.length!==2)throw Error('Unsafe photo promotion');
+          for(const i of r.items){
+            const found=m.previews.find(x=>x.id===i.id&&x.approach==='wood_patch');
+            const sha=crypto.createHash('sha256').update(fs.readFileSync(i.previewPath)).digest('hex');
+            if(!found||found.previewPath!==i.previewPath||found.previewSHA256!==i.previewSHA256||sha!==i.previewSHA256||!i.newImagePath.startsWith('assets/post-images/2026-11-11/formal-production/'))throw Error('Cannot validate source photo');
+            fs.mkdirSync(require('path').dirname(i.newImagePath),{recursive:true});
+            fs.copyFileSync(i.previewPath,i.newImagePath);
+          }
+          NODE
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/post-images/2026-11-11/formal-production/
+          git commit -m 'media: preserve two inspected official-product scene photos before D1 link update'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Update two source-bound pending images and exact latest AI review, verify both
+        run: node tools/promote-source-bound-pending-photo.mjs
+      - name: Save independent source and D1 readback receipt in latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          report="ops/receipts/${PENDING_IMAGE_PROMOTION_REQUEST##*/}"
+          cp /tmp/final-photo-pending-receipt.json "$report"
+          node -e "const r=require('./'+process.argv[1]);if(r.complete!==true||r.verified!==r.requested||r.aiApproval!==0||r.humanApproval!==0||r.scheduled!==0||r.published!==0)process.exit(1)" "$report"
+          git add "$report"
+          git commit -m 'audit: verify two real-product pending photo D1 CAS updates and preserved DEFER'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pending-official-photo-v2-${{ github.run_id }}
+          path: /tmp/final-photo-pending-receipt.json
+          retention-days: 7
