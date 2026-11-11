@@ -1,0 +1,14 @@
+{
+  "mode": "copy_only_pending_review_rebind",
+  "copyBatch": "ops/post-copy-cleanup-batches/20261110-3-public-terms.json",
+  "copyReceipt": "ops/receipts/20261110-3-public-terms.json",
+  "postIds": [
+    "XJW-CONV-chat-luerong-intro",
+    "XJW-CONV-chat-picture-or-text",
+    "XJW-CONV-cny-gift-choice"
+  ],
+  "approve": false,
+  "schedule": false,
+  "publish": false,
+  "note": "Rebind only corrected copy source fingerprints using existing 14 previously passed checks and preserve DEFER duplicate/compliance; AI evidence only, no D1 post update or external action."
+}
