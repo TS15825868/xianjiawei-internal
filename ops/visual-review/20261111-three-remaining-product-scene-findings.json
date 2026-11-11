@@ -1,0 +1,41 @@
+{
+  "schema": "xjw-pending-visual-human-inspection-v1",
+  "date": "2026-11-11",
+  "mode": "read_only",
+  "reviewedAgainst": "ops/visual-previews/20261110-official-source-composite-v8/manifest.json",
+  "checked": [
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "status": "REWORK_REQUIRED",
+      "observations": [
+        "Real 100g jar overlay visible but darker prior jar/photo remains visible along right side and base",
+        "Official original pixels not enough to certify finished scene"
+      ],
+      "next": "Remove residual underlying jar/ghost and inspect at 100% before D1 update"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "status": "REWORK_REQUIRED",
+      "observations": [
+        "Old jar silhouette still visible behind official 100g jar, particularly upper-right lid/body",
+        "Image is visibly composited and cannot pass final product consistency"
+      ],
+      "next": "Remove entire old jar silhouette and regenerate seamless tabletop from genuine scene without changing official packaging"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "status": "MANUAL_SCALE_REVIEW_REQUIRED",
+      "observations": [
+        "Actual 30cc glass jar and 180cc aluminum pouch are visible",
+        "Relative pouch size and background contact shadow need independent scale/scene review",
+        "One prior editorial similarity warning remains for storage topic"
+      ],
+      "next": "Verify original 180cc pouch proportions and published storage-topic visual difference; do not auto-promote"
+    }
+  ],
+  "pendingApprovalChanges": 0,
+  "d1Writes": 0,
+  "scheduled": 0,
+  "published": 0,
+  "policy": "No image with visible ghost packages or unresolved product scale may be marked AI_APPROVED."
+}
