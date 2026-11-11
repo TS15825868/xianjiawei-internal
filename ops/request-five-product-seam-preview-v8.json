@@ -9,5 +9,5 @@
   "scheduled": 0,
   "publications": 0,
   "allowAutoDeployment": false,
-  "diagnostic": "2026-11-11 final shadow alpha fix: eliminate rectangle-cut shadow matte, preserve source product label and visible true packaging, inspect before promotion; preview only no D1"
+  "diagnostic": "2026-11-11 recheck both remaining 100g ghost-jar images using enlarged source erase masks; 3rd 30cc/180cc storage image still needs scale inspection; preview only, no D1 writes"
 }
