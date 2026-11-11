@@ -11,9 +11,9 @@
     "pending": 49,
     "groups": {
       "IMAGE_REWORK": 3,
-      "EDITORIAL_COLLISION_CHECK": 46,
-      "COMPLIANCE_CHECK": 0,
-      "HISTORICAL_VISUAL_ONLY": 0
+      "EDITORIAL_COLLISION_CHECK": 0,
+      "COMPLIANCE_CHECK": 2,
+      "HISTORICAL_VISUAL_ONLY": 44
     }
   },
   "noAIApprovals": true,
@@ -31,7 +31,12 @@
       "XJW-CONV-chat-picture-or-text",
       "XJW-CONV-cny-gift-choice"
     ],
-    "EDITORIAL_COLLISION_CHECK": [
+    "EDITORIAL_COLLISION_CHECK": [],
+    "COMPLIANCE_CHECK": [
+      "XJW-CONV-chat-luerong-intro",
+      "XJW-CONV-chat-photo-size"
+    ],
+    "HISTORICAL_VISUAL_ONLY": [
       "XJW-CAND-20261211",
       "XJW-CAND-20261222",
       "XJW-CAND-20261225",
@@ -51,11 +56,9 @@
       "XJW-CONV-chat-family-old-object",
       "XJW-CONV-chat-fixed-storage",
       "XJW-CONV-chat-last-bowl",
-      "XJW-CONV-chat-luerong-intro",
       "XJW-CONV-chat-no-standard-answer",
       "XJW-CONV-chat-opening-prep",
       "XJW-CONV-chat-pantry-memory",
-      "XJW-CONV-chat-photo-size",
       "XJW-CONV-chat-quiet-work",
       "XJW-CONV-chat-receive-package",
       "XJW-CONV-chat-recipe-or-feel",
@@ -78,15 +81,13 @@
       "XJW-FEST-2027-eve-welcome-home",
       "XJW-FEST-2027-lantern-riceballs",
       "XJW-FEST-2027-newyear-breakfast"
-    ],
-    "COMPLIANCE_CHECK": [],
-    "HISTORICAL_VISUAL_ONLY": []
+    ]
   },
   "rows": [
     {
       "id": "XJW-CAND-20261211",
       "title": "桌邊的小筆記，你習慣怎麼分類",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -108,8 +109,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp",
       "highestPublishedCopySimilarity": 0.0551,
@@ -159,7 +159,7 @@
     {
       "id": "XJW-CAND-20261222",
       "title": "冬至餐桌上的甜湯圓與鹹湯圓",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -181,8 +181,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261222.webp",
       "highestPublishedCopySimilarity": 0.0208,
@@ -223,7 +222,7 @@
     {
       "id": "XJW-CAND-20261225",
       "title": "聖誕節的小小聚會，誰負責準備點心",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -245,8 +244,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261225.webp",
       "highestPublishedCopySimilarity": 0.0121,
@@ -296,7 +294,7 @@
     {
       "id": "XJW-CAND-20270105",
       "title": "認識食材，不一定要從複雜配方開始",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -318,8 +316,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270105.webp",
       "highestPublishedCopySimilarity": 0.0169,
@@ -369,7 +366,7 @@
     {
       "id": "XJW-CAND-20270115",
       "title": "紅棗入甜湯，整顆還是切開",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -391,8 +388,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270115.webp",
       "highestPublishedCopySimilarity": 0.053,
@@ -442,7 +438,7 @@
     {
       "id": "XJW-CAND-20270119",
       "title": "年菜菜單先留一道蔬菜",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -464,8 +460,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270119.webp",
       "highestPublishedCopySimilarity": 0,
@@ -495,7 +490,7 @@
     {
       "id": "XJW-CAND-20270126",
       "title": "市場買菜的路上，也有萬華的味道",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -517,8 +512,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270126.webp",
       "highestPublishedCopySimilarity": 0.0417,
@@ -568,7 +562,7 @@
     {
       "id": "XJW-CAND-20270129",
       "title": "年前整理餐具，先把常用的放前面",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -590,8 +584,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270129.webp",
       "highestPublishedCopySimilarity": 0.0397,
@@ -641,7 +634,7 @@
     {
       "id": "XJW-CAND-20270305",
       "title": "萬華春日早晨，老街的新風景",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -663,8 +656,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270305.webp",
       "highestPublishedCopySimilarity": 0.0305,
@@ -714,7 +706,7 @@
     {
       "id": "XJW-CAND-20270312",
       "title": "春天煮湯，你會先選湯底還是蔬菜？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -736,8 +728,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270312.webp",
       "highestPublishedCopySimilarity": 0.0508,
@@ -787,7 +778,7 @@
     {
       "id": "XJW-CAND-20270323",
       "title": "從老手藝到現代日常，記錄一個工序",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -809,8 +800,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270323.webp",
       "highestPublishedCopySimilarity": 0.1203,
@@ -860,7 +850,7 @@
     {
       "id": "XJW-CAND-20270330",
       "title": "乾燥食材分類，透明收納袋怎麼排",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -882,8 +872,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270330.webp",
       "highestPublishedCopySimilarity": 0.0791,
@@ -933,7 +922,7 @@
     {
       "id": "XJW-CONV-care-simple-checkin",
       "title": "一句問候，也是一種關心",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -955,8 +944,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
       "highestPublishedCopySimilarity": 0.0647,
@@ -1006,7 +994,7 @@
     {
       "id": "XJW-CONV-chat-buy-first-look",
       "title": "買東西時，你第一個看什麼？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1028,8 +1016,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
       "highestPublishedCopySimilarity": 0.0408,
@@ -1079,7 +1066,7 @@
     {
       "id": "XJW-CONV-chat-dayoff-cook",
       "title": "放假在家，你會想慢慢準備一餐嗎？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1101,8 +1088,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
       "highestPublishedCopySimilarity": 0.0364,
@@ -1152,7 +1138,7 @@
     {
       "id": "XJW-CONV-chat-elder-kitchen-habit",
       "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1174,8 +1160,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
       "highestPublishedCopySimilarity": 0.065,
@@ -1225,7 +1210,7 @@
     {
       "id": "XJW-CONV-chat-family-old-object",
       "title": "你會保留家裡長輩以前的東西嗎？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1247,8 +1232,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
       "highestPublishedCopySimilarity": 0.0523,
@@ -1298,7 +1282,7 @@
     {
       "id": "XJW-CONV-chat-fixed-storage",
       "title": "你的廚房，最常用木匙還是長筷？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1320,8 +1304,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-fixed-storage-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.0472,
@@ -1395,8 +1378,8 @@
       "blockers": [
         "duplicate:DEFER",
         "compliance_final:DEFER",
-        "published_copy_similarity_alert",
-        "MANUAL_SCALE_REVIEW_REQUIRED"
+        "MANUAL_SCALE_REVIEW_REQUIRED",
+        "published_copy_similarity_alert"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg",
       "highestPublishedCopySimilarity": 0.181,
@@ -1450,7 +1433,7 @@
     {
       "id": "XJW-CONV-chat-last-bowl",
       "title": "家裡煮湯，最後一口是誰喝掉的？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1472,8 +1455,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
       "highestPublishedCopySimilarity": 0.0277,
@@ -1523,7 +1505,7 @@
     {
       "id": "XJW-CONV-chat-luerong-intro",
       "title": "今天認識一個比較少聊到的：鹿茸粉",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "COMPLIANCE_CHECK",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1546,8 +1528,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "compliance_final:DEFER",
-        "published_copy_similarity_alert"
+        "compliance_final:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
       "highestPublishedCopySimilarity": 0.0531,
@@ -1597,7 +1578,7 @@
     {
       "id": "XJW-CONV-chat-no-standard-answer",
       "title": "有些問題，其實沒有標準答案",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1619,8 +1600,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0588,
@@ -1670,7 +1650,7 @@
     {
       "id": "XJW-CONV-chat-opening-prep",
       "title": "開店前，小老闆先做哪一件事？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1693,8 +1673,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.0188,
@@ -1744,7 +1723,7 @@
     {
       "id": "XJW-CONV-chat-pantry-memory",
       "title": "你家以前最常看到哪一種食材？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1766,8 +1745,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0512,
@@ -1817,7 +1795,7 @@
     {
       "id": "XJW-CONV-chat-photo-size",
       "title": "一張產品照，為什麼尺寸看起來會差很多？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "COMPLIANCE_CHECK",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1840,8 +1818,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "compliance_final:DEFER",
-        "published_copy_similarity_alert"
+        "compliance_final:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
       "highestPublishedCopySimilarity": 0.1392,
@@ -1915,7 +1892,6 @@
       "blockers": [
         "duplicate:DEFER",
         "compliance_final:DEFER",
-        "published_copy_similarity_alert",
         "REWORK_REQUIRED"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-picture-or-text-real-product-v1.jpg",
@@ -1969,7 +1945,7 @@
     {
       "id": "XJW-CONV-chat-quiet-work",
       "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -1992,8 +1968,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
       "highestPublishedCopySimilarity": 0.0131,
@@ -2043,7 +2018,7 @@
     {
       "id": "XJW-CONV-chat-receive-package",
       "title": "收到產品後，你第一件事會先看哪裡？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2066,8 +2041,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
       "highestPublishedCopySimilarity": 0.0214,
@@ -2117,7 +2091,7 @@
     {
       "id": "XJW-CONV-chat-recipe-or-feel",
       "title": "你煮東西是照食譜，還是憑感覺？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2139,8 +2113,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg",
       "highestPublishedCopySimilarity": 0.0175,
@@ -2190,7 +2163,7 @@
     {
       "id": "XJW-CONV-chat-shop-organizing",
       "title": "小老闆今天在整理什麼？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2212,8 +2185,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-shop-organizing-scene-v5.jpg",
       "highestPublishedCopySimilarity": 0.0223,
@@ -2263,7 +2235,7 @@
     {
       "id": "XJW-CONV-chat-small-things-work",
       "title": "小老闆今天忙的，都是一些很小的事",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2286,8 +2258,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
       "highestPublishedCopySimilarity": 0.0433,
@@ -2337,7 +2308,7 @@
     {
       "id": "XJW-CONV-chat-tradition-today",
       "title": "以前的做法，今天還能怎麼留下來？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2360,8 +2331,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
       "highestPublishedCopySimilarity": 0.0772,
@@ -2411,7 +2381,7 @@
     {
       "id": "XJW-CONV-chat-traditional-image",
       "title": "看到「傳統」兩個字，你第一個想到什麼？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2433,8 +2403,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-traditional-image-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0617,
@@ -2484,7 +2453,7 @@
     {
       "id": "XJW-CONV-cny-childhood-now",
       "title": "小時候過年跟現在，哪裡最不一樣？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2507,8 +2476,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0457,
@@ -2558,7 +2526,7 @@
     {
       "id": "XJW-CONV-cny-family-choice",
       "title": "過年最期待的是吃飯、見家人，還是放假？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2581,8 +2549,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-CONV-cny-family-choice-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0342,
@@ -2632,7 +2599,7 @@
     {
       "id": "XJW-CONV-cny-fridge-clean",
       "title": "過年前整理冰箱，最常找到什麼？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2654,8 +2621,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0354,
@@ -2729,7 +2695,6 @@
       "blockers": [
         "duplicate:DEFER",
         "compliance_final:DEFER",
-        "published_copy_similarity_alert",
         "REWORK_REQUIRED"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg",
@@ -2783,7 +2748,7 @@
     {
       "id": "XJW-CONV-cny-must-have-dish",
       "title": "過年煮一桌菜，你家一定不能少哪一道？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2805,8 +2770,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0518,
@@ -2856,7 +2820,7 @@
     {
       "id": "XJW-CONV-cny-pre-clean",
       "title": "過年前，你家會先大掃除還是先買東西？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2878,8 +2842,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.011,
@@ -2929,7 +2892,7 @@
     {
       "id": "XJW-CONV-cny-reopen",
       "title": "開工第一天，小老闆先做一件小事",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -2951,8 +2914,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0202,
@@ -3002,7 +2964,7 @@
     {
       "id": "XJW-CONV-new-year-slow-start",
       "title": "新年在家，先畫下一味想認識的食材",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3024,8 +2986,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.0955,
@@ -3075,7 +3036,7 @@
     {
       "id": "XJW-CONV-new-year-warm-cup-share",
       "title": "新年第一杯溫熱的，你想留給自己還是家人？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3097,8 +3058,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0602,
@@ -3148,7 +3108,7 @@
     {
       "id": "XJW-CONV-season-more-soup",
       "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3170,8 +3130,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png",
       "highestPublishedCopySimilarity": 0.0368,
@@ -3221,7 +3180,7 @@
     {
       "id": "XJW-CONV-weather-cool-drink",
       "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3244,8 +3203,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.1072,
@@ -3295,7 +3253,7 @@
     {
       "id": "XJW-CONV-weather-rain-chat",
       "title": "下雨天，你會想喝什麼？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3317,8 +3275,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.0745,
@@ -3368,7 +3325,7 @@
     {
       "id": "XJW-CONV-year-end-small-win",
       "title": "今年有沒有一件小事，你很慶幸自己做了？",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3390,8 +3347,7 @@
         "compliance_final": "PASS"
       },
       "blockers": [
-        "duplicate:DEFER",
-        "published_copy_similarity_alert"
+        "duplicate:DEFER"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
       "highestPublishedCopySimilarity": 0.0259,
@@ -3441,7 +3397,7 @@
     {
       "id": "XJW-FEST-2027-eve-welcome-home",
       "title": "除夕，先替回家的人留一個位置",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3464,8 +3420,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0261,
@@ -3515,7 +3470,7 @@
     {
       "id": "XJW-FEST-2027-lantern-riceballs",
       "title": "元宵，一起把小小的湯圓搓好",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3538,8 +3493,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0445,
@@ -3589,7 +3543,7 @@
     {
       "id": "XJW-FEST-2027-newyear-breakfast",
       "title": "元旦早上，先把早餐留給一起生活的人",
-      "group": "EDITORIAL_COLLISION_CHECK",
+      "group": "HISTORICAL_VISUAL_ONLY",
       "copyVersionBound": true,
       "imageHashBound": true,
       "checks": {
@@ -3612,8 +3566,7 @@
       },
       "blockers": [
         "duplicate:DEFER",
-        "external_metricool_mapping_review",
-        "published_copy_similarity_alert"
+        "external_metricool_mapping_review"
       ],
       "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
       "highestPublishedCopySimilarity": 0.0366,
@@ -3660,5 +3613,6 @@
       "reviewNotes": [],
       "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
     }
-  ]
+  ],
+  "notes": "Historical alert field is a classification string; NO_STRONG_CAPTION_COLLISION_IN_RETRIEVED_HISTORY is not a positive alert. One actual high similarity issue is storage topic and is already in image review group."
 }
