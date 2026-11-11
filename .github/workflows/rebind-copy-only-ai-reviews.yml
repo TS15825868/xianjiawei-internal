@@ -1,0 +1,58 @@
+name: 仙加味更正文案現版AI證據精準重綁（只新增待審證據）
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/rebind-copy-only-requests/*.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-copy-only-ai-review-rebind
+  cancel-in-progress: false
+jobs:
+  rebind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {fetch-depth: 2}
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Validate one immutable copy-rebind request
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(git diff --name-only HEAD^ HEAD -- ops/rebind-copy-only-requests/)
+          test "${#files[@]}" -eq 1
+          [[ "${files[0]}" =~ ^ops/rebind-copy-only-requests/[A-Za-z0-9_-]+\.json$ ]]
+          echo "AI_REBIND_REQUEST_FILE=${files[0]}" >> "$GITHUB_ENV"
+      - name: Verify D1 no-retry protocol and importer syntax
+        run: |
+          node --check tools/rebind-copy-only-ai-reviews.mjs
+          node --test tools/test-d1-http-transport.mjs
+      - name: Rebind corrected copy only; do not edit post status
+        run: node tools/rebind-copy-only-ai-reviews.mjs
+      - name: Save exact D1 review readback on current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          output="ops/receipts/${AI_REBIND_REQUEST_FILE##*/}"
+          cp /tmp/ai-source-rebind-receipt.json "$output"
+          node -e "const r=require('./'+process.argv[1]);if(r.complete!==true||r.requested!==r.verified||r.ai!==0||r.human!==0||r.scheduled!==0||r.published!==0)process.exit(1)" "$output"
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$output"
+          git commit -m 'audit: record current copy-only AI source rebind and unchanged D1 status'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-copy-only-evidence-rebind-${{ github.run_id }}
+          path: /tmp/ai-source-rebind-receipt.json
+          retention-days: 7
