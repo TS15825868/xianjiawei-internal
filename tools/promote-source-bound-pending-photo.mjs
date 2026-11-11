@@ -25,7 +25,6 @@ for(const fix of req.items){
   !/^assets\/post-images\/2026-11-11\/formal-production\/[A-Za-z0-9_-]+-reviewed-v2\.jpg$/.test(fix.newImagePath||'')||
   !/^ops\/visual-previews\/20261110-official-source-composite-v8\/[A-Za-z0-9_-]+-wood_patch-preview\.jpg$/.test(fix.previewPath||'')||
   !/^[a-f0-9]{64}$/.test(fix.previewSHA256||'')||
-  !/^[a-f0-9]{64}$/.test(fix.expectedFingerprint||'')||
   !/^[a-f0-9]{64}$/.test(fix.expectedImageSHA256||'')||
   !String(fix.expectedImageURL||'').startsWith(srcPrefix)||
   !String(fix.expectedUpdatedAt||'').trim())
@@ -43,8 +42,7 @@ for(const fix of req.items){
  const p=await one('SELECT * FROM social_posts WHERE id='+q(fix.id));
  if(!p||p.status!=='pending_review'||p.published_at||p.scheduled_at||p.approved_by||p.approved_at||
   Number(p.image_approved||0)!==0||p.image_quality_status!=='clear'||
-  p.updated_at!==fix.expectedUpdatedAt||p.image_url!==fix.expectedImageURL||
-  fingerprint(p)!==fix.expectedFingerprint)
+  p.updated_at!==fix.expectedUpdatedAt||p.image_url!==fix.expectedImageURL)
   throw Error('Latest post source changed; no image data may be overwritten');
  const [maps,delivery]=await Promise.all([
   one('SELECT COUNT(*) AS n FROM social_metricool_sync WHERE post_id='+q(fix.id)),
@@ -53,9 +51,13 @@ for(const fix of req.items){
  if(!maps||!delivery||Number(maps.n)!==0||Number(delivery.n)!==0)
   throw Error('The pending post has external mapping or delivery; stop safely');
  const prior=await one('SELECT * FROM social_post_quality_reviews WHERE post_id='+q(fix.id)+' ORDER BY reviewed_at DESC,id DESC LIMIT 1');
- if(prior?.decision!=='NEEDS_HUMAN_REVIEW'||prior.content_fingerprint!==fix.expectedFingerprint||
+ if(prior?.decision!=='NEEDS_HUMAN_REVIEW'||prior.content_fingerprint!==fingerprint(p)||
   prior.image_url!==p.image_url||prior.image_sha256!==fix.expectedImageSHA256)
    throw Error('Latest immutable review changed or unbound');
+ const currentMediaPath=p.image_url.slice(srcPrefix.length);
+ if(!p.image_url.startsWith(srcPrefix)||!/^assets\\/post-images\\/[A-Za-z0-9./_-]+\\.(?:jpg|jpeg|png|webp)$/.test(currentMediaPath)||
+    !fs.existsSync(currentMediaPath)||sha(fs.readFileSync(currentMediaPath))!==fix.expectedImageSHA256)
+    throw Error('Original current media bytes drifted from latest D1 SHA');
  const e=JSON.parse(prior.evidence_json||'{}');
  if(e.checks?.duplicate?.result!=='DEFER'||e.checks?.compliance_final?.result!=='DEFER'||
     e.image_sha256!==prior.image_sha256)throw Error('Pending history/compliance evidence missing');
