@@ -118,7 +118,7 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
       "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-tight_inpaint-preview.jpg",
-      "previewSHA256": "f5461c04669546aece8f48affc7061d6dfda5bcf66f2740eb53a4bbd25848425",
+      "previewSHA256": "79ee60e93a7080247ae1619aaf2133bf290b7223e011c91f03c069883900b528",
       "productTypes": [
         "luerong"
       ],
@@ -131,7 +131,7 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
       "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-texture_clone-preview.jpg",
-      "previewSHA256": "4c86eb4337e8378e76813ef4724a20b504068747f8e02cf84b5b88fcb4c995ed",
+      "previewSHA256": "64cd49fa73a57d86fa411d275aca98b50f348d2468503cd34580cc1d7b06dc1d",
       "productTypes": [
         "luerong"
       ],
@@ -144,7 +144,7 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-luerong-intro-audit-v1.jpg",
       "sourceBlob": "3892582fecf8e701ba790961af04abc6c640c3cb",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-luerong-intro-wood_patch-preview.jpg",
-      "previewSHA256": "62d6c668bb59af954f55984b6449d52319b86a4d2ed8a46ef36be52bb8990f72",
+      "previewSHA256": "92f6358ba351dac03fbf78c70707135c182134d5714e836591ee97f429b7feb7",
       "productTypes": [
         "luerong"
       ],
@@ -170,7 +170,7 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-photo-size-scene-v1.jpg",
       "sourceBlob": "c24ccffa60a43cce852a7ed3633d06c03953ecce",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-photo-size-texture_clone-preview.jpg",
-      "previewSHA256": "ec9676fea4da7dd0410c5b3cc3c326a9685104c32f68841ded438f3ba94d94ed",
+      "previewSHA256": "9e5b95499e9be649dcce3ddb13135aaa7aeabe9ac6440138b9bf58999bdb600d",
       "productTypes": [
         "drink30"
       ],
@@ -248,7 +248,7 @@
       "source": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg",
       "sourceBlob": "0de63ca21971c4775df6e038bfbf739a13b8b591",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-picture-or-text-texture_clone-preview.jpg",
-      "previewSHA256": "77d3a36ccbe83bf0ce26f1868b0f77c5d16819a979210697563cf98919d9bd31",
+      "previewSHA256": "cfd68da3bee4a076c9c273845a5d338c1a042df2627b7ea465cf5d5fb808a5a9",
       "productTypes": [
         "gao"
       ],
@@ -288,7 +288,7 @@
       "source": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-scene-v1.jpg",
       "sourceBlob": "5ab0df32d18c568482df77de23010f8829719870",
       "previewPath": "ops/visual-previews/20261110-official-source-composite-v8/XJW-CONV-chat-glass-vs-pouch-storage-texture_clone-preview.jpg",
-      "previewSHA256": "9e0c28e21d4f510816271c2bb99c40976cdb934ffa57add193bd6563cd8946a5",
+      "previewSHA256": "5bb0ce6eb928e333dd8e6f1eef263aaf03168dbbe8bd0eb565b2f869698464ef",
       "productTypes": [
         "drink30",
         "drink180"
