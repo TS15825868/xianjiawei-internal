@@ -167,12 +167,20 @@ for row,s in enumerate(SCENES):
    image=official.resize((tw,th),Image.Resampling.LANCZOS)
    px=int((ox1+(ox2-ox1)/2)*scale_x-tw/2);py=int(oy2*scale_y-th)
    if px<0 or py<0 or px+tw>w or py+th>h:raise RuntimeError("Official product cropped")
+   # The prior shadow alpha ended at the bitmap bottom and created an obvious
+   # rectangular horizontal line. Build a padded, feathered contact shadow.
    shadow=Image.new("RGBA",(w,h),(0,0,0,0))
-   a=Image.new("L",(tw,th),0)
-   ImageDraw.Draw(a).ellipse((0,th*.80,tw-1,th),fill=90)
-   a=a.filter(ImageFilter.GaussianBlur(max(2,tw*.07)))
-   silhouette=Image.new("RGBA",(tw,th),(32,24,18,0));silhouette.putalpha(a)
-   shadow.alpha_composite(silhouette,(px+round(tw*.04),py+round(th*.025)))
+   pad=max(10,round(tw*.32))
+   sw=tw+2*pad;sh=max(24,round(th*.26))
+   a=Image.new("L",(sw,sh),0)
+   ImageDraw.Draw(a).ellipse((round(pad*.55),round(sh*.30),
+      sw-round(pad*.55),round(sh*.76)),fill=78)
+   a=a.filter(ImageFilter.GaussianBlur(max(5,round(tw*.095))))
+   silhouette=Image.new("RGBA",(sw,sh),(32,24,18,0));silhouette.putalpha(a)
+   sx=px-pad;sy=py+th-round(sh*.42)
+   if sx<0 or sy<0 or sx+sw>w or sy+sh>h:
+    raise RuntimeError("Contact shadow would crop; reject this preview")
+   shadow.alpha_composite(silhouette,(sx,sy))
    canvas=Image.alpha_composite(canvas,shadow)
    canvas.alpha_composite(image,(px,py))
   preview=canvas.convert("RGB")
