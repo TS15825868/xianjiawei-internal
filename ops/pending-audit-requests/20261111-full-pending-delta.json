@@ -1,0 +1,7 @@
+{
+  "mode": "read_only",
+  "allowApproval": false,
+  "allowD1Write": false,
+  "allowPublication": false,
+  "reason": "2026-11-11 whole-queue latest D1 delta check; reconcile 49 pending, archived and published, review version binding, 16 checks, photo hash, external mappings. Continue processing independently despite missing historical media; do not infer duplicate PASS without evidence."
+}
