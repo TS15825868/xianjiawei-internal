@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths: ['ops/request-current-vs-archived-image-visual-audit-20261108.json']
 permissions:
-  contents: read
+  contents: write
 jobs:
   visual:
     runs-on: ubuntu-latest
@@ -20,6 +20,27 @@ jobs:
       - run: python -m pip install --quiet --disable-pip-version-check Pillow==11.3.0
       - name: Compare actual current pending scene images to archived, published and verified historic originals
         run: python ops/current-vs-archived-visual-audit-20261108.py
+      - name: Preserve current 49-image archive-and-published cross-check
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ops/receipts
+          cp current-vs-archived-visual-report.json ops/receipts/20261112-current-vs-archived-all-49.json
+          python - <<'PY'
+          import json
+          p='ops/receipts/20261112-current-vs-archived-all-49.json'
+          d=json.load(open(p))
+          assert d['pendingScanned']==49 and d['d1Mutations']==d['approvals']==d['schedules']==d['publications']==d['deletions']==0
+          assert len(d['allPendingNearest'])==49
+          print('All 49 current image originals screened, no D1 writes')
+          PY
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-current-vs-archived-all-49.json
+          git commit -m 'audit: preserve 49 current image vs archive/published exact and perceptual pairs'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
       - uses: actions/upload-artifact@v4
         if: always()
         with:
