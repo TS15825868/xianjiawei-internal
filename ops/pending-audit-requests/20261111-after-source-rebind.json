@@ -1,0 +1,7 @@
+{
+  "mode": "read_only",
+  "allowApproval": false,
+  "allowD1Write": false,
+  "allowPublication": false,
+  "reason": "Verify complete current 49 pending after 3 source-corrected AI evidence INSERTs with CAS readbacks; count current-version-bound, duplicate/compliance DEFER, total unchanged, and ensure no accidental human approval, scheduling or publication. Do not repeat image downloads or 132-history scan."
+}
