@@ -9,5 +9,6 @@
     "dhash64": 12,
     "averageHash64": 12
   },
-  "reason": "Narrow independent in-repository visual duplicate check of all live pending vs pending, archived, published and two verified historic IG mirror images; do not conflate with unavailable external 15 or 3"
+  "reason": "Latest 49 current pending, including 2 corrected source images and 2 new compliance PASS; screen all against current archived/published repo originals, persist exact/pHash evidence, do not repeat 178 cache downloads or approve without missing historical sources",
+  "rerunDate": "2026-11-12"
 }
