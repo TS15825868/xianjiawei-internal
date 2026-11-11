@@ -19,8 +19,8 @@ SCENES=[
 TIGHT_MASKS={
 "XJW-CONV-chat-luerong-intro":(260,354,337,473),
 "XJW-CONV-chat-photo-size":(202,334,269,415),
-"XJW-CONV-cny-gift-choice":(240,372,310,482),
-"XJW-CONV-chat-picture-or-text":(241,366,319,486),
+"XJW-CONV-cny-gift-choice":(230,357,321,492),
+"XJW-CONV-chat-picture-or-text":(229,351,331,497),
 "XJW-CONV-chat-glass-vs-pouch-storage":(169,349,214,422),
 }
 CLONE_CENTERS={
