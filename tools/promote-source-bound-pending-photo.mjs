@@ -55,7 +55,8 @@ for(const fix of req.items){
   prior.image_url!==p.image_url||prior.image_sha256!==fix.expectedImageSHA256)
    throw Error('Latest immutable review changed or unbound');
  const currentMediaPath=p.image_url.slice(srcPrefix.length);
- if(!p.image_url.startsWith(srcPrefix)||!/^assets\\/post-images\\/[A-Za-z0-9./_-]+\\.(?:jpg|jpeg|png|webp)$/.test(currentMediaPath)||
+ if(!p.image_url.startsWith(srcPrefix)||!currentMediaPath.startsWith('assets/post-images/')||
+    !['.jpg','.jpeg','.png','.webp'].some(ext=>currentMediaPath.endsWith(ext))||currentMediaPath.includes('..')||
     !fs.existsSync(currentMediaPath)||sha(fs.readFileSync(currentMediaPath))!==fix.expectedImageSHA256)
     throw Error('Original current media bytes drifted from latest D1 SHA');
  const e=JSON.parse(prior.evidence_json||'{}');
