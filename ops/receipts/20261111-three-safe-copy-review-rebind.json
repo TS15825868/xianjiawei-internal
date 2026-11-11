@@ -1,0 +1,73 @@
+{
+  "schema": "xjw-copy-only-review-rebound-v1",
+  "source": "ops/post-copy-cleanup-batches/20261110-3-public-terms.json",
+  "at": "2026-11-11T03:28:30.004Z",
+  "requested": 3,
+  "verified": 3,
+  "complete": true,
+  "ai": 0,
+  "human": 0,
+  "scheduled": 0,
+  "published": 0,
+  "rows": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "reviewId": "AI-COPY-REVIEW-2818453c8e1b432811526cf0f5dddf1f",
+      "verified": true,
+      "copySHA256": "1dff986ab19701e30ba415e33edf4ad4fbeec2d6b17fef10547e0587a20e8743",
+      "duplicate": "DEFER",
+      "compliance_final": "DEFER",
+      "postStatus": "pending_review",
+      "priorStatus": "pending_review"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "reviewId": "AI-COPY-REVIEW-6000868f626acc75becc0d4fa35cc407",
+      "verified": true,
+      "copySHA256": "eafa8b93be38ee8842da343430dc94a678f331785e595e44bfbd281cf117e8b2",
+      "duplicate": "DEFER",
+      "compliance_final": "DEFER",
+      "postStatus": "pending_review",
+      "priorStatus": "pending_review"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "reviewId": "AI-COPY-REVIEW-2a8c1b29389a74cb5a25359832afaaf8",
+      "verified": true,
+      "copySHA256": "09bee26fe285821475cdfeffff1916f01177f4c549fdb4141da93a2b6fcbb800",
+      "duplicate": "DEFER",
+      "compliance_final": "DEFER",
+      "postStatus": "pending_review",
+      "priorStatus": "pending_review"
+    }
+  ],
+  "countsBefore": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "countsAfter": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "finishedAt": "2026-11-11T03:28:34.126Z"
+}
