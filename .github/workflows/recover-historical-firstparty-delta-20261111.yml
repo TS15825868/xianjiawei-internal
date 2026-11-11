@@ -39,9 +39,9 @@ jobs:
           git config user.name 'xianjiawei-safe-audit-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add ops/receipts/20261111-firstparty-historical-media-recovery.json
-          if test -d assets/historical-published; then
-            git add assets/historical-published/instagram/2026-11-11-recovery/ assets/historical-published/facebook/2026-11-11-recovery/ --ignore-errors
-          fi
+          for dir in assets/historical-published/instagram/2026-11-11-recovery assets/historical-published/facebook/2026-11-11-recovery; do
+            if test -d "$dir"; then git add "$dir"; fi
+          done
           git commit -m 'audit: store 2026-11-11 first-party historical media and per-image dHash evidence'
           git fetch origin main
           git rebase origin/main
