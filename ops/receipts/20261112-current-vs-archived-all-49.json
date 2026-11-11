@@ -1,0 +1,1271 @@
+{
+  "schema": "xjw-all-current-local-images-versus-archived-and-published-20261108-v1",
+  "generatedAt": "2026-11-11T16:06:10.661181+00:00",
+  "head": "53edd7f6e4eadfd1376661083a50fce686843020",
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "pendingScanned": 49,
+  "referenceImages": 88,
+  "referenceBreakdown": {
+    "pending_review": 49,
+    "archived": 35,
+    "published": 2,
+    "published_ig_source": 2
+  },
+  "missingOrUnreadable": [],
+  "imageNearPairs": [
+    {
+      "current": "XJW-CONV-care-simple-checkin",
+      "reference": "XJW-CONV-cny-gift-choice",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 13,
+      "averageHash64": 10,
+      "currentPath": "assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
+      "referencePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg"
+    },
+    {
+      "current": "XJW-CAND-20270115",
+      "reference": "XJW-CAND-20270326",
+      "referenceStatus": "archived",
+      "exactFile": false,
+      "dhash64": 11,
+      "averageHash64": 24,
+      "currentPath": "media/social-candidates/20261106/XJW-CAND-20270115.webp",
+      "referencePath": "media/social-candidates/20261106/XJW-CAND-20270326.webp"
+    },
+    {
+      "current": "XJW-CONV-chat-family-old-object",
+      "reference": "XJW-CONV-brand-third-generation-note",
+      "referenceStatus": "archived",
+      "exactFile": false,
+      "dhash64": 18,
+      "averageHash64": 11,
+      "currentPath": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+      "referencePath": "assets/post-images/2026-10-10/formal-production/XJW-CONV-brand-third-generation-note-scene-v3.jpg"
+    },
+    {
+      "current": "XJW-CONV-care-simple-checkin",
+      "reference": "XJW-CONV-chat-brand-not-only-product",
+      "referenceStatus": "archived",
+      "exactFile": false,
+      "dhash64": 22,
+      "averageHash64": 11,
+      "currentPath": "assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
+      "referencePath": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-brand-not-only-product.jpg"
+    },
+    {
+      "current": "XJW-CONV-chat-no-standard-answer",
+      "reference": "XJW-CONV-cny-childhood-now",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 27,
+      "averageHash64": 11,
+      "currentPath": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+      "referencePath": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg"
+    },
+    {
+      "current": "XJW-CONV-chat-last-bowl",
+      "reference": "XJW-CONV-cny-gift-choice",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 17,
+      "averageHash64": 12,
+      "currentPath": "assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+      "referencePath": "assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg"
+    },
+    {
+      "current": "XJW-CONV-chat-pantry-memory",
+      "reference": "XJW-CONV-chat-photo-size",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 20,
+      "averageHash64": 12,
+      "currentPath": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+      "referencePath": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg"
+    },
+    {
+      "current": "XJW-CAND-20261225",
+      "reference": "XJW-CONV-chat-luerong-intro",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 22,
+      "averageHash64": 12,
+      "currentPath": "media/social-candidates/20261106/XJW-CAND-20261225.webp",
+      "referencePath": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg"
+    },
+    {
+      "current": "XJW-CONV-chat-buy-first-look",
+      "reference": "XJW-CONV-chat-family-old-object",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 23,
+      "averageHash64": 12,
+      "currentPath": "assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "referencePath": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg"
+    },
+    {
+      "current": "XJW-CAND-20261211",
+      "reference": "XJW-CONV-chat-luerong-intro",
+      "referenceStatus": "pending_review",
+      "exactFile": false,
+      "dhash64": 34,
+      "averageHash64": 12,
+      "currentPath": "media/social-candidates/20261106/XJW-CAND-20261211.webp",
+      "referencePath": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg"
+    }
+  ],
+  "allPendingNearest": [
+    {
+      "id": "XJW-CAND-20261211",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-luerong-intro",
+          "status": "pending_review",
+          "dhash64": 34,
+          "averageHash64": 12
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 15
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-tradition-today",
+          "status": "pending_review",
+          "dhash64": 30,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CAND-20270122",
+          "status": "archived",
+          "dhash64": 17,
+          "averageHash64": 25
+        },
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 17,
+          "averageHash64": 19
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-luerong-intro",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 12
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 28,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-chat-dayoff-cook",
+          "status": "pending_review",
+          "dhash64": 26,
+          "averageHash64": 14
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-gao-vs-drink",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "status": "pending_review",
+          "dhash64": 25,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-cny-childhood-now",
+          "status": "pending_review",
+          "dhash64": 34,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270326",
+          "status": "archived",
+          "dhash64": 11,
+          "averageHash64": 24
+        },
+        {
+          "id": "XJW-CONV-weather-rain-chat",
+          "status": "pending_review",
+          "dhash64": 17,
+          "averageHash64": 22
+        },
+        {
+          "id": "XJW-FEST-2027-spring-walk",
+          "status": "archived",
+          "dhash64": 21,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-traditional-image",
+          "status": "pending_review",
+          "dhash64": 28,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-year-end-clean",
+          "status": "archived",
+          "dhash64": 30,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CAND-20270226",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "neighbors": [
+        {
+          "id": "XJW-FEST-2027-spring-walk",
+          "status": "archived",
+          "dhash64": 30,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 32
+        },
+        {
+          "id": "XJW-CAND-20270309",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 29
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-soup-day",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-buy-first-look",
+          "status": "pending_review",
+          "dhash64": 30,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CAND-20261208",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 18
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-FEST-2027-spring-walk",
+          "status": "archived",
+          "dhash64": 31,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 24
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270323",
+          "status": "pending_review",
+          "dhash64": 25,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 13
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "neighbors": [
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CAND-20270122",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-30-bare-jar",
+          "status": "archived",
+          "dhash64": 16,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CAND-20270309",
+          "status": "archived",
+          "dhash64": 18,
+          "averageHash64": 20
+        },
+        {
+          "id": "XJW-CAND-20270316",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 18
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "status": "pending_review",
+          "dhash64": 13,
+          "averageHash64": 10
+        },
+        {
+          "id": "XJW-CONV-chat-brand-not-only-product",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 11
+        },
+        {
+          "id": "XJW-CONV-chat-ask-boss-topic",
+          "status": "archived",
+          "dhash64": 19,
+          "averageHash64": 15
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "status": "pending_review",
+          "dhash64": 23,
+          "averageHash64": 12
+        },
+        {
+          "id": "XJW-CONV-chat-old-methods",
+          "status": "archived",
+          "dhash64": 19,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 14
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-cny-pre-clean",
+          "status": "pending_review",
+          "dhash64": 19,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 34,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-CONV-chat-luerong-intro",
+          "status": "pending_review",
+          "dhash64": 28,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-chat-tradition-today",
+          "status": "pending_review",
+          "dhash64": 35,
+          "averageHash64": 19
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-brand-third-generation-note",
+          "status": "archived",
+          "dhash64": 18,
+          "averageHash64": 11
+        },
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-receive-package",
+          "status": "pending_review",
+          "dhash64": 28,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-recipe-or-feel",
+          "status": "pending_review",
+          "dhash64": 29,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "status": "pending_review",
+          "dhash64": 19,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 14
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "status": "pending_review",
+          "dhash64": 26,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "status": "pending_review",
+          "dhash64": 29,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "status": "pending_review",
+          "dhash64": 25,
+          "averageHash64": 19
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "status": "pending_review",
+          "dhash64": 17,
+          "averageHash64": 12
+        },
+        {
+          "id": "XJW-CONV-chat-brand-not-only-product",
+          "status": "archived",
+          "dhash64": 18,
+          "averageHash64": 21
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "status": "pending_review",
+          "dhash64": 24,
+          "averageHash64": 20
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270226",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 34,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "status": "pending_review",
+          "dhash64": 28,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-childhood-now",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 11
+        },
+        {
+          "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-picture-or-text",
+          "status": "pending_review",
+          "dhash64": 31,
+          "averageHash64": 15
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-fridge-clean",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-CONV-cny-family-choice",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 25
+        },
+        {
+          "id": "XJW-CONV-year-end-clean",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 20
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-photo-size",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 12
+        },
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 32,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-year-end-keep-habit",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 15
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-year-end-small-win",
+          "status": "pending_review",
+          "dhash64": 15,
+          "averageHash64": 21
+        },
+        {
+          "id": "XJW-CONV-chat-gao-vs-drink",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-traditional-image",
+          "status": "pending_review",
+          "dhash64": 23,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "neighbors": [
+        {
+          "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+          "status": "archived",
+          "dhash64": 31,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CAND-20270326",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 30
+        },
+        {
+          "id": "XJW-CONV-cny-childhood-now",
+          "status": "pending_review",
+          "dhash64": 24,
+          "averageHash64": 20
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-craft-years",
+          "status": "archived",
+          "dhash64": 25,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "status": "archived",
+          "dhash64": 17,
+          "averageHash64": 24
+        },
+        {
+          "id": "XJW-CONV-chat-recipe-or-feel",
+          "status": "pending_review",
+          "dhash64": 23,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-brand-third-generation-note",
+          "status": "archived",
+          "dhash64": 28,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-care-before-home-message",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "status": "archived",
+          "dhash64": 28,
+          "averageHash64": 18
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-brand-third-generation-note",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-cny-first-soup",
+          "status": "archived",
+          "dhash64": 17,
+          "averageHash64": 21
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "status": "pending_review",
+          "dhash64": 19,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-old-methods",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CAND-20261208",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CONV-chat-craft-years",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-brand-third-generation-note",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "status": "pending_review",
+          "dhash64": 21,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 21,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CAND-20270302",
+          "status": "archived",
+          "dhash64": 40,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-wanhua-morning",
+          "status": "published",
+          "dhash64": 21,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "status": "pending_review",
+          "dhash64": 33,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 33,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CAND-20270226",
+          "status": "archived",
+          "dhash64": 30,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "neighbors": [
+        {
+          "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+          "status": "archived",
+          "dhash64": 25,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "neighbors": [
+        {
+          "id": "XJW-FEST-2027-spring-walk",
+          "status": "archived",
+          "dhash64": 19,
+          "averageHash64": 25
+        },
+        {
+          "id": "XJW-CONV-chat-wanhua-morning",
+          "status": "published",
+          "dhash64": 21,
+          "averageHash64": 27
+        },
+        {
+          "id": "XJW-CONV-cny-pre-clean",
+          "status": "pending_review",
+          "dhash64": 26,
+          "averageHash64": 21
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270122",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 30
+        },
+        {
+          "id": "XJW-CONV-chat-old-methods",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 29
+        },
+        {
+          "id": "XJW-CONV-year-end-clean",
+          "status": "archived",
+          "dhash64": 25,
+          "averageHash64": 22
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "status": "archived",
+          "dhash64": 28,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-old-methods",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-brand-not-only-product",
+          "status": "archived",
+          "dhash64": 23,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-year-end-small-win",
+          "status": "pending_review",
+          "dhash64": 18,
+          "averageHash64": 23
+        },
+        {
+          "id": "XJW-CONV-chat-gao-vs-drink",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 18
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-30-bare-jar",
+          "status": "archived",
+          "dhash64": 17,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "status": "pending_review",
+          "dhash64": 19,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 31,
+          "averageHash64": 18
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 27
+        },
+        {
+          "id": "XJW-CONV-new-year-open-door",
+          "status": "archived",
+          "dhash64": 21,
+          "averageHash64": 31
+        },
+        {
+          "id": "XJW-CAND-20270326",
+          "status": "archived",
+          "dhash64": 28,
+          "averageHash64": 21
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "neighbors": [
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 24,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "status": "pending_review",
+          "dhash64": 18,
+          "averageHash64": 21
+        },
+        {
+          "id": "IG:4003900963899413608_78424002938",
+          "status": "published_ig_source",
+          "dhash64": 18,
+          "averageHash64": 31
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 15
+        },
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CAND-20270302",
+          "status": "archived",
+          "dhash64": 23,
+          "averageHash64": 17
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "status": "pending_review",
+          "dhash64": 23,
+          "averageHash64": 20
+        },
+        {
+          "id": "XJW-CONV-year-end-clean",
+          "status": "archived",
+          "dhash64": 33,
+          "averageHash64": 21
+        },
+        {
+          "id": "XJW-CAND-20261208",
+          "status": "archived",
+          "dhash64": 22,
+          "averageHash64": 31
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "neighbors": [
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CONV-chat-30-vs-180",
+          "status": "archived",
+          "dhash64": 34,
+          "averageHash64": 20
+        },
+        {
+          "id": "XJW-CONV-chat-drink-made-to-order",
+          "status": "archived",
+          "dhash64": 30,
+          "averageHash64": 21
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "status": "archived",
+          "dhash64": 24,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CAND-20270223",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-chat-drink-made-to-order",
+          "status": "archived",
+          "dhash64": 21,
+          "averageHash64": 25
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270112",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 17
+        },
+        {
+          "id": "XJW-CONV-chat-gao-vs-drink",
+          "status": "archived",
+          "dhash64": 25,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-year-end-clean",
+          "status": "archived",
+          "dhash64": 26,
+          "averageHash64": 20
+        }
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "neighbors": [
+        {
+          "id": "XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa",
+          "status": "published",
+          "dhash64": 28,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-CONV-new-year-open-door",
+          "status": "archived",
+          "dhash64": 32,
+          "averageHash64": 20
+        },
+        {
+          "id": "XJW-CAND-20261208",
+          "status": "archived",
+          "dhash64": 27,
+          "averageHash64": 21
+        }
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-30-vs-180",
+          "status": "archived",
+          "dhash64": 19,
+          "averageHash64": 24
+        },
+        {
+          "id": "XJW-CAND-20270309",
+          "status": "archived",
+          "dhash64": 36,
+          "averageHash64": 19
+        },
+        {
+          "id": "XJW-CONV-year-end-keep-habit",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 21
+        }
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-30-vs-180",
+          "status": "archived",
+          "dhash64": 23,
+          "averageHash64": 13
+        },
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "status": "archived",
+          "dhash64": 20,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CAND-20270122",
+          "status": "archived",
+          "dhash64": 16,
+          "averageHash64": 20
+        }
+      ]
+    }
+  ],
+  "exactFileDuplicates": 0,
+  "caveats": [
+    "Simple 64-bit hashes screen similarities; threshold hit is not a verdict and misses different camera crops or substantially re-rendered scenes.",
+    "The external historical 178-image scratch cache was not fetched or redownloaded. 15 unidentified private cache misses and 3 public media gaps remain.",
+    "Archive and published rows with no GitHub image path cannot be visually compared here.",
+    "Current pending unchanged, duplicate DEFER remains in D1; this is supplemental evidence only."
+  ],
+  "d1Mutations": 0,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "deletions": 0
+}
