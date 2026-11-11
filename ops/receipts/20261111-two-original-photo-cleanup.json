@@ -1,0 +1,66 @@
+{
+  "schema": "xjw-pending-real-photo-v2-d1-receipt",
+  "requested": 2,
+  "verified": 2,
+  "complete": true,
+  "createdAt": "2026-11-11T03:48:51.720Z",
+  "aiApproval": 0,
+  "humanApproval": 0,
+  "scheduled": 0,
+  "published": 0,
+  "countsBefore": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "records": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "status": "pending_review",
+      "newImageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+      "newImageSHA256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "imageBytes": 693264,
+      "currentFingerprint": "0f63ce86365203ca4619847a432fa79014188fd66b3e26f047d138ea33e98702",
+      "reviewId": "AI-IMAGE-V2-d7ae2363af319687e91a417574681b1426f",
+      "duplicate": "DEFER",
+      "compliance_final": "DEFER",
+      "verified": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "status": "pending_review",
+      "newImageURL": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg",
+      "newImageSHA256": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "imageBytes": 645316,
+      "currentFingerprint": "51cb27f02a3a6b59e762be68b628587b0c87bf02b96ca2d3e5789c3d7774390c",
+      "reviewId": "AI-IMAGE-V2-e8bc7f715d69c132415fa0a80b8489ab615",
+      "duplicate": "DEFER",
+      "compliance_final": "DEFER",
+      "verified": true
+    }
+  ],
+  "countsAfter": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "finishedAt": "2026-11-11T03:48:54.107Z"
+}
