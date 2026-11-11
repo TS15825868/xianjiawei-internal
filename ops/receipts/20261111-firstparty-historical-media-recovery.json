@@ -1,0 +1,56 @@
+{
+  "schema": "xjw-historical-media-3-current-source-dedup-v1",
+  "sources": "Metricool Brand 6889683 first-party already-published image fields",
+  "pendingCompared": 49,
+  "sourceRequests": 3,
+  "sourcePreviouslyRestoredNotRedownloaded": [
+    "4003809463882866913_78424002938",
+    "4003900963899413608_78424002938"
+  ],
+  "results": [
+    {
+      "id": "3957491164539558820_78424002938",
+      "platform": "instagram",
+      "post_url": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+      "source": "Metricool first-party published-post image",
+      "image_status": "unavailable",
+      "nearest": [],
+      "http_status": 403,
+      "error": "ValueError: remote HTTP 403"
+    },
+    {
+      "id": "3944679925123219099_78424002938",
+      "platform": "instagram",
+      "post_url": "https://www.instagram.com/p/Da-UX35lX6b/",
+      "source": "Metricool first-party published-post image",
+      "image_status": "unavailable",
+      "nearest": [],
+      "http_status": 403,
+      "error": "ValueError: remote HTTP 403"
+    },
+    {
+      "id": "411869648852531_1446376627512555",
+      "platform": "facebook",
+      "post_url": "https://facebook.com/1475619177921633/posts/1446376627512555",
+      "source": "Metricool first-party published-post image",
+      "image_status": "unavailable",
+      "nearest": [],
+      "http_status": 200,
+      "error": "ValueError: unacceptable source byte size"
+    }
+  ],
+  "mediaSaved": 0,
+  "sourceReachable": 0,
+  "failedSources": 3,
+  "D1Writes": 0,
+  "aiApprovals": 0,
+  "humanApprovals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "fullHistoryCleared": false,
+  "notes": [
+    "64-bit dHash is a near-duplicate SCREEN only, never semantic/editorial certification",
+    "15 historical private media and carousel children may remain unidentified",
+    "Recovered photos remain published history, never new product photography"
+  ]
+}
