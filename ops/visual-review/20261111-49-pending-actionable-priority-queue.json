@@ -1,0 +1,3664 @@
+{
+  "schema": "xjw-49-actionable-pending-review-queue-v1",
+  "generatedAt": "2026-11-11",
+  "source": [
+    "ops/receipts/20261111-after-two-product-photos.json",
+    "ops/receipts/20261111-current-all-pending-history-screen.json",
+    "ops/visual-review/20261111-three-remaining-product-scene-findings.json"
+  ],
+  "mode": "read_only",
+  "counts": {
+    "pending": 49,
+    "groups": {
+      "IMAGE_REWORK": 3,
+      "EDITORIAL_COLLISION_CHECK": 46,
+      "COMPLIANCE_CHECK": 0,
+      "HISTORICAL_VISUAL_ONLY": 0
+    }
+  },
+  "noAIApprovals": true,
+  "noHumanApprovals": true,
+  "noPublishing": true,
+  "globalHistoricalGaps": [
+    "15 historical media bytes remain inaccessible, so pixel-level uniqueness across all prior posts is not certified",
+    "Older Instagram/Threads carousel children may be missing",
+    "Image nearest matches from 20261107 may use old copy versions for two corrected candidate texts",
+    "No numerical threshold grants a PASS; all ambiguity requires substantive current-image checks"
+  ],
+  "groups": {
+    "IMAGE_REWORK": [
+      "XJW-CONV-chat-glass-vs-pouch-storage",
+      "XJW-CONV-chat-picture-or-text",
+      "XJW-CONV-cny-gift-choice"
+    ],
+    "EDITORIAL_COLLISION_CHECK": [
+      "XJW-CAND-20261211",
+      "XJW-CAND-20261222",
+      "XJW-CAND-20261225",
+      "XJW-CAND-20270105",
+      "XJW-CAND-20270115",
+      "XJW-CAND-20270119",
+      "XJW-CAND-20270126",
+      "XJW-CAND-20270129",
+      "XJW-CAND-20270305",
+      "XJW-CAND-20270312",
+      "XJW-CAND-20270323",
+      "XJW-CAND-20270330",
+      "XJW-CONV-care-simple-checkin",
+      "XJW-CONV-chat-buy-first-look",
+      "XJW-CONV-chat-dayoff-cook",
+      "XJW-CONV-chat-elder-kitchen-habit",
+      "XJW-CONV-chat-family-old-object",
+      "XJW-CONV-chat-fixed-storage",
+      "XJW-CONV-chat-last-bowl",
+      "XJW-CONV-chat-luerong-intro",
+      "XJW-CONV-chat-no-standard-answer",
+      "XJW-CONV-chat-opening-prep",
+      "XJW-CONV-chat-pantry-memory",
+      "XJW-CONV-chat-photo-size",
+      "XJW-CONV-chat-quiet-work",
+      "XJW-CONV-chat-receive-package",
+      "XJW-CONV-chat-recipe-or-feel",
+      "XJW-CONV-chat-shop-organizing",
+      "XJW-CONV-chat-small-things-work",
+      "XJW-CONV-chat-tradition-today",
+      "XJW-CONV-chat-traditional-image",
+      "XJW-CONV-cny-childhood-now",
+      "XJW-CONV-cny-family-choice",
+      "XJW-CONV-cny-fridge-clean",
+      "XJW-CONV-cny-must-have-dish",
+      "XJW-CONV-cny-pre-clean",
+      "XJW-CONV-cny-reopen",
+      "XJW-CONV-new-year-slow-start",
+      "XJW-CONV-new-year-warm-cup-share",
+      "XJW-CONV-season-more-soup",
+      "XJW-CONV-weather-cool-drink",
+      "XJW-CONV-weather-rain-chat",
+      "XJW-CONV-year-end-small-win",
+      "XJW-FEST-2027-eve-welcome-home",
+      "XJW-FEST-2027-lantern-riceballs",
+      "XJW-FEST-2027-newyear-breakfast"
+    ],
+    "COMPLIANCE_CHECK": [],
+    "HISTORICAL_VISUAL_ONLY": []
+  },
+  "rows": [
+    {
+      "id": "XJW-CAND-20261211",
+      "title": "桌邊的小筆記，你習慣怎麼分類",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261211.webp",
+      "highestPublishedCopySimilarity": 0.0551,
+      "highestPendingCopySimilarity": 0.1094,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1517298547087029",
+          "score": 0.0551,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1517298547087029"
+        },
+        {
+          "id": "IG:4013956389500187677_78424002938",
+          "score": 0.0551,
+          "permalink": "https://www.instagram.com/p/De0cBHEEXQd/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270129",
+          "score": 0.1094
+        },
+        {
+          "id": "XJW-CAND-20270330",
+          "score": 0.0784
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270115",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270115.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CAND-20270302",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270302.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "title": "冬至餐桌上的甜湯圓與鹹湯圓",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261222.webp",
+      "highestPublishedCopySimilarity": 0.0208,
+      "highestPendingCopySimilarity": 0,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1489994339817450",
+          "score": 0.0208,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1489994339817450"
+        },
+        {
+          "id": "IG:3993662653541048499_78424002938",
+          "score": 0.0208,
+          "permalink": "https://www.instagram.com/p/DdsVwYpDuCz/"
+        }
+      ],
+      "closestPending": [],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-deer-turtle-soup-choice-safety-v1.png"
+        },
+        {
+          "id": "411869648852531_1498042945679256|411869648852531_1498042945679256",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/7e6b0536ca4f7a1f2900.img"
+        },
+        {
+          "id": "3999460802859708577_78424002938",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/67cd1fb617d251581a8e.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "title": "聖誕節的小小聚會，誰負責準備點心",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20261225.webp",
+      "highestPublishedCopySimilarity": 0.0121,
+      "highestPendingCopySimilarity": 0.0448,
+      "closestPublished": [
+        {
+          "id": "IG:4003809463882866913_78424002938",
+          "score": 0.0121,
+          "permalink": "https://www.instagram.com/p/DeQY36LFeDh/"
+        },
+        {
+          "id": "TH:18099186008387083",
+          "score": 0.0121,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "score": 0.0448
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "score": 0.0447
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270302",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270302.webp"
+        },
+        {
+          "id": "XJW-CAND-20270105",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270105.webp"
+        },
+        {
+          "id": "411869648852531_1471535304996687|411869648852531_1471535304996687",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/66bc0f96f2c9d62ca83f.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "title": "認識食材，不一定要從複雜配方開始",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270105.webp",
+      "highestPublishedCopySimilarity": 0.0169,
+      "highestPendingCopySimilarity": 0.0514,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1496075705875980",
+          "score": 0.0169,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1496075705875980"
+        },
+        {
+          "id": "IG:3998086186707227112_78424002938",
+          "score": 0.0169,
+          "permalink": "https://www.instagram.com/p/Dd8DjQ8FJHo/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "score": 0.0514
+        },
+        {
+          "id": "XJW-CONV-cny-fridge-clean",
+          "score": 0.0443
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20261225",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261225.webp"
+        },
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-trial-first-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "title": "紅棗入甜湯，整顆還是切開",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270115.webp",
+      "highestPublishedCopySimilarity": 0.053,
+      "highestPendingCopySimilarity": 0.0673,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1471535304996687",
+          "score": 0.053,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1471535304996687"
+        },
+        {
+          "id": "IG:3978701086983039955_78424002938",
+          "score": 0.053,
+          "permalink": "https://www.instagram.com/p/Dc3L479FavT/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270312",
+          "score": 0.0673
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "score": 0.0369
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20261211",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261211.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg"
+        },
+        {
+          "id": "XJW-CAND-20270319",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270319.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "title": "年菜菜單先留一道蔬菜",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270119.webp",
+      "highestPublishedCopySimilarity": 0,
+      "highestPendingCopySimilarity": 0,
+      "closestPublished": [],
+      "closestPending": [],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20261225",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261225.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-wanhua-morning",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-039.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "title": "市場買菜的路上，也有萬華的味道",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270126.webp",
+      "highestPublishedCopySimilarity": 0.0417,
+      "highestPendingCopySimilarity": 0.0545,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0417,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0417,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "score": 0.0545
+        },
+        {
+          "id": "XJW-FEST-2027-lantern-riceballs",
+          "score": 0.0469
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1336767365140149|411869648852531_1336767365140149",
+          "distance": 24,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/3af74cefaa65e6ff80c7.img"
+        },
+        {
+          "id": "3927740814939548979_78424002938",
+          "distance": 24,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/35a5849aaa6c391f9afb.img"
+        },
+        {
+          "id": "XJW-CAND-20270309",
+          "distance": 24,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270309-v2.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "title": "年前整理餐具，先把常用的放前面",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270129.webp",
+      "highestPublishedCopySimilarity": 0.0397,
+      "highestPendingCopySimilarity": 0.1094,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0397,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0397,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20261211",
+          "score": 0.1094
+        },
+        {
+          "id": "XJW-CONV-chat-fixed-storage",
+          "score": 0.0898
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20261208",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp"
+        },
+        {
+          "id": "XJW-CAND-20270330",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270330.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-craft-years",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "title": "萬華春日早晨，老街的新風景",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270305.webp",
+      "highestPublishedCopySimilarity": 0.0305,
+      "highestPendingCopySimilarity": 0.0549,
+      "closestPublished": [
+        {
+          "id": "IG:4002774082772265069_78424002938",
+          "score": 0.0305,
+          "permalink": "https://www.instagram.com/p/DeMtdIXx-ht/"
+        },
+        {
+          "id": "TH:17987156687878610",
+          "score": 0.0305,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-FEST-2027-lantern-riceballs",
+          "score": 0.0549
+        },
+        {
+          "id": "XJW-CAND-20270126",
+          "score": 0.0429
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270309",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270309-v2.webp"
+        },
+        {
+          "id": "XJW-CAND-20270223",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270223.webp"
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "title": "春天煮湯，你會先選湯底還是蔬菜？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270312.webp",
+      "highestPublishedCopySimilarity": 0.0508,
+      "highestPendingCopySimilarity": 0.0673,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1471535304996687",
+          "score": 0.0508,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1471535304996687"
+        },
+        {
+          "id": "IG:3978701086983039955_78424002938",
+          "score": 0.0508,
+          "permalink": "https://www.instagram.com/p/Dc3L479FavT/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270115",
+          "score": 0.0673
+        },
+        {
+          "id": "XJW-CAND-20270330",
+          "score": 0.0426
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-picture-or-text",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-picture-or-text-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CAND-20270302",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270302.webp"
+        },
+        {
+          "id": "411869648852531_1428025256014359|411869648852531_1428025256014359",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/4ee6067dc344d78d522e.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "title": "從老手藝到現代日常，記錄一個工序",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270323.webp",
+      "highestPublishedCopySimilarity": 0.1203,
+      "highestPendingCopySimilarity": 0.1214,
+      "closestPublished": [
+        {
+          "id": "IG:4002774082772265069_78424002938",
+          "score": 0.1203,
+          "permalink": "https://www.instagram.com/p/DeMtdIXx-ht/"
+        },
+        {
+          "id": "TH:17987156687878610",
+          "score": 0.1203,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-tradition-today",
+          "score": 0.1214
+        },
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "score": 0.1174
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1243357651147788|411869648852531_1243357651147788",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0a0469e31af55d2f601f.img"
+        },
+        {
+          "id": "XJW-CAND-20270122",
+          "distance": 22,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270122.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "distance": 22,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "title": "乾燥食材分類，透明收納袋怎麼排",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/media/social-candidates/20261106/XJW-CAND-20270330.webp",
+      "highestPublishedCopySimilarity": 0.0791,
+      "highestPendingCopySimilarity": 0.0784,
+      "closestPublished": [
+        {
+          "id": "IG:3920666070016628175_78424002938",
+          "score": 0.0791,
+          "permalink": "https://www.instagram.com/p/DZpAQSiRJXP/"
+        },
+        {
+          "id": "IG:3920640554706633402_78424002938",
+          "score": 0.0791,
+          "permalink": "https://www.instagram.com/p/DZo6c_jR4K6/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20261211",
+          "score": 0.0784
+        },
+        {
+          "id": "XJW-CAND-20270312",
+          "score": 0.0426
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1370780828405469|411869648852531_1370780828405469|411869648852531_1370780828405469",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/4fba952889c17b5e8703.img"
+        },
+        {
+          "id": "3894500319577819666_78424002938",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/5c118cf2d41b850c26ec.img"
+        },
+        {
+          "id": "XJW-CAND-20270309",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270309-v2.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg",
+      "highestPublishedCopySimilarity": 0.0647,
+      "highestPendingCopySimilarity": 0.0796,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1482152590601625",
+          "score": 0.0647,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1482152590601625"
+        },
+        {
+          "id": "TH:17959243467209123",
+          "score": 0.0647,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "score": 0.0796
+        },
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "score": 0.0523
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-ask-boss-topic",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-ask-boss-topic-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1288224646661088|411869648852531_1288224646661088",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0c31b12e034d21f3cfbb.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "title": "買東西時，你第一個看什麼？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png",
+      "highestPublishedCopySimilarity": 0.0408,
+      "highestPendingCopySimilarity": 0.0619,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1477063464443871",
+          "score": 0.0408,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1477063464443871"
+        },
+        {
+          "id": "FB:411869648852531_1517298547087029",
+          "score": 0.0346,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1517298547087029"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "score": 0.0619
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "score": 0.056
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-deer-turtle-soup-choice-safety-v1.png"
+        },
+        {
+          "id": "XJW-FEST-2027-eve-welcome-home",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "title": "放假在家，你會想慢慢準備一餐嗎？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+      "highestPublishedCopySimilarity": 0.0364,
+      "highestPendingCopySimilarity": 0.086,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0364,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "IG:4017914296176781377_78424002938",
+          "score": 0.0364,
+          "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "score": 0.086
+        },
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "score": 0.0394
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-opening-prep",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg"
+        },
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+      "highestPublishedCopySimilarity": 0.065,
+      "highestPendingCopySimilarity": 0.086,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.065,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.065,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-dayoff-cook",
+          "score": 0.086
+        },
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "score": 0.0855
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270115",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270115.webp"
+        },
+        {
+          "id": "XJW-CONV-care-before-home-message",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg"
+        },
+        {
+          "id": "XJW-CAND-20261222",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261222.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+      "highestPublishedCopySimilarity": 0.0523,
+      "highestPendingCopySimilarity": 0.1174,
+      "closestPublished": [
+        {
+          "id": "IG:4002774082772265069_78424002938",
+          "score": 0.0523,
+          "permalink": "https://www.instagram.com/p/DeMtdIXx-ht/"
+        },
+        {
+          "id": "TH:17987156687878610",
+          "score": 0.0523,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270323",
+          "score": 0.1174
+        },
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "score": 0.0774
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-recipe-or-feel",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-dayoff-cook",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "title": "你的廚房，最常用木匙還是長筷？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-fixed-storage-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0472,
+      "highestPendingCopySimilarity": 0.0898,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0472,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "IG:4017914296176781377_78424002938",
+          "score": 0.0472,
+          "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270129",
+          "score": 0.0898
+        },
+        {
+          "id": "XJW-CAND-20261211",
+          "score": 0.0724
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270122",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270122.webp"
+        },
+        {
+          "id": "XJW-CONV-brand-third-generation-note",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-brand-third-generation-note-scene-v3.jpg"
+        },
+        {
+          "id": "411869648852531_5168748886497893",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/9569b38b3d7bcb6340cc.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "玻璃罐跟鋁袋，你家比較好收哪一種？",
+      "group": "IMAGE_REWORK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "DEFER"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "compliance_final:DEFER",
+        "published_copy_similarity_alert",
+        "MANUAL_SCALE_REVIEW_REQUIRED"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-glass-vs-pouch-storage-real-product-v1.jpg",
+      "highestPublishedCopySimilarity": 0.181,
+      "highestPendingCopySimilarity": 0.144,
+      "closestPublished": [
+        {
+          "id": "IG:3987433427959660289_78424002938",
+          "score": 0.181,
+          "permalink": "https://www.instagram.com/p/DdWNZOPDb8B/"
+        },
+        {
+          "id": "FB:411869648852531_1446376627512555",
+          "score": 0.1554,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1446376627512555"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-photo-size",
+          "score": 0.144
+        },
+        {
+          "id": "XJW-CONV-year-end-small-win",
+          "score": 0.0461
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1420307150119503|411869648852531_1420307150119503",
+          "distance": 16,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/d7e017b6102ba228b31d.img"
+        },
+        {
+          "id": "3935227118447546252_78424002938",
+          "distance": 16,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0da274e00b0a0bf67c37.img"
+        },
+        {
+          "id": "411869648852531_1388991326584419|411869648852531_1388991326584419",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/1e04dd4286bd3aba91ed.img"
+        }
+      ],
+      "reviewNotes": [
+        "Actual 30cc glass jar and 180cc aluminum pouch are visible",
+        "Relative pouch size and background contact shadow need independent scale/scene review",
+        "One prior editorial similarity warning remains for storage topic"
+      ],
+      "next": "Verify original 180cc pouch proportions and published storage-topic visual difference; do not auto-promote"
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+      "highestPublishedCopySimilarity": 0.0277,
+      "highestPendingCopySimilarity": 0.065,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1458834109600140",
+          "score": 0.0277,
+          "permalink": "https://www.facebook.com/reel/2238635956899661/"
+        },
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0248,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-FEST-2027-lantern-riceballs",
+          "score": 0.065
+        },
+        {
+          "id": "XJW-CAND-20270129",
+          "score": 0.0579
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-cny-pre-clean",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-gift-choice-audit-v1.jpg"
+        },
+        {
+          "id": "411869648852531_5168748886497893",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/df8b28a9316f3de97f10.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "title": "今天認識一個比較少聊到的：鹿茸粉",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "DEFER"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "compliance_final:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-luerong-intro-real-product-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0531,
+      "highestPendingCopySimilarity": 0.0617,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1517298547087029",
+          "score": 0.0531,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1517298547087029"
+        },
+        {
+          "id": "IG:4013956389500187677_78424002938",
+          "score": 0.0531,
+          "permalink": "https://www.instagram.com/p/De0cBHEEXQd/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "score": 0.0617
+        },
+        {
+          "id": "XJW-CAND-20261211",
+          "score": 0.0593
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1522853359864881|411869648852531_1522853359864881",
+          "distance": 18,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/809fc35a6ee2f8a0bd83.img"
+        },
+        {
+          "id": "4017914296176781377_78424002938",
+          "distance": 18,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/16907bf861fc5d84f4cb.img"
+        },
+        {
+          "id": "18148202098570237",
+          "distance": 18,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0f325d8cfdcfaf080602.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "title": "有些問題，其實沒有標準答案",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0588,
+      "highestPendingCopySimilarity": 0.0822,
+      "closestPublished": [
+        {
+          "id": "TH:18098217644144885",
+          "score": 0.0588,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdEKJwxCJbn"
+        },
+        {
+          "id": "FB:411869648852531_1507731638043720",
+          "score": 0.0318,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1507731638043720"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-picture-or-text",
+          "score": 0.0822
+        },
+        {
+          "id": "XJW-CONV-chat-buy-first-look",
+          "score": 0.0619
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20261211",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261211.webp"
+        },
+        {
+          "id": "XJW-CONV-new-year-warm-cup-share",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "title": "開店前，小老闆先做哪一件事？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0188,
+      "highestPendingCopySimilarity": 0.0941,
+      "closestPublished": [
+        {
+          "id": "IG:3941794959217857454_78424002938",
+          "score": 0.0188,
+          "permalink": "https://www.instagram.com/p/Da0EaGBmxOu/"
+        },
+        {
+          "id": "FB:411869648852531_1446376627512555",
+          "score": 0.0158,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1446376627512555"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-pre-clean",
+          "score": 0.0941
+        },
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "score": 0.0495
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-cny-fridge-clean",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-dayoff-cook",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg"
+        },
+        {
+          "id": "411869648852531_1515305060619711|411869648852531_1515305060619711",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/185cd03892058cba7a6a.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "title": "你家以前最常看到哪一種食材？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0512,
+      "highestPendingCopySimilarity": 0.0855,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0512,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0512,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "score": 0.0855
+        },
+        {
+          "id": "XJW-CAND-20270323",
+          "score": 0.0779
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_963520535798169|411869648852531_963520535798169",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/14a976f1d28d7fdb62b9.img"
+        },
+        {
+          "id": "XJW-CAND-20270119",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270119.webp"
+        },
+        {
+          "id": "XJW-FEST-2027-lantern-riceballs",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "title": "一張產品照，為什麼尺寸看起來會差很多？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "DEFER"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "compliance_final:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-photo-size-real-product-v1.jpg",
+      "highestPublishedCopySimilarity": 0.1392,
+      "highestPendingCopySimilarity": 0.144,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1446376627512555",
+          "score": 0.1392,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1446376627512555"
+        },
+        {
+          "id": "IG:3957491164539558820_78424002938",
+          "score": 0.1285,
+          "permalink": "https://www.instagram.com/p/Dbr1T8YIJuk/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+          "score": 0.144
+        },
+        {
+          "id": "XJW-CONV-year-end-small-win",
+          "score": 0.0361
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-trial-first-scene-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1496075705875980|411869648852531_1496075705875980",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/bd9412400032963a68e1.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "title": "你比較喜歡看圖，還是慢慢看文字？",
+      "group": "IMAGE_REWORK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "DEFER"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "compliance_final:DEFER",
+        "published_copy_similarity_alert",
+        "REWORK_REQUIRED"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-chat-picture-or-text-real-product-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0604,
+      "highestPendingCopySimilarity": 0.0956,
+      "closestPublished": [
+        {
+          "id": "IG:4012639510524863731_78424002938",
+          "score": 0.0604,
+          "permalink": "https://www.instagram.com/p/Devwl_8iCTz/"
+        },
+        {
+          "id": "IG:3944679925123219099_78424002938",
+          "score": 0.0522,
+          "permalink": "https://www.instagram.com/p/Da-UX35lX6b/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "score": 0.0956
+        },
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "score": 0.0822
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270312",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270312.webp"
+        },
+        {
+          "id": "411869648852531_1484865580330326|411869648852531_1484865580330326|411869648852531_1484865580330326",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/ca5ca687780cdd7541ac.img"
+        },
+        {
+          "id": "411869648852531_1428025256014359|411869648852531_1428025256014359",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/4ee6067dc344d78d522e.img"
+        }
+      ],
+      "reviewNotes": [
+        "Old jar silhouette still visible behind official 100g jar, particularly upper-right lid/body",
+        "Image is visibly composited and cannot pass final product consistency"
+      ],
+      "next": "Remove entire old jar silhouette and regenerate seamless tabletop from genuine scene without changing official packaging"
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+      "highestPublishedCopySimilarity": 0.0131,
+      "highestPendingCopySimilarity": 0.0862,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1498042945679256",
+          "score": 0.0131,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1498042945679256"
+        },
+        {
+          "id": "IG:3999460802859708577_78424002938",
+          "score": 0.0131,
+          "permalink": "https://www.instagram.com/p/DeA8Gj_jTCh/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-reopen",
+          "score": 0.0862
+        },
+        {
+          "id": "XJW-CONV-chat-opening-prep",
+          "score": 0.0495
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-tradition-today",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png"
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg"
+        },
+        {
+          "id": "411869648852531_5168748886497893",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/ae1bcbef78b6ec9a0a72.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+      "highestPublishedCopySimilarity": 0.0214,
+      "highestPendingCopySimilarity": 0.0412,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0214,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "FB:411869648852531_1515305060619711",
+          "score": 0.0214,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1515305060619711"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-pre-clean",
+          "score": 0.0412
+        },
+        {
+          "id": "XJW-CONV-chat-buy-first-look",
+          "score": 0.0371
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-recipe-or-feel",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg"
+        },
+        {
+          "id": "411869648852531_5168748886497893",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/ae1bcbef78b6ec9a0a72.img"
+        },
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-chat-deer-turtle-soup-choice-safety-v1.png"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "title": "你煮東西是照食譜，還是憑感覺？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg",
+      "highestPublishedCopySimilarity": 0.0175,
+      "highestPendingCopySimilarity": 0.0481,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1517298547087029",
+          "score": 0.0175,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1517298547087029"
+        },
+        {
+          "id": "IG:4013956389500187677_78424002938",
+          "score": 0.0175,
+          "permalink": "https://www.instagram.com/p/De0cBHEEXQd/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "score": 0.0481
+        },
+        {
+          "id": "XJW-CONV-chat-fixed-storage",
+          "score": 0.0382
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-receive-package",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "title": "小老闆今天在整理什麼？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-shop-organizing-scene-v5.jpg",
+      "highestPublishedCopySimilarity": 0.0223,
+      "highestPendingCopySimilarity": 0.0623,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1496075705875980",
+          "score": 0.0223,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1496075705875980"
+        },
+        {
+          "id": "IG:3998086186707227112_78424002938",
+          "score": 0.0223,
+          "permalink": "https://www.instagram.com/p/Dd8DjQ8FJHo/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "score": 0.0623
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "score": 0.0343
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-craft-years",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-craft-years-scene-v3.jpg"
+        },
+        {
+          "id": "XJW-CONV-care-before-home-message",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-buy-first-look",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
+      "highestPublishedCopySimilarity": 0.0433,
+      "highestPendingCopySimilarity": 0.0674,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1496075705875980",
+          "score": 0.0433,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1496075705875980"
+        },
+        {
+          "id": "IG:3998086186707227112_78424002938",
+          "score": 0.0433,
+          "permalink": "https://www.instagram.com/p/Dd8DjQ8FJHo/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-reopen",
+          "score": 0.0674
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "score": 0.0391
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg"
+        },
+        {
+          "id": "XJW-CONV-care-before-home-message",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-before-home-message-scene-v3.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+      "highestPublishedCopySimilarity": 0.0772,
+      "highestPendingCopySimilarity": 0.1214,
+      "closestPublished": [
+        {
+          "id": "IG:4002774082772265069_78424002938",
+          "score": 0.0772,
+          "permalink": "https://www.instagram.com/p/DeMtdIXx-ht/"
+        },
+        {
+          "id": "TH:17987156687878610",
+          "score": 0.0772,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeMt2-0mW92"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270323",
+          "score": 0.1214
+        },
+        {
+          "id": "XJW-CONV-chat-traditional-image",
+          "score": 0.0489
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_5159587880747327",
+          "distance": 18,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/19de3cca51e0bc62b9df.img"
+        },
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg"
+        },
+        {
+          "id": "XJW-FEST-2027-spring-walk",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-13/festival/XJW-FEST-2027-spring-walk-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "title": "看到「傳統」兩個字，你第一個想到什麼？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-traditional-image-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0617,
+      "highestPendingCopySimilarity": 0.0521,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1515305060619711",
+          "score": 0.0617,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1515305060619711"
+        },
+        {
+          "id": "IG:4012506875442008598_78424002938",
+          "score": 0.0617,
+          "permalink": "https://www.instagram.com/p/DevSb55iJIW/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "score": 0.0521
+        },
+        {
+          "id": "XJW-CONV-chat-tradition-today",
+          "score": 0.0489
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-30-bare-jar",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-bare-jar-scene-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1336767365140149|411869648852531_1336767365140149",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/3af74cefaa65e6ff80c7.img"
+        },
+        {
+          "id": "411869648852531_968246725325550|411869648852531_968246725325550",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/7676bd8370e08e78f4c0.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0457,
+      "highestPendingCopySimilarity": 0.0857,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1498042945679256",
+          "score": 0.0457,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1498042945679256"
+        },
+        {
+          "id": "IG:3999460802859708577_78424002938",
+          "score": 0.0457,
+          "permalink": "https://www.instagram.com/p/DeA8Gj_jTCh/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-FEST-2027-eve-welcome-home",
+          "score": 0.0857
+        },
+        {
+          "id": "XJW-CONV-cny-family-choice",
+          "score": 0.0558
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-trial-first",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-trial-first-scene-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1484865580330326",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/b7f57698a26081efda9b.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "title": "過年最期待的是吃飯、見家人，還是放假？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-CONV-cny-family-choice-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0342,
+      "highestPendingCopySimilarity": 0.0558,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1336767365140149",
+          "score": 0.0342,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1336767365140149"
+        },
+        {
+          "id": "FB:411869648852531_1444084084408476",
+          "score": 0.0232,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1444084084408476"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-childhood-now",
+          "score": 0.0558
+        },
+        {
+          "id": "XJW-FEST-2027-lantern-riceballs",
+          "score": 0.0331
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_678282490988643",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/85d8a6bce7ff274f9b0d.img"
+        },
+        {
+          "id": "XJW-CONV-cny-fridge-clean",
+          "distance": 22,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-simple-soup",
+          "distance": 22,
+          "path": "repo-increment/assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-simple-soup-scene-v2.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "title": "過年前整理冰箱，最常找到什麼？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0354,
+      "highestPendingCopySimilarity": 0.0481,
+      "closestPublished": [
+        {
+          "id": "IG:4003809463882866913_78424002938",
+          "score": 0.0354,
+          "permalink": "https://www.instagram.com/p/DeQY36LFeDh/"
+        },
+        {
+          "id": "TH:18099186008387083",
+          "score": 0.0354,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DeQY5EjihsW"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-opening-prep",
+          "score": 0.0481
+        },
+        {
+          "id": "XJW-CAND-20270105",
+          "score": 0.0443
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-opening-prep",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1057526489730906",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/382def9969a73d2fe0c4.img"
+        },
+        {
+          "id": "XJW-CAND-20261208",
+          "distance": 22,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261208-v2.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "title": "送禮時，你比較在意包裝還是對方用不用得到？",
+      "group": "IMAGE_REWORK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "DEFER"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "compliance_final:DEFER",
+        "published_copy_similarity_alert",
+        "REWORK_REQUIRED"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-10/formal-production/XJW-CONV-cny-gift-choice-real-product-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0693,
+      "highestPendingCopySimilarity": 0.0956,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0693,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "IG:4017914296176781377_78424002938",
+          "score": 0.0693,
+          "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-picture-or-text",
+          "score": 0.0956
+        },
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "score": 0.0901
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-care-simple-checkin",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-care-simple-checkin-scene-v3.jpg"
+        },
+        {
+          "id": "4002774082772265069_78424002938",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/cd99cc786cfe1851bfda.img"
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg"
+        }
+      ],
+      "reviewNotes": [
+        "Real 100g jar overlay visible but darker prior jar/photo remains visible along right side and base",
+        "Official original pixels not enough to certify finished scene"
+      ],
+      "next": "Remove residual underlying jar/ghost and inspect at 100% before D1 update"
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0518,
+      "highestPendingCopySimilarity": 0.0705,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0518,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0518,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "score": 0.0705
+        },
+        {
+          "id": "XJW-CAND-20270126",
+          "score": 0.0545
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-year-end-small-win",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CAND-20270105",
+          "distance": 18,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270105.webp"
+        },
+        {
+          "id": "XJW-CONV-season-more-soup",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "title": "過年前，你家會先大掃除還是先買東西？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.011,
+      "highestPendingCopySimilarity": 0.0941,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1471535304996687",
+          "score": 0.011,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1471535304996687"
+        },
+        {
+          "id": "IG:3978701086983039955_78424002938",
+          "score": 0.011,
+          "permalink": "https://www.instagram.com/p/Dc3L479FavT/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-opening-prep",
+          "score": 0.0941
+        },
+        {
+          "id": "XJW-CONV-chat-receive-package",
+          "score": 0.0412
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-customer-first-question",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-customer-first-question-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-30-bare-jar",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-30-bare-jar-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "title": "開工第一天，小老闆先做一件小事",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0202,
+      "highestPendingCopySimilarity": 0.0862,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1489421429874741",
+          "score": 0.0202,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1489421429874741"
+        },
+        {
+          "id": "IG:3993249314092726006_78424002938",
+          "score": 0.0202,
+          "permalink": "https://www.instagram.com/p/Ddq3xgSEbb2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "score": 0.0862
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "score": 0.0674
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1498042945679256|411869648852531_1498042945679256",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/7e6b0536ca4f7a1f2900.img"
+        },
+        {
+          "id": "411869648852531_1484865580330326",
+          "distance": 24,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/635b68146e0292052a5a.img"
+        },
+        {
+          "id": "411869648852531_959941636156059|411869648852531_959941636156059",
+          "distance": 24,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0941508468bd90c4973e.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0955,
+      "highestPendingCopySimilarity": 0.0971,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0955,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "IG:4017914296176781377_78424002938",
+          "score": 0.0955,
+          "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CAND-20270323",
+          "score": 0.0971
+        },
+        {
+          "id": "XJW-CONV-cny-gift-choice",
+          "score": 0.0901
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-weather-rain-chat",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg"
+        },
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "title": "新年第一杯溫熱的，你想留給自己還是家人？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0602,
+      "highestPendingCopySimilarity": 0.0796,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1482152590601625",
+          "score": 0.0602,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1482152590601625"
+        },
+        {
+          "id": "TH:17959243467209123",
+          "score": 0.0602,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdVigXvDYYg"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-care-simple-checkin",
+          "score": 0.0796
+        },
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "score": 0.0757
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-no-standard-answer",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-CAND-20270305",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270305.webp"
+        },
+        {
+          "id": "XJW-CAND-20261222",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20261222.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "title": "天氣涼一點，家裡是不是也比較常出現湯鍋？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png",
+      "highestPublishedCopySimilarity": 0.0368,
+      "highestPendingCopySimilarity": 0.0387,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1522853359864881",
+          "score": 0.0368,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1522853359864881"
+        },
+        {
+          "id": "IG:4017914296176781377_78424002938",
+          "score": 0.0368,
+          "permalink": "https://www.instagram.com/p/DfCf8O5lKhB/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "score": 0.0387
+        },
+        {
+          "id": "XJW-CONV-chat-small-things-work",
+          "score": 0.0339
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270302",
+          "distance": 16,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270302.webp"
+        },
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 18,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        },
+        {
+          "id": "411869648852531_1248420423974844|411869648852531_1248420423974844",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/ab8a14f2844ed595dcef.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.1072,
+      "highestPendingCopySimilarity": 0.0894,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.1072,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.1072,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "score": 0.0894
+        },
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "score": 0.0781
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1288224646661088|411869648852531_1288224646661088",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0c31b12e034d21f3cfbb.img"
+        },
+        {
+          "id": "411869648852531_1288050900011796|411869648852531_1288050900011796",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/1d8d2720d6e302abb334.img"
+        },
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "title": "下雨天，你會想喝什麼？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0745,
+      "highestPendingCopySimilarity": 0.0508,
+      "closestPublished": [
+        {
+          "id": "IG:3920666070016628175_78424002938",
+          "score": 0.0745,
+          "permalink": "https://www.instagram.com/p/DZpAQSiRJXP/"
+        },
+        {
+          "id": "IG:3920640554706633402_78424002938",
+          "score": 0.0745,
+          "permalink": "https://www.instagram.com/p/DZo6c_jR4K6/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-weather-cool-drink",
+          "score": 0.0508
+        },
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "score": 0.0505
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_962722782544611|411869648852531_962722782544611",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/3dfe1985bed16adf1573.img"
+        },
+        {
+          "id": "XJW-CONV-chat-elder-kitchen-habit",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg"
+        },
+        {
+          "id": "XJW-CONV-new-year-slow-start",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0259,
+      "highestPendingCopySimilarity": 0.0461,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1477063464443871",
+          "score": 0.0259,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1477063464443871"
+        },
+        {
+          "id": "TH:17861434386689511",
+          "score": 0.0246,
+          "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdG1zfxiMpf"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+          "score": 0.0461
+        },
+        {
+          "id": "XJW-CONV-chat-photo-size",
+          "score": 0.0361
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-cny-must-have-dish",
+          "distance": 16,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg"
+        },
+        {
+          "id": "411869648852531_947303744086515|411869648852531_947303744086515",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/0bd8a5965d5de43767c3.img"
+        },
+        {
+          "id": "411869648852531_1471535304996687|411869648852531_1471535304996687",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/66bc0f96f2c9d62ca83f.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "title": "除夕，先替回家的人留一個位置",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0261,
+      "highestPendingCopySimilarity": 0.0857,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1489994339817450",
+          "score": 0.0261,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1489994339817450"
+        },
+        {
+          "id": "IG:3993662653541048499_78424002938",
+          "score": 0.0261,
+          "permalink": "https://www.instagram.com/p/DdsVwYpDuCz/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-cny-childhood-now",
+          "score": 0.0857
+        },
+        {
+          "id": "XJW-FEST-2027-newyear-breakfast",
+          "score": 0.0435
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CONV-chat-buy-first-look",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-09-22/XJW-ACTIVE-IMG-004.png"
+        },
+        {
+          "id": "411869648852531_1484865580330326|411869648852531_1484865580330326|411869648852531_1484865580330326",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/ca5ca687780cdd7541ac.img"
+        },
+        {
+          "id": "411869648852531_1483861027097448|411869648852531_1483861027097448",
+          "distance": 22,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/14d682d6e29996af37e0.img"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "title": "元宵，一起把小小的湯圓搓好",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0445,
+      "highestPendingCopySimilarity": 0.065,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0445,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0445,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-CONV-chat-last-bowl",
+          "score": 0.065
+        },
+        {
+          "id": "XJW-CAND-20270129",
+          "score": 0.0624
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "XJW-CAND-20270108",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270108.webp"
+        },
+        {
+          "id": "XJW-CONV-chat-pantry-memory",
+          "distance": 20,
+          "path": "repo-increment/assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg"
+        },
+        {
+          "id": "XJW-0663bdeb-49aa-46bf-8a41-95a14486f425",
+          "distance": 22,
+          "path": "repo-increment/assets/post-images/2026-10-14/formal-production/XJW-drink180-ingredients.png"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "title": "元旦早上，先把早餐留給一起生活的人",
+      "group": "EDITORIAL_COLLISION_CHECK",
+      "copyVersionBound": true,
+      "imageHashBound": true,
+      "checks": {
+        "brand": "PASS",
+        "product": "PASS",
+        "specification": "PASS",
+        "pricing_activity": "PASS",
+        "season": "PASS",
+        "weather": "PASS",
+        "occasion": "PASS",
+        "location": "PASS",
+        "scene_environment": "PASS",
+        "temperature": "PASS",
+        "expression": "PASS",
+        "action": "PASS",
+        "mascot_companions": "PASS",
+        "physical_scale": "PASS",
+        "duplicate": "DEFER",
+        "compliance_final": "PASS"
+      },
+      "blockers": [
+        "duplicate:DEFER",
+        "external_metricool_mapping_review",
+        "published_copy_similarity_alert"
+      ],
+      "sourceImage": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+      "highestPublishedCopySimilarity": 0.0366,
+      "highestPendingCopySimilarity": 0.0435,
+      "closestPublished": [
+        {
+          "id": "FB:411869648852531_1529162322567318",
+          "score": 0.0366,
+          "permalink": "https://www.facebook.com/1531256482357902/posts/1529162322567318"
+        },
+        {
+          "id": "IG:4022256683183285942_78424002938",
+          "score": 0.0366,
+          "permalink": "https://www.instagram.com/p/DfR7SR8lKa2/"
+        }
+      ],
+      "closestPending": [
+        {
+          "id": "XJW-FEST-2027-eve-welcome-home",
+          "score": 0.0435
+        },
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "score": 0.0311
+        }
+      ],
+      "visualNeighbors": [
+        {
+          "id": "411869648852531_1057526489730906",
+          "distance": 20,
+          "path": "/workspace/scratch/4c6723560319/history-corpus/382def9969a73d2fe0c4.img"
+        },
+        {
+          "id": "XJW-CAND-20270108",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270108.webp"
+        },
+        {
+          "id": "XJW-CAND-20270122",
+          "distance": 20,
+          "path": "repo-increment/media/social-candidates/20261106/XJW-CAND-20270122.webp"
+        }
+      ],
+      "reviewNotes": [],
+      "next": "Independently inspect actual image against available published and pending history, explicitly record unresolved 15 private media / carousel gaps; no automatic PASS"
+    }
+  ]
+}
