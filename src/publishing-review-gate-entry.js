@@ -261,6 +261,28 @@ export default{async fetch(request,env,ctx){
     return json({...body,publishingReviewGateVersion:VERSION,publishingReviewChecklistCount:REQUIRED_CHECKS.length,copyImageMatchHardGate:true,semanticSceneMatch:true,duplicateLifestyleImageGate:true,weatherReviewFreshnessHours:12,editImmediatelyInvalidatesApproval:true,freeRegenerationRoundTrip:true,draftToPendingReviewRequired:true,directDraftApprovalBlocked:true,regenerationStartEndpoint:'/api/posts/:id/regeneration-start',regenerationReadyEndpoint:'/api/posts/:id/regeneration-ready',regenerationReturnsToPendingReview:true},response.status)
   }
   const returnAiReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/prepare-human-review$/),statusMatch=path.match(/^\/api\/posts\/([^/]+)\/status$/),publishMatch=path.match(/^\/api\/posts\/([^/]+)\/publish-now$/),postMatch=path.match(/^\/api\/posts\/([^/]+)$/),gateMatch=path.match(/^\/api\/posts\/([^/]+)\/review-gate$/),regenStartMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-start$/),regenReadyMatch=path.match(/^\/api\/posts\/([^/]+)\/regeneration-ready$/);
+  const historicalReviewMatch=path.match(/^\/api\/posts\/([^/]+)\/historical-review$/);
+  if(historicalReviewMatch&&request.method==='POST'){
+    const authorization=await authorize(request,env,ctx);
+    if(!authorization.ok)return authorization;
+    const profile=await authorization.json();
+    if(clean(profile?.role)!=='owner'||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(profile?.email)))return json({error:'只有品牌擁有者可提交人工歷史覆核'},403);
+    const id=decodeURIComponent(historicalReviewMatch[1]),row=await postRow(env,id);
+    if(!row)return json({error:'找不到貼文'},404);
+    const body=await readBody(request),fp=await fingerprint(row);
+    if(row.status!=='pending_review'||row.published_at||row.scheduled_at||row.approved_by||body?.content_fingerprint!==fp)
+      return json({error:'僅接受目前版本的未核准待審稿'},409);
+    const outcome=clean(body?.outcome),scope=clean(body?.scope),finding=clean(body?.finding);
+    if(!['evidence_added','possible_duplicate','unresolved'].includes(outcome)||scope.length<8||scope.length>1800||finding.length<12||finding.length>2400)
+      return json({error:'請填寫已查證來源、涵蓋範圍與具體結果'},422);
+    const idempotency='HIST-'+crypto.randomUUID();
+    const evidence=JSON.stringify({fingerprint:fp,image_url:row.image_url,outcome,scope,finding,reviewed_at:new Date().toISOString()});
+    const written=await env.DB.prepare("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,after_json,ip) SELECT ?,?,'人工歷史去重覆核','貼文',?,? ,'' WHERE EXISTS(SELECT 1 FROM social_posts WHERE id=? AND updated_at=? AND status='pending_review' AND published_at IS NULL AND scheduled_at IS NULL AND approved_by IS NULL)").bind(idempotency,clean(profile.email),id,evidence,id,row.updated_at).run();
+    if(written.meta?.changes!==1)return json({error:'貼文版本已變更，請重新讀取'},409);
+    const receipt=await env.DB.prepare("SELECT id,after_json FROM audit_logs WHERE id=? AND entity_id=?").bind(idempotency,id).first();
+    if(receipt?.after_json!==evidence)return json({error:'未確認覆核紀錄讀回'},500);
+    return json({ok:true,review_id:receipt.id,status:row.status,auto_publish:false,auto_schedule:false});
+  }
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
   if(request.method==='GET'&&/^\/api\/posts\/[^/]+\/autopublish-readiness$/.test(path)){
     const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
@@ -306,7 +328,15 @@ export default{async fetch(request,env,ctx){
     const id=decodeURIComponent(aiMatch[1]),row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     const history=await env.DB.prepare('SELECT id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,reviewed_at,old_status,new_status FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC').bind(id).all();
     const current=await fingerprint(row);
-    return json({post_id:id,current:{...postMaterial(row),status:row.status,updated_at:row.updated_at,content_fingerprint:current},required_checks:REQUIRED_CHECKS,reviews:(history.results||[]).map(review=>{
+    const notes=await env.DB.prepare("SELECT id,after_json FROM audit_logs WHERE entity_id=? AND action='人工歷史去重覆核' ORDER BY rowid DESC LIMIT 20").bind(id).all();
+    const evidenceRows=history.results||[];
+    const bound=evidenceRows.find(review=>review.content_fingerprint===current&&review.image_url===row.image_url);
+    let duplicateEvidence=null;
+    try{duplicateEvidence=JSON.parse(bound?.evidence_json||'{}').checks?.duplicate??null}catch{}
+    const humanNotes=(notes.results||[]).flatMap(note=>{
+      try{const saved=JSON.parse(note.after_json);return [{id:note.id,...saved,matches_current_content:saved.fingerprint===current&&saved.image_url===row.image_url}]}catch{return []}
+    });
+    return json({historical_review:{may_record:clean(profile?.role)==='owner'&&row.status==='pending_review'&&!row.approved_by&&!row.published_at&&!row.scheduled_at,version_bound_duplicate_evidence:duplicateEvidence,known_post_collisions:await duplicatePostErrors(env,row),human_notes:humanNotes,coverage_reference:'/ops/receipts/20261111-firstparty-historical-media-recovery.json',coverage_summary:'既有紀錄仍列 15 份未取得媒體及部分舊輪播子圖。已知查證：兩筆 Instagram HTTP 403，一筆 Facebook 檔案大小未通過驗證。缺件限制歷史比對範圍，不代表這篇已發現重複。'},post_id:id,current:{...postMaterial(row),status:row.status,updated_at:row.updated_at,content_fingerprint:current},required_checks:REQUIRED_CHECKS,reviews:(history.results||[]).map(review=>{
       let evidence=null;try{evidence=JSON.parse(review.evidence_json)}catch{}
       const {evidence_json,...summary}=review;
       return {...summary,matches_current_content:review.content_fingerprint===current&&review.image_url===row.image_url,evidence,evidence_parse_error:evidence===null};

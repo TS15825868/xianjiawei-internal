@@ -205,9 +205,34 @@
     const contextTitle=document.createElement('summary');contextTitle.textContent='目前圖文版本與既有審核證據（唯讀）';
     const contextText=document.createElement('pre');contextText.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;max-height:35vh;overflow:auto';contextText.textContent='讀取既有證據中…';
     contextBox.append(contextTitle,contextText);root.querySelector('#aiReviewEvidence').before(contextBox);
+    const historical=document.createElement('details');
+    historical.innerHTML='<summary>人工歷史去重覆核</summary><p data-history-summary></p><a target="_blank" rel="noopener" href="https://github.com/TS15825868/xianjiawei-internal/blob/main/ops/receipts/20261111-firstparty-historical-media-recovery.json">歷史缺件查證紀錄</a><pre data-history-evidence style="white-space:pre-wrap;overflow-wrap:anywhere"></pre><form hidden><label>覆核結果 <select name="outcome"><option value="unresolved">仍缺證據</option><option value="possible_duplicate">發現可能重複</option><option value="evidence_added">已取得補充證據</option></select></label><label>已查證來源與涵蓋範圍 <textarea required minlength="8" maxlength="1800" name="scope"></textarea></label><label>具體發現與影響 <textarea required minlength="12" maxlength="2400" name="finding"></textarea></label><button type="submit" class="btn">保存人工覆核紀錄</button></form><p role="status"></p>';
+    contextBox.after(historical);
+    const historyForm=historical.querySelector('form');
+    let historicalFingerprint='';
+    historyForm.addEventListener('submit',async event=>{
+      event.preventDefault();
+      const save=historyForm.querySelector('button'),status=historical.querySelector('[role=status]');
+      save.disabled=true;
+      try{
+        const fields=Object.fromEntries(new FormData(historyForm));
+        const receipt=await api('/posts/'+encodeURIComponent(id)+'/historical-review',{method:'POST',body:JSON.stringify({...fields,content_fingerprint:historicalFingerprint})});
+        status.textContent='人工覆核已保存並讀回 '+receipt.review_id+'。此紀錄不變更 AI 審核或發布狀態。';
+        historyForm.reset();
+      }catch(error){status.textContent=error.message||String(error)}
+      finally{save.disabled=false}
+    });
     // Never prefill PASS or submit an earlier version as a new review.
     api('/posts/'+encodeURIComponent(id)+'/ai-quality-review',{timeout:30000})
-      .then(context=>{contextText.textContent=JSON.stringify(context,null,2)})
+      .then(context=>{
+        contextText.textContent=JSON.stringify(context,null,2);
+        const review=context.historical_review;
+        if(!review)return;
+        historicalFingerprint=context.current.content_fingerprint;
+        historical.querySelector('[data-history-summary]').textContent=review.coverage_summary;
+        historical.querySelector('[data-history-evidence]').textContent=JSON.stringify({'目前資料庫碰撞':review.known_post_collisions,'現版去重證據':review.version_bound_duplicate_evidence,'人工紀錄':review.human_notes},null,2);
+        historyForm.hidden=!review.may_record;
+      })
       .catch(error=>{contextText.textContent='既有證據讀取失敗：'+(error.message||String(error))});
     const submit=root.querySelector('[data-ai-submit]'),result=root.querySelector('#aiReviewResult');
     submit.addEventListener('click',async()=>{
