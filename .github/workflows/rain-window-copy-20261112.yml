@@ -1,0 +1,29 @@
+name: 仙加味雨窗圖文動作修正
+on:
+  push:
+    branches: [main]
+    paths: ['ops/request-rain-window-copy-20261112.json']
+permissions:
+  contents: read
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: 比對正式 D1 版本、寫入待審稿並逐篇讀回
+        run: node ops/apply-rain-window-copy-20261112.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: product-equality-d1-${{ github.run_id }}
+          path: product-equality-d1-receipt.json
+          retention-days: 7
