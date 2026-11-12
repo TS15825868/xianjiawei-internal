@@ -1,0 +1,294 @@
+{
+  "schema": "xjw-owner-gap-followup-18-readback-v1",
+  "at": "2026-11-12T05:02:57.065Z",
+  "priorReady": 31,
+  "updates": [
+    {
+      "id": "XJW-CAND-20261211",
+      "title": "工作桌上的兩本筆記",
+      "reviewId": "AI-DEFER-3e4f6e0179933f6df2093724233668edcdc87d175eef4295968d88f56beec7ee",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "title": "聖誕午後，替朋友擺好杯盤",
+      "reviewId": "AI-DEFER-5d190ef399451a349936d4b290ffa2ce93bd316c8cb07332e1957f2eb88655d8",
+      "copyOrTitleChanged": false,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "title": "年菜菜單先留一道蔬菜",
+      "reviewId": "AI-DEFER-8844fba1d5bf4747124bac8432bc0f8acbdb618de415fd2361b97770b562ee2e",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "title": "年前，把家常碗盤擦乾歸位",
+      "reviewId": "AI-DEFER-998a9ba8bfd968d94120ad9b6da7e07632c94f3476f8feef9b7ccbcfcbdb254e",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "title": "從老手藝到現代日常，記錄一個工序",
+      "reviewId": "AI-DEFER-6db86d9667b28d71a19c07e14af872a15679ea2eb1b8cc0f8c0d77ebd9f3f3bc",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "title": "春天整理食品櫃的一個下午",
+      "reviewId": "AI-DEFER-206441255368229f0a27dbdd4dc433956e7e9bb2ffbc477af1ea494906e63747",
+      "copyOrTitleChanged": false,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "reviewId": "AI-DEFER-1825b6ba4e7e467eb2ce3df0e1add39d84b37ff345645f63683cd1ca63115936",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "title": "買食品前，把想確認的資訊記下來",
+      "reviewId": "AI-DEFER-11f60460a1c41f897ed2762a4f79160a35c4e1138271ae925d73be71f4d8d0c2",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "title": "工作桌旁的一座石磨",
+      "reviewId": "AI-DEFER-0fad20457a75a5cba6de8adddb8dd7512baabe20cf7f50c9b0fd04fc9adb21d1",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "title": "用完木匙，把它放回抽屜",
+      "reviewId": "AI-DEFER-eff1c58d824ea0b201924c27b26a84d4b78e46c08796757d10f2d26eac88ab2e",
+      "copyOrTitleChanged": false,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "title": "晚餐最後一碗熱湯",
+      "reviewId": "AI-DEFER-e6976303174e2430941df61aaa000466cc0dfa43748e0d40795d432d09aeccd1",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "title": "萬華工作桌上的鹿茸粉",
+      "reviewId": "AI-DEFER-c806d5bf0d5f69fa4322ba755ad2ed26a6bc8076fcd122e4de0ae07ee5dd7704",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "title": "從一張食材圖卡開始",
+      "reviewId": "AI-DEFER-69cc9c54a32d10953c5710fd6f814bba296d8909fa5e09c22a04acf941d27425",
+      "copyOrTitleChanged": false,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "title": "窗邊拍一張龜鹿飲實物照",
+      "reviewId": "AI-DEFER-41fa0fedbfe4db80d3188454cad585a6284bc368274df25e673b795a5925c88c",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "title": "相簿裡的萬華街坊",
+      "reviewId": "AI-DEFER-c41f93229f948f3968f38882e64823378e3c483d56cabaf0ea67f14f5be2ca02",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "reviewId": "AI-DEFER-aa2e3b4b71d8da5eac98508f2a6fd802c0c87bd0d1ba7c72127bbc3cc84b25c8",
+      "copyOrTitleChanged": false,
+      "altChanged": true,
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "title": "夕陽下的乾貨清點",
+      "reviewId": "AI-DEFER-041f7891ece95167cb464672110370bf97d748fe6371854a6c6c39fb1838d65d",
+      "copyOrTitleChanged": true,
+      "altChanged": true,
+      "readback": true
+    }
+  ],
+  "ready": [
+    {
+      "id": "XJW-CAND-20261211",
+      "title": "工作桌上的兩本筆記",
+      "receipt": "HIST-OWNER-GAP-f27a8122a1eb286bf2a7a0e2f42b63baba1c151e320db5d2c4d14a16152b5b70",
+      "reviewId": "AI-DEFER-3e4f6e0179933f6df2093724233668edcdc87d175eef4295968d88f56beec7ee",
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "title": "聖誕午後，替朋友擺好杯盤",
+      "receipt": "HIST-OWNER-GAP-41b5a696b44b6ea40f79bb920feb02117932f7ca11297440f2e36e723abbcba2",
+      "reviewId": "AI-DEFER-5d190ef399451a349936d4b290ffa2ce93bd316c8cb07332e1957f2eb88655d8",
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "title": "年菜菜單先留一道蔬菜",
+      "receipt": "HIST-OWNER-GAP-e8df0d40b3e03a9184d11272349ee1402b9da6a9ad1671af750c0c8c4c8bac35",
+      "reviewId": "AI-DEFER-8844fba1d5bf4747124bac8432bc0f8acbdb618de415fd2361b97770b562ee2e",
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "title": "年前，把家常碗盤擦乾歸位",
+      "receipt": "HIST-OWNER-GAP-4e1f884211c8d0e541cf5752ee95a0407f24b8072066b895303e71897dd2825e",
+      "reviewId": "AI-DEFER-998a9ba8bfd968d94120ad9b6da7e07632c94f3476f8feef9b7ccbcfcbdb254e",
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "title": "從老手藝到現代日常，記錄一個工序",
+      "receipt": "HIST-OWNER-GAP-7235884d31a803969b013feda10cc10da5138b2983fe4af8cafaed49d3fe16ee",
+      "reviewId": "AI-DEFER-6db86d9667b28d71a19c07e14af872a15679ea2eb1b8cc0f8c0d77ebd9f3f3bc",
+      "readback": true
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "title": "春天整理食品櫃的一個下午",
+      "receipt": "HIST-OWNER-GAP-2316a43f878432b59cfe8e20c8a4789ceb2204812cf219526242af42224ce23d",
+      "reviewId": "AI-DEFER-206441255368229f0a27dbdd4dc433956e7e9bb2ffbc477af1ea494906e63747",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "receipt": "HIST-OWNER-GAP-db5e370a83727bc834fa650c15b2f6aca6133737a319a4bbf6e5fb5765ebe76c",
+      "reviewId": "AI-DEFER-1825b6ba4e7e467eb2ce3df0e1add39d84b37ff345645f63683cd1ca63115936",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "title": "買食品前，把想確認的資訊記下來",
+      "receipt": "HIST-OWNER-GAP-36cb0036be12ba54d72b1ecebcee2e4533c1f2bc8e10081b554c9f1ce06021f3",
+      "reviewId": "AI-DEFER-11f60460a1c41f897ed2762a4f79160a35c4e1138271ae925d73be71f4d8d0c2",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "title": "工作桌旁的一座石磨",
+      "receipt": "HIST-OWNER-GAP-34c6e5b0ba0fe28422b278af775c1cad1d9ecbe63a133df85105e06b0b62bce1",
+      "reviewId": "AI-DEFER-0fad20457a75a5cba6de8adddb8dd7512baabe20cf7f50c9b0fd04fc9adb21d1",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "title": "用完木匙，把它放回抽屜",
+      "receipt": "HIST-OWNER-GAP-0c11f7db7edbc4b3e372482800a96485323ee0543dd02051b9428a6e966072a3",
+      "reviewId": "AI-DEFER-eff1c58d824ea0b201924c27b26a84d4b78e46c08796757d10f2d26eac88ab2e",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "title": "晚餐最後一碗熱湯",
+      "receipt": "HIST-OWNER-GAP-0dba1b1021d50c7e44478b5eef6a696c45b83a88d865aedb62422f5682340fdc",
+      "reviewId": "AI-DEFER-e6976303174e2430941df61aaa000466cc0dfa43748e0d40795d432d09aeccd1",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "title": "萬華工作桌上的鹿茸粉",
+      "receipt": "HIST-OWNER-GAP-42afacaa5d9f089c23f41c84f16e8806a5d8cf32e73fca9c1e66f5e3556bc786",
+      "reviewId": "AI-DEFER-c806d5bf0d5f69fa4322ba755ad2ed26a6bc8076fcd122e4de0ae07ee5dd7704",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "title": "從一張食材圖卡開始",
+      "receipt": "HIST-OWNER-GAP-58ec9f782c31cbea28a8b7f01b2231246f27a294c1ca51a6b8b88d83a66bf13f",
+      "reviewId": "AI-DEFER-69cc9c54a32d10953c5710fd6f814bba296d8909fa5e09c22a04acf941d27425",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "title": "把家裡熟悉的乾貨分開收好",
+      "receipt": "HIST-OWNER-GAP-050f69b9382069cb0b1932ca035455db954fd5becdebed681ad38648008ff6d7",
+      "reviewId": "AI-DEFER-7131f07a8b9a29aa51ca2210cbe4d52f31b4158463baf147dfd8b13710845c1e",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "title": "窗邊拍一張龜鹿飲實物照",
+      "receipt": "HIST-OWNER-GAP-31d7280a390f08e6aea40589227b66b38731beb29ddb37a7b9ea69f4eaf273d7",
+      "reviewId": "AI-DEFER-41fa0fedbfe4db80d3188454cad585a6284bc368274df25e673b795a5925c88c",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "title": "相簿裡的萬華街坊",
+      "receipt": "HIST-OWNER-GAP-c19d34554780a4050deaf2d4bf3dae6f072ad8d8934da9cd540f5679d471ef18",
+      "reviewId": "AI-DEFER-c41f93229f948f3968f38882e64823378e3c483d56cabaf0ea67f14f5be2ca02",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "receipt": "HIST-OWNER-GAP-ae88c6a23d4db7a3f6fccf4b7995e38a61ee4e740e22081b5ce0654567e591aa",
+      "reviewId": "AI-DEFER-aa2e3b4b71d8da5eac98508f2a6fd802c0c87bd0d1ba7c72127bbc3cc84b25c8",
+      "readback": true
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "title": "夕陽下的乾貨清點",
+      "receipt": "HIST-OWNER-GAP-9a816c285ec4ac74e2f698b5fa3eef325729e193f40b96575376c7741e09b92e",
+      "reviewId": "AI-DEFER-041f7891ece95167cb464672110370bf97d748fe6371854a6c6c39fb1838d65d",
+      "readback": true
+    }
+  ],
+  "heldRows": [],
+  "newReady": 18,
+  "remaining": 0,
+  "totalReady": 49,
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "aiApprovals": 0,
+  "humanApprovals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "fullHistoricalDedupCertified": false
+}
