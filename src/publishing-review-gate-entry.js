@@ -4,7 +4,7 @@ import app from './flexible-publish-entry.js';
 import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
-import {imageHash,recordAiReview,aiGate,ensureAiSchema,verifyCurrentAiQuality} from './ai-quality-review.js';
+import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';
 
 const VERSION='2026-10-30-original-image-evidence-v10';
 const REQUIRED_CHECKS=Object.freeze([
@@ -293,7 +293,10 @@ export default{async fetch(request,env,ctx){
     // Missing evidence must not enable scheduling or remote delivery.
     const [gate,quality]=await Promise.all([
       gateState(env,row).catch(()=>({ok:false,reason:'正式發布授權查詢失敗，禁止排程'})),
-      (async()=>verifyCurrentAiQuality(env,row,await fingerprint(row)))()
+      (async()=>{
+        const {verifyCurrentAiQuality}=await import('./ai-quality-review.js');
+        return verifyCurrentAiQuality(env,row,await fingerprint(row));
+      })()
         .catch(()=>({ok:false,reason:'正式 AI 圖文審核查詢失敗'}))
     ]);
     const aiEvidenceValid=quality.ok===true;
