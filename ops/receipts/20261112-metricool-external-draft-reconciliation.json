@@ -1,0 +1,28 @@
+{
+  "schema": "xjw-metricool-external-draft-reconciliation-v1",
+  "brandId": 6889683,
+  "uuid": "-1546358116532992876",
+  "previousDraftId": 409189881,
+  "currentDraftId": 425468095,
+  "title": "認識仙加味龜鹿膏｜100g／罐",
+  "copy": "認識仙加味龜鹿膏｜100g／罐\n\n有些人喜歡直接取用膏狀食材，有些人比較習慣用溫熱的水慢慢調開。\n\n龜鹿膏可依產品說明取一小匙，加入約100～300ml熱水攪拌化開，再依個人口味調整濃淡。實際食用、保存方式仍以正式產品標示為準。\n\n你平常準備溫熱飲品，喜歡濃一些還是淡一些？\n\n#仙加味 #龜鹿膏 #日常飲品",
+  "platforms": [
+    "facebook",
+    "instagram",
+    "threads"
+  ],
+  "media": [
+    "https://static.metricool.com/planner/202611/6889683-file-11338806686392267015.webp"
+  ],
+  "officialSourceSha256": "66090b2dc779dbc6fc0c4832415223a946997dbf456ad2dbdc42c6bd89c0122d",
+  "draft": true,
+  "autoPublish": false,
+  "disposition": "external_draft_ownership_unverified",
+  "d1PostId": null,
+  "mappingCreated": false,
+  "priorD1Evidence": [
+    "ops/receipts/20261112-final-three-readonly.json",
+    "https://github.com/TS15825868/xianjiawei-internal/actions/runs/43187676358"
+  ],
+  "finding": "Existing production evidence found no matching post or legacy ID mapping. UUID proves Metricool draft continuity only; no verified D1 owner post was identified. Preserve external draft without a forced mapping."
+}
