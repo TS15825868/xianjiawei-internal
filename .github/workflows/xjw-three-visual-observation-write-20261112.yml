@@ -1,0 +1,81 @@
+name: XJW preserve scoped visual review and external draft reconciliation
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-three-visual-observation-write-20261112.yml']
+permissions:
+  contents: write
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Append scoped observations only; preserve all approvals and statuses
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import crypto from 'node:crypto';
+          import {createRequire} from 'node:module';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const require=createRequire(import.meta.url);
+          const {fingerprint}=require('./tools/metricool-free-evidence.cjs');
+          const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+          const q=x=>x==null?'NULL':"'"+String(x).replaceAll("'","''")+"'";
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db,timeoutMs:45000});
+          const rows=async s=>(await query(s))[0].results;
+          const screen=JSON.parse(fs.readFileSync('ops/receipts/20261112-three-image-screen/report.json'));
+          const live=JSON.parse(fs.readFileSync('ops/receipts/20261112-three-current-and-metricool-live.json'));
+          const draft=JSON.parse(fs.readFileSync('ops/receipts/20261112-metricool-draft-reconciliation-observation.json'));
+          if(screen.pendingScanned!==3||screen.referenceImages!==88||screen.exactFileDuplicates!==0||screen.imageNearPairs.length||screen.missingOrUnreadable.length||live.mappings.length||live.exact.length||draft.target.id!==425468095||draft.target.autoPublish!==false)throw Error('Source screen changed');
+          const observations={
+            'XJW-CONV-chat-shop-organizing':['XJW-CONV-chat-shop-organizing-v6.jpg','0f44a2d76329c96bab697d66c6264f50494eeae0','萬華街景從左側門口展開，小老闆站在右側伸手將木匙掛上牆面；紅棗與枸杞分碗，鹿在左龜在右。與固定收納木格、食材罐、廚房冰箱整理等場景不同；同貼文舊圖為替換歷史而非另一篇發文。'],
+            'XJW-CONV-chat-receive-package':['XJW-CONV-chat-receive-package-v2.jpg','f92f28ea4f5d5a3d7e971dded2889f62d9b02149','居家桌前雙手持說明卡，前景開箱與填充紙，鹿龜分列兩側。其他閱讀卡片、舊物或工作筆記圖未見相同開箱構圖。與同貼文舊版同主題，保留退件歷史。'],
+            'XJW-CONV-weather-cool-drink':['XJW-CONV-weather-cool-drink-v2.jpg','c2d389a57217d2f65c5268585bcb2c8f532c9c77','小老闆盤腿坐窗邊軟墊，雙手捧有熱氣的杯子，秋葉在窗外、鹿龜在右側，無貓。不同於雨天桌旁茶杯、工作桌或湯鍋構圖；同貼文舊版保留。']
+          };
+          const countsBefore=await rows('SELECT status,COUNT(*) count FROM social_posts GROUP BY status ORDER BY status');
+          if(JSON.stringify(countsBefore)!==JSON.stringify(live.counts))throw Error('D1 scope changed');
+          const readback=[];
+          for(const [id,[file,blob,observation]] of Object.entries(observations)){
+            const p=(await rows('SELECT * FROM social_posts WHERE id='+q(id)))[0];
+            const r=(await rows('SELECT * FROM social_post_quality_reviews WHERE post_id='+q(id)+' ORDER BY reviewed_at DESC,rowid DESC LIMIT 1'))[0];
+            const path='assets/post-images/2026-11-12/'+file;
+            const bytes=fs.readFileSync(path),digest=sha(bytes);
+            const blobHash=crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+            if(blobHash!==blob||!p||!r||p.image_url!==live.target.find(t=>t.id===id)?.image_url||!p.image_url.endsWith('/'+path)||r.image_url!==p.image_url||r.image_sha256!==digest||fingerprint(p)!==r.content_fingerprint||r.decision!=='NEEDS_HUMAN_REVIEW'||p.status!=='pending_review'||p.approved_by||p.approved_at||p.scheduled_at||p.published_at||Number(p.image_approved||0))throw Error('Version/safety check failed '+id);
+            const ev=JSON.parse(r.evidence_json);if(ev.checks?.duplicate?.result!=='DEFER')throw Error('Duplicate state changed');
+            const proof={schema:'xjw-scoped-new-image-visual-observation-v1',fingerprint:r.content_fingerprint,image_sha256:digest,image_url:p.image_url,review_id:r.id,observation,reference_images:88,reference_breakdown:screen.referenceBreakdown,contact_sheets_visually_inspected:4,exact_matches:0,near_threshold_matches:0,scope:'ChatGPT visually inspected all four available repository contact sheets and three full-resolution target images; no matching composition found among current repository images. Not full external historical certification.',limitations:['178-file prior external scratch corpus not currently rechecked against new image hashes','15 historical unavailable media and older carousel child gaps retained','3 public media gaps recorded by screen','No owner gap qualification asserted for the new version'],ai_duplicate:'DEFER',ai_approved:false,human_approved:false,auto_publish:false,auto_schedule:false};
+            const logId='XJW-SCOPED-VISUAL-'+sha(id+'|'+r.id+'|'+digest),json=JSON.stringify(proof);
+            const sql='INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,after_json,ip) SELECT '+[logId,'chatgpt:scoped-visual-audit','新圖現有來源視覺比對補證','貼文',id,json,''].map(q).join(',')+' WHERE EXISTS(SELECT 1 FROM social_posts WHERE id='+q(id)+' AND updated_at='+q(p.updated_at)+" AND status='pending_review' AND approved_by IS NULL AND approved_at IS NULL AND scheduled_at IS NULL AND published_at IS NULL AND COALESCE(image_approved,0)=0) AND "+q(r.id)+'=(SELECT id FROM social_post_quality_reviews WHERE post_id='+q(id)+' ORDER BY reviewed_at DESC,rowid DESC LIMIT 1)';
+            await query(sql);
+            const back=(await rows('SELECT after_json FROM audit_logs WHERE id='+q(logId)))[0];
+            if(back?.after_json!==json)throw Error('Visual evidence readback mismatch '+id);
+            readback.push({id,logId,sha256:digest,fingerprint:r.content_fingerprint,readback:true,ownerGapQualification:false});
+          }
+          const sync=await rows('SELECT post_id,metricool_id,state FROM social_metricool_sync');
+          const posts=await rows('SELECT id,title,copy,status FROM social_posts');
+          const ids=['409189881','425468095','-1546358116532992876'];
+          if(sync.some(s=>ids.includes(String(s.metricool_id)))||posts.some(p=>[p.title,p.copy].some(t=>String(t||'').includes('認識仙加味龜鹿膏｜100g／罐')||String(t||'').includes('有些人喜歡直接取用膏狀食材'))))throw Error('External mapping changed; no speculative binding');
+          const ext={schema:'xjw-external-draft-reconciliation-v1',brand_id:'6889683',metricool_id:425468095,previous_id:409189881,uuid:'-1546358116532992876',title:'認識仙加味龜鹿膏｜100g／罐',platforms:['facebook','instagram','threads'],draft:true,auto_publish:false,disposition:'external_draft_preserved_unmapped',related_archived_posts:['XJW-GUILU-gao-warm-water','XJW-CAND-20270309'],reason:'No exact current ID or text match in D1. Similar archived topics prevent speculative import or binding. Preserve external draft; not a publication or a D1 social post.',mapping_created:false,source:'ops/receipts/20261112-metricool-draft-reconciliation-observation.json'};
+          const extId='XJW-EXTERNAL-DRAFT-425468095',extJSON=JSON.stringify(ext);
+          await query('INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,after_json,ip) VALUES('+[extId,'chatgpt:external-draft-reconciliation','外部草稿獨立對帳','外部草稿','metricool:425468095',extJSON,''].map(q).join(',')+')');
+          const extBack=(await rows('SELECT after_json FROM audit_logs WHERE id='+q(extId)))[0];
+          if(extBack?.after_json!==extJSON)throw Error('External audit readback mismatch');
+          const counts=await rows('SELECT status,COUNT(*) count FROM social_posts GROUP BY status ORDER BY status');
+          if(JSON.stringify(counts)!==JSON.stringify(countsBefore))throw Error('Post statuses changed');
+          fs.writeFileSync('ops/receipts/20261112-scoped-visual-and-external-draft-readback.json',JSON.stringify({at:new Date().toISOString(),readback,external:{id:extId,readback:true,disposition:ext.disposition,mappingCreated:false},counts,fullHistoricalDedupCertified:false,approvals:0,schedules:0,publications:0},null,2)+'\n');
+          JS
+      - name: Persist readback
+        run: |
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-scoped-visual-and-external-draft-readback.json
+          git commit -m 'audit: preserve scoped visual and external draft D1 readback'
+          git pull --rebase origin main
+          git push origin HEAD:main
