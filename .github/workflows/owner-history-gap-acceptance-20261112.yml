@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python -m pip install -q pillow
+      - name: Install existing repository dependencies for shared production gate
+        run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
       - name: Recheck current version captions and original image sources
         run: |
           node --check ops/apply-owner-history-gap-acceptance-20261112.mjs
