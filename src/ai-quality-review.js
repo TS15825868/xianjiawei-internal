@@ -23,13 +23,12 @@ export function approvedAiImageSource(url){
   }catch{return false}
 }
 export async function imageHash(url){if(!approvedAiImageSource(url))throw Error('圖片來源不在仙加味正式允許範圍');const u=new URL(url);const r=await fetch(u,{redirect:'manual',signal:AbortSignal.timeout(20000)});if(!r.ok||!/^image\//.test(r.headers.get('content-type')||''))throw Error('圖片無法讀取');const b=await r.arrayBuffer();if(b.byteLength>12*1024*1024)throw Error('圖片過大');return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}
-export async function aiGate(env,row,fp){
+export async function verifyCurrentAiQuality(env,row,fp){
   await ensureAiSchema(env);
   const r=await env.DB.prepare("SELECT * FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1").bind(row.id).first();
-  if(!r||r.reviewer_type!=='AI'||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||!r.authorized_by||row.approved_by!==r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
-  if(!['approved','scheduled'].includes(row.status)||Number(row.image_approved)!==1)return{ok:false,reason:'貼文尚未完成正式核准及圖片確認，不得使用AI證據發布'};
+  if(!r||r.reviewer_type!=='AI'||r.decision!=='AI_APPROVED'||r.policy_version!==AI_POLICY_VERSION||!r.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
   let e;try{e=JSON.parse(r.evidence_json)}catch{return{ok:false,reason:'AI審核證據格式錯誤'}};
-  if(e.model!==r.model||!String(row.review_note||'').startsWith('AI審核：AI_APPROVED；'))return{ok:false,reason:'AI審核證據與原核准身分不一致'};
+  if(e.model!==r.model)return{ok:false,reason:'AI審核證據與原核准身分不一致'};
   const result=evidence.assess(e,row.id,fp,row.image_url);
   const reviewed=Date.parse(r.reviewed_at||'');
   if(!Number.isFinite(reviewed)||reviewed>Date.now()+60000||Date.now()-reviewed>24*3600000)return{ok:false,reason:'AI審核紀錄已過期或時間不正確'};
@@ -43,7 +42,16 @@ export async function aiGate(env,row,fp){
     if(await imageHash(row.image_url)!==r.image_sha256)return{ok:false,reason:'正式發布圖片實體已變更，舊AI審核失效'};
   }catch{return{ok:false,reason:'正式發布圖片無法重新驗證'}}
   if(result.decision!=='AI_APPROVED')return{ok:false,reason:result.reasons.join('；')};
-  return{ok:true,reviewer_type:'AI',decision:'AI_APPROVED',reviewed_by:`ai:${r.model}`,reviewed_at:r.reviewed_at,fingerprint:fp,image_sha256:r.image_sha256};
+  return{ok:true,reviewer_type:'AI',decision:'AI_APPROVED',reviewed_by:`ai:${r.model}`,reviewed_at:r.reviewed_at,fingerprint:fp,image_sha256:r.image_sha256,review_id:r.id,authorized_by:r.authorized_by,channels};
+}
+// Existing human approval gate remains unchanged in scope; quality verification alone cannot publish.
+export async function aiGate(env,row,fp){
+  if(!['approved','scheduled'].includes(row.status)||Number(row.image_approved)!==1)return{ok:false,reason:'貼文尚未完成正式核准及圖片確認，不得使用AI證據發布'};
+  if(!String(row.review_note||'').startsWith('AI審核：AI_APPROVED；'))return{ok:false,reason:'AI審核證據與原核准身分不一致'};
+  const result=await verifyCurrentAiQuality(env,row,fp);
+  if(!result.ok)return result;
+  if(!row.approved_by||row.approved_by!==result.authorized_by)return{ok:false,reason:'未取得目前版本的完整AI審核證據'};
+  return result;
 }
 export async function recordAiReview(env,row,e,profile,checks){
   if(!['owner','admin'].includes(profile?.role))throw Error('只有正式管理者能提交AI審核證據');
