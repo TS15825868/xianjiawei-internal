@@ -45,7 +45,9 @@ must(gate.includes("['PUT','PATCH'].includes(request.method)"),'文案或圖片P
 must(gate.includes('invalidateEditedPost'),'缺少貼文修改後立即退回草稿與清核准機制');
 must(gate.includes("status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0"),'修改後未完整清除排程／核准／圖片核准狀態');
 must(gate.includes('30cc正式名稱必須是小玻璃罐'),'30cc玻璃罐正式名稱守門缺失');
-must(gate.includes('龜鹿膠與龜鹿湯塊已退出公開產品清單'),'已下架龜鹿產品必須禁止新公開貼文');
+const authority=read('src/product-authority.js');
+const flexible=read('src/flexible-publish-entry.js');
+must(authority.includes('龜鹿湯塊與龜鹿膠已退出目前對外產品清單') && authority.includes('export function validatePostPayload') && flexible.includes('validatePostPayload(before)'),'正式產品權威須在公開發布前攔截已下架商品');
 must(gate.includes('CUSTOMER_INTERNAL_TERMS'),'正式審核缺少顧客文案內部用語守門');
 must(gate.includes('row?.image_alt'),'正式審核必須把圖片替代文字納入顧客可見文字守門');
 must(gate.includes('duplicatePostErrors'),'正式審核缺少重複貼文守門');
