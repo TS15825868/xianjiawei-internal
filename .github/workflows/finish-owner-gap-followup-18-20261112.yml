@@ -1,0 +1,47 @@
+name: 仙加味剩餘18篇圖文修正與歷史缺件授權驗收
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finish-owner-gap-followup-18-20261112.yml'
+      - 'ops/request-owner-gap-followup-18-20261112.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Apply targeted source-bound corrections and verify D1
+        run: |
+          node --check ops/finish-owner-gap-followup-18-20261112.mjs
+          node ops/finish-owner-gap-followup-18-20261112.mjs
+      - name: Preserve actual readback and updated caption comparison
+        run: |
+          set -euo pipefail
+          cp all-active-history-dedup-screen.json ops/receipts/20261112-owner-gap-followup-18-copy-screen.json
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-owner-gap-followup-18-readback.json ops/receipts/20261112-owner-gap-followup-18-copy-screen.json
+          git commit -m 'review: preserve final 18-post correction and owner-gap readback'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-owner-gap-followup-18-${{ github.run_id }}
+          path: |
+            ops/receipts/20261112-owner-gap-followup-18-readback.json
+            all-active-history-dedup-screen.json
+          retention-days: 7
