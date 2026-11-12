@@ -1,9 +1,10 @@
 import {productEqualityErrors} from './product-equality-policy.js';
 import app from './publishing-only-entry.js';
-import { productMatchErrors, duplicatePostErrors, validOriginalImageReview } from './publishing-review-gate-entry.js';
+import { productMatchErrors, duplicatePostErrors, fingerprint, validOriginalImageReview } from './publishing-review-gate-entry.js';
+import { imageHash } from './ai-quality-review.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-11-04-paged-history-audit-v16';
+const VERSION='2026-11-12-current-visual-evidence-v17';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -73,12 +74,12 @@ function lifestyleRuleErrors(row){
   return errors;
 }
 
-function semanticErrors(row,liveRows=[],originalReviewed=false){
+function semanticErrors(row,liveRows=[],originalReviewed=false,currentVisualReviewed=false){
   const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=productEqualityErrors(row);
   const imageUrl=normalizedImageUrl(row?.image_url);
   const imageFilename=imageUrl.split('/').pop();
   if(!originalReviewed&&KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');
-  if(!originalReviewed&&REVIEW_REQUIRED_SCENES_20261017.includes(imageFilename))errors.push('此圖保留2026/10/17視覺待覆核紀錄：須依使用者正式參考確認固定Q版小男孩、服裝、印章及夥伴身分，避免廉價玩具感、拼貼或造型改變；不得僅因立體光影就要求改成2D。若需換圖，使用正式角色參考及產品實拍，重新回待審核。');
+  if(!originalReviewed&&!currentVisualReviewed&&REVIEW_REQUIRED_SCENES_20261017.includes(imageFilename))errors.push('此圖保留2026/10/17視覺待覆核紀錄：須依使用者正式參考確認固定Q版小男孩、服裝、印章及夥伴身分，避免廉價玩具感、拼貼或造型改變；不得僅因立體光影就要求改成2D。若需換圖，使用正式角色參考及產品實拍，重新回待審核。');
   if(row?.id==='XJW-CONV-chat-brand-not-only-product' && imageUrl.endsWith('/2026-09-22/xjw-active-img-003.png'))errors.push('此圖片與另一篇使用相同Git實體圖片，禁止一圖多文，需重製專屬情境。');
   if(clean(row?.image_quality_status)==='needs_review')errors.push('圖片證據不足，待人工確認；不是確定不合格，禁止核准、排程或發布。');
   if(['rejected','needs_regeneration','needs_rework','low','missing'].includes(clean(row?.image_quality_status).toLowerCase()))errors.push('目前圖片尚未通過正式視覺驗收，禁止核准、排程或發布。');
@@ -134,10 +135,27 @@ async function liveRows(env){
   const result=await env.DB.prepare("SELECT * FROM social_posts WHERE status<>'archived'").all();
   return result.results||[];
 }
+async function hasCurrentVisualReview(env,row){
+  const filename=normalizedImageUrl(row.image_url).split('/').pop();
+  if(!REVIEW_REQUIRED_SCENES_20261017.includes(filename)||KNOWN_BAD_VISUAL_FILENAMES.includes(filename))return false;
+  if(!['clear','passed'].includes(clean(row.image_quality_status)))return false;
+  const review=await env.DB.prepare(`SELECT content_fingerprint,image_url,image_sha256,evidence_json
+    FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1`).bind(row.id).first();
+  if(!review||review.image_url!==row.image_url||review.content_fingerprint!==await fingerprint(row))return false;
+  try{
+    const evidence=JSON.parse(review.evidence_json);
+    const observation=evidence.current_image_visual_observation;
+    if(observation?.request!=='ops/request-20261112-49-visual-evidence-write.json'||
+      !clean(observation.observation)||!review.image_sha256||observation.sha256!==review.image_sha256||
+      !['brand','product','scene_environment','action','mascot_companions','physical_scale']
+        .every(key=>evidence.checks?.[key]?.result==='PASS'))return false;
+    return await imageHash(row.image_url)===review.image_sha256;
+  }catch{return false;}
+}
 async function auditOne(env,row,rows,history=null,visualLogs=null){
   if(!row)return{ok:false,errors:['找不到貼文']};
   const receiptHold=publishedPlatformReceiptHold(row);
-  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows,await validOriginalImageReview(env,row,visualLogs))];
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows,await validOriginalImageReview(env,row,visualLogs),await hasCurrentVisualReview(env,row))];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
@@ -157,7 +175,10 @@ async function batchAudit(request,env,ctx){
   // One batched evidence read; avoid a D1 request per reviewed image.
   const visualResult=await env.DB.prepare(`SELECT a.entity_id,a.actor_email,a.after_json FROM audit_logs a WHERE a.rowid IN (SELECT MAX(rowid) FROM audit_logs WHERE action='圖片原網址重新視覺覆核' AND entity_id IN (${ids.map(()=>'?').join(',')}) GROUP BY entity_id)`).bind(...ids).all();
   const visualById=new Map();for(const log of visualResult.results||[])if(!visualById.has(log.entity_id))visualById.set(log.entity_id,[log]);
-  for(const id of ids){const row=byId.get(id)||await postRow(env,id);items.push({id,...await auditOne(env,row,rows,history,visualById.get(id)||[])});}
+  items.push(...await Promise.all(ids.map(async id=>{
+    const row=byId.get(id)||await postRow(env,id);
+    return {id,...await auditOne(env,row,rows,history,visualById.get(id)||[])};
+  })));
   return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',offset:all?offset:0,next_offset:all&&offset+ids.length<rows.length?offset+ids.length:null,library_total:rows.length,items});
 }
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
