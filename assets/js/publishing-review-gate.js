@@ -51,6 +51,15 @@
     const card=cardFor(item.id);if(!card)return;
     const errors=Array.isArray(item.errors)?item.errors:[];
     card.dataset.contentAudit=item.ok?'ok':'blocked';
+    const flow=item.quality_flow;
+    if(flow&&flow.state!=='NOT_IN_REVIEW'){
+      card.dataset.aiQualityFlow=flow.state;
+      const pill=card.querySelector('.status-pill');
+      if(pill&&card.dataset.status!=='scheduled'&&card.dataset.status!=='published'){
+        pill.textContent=flow.quality_complete?(flow.state==='AI_QUALITY_COMPLETE_WITH_ACCEPTED_GAPS'?'AI審核完成（保留缺件）':'AI審核完成'):(flow.state==='AI_REPAIR_REQUIRED'?'AI自動修復':'AI自動補證');
+      }
+      if(flow.quality_complete)card.querySelectorAll('[data-post-status="approved"]').forEach(button=>{button.textContent='另行發布核准';button.title='品質審核已完成；此按鈕僅供另行取得正式發布授權，並非例行品質待審。'});
+    }
     const externalHold=item.publication_reconciliation_required===true;
     card.dataset.externalPublishedHold=externalHold?'1':'0';
     // Never offer generation/re-submission actions for a D1 row whose
@@ -62,6 +71,10 @@
     if(box){
       box.className=item.ok?'xjw-ok':'xjw-danger';
       box.innerHTML=item.ok?'<strong>圖文完整檢查（不會發布）</strong><br>產品、重複圖、季節／天氣與明確情境自動預檢通過；仍須取得完整16項 AI 審核證據或人工核准。':`<strong>圖文完整檢查未通過（不會發布）</strong><br>${errors.map(esc).join('；')}`;
+    }
+    if(box&&item.ok&&flow&&flow.state!=='NOT_IN_REVIEW'){
+      box.className=flow.quality_complete?'xjw-ok':'xjw-warning';
+      box.innerHTML='<strong>'+esc(flow.quality_complete?'AI自動品質審核完成':'AI自動審核處理中')+'</strong><br>'+esc(flow.reason)+'；未授權自動排程或發布。';
     }
     card.querySelectorAll('[data-post-status="pending_review"],[data-post-status="approved"],[data-post-schedule],[data-post-publish-now]').forEach(button=>{
       if(item.ok){
@@ -134,6 +147,10 @@
       rootRemoveAuditError();
       (visibleResult.items||[]).forEach(applyAudit);
       auditSummary(Number(allResult.problem_count||0),Number(allResult.total||0));
+      const qualityItems=allResult.items.filter(i=>i.quality_flow&&i.quality_flow.state!=='NOT_IN_REVIEW');
+      const qualityDone=qualityItems.filter(i=>i.quality_flow.quality_complete).length;
+      const root=document.getElementById('readinessSummary');
+      if(root){let chip=root.querySelector('[data-ai-quality-flow-summary]');if(!chip){chip=document.createElement('span');chip.dataset.aiQualityFlowSummary='1';root.appendChild(chip)}chip.className='readiness-chip '+(qualityDone===qualityItems.length?'ok':'');chip.textContent='AI品質流程完成 '+qualityDone+'／'+qualityItems.length+'（不等於發布授權）';}
     }catch(error){
       if(run!==auditRun)return;
       console.warn('全庫圖文完整檢查暫時無法載入',error);

@@ -2,6 +2,7 @@ import {productEqualityErrors} from './product-equality-policy.js';
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors, fingerprint, validOriginalImageReview } from './publishing-review-gate-entry.js';
 import { imageHash } from './ai-quality-review.js';
+import { classifyAiQualityFlow } from './ai-quality-flow.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
 const VERSION='2026-11-12-current-visual-evidence-v18';
@@ -176,9 +177,22 @@ async function batchAudit(request,env,ctx){
   // One batched evidence read; avoid a D1 request per reviewed image.
   const visualResult=await env.DB.prepare(`SELECT a.entity_id,a.actor_email,a.after_json FROM audit_logs a WHERE a.rowid IN (SELECT MAX(rowid) FROM audit_logs WHERE action='圖片原網址重新視覺覆核' AND entity_id IN (${ids.map(()=>'?').join(',')}) GROUP BY entity_id)`).bind(...ids).all();
   const visualById=new Map();for(const log of visualResult.results||[])if(!visualById.has(log.entity_id))visualById.set(log.entity_id,[log]);
+  // Quality state is separate from the publication gate. Read only current-version evidence.
+  const reviewById=new Map(),gapById=new Map();
+  try{
+    const placeholders=ids.map(()=>'?').join(',');
+    const [reviewRows,gapRows]=await Promise.all([
+      env.DB.prepare(`SELECT * FROM (SELECT q.*,ROW_NUMBER() OVER(PARTITION BY post_id ORDER BY reviewed_at DESC,rowid DESC) AS rn FROM social_post_quality_reviews q WHERE post_id IN (${placeholders})) WHERE rn=1`).bind(...ids).all(),
+      env.DB.prepare(`SELECT entity_id,after_json FROM audit_logs WHERE action='歷史缺件授權覆核' AND entity_id IN (${placeholders})`).bind(...ids).all()
+    ]);
+    for(const r of reviewRows.results||[])reviewById.set(r.post_id,r);
+    for(const n of gapRows.results||[]){if(!gapById.has(n.entity_id))gapById.set(n.entity_id,[]);gapById.get(n.entity_id).push(n);}
+  }catch{/* fail closed: no evidence means AI must obtain evidence, not a quality pass */}
   items.push(...await Promise.all(ids.map(async id=>{
     const row=byId.get(id)||await postRow(env,id);
-    return {id,...await auditOne(env,row,rows,history,visualById.get(id)||[])};
+    const result=await auditOne(env,row,rows,history,visualById.get(id)||[]);
+    const flow=classifyAiQualityFlow(row,reviewById.get(id),gapById.get(id)||[],row?await fingerprint(row):'',result.ok);
+    return {id,...result,quality_flow:flow,recommended_action:result.ok&&row&&['draft','pending_review','approved'].includes(row.status)?flow.reason:result.recommended_action};
   })));
   return json({version:VERSION,total:items.length,problem_count:items.filter(item=>!item.ok).length,scope:all?'all':'selected',offset:all?offset:0,next_offset:all&&offset+ids.length<rows.length?offset+ids.length:null,library_total:rows.length,items});
 }
