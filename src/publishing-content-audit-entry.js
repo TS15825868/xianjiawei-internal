@@ -1,3 +1,4 @@
+import {productEqualityErrors} from './product-equality-policy.js';
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors, validOriginalImageReview } from './publishing-review-gate-entry.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
@@ -73,7 +74,7 @@ function lifestyleRuleErrors(row){
 }
 
 function semanticErrors(row,liveRows=[],originalReviewed=false){
-  const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=[];
+  const text=publicText(row),visible=publicVisibleText(row),image=imageText(row),errors=productEqualityErrors(row);
   const imageUrl=normalizedImageUrl(row?.image_url);
   const imageFilename=imageUrl.split('/').pop();
   if(!originalReviewed&&KNOWN_BAD_VISUAL_FILENAMES.includes(imageFilename))errors.push('此圖已人工實際視覺覆核為產品包裝不符、過度3D角色、拼貼、非完整生活情境或畫面問題；必須依正式小老闆與原廠產品實拍重製，重新回待審核。');

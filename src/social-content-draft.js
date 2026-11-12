@@ -1,3 +1,4 @@
+import {PRODUCT_EQUALITY_GUIDANCE, productEqualityErrors} from './product-equality-policy.js';
 // Owner-only Workers AI social caption drafts. Never creates approval, media or publish calls.
 // Separate from customer service product-fact drafts; requires explicit verified free-plan flags.
 import {PRODUCTS, PRODUCT_MASTER_META} from './product-master-snapshot.js';
@@ -24,7 +25,7 @@ function validateOutput(result,product){
     !safeString(result.sceneBrief,220)||result.sceneBrief.length<20||
     !safeString(result.imageAlt,160)||result.imageAlt.length<12)return false;
  const all=[result.copy,result.sceneBrief,result.imageAlt].join(' ');
- if(BLOCKED.test(all)||PRIVATE.test(all)||!result.copy.includes('仙加味'))return false;
+ if(productEqualityErrors({copy:result.copy,sceneBrief:result.sceneBrief,image_alt:result.imageAlt}).length||BLOCKED.test(all)||PRIVATE.test(all)||!result.copy.includes('仙加味'))return false;
  if(product&&!result.copy.includes(product.name))return false;
  if(PRODUCTS.some(p=>p.id!==product?.id&&result.copy.includes(p.name)))return false;
  if(/(?:今天|明天)(?:必定|一定)?(?:會下雨|有寒流|高溫|豪雨)/u.test(result.copy))return false;
@@ -48,14 +49,14 @@ export async function socialContentDraft(request,env,{authenticate}={}){
     Object.keys(body).some(k=>!['topic','category','sceneBrief','candidateDate','productId','persist'].includes(k)))
   return deny('invalid_payload',400);
  const {topic,category,sceneBrief,candidateDate,productId,persist=false}=body;
- if(!safeString(topic,100)||!safeString(sceneBrief,220)||!CATEGORIES.has(category)||PRIVATE.test(topic+' '+sceneBrief)||BLOCKED.test(topic+' '+sceneBrief)||
+ if(!safeString(topic,100)||!safeString(sceneBrief,220)||!CATEGORIES.has(category)||PRIVATE.test(topic+' '+sceneBrief)||BLOCKED.test(topic+' '+sceneBrief)||productEqualityErrors({title:topic,sceneBrief}).length||
     (candidateDate!=null&&(!/^20\d{2}-\d{2}-\d{2}$/.test(candidateDate)||Number.isNaN(Date.parse(candidateDate+'T00:00:00Z'))))||
     (persist!==true&&persist!==false))return deny('unverified_content_scope',422);
  const product=productId==null?null:PRODUCTS.find(p=>p.id===productId);
  if(productId!=null&&!product)return deny('unverified_or_retired_product',422);
  if(persist&&!candidateDate)return deny('candidate_date_required',422);
  const facts=product?{name:product.name,allowedSpecs:product.allowedSpecs,usage:'只可說明產品形式，不臆測用量、功效、價格或成分'}:null;
- const system='你是「仙加味」內部社群文案產稿器。只輸出嚴格JSON物件，鍵為copy、sceneBrief、imageAlt，使用繁體中文。copy 80~200字，描述具體生活場景、自然提及仙加味、最後可加入一個互動問題。不得醫療療效宣稱、價格、虛構優惠、即時天氣、杜撰節日。情境需可繪製為正式Q版小老闆（短黑髮、米白中式上衣、深橄欖綠圍裙、紅色仙加味印章），小鹿與小烏龜分開。產品只能引用官方真實原圖，絕不要求生成新包裝。JSON外不得有文字或Markdown。產品資訊僅能使用提供的正式事實。';
+ const system=PRODUCT_EQUALITY_GUIDANCE+' '+ '你是「仙加味」內部社群文案產稿器。只輸出嚴格JSON物件，鍵為copy、sceneBrief、imageAlt，使用繁體中文。copy 80~200字，描述具體生活場景、自然提及仙加味、最後可加入一個互動問題。不得醫療療效宣稱、價格、虛構優惠、即時天氣、杜撰節日。情境需可繪製為正式Q版小老闆（短黑髮、米白中式上衣、深橄欖綠圍裙、紅色仙加味印章），小鹿與小烏龜分開。產品只能引用官方真實原圖，絕不要求生成新包裝。JSON外不得有文字或Markdown。產品資訊僅能使用提供的正式事實。';
  let raw;
  try{raw=await env.AI.run(MODEL,{messages:[{role:'system',content:system},{role:'user',content:JSON.stringify({topic,category,sceneBrief,date:candidateDate||null,verifiedProductFacts:facts})}],max_tokens:550,chat_template_kwargs:{enable_thinking:false}});}catch{return deny('model_unavailable',503);}
  const result=parseResult(modelText(raw));

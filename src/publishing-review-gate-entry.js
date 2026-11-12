@@ -1,3 +1,4 @@
+import {productEqualityErrors} from './product-equality-policy.js';
 import {recordAiDeferral} from './ai-review-deferral.js';
 import app from './flexible-publish-entry.js';
 import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
@@ -132,6 +133,8 @@ async function gateState(env,row){
   if(['needs_review','needs_rework','needs_regeneration','rejected','low','missing']
     .includes(clean(row.image_quality_status).toLowerCase()))
     return{ok:false,reason:clean(row.image_quality_status)==='needs_review'?'圖片證據不足，待人工確認；不能排程或發布':'圖片仍需重製或未通過品質檢查；不能排程或發布'};
+  const equalityErrors=productEqualityErrors(row);
+  if(equalityErrors.length)return{ok:false,reason:equalityErrors[0]};
   // A quality-only AI review never satisfies the publication gate. All posts,
   // including AI_APPROVED ones, require a version-bound HUMAN gate and owner approval.
   if(!['approved','scheduled'].includes(clean(row.status))||!clean(row.approved_by)||!row.approved_at)
