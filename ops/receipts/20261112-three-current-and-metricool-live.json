@@ -1,0 +1,107 @@
+{
+  "at": "2026-11-12T10:25:57.466Z",
+  "head": "f6cbfe8e1ac4636746213bc1eb3f91662fc5ae69",
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "target": [
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "title": "小老闆今天在整理什麼？",
+      "status": "pending_review",
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-12/XJW-CONV-chat-shop-organizing-v6.jpg"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "status": "pending_review",
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-12/XJW-CONV-chat-receive-package-v2.jpg"
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "status": "pending_review",
+      "image_url": "https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/post-images/2026-11-12/XJW-CONV-weather-cool-drink-v2.jpg"
+    }
+  ],
+  "mappings": [],
+  "exact": [],
+  "relevant": [
+    {
+      "id": "POST-GAO-100",
+      "title": "早上取用完就放回原位：龜鹿膏100g的居家小習慣",
+      "status": "archived"
+    },
+    {
+      "id": "POST-COMBO",
+      "title": "平日在外、週末在家：龜鹿膏與30cc可以分開安排",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-GUILU-gao-100g",
+      "title": "家裡只留一個固定位置：龜鹿膏100g不必跟所有食品混放",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-GUILU-gao-routine",
+      "title": "下午回家先洗手再取一匙：把龜鹿膏變成固定的小流程",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-GUILU-gao-warm-water",
+      "title": "不想直接吃龜鹿膏？在家用100～300ml熱水化開也可以",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-GUILU-gao-first-half",
+      "title": "第一次接觸龜鹿膏，可以先從半匙認識自己的日常節奏",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-01-product-guilu-gao",
+      "title": "早餐後整理廚房時，順手把龜鹿膏放回冰箱",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-SOCIAL-20260815-03-gao-half-spoon-start",
+      "title": "週末第一次開龜鹿膏，先用乾淨小匙從半匙開始",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-CONV-chat-gao-vs-drink",
+      "title": "龜鹿膏跟龜鹿飲，差在哪？",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-CONV-chat-gao-storage",
+      "title": "龜鹿膏放在哪裡比較不容易忘記？",
+      "status": "archived"
+    },
+    {
+      "id": "XJW-CAND-20270309",
+      "title": "在家認識龜鹿膏，從100g罐裝開始",
+      "status": "archived"
+    }
+  ],
+  "identity": [
+    "409189881",
+    "425468095",
+    "-1546358116532992876"
+  ],
+  "scope": "metricool_id and exact text; UUID not separately stored unless present in metricool_id",
+  "d1Writes": 0,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "xjw-all-current-local-images-versus-archived-and-published-20261108-v1",
+  "generatedAt": "2026-11-12T10:25:53.573898+00:00",
+  "head": "f6cbfe8e1ac4636746213bc1eb3f91662fc5ae69",
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "pendingScanned": 3,
+  "referenceImages": 88,
+  "referenceBreakdown": {
+    "pending_review": 49,
+    "archived": 35,
+    "published": 2,
+    "published_ig_source": 2
+  },
+  "missingOrUnreadable": [],
+  "imageNearPairs": [],
+  "allPendingNearest": [
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-chat-family-old-object",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 14
+        },
+        {
+          "id": "XJW-CONV-chat-quiet-work",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CONV-chat-deer-turtle-soup-choice",
+          "status": "archived",
+          "dhash64": 29,
+          "averageHash64": 16
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "neighbors": [
+        {
+          "id": "XJW-CONV-cny-fridge-clean",
+          "status": "pending_review",
+          "dhash64": 17,
+          "averageHash64": 23
+        },
+        {
+          "id": "XJW-CONV-care-simple-checkin",
+          "status": "pending_review",
+          "dhash64": 20,
+          "averageHash64": 22
+        },
+        {
+          "id": "XJW-CAND-20270129",
+          "status": "pending_review",
+          "dhash64": 22,
+          "averageHash64": 25
+        }
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "neighbors": [
+        {
+          "id": "XJW-CAND-20270319",
+          "status": "archived",
+          "dhash64": 34,
+          "averageHash64": 16
+        },
+        {
+          "id": "XJW-CAND-20270105",
+          "status": "pending_review",
+          "dhash64": 34,
+          "averageHash64": 18
+        },
+        {
+          "id": "XJW-CAND-20270119",
+          "status": "pending_review",
+          "dhash64": 27,
+          "averageHash64": 19
+        }
+      ]
+    }
+  ],
+  "exactFileDuplicates": 0,
+  "caveats": [
+    "Simple 64-bit hashes screen similarities; threshold hit is not a verdict and misses different camera crops or substantially re-rendered scenes.",
+    "The external historical 178-image scratch cache was not fetched or redownloaded. 15 unidentified private cache misses and 3 public media gaps remain.",
+    "Archive and published rows with no GitHub image path cannot be visually compared here.",
+    "Current pending unchanged, duplicate DEFER remains in D1; this is supplemental evidence only."
+  ],
+  "d1Mutations": 0,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "deletions": 0
+}
