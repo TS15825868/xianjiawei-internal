@@ -4,7 +4,7 @@ import { productMatchErrors, duplicatePostErrors, fingerprint, validOriginalImag
 import { imageHash } from './ai-quality-review.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 
-const VERSION='2026-11-12-current-visual-evidence-v17';
+const VERSION='2026-11-12-current-visual-evidence-v18';
 const HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-xianjiawei-content-audit':VERSION};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
 const clean=value=>String(value??'').trim();
@@ -113,7 +113,7 @@ function semanticErrors(row,liveRows=[],originalReviewed=false,currentVisualRevi
   if(isHotWeatherTopic(row)&&!hasAny(image,['hot-weather','hydration','悶熱','炎熱','夏天','補水','水壺']))errors.push('文案主題是炎熱／悶熱天氣，但圖片資訊沒有對應炎熱、外出或補水情境');
   if(isTemperatureTopic(row)&&!hasAny(image,['temperature-coat','溫差','換季','外套']))errors.push('文案主題是早晚溫差／換季情境，但圖片資訊沒有對應薄外套或溫差場景');
 
-  const seasons=[['春天',['spring','春天','春季']],['夏天',['summer','夏天','夏季']],['秋天',['autumn','fall','秋天','秋季']],['冬天',['winter','冬天','冬季']]].filter(([label])=>text.includes(label));
+  const seasons=[['春天',['spring','春天','春季','春日']],['夏天',['summer','夏天','夏季','夏日']],['秋天',['autumn','fall','秋天','秋季','秋日']],['冬天',['winter','冬天','冬季','冬日']]].filter(([label])=>text.includes(label));
   if(seasons.length>1){if(!hasAny(image,['four-seasons','四季','春夏秋冬']))errors.push('文案同時描述多個季節，但圖片不是清楚的四季／多季節情境');}
   else if(seasons.length===1&&!hasAny(image,seasons[0][1]))errors.push(`文案指定「${seasons[0][0]}」，但圖片資訊沒有對應季節`);
 
