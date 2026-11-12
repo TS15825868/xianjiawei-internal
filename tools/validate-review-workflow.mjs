@@ -20,10 +20,10 @@ if(worker.includes("draft:['approved']"))throw new Error('草稿不得直接跳�
 const requiredUi=[
   "post.status==='draft'",
   'data-post-status="pending_review"',
-  '送待審核',
+  '交給AI審核',
   "post.status==='pending_review'",
   'data-post-status="approved"',
-  '16項審核通過',
+  '另行發布核准',
   '退回草稿'
 ];
 for(const token of requiredUi){
@@ -36,7 +36,7 @@ if(ui.includes("['draft','pending_review'].includes(post.status)?`<button class=
 const requiredGate=[
   'submitForReview',
   "status:'pending_review'",
-  '已送待審核',
+  '已交給AI審核',
   'data-post-status="pending_review"',
   'data-post-status="approved"',
   'draftToPendingReview:true',
@@ -46,4 +46,4 @@ for(const token of requiredGate){
   if(!reviewGate.includes(token))throw new Error(`16項審核攔截層缺少正式流程能力：${token}`);
 }
 
-console.log('PASS：正式貼文流程三層一致：草稿 → 待審核 → 16項人工審核通過 → 排程／立即發布；草稿不得直接核准。');
+console.log('PASS：正式貼文流程三層一致：草稿 → AI品質流程 → 獨立16項發布授權 → 排程／立即發布；草稿不得直接核准。');
