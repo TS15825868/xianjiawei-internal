@@ -1,0 +1,25 @@
+name: XJW three new images read-only history screen
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-three-image-history-screen.yml']
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install -q pillow
+      - run: python ops/20261112-three-image-history-screen.py
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: three-image-history-screen
+          path: |
+            current-vs-archived-visual-report.json
+            three-history-contact-*.jpg
