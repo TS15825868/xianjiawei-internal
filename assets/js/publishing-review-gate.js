@@ -229,8 +229,8 @@
         const review=context.historical_review;
         if(!review)return;
         historicalFingerprint=context.current.content_fingerprint;
-        historical.querySelector('[data-history-summary]').textContent=review.coverage_summary;
-        historical.querySelector('[data-history-evidence]').textContent=JSON.stringify({'目前資料庫碰撞':review.known_post_collisions,'現版去重證據':review.version_bound_duplicate_evidence,'人工紀錄':review.human_notes},null,2);
+        historical.querySelector('[data-history-summary]').textContent=(review.may_enter_human_review?'可進入人工核准：品牌擁有者已一次性授權接受歷史缺件風險；AI 歷史去重仍為 DEFER，尚未人工核准、排程或發布。請關閉本視窗，使用原有人工核准按鈕完成16項確認。\n':'歷史缺件授權尚未符合目前版本的人工核准準備條件。\n')+review.coverage_summary;
+        historical.querySelector('[data-history-evidence]').textContent=JSON.stringify({'目前資料庫碰撞':review.known_post_collisions,'現版去重證據':review.version_bound_duplicate_evidence,'品牌擁有者缺件授權（非核准）':review.owner_gap_acceptance,'人工紀錄':review.human_notes},null,2);
         historyForm.hidden=!review.may_record;
       })
       .catch(error=>{contextText.textContent='既有證據讀取失敗：'+(error.message||String(error))});
