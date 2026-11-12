@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
       - name: Read D1 and deployed quality classification
         run: |
           node --input-type=module <<'JS'
@@ -25,6 +26,8 @@ jobs:
           import {createRequire} from 'node:module';
           import {createD1Transport} from './tools/d1-http-transport.mjs';
           import {classifyAiQualityFlow} from './src/ai-quality-flow.js';
+          import {auditOne} from './src/publishing-content-audit-entry.js';
+          import crypto from 'node:crypto';
           const require=createRequire(import.meta.url),{fingerprint}=require('./tools/metricool-free-evidence.cjs');
           const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
           const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId,timeoutMs:45000});
@@ -34,6 +37,26 @@ jobs:
           const notes=await rows("SELECT entity_id,after_json FROM audit_logs WHERE action='歷史缺件授權覆核'");
           const counts=await rows("SELECT status,COUNT(*) count FROM social_posts GROUP BY status");
           const preliminary=posts.map(p=>({id:p.id,flow:classifyAiQualityFlow(p,reviews.find(r=>r.post_id===p.id),notes.filter(n=>n.entity_id===p.id),fingerprint(p),true)}));
+          const history=await rows("SELECT id,title,copy,status,image_url,image_source FROM social_posts");
+          const active=history.filter(p=>p.status!=='archived');
+          const originals=await rows("SELECT a.entity_id,a.actor_email,a.after_json FROM audit_logs a WHERE a.rowid IN (SELECT MAX(rowid) FROM audit_logs WHERE action='圖片原網址重新視覺覆核' GROUP BY entity_id)");
+          const latestById=new Map(reviews.map(r=>[r.post_id,r]));
+          // The production function only needs this read-only D1 lookup for legacy visual evidence.
+          // Reject every other query rather than simulating an unknown result.
+          const env={DB:{prepare(sql){
+            if(!/^SELECT content_fingerprint,image_url,image_sha256,evidence_json\s+FROM social_post_quality_reviews WHERE post_id=\? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1$/.test(sql.trim()))throw Error('Unexpected read-only audit query');
+            return {bind(id){return {async first(){return latestById.get(id)||null}}}};
+          }}};
+          const exact=[];
+          for(const p of posts){
+            const r=latestById.get(p.id);
+            const audit=await auditOne(env,p,active,history,originals.filter(n=>n.entity_id===p.id));
+            const prefix='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/';
+            const relative=p.image_url?.startsWith(prefix)?p.image_url.slice(prefix.length).split('?')[0]:'';
+            const imageVerified=Boolean(relative&&/^(assets\/post-images\/|media\/social-candidates\/)/.test(relative)&&!relative.split('/').includes('..')&&fs.existsSync(relative)&&crypto.createHash('sha256').update(fs.readFileSync(relative)).digest('hex')===r?.image_sha256);
+            const flow=classifyAiQualityFlow(p,r,notes.filter(n=>n.entity_id===p.id),fingerprint(p),audit.ok&&imageVerified);
+            exact.push({id:p.id,flow,auditOk:audit.ok,imageVerified,errors:audit.errors});
+          }
           const base='https://xianjiawei-internal.tung314069.workers.dev';
           const headers={};
           if(process.env.CF_ACCESS_CLIENT_ID&&process.env.CF_ACCESS_CLIENT_SECRET){headers['CF-Access-Client-Id']=process.env.CF_ACCESS_CLIENT_ID;headers['CF-Access-Client-Secret']=process.env.CF_ACCESS_CLIENT_SECRET;}
@@ -49,7 +72,7 @@ jobs:
             }catch(e){errors.push({ids,error:String(e.message)});if(i===0)break;}
           }
           const tally=a=>Object.fromEntries([...new Set(a.map(x=>x.flow.state))].map(k=>[k,a.filter(x=>x.flow.state===k).length]));
-          const receipt={at:new Date().toISOString(),head:process.env.GITHUB_SHA,counts,pending:posts.length,preliminaryEvidenceOnly:tally(preliminary),preliminaryDoesNotValidateLiveAudit:true,liveVerified:live.length,liveQualityStates:tally(live),liveIssues:live.filter(x=>!x.flow.quality_complete),errors,autoPublish:false,autoSchedule:false,d1Writes:0,publications:0};
+          const receipt={at:new Date().toISOString(),head:process.env.GITHUB_SHA,counts,pending:posts.length,preliminaryEvidenceOnly:tally(preliminary),preliminaryDoesNotValidateLiveAudit:true,productionCodeOnLiveD1Verified:exact.length,productionCodeStates:tally(exact),productionCodeIssues:exact.filter(x=>!x.flow.quality_complete),imageBytesVerified:exact.filter(x=>x.imageVerified).length,liveVerified:live.length,liveQualityStates:tally(live),liveIssues:live.filter(x=>!x.flow.quality_complete),errors,autoPublish:false,autoSchedule:false,d1Writes:0,publications:0};
           fs.writeFileSync('ops/receipts/20261112-ai-quality-flow-live.json',JSON.stringify(receipt,null,2)+'\n');
           JS
       - name: Save verification receipt
