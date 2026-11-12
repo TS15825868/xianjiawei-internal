@@ -19,3 +19,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node ops/20261112-final-three-images.mjs
+
+# Resume the evidence insert for a previously committed image update.
