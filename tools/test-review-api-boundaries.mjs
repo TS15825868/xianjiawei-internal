@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 // Execute the production gate with isolated auth, storage and publisher adapters.
 // No credentials, production database or external network are used.
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
+source=source.replace("'./product-equality-policy.js'",JSON.stringify(new URL('../src/product-equality-policy.js',import.meta.url).href));
 source=source.replace("import {recordAiDeferral} from './ai-review-deferral.js';",'const recordAiDeferral=()=>{throw Error("unexpected defer write")};');
 source=source.replace("import {assessAutopublishCandidate} from './ai-autopublish-policy.js';",'const assessAutopublishCandidate=()=>({ok:false,reasons:["Isolated test"]});');
 assert.match(source,/const fullAudit=await auditOne\(env,row,/);

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
+source=source.replace("'./product-equality-policy.js'",JSON.stringify(new URL('../src/product-equality-policy.js',import.meta.url).href));
 source=source.replace("import {recordAiDeferral} from './ai-review-deferral.js';",'const recordAiDeferral=()=>{throw Error("unexpected defer write")};');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async()=>Response.json(globalThis.imageTestProfile)};`)
 .replace("import {assessAutopublishCandidate} from './ai-autopublish-policy.js';",'const assessAutopublishCandidate=()=>({});')
