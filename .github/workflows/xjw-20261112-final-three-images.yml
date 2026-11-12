@@ -1,0 +1,21 @@
+name: XJW final three image replacements
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261112-final-three-images.yml']
+permissions:
+  contents: read
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify original rows, apply three new images and read back
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node ops/20261112-final-three-images.mjs
