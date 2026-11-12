@@ -1,0 +1,53 @@
+{
+  "at": "2026-11-12T10:32:50.170Z",
+  "readback": [
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "logId": "XJW-SCOPED-VISUAL-dfab21d034878387b8ee1659ae564096f68f32bba748f64455eb6d4d30fac623",
+      "sha256": "b9b7192073a97c140a01875f91afa70febb2930d4419265b86dc24b816e20ab3",
+      "fingerprint": "b7e23662589815a8c58aa2f0e39a7ef60435b6e5f1421dc0d46aa3617c235e72",
+      "readback": true,
+      "ownerGapQualification": false
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "logId": "XJW-SCOPED-VISUAL-0df9472972ee08b8d073589dab182f3b895beead6ccc6a3991a39578a656e5b3",
+      "sha256": "0750177841a586f6667b8ce425a780a06a04841f2a656d8fc6fd8d7f1c0c61f6",
+      "fingerprint": "726ccbd4dddba8eff9af62700f4d282b25003066d5ad1e999c8218193e19e619",
+      "readback": true,
+      "ownerGapQualification": false
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "logId": "XJW-SCOPED-VISUAL-805ab4d6059e2442e613ac3336a5c7151076a56e1fb591a5cb124bc9c952777c",
+      "sha256": "36bd2a9f2927c89a642a12f4c41a6fecf1ddfcc119a3720e5cc4f137079d1bb3",
+      "fingerprint": "5a50ede35a5db84c64e6ae007d4086beab27ef5883bea84063b2c8a78542e06e",
+      "readback": true,
+      "ownerGapQualification": false
+    }
+  ],
+  "external": {
+    "id": "XJW-EXTERNAL-DRAFT-425468095",
+    "readback": true,
+    "disposition": "external_draft_preserved_unmapped",
+    "mappingCreated": false
+  },
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "fullHistoricalDedupCertified": false,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0
+}
