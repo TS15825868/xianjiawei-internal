@@ -4,10 +4,11 @@ on:
     branches: [main]
     paths: ['.github/workflows/xjw-three-image-history-screen.yml']
 permissions:
-  contents: read
+  contents: write
 jobs:
   screen:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
@@ -17,6 +18,48 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Read-only Metricool identity and D1 mapping check
+        if: always()
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId,timeoutMs:45000});
+          const rows=async s=>(await query(s))[0].results;
+          const posts=await rows("SELECT id,title,copy,status,image_url FROM social_posts");
+          const sync=await rows("SELECT post_id,metricool_id,state FROM social_metricool_sync");
+          const ids=['409189881','425468095','-1546358116532992876'];
+          const mappings=sync.filter(x=>ids.includes(String(x.metricool_id)));
+          const exact=posts.filter(x=>[x.title,x.copy].some(t=>String(t||'').includes('認識仙加味龜鹿膏｜100g／罐')||String(t||'').includes('有些人喜歡直接取用膏狀食材'))).map(({id,title,status})=>({id,title,status}));
+          const relevant=posts.filter(x=>/龜鹿膏/.test(x.title||'')).map(({id,title,status})=>({id,title,status}));
+          const targetIds=['XJW-CONV-chat-shop-organizing','XJW-CONV-chat-receive-package','XJW-CONV-weather-cool-drink'];
+          const target=posts.filter(x=>targetIds.includes(x.id)).map(({id,title,status,image_url})=>({id,title,status,image_url}));
+          const counts=await rows("SELECT status,COUNT(*) count FROM social_posts GROUP BY status");
+          fs.mkdirSync('ops/receipts',{recursive:true});
+          fs.writeFileSync('ops/receipts/20261112-three-current-and-metricool-live.json',JSON.stringify({at:new Date().toISOString(),head:process.env.GITHUB_SHA,counts,target,mappings,exact,relevant,identity:ids,scope:'metricool_id and exact text; UUID not separately stored unless present in metricool_id',d1Writes:0,approvals:0,schedules:0,publications:0},null,2)+'\n');
+          JS
+      - name: Preserve image screen and mapping receipt for direct readback
+        if: always()
+        run: |
+          mkdir -p ops/receipts/20261112-three-image-screen
+          if test -f current-vs-archived-visual-report.json; then
+            cp current-vs-archived-visual-report.json ops/receipts/20261112-three-image-screen/report.json
+            cp three-history-contact-*.jpg ops/receipts/20261112-three-image-screen/
+            git add ops/receipts/20261112-three-image-screen
+          fi
+          if test -f ops/receipts/20261112-three-current-and-metricool-live.json; then
+            git add ops/receipts/20261112-three-current-and-metricool-live.json
+          fi
+          if git diff --cached --quiet; then exit 1; fi
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'audit: preserve three-image screen and live mapping evidence'
+          git pull --rebase origin main
+          git push origin HEAD:main
       - uses: actions/upload-artifact@v4
         with:
           name: three-image-history-screen
