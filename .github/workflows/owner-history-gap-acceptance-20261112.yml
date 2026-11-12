@@ -1,0 +1,56 @@
+name: 仙加味49篇一次性歷史缺件授權正式驗收（不核准不發布）
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/owner-history-gap-acceptance-20261112.yml'
+      - 'ops/request-owner-history-gap-acceptance-20261112.json'
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install -q pillow
+      - name: Recheck current version captions and original image sources
+        run: |
+          node --check ops/apply-owner-history-gap-acceptance-20261112.mjs
+          node --check src/publishing-review-gate-entry.js
+          node --check assets/js/publishing-review-gate.js
+          node ops/full-current-history-screen-20261107.mjs
+          python ops/current-vs-archived-visual-audit-20261108.py
+      - name: Record explicitly delegated historical gap acceptance and verify every D1 receipt
+        run: node ops/apply-owner-history-gap-acceptance-20261112.mjs
+      - name: Preserve current comparison and D1 readback evidence
+        run: |
+          set -euo pipefail
+          cp current-vs-archived-visual-report.json ops/receipts/20261112-owner-gap-current-image-screen.json
+          cp all-active-history-dedup-screen.json ops/receipts/20261112-owner-gap-current-copy-screen.json
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-owner-gap-current-image-screen.json ops/receipts/20261112-owner-gap-current-copy-screen.json ops/receipts/20261112-owner-history-gap-readback.json
+          git commit -m 'review: preserve current source comparison and verified owner-delegated historical gap receipts'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xjw-owner-gap-receipts-${{ github.run_id }}
+          path: |
+            current-vs-archived-visual-report.json
+            all-active-history-dedup-screen.json
+            ops/receipts/20261112-owner-history-gap-readback.json
+          retention-days: 7
