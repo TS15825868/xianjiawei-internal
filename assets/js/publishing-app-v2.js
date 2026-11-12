@@ -78,7 +78,7 @@ function connection(message,error=false){
 }
 
 function statusLabel(v=''){
-  return({draft:'草稿',pending_review:'待審核',approved:'已核准',scheduled:'已排程',published:'已發布',manual_required:'需人工核對',failed:'失敗',archived:'已封存'})[v]||v||'—';
+  return({draft:'草稿',pending_review:'AI品質流程',approved:'已核准',scheduled:'已排程',published:'已發布',manual_required:'需人工核對',failed:'失敗',archived:'已封存'})[v]||v||'—';
 }
 
 function setButtonBusy(button,text='處理中…'){
@@ -129,8 +129,8 @@ function audit(post){
   }
   if(!post.image_alt)return{level:'warning',text:'尚未填寫圖片說明，請補齊後再完成審核。'};
   if(['needs_rework','needs_regeneration','rejected','low','missing'].includes(String(post.image_quality_status||'').trim().toLowerCase()))
-    return{level:'danger',text:'目前圖片仍標記為需要重製／品質不合格。請更換正確情境圖片，重新送待審核並完成16項人工檢查。'};
-  return{level:'ok',text:'基本圖文預檢通過；正式發布前仍須完成16項人工圖文審核。'};
+    return{level:'danger',text:'目前圖片仍標記為需要重製／品質不合格。請更換正確情境圖片，交由AI修復並重新驗證16項品質證據。'};
+  return{level:'ok',text:'基本圖文預檢通過；AI品質流程與正式發布授權分開。'};
 }
 
 function metricsData(){
@@ -153,8 +153,8 @@ function renderMetrics(){
   const c=metricsData();
   root.innerHTML=[
     ['草稿',c.draft,'draft'],
-    ['待審核',c.pending,'pending_review'],
-    ['AI 預審待人工',c.aiPending,'ai_pending'],
+    ['AI品質流程',c.pending,'pending_review'],
+    ['AI預審／發布未授權',c.aiPending,'ai_pending'],
     ['AI 已核准',c.aiApproved,'ai_approved'],
     ['人工已核准',c.approved,'human_approved'],
     ['已排程',c.scheduled,'scheduled'],
@@ -183,20 +183,20 @@ function card(post){
   return`<article class="card xjw-row publish-card" data-status="${esc(post.status)}" data-locked="${locked?'true':'false'}">
     <div class="xjw-row-head">
       <div><p class="eyebrow">${esc(post.category||'貼文')}</p><h3>${esc(post.title||'未命名貼文')}</h3></div>
-      <span class="status-pill ${esc(aiNeedsHuman?'pending_review':post.status)}">${esc(aiNeedsHuman?'AI 預審完成・待人工核准':statusLabel(post.status))}</span>
+      <span class="status-pill ${esc(aiNeedsHuman?'pending_review':post.status)}">${esc(aiNeedsHuman?'AI預審完成・發布未授權':statusLabel(post.status))}</span>
     </div>
     <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:(post.proposed_scheduled_at?`<span>候選時段（尚未排程）：${esc(fmt(post.proposed_scheduled_at))}</span>`:'')}</div>
     ${post.headline?`<h4>${esc(post.headline)}</h4>`:''}
     <div class="public-copy-label">客戶實際會看到的文案</div><div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
     ${post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:''}
     <div class="xjw-${a.level}"><strong>內部檢查（不會發布）</strong><br>${esc(a.text)}</div>
-    ${aiNeedsHuman?'<div class="xjw-warning"><strong>AI 已完成品質初審，但不是人工核准。</strong><br>原文案、圖片及預審證據已保留，請進行16項人工確認後才能排程或發布。</div>':''}
+    ${aiNeedsHuman?'<div class="xjw-warning"><strong>AI 已完成品質初審，但不是人工核准。</strong><br>原文案、圖片及預審證據已保留；品質由AI維護，對外發布仍須另行授權。</div>':''}
     <div class="xjw-actions">
       <button class="btn small" data-post-view="${esc(post.id)}">查看／發布結果</button>
       ${!readOnly&&!locked?`<button class="btn small orange" data-post-edit="${esc(post.id)}">重新編輯</button>`:''}
-      ${!readOnly&&post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>送待審核</button>`:''}
-      ${!readOnly&&post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>16項審核通過</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
-      ${!readOnly&&aiNeedsHuman?`<button class="btn small orange" data-post-prepare-human-review="${esc(post.id)}">進行人工16項審核</button>`:''}
+      ${!readOnly&&post.status==='draft'?`<button class="btn small green" data-post-status="pending_review" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>交給AI審核</button>`:''}
+      ${!readOnly&&post.status==='pending_review'?`<button class="btn small green" data-post-status="approved" data-id="${esc(post.id)}" ${a.level==='danger'?'disabled':''}>另行發布核准</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">退回草稿</button>`:''}
+      ${!readOnly&&aiNeedsHuman?`<button class="btn small orange" data-post-prepare-human-review="${esc(post.id)}">返回AI品質流程</button>`:''}
       ${!readOnly&&post.status==='approved'&&!aiNeedsHuman?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">安排時間</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${!readOnly&&post.status==='scheduled'?`<button class="btn small orange" data-post-schedule="${esc(post.id)}">修改時間</button><button class="btn small" data-post-status="draft" data-id="${esc(post.id)}">取消排程</button><button class="btn small green" data-post-publish-now="${esc(post.id)}">立即發布</button>`:''}
       ${post.status==='manual_required'?`<button class="btn small" data-post-deliveries="${esc(post.id)}">查看各平台狀態</button>`:''}
@@ -612,7 +612,7 @@ async function changeStatus(id,status,button){
   const done=setButtonBusy(button,'更新中…');
   try{
     await api(`/posts/${encodeURIComponent(id)}/status`,{method:'POST',body:JSON.stringify({status})});
-    toast(status==='pending_review'?'已送待審核':status==='draft'?'已退回草稿／取消排程':'狀態已更新');
+    toast(status==='pending_review'?'已交給AI審核':status==='draft'?'已退回草稿／取消排程':'狀態已更新');
     await load();
   }catch(error){
     toast(error.message||String(error),true);
