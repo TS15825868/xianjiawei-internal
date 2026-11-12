@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-12T10:43:00.288Z",
-  "head": "1916faa99d7c1a835f491d5e8be774c8dc7b9e38",
+  "at": "2026-11-12T10:44:37.436Z",
+  "head": "33b8aeed6d585ff03c045aa421076e721ff6bdea",
   "counts": [
     {
       "status": "archived",
@@ -20,6 +20,12 @@
     "AI_QUALITY_COMPLETE_WITH_ACCEPTED_GAPS": 49
   },
   "preliminaryDoesNotValidateLiveAudit": true,
+  "productionCodeOnLiveD1Verified": 49,
+  "productionCodeStates": {
+    "AI_QUALITY_COMPLETE_WITH_ACCEPTED_GAPS": 49
+  },
+  "productionCodeIssues": [],
+  "imageBytesVerified": 49,
   "liveVerified": 0,
   "liveQualityStates": {},
   "liveIssues": [],
