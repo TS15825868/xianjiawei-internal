@@ -91,7 +91,23 @@
       window.XJWShowBootHelp=showHelp;
       var diagnoseButton=document.querySelector('[data-diagnose]');
       if(diagnoseButton)diagnoseButton.addEventListener('click',function(event){
-        if(window.XJWPublishingReadiness?.run){action('正在進行完整系統與平台安全診斷…');return;}
+        if(window.XJWPublishingReadiness?.run){
+          if(diagnoseButton.disabled)return;
+          var runningMessage='正在進行完整系統與平台安全診斷…';
+          diagnoseButton.disabled=true;
+          action(runningMessage);
+          function finishDiagnostic(message,error){
+            diagnoseButton.disabled=false;
+            if(document.getElementById('actionState')?.textContent===runningMessage)action(message,error);
+          }
+          window.XJWPublishingReadiness.run({full:true}).then(function(report){
+            var platformIssue=report?.platformProbeError||report?.blockingPlatformFailures?.length;
+            if(!report?.ok){finishDiagnostic('系統診斷完成：核心服務有項目需要處理。',true);return;}
+            if(platformIssue){finishDiagnostic('系統診斷完成：核心正常，平台連線有項目需要處理。',true);return;}
+            finishDiagnostic('系統診斷完成：核心功能正常，請參閱下方平台狀態。');
+          }).catch(function(){finishDiagnostic('系統診斷未完成，請稍後重試。',true);});
+          return;
+        }
         event.preventDefault();
         if(diagnoseButton.disabled)return;
         var old=diagnoseButton.textContent;diagnoseButton.disabled=true;diagnoseButton.textContent='診斷中…';action('正在檢查 Worker、D1、存取狀態與貼文資料…');
