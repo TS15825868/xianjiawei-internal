@@ -1,0 +1,50 @@
+{
+  "schema": "xjw-metricool-draft-reconciliation-observation-v1",
+  "date": "2026-11-12",
+  "brandId": "6889683",
+  "scope": {
+    "from": "2026-11-01",
+    "to": "2026-12-31",
+    "timezone": "Asia/Taipei",
+    "source": "Metricool connector live planner query"
+  },
+  "target": {
+    "id": 425468095,
+    "previousId": 409189881,
+    "uuid": "-1546358116532992876",
+    "title": "認識仙加味龜鹿膏｜100g／罐",
+    "media": "https://static.metricool.com/planner/202611/6889683-file-11338806686392267015.webp",
+    "draft": true,
+    "autoPublish": false,
+    "platforms": [
+      "facebook",
+      "instagram",
+      "threads"
+    ],
+    "mappingStatus": "unresolved_external_draft",
+    "mappingVerified": false,
+    "sourceImageShaReportedByWork": "66090b2dc779dbc6fc0c4832415223a946997dbf456ad2dbdc42c6bd89c0122d",
+    "remoteMediaShaVerified": false
+  },
+  "plannerDraftIds": [
+    409115861,
+    409149617,
+    409190019,
+    413610813,
+    413610864,
+    413610902,
+    415295632,
+    425468095
+  ],
+  "plannerDraftCount": 8,
+  "allObservedDraftsAutoPublishFalse": true,
+  "notes": [
+    "Planner query includes historical dated drafts; do not equate count with D1 unmapped drafts.",
+    "Prior D1 title screen found no exact target; current mapping not independently verified. Preserve external draft and do not create a speculative mapping."
+  ],
+  "d1Writes": 0,
+  "metricoolWrites": 0,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0
+}
