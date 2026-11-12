@@ -1,0 +1,62 @@
+name: Verify live automatic AI quality workflow
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/verify-ai-quality-flow-live-20261112.yml']
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+      CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Read D1 and deployed quality classification
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import {createRequire} from 'node:module';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          import {classifyAiQualityFlow} from './src/ai-quality-flow.js';
+          const require=createRequire(import.meta.url),{fingerprint}=require('./tools/metricool-free-evidence.cjs');
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId,timeoutMs:45000});
+          const rows=async s=>(await query(s))[0].results;
+          const posts=await rows("SELECT * FROM social_posts WHERE status='pending_review' ORDER BY id");
+          const reviews=await rows("SELECT * FROM (SELECT q.*,ROW_NUMBER() OVER(PARTITION BY post_id ORDER BY reviewed_at DESC,rowid DESC) rn FROM social_post_quality_reviews q) WHERE rn=1");
+          const notes=await rows("SELECT entity_id,after_json FROM audit_logs WHERE action='歷史缺件授權覆核'");
+          const counts=await rows("SELECT status,COUNT(*) count FROM social_posts GROUP BY status");
+          const preliminary=posts.map(p=>({id:p.id,flow:classifyAiQualityFlow(p,reviews.find(r=>r.post_id===p.id),notes.filter(n=>n.entity_id===p.id),fingerprint(p),true)}));
+          const base='https://xianjiawei-internal.tung314069.workers.dev';
+          const headers={};
+          if(process.env.CF_ACCESS_CLIENT_ID&&process.env.CF_ACCESS_CLIENT_SECRET){headers['CF-Access-Client-Id']=process.env.CF_ACCESS_CLIENT_ID;headers['CF-Access-Client-Secret']=process.env.CF_ACCESS_CLIENT_SECRET;}
+          const live=[],errors=[];
+          for(let i=0;i<posts.length;i+=4){
+            const ids=posts.slice(i,i+4).map(p=>p.id);
+            try{
+              const response=await fetch(base+'/api/posts/content-audit?ids='+encodeURIComponent(ids.join(',')),{headers,redirect:'manual',signal:AbortSignal.timeout(30000)});
+              if(!response.ok)throw Error('HTTP '+response.status);
+              const data=await response.json();
+              if(!Array.isArray(data.items)||data.items.length!==ids.length||data.items.some(x=>!x.quality_flow)||new Set(data.items.map(x=>x.id)).size!==ids.length||ids.some(id=>!data.items.some(x=>x.id===id)))throw Error('Incomplete deployed response');
+              live.push(...data.items.map(x=>({id:x.id,ok:x.ok,flow:x.quality_flow,errors:x.errors})));
+            }catch(e){errors.push({ids,error:String(e.message)});if(i===0)break;}
+          }
+          const tally=a=>Object.fromEntries([...new Set(a.map(x=>x.flow.state))].map(k=>[k,a.filter(x=>x.flow.state===k).length]));
+          const receipt={at:new Date().toISOString(),head:process.env.GITHUB_SHA,counts,pending:posts.length,preliminaryEvidenceOnly:tally(preliminary),preliminaryDoesNotValidateLiveAudit:true,liveVerified:live.length,liveQualityStates:tally(live),liveIssues:live.filter(x=>!x.flow.quality_complete),errors,autoPublish:false,autoSchedule:false,d1Writes:0,publications:0};
+          fs.writeFileSync('ops/receipts/20261112-ai-quality-flow-live.json',JSON.stringify(receipt,null,2)+'\n');
+          JS
+      - name: Save verification receipt
+        run: |
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-ai-quality-flow-live.json
+          git commit -m 'audit: preserve automatic AI quality live verification'
+          git pull --rebase origin main
+          git push origin HEAD:main
