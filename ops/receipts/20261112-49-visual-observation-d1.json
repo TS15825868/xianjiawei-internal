@@ -1,0 +1,419 @@
+{
+  "schema": "xjw-49-visual-observation-d1-receipt-v1",
+  "capturedAt": "2026-11-12T03:49:22.785Z",
+  "verifiedCount": 49,
+  "skippedCount": 0,
+  "verified": [
+    {
+      "id": "XJW-CAND-20261211",
+      "reviewId": "AI-DEFER-48016d7ce26e1bf2632759e55f6a2f093a1732c226bed6f9ac7e42e9bcd33a57",
+      "imageSha": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "reviewId": "AI-DEFER-a1745eef4cd2397209c46ff0005e313303930e32079778c98a14d395f7e3ae76",
+      "imageSha": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "reviewId": "AI-DEFER-2c38aa4d9f1ae44696d6ae05b11135d983848a51e3dbadba732c37931d7c622a",
+      "imageSha": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "reviewId": "AI-DEFER-0991d079817d0745bd5159baefb2c67c205181554a826ef5a7d397e07da6627a",
+      "imageSha": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "reviewId": "AI-DEFER-b5325b30b6a65cf568e376123a00f23dce0535c1642013d2b192cdc97c318cda",
+      "imageSha": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "reviewId": "AI-DEFER-59cc9e9fb80fa8eb7f06654a11a58d2e7c7716e6149417895acf8bdf9ed7069b",
+      "imageSha": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "reviewId": "AI-DEFER-3ef7fff523c72e5286d90a76d9917d36cf63eb092a672bffddd6c4e3b3eb693f",
+      "imageSha": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "reviewId": "AI-DEFER-2c8cc33cca890de0d2affe0f31f8158fb8fa25f5bde4dbc48ff0f38a63bb771c",
+      "imageSha": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "reviewId": "AI-DEFER-4ddea4695c2b7d41e89b459a13cbf46e5362e37403b47a9fa448d62b093d68df",
+      "imageSha": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "reviewId": "AI-DEFER-0ca93a39d5359a7db8b7de5eab300453b7705261e7e0fd628720ceeac7d7c239",
+      "imageSha": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "reviewId": "AI-DEFER-013f07cb240ba375c4bffdf7821686dff9dab61f76262bda9b2f33bfdf98e36a",
+      "imageSha": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "reviewId": "AI-DEFER-d5a757fb2a62747c5e7d0f6b055abe6132bc80545c69b7a00893301e991a1f95",
+      "imageSha": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "reviewId": "AI-DEFER-47a4a162570a034c987ee2cc49523b0510bfe8ef6d5172182fb7f18231306cbf",
+      "imageSha": "7ff37b482e1876251753ed157485290b2cac418a521be532214d221c9517cda0",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "reviewId": "AI-DEFER-56618507bf036280ab166e38f952a8d8ed5bea37c2f0946b48aa171f1c27a60e",
+      "imageSha": "9c933fa3e74daa6e200b03ae9f48cc8707d6543483811a0a872de6da6d5b242d",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "reviewId": "AI-DEFER-2ec9661629b059d0c03cbcf138cad986f2a0905daefe0b148ef6b9ea76573a55",
+      "imageSha": "8d8a7274b619a155ea6d1ce8aafcbf67bab025a5e86f0363d6b482e663d177a6",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "reviewId": "AI-DEFER-bfd12b8676802cb85808f0e7afe893e85566f3531fc1a7e71c330cb28b5398c3",
+      "imageSha": "dd30eaea035ef2b57b5eede9eb150b926501a76a99f1b9a522b73f9290a27589",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "reviewId": "AI-DEFER-195503cde31f88abfd0f4b8d57db2f28ad5ff02f1b8fe9bcf6a4bd6915c7cf15",
+      "imageSha": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "reviewId": "AI-DEFER-4d05fc8702ffc84d2893c6bb6a14a4bc06a84d3edc238d86a712085580d44fa9",
+      "imageSha": "d35515ad1c0ed02dad9865decfb10f41aa6dc27a626dd99e9872f5a2a82af7b8",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "reviewId": "AI-DEFER-506a81e7e4b95bae0ceacb14eef52f3dfe3a268272ab628adb908d8ea53b648c",
+      "imageSha": "babcfef72467c0ff38be1d942115e34187f3f10e967320f997d2b35aa8458601",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "reviewId": "AI-DEFER-dbefd62d74c910bf284e8eeea1074affba6d6a6a1ef7dc72ebaed133d918dad1",
+      "imageSha": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "reviewId": "AI-DEFER-f6de96fe46e504c7c5a8573c1661d66fe2436b2e8af715a20c2661f2228e3fe9",
+      "imageSha": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "reviewId": "AI-DEFER-e840c99768d261cf634358a9fc70c9dbd79b3b7b18221e972306e8dbdb3600cb",
+      "imageSha": "4991b10381f397522363d42772f902806833810270ae33ec844af28638676000",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "reviewId": "AI-DEFER-3490cad72653f2619d433e19ca6a1b0f70e57f1dca44c896df5441a39a11dca6",
+      "imageSha": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "reviewId": "AI-DEFER-7131f07a8b9a29aa51ca2210cbe4d52f31b4158463baf147dfd8b13710845c1e",
+      "imageSha": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "reviewId": "AI-DEFER-fc44b3ed7534dcf8e90632cd94cdc085d898640782eb2d21edb956ca70349200",
+      "imageSha": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "reviewId": "AI-DEFER-0bf80b94dc7902edeb4bb542a86c7689232faed16b4ba58056089e1e5f2c8381",
+      "imageSha": "3530f50ac3338e4c444cfb9f191d99b5c86ea9a95bf12bc9dfcb9f0627a91676",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "reviewId": "AI-DEFER-f9f65925dc08cb8bea395ceebe92bca31dedcd80b04860d23a5936474daabe52",
+      "imageSha": "caa172f0d85559667c1420008a09ce2c6331759bd75ae335ada4b55fbe4fa17f",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "reviewId": "AI-DEFER-3acda395a60fde134c3ef1a17ac68b36a010d55c3011d0f48c22b87ac5e4076e",
+      "imageSha": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "reviewId": "AI-DEFER-2b4a88563cd78038369fe437c9e1af8cdb90f0159661ca9300b303fbee79aa89",
+      "imageSha": "ac23cb985a1d80c9dda4ff8fd758dedd9f7c3aec674df6ad662388a754c37a4e",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "reviewId": "AI-DEFER-3effb4bc67f16c505ae85062ec58c10797f9affc463f2b5656e70c00b83a8c5f",
+      "imageSha": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "reviewId": "AI-DEFER-2e03f7906a035230807236cdb44b0d52090939af6796f0ea6eea9be1a27d3feb",
+      "imageSha": "7fa4563e0290a539e321f72fce5189463b44d6cd6359b93b253d1d3898904a99",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "reviewId": "AI-DEFER-6f5465c90f1d69ed111536bae64e03d1fa63ca3381e6dcd3153da33f6f5b81c6",
+      "imageSha": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "reviewId": "AI-DEFER-89d47da7f0f49f9a2c35d9f9f5c3391fb1a96719a94c6f175ca9a41f3550271f",
+      "imageSha": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "reviewId": "AI-DEFER-1f0e2a685e18f21ff8ec2870dddf4450d9a536b338c54a710ba0c877e08b8c0e",
+      "imageSha": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "reviewId": "AI-DEFER-a0e5d5f27f9cff73afaf29adf10a24a5ec719aa877db154183af01f88db21ba5",
+      "imageSha": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "reviewId": "AI-DEFER-e8acf87dad78819f6f9f25a540455f326680880db8ec1b9a7926fad16916594f",
+      "imageSha": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "reviewId": "AI-DEFER-d922ead3dd03ba800146472d4d928e555054c02d42454d1e4d4ca9a085858077",
+      "imageSha": "4905bcaab77381f53f3ab5ede77c9b5f06951b22f6cc97f610af9d025f61c7c0",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "reviewId": "AI-DEFER-72480442a3324bd55e31ea63bb7696dd10456d4856fed1e0deea7475b813520f",
+      "imageSha": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "reviewId": "AI-DEFER-ab6c790d1ac38c971bad6910ca57c3034c4da9d025d6126ccf872808f1f80602",
+      "imageSha": "9790f1ca7766b43b99de629872fa8b6e79a19f2a5b919e108ca746849d35b836",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "reviewId": "AI-DEFER-728a780662765fe08387c84c3c07fd1b257043b4635fe6c935f64acbef0dd2c5",
+      "imageSha": "d8702b0d1546026cb7175d5792a89f1ce4e98b1a350163d03e51cd19507dbfbf",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "reviewId": "AI-DEFER-36beb4df4a82d5ec7049311e37caa0cac38910b9b3f6ce79deeef56d8b0410d1",
+      "imageSha": "22b5ec499b3b45156cb450ff44ad3d283fd8fe781cd067a851cd8b66627bc808",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "reviewId": "AI-DEFER-b40f1430551003add88021890cadf813b8ba50acc2e11df726794d9a957402c7",
+      "imageSha": "1da90695f31d6129086c0945f4760226a67fd3029ee24bffaf1f933ac1ccc532",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "reviewId": "AI-DEFER-e93d09ce838d9fa497b53018929ba6c0335ad73fdacb6b6b2044b0f93449ef91",
+      "imageSha": "db76be5d7368af28baec5fc66748dba6a8c6b171a5a17be8a326dd1ea911b83a",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "reviewId": "AI-DEFER-248b8d08448e3b889a73312395cf9d518412192c3507a61f8bbaad16da2d929b",
+      "imageSha": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "reviewId": "AI-DEFER-4dc8cdaf06daabb068ea1937163fdae871d5bcd1acec9f68c858eda5714d1066",
+      "imageSha": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "reviewId": "AI-DEFER-4e3bf7abb99299318102d0721adcee58d9b7ebe2262a7ddc336dc3ff15bb015c",
+      "imageSha": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "reviewId": "AI-DEFER-3d3bc8654456274fca770593255858d2b97a1b87094c7e543e2d5d73936ff91c",
+      "imageSha": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "reviewId": "AI-DEFER-3b1429de971d2ca22abb4a8b3cc4cd3b527fc908efe03e0208335575431e7279",
+      "imageSha": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "missing": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "reviewId": "AI-DEFER-bb69ee667959e49f2da696c86a491992710f4ebe522f83d5edc19cab12899337",
+      "imageSha": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "missing": [
+        "duplicate"
+      ]
+    }
+  ],
+  "skipped": [],
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "aiApprovals": 0,
+  "humanApprovals": 0,
+  "schedules": 0,
+  "publications": 0
+}
