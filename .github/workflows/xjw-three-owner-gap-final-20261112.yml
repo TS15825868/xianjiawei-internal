@@ -1,0 +1,93 @@
+name: XJW finalize owner-delegated gap for three replacement images
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-three-owner-gap-final-20261112.yml']
+permissions:
+  contents: write
+concurrency:
+  group: xianjiawei-post-image-queue-write
+  cancel-in-progress: false
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Refresh caption comparison without editing existing posts
+        run: node ops/full-current-history-screen-20261107.mjs
+      - name: Apply authorized missing-source acknowledgement for only three new versions
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import crypto from 'node:crypto';
+          import {createRequire} from 'node:module';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          import {duplicatePostErrors,productMatchErrors} from './src/publishing-review-gate-entry.js';
+          const require=createRequire(import.meta.url),{fingerprint}=require('./tools/metricool-free-evidence.cjs');
+          const sha=b=>crypto.createHash('sha256').update(b).digest('hex'),q=x=>x==null?'NULL':"'"+String(x).replaceAll("'","''")+"'";
+          const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+          const auth=read('ops/request-owner-history-gap-acceptance-20261112.json'),scoped=read('ops/receipts/20261112-scoped-visual-and-external-draft-readback.json'),screen=read('ops/receipts/20261112-three-image-screen/report.json'),copy=read('all-active-history-dedup-screen.json');
+          if(auth.schema!=='xjw-owner-delegated-historical-gap-acceptance-v1'||auth.rows.length!==49||auth.missingHistoricalMedia!==15||auth.allowAIApproval!==false||auth.allowHumanApproval!==false||auth.allowSchedule!==false||auth.allowPublish!==false||scoped.readback.length!==3||!scoped.external.readback||screen.referenceImages!==88||screen.exactFileDuplicates!==0||screen.imageNearPairs.length||copy.activePosts!==49||copy.historyRows<132||copy.d1Mutations!==0)throw Error('Invalid scope or evidence');
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db,timeoutMs:45000});
+          const rows=async s=>(await query(s))[0].results;
+          const all=await rows('SELECT * FROM social_posts ORDER BY id');
+          if(all.length!==161||all.filter(p=>p.status==='pending_review').length!==49)throw Error('Live scope changed');
+          const checks=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
+          const ids=['XJW-CONV-chat-shop-organizing','XJW-CONV-chat-receive-package','XJW-CONV-weather-cool-drink'];
+          const prepared=[],holds=[],ready=[];
+          for(const id of ids){
+            try{
+              const a=auth.rows.find(x=>x.id===id),s=scoped.readback.find(x=>x.id===id),p=all.find(x=>x.id===id),c=copy.rows.find(x=>x.id===id);
+              const r=(await rows('SELECT * FROM social_post_quality_reviews WHERE post_id='+q(id)+' ORDER BY reviewed_at DESC,rowid DESC LIMIT 1'))[0];
+              const l=(await rows('SELECT after_json FROM audit_logs WHERE id='+q(s.logId)))[0],v=JSON.parse(l.after_json),e=JSON.parse(r.evidence_json);
+              if(!a||!s?.readback||!p||!r||!c||p.title!==a.expectedTitle||p.copy!==a.expectedCopy||p.status!=='pending_review'||p.approved_by||p.approved_at||p.scheduled_at||p.published_at||Number(p.image_approved||0)||fingerprint(p)!==s.fingerprint||r.content_fingerprint!==s.fingerprint||r.image_sha256!==s.sha256||r.image_url!==p.image_url||r.decision!=='NEEDS_HUMAN_REVIEW'||e.content_fingerprint!==s.fingerprint||e.image_sha256!==s.sha256||v.fingerprint!==s.fingerprint||v.image_sha256!==s.sha256||v.review_id!==r.id||v.reference_images!==88||v.contact_sheets_visually_inspected!==4||v.exact_matches!==0||v.near_threshold_matches!==0||checks.some(k=>e.checks?.[k]?.result!==(k==='duplicate'?'DEFER':'PASS')))throw Error('Version or source evidence differs');
+              if(c.copyImageFingerprint!==s.fingerprint||c.copySHA256!==sha(p.copy)||c.highestPublishedSimilarity>=.16||c.highestPendingSimilarity>=.16)throw Error('Caption collision or mismatch');
+              const path=p.image_url.replace('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/','').split('?')[0];
+              if(!path.startsWith('assets/post-images/2026-11-12/')||sha(fs.readFileSync(path))!==s.sha256)throw Error('Source bytes changed');
+              const errors=[...productMatchErrors(p),...await duplicatePostErrors(null,p,all)];
+              if(errors.length)throw Error(errors.join('；'));
+              const ext=await rows('SELECT state,metricool_id FROM social_metricool_sync WHERE post_id='+q(id));
+              const delivery=await rows("SELECT platform FROM social_publish_deliveries WHERE post_id="+q(id)+" AND (COALESCE(attempt_count,0)>0 OR last_attempt_at IS NOT NULL OR published_at IS NOT NULL OR TRIM(COALESCE(remote_id,''))<>'' OR status IN ('sending','retry','published','manual_required','permanent_failed'))");
+              if(delivery.length||ext.some(x=>!['pending_review','draft'].includes(x.state)))throw Error('External send or mapping hold');
+              prepared.push({p,r,s,v,c});
+            }catch(err){holds.push({id,reason:String(err.message)});}
+          }
+          for(const {p,r,s,v,c} of prepared){
+            try{
+              const record={schema:auth.schema,fingerprint:s.fingerprint,image_url:p.image_url,image_sha256:s.sha256,ai_review_id:r.id,outcome:'owner_gap_accepted_for_human_review',scope:'New replacement image independently inspected against 88 currently accessible repository images, fresh 132 published captions and current pending captions. Prior external 178-file scratch corpus not available for new image comparison; this is an owner-delegated missing-source acknowledgement only.',finding:v.observation,authorization_ref:'ops/request-owner-history-gap-acceptance-20261112.json',authorization_actor:'ChatGPT acting on explicit owner instruction; not authenticated human approval',historical_media_missing:15,older_carousel_children_may_be_missing:true,legacy178_same_sha:false,additional_scope_limit:'Prior 178-file scratch corpus is inaccessible here and was not recertified for replacement images. Three public media gaps also retained.',current_available_image_reference_count:88,current_published_caption_count:copy.historyRows,scoped_visual_audit_id:s.logId,caption_similarity:{published:c.highestPublishedSimilarity,pending:c.highestPendingSimilarity},ai_duplicate:'DEFER',ai_approved:false,human_approved:false,may_enter_human_review:true,auto_schedule:false,auto_publish:false,reviewed_at:new Date().toISOString()};
+              const id='HIST-OWNER-GAP-'+sha(p.id+'|'+r.id+'|'+s.sha256),proof=JSON.stringify(record);
+              const previous=(await rows('SELECT after_json FROM audit_logs WHERE id='+q(id)))[0];
+              if(previous){const x=JSON.parse(previous.after_json);if(x.fingerprint!==s.fingerprint||x.image_sha256!==s.sha256||x.ai_review_id!==r.id||x.outcome!==record.outcome||x.ai_approved!==false||x.human_approved!==false||x.auto_publish!==false||x.auto_schedule!==false)throw Error('Conflicting owner note');}
+              else{
+                const sql='INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,after_json,ip) SELECT '+[id,'chatgpt:owner-delegated','歷史缺件授權覆核','貼文',p.id,proof,''].map(q).join(',')+' WHERE EXISTS(SELECT 1 FROM social_posts WHERE id='+q(p.id)+' AND updated_at='+q(p.updated_at)+" AND status='pending_review' AND approved_by IS NULL AND approved_at IS NULL AND scheduled_at IS NULL AND published_at IS NULL AND COALESCE(image_approved,0)=0) AND "+q(r.id)+'=(SELECT id FROM social_post_quality_reviews WHERE post_id='+q(p.id)+' ORDER BY reviewed_at DESC,rowid DESC LIMIT 1)';
+                const w=await query(sql);if(w[0]?.meta?.changes!==1)throw Error('CAS failed');
+              }
+              const back=(await rows('SELECT after_json FROM audit_logs WHERE id='+q(id)+' AND entity_id='+q(p.id)))[0];
+              if(back?.after_json!==(previous?.after_json??proof))throw Error('Readback failed');
+              ready.push({id:p.id,receipt:id,reviewId:r.id,sha256:s.sha256,fingerprint:s.fingerprint,readback:true});
+            }catch(err){holds.push({id:p.id,reason:String(err.message)});}
+          }
+          const counts=await rows('SELECT status,COUNT(*) count FROM social_posts GROUP BY status ORDER BY status');
+          const notes=await rows("SELECT entity_id,after_json FROM audit_logs WHERE action='歷史缺件授權覆核' AND entity_id IN (SELECT id FROM social_posts WHERE status='pending_review')");
+          const revs=await rows("SELECT * FROM (SELECT *,ROW_NUMBER() OVER(PARTITION BY post_id ORDER BY reviewed_at DESC,rowid DESC) rn FROM social_post_quality_reviews) WHERE rn=1");
+          const pending=await rows("SELECT * FROM social_posts WHERE status='pending_review'");
+          const matched=pending.filter(p=>{const r=revs.find(x=>x.post_id===p.id);return notes.some(n=>{try{const a=JSON.parse(n.after_json);return n.entity_id===p.id&&a.schema===auth.schema&&a.outcome==='owner_gap_accepted_for_human_review'&&a.fingerprint===fingerprint(p)&&a.image_url===p.image_url&&a.image_sha256===r?.image_sha256&&a.ai_review_id===r?.id&&r?.content_fingerprint===a.fingerprint&&r?.decision==='NEEDS_HUMAN_REVIEW'&&a.ai_approved===false&&a.human_approved===false&&a.auto_publish===false&&a.auto_schedule===false}catch{return false}})});
+          const receipt={schema:'xjw-three-new-owner-gap-readback-v1',at:new Date().toISOString(),ready,holds,matchedOwnerGapCount:matched.length,unmatchedOwnerGapIds:pending.filter(p=>!matched.includes(p)).map(p=>p.id),counts,external:scoped.external,fullHistoricalDedupCertified:false,prior178Rechecked:false,aiApprovals:0,humanApprovals:0,schedules:0,publications:0};
+          fs.writeFileSync('ops/receipts/20261112-three-new-owner-gap-readback.json',JSON.stringify(receipt,null,2)+'\n');
+          JS
+      - name: Persist exact results
+        run: |
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-three-new-owner-gap-readback.json
+          git commit -m 'review: preserve three replacement owner-gap readbacks and 49-version coverage'
+          git pull --rebase origin main
+          git push origin HEAD:main
