@@ -336,7 +336,16 @@ export default{async fetch(request,env,ctx){
     const humanNotes=(notes.results||[]).flatMap(note=>{
       try{const saved=JSON.parse(note.after_json);return [{id:note.id,...saved,matches_current_content:saved.fingerprint===current&&saved.image_url===row.image_url}]}catch{return []}
     });
-    return json({historical_review:{may_record:clean(profile?.role)==='owner'&&row.status==='pending_review'&&!row.approved_by&&!row.published_at&&!row.scheduled_at,version_bound_duplicate_evidence:duplicateEvidence,known_post_collisions:await duplicatePostErrors(env,row),human_notes:humanNotes,coverage_reference:'/ops/receipts/20261111-firstparty-historical-media-recovery.json',coverage_summary:'既有紀錄仍列 15 份未取得媒體及部分舊輪播子圖。已知查證：兩筆 Instagram HTTP 403，一筆 Facebook 檔案大小未通過驗證。缺件限制歷史比對範圍，不代表這篇已發現重複。'},post_id:id,current:{...postMaterial(row),status:row.status,updated_at:row.updated_at,content_fingerprint:current},required_checks:REQUIRED_CHECKS,reviews:(history.results||[]).map(review=>{
+    // Owner-delegated acceptance covers unavailable historical material only.
+    // It is version-bound informational readiness, never an AI approval or a publication gate.
+    const ownerGapRows=await env.DB.prepare("SELECT id,after_json FROM audit_logs WHERE entity_id=? AND action='歷史缺件授權覆核' ORDER BY rowid DESC LIMIT 20").bind(id).all();
+    const newest=evidenceRows[0];
+    const currentCollisions=await duplicatePostErrors(env,row);
+    const ownerGap=(ownerGapRows.results||[]).flatMap(note=>{
+      try{const a=JSON.parse(note.after_json);return a.schema==='xjw-owner-delegated-historical-gap-acceptance-v1'&&a.outcome==='owner_gap_accepted_for_human_review'&&a.fingerprint===current&&a.image_url===row.image_url&&a.image_sha256===newest?.image_sha256&&a.ai_review_id===newest?.id&&newest?.content_fingerprint===current&&newest?.decision==='NEEDS_HUMAN_REVIEW'&&a.ai_approved===false&&a.human_approved===false&&a.auto_schedule===false&&a.auto_publish===false?[{id:note.id,...a}]:[]}catch{return []}
+    })[0]||null;
+    const mayEnterHumanReview=!!ownerGap&&row.status==='pending_review'&&!row.approved_by&&!row.approved_at&&!row.scheduled_at&&!row.published_at&&!Number(row.image_approved||0)&&!currentCollisions.length&&!productMatchErrors(row).length;
+    return json({historical_review:{owner_gap_acceptance:ownerGap,may_enter_human_review:mayEnterHumanReview,may_record:clean(profile?.role)==='owner'&&row.status==='pending_review'&&!row.approved_by&&!row.published_at&&!row.scheduled_at,version_bound_duplicate_evidence:duplicateEvidence,known_post_collisions:currentCollisions,human_notes:humanNotes,coverage_reference:'/ops/receipts/20261111-firstparty-historical-media-recovery.json',coverage_summary:'既有紀錄仍列 15 份未取得媒體及部分舊輪播子圖。已知查證：兩筆 Instagram HTTP 403，一筆 Facebook 檔案大小未通過驗證。缺件限制歷史比對範圍，不代表這篇已發現重複。'},post_id:id,current:{...postMaterial(row),status:row.status,updated_at:row.updated_at,content_fingerprint:current},required_checks:REQUIRED_CHECKS,reviews:(history.results||[]).map(review=>{
       let evidence=null;try{evidence=JSON.parse(review.evidence_json)}catch{}
       const {evidence_json,...summary}=review;
       return {...summary,matches_current_content:review.content_fingerprint===current&&review.image_url===row.image_url,evidence,evidence_parse_error:evidence===null};
