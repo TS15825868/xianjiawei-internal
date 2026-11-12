@@ -97,7 +97,8 @@ must(required===1,'16項審核欄位母本缺失');
 must((ui.match(/\['[a-z_]+','/g)||[]).length===16,'前端必須剛好顯示16項審核');
 must(ui.includes('最終確認：文案與圖片一致'),'前端缺少最終圖文一致確認');
 must(ui.includes('data-post-status="pending_review"'),'草稿前端缺少「送待審核」狀態操作');
-must(ui.includes("button.textContent='送待審核'"),'草稿前端按鈕必須清楚顯示「送待審核」');
+must(ui.includes("button.textContent='交給AI審核'"),'草稿前端按鈕必須清楚顯示「交給AI審核」');
+must(ui.includes("button.textContent='另行發布核准'")&&ui.includes('flow.quality_complete'),'AI品質完成與發布核准必須分開顯示');
 must(ui.includes('draftToPendingReview:true'),'前端能力標記缺少draft→pending_review');
 must(ui.includes('directDraftApproval:false'),'前端不得宣告草稿可直接核准');
 must(ui.includes('semanticAudit:true')&&ui.includes('duplicateImageAudit:true'),'前端缺少目前圖文語意／重複圖片預檢能力標記');
@@ -113,4 +114,4 @@ must(raster.includes("if(approving){button.dataset.xjwRasterReady='1';button.cli
 must(raster.includes("圖片已轉成正式JPEG並退回草稿；請重新完成16項圖文審核後再發布"),'已核准貼文轉JPEG後沒有明確要求重新審核');
 const rasterAt=html.indexOf('svg-candidate-rasterizer.js'),reviewAt=html.indexOf('publishing-review-gate.js');
 must(rasterAt>=0&&reviewAt>=0&&rasterAt<reviewAt,'正式順序必須先安全轉JPEG，再進16項人工圖文審核');
-console.log('PASS：唯一貼文系統固定使用 draft → pending_review → 16項人工審核 → approved → 排程／立即發布；重生成也回 pending_review。草稿不得直接核准；目前內容語意守門可在既有正式安全鏈外層增加重複圖片、季節、天氣與情境檢查，不鎖死舊入口檔名。');
+console.log('PASS：唯一貼文系統固定使用 draft → pending_review（AI品質流程）→ 獨立16項發布核准 → approved → 排程／立即發布；重生成也回 pending_review。草稿不得直接核准；目前內容語意守門可在既有正式安全鏈外層增加重複圖片、季節、天氣與情境檢查，不鎖死舊入口檔名。');
