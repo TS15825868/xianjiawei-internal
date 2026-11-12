@@ -1,0 +1,378 @@
+{
+  "schema": "xjw-owner-historical-gap-readback-v1",
+  "at": "2026-11-12T04:35:14.539Z",
+  "readyForHumanReview": 31,
+  "held": 18,
+  "ready": [
+    {
+      "id": "XJW-CAND-20261222",
+      "title": "冬至餐桌上的甜湯圓與鹹湯圓",
+      "receipt": "HIST-OWNER-GAP-65791a70defcc578a52c6d3a4413dd9cb61f2a39e66e00ee8b51ad04d827b201",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "title": "在萬華店認識幾味乾燥食材",
+      "receipt": "HIST-OWNER-GAP-8564b420bd16c93d747dc1eb495d03f984581235a48b2879ce8e49ef98c2f9e7",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "title": "冬日早晨，為甜湯準備紅棗",
+      "receipt": "HIST-OWNER-GAP-3ed60b6e6fdfc930257d310914c2f43fef1c1e962a9230d770eb0d5b98b3bc0d",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "title": "市場買菜的路上，也有萬華的味道",
+      "receipt": "HIST-OWNER-GAP-b80ccf9c9712c6b8a0337267886cee5f1ce113857d84d18783ff3fef9a4d2e44",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "title": "萬華春日早晨，老街的新風景",
+      "receipt": "HIST-OWNER-GAP-a39af14ae78e40fbfd336949b19f6f635be33c8fe79335ae3ff3dae0f134c546",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "title": "春天的蔬菜湯，先把備料寫好",
+      "receipt": "HIST-OWNER-GAP-47556e92b5fcb74ef7ce8e068d938afc766a7c28ec14ef3ec12f057a33a1f735",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "title": "放假的午後，從揉麵開始",
+      "receipt": "HIST-OWNER-GAP-9fada14b90ba2fcb6d60921f95c1758ecefb3be691f8e10289d99a801c5bbefa",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "receipt": "HIST-OWNER-GAP-2c56ec7e87c91b12ba1ba9d90d9be4cc975771d1bdb61e102ac74e4b6a24cf95",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "title": "萬華雨天，先把門口整理好",
+      "receipt": "HIST-OWNER-GAP-fc1484efed6da57285862492dd885734fcf0a2fb366307bf96d1df6496aa4629",
+      "readback": true,
+      "legacy178SameSHA": false
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "title": "開店前，小老闆先做哪一件事？",
+      "receipt": "HIST-OWNER-GAP-defd419083e90a4653da4f83082b527b1cd0cc0d963a540462edb912d40e361a",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "title": "木勺旁的一頁工藝手繪",
+      "receipt": "HIST-OWNER-GAP-2fb004b51c41d83c3c292b35fc11e2e60483d9eb54e6ba724ee5da36e5bc9593",
+      "readback": true,
+      "legacy178SameSHA": false
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "receipt": "HIST-OWNER-GAP-d40004bea396890cff512de2cf8f75d9a9b0f6f10fc8cf812e5d27ca462d73f7",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "receipt": "HIST-OWNER-GAP-22ee2bc6df6f6fc7f58cbce20323d562c1dbc99e7f606b2a5657dc1da37cbd26",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "title": "備料前翻一頁料理筆記",
+      "receipt": "HIST-OWNER-GAP-97fc798d129938a8712481769dc91615e30b9b5bf7c27424f1042f4654ba7a64",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "title": "小老闆今天在整理什麼？",
+      "receipt": "HIST-OWNER-GAP-89d67d1f79379e9f9efee7e472103938f30e7c4aeded9b386de78e6c9f201bd2",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "title": "小老闆今天忙的，都是一些很小的事",
+      "receipt": "HIST-OWNER-GAP-6e175b6007ec8ef64a6f5433b45982ec7ff3dded565b3c55cf8ad61700bc4dca",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "title": "以前的做法，今天還能怎麼留下來？",
+      "receipt": "HIST-OWNER-GAP-5ff6130d537cf0427b572afb345b677064574f1a8dcdb75bbacd88098b315957",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "title": "小時候過年跟現在，哪裡最不一樣？",
+      "receipt": "HIST-OWNER-GAP-418607841adce90b23ca7d21d5cdc358571b801fa79903980e8162c814d2ea0c",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "title": "過年回家，先給家人一個擁抱",
+      "receipt": "HIST-OWNER-GAP-f877ae637ca68e1829360be40d779abd0739fd567f80a2dcca68aa44c2ca5c7f",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "title": "年前整理冰箱的一個角落",
+      "receipt": "HIST-OWNER-GAP-1650ad65d9faef4eb01df5de6a4fa25de0f40f1002c7a407f9fc1958af0ff4a7",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "title": "年節午後，留一張心意卡",
+      "receipt": "HIST-OWNER-GAP-646b192577475d792cbe38a1b20d714117ba27c5d4df45ed83668de8500321b4",
+      "readback": true,
+      "legacy178SameSHA": false
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "title": "過年煮一桌菜，你家一定不能少哪一道？",
+      "receipt": "HIST-OWNER-GAP-1c86d9f165a77cdff36b2893d2f8b00fe6aec43d06ab4b430099eb1a84d2bbe6",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "title": "年前，把萬華工作間掃乾淨",
+      "receipt": "HIST-OWNER-GAP-736c9b9a761c25df3e1c8f1af23a827eef0d3f8cf06c2b38afae760cdf712ee5",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "title": "開工第一天，小老闆先做一件小事",
+      "receipt": "HIST-OWNER-GAP-28f710bfa44748a8e308e7dd13a1d07edf18e437d5378704c8129103c680ff02",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "title": "新年早晨，端一杯溫熱飲品給家人",
+      "receipt": "HIST-OWNER-GAP-e93cae2b9879e6d7bb30a5be6444f6c9467c08882ab6b9820c9e04d2994c9dcd",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "title": "天氣轉涼，晚餐端一鍋熱湯",
+      "receipt": "HIST-OWNER-GAP-96d7466b8beb9c81b6c88cfe65bdba40ae7e37b9fb77056d75a96cb6aab8db53",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "receipt": "HIST-OWNER-GAP-1a28f154320072ec6e24a50eef7f832330f0a7384da087c40e43c7b65e056003",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "title": "雨天窗邊的一杯溫熱飲品",
+      "receipt": "HIST-OWNER-GAP-a46bc4d76bdfc15077e1b21c0fb127c348b83d2743addcb39d202c38b259199e",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "title": "除夕，先替回家的人留一個位置",
+      "receipt": "HIST-OWNER-GAP-67e9f2ee2765a588c85f512b7a21dd32aa1e32e8ebd9eea69602f6b60e24332a",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "title": "元宵夜，和家人一起搓湯圓",
+      "receipt": "HIST-OWNER-GAP-14ee2c5651fdb1fe1f5a8a4f81746f539d0739f31c537d6c2837ebe740068958",
+      "readback": true,
+      "legacy178SameSHA": true
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "title": "元旦早上，先把早餐留給一起生活的人",
+      "receipt": "HIST-OWNER-GAP-c93741651bf35eae099b86f60df0c57eef10ec6c5510282d0fbad364ff2fe0a8",
+      "readback": true,
+      "legacy178SameSHA": true
+    }
+  ],
+  "heldRows": [
+    {
+      "id": "XJW-CAND-20261211",
+      "title": "工作桌上的料理筆記",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索",
+        "New or unresolved image pair: {\"current\":\"XJW-CAND-20261211\",\"reference\":\"XJW-CONV-chat-luerong-intro\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":34,\"averageHash64\":12,\"currentPath\":\"media/social-candidates/20261106/XJW-CAND-20261211.webp\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg\"}"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "title": "聖誕午後，替朋友擺好杯盤",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索",
+        "New or unresolved image pair: {\"current\":\"XJW-CAND-20261225\",\"reference\":\"XJW-CONV-chat-luerong-intro\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":22,\"averageHash64\":12,\"currentPath\":\"media/social-candidates/20261106/XJW-CAND-20261225.webp\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg\"}"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "title": "年菜菜單先留一道蔬菜",
+      "reasons": [
+        "文案屬「家人」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "title": "年前，把家常碗盤擦乾歸位",
+      "reasons": [
+        "文案屬「家人」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "title": "從老手藝到現代日常，記錄一個工序",
+      "reasons": [
+        "文案屬「保存」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "title": "春天整理食品櫃的一個下午",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "title": "一句問候，也是一種關心",
+      "reasons": [
+        "文案屬「工作」情境，但圖片說明／來源沒有對應情境線索",
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "title": "買食品前，把想確認的資訊記下來",
+      "reasons": [
+        "文案屬「保存」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "title": "你會保留家裡長輩以前的東西嗎？",
+      "reasons": [
+        "Family old photo/album posts share core editorial angle; year-end small win is close to previously published year-end life reflection. Do not treat this as accepted missing-source risk; concrete topic rewrite/verification remains required."
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "title": "用完木匙，把它放回抽屜",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "title": "家裡煮湯，最後一口是誰喝掉的？",
+      "reasons": [
+        "文案屬「家人」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "title": "萬華工作桌上的鹿茸粉",
+      "reasons": [
+        "文案屬「保存」情境，但圖片說明／來源沒有對應情境線索",
+        "New or unresolved image pair: {\"current\":\"XJW-CAND-20261225\",\"reference\":\"XJW-CONV-chat-luerong-intro\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":22,\"averageHash64\":12,\"currentPath\":\"media/social-candidates/20261106/XJW-CAND-20261225.webp\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg\"}",
+        "New or unresolved image pair: {\"current\":\"XJW-CAND-20261211\",\"reference\":\"XJW-CONV-chat-luerong-intro\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":34,\"averageHash64\":12,\"currentPath\":\"media/social-candidates/20261106/XJW-CAND-20261211.webp\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg\"}"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "title": "從一張食材圖卡開始",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "title": "把家裡熟悉的乾貨分開收好",
+      "reasons": [
+        "New or unresolved image pair: {\"current\":\"XJW-CONV-chat-pantry-memory\",\"reference\":\"XJW-CONV-chat-photo-size\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":20,\"averageHash64\":12,\"currentPath\":\"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg\"}"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "title": "窗邊拍一張龜鹿飲實物照",
+      "reasons": [
+        "Current caption similarity requires editorial review: {\"published\":[{\"id\":\"FB:411869648852531_1446376627512555\",\"platform\":\"Facebook\",\"score\":0.1629,\"permalink\":\"https://www.facebook.com/1531256482357902/posts/1446376627512555\",\"date\":\"2026-08-06T04:15:29+0000\",\"snippet\":\"龜鹿飲試喝組｜先試喝，再決定\\n\\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\\n\\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、電話及地址限申請一次。\\n\\n龜鹿飲30cc玻璃罐採小玻璃裸罐、無貼紙；另有180cc鋁袋，可依自己的生活習慣選擇。\\n\\n龜鹿飲接單後製作，約5～\",\"mediaSlots\":2},{\"id\":\"IG:3957491164539558820_78424002938\",\"platform\":\"instagram\",\"score\":0.1504,\"permalink\":\"https://www.instagram.com/p/Dbr1T8YIJuk/\",\"date\":\"20260806041532\",\"snippet\":\"龜鹿飲試喝組｜先試喝，再決定\\n\\n初次認識仙加味龜鹿飲，可以先了解試喝方式，再安排自己的日常飲用。\\n\\n30cc小玻璃罐試喝組：3罐試喝品免費，運費自付。每位顧客、電話及地址限申請一次。\\n\\n龜鹿飲30cc玻璃罐採小玻璃裸罐、無貼紙；另有180cc鋁袋，可依自己的生活習慣選擇。\\n\\n龜鹿飲接單後製作，約5～\",\"mediaSlots\":1}],\"pending\":[{\"id\":\"XJW-CONV-chat-traditional-image\",\"title\":\"窗邊翻開一冊萬華舊照片\",\"score\":0.0909},{\"id\":\"XJW-CONV-year-end-small-win\",\"title\":\"今年有沒有一件小事，你很慶幸自己做了？\",\"score\":0.0903}]}",
+        "New or unresolved image pair: {\"current\":\"XJW-CONV-chat-pantry-memory\",\"reference\":\"XJW-CONV-chat-photo-size\",\"referenceStatus\":\"pending_review\",\"exactFile\":false,\"dhash64\":20,\"averageHash64\":12,\"currentPath\":\"assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg\",\"referencePath\":\"assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg\"}"
+      ]
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "title": "窗邊翻開一冊萬華舊照片",
+      "reasons": [
+        "Family old photo/album posts share core editorial angle; year-end small win is close to previously published year-end life reflection. Do not treat this as accepted missing-source risk; concrete topic rewrite/verification remains required."
+      ]
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "title": "新年在家，先畫下一味想認識的食材",
+      "reasons": [
+        "文案屬「料理」情境，但圖片說明／來源沒有對應情境線索"
+      ]
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "title": "今年有沒有一件小事，你很慶幸自己做了？",
+      "reasons": [
+        "Family old photo/album posts share core editorial angle; year-end small win is close to previously published year-end life reflection. Do not treat this as accepted missing-source risk; concrete topic rewrite/verification remains required."
+      ]
+    }
+  ],
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "aiApprovals": 0,
+  "humanApprovals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "fullHistoricalDedupCertified": false
+}
