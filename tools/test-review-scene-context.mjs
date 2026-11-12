@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {validatePublicProductText} from '../src/product-authority.js';
 import {semanticSceneErrors,productMatchErrors} from '../src/publishing-review-gate-entry.js';
 const unpack={title:'收到東西先看哪裡',category:'生活情境',copy:'有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？',image_url:'https://example.com/unpacking.jpg',image_alt:'仙加味小老闆在家打開紙箱，先閱讀隨附說明卡，小鹿與小烏龜在旁陪伴。'};
 assert.deepEqual(semanticSceneErrors(unpack),[]);
@@ -9,6 +10,6 @@ assert.deepEqual(semanticSceneErrors(comparison),[]);
 assert(semanticSceneErrors({...comparison,image_alt:'小老闆散步'}).some(e=>e.includes('產品選擇')));
 assert(semanticSceneErrors({...comparison,copy:comparison.copy+'指著看板比較。'}).some(e=>e.includes('產品選擇')));
 assert(semanticSceneErrors({...unpack,title:'雨天生活',copy:'下雨時，仙加味小老闆準備雨具'}).some(e=>e.includes('雨天')));
-assert(productMatchErrors({...comparison,copy:comparison.copy+'龜鹿湯塊'}).some(e=>e.includes('退出公開')));
+assert(validatePublicProductText(comparison.copy+'龜鹿湯塊').some(e=>e.includes('已退出')));
 assert(productMatchErrors({...comparison,image_alt:''}).some(e=>e.includes('缺少圖片說明')));
 console.log('PASS scene context: unboxing is not storage teaching; two-product introduction is a comparison; explicit storage, boards, rain and physical product gates retained; no approval writes');
