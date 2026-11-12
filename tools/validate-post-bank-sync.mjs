@@ -38,7 +38,8 @@ const normalized=html.replace(/\s+/g,'');
 const hasAny=patterns=>patterns.some(p=>p.test(normalized));
 must(hasAny([/圖不符合.*文案不符合.*全部重新生成/,/重新生成.*圖.*文案/]),'貼文系統沒有提供圖／文案重新生成入口');
 must(/原核准自動失效/.test(normalized)||/撤銷舊核准/.test(normalized),'貼文系統沒有說明修改／重生成後舊核准會失效');
-must(hasAny([/儲存後(?:會)?自動回到[「"]?待審核/,/生成完成後.*待審核/,/重新生成後.*待審核/,/完成後.*重新進入待審核/]),'貼文系統沒有說明重生成完成後必須回待審核');
+must(hasAny([/完成後.*重新進入AI品質流程/]),'貼文系統沒有說明重生成完成後必須重新進入AI品質流程');
+must(html.includes('不自動取得發布核准')&&gate.includes("status='pending_review'"),'AI品質流程不得跳過重新驗證或獨立發布核准');
 must(/不會自動核准.{0,20}發布/.test(normalized)||/不自動核准.{0,20}不自動發布/.test(normalized),'貼文系統沒有說明重生成不得自動核准／排程／發布');
 must(/16項/.test(normalized)&&(/重新完成/.test(normalized)||/重跑/.test(normalized)||/審核/.test(normalized)),'貼文系統沒有保留16項重新審核能力說明');
 
