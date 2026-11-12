@@ -1,0 +1,48 @@
+name: XJW final three and Metricool read-only evidence
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/final-three-readonly-20261112.yml']
+permissions:
+  contents: write
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Read only targeted evidence
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import crypto from 'node:crypto';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const query=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db,timeoutMs:45000});
+          const rows=async s=>(await query(s))[0].results;
+          const ids=['XJW-CONV-chat-shop-organizing','XJW-CONV-chat-receive-package','XJW-CONV-weather-cool-drink'];
+          const scope=ids.map(x=>"'"+x+"'").join(',');
+          const posts=await rows('SELECT id,title,copy,image_url,image_alt,status FROM social_posts ORDER BY id');
+          const reviews=await rows('SELECT * FROM social_post_quality_reviews WHERE post_id IN ('+scope+') ORDER BY reviewed_at DESC');
+          const logs=await rows('SELECT entity_id,action,after_json FROM audit_logs WHERE entity_id IN ('+scope+') ORDER BY rowid DESC LIMIT 150');
+          const target=posts.filter(p=>ids.includes(p.id)).map(p=>{const path=p.image_url?.replace('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/','').split('?')[0];return {id:p.id,title:p.title,status:p.status,copy:p.copy,image_alt:p.image_alt,path:path?.startsWith('assets/')||path?.startsWith('media/')?path:null,sha:path&&fs.existsSync(path)?crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex'):null};});
+          const safeReviews=reviews.map(r=>({post_id:r.post_id,id:r.id,decision:r.decision,image_sha256:r.image_sha256,content_fingerprint:r.content_fingerprint,reviewed_at:r.reviewed_at}));
+          const visualLogs=logs.filter(r=>/視覺|圖片|visual|image/i.test(r.action)).map(r=>{let e={};try{e=JSON.parse(r.after_json)}catch{};return {id:r.entity_id,action:r.action,keys:Object.keys(e),decision:e.decision??e.result??null,image_sha256:e.image_sha256??null,reason:typeof e.reason==='string'?e.reason.slice(0,500):null};});
+          const draftTitle='認識仙加味龜鹿膏｜100g／罐';
+          const matches=posts.filter(p=>p.title===draftTitle||p.copy?.includes(draftTitle)||p.copy?.includes('有些人喜歡直接取用膏狀食材')).map(p=>({id:p.id,title:p.title,status:p.status,image_url:p.image_url}));
+          const receipt={at:new Date().toISOString(),scope:'read-only',total:posts.length,target,reviews:safeReviews,visualLogs,metricoolDraft:409189881,matches,d1Writes:0,approvals:0,publishes:0};
+          fs.writeFileSync('ops/receipts/20261112-final-three-readonly.json',JSON.stringify(receipt,null,2)+'\n');
+          JS
+      - name: Preserve limited evidence
+        run: |
+          git config user.name 'xianjiawei-safe-audit-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ops/receipts/20261112-final-three-readonly.json
+          git commit -m 'audit: preserve targeted final-three and draft match readback'
+          git pull --rebase origin main
+          git push origin HEAD:main
