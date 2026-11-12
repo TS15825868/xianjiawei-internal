@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-12T10:43:00.288Z",
+  "head": "1916faa99d7c1a835f491d5e8be774c8dc7b9e38",
+  "counts": [
+    {
+      "status": "archived",
+      "count": 107
+    },
+    {
+      "status": "pending_review",
+      "count": 49
+    },
+    {
+      "status": "published",
+      "count": 5
+    }
+  ],
+  "pending": 49,
+  "preliminaryEvidenceOnly": {
+    "AI_QUALITY_COMPLETE_WITH_ACCEPTED_GAPS": 49
+  },
+  "preliminaryDoesNotValidateLiveAudit": true,
+  "liveVerified": 0,
+  "liveQualityStates": {},
+  "liveIssues": [],
+  "errors": [
+    {
+      "ids": [
+        "XJW-CAND-20261211",
+        "XJW-CAND-20261222",
+        "XJW-CAND-20261225",
+        "XJW-CAND-20270105"
+      ],
+      "error": "HTTP 302"
+    }
+  ],
+  "autoPublish": false,
+  "autoSchedule": false,
+  "d1Writes": 0,
+  "publications": 0
+}
