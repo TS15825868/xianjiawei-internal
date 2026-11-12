@@ -1,0 +1,347 @@
+{
+  "at": "2026-11-12T08:41:21.007Z",
+  "scope": "read-only",
+  "total": 161,
+  "target": [
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "title": "收到產品後，你第一件事會先看哪裡？",
+      "status": "pending_review",
+      "copy": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？",
+      "image_alt": "仙加味小老闆在家打開紙箱，先閱讀隨附說明卡，小鹿與小烏龜在旁陪伴。",
+      "path": "assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+      "sha": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce"
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "title": "小老闆今天在整理什麼？",
+      "status": "pending_review",
+      "copy": "今天不講大道理，小老闆正在整理仙加味店裡的漢方食材。把紅棗、枸杞分好，再把工作用的木匙放回原位。\n\n小鹿負責到處看看，小烏龜看起來比較像在監工。仙加味每天的細節，就是從這些小事慢慢累積。\n\n你是用完馬上歸位派，還是最後再一次整理派？",
+      "image_alt": "仙加味小老闆在萬華木質工作間分類紅棗與枸杞，將木匙放回工作架；小鹿看著食材，小烏龜陪在工藝筆記旁。",
+      "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-shop-organizing-scene-v5.jpg",
+      "sha": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2"
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "status": "pending_review",
+      "copy": "天氣轉涼時，有些人會比較想準備一杯溫熱的，或替家裡煮一鍋湯。\n\n仙加味分享的漢方飲食文化，也從這些簡單的日常安排開始。\n\n遇到涼爽的日子，你會先準備熱飲、湯，還是找件薄外套？",
+      "image_alt": "天氣轉涼時，仙加味小老闆在窗邊翻看生活筆記，桌上放著溫熱飲品，小鹿與小烏龜一起享受安靜的午後。",
+      "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
+      "sha": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682"
+    }
+  ],
+  "reviews": [
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-248b8d08448e3b889a73312395cf9d518412192c3507a61f8bbaad16da2d929b",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "fc7ed0cef81e5a33f38d61e482427179e16d30533b388e4ca34d58fef0f7e524",
+      "reviewed_at": "2026-11-12T03:49:16.514Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-3effb4bc67f16c505ae85062ec58c10797f9affc463f2b5656e70c00b83a8c5f",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "dd2822992d4e3e9f81a11817b7b934f3cc65987c94e978340e712fea3e137200",
+      "reviewed_at": "2026-11-12T03:49:03.466Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-3acda395a60fde134c3ef1a17ac68b36a010d55c3011d0f48c22b87ac5e4076e",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "d9243263fc1f3701fea55d6b7eb2473e4dfdc5acc46a31823c7c33823fd06d14",
+      "reviewed_at": "2026-11-12T03:49:01.517Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-VIS-6dfce1447ee2ff37182d2ef698274b2210e196f7c7eb2e098a622d0e7709233d",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "fc7ed0cef81e5a33f38d61e482427179e16d30533b388e4ca34d58fef0f7e524",
+      "reviewed_at": "2026-11-10T10:57:06.827Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-VIS-24f1d47beeed792ac86fd3f36f39c63082955ed050f3f206f4e84e7de37dd3dd",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "dd2822992d4e3e9f81a11817b7b934f3cc65987c94e978340e712fea3e137200",
+      "reviewed_at": "2026-11-10T10:56:39.854Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-VIS-005e4aab9b25ff5e65f8bf530451af7160262922fe6a033940511f68cfaf789a",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "d9243263fc1f3701fea55d6b7eb2473e4dfdc5acc46a31823c7c33823fd06d14",
+      "reviewed_at": "2026-11-10T10:56:36.083Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-86c7688431ca25308579b3831deb0973678c8235e62f53077ef92bd67738aaf2",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "d9243263fc1f3701fea55d6b7eb2473e4dfdc5acc46a31823c7c33823fd06d14",
+      "reviewed_at": "2026-11-07T14:41:02.577Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-49cf2b4dd0d94000bade94db06f7b8b4fef820ba150e3756edc871d11cb75564",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "fc7ed0cef81e5a33f38d61e482427179e16d30533b388e4ca34d58fef0f7e524",
+      "reviewed_at": "2026-11-07T07:29:12.799Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-cafc8b6c160e27b6667fd73eef15f6e4824b55b85ed2fcb83f8e185d73e7b2e7",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "dd2822992d4e3e9f81a11817b7b934f3cc65987c94e978340e712fea3e137200",
+      "reviewed_at": "2026-11-07T07:28:29.413Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-c130c8b285811befc362d833b1c6f392fa3af3dc6ec497f96b21ddf138e1d7a9",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "d9243263fc1f3701fea55d6b7eb2473e4dfdc5acc46a31823c7c33823fd06d14",
+      "reviewed_at": "2026-11-07T07:28:24.051Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-acc7ea20a62a17e846f49ef6c82bc4d6982edfc1bcba3edbbfd290c7203a8268",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "2c852fdc13d3bc1d01ba27192f7869f6388314d269e33fd001e3d8d5a603e375",
+      "reviewed_at": "2026-11-04T10:03:39.965Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-dc489b93217270d6a028a4b4854aa2b6200fb2336c595816e2c1a79904653d82",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "b79acf8ff6a0ce9d8768248daac0a344071322e745a2fc14f626f2704c3ed194",
+      "reviewed_at": "2026-11-04T10:03:39.964Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-71d605e0390aacf84b46781b79bb6e12819f9534b826945710e1b7a07dddb435",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "7d2492c25a5c93e33e98bd5e6abce2ae2f100ef6f8ab530e0b9fb0561c81587e",
+      "reviewed_at": "2026-11-04T10:03:39.964Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-44e39bd889a9addb20d9caecaf1863f1977993d82c0d8192f7d0dcffd2f6bdff",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "2c852fdc13d3bc1d01ba27192f7869f6388314d269e33fd001e3d8d5a603e375",
+      "reviewed_at": "2026-11-02T06:55:34.129Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-5fc286a1f6dbdbb28de8cd2c2853e542177e97b4526d56e0700c7f766d03d3ad",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "7d2492c25a5c93e33e98bd5e6abce2ae2f100ef6f8ab530e0b9fb0561c81587e",
+      "reviewed_at": "2026-11-02T06:55:34.129Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-ce9da78967989584501ed8aa9468a4f56cc9cbca2976104ded44974730427553",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "b79acf8ff6a0ce9d8768248daac0a344071322e745a2fc14f626f2704c3ed194",
+      "reviewed_at": "2026-11-02T06:55:34.129Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-0ce39ea189370634ca0ff776e0b6ece25be0873e39a54c59ce14534f1ac99725",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "2c852fdc13d3bc1d01ba27192f7869f6388314d269e33fd001e3d8d5a603e375",
+      "reviewed_at": "2026-11-02T05:33:19.099Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-6cbe15798be34f6906bca931f3c4cea206b7ae31ef17cdc925cbf47430e1c6e0",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "b79acf8ff6a0ce9d8768248daac0a344071322e745a2fc14f626f2704c3ed194",
+      "reviewed_at": "2026-11-02T05:33:19.098Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-989a7ccd6921eb2dcd9064841fdb17a7ed12a10cae18c5730166e63597148e0b",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "7d2492c25a5c93e33e98bd5e6abce2ae2f100ef6f8ab530e0b9fb0561c81587e",
+      "reviewed_at": "2026-11-02T05:33:19.098Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-DEFER-f1fc78cabe822e5c589fbc8f096c06d42ee13f9e31badd126e1af936bb489c68",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "7d2492c25a5c93e33e98bd5e6abce2ae2f100ef6f8ab530e0b9fb0561c81587e",
+      "reviewed_at": "2026-10-31T13:58:39.016Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-DEFER-4f521a2b7146cc40baaee40c3ff94d2ffee44651808f45297b4162193652474a",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "b79acf8ff6a0ce9d8768248daac0a344071322e745a2fc14f626f2704c3ed194",
+      "reviewed_at": "2026-10-31T13:58:39.016Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-DEFER-41f478937284187011f971050026715853b0e3dbd343707838c7fb34fcbe0ba8",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "2c852fdc13d3bc1d01ba27192f7869f6388314d269e33fd001e3d8d5a603e375",
+      "reviewed_at": "2026-10-31T13:58:39.015Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-RECHECK-20261031-e83b1c29ba0235975846a5",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "2c852fdc13d3bc1d01ba27192f7869f6388314d269e33fd001e3d8d5a603e375",
+      "reviewed_at": "2026-10-31T06:16:44.123Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "id": "AI-PRECHECK-20261031-a5829c8e5c8f6742af03b95a",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "content_fingerprint": "b79acf8ff6a0ce9d8768248daac0a344071322e745a2fc14f626f2704c3ed194",
+      "reviewed_at": "2026-10-31T06:12:03.852Z"
+    },
+    {
+      "post_id": "XJW-CONV-chat-shop-organizing",
+      "id": "AI-PRECHECK-20261031-fad5abf23fa7e709176cd4e0",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "content_fingerprint": "7d2492c25a5c93e33e98bd5e6abce2ae2f100ef6f8ab530e0b9fb0561c81587e",
+      "reviewed_at": "2026-10-31T06:12:03.852Z"
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "id": "AI-PRECHECK-20261031-e83b1c29ba0235975846a53a",
+      "decision": "NEEDS_HUMAN_REVIEW",
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "content_fingerprint": "a4c2f04e5d0eaf58585b0187b4d0a8254092dfc9688dfff70ae09ce4cac5b148",
+      "reviewed_at": "2026-10-31T06:12:03.852Z"
+    }
+  ],
+  "visualLogs": [
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "action": "既有獨立視覺證據批次釐清（非人工核准）",
+      "keys": [
+        "quality",
+        "sourceReview",
+        "sha256",
+        "dedup",
+        "humanApproval"
+      ],
+      "decision": null,
+      "image_sha256": null,
+      "reason": null
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "action": "既有獨立視覺證據批次釐清（非人工核准）",
+      "keys": [
+        "quality",
+        "sourceReview",
+        "sha256",
+        "dedup",
+        "humanApproval"
+      ],
+      "decision": null,
+      "image_sha256": null,
+      "reason": null
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "action": "既有獨立視覺證據批次釐清（非人工核准）",
+      "keys": [
+        "quality",
+        "sourceReview",
+        "sha256",
+        "dedup",
+        "humanApproval"
+      ],
+      "decision": null,
+      "image_sha256": null,
+      "reason": null
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "action": "AI圖片實際看圖：舊需重製轉待正式覆核",
+      "keys": [
+        "quality",
+        "visual_precheck",
+        "reviewer_type",
+        "image_sha256",
+        "copy_sha256",
+        "d1_image_artifact_ids",
+        "not_human_approved",
+        "not_ai_approved",
+        "auto_publish"
+      ],
+      "decision": null,
+      "image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "reason": null
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "action": "AI圖片實際看圖：舊需重製轉待正式覆核",
+      "keys": [
+        "quality",
+        "visual_precheck",
+        "reviewer_type",
+        "image_sha256",
+        "copy_sha256",
+        "d1_image_artifact_ids",
+        "not_human_approved",
+        "not_ai_approved",
+        "auto_publish"
+      ],
+      "decision": null,
+      "image_sha256": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "reason": null
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "action": "AI圖片實際看圖：舊需重製轉待正式覆核",
+      "keys": [
+        "quality",
+        "visual_precheck",
+        "reviewer_type",
+        "image_sha256",
+        "copy_sha256",
+        "d1_image_artifact_ids",
+        "not_human_approved",
+        "not_ai_approved",
+        "auto_publish"
+      ],
+      "decision": null,
+      "image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "reason": null
+    }
+  ],
+  "metricoolDraft": 409189881,
+  "matches": [],
+  "d1Writes": 0,
+  "approvals": 0,
+  "publishes": 0
+}
