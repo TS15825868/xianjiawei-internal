@@ -174,13 +174,13 @@
     button.disabled=true;const old=button.textContent;button.textContent='送審中…';
     try{
       await api(`/posts/${encodeURIComponent(id)}/status`,{method:'POST',body:JSON.stringify({status:'pending_review'})});
-      toast('已送待審核；接下來請完成人工16項圖文審核。');
+      toast('已交給AI審核；由自動化任務檢查、補證及修復，不需要逐篇人工品質審核。');
       document.querySelector('[data-refresh]')?.click();
     }catch(error){button.disabled=false;button.textContent=old;toast(error.message||String(error),true)}
   }
   function render(post){
     const root=document.getElementById('modalRoot');if(!root)return;
-    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-review-close></div><div class="xjw-modal-card publishing-review-card"><h2>16項完整圖文審核</h2><p class="muted">這次核准會綁定目前這份文案與圖片。之後只要文案或圖片修改，核准會自動失效，必須重新檢查。</p><div class="publishing-review-preview"><div><strong>${esc(post.title||'未命名貼文')}</strong><div class="publishing-review-copy">${esc(post.copy||post.headline||'尚無文案')}</div></div>${post.image_url?`<img src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文候選圖')}" loading="eager" decoding="async">`:'<div class="xjw-danger">缺少圖片</div>'}</div><div class="publishing-review-checks">${CHECKS.map(([id,label,help])=>`<label class="publishing-review-check"><input type="checkbox" data-review-check="${id}"><span><strong>${label}</strong><small>${help}</small></span></label>`).join('')}</div><label class="publishing-review-match"><input type="checkbox" id="copyImageMatch"><span><strong>最終確認：文案與圖片一致</strong><small>產品、情境、季節、環境、冷熱、表情、動作、產品比例、重複圖片與完整視覺都已逐項比對。</small></span></label><div class="xjw-modal-footer"><button type="button" class="btn" data-review-close>取消</button><button type="button" class="btn green" id="reviewApprove" disabled>完成審核並核准</button></div></div></div>`;
+    root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-review-close></div><div class="xjw-modal-card publishing-review-card"><h2>另行發布核准（16項確認）</h2><p class="muted">這不是例行AI品質審核，而是獨立的正式發布授權。這次核准會綁定目前這份文案與圖片。之後只要文案或圖片修改，核准會自動失效，必須重新檢查。</p><div class="publishing-review-preview"><div><strong>${esc(post.title||'未命名貼文')}</strong><div class="publishing-review-copy">${esc(post.copy||post.headline||'尚無文案')}</div></div>${post.image_url?`<img src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文候選圖')}" loading="eager" decoding="async">`:'<div class="xjw-danger">缺少圖片</div>'}</div><div class="publishing-review-checks">${CHECKS.map(([id,label,help])=>`<label class="publishing-review-check"><input type="checkbox" data-review-check="${id}"><span><strong>${label}</strong><small>${help}</small></span></label>`).join('')}</div><label class="publishing-review-match"><input type="checkbox" id="copyImageMatch"><span><strong>最終確認：文案與圖片一致</strong><small>產品、情境、季節、環境、冷熱、表情、動作、產品比例、重複圖片與完整視覺都已逐項比對。</small></span></label><div class="xjw-modal-footer"><button type="button" class="btn" data-review-close>取消</button><button type="button" class="btn green" id="reviewApprove" disabled>完成審核並核准</button></div></div></div>`;
     const boxes=[...root.querySelectorAll('[data-review-check]')],match=root.querySelector('#copyImageMatch'),approve=root.querySelector('#reviewApprove');
     const refresh=()=>{approve.disabled=!(boxes.every(box=>box.checked)&&match.checked&&post.image_url)};
     boxes.forEach(box=>box.addEventListener('change',refresh));match.addEventListener('change',refresh);
@@ -202,7 +202,7 @@
     const id=button.dataset.postPrepareHumanReview;
     button.disabled=true;const label=button.textContent;button.textContent='準備人工審核…';
     api('/posts/'+encodeURIComponent(id)+'/prepare-human-review',{method:'POST'})
-      .then(()=>{toast('原文案和圖片保留，已準備16項人工圖文審核。');document.querySelector('[data-refresh]')?.click()})
+      .then(()=>{toast('原文案和圖片保留，已返回AI品質流程。');document.querySelector('[data-refresh]')?.click()})
       .catch(error=>{button.disabled=false;button.textContent=label;toast(error.message||String(error),true)});
   },true);
   document.addEventListener('click',event=>{
@@ -329,10 +329,10 @@
       const button=document.createElement('button');button.type='button';button.className='btn small';button.dataset.originalReview='1';button.dataset.id=id;button.textContent='重新覆核原圖';actions.append(button);
     });
     document.querySelectorAll('.publish-card[data-status="draft"] [data-post-status="approved"]').forEach(button=>{
-      button.dataset.postStatus='pending_review';delete button.dataset.reviewGateReady;button.textContent='送待審核';button.title='先送入待審核，再由人工完成16項圖文審核；草稿不能直接核准。';
+      button.dataset.postStatus='pending_review';delete button.dataset.reviewGateReady;button.textContent='交給AI審核';button.title='進入AI品質流程；草稿不能直接取得發布核准。';
     });
     document.querySelectorAll('.publish-card[data-status="pending_review"] [data-post-status="approved"]').forEach(button=>{
-      if(button.dataset.reviewGateReady)return;button.dataset.reviewGateReady='1';button.textContent='16項審核通過';button.title='必須完成品牌、產品、規格、情境、季節、天氣、冷熱、表情、動作、產品比例、重複圖片、完整非拼湊視覺與圖文一致等檢查後才能核准。';
+      if(button.dataset.reviewGateReady)return;button.dataset.reviewGateReady='1';button.textContent='另行發布核准';button.title='此操作是獨立的正式發布授權；日常品質檢查由AI自動化任務負責。';
     });
   }
   document.addEventListener('xjw-publishing-list-rendered',()=>scheduleAudit(160));
