@@ -139,10 +139,10 @@ async function hasCurrentVisualReview(env,row){
   const filename=normalizedImageUrl(row.image_url).split('/').pop();
   if(!REVIEW_REQUIRED_SCENES_20261017.includes(filename)||KNOWN_BAD_VISUAL_FILENAMES.includes(filename))return false;
   if(!['clear','passed'].includes(clean(row.image_quality_status)))return false;
-  const review=await env.DB.prepare(`SELECT content_fingerprint,image_url,image_sha256,evidence_json
-    FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1`).bind(row.id).first();
-  if(!review||review.image_url!==row.image_url||review.content_fingerprint!==await fingerprint(row))return false;
   try{
+    const review=await env.DB.prepare(`SELECT content_fingerprint,image_url,image_sha256,evidence_json
+    FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC LIMIT 1`).bind(row.id).first();
+    if(!review||review.image_url!==row.image_url||review.content_fingerprint!==await fingerprint(row))return false;
     const evidence=JSON.parse(review.evidence_json);
     const observation=evidence.current_image_visual_observation;
     if(observation?.request!=='ops/request-20261112-49-visual-evidence-write.json'||
@@ -155,7 +155,8 @@ async function hasCurrentVisualReview(env,row){
 async function auditOne(env,row,rows,history=null,visualLogs=null){
   if(!row)return{ok:false,errors:['找不到貼文']};
   const receiptHold=publishedPlatformReceiptHold(row);
-  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows,await validOriginalImageReview(env,row,visualLogs),await hasCurrentVisualReview(env,row))];
+  const originalReviewed=await validOriginalImageReview(env,row,visualLogs);
+  const errors=[...(receiptHold?[receiptHold.reason]:[]),...productErrors(row),...await duplicatePostErrors(env,row,history),...semanticErrors(row,rows,originalReviewed,!originalReviewed&&await hasCurrentVisualReview(env,row))];
   const unique=uniq(errors);
   return{ok:unique.length===0,errors:unique,publication_reconciliation_required:Boolean(receiptHold),recommended_action:receiptHold?'先核對已發布平台回執，禁止再次發布':unique.length?'修正文案或更換／重新生成符合情境的圖片':'進行16項人工圖文審核'};
 }
