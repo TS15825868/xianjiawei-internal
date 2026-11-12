@@ -1,0 +1,413 @@
+{
+  "schema": "xjw-owner-delegated-historical-gap-acceptance-v1",
+  "authorization": "我同意採用一次性歷史缺件人工覆核機制。請直接完成49篇可取得資料的最終去重確認，保留無法取得的歷史媒體紀錄，將符合條件的貼文移入可人工核准狀態，正式更新GitHub、Cloudflare及D1並逐篇讀回。不得假造AI審核結果，不得擅自排程或發布。全部一次完成。",
+  "authorizationSource": "explicit owner instruction in current ChatGPT conversation; assistant records delegation, not logged-in human identity",
+  "baseline": "d3bdb8c2fdde12868f3f53a7abc2eed4d04111a3",
+  "missingHistoricalMedia": 15,
+  "carouselChildrenMayBeMissing": true,
+  "allowAIApproval": false,
+  "allowHumanApproval": false,
+  "allowSchedule": false,
+  "allowPublish": false,
+  "rows": [
+    {
+      "id": "XJW-CAND-20261211",
+      "reviewId": "AI-DEFER-48016d7ce26e1bf2632759e55f6a2f093a1732c226bed6f9ac7e42e9bcd33a57",
+      "imageSha": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "expectedTitle": "工作桌上的料理筆記",
+      "expectedCopy": "上午，小老闆在仙加味萬華工作間把桌上的素面筆記本整理成兩疊，小鹿和小烏龜分開坐在桌旁。想記下家常湯的搭配，可以留一頁寫食材和做法。下次在市場看到熟悉的食材，就翻回去看看。",
+      "observation": "桌邊兩本不同顏色的筆記本，雙手分放，小鹿在左、小烏龜在右；以筆記分類為主，非工藝手繪。"
+    },
+    {
+      "id": "XJW-CAND-20261222",
+      "reviewId": "AI-DEFER-a1745eef4cd2397209c46ff0005e313303930e32079778c98a14d395f7e3ae76",
+      "imageSha": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "expectedTitle": "冬至餐桌上的甜湯圓與鹹湯圓",
+      "expectedCopy": "冬至這天，小老闆端出兩碗不同口味的湯圓，和小鹿、小烏龜一起討論最喜歡哪一種。仙加味祝大家冬至餐桌溫暖熱鬧。",
+      "observation": "冬至桌上兩碗不同口味湯圓及未煮湯圓，雙手張開介紹；非元宵夜揉製畫面。"
+    },
+    {
+      "id": "XJW-CAND-20261225",
+      "reviewId": "AI-DEFER-2c38aa4d9f1ae44696d6ae05b11135d983848a51e3dbadba732c37931d7c622a",
+      "imageSha": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "expectedTitle": "聖誕午後，替朋友擺好杯盤",
+      "expectedCopy": "聖誕節午後，仙加味小老闆在家裡的桌上擺好杯盤、餅乾和蛋糕，小鹿和小烏龜圍在桌邊。仙加味喜歡記下這些小聚的餐桌習慣。朋友到了，先倒一杯熱飲，再把點心分到各自的盤裡。",
+      "observation": "聖誕花圈、紅色植栽與茶點盤，坐在圓桌旁招呼夥伴；節慶茶點場景。"
+    },
+    {
+      "id": "XJW-CAND-20270105",
+      "reviewId": "AI-DEFER-0991d079817d0745bd5159baefb2c67c205181554a826ef5a7d397e07da6627a",
+      "imageSha": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "expectedTitle": "在萬華店認識幾味乾燥食材",
+      "expectedCopy": "在仙加味萬華店裡，小老闆把乾燥食材分碗擺開，小鹿和小烏龜在桌旁一起看。第一次認識食材，可以先記下名稱和外形。等到準備煮湯時，再找出家裡常用的搭配。",
+      "observation": "桌上多碗乾燥食材，手掌向食材，鹿龜靠右；食材認識，非單一紅棗料理。"
+    },
+    {
+      "id": "XJW-CAND-20270115",
+      "reviewId": "AI-DEFER-b5325b30b6a65cf568e376123a00f23dce0535c1642013d2b192cdc97c318cda",
+      "imageSha": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "expectedTitle": "冬日早晨，為甜湯準備紅棗",
+      "expectedCopy": "冬天早上，小老闆在家把紅棗和其他甜湯食材分碗擺好，小鹿和小烏龜在旁觀看。仙加味喜歡記下家常甜湯的備料步驟。先將紅棗洗淨，接下來就按家裡熟悉的食譜準備。",
+      "observation": "手持紅棗，桌上紅棗、切片與配料；單一食材處理角度。"
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "reviewId": "AI-DEFER-59cc9e9fb80fa8eb7f06654a11a58d2e7c7716e6149417895acf8bdf9ed7069b",
+      "imageSha": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "expectedTitle": "年菜菜單先留一道蔬菜",
+      "expectedCopy": "開始討論年菜時，小老闆拿起一張空白紙，準備把家人愛吃的青菜料理列進菜單。桌上已有幾道蔬菜料理，仙加味想問：你家的年菜一定會出現哪道蔬菜？",
+      "observation": "年菜桌上三道蔬菜及空白菜單，手指菜單；重點為菜單預備。"
+    },
+    {
+      "id": "XJW-CAND-20270126",
+      "reviewId": "AI-DEFER-3ef7fff523c72e5286d90a76d9917d36cf63eb092a672bffddd6c4e3b3eb693f",
+      "imageSha": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "expectedTitle": "市場買菜的路上，也有萬華的味道",
+      "expectedCopy": "年前走進萬華市場，小老闆看見一攤攤準備年節食材的店家。仙加味的故事，也和這些熟悉的街道與飲食文化一起延續。",
+      "observation": "市場街道，提著蔬菜籃穿過攤販，鹿龜跟行；不同於春日散步。"
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "reviewId": "AI-DEFER-2c8cc33cca890de0d2affe0f31f8158fb8fa25f5bde4dbc48ff0f38a63bb771c",
+      "imageSha": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "expectedTitle": "年前，把家常碗盤擦乾歸位",
+      "expectedCopy": "年前準備家人聚餐時，小老闆在廚房木櫃前用布巾擦乾青花碗，再把碗盤放回櫃子。仙加味喜歡記下家常料理前的準備。把盛菜和分湯用的碗盤先擺好，等家人到齊就可以開飯。",
+      "observation": "餐具櫃前拿布擦碗，桌面已清空；餐具歸位場景。"
+    },
+    {
+      "id": "XJW-CAND-20270305",
+      "reviewId": "AI-DEFER-4ddea4695c2b7d41e89b459a13cbf46e5362e37403b47a9fa448d62b093d68df",
+      "imageSha": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "expectedTitle": "萬華春日早晨，老街的新風景",
+      "expectedCopy": "春天早上，小老闆走過萬華熟悉的街角，發現店家門口有新的花草布置。仙加味從這片街區起家，也喜歡記錄現在的日常風景。你有經常走過的老街嗎？",
+      "observation": "春日花木街景，小老闆與鹿龜步行賞花；與傳統街景同屬戶外散步，需保留主題區別。"
+    },
+    {
+      "id": "XJW-CAND-20270312",
+      "reviewId": "AI-DEFER-0ca93a39d5359a7db8b7de5eab300453b7705261e7e0fd628720ceeac7d7c239",
+      "imageSha": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "expectedTitle": "春天的蔬菜湯，先把備料寫好",
+      "expectedCopy": "春天的早上，小老闆把菇類和蔬菜分開擺好，再在紙上記下晚餐湯品要用的材料。仙加味分享家常飲食，喜歡從這些備料小事開始。下鍋前看一眼清單，就知道還有什麼需要清洗或切好。",
+      "observation": "桌上生蔬菜、菇類和筆記本，思考搭配；不同於正在烹煮的湯鍋。"
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "reviewId": "AI-DEFER-013f07cb240ba375c4bffdf7821686dff9dab61f76262bda9b2f33bfdf98e36a",
+      "imageSha": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "expectedTitle": "從老手藝到現代日常，記錄一個工序",
+      "expectedCopy": "整理家族留下的製作筆記時，小老闆在桌上翻開筆記本，拿著筆準備梳理鹿角與熬膠工序的老經驗。仙加味想把萬華累積的漢方飲食文化整理成更容易理解的內容。你會怎麼保存家裡傳下來的做法？",
+      "observation": "工作桌筆記、老書及石臼，拿筆記錄工序；不同於新版銅鍋手繪的側身翻頁特寫。"
+    },
+    {
+      "id": "XJW-CAND-20270330",
+      "reviewId": "AI-DEFER-d5a757fb2a62747c5e7d0f6b055abe6132bc80545c69b7a00893301e991a1f95",
+      "imageSha": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "expectedTitle": "春天整理食品櫃的一個下午",
+      "expectedCopy": "小老闆在家裡的食品櫃前，把菇類、紅棗和麵條分別收進透明食材袋，再放回籃子。仙加味分享飲食日常，也記錄這些料理前的小動作。收好前看一下食材原本的保存標示，下次備料時就能按需要拿取。",
+      "observation": "開櫃整理透明食材袋，籃內多種食材；食材分裝情境，不是產品包裝比較。"
+    },
+    {
+      "id": "XJW-CONV-care-simple-checkin",
+      "reviewId": "AI-DEFER-47a4a162570a034c987ee2cc49523b0510bfe8ef6d5172182fb7f18231306cbf",
+      "imageSha": "7ff37b482e1876251753ed157485290b2cac418a521be532214d221c9517cda0",
+      "expectedTitle": "一句問候，也是一種關心",
+      "expectedCopy": "午休或工作空檔，小老闆拿起手機，想傳訊息問家人今天午餐吃了什麼，有沒有坐下來好好吃飯。\n\n仙加味喜歡記錄家常餐桌的飲食文化，這樣簡單的午間問候也很貼近日常。\n\n你會和家人分享今天吃了哪一道午餐嗎？",
+      "observation": "工作桌前持手機與素面小卡，鹿龜左右陪伴；日常問候。"
+    },
+    {
+      "id": "XJW-CONV-chat-buy-first-look",
+      "reviewId": "AI-DEFER-56618507bf036280ab166e38f952a8d8ed5bea37c2f0946b48aa171f1c27a60e",
+      "imageSha": "9c933fa3e74daa6e200b03ae9f48cc8707d6543483811a0a872de6da6d5b242d",
+      "expectedTitle": "買食品前，把想確認的資訊記下來",
+      "expectedCopy": "仙加味小老闆在萬華店的工作桌前拿起放大鏡，看看手邊的空白資訊卡，小鹿和小烏龜陪在旁邊。買食品前，可以把想確認的品名、規格、食用和保存資訊列下來，再依正式標示逐項核對。",
+      "observation": "持放大鏡觀察空白資訊卡，桌上散放原料；非食品盒裝優劣比較。"
+    },
+    {
+      "id": "XJW-CONV-chat-dayoff-cook",
+      "reviewId": "AI-DEFER-2ec9661629b059d0c03cbcf138cad986f2a0905daefe0b148ef6b9ea76573a55",
+      "imageSha": "8d8a7274b619a155ea6d1ce8aafcbf67bab025a5e86f0363d6b482e663d177a6",
+      "expectedTitle": "放假的午後，從揉麵開始",
+      "expectedCopy": "放假的午後，仙加味小老闆在家裡的廚房揉麵，桌邊已放好蔬菜和備料用的小碗。小鹿端著碗，小烏龜在布巾旁陪伴。先把手邊的麵糰和配菜準備好，再安排接下來的料理步驟。",
+      "observation": "廚房桌上揉麵團，鹿端碗、龜在桌邊；家常麵食實作。"
+    },
+    {
+      "id": "XJW-CONV-chat-elder-kitchen-habit",
+      "reviewId": "AI-DEFER-bfd12b8676802cb85808f0e7afe893e85566f3531fc1a7e71c330cb28b5398c3",
+      "imageSha": "dd30eaea035ef2b57b5eede9eb150b926501a76a99f1b9a522b73f9290a27589",
+      "expectedTitle": "長輩教過你的廚房習慣，現在還有留著嗎？",
+      "expectedCopy": "午後在家中廚房，仙加味小老闆雙手端著裝有紅棗和枸杞的竹篩，把洗過的食材瀝乾；小鹿拿著空竹籃，小烏龜在桌邊陪伴，旁邊還有蔬菜和備料用的大碗。\n\n以前家裡的大人常常一邊備餐，一邊教我們先把食材挑好、洗淨、瀝乾，再依料理需求準備下一步。仙加味分享的漢方飲食文化，也包含這些家常料理裡留下的小習慣；實際處理食材時仍以來源及包裝說明為準。\n\n你現在還保留哪一個長輩教過的廚房備料習慣？",
+      "observation": "手持裝紅棗的竹籃，水落到碗中；清洗食材的長輩廚房習慣。"
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "reviewId": "AI-DEFER-195503cde31f88abfd0f4b8d57db2f28ad5ff02f1b8fe9bcf6a4bd6915c7cf15",
+      "imageSha": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+      "expectedTitle": "你會保留家裡長輩以前的東西嗎？",
+      "expectedCopy": "午後整理仙加味萬華工作間，小老闆坐在老木桌旁翻看家族舊照片，旁邊還放著一座石磨，小鹿和小烏龜也跟著看。\n\n有些老物件看起來平凡，卻記錄著以前的生活。仙加味想把萬華家族留下的漢方飲食文化與日常故事慢慢整理下來。\n\n你家有沒有一件捨不得丟的老工具或老照片？",
+      "observation": "凝視舊照片及石製器具；與翻閱老相冊主題相近，但道具與動作不同，需保留編輯角度區別。"
+    },
+    {
+      "id": "XJW-CONV-chat-fixed-storage",
+      "reviewId": "AI-DEFER-4d05fc8702ffc84d2893c6bb6a14a4bc06a84d3edc238d86a712085580d44fa9",
+      "imageSha": "d35515ad1c0ed02dad9865decfb10f41aa6dc27a626dd99e9872f5a2a82af7b8",
+      "expectedTitle": "用完木匙，把它放回抽屜",
+      "expectedCopy": "仙加味小老闆在木質工作間把用過的木匙放回抽屜，長筷收在旁格，小鹿和小烏龜各在桌旁一側。備料前把工具分開放好，做完料理也知道該收回哪裡。",
+      "observation": "打開木抽屜整理木匙和長筷；工具歸位，未呈現商品比較。"
+    },
+    {
+      "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "reviewId": "AI-DEFER-506a81e7e4b95bae0ceacb14eef52f3dfe3a268272ab628adb908d8ea53b648c",
+      "imageSha": "babcfef72467c0ff38be1d942115e34187f3f10e967320f997d2b35aa8458601",
+      "expectedTitle": "萬華雨天，先把門口整理好",
+      "expectedCopy": "午後下雨時，仙加味小老闆在萬華店門的屋簷下收起傘，蹲下來擦掉門墊邊的雨水。小鹿在騎樓旁，小烏龜在長凳邊等著。\n\n雨天進店前，先把傘上的水留在門外。這是仙加味萬華店裡一件很小、每天遇到下雨就會做的事。",
+      "observation": "新版：雨天門口蹲下擦門墊，深藍傘、長凳與雨水；鹿龜分處兩側，無商品包裝。"
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "reviewId": "AI-DEFER-dbefd62d74c910bf284e8eeea1074affba6d6a6a1ef7dc72ebaed133d918dad1",
+      "imageSha": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+      "expectedTitle": "家裡煮湯，最後一口是誰喝掉的？",
+      "expectedCopy": "晚餐快結束時，仙加味小老闆端起餐桌上最後一碗熱湯，小鹿和小烏龜在一旁笑著陪伴。\n\n有些家庭一鍋湯很快就喝完，有些最後總會剩一小碗，大家互相問：「你要不要喝掉？」\n\n仙加味喜歡記錄這些餐桌小事情，因為飲食文化最後還是回到一家人的日常。\n\n這種小事情，反而很有家的感覺。你家最後一碗通常是誰負責？",
+      "observation": "晚餐桌前閉眼笑著捧碗，桌上湯鍋與菜餚；家庭用餐場景。"
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "reviewId": "AI-DEFER-f6de96fe46e504c7c5a8573c1661d66fe2436b2e8af715a20c2661f2228e3fe9",
+      "imageSha": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "expectedTitle": "萬華工作桌上的鹿茸粉",
+      "expectedCopy": "午後在仙加味萬華工作間，小老闆拿起木尺，和小鹿、小烏龜一起看桌上的鹿茸粉罐。這是仙加味鹿茸粉75g／罐。認識這款食材時，可以先從罐身品名與規格讀起，食用和保存依產品標示。",
+      "observation": "新版：木尺、白蓋鹿茸粉實物罐與木桌；與已修復來源SHA一致，非AI改造包裝。"
+    },
+    {
+      "id": "XJW-CONV-chat-no-standard-answer",
+      "reviewId": "AI-DEFER-e840c99768d261cf634358a9fc70c9dbd79b3b7b18221e972306e8dbdb3600cb",
+      "imageSha": "4991b10381f397522363d42772f902806833810270ae33ec844af28638676000",
+      "expectedTitle": "從一張食材圖卡開始",
+      "expectedCopy": "在仙加味萬華店的木桌前，小老闆和來訪的朋友翻看食材圖卡。卡片畫著紅棗、葉片和種子，小鹿和小烏龜分開坐在桌邊。碰到陌生食材時，可以先認出外形、查清楚名字，再去了解在家常料理裡怎麼使用。",
+      "observation": "與成人顧客對坐，桌上小卡和杯子；諮詢互動而非筆記整理。"
+    },
+    {
+      "id": "XJW-CONV-chat-opening-prep",
+      "reviewId": "AI-DEFER-3490cad72653f2619d433e19ca6a1b0f70e57f1dca44c896df5441a39a11dca6",
+      "imageSha": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+      "expectedTitle": "開店前，小老闆先做哪一件事？",
+      "expectedCopy": "每天開店前，好像都有一套自己的順序。有人先開燈，有人先把昨天沒收好的東西整理完。\n\n仙加味萬華工作間的一天，從拉起竹簾、放好木匙和確認食材抽屜開始。\n\n小老闆先把眼前的小事做好。你開始工作前的第一件事通常是什麼？",
+      "observation": "拉開窗邊竹簾、整理工作桌食材；開店前動作，與打掃及歸位有差異。"
+    },
+    {
+      "id": "XJW-CONV-chat-pantry-memory",
+      "reviewId": "AI-DEFER-7131f07a8b9a29aa51ca2210cbe4d52f31b4158463baf147dfd8b13710845c1e",
+      "imageSha": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+      "expectedTitle": "把家裡熟悉的乾貨分開收好",
+      "expectedCopy": "仙加味小老闆把紅棗、枸杞和其他乾燥食材分開整理，小鹿與小烏龜在旁看著。看看家裡常備的食材，從認得外形開始，再記下長輩以前用它搭配過哪一道料理。",
+      "observation": "透明玻璃食材罐與紅色乾果，小老闆手持罐蓋；家中食材回憶。"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "reviewId": "AI-DEFER-fc44b3ed7534dcf8e90632cd94cdc085d898640782eb2d21edb956ca70349200",
+      "imageSha": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "expectedTitle": "窗邊拍一張龜鹿飲實物照",
+      "expectedCopy": "在仙加味萬華店的窗邊，小老闆架好手機，拍下桌上的龜鹿飲30cc玻璃罐。小鹿和小烏龜在旁邊看著。這款是無貼紙的玻璃裸罐，照片保留實物瓶型和原始比例，讓大家看清楚拿到手的樣子。",
+      "observation": "新版：手機腳架、金蓋30cc玻璃裸罐放桌上；保留正式無貼紙實物，非包裝價值比較。"
+    },
+    {
+      "id": "XJW-CONV-chat-picture-or-text",
+      "reviewId": "AI-DEFER-0bf80b94dc7902edeb4bb542a86c7689232faed16b4ba58056089e1e5f2c8381",
+      "imageSha": "3530f50ac3338e4c444cfb9f191d99b5c86ea9a95bf12bc9dfcb9f0627a91676",
+      "expectedTitle": "木勺旁的一頁工藝手繪",
+      "expectedCopy": "午後的仙加味萬華工作間，小老闆翻開一頁手繪筆記。紙上畫著銅鍋和器具，桌邊放著一支木勺，小鹿和小烏龜也靠近看。\n\n從鹿角到熬膠，仙加味家族四代留下的工藝故事，可以先從認識一件器具開始。這一頁，留給陪伴老工序的銅鍋與木勺。",
+      "observation": "新版：側身翻閱手繪銅鍋筆記，前景木勺、後方銅鍋；鹿龜獨立，沒有商品罐殘影。"
+    },
+    {
+      "id": "XJW-CONV-chat-quiet-work",
+      "reviewId": "AI-DEFER-f9f65925dc08cb8bea395ceebe92bca31dedcd80b04860d23a5936474daabe52",
+      "imageSha": "caa172f0d85559667c1420008a09ce2c6331759bd75ae335ada4b55fbe4fa17f",
+      "expectedTitle": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+      "expectedCopy": "今天店裡比較安靜。小老闆整理完桌子，就坐著慢慢把事情做完。\n\n有些人工作時喜歡安靜，有些人旁邊一定要有點聲音才習慣。\n\n仙加味萬華工作間也有這種安靜時刻，讓小老闆專心翻看工作筆記。\n\n你是哪一種？",
+      "observation": "較平面風格的小老闆坐桌前讀寫，鹿休息、龜在桌腳；安靜工作情境。"
+    },
+    {
+      "id": "XJW-CONV-chat-receive-package",
+      "reviewId": "AI-DEFER-3acda395a60fde134c3ef1a17ac68b36a010d55c3011d0f48c22b87ac5e4076e",
+      "imageSha": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "expectedTitle": "收到產品後，你第一件事會先看哪裡？",
+      "expectedCopy": "有人收到東西先看外觀，有人先看規格，也有人會先確認保存和使用方式。\n\n我們希望仙加味的資訊可以讓人一看就找得到重點。你拆開一個新產品時，第一個通常看哪裡？",
+      "observation": "打開普通運送紙箱、持空白卡片；未見品牌商品包裝或包裝高低暗示。"
+    },
+    {
+      "id": "XJW-CONV-chat-recipe-or-feel",
+      "reviewId": "AI-DEFER-2b4a88563cd78038369fe437c9e1af8cdb90f0159661ca9300b303fbee79aa89",
+      "imageSha": "ac23cb985a1d80c9dda4ff8fd758dedd9f7c3aec674df6ad662388a754c37a4e",
+      "expectedTitle": "備料前翻一頁料理筆記",
+      "expectedCopy": "仙加味小老闆在家常廚房翻開料理筆記，桌上已備好蔬菜和菇類，小鹿和小烏龜分別在一旁。準備晚餐時，先把想煮的菜和手邊的食材記下來。下一次再做同一道菜，翻回這一頁就能想起當天的搭配。",
+      "observation": "廚房翻閱料理筆記，前景蔬菜菇類；備料前記錄。"
+    },
+    {
+      "id": "XJW-CONV-chat-shop-organizing",
+      "reviewId": "AI-DEFER-3effb4bc67f16c505ae85062ec58c10797f9affc463f2b5656e70c00b83a8c5f",
+      "imageSha": "7ad496354fb2413adf3af6c48c94d64247d98a618aea10ce39b03ad39a60a8f2",
+      "expectedTitle": "小老闆今天在整理什麼？",
+      "expectedCopy": "今天不講大道理，小老闆正在整理仙加味店裡的漢方食材。把紅棗、枸杞分好，再把工作用的木匙放回原位。\n\n小鹿負責到處看看，小烏龜看起來比較像在監工。仙加味每天的細節，就是從這些小事慢慢累積。\n\n你是用完馬上歸位派，還是最後再一次整理派？",
+      "observation": "木櫃前整理紅色食材盤，伸手取放物件；與開店拉竹簾及年末木櫃操作同類但動作不同。"
+    },
+    {
+      "id": "XJW-CONV-chat-small-things-work",
+      "reviewId": "AI-DEFER-2e03f7906a035230807236cdb44b0d52090939af6796f0ea6eea9be1a27d3feb",
+      "imageSha": "7fa4563e0290a539e321f72fce5189463b44d6cd6359b93b253d1d3898904a99",
+      "expectedTitle": "小老闆今天忙的，都是一些很小的事",
+      "expectedCopy": "有時候一天忙完，回頭看好像都不是什麼大事：開燈、整理桌子、回幾個訊息、把東西放回去。\n\n仙加味的日常營運也是如此，許多小細節都需要每天一件件做好。\n\n但店裡的日常就是這些小事情慢慢堆起來的。你今天完成了哪一件小事？",
+      "observation": "木桌抹布、筆筒與整理工具，手持物件；桌面整理的小事。"
+    },
+    {
+      "id": "XJW-CONV-chat-tradition-today",
+      "reviewId": "AI-DEFER-6f5465c90f1d69ed111536bae64e03d1fa63ca3381e6dcd3153da33f6f5b81c6",
+      "imageSha": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179",
+      "expectedTitle": "以前的做法，今天還能怎麼留下來？",
+      "expectedCopy": "傳統不一定代表今天要照以前一模一樣地生活。\n\n有些值得留下來的是做法、經驗和背後的文化；至於怎麼進到現在的日常，可以慢慢調整。\n\n仙加味把四代累積的鹿角與熬膠工藝整理成今天更容易理解的資訊，也是這個想法。\n\n你有沒有什麼小時候覺得老派，長大後反而開始喜歡的東西？",
+      "observation": "走在老街店屋之間，鹿龜陪走，日照街景；與春日花木散步主題接近，需保留編輯角度區別。"
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "reviewId": "AI-DEFER-89d47da7f0f49f9a2c35d9f9f5c3391fb1a96719a94c6f175ca9a41f3550271f",
+      "imageSha": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+      "expectedTitle": "窗邊翻開一冊萬華舊照片",
+      "expectedCopy": "在仙加味萬華店的窗邊，小老闆翻開家族相簿，小鹿和小烏龜在桌旁觀看。照片可以留下當年店裡的工具和街坊的樣子。挑一張和長輩一起看，問問當時在做什麼，就能替這張照片補上一段故事。",
+      "observation": "桌前翻開大本舊相冊，鹿龜陪伴；與家族舊物及春節相片畫面接近，需保留編輯角度區別。"
+    },
+    {
+      "id": "XJW-CONV-cny-childhood-now",
+      "reviewId": "AI-DEFER-1f0e2a685e18f21ff8ec2870dddf4450d9a536b338c54a710ba0c877e08b8c0e",
+      "imageSha": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+      "expectedTitle": "小時候過年跟現在，哪裡最不一樣？",
+      "expectedCopy": "小時候期待過年，跟長大後期待的事情常常完全不一樣。有人記得的是年夜飯，有人記得長輩家，也有人現在最期待的是終於可以休息。\n\n仙加味從萬華走過幾代年節，也想把這些家庭生活記憶留下來。\n\n你覺得自己家過年最大的改變是什麼？",
+      "observation": "春節紅色佈置桌面，手持舊照片與散落相片；節慶回憶，與一般舊物/相冊畫面接近。"
+    },
+    {
+      "id": "XJW-CONV-cny-family-choice",
+      "reviewId": "AI-DEFER-a0e5d5f27f9cff73afaf29adf10a24a5ec719aa877db154183af01f88db21ba5",
+      "imageSha": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+      "expectedTitle": "過年回家，先給家人一個擁抱",
+      "expectedCopy": "春節回到家，小老闆抱抱坐在客廳的長輩。家常菜已經擺上桌，小鹿和小烏龜在一旁陪伴。仙加味想留住這樣的家常年節畫面：進門先問聲好，等家人坐齊，再一起開飯。",
+      "observation": "新年客廳擁抱長輩，另一家人在後方，鹿龜陪伴；家庭擁抱主題。"
+    },
+    {
+      "id": "XJW-CONV-cny-fridge-clean",
+      "reviewId": "AI-DEFER-e8acf87dad78819f6f9f25a540455f326680880db8ec1b9a7926fad16916594f",
+      "imageSha": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+      "expectedTitle": "年前整理冰箱的一個角落",
+      "expectedCopy": "年前，仙加味小老闆打開冰箱，把收納盒和食材分開整理，小鹿看著水果籃，小烏龜在旁陪伴。準備家常年菜前，可以先看清食材的保存標示，再把這幾天要用的食材放到看得見的位置。",
+      "observation": "年節冰箱前放入透明食材盒，桌上水果；年前冰箱整理。"
+    },
+    {
+      "id": "XJW-CONV-cny-gift-choice",
+      "reviewId": "AI-DEFER-d922ead3dd03ba800146472d4d928e555054c02d42454d1e4d4ca9a085858077",
+      "imageSha": "4905bcaab77381f53f3ab5ede77c9b5f06951b22f6cc97f610af9d025f61c7c0",
+      "expectedTitle": "年節午後，留一張心意卡",
+      "expectedCopy": "年節午後，家人剛走進門，小老闆把準備好的心意卡放在玄關桌上。門邊的梅花和燈籠有了年味，小鹿和小烏龜也在旁迎接。\n\n仙加味喜歡記下這些圍桌前的片刻。想寫給家人的祝福，可以從一句平常想說的話開始。",
+      "observation": "新版：玄關心意卡、梅花、燈籠與進門長輩；鹿龜在桌上，未呈現產品盒裝。"
+    },
+    {
+      "id": "XJW-CONV-cny-must-have-dish",
+      "reviewId": "AI-DEFER-72480442a3324bd55e31ea63bb7696dd10456d4856fed1e0deea7475b813520f",
+      "imageSha": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512",
+      "expectedTitle": "過年煮一桌菜，你家一定不能少哪一道？",
+      "expectedCopy": "過年準備一桌熟悉的家常菜時，小老闆把料理擺上餐桌，想到以前長輩總會準備的那一道菜。\n\n仙加味想記錄萬華家族年節裡的飲食文化：有沒有一道料理，是你從小看到長輩準備、現在也想保留下來的？",
+      "observation": "年菜桌前擺放菜餚，紅色節慶背景；家庭菜餚準備。"
+    },
+    {
+      "id": "XJW-CONV-cny-pre-clean",
+      "reviewId": "AI-DEFER-ab6c790d1ac38c971bad6910ca57c3034c4da9d025d6126ccf872808f1f80602",
+      "imageSha": "9790f1ca7766b43b99de629872fa8b6e79a19f2a5b919e108ca746849d35b836",
+      "expectedTitle": "年前，把萬華工作間掃乾淨",
+      "expectedCopy": "過年前，仙加味小老闆在萬華工作間掃地，把食材木櫃旁的工具收好。小鹿守著木櫃，小烏龜在矮凳旁看著。收工前把用過的工具歸位，年後回來就知道從哪裡接著做。",
+      "observation": "年前掃帚清掃木櫃旁地面，鹿龜陪伴；大掃除動作。"
+    },
+    {
+      "id": "XJW-CONV-cny-reopen",
+      "reviewId": "AI-DEFER-728a780662765fe08387c84c3c07fd1b257043b4635fe6c935f64acbef0dd2c5",
+      "imageSha": "d8702b0d1546026cb7175d5792a89f1ce4e98b1a350163d03e51cd19507dbfbf",
+      "expectedTitle": "開工第一天，小老闆先做一件小事",
+      "expectedCopy": "年假結束，開工第一天不用急著一下子把所有事情做完。小老闆先把店門打開、整理桌子，再看看今天最重要的是哪一件。\n\n仙加味萬華工作間也從開門、擦桌這些小動作，慢慢接回熟悉的日常。\n\n你開工第一天最想先完成什麼？",
+      "observation": "開工站在木門口開門，鹿龜在門旁；開門動作，不是雨天擦門墊。"
+    },
+    {
+      "id": "XJW-CONV-new-year-slow-start",
+      "reviewId": "AI-DEFER-36beb4df4a82d5ec7049311e37caa0cac38910b9b3f6ce79deeef56d8b0410d1",
+      "imageSha": "22b5ec499b3b45156cb450ff44ad3d283fd8fe781cd067a851cd8b66627bc808",
+      "expectedTitle": "新年在家，先畫下一味想認識的食材",
+      "expectedCopy": "新年在家，小老闆翻開筆記本，拿起鉛筆，把桌邊看到的植物畫下來；小鹿和小烏龜分別坐在旁邊陪著。\n\n仙加味想分享的漢方飲食文化，也可以從這樣的小練習開始：看看食材的外形、記下名字，再慢慢了解日常料理裡怎麼搭配。\n\n今年你最想多認識哪一味食材？先記下一個名字，下次到市場時再仔細看看。\n\n仙加味｜補養，是一種節奏。",
+      "observation": "年節窗邊桌上畫食材筆記，鹿龜在旁；以食材手繪為焦點。"
+    },
+    {
+      "id": "XJW-CONV-new-year-warm-cup-share",
+      "reviewId": "AI-DEFER-b40f1430551003add88021890cadf813b8ba50acc2e11df726794d9a957402c7",
+      "imageSha": "1da90695f31d6129086c0945f4760226a67fd3029ee24bffaf1f933ac1ccc532",
+      "expectedTitle": "新年早晨，端一杯溫熱飲品給家人",
+      "expectedCopy": "新年早晨，仙加味小老闆在餐桌旁雙手端起一杯溫熱飲品，遞給坐在桌邊的家人。小鹿和小烏龜陪在旁邊，桌上已經擺好早餐。仙加味想記下這個餐桌時刻：早餐備好，杯子端上桌，一家人就可以慢慢坐下來。",
+      "observation": "雙手端杯遞給家人，年節早餐桌；與元旦端早餐不同物件。"
+    },
+    {
+      "id": "XJW-CONV-season-more-soup",
+      "reviewId": "AI-DEFER-e93d09ce838d9fa497b53018929ba6c0335ad73fdacb6b6b2044b0f93449ef91",
+      "imageSha": "db76be5d7368af28baec5fc66748dba6a8c6b171a5a17be8a326dd1ea911b83a",
+      "expectedTitle": "天氣轉涼，晚餐端一鍋熱湯",
+      "expectedCopy": "天氣轉涼時，仙加味小老闆在家常廚房戴好隔熱手套，掀開熱雞湯的鍋蓋。小鹿和小烏龜在料理桌外等著。湯鍋放穩，臉避開蒸汽，再把煮好的湯盛進碗裡端上餐桌。",
+      "observation": "冬日廚房打開湯鍋蓋，鍋內有湯與備好的蔬菜；不對應特定商品外觀。"
+    },
+    {
+      "id": "XJW-CONV-weather-cool-drink",
+      "reviewId": "AI-DEFER-248b8d08448e3b889a73312395cf9d518412192c3507a61f8bbaad16da2d929b",
+      "imageSha": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "expectedTitle": "天氣轉涼時，你會想喝點溫熱的嗎？",
+      "expectedCopy": "天氣轉涼時，有些人會比較想準備一杯溫熱的，或替家裡煮一鍋湯。\n\n仙加味分享的漢方飲食文化，也從這些簡單的日常安排開始。\n\n遇到涼爽的日子，你會先準備熱飲、湯，還是找件薄外套？",
+      "observation": "涼天窗邊雙手捧溫熱杯，鹿披圍巾，桌上點心；與雨夜桌上杯位置不同。"
+    },
+    {
+      "id": "XJW-CONV-weather-rain-chat",
+      "reviewId": "AI-DEFER-4dc8cdaf06daabb068ea1937163fdae871d5bcd1acec9f68c858eda5714d1066",
+      "imageSha": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+      "expectedTitle": "雨天窗邊的一杯溫熱飲品",
+      "expectedCopy": "窗外下雨時，仙加味小老闆坐在窗邊，手邊放著一杯溫熱飲品。小鹿和小烏龜在旁陪伴。下雨的午後，回到室內先擦乾手，再替自己倒一杯溫熱飲品，坐在窗邊歇一會兒。",
+      "observation": "雨夜窗邊托腮，杯子放桌面，鹿龜陪伴；新版文字已改為手邊放著杯子。"
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "reviewId": "AI-DEFER-4e3bf7abb99299318102d0721adcee58d9b7ebe2262a7ddc336dc3ff15bb015c",
+      "imageSha": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+      "expectedTitle": "今年有沒有一件小事，你很慶幸自己做了？",
+      "expectedCopy": "年底傍晚，小老闆在仙加味萬華店裡打開食材木櫃，一邊看看抽屜裡的紅棗與乾貨，一邊拿著小紙卡準備記下接下來要整理的事。小鹿和小烏龜在旁邊看著。\n\n這些不顯眼的小事，也是日常工作的一部分。你今年有哪一件看似很小、做完卻特別有成就感的事？",
+      "observation": "夕陽工作桌，手伸向木櫃抽屜，鹿龜在前；年末收工記錄。"
+    },
+    {
+      "id": "XJW-FEST-2027-eve-welcome-home",
+      "reviewId": "AI-DEFER-3d3bc8654456274fca770593255858d2b97a1b87094c7e543e2d5d73936ff91c",
+      "imageSha": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "expectedTitle": "除夕，先替回家的人留一個位置",
+      "expectedCopy": "除夕準備年夜飯時，小老闆想先做一件小事：替剛回到家的家人拉好椅子，讓大家不用急，慢慢坐下來。\n\n仙加味從萬華走過幾代家庭日常，一直珍惜的，是有人一起吃飯、有人願意等你回家的時刻。\n\n今年的年夜飯，你最想把哪個位置留給誰？",
+      "observation": "除夕夜為進門家人拉出椅子，紅色節慶裝飾；與玄關卡片不同動作。"
+    },
+    {
+      "id": "XJW-FEST-2027-lantern-riceballs",
+      "reviewId": "AI-DEFER-3b1429de971d2ca22abb4a8b3cc4cd3b527fc908efe03e0208335575431e7279",
+      "imageSha": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "expectedTitle": "元宵夜，和家人一起搓湯圓",
+      "expectedCopy": "元宵夜，仙加味小老闆和家人圍在廚房桌邊搓湯圓，小鹿和小烏龜分開陪伴，窗外有燈籠和月光。一家人把手邊的小麵糰慢慢搓圓，等備好再依家裡的做法下鍋。",
+      "observation": "元宵夜與成人手部共同搓圓湯圓，月光與燈籠；不同於冬至已煮湯圓。"
+    },
+    {
+      "id": "XJW-FEST-2027-newyear-breakfast",
+      "reviewId": "AI-DEFER-bb69ee667959e49f2da696c86a491992710f4ebe522f83d5edc19cab12899337",
+      "imageSha": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "expectedTitle": "元旦早上，先把早餐留給一起生活的人",
+      "expectedCopy": "元旦早上，不一定要急著列出一整年的目標。把熱粥、饅頭和家人喜歡的小菜準備好，坐下來一起吃一餐，也是一個踏實的開始。\n\n仙加味想留下的漢方生活，不只在產品裡，也在這些照顧日常、好好相聚的小事裡。\n\n新年的第一餐，你最想和誰一起吃？",
+      "observation": "早晨向家人端出一碗早餐，旁有包子；與新年遞熱飲不同，仍需留意家庭早餐角度。"
+    }
+  ],
+  "topicHoldIds": [
+    "XJW-CONV-chat-family-old-object",
+    "XJW-CONV-chat-traditional-image",
+    "XJW-CONV-year-end-small-win"
+  ],
+  "topicHoldReason": "Family old photo/album posts share core editorial angle; year-end small win is close to previously published year-end life reflection. Do not treat this as accepted missing-source risk; concrete topic rewrite/verification remains required.",
+  "knownPairReview": "ops/visual-review/20261112-ten-pairs-actual-visual-findings.json"
+}
