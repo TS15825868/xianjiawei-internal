@@ -4,7 +4,7 @@ import app from './flexible-publish-entry.js';
 import {assessAutopublishCandidate} from './ai-autopublish-policy.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
 import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';
-import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';
+import {imageHash,recordAiReview,aiGate,ensureAiSchema,verifyCurrentAiQuality} from './ai-quality-review.js';
 
 const VERSION='2026-10-30-original-image-evidence-v10';
 const REQUIRED_CHECKS=Object.freeze([
@@ -289,15 +289,19 @@ export default{async fetch(request,env,ctx){
     const id=decodeURIComponent(path.split('/')[3]||'');
     const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
     let platforms=[];try{platforms=JSON.parse(row.platforms_json||'[]')}catch{}
-    // Report the ACTUAL verified gate, rather than always passing an empty
-    // evidence object. No guesswork about paid quotas, external UUIDs, or
-    // platform permission can authorize a customer-visible publication.
-    let gate;
-    try{gate=await gateState(env,row);}
-    catch{gate={ok:false,reason:'正式圖文審核查詢失敗，禁止排程'};}
-    const aiEvidenceValid=gate.ok===true&&gate.reviewer_type==='AI';
+    // Quality and publication authorization are independent evidence.
+    // Missing evidence must not enable scheduling or remote delivery.
+    const [gate,quality]=await Promise.all([
+      gateState(env,row).catch(()=>({ok:false,reason:'正式發布授權查詢失敗，禁止排程'})),
+      (async()=>verifyCurrentAiQuality(env,row,await fingerprint(row)))()
+        .catch(()=>({ok:false,reason:'正式 AI 圖文審核查詢失敗'}))
+    ]);
+    const aiEvidenceValid=quality.ok===true;
+    const humanGateValid=gate.ok===true&&gate.reviewer_type==='HUMAN';
     const checks={
       aiEvidenceValid,
+      humanGateValid,
+      humanApprovalValid:humanGateValid,
       imageAuthentic:aiEvidenceValid,
       sceneMatches:aiEvidenceValid,
       productAuthorityValid:aiEvidenceValid,
@@ -310,10 +314,11 @@ export default{async fetch(request,env,ctx){
       platformReady:false,
       quotaVerified:false,
       deliveryDedupReady:false,
-      reviewedAt:aiEvidenceValid?gate.reviewed_at:null
+      reviewedAt:aiEvidenceValid?quality.reviewed_at:null
     };
     const assessment=assessAutopublishCandidate({...row,platforms},checks);
     return json({...assessment,post_id:id,review_gate_passed:gate.ok===true,
+      ai_quality_verified:aiEvidenceValid,ai_quality_blocker:aiEvidenceValid?null:quality.reason,
       reviewer_type:gate.ok?gate.reviewer_type||'HUMAN':null,
       review_blocker:gate.ok?null:gate.reason||'缺少有效圖文審核',
       external_quota_verified:false,external_platform_verified:false,
