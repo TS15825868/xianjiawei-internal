@@ -156,6 +156,21 @@ async function gateState(env,row){
   }
   return{ok:true,reviewer_type:'HUMAN',reviewed_at:gate.reviewed_at||'',reviewed_by:gate.reviewed_by||'',fingerprint:current}
 }
+// Scheduled dispatch may use a separately persisted owner delegation, but
+// human approvals retain their original independent path. Never synthesize
+// approved_by, and never expand the grant to LINE OA or other channels.
+async function scheduledPublicationGate(env,row,now=Date.now()){
+  const manual=await gateState(env,row);
+  if(manual.ok||env?.XJW_AI_DELEGATED_PUBLICATION_ENABLED!=='true')return manual;
+  if(!row||row.status!=='scheduled'||row.published_at||row.approved_by||row.approved_at||publishedPlatformReceiptHold(row))return manual;
+  if(await metricoolOwns(env,row.id))return {ok:false,reason:'既有外部排程由原UUID管理，不得重複直接發布'};
+  const {verifyDelegatedDispatch}=await import('./ai-delegated-publication.js');
+  const {verifyCurrentAiQuality}=await import('./ai-quality-review.js');
+  return verifyDelegatedDispatch(env,row,{
+    now,fingerprint,verifyQuality:verifyCurrentAiQuality,
+    checkContent:async(e,p)=>[...productMatchErrors(p),...await duplicatePostErrors(e,p),...(isWeatherPost(p)?['天氣需另行查證']:[])]
+  });
+}
 async function saveGate(env,row,body,profile){const priorPublic=publishedPlatformReceiptHold(row);if(priorPublic)throw new Error(priorPublic.reason);const checklist=checklistFrom(body);if(checklist.missing.length)throw new Error(`16項圖文審核尚未完成：${checklist.missing.join('、')}`);if(body?.copy_image_match!==true)throw new Error('必須確認「文案與圖片一致」才能核准');const errors=productMatchErrors(row);errors.push(...await duplicatePostErrors(env,row));if(errors.length)throw new Error([...new Set(errors)].join('；'));const fp=await fingerprint(row),now=new Date().toISOString();await ensureSchema(env);await env.DB.prepare(`INSERT INTO social_post_review_gates(post_id,content_fingerprint,checklist_json,copy_image_match,reviewed_by,reviewed_at) VALUES(?,?,?,?,?,?) ON CONFLICT(post_id) DO UPDATE SET content_fingerprint=excluded.content_fingerprint,checklist_json=excluded.checklist_json,copy_image_match=excluded.copy_image_match,reviewed_by=excluded.reviewed_by,reviewed_at=excluded.reviewed_at`).bind(row.id,fp,JSON.stringify(checklist.value),1,clean(profile?.email),now).run()}
 async function clearGate(env,id){try{await ensureSchema(env);await env.DB.prepare('DELETE FROM social_post_review_gates WHERE post_id=?').bind(id).run()}catch{}}
 async function invalidateEditedPost(env,id,before){
@@ -449,5 +464,5 @@ export default{async fetch(request,env,ctx){
   return app.fetch(request,env,ctx)
 },async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx)}};
 
-export { reviewExistingImage, imageReviewContext, validOriginalImageReview, VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
+export { reviewExistingImage, imageReviewContext, validOriginalImageReview, VERSION, REQUIRED_CHECKS, PRODUCT_RULES, REGENERATION_ROLES, CUSTOMER_INTERNAL_TERMS, SCENE_GROUPS, customerCopyErrors, duplicatePostErrors, productMatchErrors, semanticSceneErrors, isWeatherPost, checklistFrom, fingerprint, gateState, scheduledPublicationGate, invalidateEditedPost, submitForReview, regenerationStart, regenerationReady };
 
