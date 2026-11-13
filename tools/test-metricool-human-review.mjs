@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {gateState,fingerprint,REQUIRED_CHECKS} from '../src/publishing-review-gate-entry.js';
-import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate} from '../src/metricool-sync.js';
+import {nextMetricoolSlot,metricoolBody,metricoolConfiguration,syncMetricool,requiresDatedSchedule,enqueueMetricool,metricoolScheduleCapacity,metricoolImmediate,aiScheduleFresh} from '../src/metricool-sync.js';
 const row={id:'SAFE-TEST',title:'仙加味',headline:'萬華日常',copy:'仙加味的日常工藝',category:'品牌',image_url:'https://example.com/a.jpg',image_alt:'萬華日常',image_source:'情境',image_width:1254,image_height:1254,image_quality_status:'ok',status:'approved',approved_at:new Date().toISOString(),approved_by:'human@example.com',platforms_json:'["Facebook","Instagram","Threads"]'};
 let gate={post_id:row.id,content_fingerprint:await fingerprint(row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(x=>[x,true]))),copy_image_match:1,reviewed_by:'human@example.com',reviewed_at:new Date().toISOString()};
 const env={DB:{exec:async()=>({}),prepare:()=>({run:async()=>({meta:{changes:0}}),bind:()=>({first:async()=>gate})})}};
@@ -19,12 +19,12 @@ const unbound={METRICOOL_API_TOKEN:'unit-test-not-a-real-credential',DB:{prepare
 assert.equal((await syncMetricool(unbound,{})).blocked,'METRICOOL_EXISTING_UUID_BOOTSTRAP_REQUIRED');
 assert.equal(unboundQueries,0);
 const nativeFetch=globalThis.fetch;
-async function simulate(link,{gateOK=true,now='2026-10-13T12:00:00Z'}={}){
+async function simulate(link,{gateOK=true,gateThrows=false,now='2026-10-13T12:00:00Z'}={}){
   const writes=[],calls=[];
   const scheduledRow={...row,status:'scheduled'};
   const db={prepare:sql=>{const statement={bind(...args){this.args=args;return this},async first(){if(sql.includes('social_metricool_control'))return{setting_value:'20261013-eight-recovery'};if(sql.includes('FROM social_posts'))return scheduledRow;throw Error(sql)},async all(){if(sql.includes('LEFT JOIN'))return{results:[]};if(sql.includes('SELECT * FROM social_metricool_sync'))return{results:['scheduled','queued','blocked_config','awaiting_work'].includes(link.state)?[link]:[]};throw Error(sql)},async run(){writes.push({sql,args:this.args});return{meta:{changes:1}}}};return statement}};
   globalThis.fetch=async()=>{calls.push(1);throw Error('Free Worker must never call Metricool')};
-  try{await syncMetricool({DB:db,METRICOOL_API_TOKEN:'ignored'}, {gateState:async()=>({ok:gateOK,reason:'test invalid review'}),fingerprint:async()=>link.content_fingerprint},new Date(now));return{writes,calls}}finally{globalThis.fetch=nativeFetch}
+  try{await syncMetricool({DB:db,METRICOOL_API_TOKEN:'ignored'}, {gateState:async()=>{if(gateThrows)throw Error('temporary lookup failure');return{ok:gateOK,reason:'test invalid review'}},fingerprint:async()=>link.content_fingerprint},new Date(now));return{writes,calls}}finally{globalThis.fetch=nativeFetch}
 }
 const baseLink={post_id:row.id,metricool_id:1,uuid:'stable-uuid',state:'scheduled',content_fingerprint:'fp',publication_at:'2026-11-06T10:00:00+08:00',attempts:0};
 const future=await simulate(baseLink);assert.equal(future.calls.length,0);assert.equal(future.writes.filter(x=>x.sql.startsWith('UPDATE')).length,0);
@@ -134,3 +134,16 @@ assert.equal(immediate.externalScheduled,false);
 assert.equal(immediateWrites.at(-1).args[1],'already-scheduled');
 assert.ok(Number.isFinite(Date.parse(immediateWrites.at(-1).args[0])));
 console.log('PASS immediate updates the original externally scheduled UUID with a valid future timestamp, never claims publishing');
+
+// Expired or unreadable approval after external due time never implies a
+// canceled post: the same UUID must be reconciled, not sent a second time.
+const dueInvalid=await simulate(baseLink,{gateOK:false,now:'2026-11-07T00:00:00Z'});
+assert(dueInvalid.writes.some(x=>x.args?.includes('awaiting_verification')));
+assert(!dueInvalid.writes.some(x=>x.args?.includes('cancel_required')));
+const dueUnreadable=await simulate(baseLink,{gateThrows:true,now:'2026-11-07T00:00:00Z'});
+assert(dueUnreadable.writes.some(x=>x.args?.includes('awaiting_verification')));
+const futureUnreadable=await simulate(baseLink,{gateThrows:true});
+assert.equal(futureUnreadable.writes.filter(x=>x.sql.startsWith('UPDATE')).length,0);
+assert.equal(aiScheduleFresh({},'2026-11-16T12:00:00Z','2026-11-17T02:00:00Z',{reviewerType:'AI_DELEGATED'}).ok,true);
+assert.equal(aiScheduleFresh({},'2026-11-13T12:00:00Z','2026-11-17T02:00:00Z',{reviewerType:'AI_DELEGATED'}).ok,false);
+console.log('PASS: preserve external UUIDs on transient failure; due results reconcile before review checks; delegated quality freshness is mandatory');
