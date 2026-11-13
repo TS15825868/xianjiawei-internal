@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 let source=fs.readFileSync(new URL('../src/production-entry.js',import.meta.url),'utf8');
 const replacements=[
   ["import app,{gateState} from './publishing-review-gate-entry.js';",
-   "const app={scheduled:async()=>{globalThis.__scheduleSafety.forwarded++}};const gateState=async()=>globalThis.__scheduleSafety.review;"],
+   "const app={scheduled:async()=>{globalThis.__scheduleSafety.forwarded++}};const gateState=async()=>{if(globalThis.__scheduleSafety.failReview)throw Error('temporary review storage failure');return globalThis.__scheduleSafety.review;};"],
   ["import { keepLineWarm } from './flexible-publish-entry.js';",
    "const keepLineWarm=async()=>{globalThis.__scheduleSafety.lineWarmed++};"],
   ["import { createRemoteJWKSet, jwtVerify } from 'jose';",
@@ -21,8 +21,8 @@ for(const [from,to] of replacements){
 }
 const {default:production}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
 
-function scenario({failHealth=false,failQuery=false,failUpdate=false,review={ok:true},due=[]}={}){
- const state={failHealth,failQuery,failUpdate,review,due,forwarded:0,lineWarmed:0,probes:0,writes:0};
+function scenario({failHealth=false,failQuery=false,failUpdate=false,failReview=false,review={ok:true},due=[]}={}){
+ const state={failHealth,failQuery,failUpdate,failReview,review,due,forwarded:0,lineWarmed:0,probes:0,writes:0};
  globalThis.__scheduleSafety=state;
  const DB={prepare(sql){return{
    bind(){return this},
@@ -82,6 +82,13 @@ async function exercise(options,{scheduledTime=Date.parse('2026-10-26T00:00:00Z'
  const a=await exercise({due:[]},{scheduledTime:Date.parse('2026-10-26T00:02:00Z')});
  assert.equal(a.forwarded,0,'No reviewed posts means no publisher calls on non-heartbeat minute');
  assert.equal(a.lineWarmed,0,'Do not wake Render LINE on every cron minute');
+}
+{
+ const a=await exercise({due:[{id:'valid-schedule',status:'scheduled',scheduled_at:'2026-10-26T00:00:00Z'}],failReview:true});
+ assert.equal(a.writes,0,'Temporary review storage failure must preserve the existing schedule and approval');
+ assert.equal(a.forwarded,0,'Unable to verify approval must not publish');
+ assert.equal(a.probes,0,'Failed review read must not invoke provider probes');
+ assert.equal(a.lineWarmed,1,'Independent LINE keep-warm remains available');
 }
 delete globalThis.__scheduleSafety;
 console.log('PASS scheduled publication fails closed on review lookup/quarantine write/D1 failures, retains five-minute LINE keep-warm and one-minute reviewed schedule routing; no external requests');
