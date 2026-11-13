@@ -1,0 +1,69 @@
+name: 仙加味原生社群權限與缺失歷史來源正式讀回
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-native-route-live-readback-20261113.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-native-route-live-readback-20261113
+  cancel-in-progress: false
+jobs:
+  readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Read exact one-shot production receipt and check newly returned missing image bytes
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createHash} from 'node:crypto';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          let row;
+          for(let attempt=0;attempt<45;attempt++){
+            row=(await read("SELECT status,result_json,completed_at FROM social_meta_history_readonly WHERE run_id='XJW-META-NATIVE-READINESS-20261113-V1'"))[0];
+            if(row?.status==='completed')break;
+            await new Promise(r=>setTimeout(r,12000));
+          }
+          if(row?.status!=='completed')throw Error('No completed new live Worker receipt; do not mark platform ready');
+          const report=JSON.parse(row.result_json);
+          if(report.readOnly!==true||report.publications!==0||report.actualPublishVerified!==false)throw Error('Unexpected audit scope');
+          const recovery=[];
+          for(const item of report.missingMedia||[]){
+            for(const media of item.images||[]){
+              try{
+                const u=new URL(media.url);
+                if(u.protocol!=='https:'||!/\.(fbcdn\.net|cdninstagram\.com|facebook\.com|fbsbx\.com)$/i.test(u.hostname))continue;
+                const r=await fetch(u,{redirect:'error',signal:AbortSignal.timeout(10000)});
+                if(!r.ok||!r.headers.get('content-type')?.startsWith('image/'))throw Error('source image HTTP '+r.status);
+                const b=Buffer.from(await r.arrayBuffer());
+                if(b.length<1024||b.length>12*1024*1024)throw Error('invalid source bytes');
+                const hash=createHash('sha256').update(b).digest('hex');
+                recovery.push({postId:item.postId,platform:item.platform,bytes:b.length,sha256:hash,retrievable:true,sourceHost:u.hostname});
+                fs.mkdirSync('native-history-recovery',{recursive:true});
+                fs.writeFileSync('native-history-recovery/'+hash+'.img',b);
+              }catch(e){recovery.push({postId:item.postId,platform:item.platform,retrievable:false,error:String(e.message).slice(0,120)})}
+            }
+          }
+          const out={completedAt:row.completed_at,facebook:report.facebook,instagram:report.instagram,threads:report.threads,reason:report.reason||null,missingMedia:(report.missingMedia||[]).map(x=>({platform:x.platform,postId:x.postId,sourceCount:x.images?.length||0})),recovery,actualPublishVerified:false,postMutations:0,publications:0};
+          console.log('XJW_NATIVE_LIVE_READBACK '+JSON.stringify(out));
+          fs.writeFileSync('native-route-readback.json',JSON.stringify(out,null,2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: xjw-native-route-live-readback-${{ github.run_id }}
+          path: |
+            native-route-readback.json
+            native-history-recovery/
+          retention-days: 5
