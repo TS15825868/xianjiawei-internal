@@ -205,7 +205,7 @@
       "proposed_scheduled_at": "2027-02-13T10:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-11-10T10:08:00+08:00",
+  "updatedAt": "2026-11-13T12:59:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -345,25 +345,57 @@
     "timezone": "Asia/Taipei"
   },
   "slotAuthority": {
-    "updatedAt": "2026-11-10T10:08:00+08:00",
+    "updatedAt": "2026-11-13T12:59:00+08:00",
     "previousSlotsArray": "legacy_historical_candidates_only__never_formal_schedule",
     "nextTargetSlots": [
       {
         "dateTime": "2026-11-13T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Await fully verified 16/16 and independent cross-platform evidence"
-      },
-      {
-        "dateTime": "2026-11-15T10:00:00+08:00",
-        "status": "OPTIONAL_TARGET_NOT_SCHEDULED",
-        "reason": "Third post only if eligible and not duplicate"
+        "status": "PUBLISHED_AFTER_MISSED_SLOT",
+        "actualPublicationAt": "2026-11-13T12:55:00+08:00",
+        "postId": "XJW-CONV-chat-shop-organizing",
+        "remoteMetricoolId": 426543853,
+        "remoteUuid": "3756528086249982532",
+        "receiptRun": 43368903177,
+        "providers": [
+          "facebook",
+          "instagram",
+          "threads"
+        ],
+        "verifiedAt": "2026-11-13T12:58:35+08:00",
+        "qualityScope": "single owner-directed release; historical DEFER preserved"
       },
       {
         "dateTime": "2026-11-17T10:00:00+08:00",
         "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Await fully verified evidence"
+        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+      },
+      {
+        "dateTime": "2026-11-20T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+      },
+      {
+        "dateTime": "2026-11-24T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+      },
+      {
+        "dateTime": "2026-11-27T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+      },
+      {
+        "dateTime": "2026-12-01T10:00:00+08:00",
+        "status": "TARGET_NOT_SCHEDULED",
+        "reason": "Complete independent current version quality and publication evidence before external scheduling"
       }
     ],
-    "doNotBackfillMissedToday": "2026-11-10 10:00 proposed candidate was not approved or published. Never falsely record published or schedule to past time."
+    "doNotBackfillMissedToday": "11/13 single recovery completed at 12:55; never recreate UUID 3756528086249982532 or re-publish this post.",
+    "currentD1Counts": {
+      "archived": 107,
+      "pending_review": 48,
+      "published": 6
+    },
+    "todayClosed": true
   }
 }
