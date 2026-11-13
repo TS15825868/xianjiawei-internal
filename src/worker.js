@@ -265,7 +265,7 @@ export async function overview(env){
 }
 async function settings(env){
   const result=await env.DB.prepare('SELECT setting_key,setting_value,updated_at FROM app_settings ORDER BY setting_key').all();
-  const output={schedule_policy:'週一／週三／週五 09:00（Asia/Taipei）；正常每週 3 篇；立即發布不受固定時段限制',storage:'Cloudflare D1',secrets:'Cloudflare Worker Secrets',access:'Cloudflare Access'};
+  const output={schedule_policy:'週二／週五 10:00（Asia/Taipei）；正常每週2篇，特殊週最多3篇；既有有效排程優先；立即發布不受固定時段限制',storage:'Cloudflare D1',secrets:'Cloudflare Worker Secrets',access:'Cloudflare Access'};
   for(const row of result.results||[]){if(/token|secret|password|credential|private.?key|api.?key/i.test(row.setting_key))continue;let value=row.setting_value;try{value=JSON.parse(value);}catch{}output[row.setting_key]=value;}
   return{settings:output};
 }
@@ -274,7 +274,7 @@ async function health(env){
   try{
     await ensureSchema(env);
     const [products,inventory,posts]=await Promise.all([env.DB.prepare("SELECT COUNT(*) AS count FROM app_records WHERE module='products' AND archived=0").first(),env.DB.prepare("SELECT COUNT(*) AS count FROM app_records WHERE module='inventory' AND archived=0").first(),env.DB.prepare("SELECT COUNT(*) AS count FROM social_posts WHERE status<>'archived'").first()]);
-    return json({ok:true,service:'仙加味營運中控',version:VERSION,storage:'cloudflare-d1',products:Number(products?.count||0),inventory:Number(inventory?.count||0),posts:Number(posts?.count||0),checkedAt:new Date().toISOString(),publicRepository:'TS15825868/xianjiawei-internal',privateHistoryRepository:'TS15825868/xianjiawei-internal-private',privateOperationalDataInGit:false,accessProtected:true,socialPublisher:publisherConfiguration(env),fixedPostingFrequency:'每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）',immediatePublishing:true,lineVoomManualOnly:true});
+    return json({ok:true,service:'仙加味營運中控',version:VERSION,storage:'cloudflare-d1',products:Number(products?.count||0),inventory:Number(inventory?.count||0),posts:Number(posts?.count||0),checkedAt:new Date().toISOString(),publicRepository:'TS15825868/xianjiawei-internal',privateHistoryRepository:'TS15825868/xianjiawei-internal-private',privateOperationalDataInGit:false,accessProtected:true,socialPublisher:publisherConfiguration(env),fixedPostingFrequency:'每週2～3篇（週二／週五 10:00，Asia/Taipei；特殊週另加1篇）',immediatePublishing:true,lineVoomManualOnly:true});
   }catch(error){return json({ok:false,service:'仙加味營運中控',version:VERSION,error:String(error?.message||error),checkedAt:new Date().toISOString()},503);}
 }
 
