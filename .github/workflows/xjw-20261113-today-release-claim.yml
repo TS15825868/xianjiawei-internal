@@ -1,0 +1,68 @@
+name: 仙加味今日單篇委任補發安全保留
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261113-today-release-claim.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-20261113-single-release-claim
+  cancel-in-progress: false
+jobs:
+  claim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Reserve the exact owner-directed one-time release without altering quality status or contacting Metricool
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createHash} from 'node:crypto';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const id='XJW-CONV-chat-shop-organizing';
+          const fp='b7e23662589815a8c58aa2f0e39a7ef60435b6e5f1421dc0d46aa3617c235e72';
+          const imageSha='b9b7192073a97c140a01875f91afa70febb2930d4419265b86dc24b816e20ab3';
+          const reviewId='AI-DEFER-a05cf82d64a651504c3790453f9b060f3f8743d23839d260e5ec7912d093df84';
+          const at='2026-11-13T12:55:00+08:00';
+          const ref='owner-chat-2026-11-13-today-post-direct-release';
+          const grantId='XJW-OWNER-DIRECT-20261113-shop-organizing-v6';
+          const sha=x=>createHash('sha256').update(x).digest('hex'),q=x=>"'"+String(x).replaceAll("'","''")+"'";
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const p=(await read("SELECT * FROM social_posts WHERE id="+q(id)))[0];
+          const r=(await read("SELECT * FROM social_post_quality_reviews WHERE post_id="+q(id)+" ORDER BY reviewed_at DESC,created_at DESC LIMIT 1"))[0];
+          const clean=x=>String(x??'').trim();
+          const material={title:clean(p.title),headline:clean(p.headline),copy:clean(p.copy),category:clean(p.category),image_url:clean(p.image_url),image_alt:clean(p.image_alt),image_source:clean(p.image_source),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:clean(p.image_quality_status)};
+          if(Date.parse(at)<=Date.now()+60000||p.status!=='pending_review'||p.published_at||p.scheduled_at||p.approved_by||p.approved_at||Number(p.image_approved)!==0||sha(JSON.stringify(material))!==fp||r.id!==reviewId||r.image_sha256!==imageSha||r.decision!=='NEEDS_HUMAN_REVIEW')throw Error('scope, content, or time changed');
+          const g=JSON.parse(r.evidence_json);
+          const keys=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','compliance_final'];
+          if(keys.some(k=>g.checks?.[k]?.result!=='PASS')||g.checks?.duplicate?.result!=='DEFER')throw Error('review not scoped as expected');
+          const exact=(await read("SELECT id FROM social_posts WHERE id<>"+q(id)+" AND (image_url="+q(p.image_url)+" OR copy="+q(p.copy)+")"));
+          if(exact.length||(await read("SELECT post_id FROM social_metricool_sync WHERE post_id="+q(id))).length||(await read("SELECT post_id FROM social_publish_deliveries WHERE post_id="+q(id))).length)throw Error('possible duplicate or existing delivery');
+          const prior=(await read("SELECT id,after_json FROM audit_logs WHERE entity_id="+q(id)+" AND action='歷史缺件授權覆核' ORDER BY rowid DESC LIMIT 1"))[0];
+          const gap=JSON.parse(prior.after_json);
+          if(gap.outcome!=='owner_gap_accepted_for_human_review'||gap.fingerprint!==fp||gap.image_sha256!==imageSha||gap.ai_review_id!==reviewId)throw Error('historical scope differs');
+          const photo=await fetch(p.image_url,{redirect:'error',signal:AbortSignal.timeout(15000)});
+          if(!photo.ok||sha(Buffer.from(await photo.arrayBuffer()))!==imageSha)throw Error('remote photo differs');
+          // This is an individual owner-directed release request, not a full AI approval,
+          // not the earlier historical gap authorization, and not a standing policy change.
+          const proof={schema:'xjw-owner-directed-scoped-release-v1',ownerAuthorizationRef:ref,postId:id,fingerprint:fp,imageSha256:imageSha,reviewId,qualityDecision:'NEEDS_HUMAN_REVIEW',qualityScope:'15 PASS; known duplicate screen no collision; historical media gaps remain',historyGapRef:prior.id,fullHistoricalDedupCertified:false,aiApproved:false,humanApproved:false,publicationAt:at,channels:['facebook','instagram','threads'],preflightRun:43367984230,releaseState:'RESERVED_NOT_SENT',ownerDirected:true};
+          const insert="INSERT INTO social_post_delegated_publication(id,post_id,schema,scope,owner_authorization_ref,issued_by,issued_at,expires_at,fingerprint,image_sha256,review_id,channels_json,publication_at) SELECT "+[grantId,id,proof.schema,'brand-social-only',ref,'chatgpt:owner-delegated',new Date().toISOString(),at,fp,imageSha,reviewId,JSON.stringify(proof.channels),at].map(q).join(',')+" WHERE EXISTS(SELECT 1 FROM social_posts WHERE id="+q(id)+" AND updated_at="+q(p.updated_at)+" AND status='pending_review' AND published_at IS NULL AND scheduled_at IS NULL AND approved_by IS NULL AND approved_at IS NULL) AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id="+q(id)+") AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id="+q(id)+") ON CONFLICT(post_id) DO NOTHING";
+          const written=await execute(insert);
+          if(Number(written[0]?.meta?.changes)!==1)throw Error('release claim collision, no external send');
+          const auditId=grantId+'-AUDIT';
+          await execute("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES("+[auditId,'chatgpt:owner-delegated','單篇使用者指示補發保留','貼文',id,JSON.stringify({status:p.status,reviewId}),JSON.stringify(proof),''].map(q).join(',')+")");
+          const claim=await execute("INSERT INTO social_metricool_sync(post_id,uuid,publication_at,content_fingerprint,state,last_error,template_json) SELECT "+[id,grantId,at,fp,'unknown','本次委任單篇已保留；未取得遠端回執前禁止重建',JSON.stringify(proof)].map(q).join(',')+" WHERE EXISTS(SELECT 1 FROM social_post_delegated_publication WHERE id="+q(grantId)+" AND post_id="+q(id)+") AND EXISTS(SELECT 1 FROM social_posts WHERE id="+q(id)+" AND updated_at="+q(p.updated_at)+" AND status='pending_review') AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id="+q(id)+") ON CONFLICT(post_id) DO NOTHING");
+          if(Number(claim[0]?.meta?.changes)!==1)throw Error('external reservation collision, no external send');
+          const readback=(await read("SELECT post_id,state,uuid,publication_at,content_fingerprint FROM social_metricool_sync WHERE post_id="+q(id)))[0];
+          const authorization=(await read("SELECT id,post_id,schema,review_id,publication_at FROM social_post_delegated_publication WHERE id="+q(grantId)))[0];
+          if(readback?.uuid!==grantId||readback.state!=='unknown'||readback.content_fingerprint!==fp||authorization?.review_id!==reviewId)throw Error('readback not confirmed');
+          console.log('TODAY_RELEASE_CLAIM '+JSON.stringify({readback,authorization,fullAiApproved:false,remoteRequests:0,postStatusUnchanged:true}));
+          NODE
