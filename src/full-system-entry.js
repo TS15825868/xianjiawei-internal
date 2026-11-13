@@ -3,6 +3,7 @@ import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
 import {socialContentDraft} from './social-content-draft.js';
 import {collectMetaHistoryOnce} from './meta-history-readonly.js';
+import {collectNativeBrandRouteOnce} from './meta-native-readiness-audit.js';
 import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {lineHandoffApi} from './line-handoff.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
@@ -309,6 +310,9 @@ export default{
        new Date(time).toISOString().slice(0,10)==='2026-11-05'&&
        new Date(time).getUTCMinutes()%5===0&&typeof ctx?.waitUntil==='function'){
       ctx.waitUntil(collectMetaHistoryOnce(env).catch(()=>console.warn('meta_history_readonly_unavailable')));
+    }
+    if(env?.XJW_META_NATIVE_AUDIT_DATE==='2026-11-13'&&new Date(time).toISOString().slice(0,10)==='2026-11-13'&&new Date(time).getUTCMinutes()%5===0&&typeof ctx?.waitUntil==='function'){
+      ctx.waitUntil(collectNativeBrandRouteOnce(env).catch(()=>console.warn('meta_native_readiness_audit_unavailable')));
     }
     // Never resurrect the September historical first post on every tick.
     if(typeof publishingApp.scheduled==='function')return publishingApp.scheduled(controller,env,ctx);
