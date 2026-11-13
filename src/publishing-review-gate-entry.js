@@ -283,6 +283,32 @@ export default{async fetch(request,env,ctx){
     if(receipt?.after_json!==evidence)return json({error:'未確認覆核紀錄讀回'},500);
     return json({ok:true,review_id:receipt.id,status:row.status,auto_publish:false,auto_schedule:false});
   }
+  const delegatedMatch=path.match(/^\/api\/posts\/([^/]+)\/delegated-publication$/);
+  if(delegatedMatch&&['GET','POST'].includes(request.method)){
+    const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
+    const profile=await auth.json();
+    if(!['owner','admin'].includes(clean(profile?.role)))return json({error:'僅正式管理者可操作委任發布'},403);
+    const id=decodeURIComponent(delegatedMatch[1]),row=await postRow(env,id);
+    if(!row)return json({error:'找不到貼文'},404);
+    try{
+      const {readDelegatedGrant,prepareDelegatedGrant,assessDelegatedPublication}=await import('./ai-delegated-publication.js');
+      const {verifyCurrentAiQuality}=await import('./ai-quality-review.js');
+      if(request.method==='POST'){
+        const body=await readBody(request);
+        if(typeof body?.publication_at!=='string'||body.content_fingerprint!==await fingerprint(row))return json({error:'須指定正式現版及未來發布時間'},409);
+        const result=await prepareDelegatedGrant(env,row,body.publication_at,profile,{
+          fingerprint,verifyQuality:verifyCurrentAiQuality,
+          checkContent:async(e,p)=>[...productMatchErrors(p),...await duplicatePostErrors(e,p),...(isWeatherPost(p)?['天氣需另行查證']:[])]
+        });
+        return json({...result,external_scheduled:false,external_published:false});
+      }
+      const grant=await readDelegatedGrant(env,id);
+      if(!grant)return json({ok:true,post_id:id,authorization_present:false,auto_schedule:false,auto_publish:false});
+      const quality=await verifyCurrentAiQuality(env,row,await fingerprint(row));
+      const assessment=assessDelegatedPublication({grant,post:row,quality,publicationAt:grant.publication_at,enabled:true});
+      return json({ok:true,post_id:id,authorization_present:true,authorization_id:grant.id,publication_at:grant.publication_at,authorization_current:assessment.ok,blocker:assessment.ok?null:assessment.reason,auto_schedule:false,auto_publish:false});
+    }catch(error){return json({error:clean(error?.message||error),auto_schedule:false,auto_publish:false},409)}
+  }
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
   if(request.method==='GET'&&/^\/api\/posts\/[^/]+\/autopublish-readiness$/.test(path)){
     const auth=await authorize(request,env,ctx);if(!auth.ok)return auth;
