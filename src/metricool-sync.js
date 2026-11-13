@@ -59,7 +59,7 @@ export function aiScheduleFresh(row,reviewedAt,publicationAt,{reviewerType}={}){
   if(reviewerType==='HUMAN')return{ok:true};
   // approved_by is the real owner email (FK profiles.email), not a synthetic
   // model identity. Distinguish AI via the verified reviewer type and stamp.
-  const aiApproved=reviewerType==='AI'||
+  const aiApproved=['AI','AI_DELEGATED'].includes(reviewerType)||
     String(row?.review_note||'').startsWith('AI審核：AI_APPROVED；')||
     String(row?.approved_by||'').startsWith('ai:');
   if(!aiApproved)return{ok:true};
@@ -165,9 +165,26 @@ export async function syncMetricool(env,checks,now=new Date()){
   for(const row of approved.results||[]){if((await checks.gateState(env,row)).ok)await enqueueMetricool(env,row,checks,now)}
   const result=await env.DB.prepare("SELECT * FROM social_metricool_sync WHERE state IN ('awaiting_work','queued','blocked_config','scheduled','expired') ORDER BY publication_at LIMIT 100").all();
   for(const link of result.results||[]){
-    const row=await env.DB.prepare('SELECT * FROM social_posts WHERE id=?').bind(link.post_id).first();
-    const valid=row&&['approved','scheduled'].includes(row.status)&&(await checks.gateState(env,row)).ok&&(await checks.fingerprint(row))===link.content_fingerprint;
     let state=link.state,error='';
+    const at=Date.parse(link.publication_at);
+    // An external UUID past its target time might already be public. Reconcile
+    // first, even if approval expired or a later review is unavailable. Never
+    // return an ambiguous remote delivery to a queue that could recreate it.
+    if(link.metricool_id&&link.uuid&&Number.isFinite(at)&&at<=now.getTime()){
+      state='awaiting_verification';error='原外部排程時間已到；先查證原UUID及逐平台發布回執，不取消、不重建、不重發。';
+      if(state!==link.state)await env.DB.prepare("UPDATE social_metricool_sync SET state=?,last_error=?,lease_until=NULL,updated_at=datetime('now') WHERE post_id=? AND state=?").bind(state,error,link.post_id,link.state).run();
+      continue;
+    }
+    let row,valid;
+    try{
+      row=await env.DB.prepare('SELECT * FROM social_posts WHERE id=?').bind(link.post_id).first();
+      valid=row&&['approved','scheduled'].includes(row.status)&&(await checks.gateState(env,row)).ok&&(await checks.fingerprint(row))===link.content_fingerprint;
+    }catch(error){
+      // Temporary D1 or review failure is not a revoked approval. Preserve
+      // this external UUID and let other independent links be checked.
+      console.warn('Metricool暫時無法核對；保留原排程',link.post_id);
+      continue;
+    }
     if(!valid){state=link.metricool_id&&link.state==='scheduled'?'cancel_required':'pending_review';error=state==='cancel_required'?'人工審核或圖文版本已失效；需Work立即處理既有Metricool排程，Worker不能取消外部排程。':'未取得有效的人工或AI核准，禁止送出';}
     else if(!link.metricool_id&&requiresDatedSchedule(row)&&!hasExplicitFutureDate(row,now)){state='blocked_context';error='節慶內容未指定符合節日的日期；禁止使用一般週間自動時段，等待日期核對。';}
     else if(Date.parse(link.publication_at)<=now.getTime()){state=link.metricool_id?'awaiting_verification':'expired';error=link.metricool_id?'排程時間已到；尚未查證平台結果，不標記成功，不重發。':'待Work排程已過期；先查是否已發布，再決定補排。';}
