@@ -4,6 +4,7 @@
   "preserveHumanApproval": true,
   "publish": false,
   "schedule": false,
-  "reason": "Read current 68 pending records and exact proposed dates, no stale 11/07 snapshot.",
-  "readonlyRetry": 2
+  "reason": "Urgent read-only verification of November 13 original post dates and approval state",
+  "readonlyRetry": 2,
+  "requested_at": "2026-11-13T11:39:00+08:00"
 }
