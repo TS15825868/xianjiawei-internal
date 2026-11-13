@@ -1,0 +1,105 @@
+{
+  "schema": "xjw-operational-delta-receipt-v1",
+  "date": "2026-11-13",
+  "native": {
+    "sourceRun": 43387893138,
+    "completedAt": "2026-11-13T07:45:32.408Z",
+    "facebook": {
+      "expectedId": "411869648852531",
+      "identity": {
+        "ok": false,
+        "status": 0,
+        "errorCode": 0
+      },
+      "identityMatches": false,
+      "configuredIdentityMatches": true,
+      "observedPageId": null
+    },
+    "instagram": {
+      "expectedUsername": "xianjiawei.tw"
+    },
+    "threads": {
+      "route": "Metricool",
+      "nativeAvailable": false
+    },
+    "reason": "facebook_identity_not_verified",
+    "missingMedia": [],
+    "recovery": [],
+    "actualPublishVerified": false,
+    "postMutations": 0,
+    "publications": 0
+  },
+  "historicalDelta": {
+    "sourceRun": 43388270374,
+    "source": "owner-confirmed published historical creative from website manifest; pinned pre-publication Git revision",
+    "sourceCommit": "565f2c81cf986b06d7597cba1567e8425279d1a3",
+    "publishedAtTaipei": "2026-08-06T12:54:00+08:00",
+    "historicalSha256": "c8404501569fbf072311f91cfac04faa3995df0ce0385608a6b1ebb31aa5a619",
+    "historicalBytes": 33589,
+    "candidateCount": 48,
+    "compared": 48,
+    "exactMatches": [],
+    "nearPairs": [],
+    "unverified": [],
+    "nearest": [
+      {
+        "id": "XJW-CONV-chat-luerong-intro",
+        "verified": true,
+        "currentSha256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+        "exact": false,
+        "distance": 23
+      },
+      {
+        "id": "XJW-CAND-20261225",
+        "verified": true,
+        "currentSha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+        "exact": false,
+        "distance": 23
+      },
+      {
+        "id": "XJW-CONV-chat-pantry-memory",
+        "verified": true,
+        "currentSha256": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+        "exact": false,
+        "distance": 25
+      },
+      {
+        "id": "XJW-CONV-chat-photo-size",
+        "verified": true,
+        "currentSha256": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+        "exact": false,
+        "distance": 25
+      },
+      {
+        "id": "XJW-CAND-20270105",
+        "verified": true,
+        "currentSha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+        "exact": false,
+        "distance": 25
+      }
+    ],
+    "knownRemoteIds": [
+      "411869648852531_1446376627512555",
+      "3957491164539558820_78424002938"
+    ],
+    "exactRemoteIdentityCertified": false,
+    "platformListKnown": false,
+    "fullHistoricalDedupCertified": false,
+    "aiApprovals": 0,
+    "postMutations": 0,
+    "publications": 0
+  },
+  "n8n": {
+    "sourceRun": 43388017596,
+    "deployId": "dep-dbo50vs9v7es73ea86g0",
+    "activationLogsObservedAt": "2026-11-12T13:33:12Z",
+    "readinessTimeoutSeconds": 40,
+    "threeActualExecutionsVerified": false,
+    "noAdditionalWakeWithoutNewEvidence": true
+  },
+  "previousSuccessfulDeployment": 43387857053,
+  "fullAcceptance": 43387857021,
+  "qualityGate": 43387857045,
+  "autoPublishEnabled": false,
+  "additionalCost": "NT$0"
+}
