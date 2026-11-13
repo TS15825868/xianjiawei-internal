@@ -366,28 +366,241 @@
       },
       {
         "dateTime": "2026-11-17T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+        "postId": "XJW-CONV-care-simple-checkin",
+        "title": "一句問候，也是一種關心",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
       },
       {
         "dateTime": "2026-11-20T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+        "postId": "XJW-CONV-chat-buy-first-look",
+        "title": "買食品前，把想確認的資訊記下來",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
       },
       {
         "dateTime": "2026-11-24T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+        "postId": "XJW-CONV-chat-recipe-or-feel",
+        "title": "備料前翻一頁料理筆記",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
       },
       {
         "dateTime": "2026-11-27T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+        "postId": "XJW-CONV-chat-family-old-object",
+        "title": "工作桌旁的一座石磨",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
       },
       {
         "dateTime": "2026-12-01T10:00:00+08:00",
-        "status": "TARGET_NOT_SCHEDULED",
-        "reason": "Complete independent current version quality and publication evidence before external scheduling"
+        "postId": "XJW-CONV-chat-elder-kitchen-habit",
+        "title": "長輩教過你的廚房習慣，現在還有留著嗎？",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-04T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-dayoff-cook",
+        "title": "放假的午後，從揉麵開始",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-08T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-traditional-image",
+        "title": "相簿裡的萬華街坊",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-11T10:00:00+08:00",
+        "postId": "XJW-CAND-20261211",
+        "title": "工作桌上的兩本筆記",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-15T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-no-standard-answer",
+        "title": "從一張食材圖卡開始",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-18T10:00:00+08:00",
+        "postId": "XJW-CONV-season-more-soup",
+        "title": "天氣轉涼，晚餐端一鍋熱湯",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": true
+      },
+      {
+        "dateTime": "2026-12-22T10:00:00+08:00",
+        "postId": "XJW-CAND-20261222",
+        "title": "冬至餐桌上的甜湯圓與鹹湯圓",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-25T10:00:00+08:00",
+        "postId": "XJW-CAND-20261225",
+        "title": "聖誕午後，替朋友擺好杯盤",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2026-12-29T10:00:00+08:00",
+        "postId": "XJW-CONV-year-end-small-win",
+        "title": "夕陽下的乾貨清點",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-01T09:00:00+08:00",
+        "postId": "XJW-FEST-2027-newyear-breakfast",
+        "title": "元旦早上，先把早餐留給一起生活的人",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-03T10:00:00+08:00",
+        "postId": "XJW-CONV-new-year-warm-cup-share",
+        "title": "新年早晨，端一杯溫熱飲品給家人",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-05T10:00:00+08:00",
+        "postId": "XJW-CAND-20270105",
+        "title": "在萬華店認識幾味乾燥食材",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-08T10:00:00+08:00",
+        "postId": "XJW-CONV-new-year-slow-start",
+        "title": "新年在家，先畫下一味想認識的食材",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-12T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-fixed-storage",
+        "title": "用完木匙，把它放回抽屜",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-15T10:00:00+08:00",
+        "postId": "XJW-CAND-20270115",
+        "title": "冬日早晨，為甜湯準備紅棗",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-19T10:00:00+08:00",
+        "postId": "XJW-CAND-20270119",
+        "title": "年菜菜單先留一道蔬菜",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-22T10:00:00+08:00",
+        "postId": "XJW-CONV-cny-gift-choice",
+        "title": "年節午後，留一張心意卡",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-24T10:00:00+08:00",
+        "postId": "XJW-CONV-cny-pre-clean",
+        "title": "年前，把萬華工作間掃乾淨",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-26T10:00:00+08:00",
+        "postId": "XJW-CAND-20270126",
+        "title": "市場買菜的路上，也有萬華的味道",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-01-29T10:00:00+08:00",
+        "postId": "XJW-CAND-20270129",
+        "title": "年前，把家常碗盤擦乾歸位",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-03T09:00:00+08:00",
+        "postId": "XJW-CONV-cny-childhood-now",
+        "title": "小時候過年跟現在，哪裡最不一樣？",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-05T09:00:00+08:00",
+        "postId": "XJW-FEST-2027-eve-welcome-home",
+        "title": "除夕，先替回家的人留一個位置",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-06T09:00:00+08:00",
+        "postId": "XJW-CONV-cny-family-choice",
+        "title": "過年回家，先給家人一個擁抱",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-09T10:00:00+08:00",
+        "postId": "XJW-CONV-cny-must-have-dish",
+        "title": "過年煮一桌菜，你家一定不能少哪一道？",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-12T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-tradition-today",
+        "title": "以前的做法，今天還能怎麼留下來？",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-16T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-receive-package",
+        "title": "收到產品後，你第一件事會先看哪裡？",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-19T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-pantry-memory",
+        "title": "把家裡熟悉的乾貨分開收好",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-20T09:00:00+08:00",
+        "postId": "XJW-FEST-2027-lantern-riceballs",
+        "title": "元宵夜，和家人一起搓湯圓",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-23T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-picture-or-text",
+        "title": "木勺旁的一頁工藝手繪",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
+      },
+      {
+        "dateTime": "2027-02-26T10:00:00+08:00",
+        "postId": "XJW-CONV-chat-last-bowl",
+        "title": "晚餐最後一碗熱湯",
+        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
+        "requiresWeatherRecheck": false
       }
     ],
     "doNotBackfillMissedToday": "11/13 single recovery completed at 12:55; never recreate UUID 3756528086249982532 or re-publish this post.",
@@ -396,6 +609,136 @@
       "pending_review": 48,
       "published": 6
     },
-    "todayClosed": true
+    "todayClosed": true,
+    "reserveCandidates": [
+      {
+        "id": "XJW-CONV-chat-quiet-work",
+        "title": "今天店裡有點安靜，你喜歡安靜工作嗎？",
+        "at": "2027-04-09T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CONV-chat-luerong-intro",
+        "title": "萬華工作桌上的鹿茸粉",
+        "at": null,
+        "reason": "product_draft_overlap_requires_mapping"
+      },
+      {
+        "id": "XJW-CONV-chat-opening-prep",
+        "title": "開店前，小老闆先做哪一件事？",
+        "at": "2027-04-13T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CONV-chat-photo-size",
+        "title": "窗邊拍一張龜鹿飲實物照",
+        "at": null,
+        "reason": "product_draft_overlap_requires_mapping"
+      },
+      {
+        "id": "XJW-CONV-chat-glass-vs-pouch-storage",
+        "title": "萬華雨天，先把門口整理好",
+        "at": null,
+        "reason": "weather_context_trigger"
+      },
+      {
+        "id": "XJW-CONV-chat-small-things-work",
+        "title": "小老闆今天忙的，都是一些很小的事",
+        "at": "2027-03-09T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CONV-weather-rain-chat",
+        "title": "雨天窗邊的一杯溫熱飲品",
+        "at": null,
+        "reason": "weather_context_trigger"
+      },
+      {
+        "id": "XJW-CONV-weather-cool-drink",
+        "title": "天氣轉涼時，你會想喝點溫熱的嗎？",
+        "at": null,
+        "reason": "weather_context_trigger"
+      },
+      {
+        "id": "XJW-CONV-cny-fridge-clean",
+        "title": "年前整理冰箱的一個角落",
+        "at": null,
+        "reason": "reserve_for_context_or_replace_slot"
+      },
+      {
+        "id": "XJW-CONV-cny-reopen",
+        "title": "開工第一天，小老闆先做一件小事",
+        "at": null,
+        "reason": "actual_business_reopening_date_required"
+      },
+      {
+        "id": "XJW-CAND-20270305",
+        "title": "萬華春日早晨，老街的新風景",
+        "at": "2027-03-05T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CAND-20270312",
+        "title": "春天的蔬菜湯，先把備料寫好",
+        "at": "2027-03-12T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CAND-20270323",
+        "title": "從老手藝到現代日常，記錄一個工序",
+        "at": "2027-03-23T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      },
+      {
+        "id": "XJW-CAND-20270330",
+        "title": "春天整理食品櫃的一個下午",
+        "at": "2027-03-30T10:00:00+08:00",
+        "reason": "outside_authorization_horizon"
+      }
+    ],
+    "verifiedCandidateCalendar": {
+      "run": 43369544712,
+      "verified": 48,
+      "changed": 24,
+      "planned": 34,
+      "reserved": 14,
+      "existingMappingsRepaired": 2,
+      "actualSchedules": 0
+    },
+    "monthlyFreeCapacity": {
+      "source": "https://help.metricool.com/main-differences-between-free-and-paid-plans-bl0v9",
+      "monthlyLimit": 20,
+      "perNetwork": true,
+      "accountCounterLiveVerified": false,
+      "months": [
+        {
+          "month": "2026-11",
+          "plannedContent": 4,
+          "platformDeliveries": 12,
+          "knownMonthPublishedPlatformDeliveries": 9,
+          "conservativeTotal": 21,
+          "minimumNativeDeliveriesIfAllKnownCount": 1
+        },
+        {
+          "month": "2026-12",
+          "plannedContent": 9,
+          "platformDeliveries": 27,
+          "minimumNativeDeliveries": 7
+        },
+        {
+          "month": "2027-01",
+          "plannedContent": 11,
+          "platformDeliveries": 33,
+          "minimumNativeDeliveries": 13
+        },
+        {
+          "month": "2027-02",
+          "plannedContent": 10,
+          "platformDeliveries": 30,
+          "minimumNativeDeliveries": 10
+        }
+      ],
+      "routeNote": "Do not reserve or schedule over verified monthly quota. Direct Meta FB/IG requires actual publish permission and per-platform ownership before hybrid routing; Threads remains Metricool. Do not activate until actual verified quota and safety."
+    }
   }
 }
