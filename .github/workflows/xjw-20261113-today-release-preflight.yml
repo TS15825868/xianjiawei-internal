@@ -1,0 +1,57 @@
+name: 仙加味 11／13 今日補發單篇現版核對
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261113-today-release-preflight.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-20261113-single-release
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Verify exact current post and independent scoped review; no remote publication
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createHash} from 'node:crypto';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          import evidence from './src/ai-quality-evidence.cjs';
+          const id='XJW-CONV-chat-shop-organizing';
+          const receipt=JSON.parse(fs.readFileSync('ops/receipts/20261112-three-new-owner-gap-readback.json')).ready.find(x=>x.id===id);
+          const screen=JSON.parse(fs.readFileSync('ops/receipts/20261112-three-image-screen/report.json'));
+          const sha=x=>createHash('sha256').update(x).digest('hex'),q=x=>"'"+String(x).replaceAll("'","''")+"'";
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const p=(await read("SELECT * FROM social_posts WHERE id="+q(id)))[0];
+          const r=(await read("SELECT * FROM social_post_quality_reviews WHERE post_id="+q(id)+" ORDER BY reviewed_at DESC,created_at DESC LIMIT 1"))[0];
+          const a=(await read("SELECT after_json FROM audit_logs WHERE id="+q(receipt.receipt)+" AND entity_id="+q(id)+" AND action='歷史缺件授權覆核'"))[0];
+          const clean=x=>String(x??'').trim();
+          const material={title:clean(p.title),headline:clean(p.headline),copy:clean(p.copy),category:clean(p.category),image_url:clean(p.image_url),image_alt:clean(p.image_alt),image_source:clean(p.image_source),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:clean(p.image_quality_status)};
+          const fp=sha(JSON.stringify(material)),review=JSON.parse(r.evidence_json),gap=JSON.parse(a.after_json);
+          if(p.status!=='pending_review'||p.published_at||p.scheduled_at||p.approved_by||p.approved_at||Number(p.image_approved)!==0||fp!==receipt.fingerprint||r.id!==receipt.reviewId||r.content_fingerprint!==fp||r.image_sha256!==receipt.sha256||r.decision!=='NEEDS_HUMAN_REVIEW')throw Error('current version differs');
+          if(gap.outcome!=='owner_gap_accepted_for_human_review'||gap.fingerprint!==fp||gap.image_sha256!==receipt.sha256||gap.ai_review_id!==r.id||gap.ai_approved!==false||gap.human_approved!==false)throw Error('owner gap record differs');
+          if(evidence.CHECKS.filter(k=>k!=='duplicate').some(k=>review.checks?.[k]?.result!=='PASS')||review.checks?.duplicate?.result!=='DEFER')throw Error('known quality defect or evidence mismatch');
+          const file='assets/post-images/2026-11-12/XJW-CONV-chat-shop-organizing-v6.jpg';
+          if(sha(fs.readFileSync(file))!==receipt.sha256||p.image_url!=='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'+file)throw Error('local image differs');
+          const b=await fetch(p.image_url,{redirect:'error',signal:AbortSignal.timeout(20000)});if(!b.ok||sha(Buffer.from(await b.arrayBuffer()))!==receipt.sha256)throw Error('live image differs');
+          if(!Array.isArray(screen.imageNearPairs)||screen.imageNearPairs.length||screen.exactFileDuplicates!==0||!screen.allPendingNearest.some(x=>x.id===id))throw Error('scoped image evidence differs');
+          const platforms=JSON.parse(p.platforms_json).map(x=>x.toLowerCase()).sort();
+          if(JSON.stringify(platforms)!=='["facebook","instagram","threads"]')throw Error('platforms changed');
+          const linked=await read("SELECT post_id FROM social_metricool_sync WHERE post_id="+q(id));
+          const deliveries=await read("SELECT post_id FROM social_publish_deliveries WHERE post_id="+q(id));
+          const dup=await read("SELECT id FROM social_posts WHERE id<>"+q(id)+" AND (image_url="+q(p.image_url)+" OR copy="+q(p.copy)+")");
+          const dupSha=await read("SELECT post_id FROM social_post_quality_reviews WHERE post_id<>"+q(id)+" AND image_sha256="+q(receipt.sha256));
+          if(linked.length||deliveries.length||dup.length||dupSha.length)throw Error('existing delivery, exact duplicate or mapping');
+          console.log('TODAY_RELEASE_PREFLIGHT '+JSON.stringify({id,fp,imageSha256:receipt.sha256,copy:p.copy,imageUrl:p.image_url,alt:p.image_alt,channels:platforms,current15Pass:true,duplicateScope:'no known collision; historical gaps remain',ownerGapAcceptance:'historical review only',fullAiApproved:false,knownHistoricalMediaGaps:true,remoteSchedule:false,published:false,preflightVerified:true}));
+          NODE
