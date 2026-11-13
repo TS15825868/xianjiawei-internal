@@ -1,4 +1,4 @@
-import app,{gateState} from './publishing-review-gate-entry.js';
+import app,{scheduledPublicationGate} from './publishing-review-gate-entry.js';
 import { keepLineWarm } from './flexible-publish-entry.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { publisherConfiguration } from './social-publisher.js';
@@ -120,7 +120,7 @@ async function quarantineUngatedDuePosts(env,scheduledTime){
     let gate={ok:false,reason:'正式圖文審核不存在'};
     // A transient database/review lookup failure is not an invalid approval.
     // Stop this cron safely and preserve the existing schedule for retry.
-    try{gate=await gateState(env,row)}catch(error){throw new Error('排程審核暫時無法讀取；保留原核准與排程：'+String(error?.message||error))}
+    try{gate=await scheduledPublicationGate(env,row)}catch(error){throw new Error('排程審核暫時無法讀取；保留原核准與排程：'+String(error?.message||error))}
     if(gate.ok)continue;
     const changed=await env.DB.prepare("UPDATE social_posts SET status='draft',scheduled_at=NULL,approved_by=NULL,approved_at=NULL,image_approved=0,updated_at=? WHERE id=? AND status='scheduled' AND published_at IS NULL AND scheduled_at=?").bind(new Date().toISOString(),row.id,row.scheduled_at).run();
     if(Number(changed?.meta?.changes)!==1)continue;
