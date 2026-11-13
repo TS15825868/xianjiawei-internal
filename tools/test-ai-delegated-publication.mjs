@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {assessDelegatedPublication,DELEGATION_SCHEMA,DELEGATION_END,prepareDelegatedGrant,readDelegatedGrant} from '../src/ai-delegated-publication.js';
+import {assessDelegatedPublication,DELEGATION_SCHEMA,DELEGATION_END,prepareDelegatedGrant,readDelegatedGrant,verifyDelegatedDispatch,STANDING_AUTHORIZATION_REF,DELEGATED_LATE_WINDOW_MS} from '../src/ai-delegated-publication.js';
 const now=Date.parse('2026-11-13T01:00:00Z'),at='2026-11-13T02:00:00Z';
 const quality={ok:true,decision:'AI_APPROVED',review_id:'review-1',fingerprint:'a'.repeat(64),image_sha256:'b'.repeat(64),channels:['facebook','instagram','threads'],reviewed_at:new Date(now).toISOString()};
 const grant={id:'grant-1',schema:DELEGATION_SCHEMA,scope:'brand-social-only',owner_authorization_ref:'owner-authorization',issued_at:new Date(now-1000).toISOString(),expires_at:DELEGATION_END,post_id:'post-1',fingerprint:quality.fingerprint,image_sha256:quality.image_sha256,review_id:quality.review_id,channels:quality.channels,publication_at:at};
@@ -35,4 +35,28 @@ test('persisted grant requires current quality, role, matching content and no de
     assert.equal(db.prepare("SELECT status FROM social_posts WHERE id=?").get(post.id).status,'pending_review');
     await assert.rejects(()=>prepareDelegatedGrant({DB},post,at,profile,deps),/禁止覆寫/);
   }finally{db.close()}
+});
+
+test('due-time delegation uses bounded dispatch window instead of expiring at target time',()=>{
+ const due=Date.parse(at),scheduled={...input.post,status:'scheduled',scheduled_at:at};
+ const dispatch={...input,phase:'dispatch',post:scheduled,now:due};
+ assert.equal(assessDelegatedPublication(dispatch).ok,true);
+ assert.equal(assessDelegatedPublication({...dispatch,now:due+60000}).ok,true);
+ assert.equal(assessDelegatedPublication({...dispatch,now:due-1}).ok,false);
+ assert.equal(assessDelegatedPublication({...dispatch,now:due+DELEGATED_LATE_WINDOW_MS+1}).ok,false);
+ assert.equal(assessDelegatedPublication({...dispatch,post:input.post}).ok,false);
+ assert.equal(assessDelegatedPublication({...dispatch,post:{...scheduled,scheduled_at:'2026-11-13T02:05:00Z'}}).ok,false);
+ assert.equal(assessDelegatedPublication({...dispatch,phase:'prepare'}).ok,false);
+});
+test('actual dispatch reads persisted grant, rechecks content, defaults off',async()=>{
+ const stored={...grant,owner_authorization_ref:STANDING_AUTHORIZATION_REF,channels_json:JSON.stringify(grant.channels)};
+ const DB={prepare(sql){assert.match(sql,/SELECT \* FROM social_post_delegated_publication/);return{bind(){return this},async first(){return stored}}}};
+ const post={...input.post,status:'scheduled',scheduled_at:at};
+ const deps={fingerprint:async()=>quality.fingerprint,verifyQuality:async()=>quality,checkContent:async()=>[],now:Date.parse(at)};
+ assert.equal((await verifyDelegatedDispatch({DB},post,deps)).ok,false);
+ const env={DB,XJW_AI_DELEGATED_PUBLICATION_ENABLED:'true'};
+ assert.equal((await verifyDelegatedDispatch(env,post,deps)).ok,true);
+ assert.equal((await verifyDelegatedDispatch(env,post,{...deps,checkContent:async()=>['duplicate']})).ok,false);
+ stored.revoked_at=at;
+ assert.equal((await verifyDelegatedDispatch(env,post,deps)).ok,false);
 });
