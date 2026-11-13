@@ -1,0 +1,52 @@
+{
+  "schema": "xjw-owner-retail-policy-v1",
+  "confirmedAt": "2026-11-13",
+  "currency": "TWD",
+  "channels": [
+    "store",
+    "LINE"
+  ],
+  "websitePriceDisplay": false,
+  "mixFlavorsConfirmed": false,
+  "products": [
+    {
+      "id": "PRD-PARTNER-BAUMANN-GINSENG-LOQUAT",
+      "name": "寶曼花旗參枇杷爽喉軟糖",
+      "unitPrice": 100,
+      "offers": [
+        {
+          "paid": 5,
+          "free": 1,
+          "total": 6,
+          "amount": 500
+        },
+        {
+          "paid": 10,
+          "free": 2,
+          "total": 12,
+          "amount": 1000
+        }
+      ]
+    },
+    {
+      "id": "PRD-PARTNER-SUNE-GINSENG-CITRUS",
+      "name": "上裕花旗參冰橙檸檬爽喉軟糖",
+      "unitPrice": 100,
+      "offers": [
+        {
+          "paid": 5,
+          "free": 1,
+          "total": 6,
+          "amount": 500
+        },
+        {
+          "paid": 10,
+          "free": 2,
+          "total": 12,
+          "amount": 1000
+        }
+      ]
+    }
+  ],
+  "costConfirmed": false
+}
