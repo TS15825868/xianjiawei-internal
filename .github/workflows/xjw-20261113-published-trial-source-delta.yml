@@ -1,0 +1,78 @@
+name: 仙加味8月6日正式已發試喝原圖缺件增量比對
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261113-published-trial-source-delta.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Fetch only new dated historical source and current image identities
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 20 'https://raw.githubusercontent.com/TS15825868/xianjiawei/565f2c81cf986b06d7597cba1567e8425279d1a3/images/posts/approved-v412/guilu-drink-trial-evergreen.jpg' -o /tmp/xjw-trial-20260806.jpg
+          curl -fsS --max-time 20 'https://raw.githubusercontent.com/TS15825868/xianjiawei/d7507538fb21b4a247488129cf5ff3273536e7a9/content/social-guilu-drink-trial-v1.json' -o /tmp/xjw-trial-published-manifest.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db});
+          const rows=(await execute("SELECT p.id,p.title,p.image_url,q.image_sha256,q.id AS review_id FROM social_posts p JOIN social_post_quality_reviews q ON q.id=(SELECT id FROM social_post_quality_reviews WHERE post_id=p.id ORDER BY reviewed_at DESC,created_at DESC,id DESC LIMIT 1) WHERE p.status='pending_review'")).flatMap(x=>x.results||[]);
+          fs.writeFileSync('/tmp/xjw-pending-image-delta.json',JSON.stringify(rows));
+          NODE
+      - name: Compare verified historical source bytes to all current local candidate bytes
+        run: |
+          python -m pip -q install pillow
+          python - <<'PY'
+          import json, hashlib, pathlib
+          from PIL import Image
+          root=pathlib.Path('.').resolve()
+          manifest=json.load(open('/tmp/xjw-trial-published-manifest.json'))
+          known=next(x for x in manifest['supersededPosterHistory'] if x['assetId']=='post-trial-evergreen-v412')
+          assert known['status']=='published-history-superseded' and known['publishedAtTaipei']=='2026-08-06T12:54:00+08:00' and known['preventRepublish'] is True
+          def digest(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+          def dhash(path):
+              im=Image.open(path).convert('L').resize((9,8),Image.Resampling.LANCZOS)
+              v=list(im.getdata())
+              return sum((v[y*9+x]>v[y*9+x+1])<<(y*8+x) for y in range(8) for x in range(8))
+          src=pathlib.Path('/tmp/xjw-trial-20260806.jpg')
+          hist_sha=digest(src)
+          hist_dhash=dhash(src)
+          prefix='https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/'
+          results=[]
+          for r in json.load(open('/tmp/xjw-pending-image-delta.json')):
+              u=r['image_url']
+              if not u.startswith(prefix):
+                  results.append({'id':r['id'],'verified':False,'reason':'not_local_repo_source'}); continue
+              path=(root/u[len(prefix):]).resolve()
+              if root not in path.parents or not path.is_file():
+                  results.append({'id':r['id'],'verified':False,'reason':'source_missing'});continue
+              try:
+                  sha=digest(path)
+                  if sha!=r['image_sha256']:
+                      results.append({'id':r['id'],'verified':False,'reason':'review_image_sha_mismatch'});continue
+                  dist=(hist_dhash^dhash(path)).bit_count()
+                  results.append({'id':r['id'],'verified':True,'currentSha256':sha,'exact':sha==hist_sha,'distance':dist})
+              except Exception:
+                  results.append({'id':r['id'],'verified':False,'reason':'decode_failed'})
+          result={'source':'owner-confirmed published historical creative from website manifest; pinned pre-publication Git revision','sourceCommit':'565f2c81cf986b06d7597cba1567e8425279d1a3','publishedAtTaipei':known['publishedAtTaipei'],'historicalSha256':hist_sha,'historicalBytes':src.stat().st_size,'candidateCount':len(results),'compared':sum(x['verified'] for x in results),'exactMatches':[x for x in results if x.get('exact')],'nearPairs':[x for x in results if x.get('distance',99)<=10],'unverified':[x for x in results if not x['verified']],'nearest':sorted((x for x in results if x['verified']),key=lambda x:x['distance'])[:5],'knownRemoteIds':['411869648852531_1446376627512555','3957491164539558820_78424002938'],'exactRemoteIdentityCertified':False,'platformListKnown':known['exactPlatformListRecorded'],'fullHistoricalDedupCertified':False,'aiApprovals':0,'postMutations':0,'publications':0}
+          print('XJW_TRIAL_HISTORICAL_DELTA '+json.dumps(result,ensure_ascii=False))
+          pathlib.Path('trial-historical-delta-receipt.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xjw-trial-historical-delta-${{ github.run_id }}
+          path: trial-historical-delta-receipt.json
+          retention-days: 5
