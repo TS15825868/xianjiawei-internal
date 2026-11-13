@@ -59,3 +59,19 @@ test('every five minutes yields 12 heartbeat attempts hourly without switching o
  assert.deepEqual(ticks,[0,5,10,15,20,25,30,35,40,45,50,55]);
  for(const invalid of [NaN,undefined,0,Infinity])assert.equal(shouldKeepLineWarmAt(invalid),false);
 });
+
+test('formal cadence stays Tuesday and Friday 10:00 Taipei, with Sunday only optional',async()=>{
+ const policy=JSON.parse(source('ops/social-publishing-cadence-current.json'));
+ assert.equal(policy.weeklyCadence.normalPostsPerWeek,2);
+ assert.equal(policy.weeklyCadence.specialWeekMaxPosts,3);
+ assert.deepEqual(policy.weeklyCadence.slots,[{weekday:'Tuesday',time:'10:00'},{weekday:'Friday',time:'10:00'},{weekday:'Sunday',time:'10:00',optional:true}]);
+ const {nextMetricoolSlot,metricoolConfiguration}=await import('../src/metricool-sync.js');
+ assert.match(metricoolConfiguration().defaultPolicy,/週二／週五.*10:00/);
+ assert.equal(nextMetricoolSlot(new Date('2026-11-13T01:59:00Z')),'2026-11-13T02:00:00.000Z');
+ assert.equal(nextMetricoolSlot(new Date('2026-11-13T02:01:00Z')),'2026-11-17T02:00:00.000Z');
+ assert.equal(nextMetricoolSlot(new Date('2026-11-13T02:01:00Z'),['2026-11-17T02:00:00.000Z']),'2026-11-20T02:00:00.000Z');
+ for(const path of ['src/worker.js','src/flexible-publish-entry.js']){
+   assert.doesNotMatch(source(path),/週一／週三／週五 09:00/);
+   assert.match(source(path),/週二／週五 10:00/);
+ }
+});
