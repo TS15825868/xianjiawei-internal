@@ -21,15 +21,16 @@ for(const [from,to] of replacements){
 }
 const {default:production}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
 
-function scenario({failHealth=false,failQuery=false,failUpdate=false,failReview=false,review={ok:true},due=[]}={}){
- const state={failHealth,failQuery,failUpdate,failReview,review,due,forwarded:0,lineWarmed:0,probes:0,writes:0};
+function scenario({failHealth=false,failQuery=false,failUpdate=false,failReview=false,review={ok:true},due=[],externalOwned=[]}={}){
+ const state={failHealth,failQuery,failUpdate,failReview,review,due,externalOwned,forwarded:0,lineWarmed:0,probes:0,writes:0};
  globalThis.__scheduleSafety=state;
  const DB={prepare(sql){return{
    bind(){return this},
    async all(){
      if(!sql.includes('FROM social_posts WHERE status=\'scheduled\''))throw Error('Unexpected SQL');
      if(state.failQuery)throw Error('database read unavailable');
-     return {results:state.due};
+     assert.match(sql,/NOT EXISTS\(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id\)/,'Native preflight must exclude external-owned schedules');
+     return {results:state.due.filter(row=>!state.externalOwned.includes(row.id))};
    },
    async run(){
      state.writes++;
@@ -89,6 +90,17 @@ async function exercise(options,{scheduledTime=Date.parse('2026-10-26T00:00:00Z'
  assert.equal(a.forwarded,0,'Unable to verify approval must not publish');
  assert.equal(a.probes,0,'Failed review read must not invoke provider probes');
  assert.equal(a.lineWarmed,1,'Independent LINE keep-warm remains available');
+}
+{
+ const a=await exercise({due:[{id:'external-schedule',status:'scheduled'}],externalOwned:['external-schedule'],review:{ok:false}});
+ assert.equal(a.writes,0,'Externally owned schedule must not be quarantined or changed');
+ assert.equal(a.forwarded,0,'Externally owned schedule must not enter native publisher');
+ assert.equal(a.probes,0,'Externally owned-only due work needs no native provider probe');
+}
+{
+ const a=await exercise({due:[{id:'external-schedule',status:'scheduled'},{id:'native-schedule',status:'scheduled'}],externalOwned:['external-schedule'],review:{ok:true}});
+ assert.equal(a.writes,0,'Existing external and valid native schedules remain intact');
+ assert.equal(a.forwarded,1,'Independent native schedule may still proceed');
 }
 delete globalThis.__scheduleSafety;
 console.log('PASS scheduled publication fails closed on review lookup/quarantine write/D1 failures, retains five-minute LINE keep-warm and one-minute reviewed schedule routing; no external requests');
