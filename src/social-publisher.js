@@ -391,10 +391,11 @@ async function publishOne(env,post,now){
   // Historical AI_APPROVED status alone must never dispatch a public post.
   let manualGate;
   try{
-    const {gateState}=await import('./publishing-review-gate-entry.js');
-    manualGate=await gateState(env,post);
+    const {scheduledPublicationGate}=await import('./publishing-review-gate-entry.js');
+    manualGate=await scheduledPublicationGate(env,post,now.getTime());
   }catch(error){return{id:post.id,ok:false,blocked:true,reason:'human_gate_unavailable',error:String(error?.message||error),results:[]};}
-  if(!manualGate?.ok||manualGate.reviewer_type==='AI'||manualGate.reviewed_by!==post.approved_by)
+  const delegated=manualGate?.ok===true&&manualGate.reviewer_type==='AI_DELEGATED'&&env?.XJW_AI_DELEGATED_PUBLICATION_ENABLED==='true';
+  if(!manualGate?.ok||(!delegated&&(manualGate.reviewer_type!=='HUMAN'||manualGate.reviewed_by!==post.approved_by)))
     return{id:post.id,ok:false,blocked:true,reason:'human_approval_required',error:manualGate?.reason||'未取得與目前圖文版本一致的人工審核及核准',results:[]};
   const media=mediaUrl(post);
   if(!media)return{id:post.id,ok:false,blocked:true,reason:'missing_media',error:'缺少正式圖片或影片，依仙加味最新規則禁止發布。',results:[]};
@@ -404,6 +405,17 @@ async function publishOne(env,post,now){
     reason:'invalid_platform_selection',
     error:'包含不支援或無法辨識的發布平台，禁止忽略原設定而部分發布。請人工重新檢查完整平台清單。',results:[]};
   if(platforms.length===0)return{id:post.id,ok:false,blocked:true,reason:'no_valid_platforms',error:'未設定有效發布平台，禁止將貼文標記為已發布。',results:[]};
+  if(delegated){
+    // This path is native-only. Threads must first have a separately verified
+    // external scheduler; do not partially publish a three-platform grant.
+    const approved=manualGate.channels||[];
+    if(media!==clean(post.image_url)||isVideoPost(post)||JSON.stringify(platforms.map(p=>p.toLowerCase()).sort())!==JSON.stringify([...approved].sort())||platforms.some(p=>!['Facebook','Instagram'].includes(p)))
+      return{id:post.id,ok:false,blocked:true,reason:'delegated_native_route_not_verified',results:[]};
+    const {probePublisherConnections}=await import('./platform-connection-probe.js');
+    const probe=await probePublisherConnections(env);
+    if(platforms.some(p=>probe.platforms?.[p]?.directConfigured!==true||probe.platforms?.[p]?.connected!==true||probe.platforms?.[p]?.verified!==true))
+      return{id:post.id,ok:false,blocked:true,reason:'delegated_native_platform_not_verified',results:[]};
+  }
   const results=[];
   for(const platform of platforms){
     const prior=await deliveryRecord(env,post.id,platform);
@@ -417,7 +429,8 @@ async function publishOne(env,post,now){
     try{claimed=await reserveDelivery(env,post.id,platform,prior,now)}
     catch{results.push({platform,ok:false,skipped:true,reason:'delivery_claim_unavailable',retryable:false});continue}
     if(!claimed){results.push({platform,ok:false,skipped:true,reason:'delivery_claim_conflict',retryable:false});continue}
-    const result=await dispatchPlatform(env,post,platform);
+    // Delegation may use only the individually verified official native route.
+    const result=delegated?(platform==='Facebook'?await dispatchFacebook(env,post):await dispatchInstagram(env,post)):await dispatchPlatform(env,post,platform);
     try{await saveDelivery(env,post.id,platform,result,now.toISOString());results.push(result)}
     catch{
       // The remote platform may have accepted this send; leave the durable
