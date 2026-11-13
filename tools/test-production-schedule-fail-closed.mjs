@@ -4,8 +4,8 @@ import assert from 'node:assert/strict';
 // Isolated executable test: no Cloudflare credentials, database, API or posting.
 let source=fs.readFileSync(new URL('../src/production-entry.js',import.meta.url),'utf8');
 const replacements=[
-  ["import app,{gateState} from './publishing-review-gate-entry.js';",
-   "const app={scheduled:async()=>{globalThis.__scheduleSafety.forwarded++}};const gateState=async()=>{if(globalThis.__scheduleSafety.failReview)throw Error('temporary review storage failure');return globalThis.__scheduleSafety.review;};"],
+  ["import app,{scheduledPublicationGate} from './publishing-review-gate-entry.js';",
+   "const app={scheduled:async()=>{globalThis.__scheduleSafety.forwarded++}};const scheduledPublicationGate=async()=>{if(globalThis.__scheduleSafety.failReview)throw Error('temporary review storage failure');return globalThis.__scheduleSafety.review;};"],
   ["import { keepLineWarm } from './flexible-publish-entry.js';",
    "const keepLineWarm=async()=>{globalThis.__scheduleSafety.lineWarmed++};"],
   ["import { createRemoteJWKSet, jwtVerify } from 'jose';",
