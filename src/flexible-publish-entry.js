@@ -197,7 +197,7 @@ async function currentHealth(request,env,ctx){
     ...payload,
     runtimeEntry:'src/flexible-publish-entry.js',
     flexiblePublishingVersion:FLEX_VERSION,
-    fixedPostingFrequency:'每週 3 篇（週一／週三／週五 09:00，Asia/Taipei）',
+    fixedPostingFrequency:'每週2～3篇（週二／週五 10:00，Asia/Taipei；特殊週另加1篇）',
     immediatePublishingBypassesFixedSchedule:true,
     unreadyPlatformFallsBackToManual:true,
     manualDeliveryReconciliation:true,
