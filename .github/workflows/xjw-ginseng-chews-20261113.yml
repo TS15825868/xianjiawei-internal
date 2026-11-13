@@ -1,0 +1,70 @@
+name: 仙加味花旗參軟糖兩款正式商品與售價建檔
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-ginseng-chews-20261113.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-ginseng-chews-20261113
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Import two exact owner-authorized product records, preserve stock and unknown cost
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const source='429e4c0fdf1adae98c859b4c487c2a3bfd9133fa';
+          const raw='https://raw.githubusercontent.com/TS15825868/xianjiawei/'+source+'/';
+          const publicBase='https://ts15825868.github.io/xianjiawei/';
+          const r=await fetch(raw+'partner-catalog.json',{signal:AbortSignal.timeout(15000)});
+          if(!r.ok)throw Error('product authority unavailable');
+          const catalog=await r.json();
+          const ids=['baumann-ginseng-loquat','sun-e-ginseng-citrus'];
+          const products=ids.map(id=>catalog.products.find(x=>x.id===id));
+          if(products.some(p=>!p||p.public!==true||p.size!=='30g／包｜12包／盒'||p.imageSourceRecord?.noAIGeneration!==true))throw Error('product source mismatch');
+          const db=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId:db});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const q=x=>x==null?'NULL':"'"+String(x).replaceAll("'","''")+"'";
+          const before=await read("SELECT id,data_json,archived FROM app_records WHERE module='products'");
+          const result=[];
+          for(const p of products){
+            const matches=before.filter(row=>{const d=JSON.parse(row.data_json);return row.id===p.erpId||String(d.sku)===p.barcode||String(d.barcode)===p.barcode||[p.name,p.displayName].includes(d.name)});
+            if(matches.length>1||matches.some(row=>row.archived))throw Error('ambiguous or archived product identity '+p.id);
+            const row=matches[0];
+            const old=row?JSON.parse(row.data_json):{};
+            if(row&&old.brand_name&&![p.brand,'待確認','待核對','仙加味精選'].includes(old.brand_name))throw Error('brand identity conflict '+p.id);
+            const next={...old,id:row?.id||p.erpId,name:p.displayName,sku:p.barcode,barcode:p.barcode,category:'其他品牌商品／休閒食品',brand_name:p.brand,manufacturer_brand:p.brand,manufacturing_mode:'原廠商品轉售',source_product:p.name,source_specification:p.size,specification:p.size,unit:'包',listing_status:'已核准公開',public_product_card_enabled:true,online_transaction_enabled:false,retail_price:100,promotion_text:'買5送1｜6包500元；整盒12包1000元；各口味分開計價，混搭未確認',offers:[{qty:12,total:1000,label:'整盒12包'},{qty:6,total:500,label:'買5送1'}],price_confirmed_at:'2026-11-13',description:p.description,ingredients:p.ingredients.join('、'),storage:p.storage.join('；'),image_url:publicBase+p.image,approved_display_image_url:publicBase+p.image,approved_detail_image_urls:p.detailImages.map(x=>publicBase+x),source_image_ids:p.sourceFiles,photo_metadata:{source:p.imageSourceRecord,verifiedAsOriginalProductPhoto:true,productLabelMatched:true,noChatScreenshot:true},notes:[old.notes,'原廠負責廠商：上裕興業有限公司；原產地台灣；保存期限2年；實際庫存、進貨成本、批號及效期須依實際進貨確認。'].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join('\n')};
+            // Do not replace a known stock, cost, wholesale price, batch or expiry.
+            // Bundle totals are not single-unit promotional prices.
+            if(!row)delete next.promotional_price;
+            const id=next.id;
+            if(row){
+              const w=await execute("UPDATE app_records SET data_json="+q(JSON.stringify(next))+",updated_at=CURRENT_TIMESTAMP WHERE module='products' AND id="+q(id)+" AND archived=0 AND data_json="+q(row.data_json));
+              if(Number(w[0]?.meta?.changes)!==1)throw Error('concurrent change; preserve '+id);
+            }else{
+              const w=await execute("INSERT INTO app_records(module,id,data_json,archived,created_by,created_at,updated_at) SELECT 'products',"+q(id)+","+q(JSON.stringify(next))+",0,(SELECT email FROM profiles WHERE role='owner' AND active=1 AND (SELECT COUNT(*) FROM profiles WHERE role='owner' AND active=1)=1),CURRENT_TIMESTAMP,CURRENT_TIMESTAMP WHERE NOT EXISTS(SELECT 1 FROM app_records WHERE module='products' AND id="+q(id)+")");
+              if(Number(w[0]?.meta?.changes)!==1)throw Error('existing product changed; preserve '+id);
+            }
+            const back=(await read("SELECT data_json FROM app_records WHERE module='products' AND id="+q(id)+" AND archived=0"))[0];
+            const d=JSON.parse(back.data_json);
+            if(d.retail_price!==100||d.sku!==p.barcode||d.specification!==p.size||d.offers.length!==2||d.image_url!==publicBase+p.image||d.online_transaction_enabled!==false)throw Error('product readback mismatch '+id);
+            for(const k of ['cost_price','wholesale_price','quantity','stock','batch_number','expiry_date'])if(JSON.stringify(old[k])!==JSON.stringify(d[k]))throw Error('unknown operational field changed '+k);
+            result.push({id,name:d.name,retailPrice:d.retail_price,offers:d.offers,verified:true,newRecord:!row});
+          }
+          const after=await read("SELECT id,data_json,archived FROM app_records WHERE module='products'");
+          for(const x of before)if(!result.some(y=>y.id===x.id)){const y=after.find(v=>v.id===x.id);if(!y||y.data_json!==x.data_json||y.archived!==x.archived)throw Error('unrelated product modified')}
+          console.log('XJW_GINSENG_ERP_READBACK '+JSON.stringify({source,result,previousCount:before.filter(x=>!x.archived).length,currentCount:after.filter(x=>!x.archived).length,stockMutations:0,unconfirmedCostWrites:0,orderMutations:0}));
+          NODE
