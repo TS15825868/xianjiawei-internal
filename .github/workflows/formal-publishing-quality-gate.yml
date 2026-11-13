@@ -113,6 +113,9 @@ jobs:
           # One 11/10 user-directed post was actually published by Metricool.
           # Read real provider deliveries; NEVER forge image_approved in D1.
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT s.post_id,s.metricool_id,s.uuid,s.state,d.platform,d.status,d.remote_id FROM social_metricool_sync s JOIN social_publish_deliveries d ON d.post_id=s.post_id WHERE s.post_id='XJW-CONV-chat-wanhua-morning' AND s.metricool_id=422664301 AND s.uuid='2843164329541847045'" > formal-owner-direct-deliveries.json
+          # The 11/13 release is closed in D1; verify the exact immutable grant,
+          # fingerprint, scoped review and three published receipts, not approval flags.
+          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT s.post_id,s.metricool_id,s.uuid,s.state,s.content_fingerprint,d.platform,d.status,d.remote_id,g.id AS grant_id,g.schema AS grant_schema,g.fingerprint AS grant_fp,g.review_id,g.owner_authorization_ref,q.decision,q.content_fingerprint AS review_fp,q.image_sha256 FROM social_metricool_sync s JOIN social_publish_deliveries d ON d.post_id=s.post_id JOIN social_post_delegated_publication g ON g.post_id=s.post_id JOIN social_post_quality_reviews q ON q.id=g.review_id AND q.post_id=s.post_id WHERE s.post_id='XJW-CONV-chat-shop-organizing' AND s.metricool_id=426543853 AND s.uuid='3756528086249982532'" > formal-owner-direct-20261113.json
 
       - name: Verify every public copy, assigned image and status dynamically
         shell: bash
@@ -146,9 +149,27 @@ jobs:
               r.uuid==='2843164329541847045' &&
               r.state==='published' && r.status==='published' &&
               officialUrls.get(String(r.platform).toLowerCase())===r.remote_id);
-          const isOwnerDirectHistoricalReceipt=p=>exceptionIsVerified &&
-            p.id==='XJW-CONV-chat-wanhua-morning'&&p.status==='published'&&
-            Number(p.image_approved||0)===0;
+          const e13=JSON.parse(fs.readFileSync('formal-owner-direct-20261113.json','utf8'));
+          const rows13=(Array.isArray(e13)?e13[0]?.results:e13?.results)||[];
+          const urls13=new Map([
+            ['facebook','https://facebook.com/1475619177921633/posts/1539568071526743'],
+            ['instagram','https://www.instagram.com/p/Dfq0larCCzo/'],
+            ['threads','https://www.threads.com/@xianjiawei.tw/post/Dfq0neWjfH9']
+          ]);
+          const fp13='b7e23662589815a8c58aa2f0e39a7ef60435b6e5f1421dc0d46aa3617c235e72';
+          const verified13=rows13.length===3&&new Set(rows13.map(r=>r.platform)).size===3&&rows13.every(r=>
+            r.post_id==='XJW-CONV-chat-shop-organizing'&&Number(r.metricool_id)===426543853&&
+            r.uuid==='3756528086249982532'&&r.state==='published'&&r.status==='published'&&urls13.get(r.platform)===r.remote_id&&
+            r.grant_id==='XJW-OWNER-DIRECT-20261113-shop-organizing-v6'&&r.grant_schema==='xjw-owner-directed-scoped-release-v1'&&
+            r.owner_authorization_ref==='owner-chat-2026-11-13-today-post-direct-release'&&
+            r.content_fingerprint===fp13&&r.grant_fp===fp13&&r.review_fp===fp13&&
+            r.review_id==='AI-DEFER-a05cf82d64a651504c3790453f9b060f3f8743d23839d260e5ec7912d093df84'&&
+            r.decision==='NEEDS_HUMAN_REVIEW'&&r.image_sha256==='b9b7192073a97c140a01875f91afa70febb2930d4419265b86dc24b816e20ab3');
+          const fingerprint=require('./tools/metricool-free-evidence.cjs').fingerprint;
+          const isOwnerDirectHistoricalReceipt=p=>!!p&&p.status==='published'&&Number(p.image_approved||0)===0&&(
+            (exceptionIsVerified&&p.id==='XJW-CONV-chat-wanhua-morning')||
+            (verified13&&p.id==='XJW-CONV-chat-shop-organizing'&&fingerprint(p)===fp13&&p.published_at==='2026-11-13T12:55:00+08:00'));
+          if(verified13)console.log('::notice title=11/13正式發布回執::只辨識已發布歷史，不改AI判定、人工核准或未來貼文資格。');
 
           const allowedStatuses=new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
           const banned=['治療','改善疾病','預防疾病','關節','卡卡','疲勞','精神不濟','補氣','生津','膠原蛋白','鈣質','保證功效','台興山產','主文已經','已經發過','不再重複','之後所有產品圖','排版方便','實際作業','一句廣告語','候選圖','回填','守門員','TODO','debug','placeholder'];
