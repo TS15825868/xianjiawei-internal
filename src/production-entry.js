@@ -114,7 +114,9 @@ async function platformPublishGate(env,{force=false}={}){
 async function quarantineUngatedDuePosts(env,scheduledTime){
   if(!env?.DB)return{checked:0,quarantined:0};
   const at=new Date(scheduledTime||Date.now()).toISOString();
-  const result=await env.DB.prepare("SELECT * FROM social_posts WHERE status='scheduled' AND scheduled_at IS NOT NULL AND datetime(scheduled_at)<=datetime(?)").bind(at).all();
+  const result=await env.DB.prepare("SELECT * FROM social_posts WHERE status='scheduled' AND scheduled_at IS NOT NULL AND datetime(scheduled_at)<=datetime(?) AND NOT EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id=social_posts.id)").bind(at).all();
+  // Metricool owns its entire lifecycle, including failed or ambiguous receipts.
+  // Never revoke or mutate an externally owned schedule during native preflight.
   let quarantined=0;
   for(const row of result.results||[]){
     let gate={ok:false,reason:'正式圖文審核不存在'};
