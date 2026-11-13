@@ -1,0 +1,64 @@
+name: 仙加味11月13日三平台發布回執正式結案
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261113-published-reconcile.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-20261113-published-reconcile
+  cancel-in-progress: false
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Reconcile verified published receipts only
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createRequire} from 'node:module';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const {fingerprint}=createRequire(import.meta.url)('./tools/metricool-free-evidence.cjs');
+          const id='XJW-CONV-chat-shop-organizing',gid='XJW-OWNER-DIRECT-20261113-shop-organizing-v6';
+          const fp='b7e23662589815a8c58aa2f0e39a7ef60435b6e5f1421dc0d46aa3617c235e72';
+          const mid=426543853,uuid='3756528086249982532',at='2026-11-13T12:55:00+08:00';
+          const providers=[
+            {network:'facebook',id:'1539568071526743',status:'PUBLISHED',publicUrl:'https://facebook.com/1475619177921633/posts/1539568071526743'},
+            {network:'instagram',id:'https://www.instagram.com/p/Dfq0larCCzo/',status:'PUBLISHED',publicUrl:'https://www.instagram.com/p/Dfq0larCCzo/'},
+            {network:'threads',id:'18165681304498422',status:'PUBLISHED',publicUrl:'https://www.threads.com/@xianjiawei.tw/post/Dfq0neWjfH9'}
+          ];
+          const q=x=>"'"+String(x).replaceAll("'","''")+"'";
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const p=(await read("SELECT * FROM social_posts WHERE id="+q(id)))[0];
+          const l=(await read("SELECT * FROM social_metricool_sync WHERE post_id="+q(id)))[0];
+          const g=(await read("SELECT * FROM social_post_delegated_publication WHERE id="+q(gid)))[0];
+          const review=(await read("SELECT id,decision,content_fingerprint,image_sha256 FROM social_post_quality_reviews WHERE post_id="+q(id)+" ORDER BY reviewed_at DESC,created_at DESC LIMIT 1"))[0];
+          if(!p||fingerprint(p)!==fp||!['pending_review','published'].includes(p.status)||!l||Number(l.metricool_id)!==mid||l.uuid!==uuid||l.publication_at!==at||l.content_fingerprint!==fp||!['awaiting_verification','published'].includes(l.state)||g?.schema!=='xjw-owner-directed-scoped-release-v1'||g.fingerprint!==fp||g.review_id!==review?.id||review.decision!=='NEEDS_HUMAN_REVIEW')throw Error('source or scope changed; no write');
+          const prior=JSON.parse(l.template_json);
+          if(prior.remote?.id!==mid||prior.remote?.uuid!==uuid)throw Error('remote identity mismatch');
+          const now=new Date().toISOString();
+          const proof={...prior,remote:{...prior.remote,providers},publicationVerified:true,releaseState:'PUBLISHED_VERIFIED',verifiedAt:now,fullAiApproved:false,historyGapPreserved:true};
+          const existing=await read("SELECT platform,status,remote_id FROM social_publish_deliveries WHERE post_id="+q(id));
+          if(existing.some(d=>!providers.some(r=>r.network===d.platform&&d.status==='published'&&d.remote_id===r.publicUrl)))throw Error('existing delivery differs; no overwrite');
+          const scope=" EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id="+q(id)+" AND metricool_id="+mid+" AND uuid="+q(uuid)+" AND content_fingerprint="+q(fp)+" AND state IN ('awaiting_verification','published'))";
+          const statements=providers.filter(r=>!existing.some(d=>d.platform===r.network)).map(r=>"INSERT INTO social_publish_deliveries(post_id,platform,status,attempt_count,last_attempt_at,published_at,remote_id,response_json,error_text,created_at,updated_at) SELECT "+[id,r.network,'published'].map(q).join(',')+",1,"+[now,at,r.publicUrl,JSON.stringify({source:'Metricool connector',...r,metricoolId:mid,uuid,observedAt:now,ownerDirectException:true,duplicate:'DEFER'}),'',now,now].map(q).join(',')+" WHERE "+scope+" AND NOT EXISTS(SELECT 1 FROM social_publish_deliveries WHERE post_id="+q(id)+" AND platform="+q(r.network)+")");
+          const complete="(SELECT COUNT(*) FROM social_publish_deliveries WHERE post_id="+q(id)+" AND status='published' AND platform IN ('facebook','instagram','threads') AND TRIM(COALESCE(remote_id,''))<>'')=3";
+          statements.push("UPDATE social_metricool_sync SET state='published',template_json="+q(JSON.stringify(proof))+",last_error='',last_sync_at="+q(now)+",updated_at="+q(now)+" WHERE post_id="+q(id)+" AND uuid="+q(uuid)+" AND metricool_id="+mid+" AND content_fingerprint="+q(fp)+" AND "+complete);
+          statements.push("UPDATE social_posts SET status='published',published_at="+q(at)+",scheduled_at=NULL,proposed_scheduled_at=NULL,review_note="+q('使用者單篇委任補發；Metricool三平台正式發布回執已核對；原AI歷史去重DEFER保留，未冒充人工或完整AI核准。')+",updated_at="+q(now)+" WHERE id="+q(id)+" AND status='pending_review' AND updated_at="+q(p.updated_at)+" AND published_at IS NULL AND approved_by IS NULL AND "+complete+" AND EXISTS(SELECT 1 FROM social_metricool_sync WHERE post_id="+q(id)+" AND state='published' AND uuid="+q(uuid)+")");
+          statements.push("INSERT OR IGNORE INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) SELECT "+[gid+'-PUBLISHED','chatgpt:owner-delegated','單篇三平台正式發布回執結案','貼文',id,JSON.stringify({status:p.status,review:review.id}),JSON.stringify(proof),''].map(q).join(',')+" WHERE EXISTS(SELECT 1 FROM social_posts WHERE id="+q(id)+" AND status='published') AND "+complete);
+          await execute(statements.join(';\n'));
+          const back=(await read("SELECT status,published_at,approved_by,image_approved FROM social_posts WHERE id="+q(id)))[0];
+          const link=(await read("SELECT metricool_id,uuid,state FROM social_metricool_sync WHERE post_id="+q(id)))[0];
+          const receipts=await read("SELECT platform,status,remote_id FROM social_publish_deliveries WHERE post_id="+q(id)+" ORDER BY platform");
+          if(back.status!=='published'||!back.published_at||back.approved_by||Number(back.image_approved)!==0||link.state!=='published'||link.uuid!==uuid||receipts.length!==3||receipts.some(d=>!providers.some(r=>d.platform===r.network&&d.status==='published'&&d.remote_id===r.publicUrl)))throw Error('readback mismatch; no external retry');
+          console.log('XJW_PUBLISHED_RECONCILED '+JSON.stringify({post:back,link,receipts,counts:await read("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status"),externalSends:0,qualityDecision:review.decision}));
+          NODE
