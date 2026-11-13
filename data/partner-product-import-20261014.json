@@ -807,5 +807,41 @@
     "approved_display_image_url": "https://ts15825868.github.io/xianjiawei/images/partner-products/staging/IMG_9959.jpg",
     "approved_detail_image_urls": [],
     "display_media_version": "20261016-calm-catalog-v1"
+  },
+  {
+    "id": "PRD-PARTNER-BAUMANN-GINSENG-LOQUAT",
+    "name": "寶曼花旗參枇杷爽喉軟糖",
+    "brand_name": "寶曼",
+    "barcode": "4719886820188",
+    "ingredients": "砂糖、麥芽糖、椰子油、明膠（動物來源）、植物萃取物（枇杷葉、桔梗、茯苓、陳皮、蓮子、羅漢果、生薑）、花旗參、蜂蜜、香料、焦糖色素、薄荷、棕櫚蠟",
+    "category": "其他品牌商品／休閒食品",
+    "specification": "30g／包；12包／盒",
+    "manufacturing_mode": "原廠商品轉售",
+    "manufacturer_brand": "上裕興業有限公司（負責廠商）",
+    "origin": "台灣",
+    "storage": "陰涼乾燥處，避免日光直射，勿擠壓",
+    "shelf_life": "2年",
+    "listing_status": "內部建檔／待正式圖片同步",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false,
+    "notes": "2026-11-13 使用者確認販售；原廠正背面照片為資料來源。含動物明膠；非素食。價格另依正式零售政策，不推定進貨成本。"
+  },
+  {
+    "id": "PRD-PARTNER-SUNE-GINSENG-CITRUS",
+    "name": "上裕花旗參冰橙檸檬爽喉軟糖",
+    "brand_name": "上裕",
+    "barcode": "4719886820164",
+    "ingredients": "砂糖、麥芽糖、椰子油、明膠（動物來源）、檸檬酸、花旗參、檸檬濃縮果汁、柳橙濃縮果汁、香料、焦糖色素、薄荷、棕櫚蠟",
+    "category": "其他品牌商品／休閒食品",
+    "specification": "30g／包；12包／盒",
+    "manufacturing_mode": "原廠商品轉售",
+    "manufacturer_brand": "上裕興業有限公司（負責廠商）",
+    "origin": "台灣",
+    "storage": "陰涼乾燥處，避免日光直射，勿擠壓",
+    "shelf_life": "2年",
+    "listing_status": "內部建檔／待正式圖片同步",
+    "public_product_card_enabled": false,
+    "online_transaction_enabled": false,
+    "notes": "2026-11-13 使用者確認販售；原廠正背面照片為資料來源。含動物明膠；非素食。價格另依正式零售政策，不推定進貨成本。"
   }
 ]
