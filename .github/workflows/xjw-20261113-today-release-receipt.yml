@@ -1,0 +1,48 @@
+name: 仙加味今日補發 Metricool 正式排程回執
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/xjw-20261113-today-release-receipt.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-20261113-today-receipt
+  cancel-in-progress: false
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Bind verified remote schedule to original reserved post; do not dispatch
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createHash} from 'node:crypto';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          const postId='XJW-CONV-chat-shop-organizing',grantId='XJW-OWNER-DIRECT-20261113-shop-organizing-v6';
+          const fp='b7e23662589815a8c58aa2f0e39a7ef60435b6e5f1421dc0d46aa3617c235e72',at='2026-11-13T12:55:00+08:00';
+          const remote={id:426543853,uuid:'3756528086249982532',publicationDate:{dateTime:'2026-11-13T12:55:00',timezone:'Asia/Taipei'},draft:false,autoPublish:true,providers:[{network:'facebook',status:'PENDING'},{network:'instagram',status:'PENDING'},{network:'threads',status:'PENDING'}],media:['https://static.metricool.com/planner/202611/6889683-file-1051004458734847480.jpeg'],instagramData:{autoPublish:true,isAiGenerated:true,carouselTags:{'0':[{username:'ct314069',x:0.5,y:0.5,deleted:false}]}},plannerUrl:'https://app.metricool.com/planner/calendar?blogId=6889683&openWithPostUuid=3756528086249982532'};
+          const q=x=>"'"+String(x).replaceAll("'","''")+"'";
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const p=(await read("SELECT * FROM social_posts WHERE id="+q(postId)))[0];
+          const g=(await read("SELECT * FROM social_post_delegated_publication WHERE id="+q(grantId)))[0];
+          const l=(await read("SELECT * FROM social_metricool_sync WHERE post_id="+q(postId)))[0];
+          const clean=x=>String(x??'').trim();
+          const material={title:clean(p.title),headline:clean(p.headline),copy:clean(p.copy),category:clean(p.category),image_url:clean(p.image_url),image_alt:clean(p.image_alt),image_source:clean(p.image_source),image_width:Number(p.image_width||0),image_height:Number(p.image_height||0),image_quality_status:clean(p.image_quality_status)};
+          if(createHash('sha256').update(JSON.stringify(material)).digest('hex')!==fp||p.published_at||p.status!=='pending_review'||g?.schema!=='xjw-owner-directed-scoped-release-v1'||g.fingerprint!==fp||g.publication_at!==at||l?.uuid!==grantId||l.state!=='unknown'||l.content_fingerprint!==fp)throw Error('release reservation no longer matches');
+          const proof={schema:'xjw-owner-directed-scoped-release-receipt-v1',source:'Metricool connector create and independent getScheduledPosts readback',authorizationId:grantId,postId,fingerprint:fp,remote,externalScheduleVerified:true,publicationVerified:false,fullAiApproved:false,historyGapPreserved:true,releaseState:'REMOTE_SCHEDULED_AWAITING_DELIVERY',observedCopy:p.copy,observedAlt:p.image_alt};
+          const write=await execute("UPDATE social_metricool_sync SET metricool_id=426543853,uuid="+q(remote.uuid)+",state='awaiting_verification',template_json="+q(JSON.stringify(proof))+",last_error='',last_sync_at="+q(new Date().toISOString())+",updated_at=datetime('now') WHERE post_id="+q(postId)+" AND uuid="+q(grantId)+" AND state='unknown' AND content_fingerprint="+q(fp)+" AND EXISTS(SELECT 1 FROM social_posts WHERE id="+q(postId)+" AND updated_at="+q(p.updated_at)+" AND status='pending_review' AND published_at IS NULL)");
+          if(Number(write[0]?.meta?.changes)!==1)throw Error('receipt write conflict; do not resend');
+          await execute("INSERT INTO audit_logs(id,actor_email,action,entity_type,entity_id,before_json,after_json,ip) VALUES("+[grantId+'-REMOTE-SCHEDULE','chatgpt:owner-delegated','單篇正式外部排程回執','貼文',postId,JSON.stringify({state:'unknown',uuid:grantId}),JSON.stringify(proof),''].map(q).join(',')+")");
+          const confirmed=(await read("SELECT post_id,metricool_id,uuid,publication_at,content_fingerprint,state FROM social_metricool_sync WHERE post_id="+q(postId)))[0];
+          if(String(confirmed?.metricool_id)!=='426543853'||confirmed.uuid!==remote.uuid||confirmed.state!=='awaiting_verification')throw Error('receipt readback failed; do not resend');
+          console.log('TODAY_REMOTE_SCHEDULE_READBACK '+JSON.stringify({confirmed,externalScheduleVerified:true,publicationVerified:false,postQualityUnchanged:true,externalRequests:0}));
+          NODE
