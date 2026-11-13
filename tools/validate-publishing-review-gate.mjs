@@ -26,7 +26,7 @@ if(contentAuditMain){
   must(contentAudit.includes("from './publishing-only-entry.js'"),'內容語意守門入口必須包在publishing-only正式安全鏈外層，不能繞過既有權限／發布流程');
   for(const token of ['duplicateImageHardGate','seasonWeatherContextAudit','semanticImageMatchHardGate','/api/posts/content-audit','isFixedReusableImage','semanticErrors'])must(contentAudit.includes(token),`內容語意守門缺少目前能力：${token}`);
 }
-must(production.includes("gateState(env,row)"),'排程發布前必須檢查持久圖文審核指紋');
+must(production.includes("scheduledPublicationGate(env,row)")&&gate.includes("const manual=await gateState(env,row)")&&gate.includes("verifyDelegatedDispatch(env,row"),'排程發布前必須檢查持久人工圖文審核或獨立委任指紋');
 must(production.includes("status='draft'"),'無有效審核的到期排程必須退回草稿');
 must(gate.includes('social_post_review_gates'),'必須建立持久圖文審核紀錄表');
 must(gate.includes("crypto.subtle.digest('SHA-256'"),'文案圖片核准必須綁定內容指紋');
