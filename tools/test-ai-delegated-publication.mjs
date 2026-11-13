@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assessDelegatedPublication,DELEGATION_SCHEMA,DELEGATION_END} from '../src/ai-delegated-publication.js';
+const now=Date.parse('2026-11-13T01:00:00Z'),at='2026-11-13T02:00:00Z';
+const quality={ok:true,decision:'AI_APPROVED',review_id:'review-1',fingerprint:'a'.repeat(64),image_sha256:'b'.repeat(64),channels:['facebook','instagram','threads'],reviewed_at:new Date(now).toISOString()};
+const grant={id:'grant-1',schema:DELEGATION_SCHEMA,scope:'brand-social-only',owner_authorization_ref:'owner-authorization',issued_at:new Date(now-1000).toISOString(),expires_at:DELEGATION_END,post_id:'post-1',fingerprint:quality.fingerprint,image_sha256:quality.image_sha256,review_id:quality.review_id,channels:quality.channels,publication_at:at};
+const input={grant,quality,post:{id:'post-1',status:'pending_review'},publicationAt:at,now,enabled:true};
+test('delegated publication is separate from human approval',()=>assert.equal(assessDelegatedPublication(input).reviewer_type,'AI_DELEGATED'));
+test('default off and missing grant fail closed',()=>{assert.equal(assessDelegatedPublication({...input,enabled:false}).ok,false);assert.equal(assessDelegatedPublication({...input,grant:null}).ok,false)});
+test('changed or revoked grant cannot publish',()=>{for(const change of [{revoked_at:at},{fingerprint:'c'.repeat(64)},{image_sha256:'c'.repeat(64)},{review_id:'other'},{channels:['facebook']},{expires_at:'2027-03-01T00:00:00+08:00'},{publication_at:'2026-11-13T03:00:00Z'}])assert.equal(assessDelegatedPublication({...input,grant:{...grant,...change}}).ok,false)});
+test('historical gaps and expired quality cannot authorize publication',()=>{for(const change of [{decision:'NEEDS_HUMAN_REVIEW'},{reviewed_at:'2026-11-11T00:00:00Z'},{review_id:null}])assert.equal(assessDelegatedPublication({...input,quality:{...quality,...change}}).ok,false)});
+test('published posts and customer scope are blocked',()=>{assert.equal(assessDelegatedPublication({...input,post:{...input.post,published_at:at}}).ok,false);assert.equal(assessDelegatedPublication({...input,grant:{...grant,scope:'customer'}}).ok,false)});
