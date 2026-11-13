@@ -1,0 +1,44 @@
+name: 仙加味獨立委任發布正式 D1 安全建置
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/prepare-ai-delegated-publication-d1.yml']
+permissions:
+  contents: read
+concurrency:
+  group: xjw-delegated-publication-schema
+  cancel-in-progress: false
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: {node-version: 22}
+      - name: Verify isolated delegation safety tests
+        run: node --test tools/test-ai-delegated-publication.mjs
+      - name: Create only independent authorization schema and verify live readback
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createD1Transport} from './tools/d1-http-transport.mjs';
+          import {ensureDelegationSchema} from './src/ai-delegated-publication.js';
+          const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
+          const execute=createD1Transport({token:process.env.CLOUDFLARE_API_TOKEN,accountId:process.env.CLOUDFLARE_ACCOUNT_ID,databaseId});
+          const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
+          const count=()=>read("SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status");
+          const before=await count();
+          await ensureDelegationSchema({DB:{prepare(sql){if(!/^CREATE TABLE IF NOT EXISTS social_post_delegated_publication\(/.test(sql))throw Error('unexpected migration SQL');return{run:()=>execute(sql)}}}});
+          const columns=await read("PRAGMA table_info(social_post_delegated_publication)");
+          const required=['id','post_id','schema','scope','owner_authorization_ref','issued_by','issued_at','expires_at','fingerprint','image_sha256','review_id','channels_json','publication_at','revoked_at'];
+          if(required.some(k=>!columns.some(c=>c.name===k)))throw Error('delegation schema readback incomplete');
+          const after=await count();
+          const grants=await read("SELECT COUNT(*) AS total FROM social_post_delegated_publication");
+          const current=await read("SELECT COUNT(*) AS total FROM social_posts p JOIN social_post_quality_reviews q ON q.post_id=p.id WHERE p.status='pending_review' AND q.decision='AI_APPROVED' AND datetime(q.reviewed_at)>=datetime('now','-24 hours') AND NOT EXISTS(SELECT 1 FROM social_post_quality_reviews n WHERE n.post_id=q.post_id AND (n.reviewed_at>q.reviewed_at OR (n.reviewed_at=q.reviewed_at AND n.created_at>q.created_at)))");
+          console.log('XJW_DELEGATION_D1_READBACK '+JSON.stringify({schemaVerified:true,columns:required.length,grants:grants[0]?.total,currentFreshAiApprovedCandidates:current[0]?.total,before,after,postCountsUnchanged:JSON.stringify(before)===JSON.stringify(after),issued:0,scheduled:0,published:0}));
+          NODE
