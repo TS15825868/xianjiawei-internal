@@ -31,7 +31,7 @@ test("counts both directions, two-sided duplicates and explicit test exclusions"
 
 test("counts each diverging field without conflating payment and shipment", () => {
   const result = reconcileCrmOrders([headers, row("A")], [{
-    ...order("A"), receivedAt: "2026-11-16T08:31:00Z", orderStatus: "取消", source: "門市",
+    ...order("A"), receivedAt: "2026-11-16T08:31:00Z", orderStatus: "已確認", source: "門市",
     amount: 100, paymentStatus: "已收款", shippingStatus: "已出貨",
   }], auxiliary("A"));
   assert.equal(result.different, 1);
@@ -49,4 +49,18 @@ test("holds missing and conflicting evidence; never treats malformed rows as saf
   const result = reconcileCrmOrders([headers, ...records], ["A", "B", "C"].map(order), options);
   assert.deepEqual([result.blocked, result.malformed, result.missingCrmSource, result.conflictingPayment, result.unavailable.source], [3, 1, 1, 1, 1]);
   assert.throws(() => reconcileCrmOrders([[...headers, "訂單編號"]], []), /欄位/);
+});
+
+test("holds cancellations with paid or shipped evidence and excludes unlinked channels", () => {
+  const options = auxiliary("A", "B");
+  options.payments[1][1] = "已收款";
+  const result = reconcileCrmOrders(
+    [headers, row("A", local, "A", "取消"), row("B")],
+    [order("A"), { ...order("B"), orderStatus: "已取消", shippingStatus: "已出貨" }, { ...order(""), source: "門市" }],
+    options,
+  );
+  assert.deepEqual(
+    [result.crmStatusConflicts, result.erpStatusConflicts, result.blocked, result.erpWithoutCrmId, result.erpOnly],
+    [1, 1, 2, 1, 0],
+  );
 });
