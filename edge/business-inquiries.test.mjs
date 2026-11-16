@@ -122,3 +122,14 @@ test("management scopes personal data and prevents stale or cross-origin updates
   assert.equal((await run("sales", patch)).status, 409);
   assert.equal((await (await run("owner", undefined, "?status=" + encodeURIComponent("洽談中"))).json()).inquiries.length, 1);
 });
+
+test("additive migration leaves existing ERP records intact and can run twice", t => {
+  const sqlite = new DatabaseSync(":memory:");
+  t.after(() => sqlite.close());
+  sqlite.exec("CREATE TABLE app_records (id TEXT PRIMARY KEY, module TEXT); INSERT INTO app_records VALUES ('isolated-order', 'orders');");
+  sqlite.exec(businessInquirySchema);
+  sqlite.exec(businessInquirySchema);
+  assert.equal(sqlite.prepare("SELECT module FROM app_records WHERE id = 'isolated-order'").get().module, "orders");
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiries").get().count, 0);
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiry_drafts").get().count, 0);
+});
