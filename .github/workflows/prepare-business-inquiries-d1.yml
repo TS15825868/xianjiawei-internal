@@ -28,7 +28,7 @@ jobs:
           node-version: 22
       - name: Verify schema and isolate test data
         run: |
-          node --test edge/business-inquiries.test.mjs
+          node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs
           node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; process.stdout.write(businessInquirySchema)' > "$RUNNER_TEMP/business-inquiries.sql"
       - name: Install existing project dependencies without credentials
         run: npm ci --ignore-scripts
