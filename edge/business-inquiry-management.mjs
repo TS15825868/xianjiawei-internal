@@ -1,3 +1,4 @@
+import { businessNotificationAction, notificationControls } from "./business-inquiry-notification-management.mjs";
 export const managementPath = "/api/business-inquiries";
 const statuses = ["待洽談", "洽談中", "待報價", "已報價", "合作成立", "暫緩", "未成立"];
 
@@ -28,7 +29,7 @@ export async function businessInquiryManagement(request, env, authenticate) {
                OR instr(details, ?) > 0 OR instr(category, ?) > 0)
         ORDER BY received_at DESC, id DESC LIMIT 51 OFFSET ?
       `).bind(status, status, keyword, keyword, keyword, keyword, keyword, offset).all();
-      return reply(200, { inquiries: results.slice(0, 50), nextOffset: results.length > 50 ? offset + 50 : null });
+      return reply(200, { inquiries: results.slice(0, 50), nextOffset: results.length > 50 ? offset + 50 : null, notificationControls: notificationControls(env, profile) });
     }
     if (request.method !== "PATCH") return reply(405, { error: "method_not_allowed" });
     if (request.headers.get("origin") !== new URL(request.url).origin ||
@@ -36,6 +37,7 @@ export async function businessInquiryManagement(request, env, authenticate) {
       return reply(403, { error: "invalid_origin" });
     }
     const payload = await request.json().catch(() => null);
+    if (payload && Object.hasOwn(payload, "notificationAction")) return await businessNotificationAction(payload, env, profile);
     const { id, revision, status, assignee, notes } = payload ?? {};
     if (!/^B2B-[a-f0-9-]{36}$/i.test(id ?? "") || !Number.isSafeInteger(revision) || revision < 0 ||
         !statuses.includes(status) || typeof assignee !== "string" || assignee.length > 100 ||
