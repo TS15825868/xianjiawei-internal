@@ -1,3 +1,4 @@
+import {businessInquiryManagement,managementPath} from "../edge/business-inquiry-management.mjs";
 import {sweepExpiredBusinessNotifications} from "../edge/business-inquiries.mjs";
 import {businessInquiryIntake} from "../edge/business-inquiry-intake.mjs";
 import publishingApp from './publishing-content-audit-entry.js';
@@ -222,6 +223,7 @@ export default{
     const maintenance=maintenanceNoLogin(env);
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+    if(path===managementPath && !maintenance)return businessInquiryManagement(request,env,verifyFastAccess);
     if(path==='/api/internal/business-inquiries')return businessInquiryIntake(request,env);
     if(path==='/api/ai-ops/readiness')return aiOperationsReadiness(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/line-handoff'||path.startsWith('/api/line-handoff/'))return lineHandoffApi(request,env,{authenticate:verifyFastAccess});
