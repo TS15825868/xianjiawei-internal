@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { backup, DatabaseSync } from "node:sqlite";
 import { test } from "node:test";
-import { randomUUID } from "node:crypto";
+import { createHmac, randomUUID } from "node:crypto";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -62,4 +62,38 @@ test("isolated backup restores both the record and confirmed notification state"
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test("signed intake rejects stale or altered requests and holds expired notification claims", async t => {
+  const { businessInquiryIntake } = await import("./business-inquiry-intake.mjs");
+  const { db, data, sqlite } = fixture(t);
+  const secret = "isolated-test-key-not-a-real-credential";
+  const env = { DB: db, XJW_B2B_INTAKE_ENABLED: "true", XJW_B2B_INTAKE_SECRET: secret };
+  const path = "/api/internal/business-inquiries";
+  const now = Date.now();
+  function signed(input, date = now, signedBody = JSON.stringify(input)) {
+    const signature = createHmac("sha256", secret)
+      .update(`xjw-b2b-intake-v1\nPOST\n${path}\n${date}\n${signedBody}`).digest("hex");
+    return new Request("https://isolated.invalid" + path, {
+      method: "POST", body: JSON.stringify(input),
+      headers: { "x-xjw-timestamp": String(date), "x-xjw-signature": signature },
+    });
+  }
+  assert.equal((await businessInquiryIntake(signed(data), {}, now)).status, 404);
+  assert.equal((await businessInquiryIntake(signed(data, now - 300001), env, now)).status, 401);
+  assert.equal((await businessInquiryIntake(signed(data, now, "{}"), env, now)).status, 401);
+  assert.equal((await businessInquiryIntake(signed({ ...data, details: "a".repeat(5000) }), env, now)).status, 400);
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiries").get().count, 0);
+
+  const first = await businessInquiryIntake(signed(data), env, now);
+  assert.equal(first.status, 201);
+  assert.equal(JSON.stringify(await first.json()).includes(data.businessContact), false);
+  await claimBusinessNotification(db, data.id, "lost-process", now);
+  const replay = await businessInquiryIntake(signed(data, now + 300001), env, now + 300001);
+  assert.equal(replay.status, 200);
+  assert.equal((await replay.json()).notificationStatus, "uncertain");
+  assert.equal(await claimBusinessNotification(db, data.id, "retry"), false);
+  const conflict = await businessInquiryIntake(signed({ ...data, origin: "website:b2b" }), env, now);
+  assert.equal(conflict.status, 409);
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiries").get().count, 1);
 });
