@@ -1,0 +1,71 @@
+name: Prepare B2B inquiry tables
+on:
+  push:
+    branches:
+      - ops/b2b-inquiry-persistence
+    paths:
+      - '.github/workflows/prepare-business-inquiries-d1.yml'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Apply the migration after the backup and isolated rehearsal
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: xjw-business-inquiry-d1-migration
+  cancel-in-progress: false
+jobs:
+  migrate:
+    if: github.repository == 'TS15825868/xianjiawei-internal' && ((github.event_name == 'push' && github.ref == 'refs/heads/ops/b2b-inquiry-persistence') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify schema and isolate test data
+        run: |
+          node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs
+          node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; process.stdout.write(businessInquirySchema)' > "$RUNNER_TEMP/business-inquiries.sql"
+      - name: Install existing project dependencies without credentials
+        run: npm ci --ignore-scripts
+      - name: Export and rehearse migration against an isolated restore
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx --no-install wrangler d1 time-travel info xianjiawei-internal-db --json > "$RUNNER_TEMP/business-inquiries-recovery.json"
+          npx --no-install wrangler d1 export xianjiawei-internal-db --remote --skip-confirmation --output "$RUNNER_TEMP/business-inquiries-backup.sql"
+          python3 tools/verify-business-inquiry-d1-restore.py \
+            "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries.sql" \
+            "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-preflight.json"
+      - name: Redact recovery identifier from the public-repository artifact
+        run: |
+          python3 -c 'import hashlib,json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"business-inquiries-preflight.json"; x=json.loads(p.read_text()); b=x.pop("bookmark"); x["bookmarkSha256"]=hashlib.sha256(b.encode()).hexdigest(); p.write_text(json.dumps(x,indent=2)+"\n")'
+      - name: Preserve recovery and rehearsal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: b2b-d1-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/business-inquiries-preflight.json
+          if-no-files-found: error
+      - name: Apply approved B2B schema and verify reads
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.apply == true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --file "$RUNNER_TEMP/business-inquiries.sql"
+          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
+      - name: Remove downloaded production data from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries-recovery.json"

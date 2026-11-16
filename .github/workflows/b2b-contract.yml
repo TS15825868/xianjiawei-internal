@@ -1,0 +1,79 @@
+name: Isolated B2B cross-system contract
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'edge/business-inquir*.mjs'
+      - 'integrations/b2b-crm/**'
+      - 'src/full-system-entry.js'
+      - 'package.json'
+      - 'wrangler.jsonc'
+      - 'business-inquiries.html'
+      - 'assets/js/business-inquiry-management.js'
+      - '.github/workflows/b2b-contract.yml'
+  push:
+    branches: [ops/b2b-inquiry-persistence]
+    paths:
+      - 'edge/business-inquir*.mjs'
+      - 'integrations/b2b-crm/**'
+      - 'src/full-system-entry.js'
+      - 'package.json'
+      - 'wrangler.jsonc'
+      - 'business-inquiries.html'
+      - 'assets/js/business-inquiry-management.js'
+      - '.github/workflows/b2b-contract.yml'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-b2b-contract-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: erp
+          persist-credentials: false
+      - uses: actions/checkout@v5
+        with:
+          repository: TS15825868/TS-LINE
+          ref: fb105f7679457df289c76f9680de5067a1c71aea
+          path: line
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: ERP isolated B2B regressions
+        working-directory: erp
+        run: node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
+      - name: LINE signed intake and Access contracts against actual ERP handler
+        working-directory: line
+        run: node --test business-inquiry-intake.test.js business-inquiry-access.test.js
+      - name: CRM order contract against checked-in Apps Script (offline only)
+        working-directory: line
+        run: node crm-order-contract.test.js
+  release-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install existing dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate full static ERP and existing publishing guards
+        run: |
+          npm run build:static
+          npm run guard:full
+          node --check assets/js/business-inquiry-management.js
+          test -f dist/business-inquiries.html
+          test -f dist/assets/js/business-inquiry-management.js
+      - name: Verify disabled B2B release defaults and bundle without deploying
+        run: |
+          node -e 'const fs=require("fs");const s=fs.readFileSync("wrangler.jsonc","utf8");for(const name of ["XJW_B2B_INTAKE_ENABLED","XJW_B2B_NOTIFICATION_RETRY_ENABLED","XJW_B2B_CRM_ENABLED"]){if(!s.includes(JSON.stringify(name)+": \"false\""))throw Error(name+" must be disabled in staged release");}'
+          npx --no-install wrangler deploy --dry-run --outdir "$RUNNER_TEMP/xjw-b2b-bundle"
