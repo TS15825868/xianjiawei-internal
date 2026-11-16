@@ -88,13 +88,14 @@ test('concurrent schedules claim one sender; abandoned claims recover and exhaus
   const {DB,data,env,row}=fixture(t);await storeBusinessInquiry(DB,data);
   let now=Date.now(),calls=0;
   const receiver=gas(()=>now);
-  let release;const gate=new Promise(resolve=>{release=resolve;});
-  const transport=async(_url,init)=>{calls++;await gate;return Response.json(receiver.post(init.body));};
+  let release,entered;const gate=new Promise(resolve=>{release=resolve;});
+  const started=new Promise(resolve=>{entered=resolve;});
+  const transport=async(_url,init)=>{calls++;entered();await gate;return Response.json(receiver.post(init.body));};
   const first=deliverBusinessInquiryCrm(env,{transport,now:()=>now});
   const second=deliverBusinessInquiryCrm(env,{transport,now:()=>now});
   // A concurrent delivery can complete without contacting the receiver while
   // the winning claim is still in flight.
-  await Promise.race([first,second]);assert.equal(calls,1);release();
+  try { await Promise.all([started,Promise.race([first,second])]);assert.equal(calls,1); } finally { release(); }
   await Promise.all([first,second]);assert.equal(row().state,'sent');assert.equal(receiver.rows.length,2);
   const abandoned={...data,id:'B2B-'+crypto.randomUUID()};
   await storeBusinessInquiry(DB,abandoned);
