@@ -84,3 +84,12 @@ export async function expireBusinessNotification(db, inquiryId, now = Date.now()
   `).bind(inquiryId, now - notificationLeaseMs).first();
   return Boolean(expired);
 }
+
+
+export async function sweepExpiredBusinessNotifications(db, now = Date.now()) {
+  await db.prepare(`
+    UPDATE business_inquiries SET notification_status = 'uncertain',
+        notification_claim = NULL, notification_started_at = NULL
+    WHERE notification_status = 'sending' AND notification_started_at <= ?
+  `).bind(now - notificationLeaseMs).run();
+}
