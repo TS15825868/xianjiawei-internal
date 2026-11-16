@@ -58,6 +58,14 @@ function stateIndex(sheet, label) {
   return states;
 }
 
+function hasStatusConflict({ orderStatus, paymentStatus, shippingStatus }) {
+  const cancelled = ["取消", "已取消", "訂單取消"].includes(orderStatus);
+  const paid = ["已付款", "已收款", "已入帳", "已匯款"].includes(paymentStatus);
+  const shipped = ["已出貨", "已送達", "已取貨"].includes(shippingStatus);
+  // A cancellation after payment or fulfillment needs review (e.g. refund or return).
+  return cancelled && (paid || shipped);
+}
+
 function add(index, id, order) {
   const entries = index.get(id) ?? [];
   entries.push(order);
@@ -76,6 +84,7 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
     duplicate: 0, duplicateCrm: 0, duplicateErp: 0, unmatched: 0, erpOnly: 0, matched: 0, different: 0, blocked: 0,
     missingCrmSource: 0, missingErpSource: 0, conflictingPayment: 0, conflictingShipping: 0,
     missingCrmPaymentStatus: 0, missingCrmShippingStatus: 0,
+    crmStatusConflicts: 0, erpStatusConflicts: 0,
     differences: Object.fromEntries(comparedFields.map(field => [field, 0])),
     unavailable: Object.fromEntries(comparedFields.map(field => [field, 0])),
   };
@@ -101,7 +110,9 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
     if (shippingConflict) report.conflictingShipping++;
     const invalid = !id || order.receivedAt === null || !order.orderStatus || order.amount === null;
     if (invalid) report.malformed++;
-    if (id) add(crm, id, { ...order, blocked: invalid || paymentConflict || shippingConflict });
+    const statusConflict = hasStatusConflict(order);
+    if (statusConflict) report.crmStatusConflicts++;
+    if (id) add(crm, id, { ...order, blocked: invalid || paymentConflict || shippingConflict || statusConflict });
   }
   const erp = new Map();
   for (const row of erpOrders) {
@@ -114,9 +125,11 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
       amount: amountInCents(row.amount), paymentStatus: clean(row.paymentStatus), shippingStatus: clean(row.shippingStatus),
     };
     if (!order.source) report.missingErpSource++;
-    const blocked = order.receivedAt === null || !order.orderStatus || order.amount === null;
-    if (blocked) report.malformedErp++;
-    add(erp, id, { ...order, blocked });
+    const invalid = order.receivedAt === null || !order.orderStatus || order.amount === null;
+    if (invalid) report.malformedErp++;
+    const statusConflict = hasStatusConflict(order);
+    if (statusConflict) report.erpStatusConflicts++;
+    add(erp, id, { ...order, blocked: invalid || statusConflict });
   }
   for (const id of new Set([...crm.keys(), ...erp.keys()])) {
     const left = crm.get(id) ?? [];
