@@ -1,3 +1,4 @@
+import {sweepExpiredBusinessNotifications} from "../edge/business-inquiries.mjs";
 import {businessInquiryIntake} from "../edge/business-inquiry-intake.mjs";
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
@@ -296,6 +297,9 @@ export default{
     return response;
   },
   async scheduled(controller,env,ctx){
+    if(env.XJW_B2B_INTAKE_ENABLED==='true'){
+      ctx.waitUntil(sweepExpiredBusinessNotifications(env.DB).catch(()=>console.error('[XJW_B2B] notification sweep failed')));
+    }
     // Metricool Free uses manual Work transfer, not a background publishing API.
     // Reconcile local evidence at most once per 15-minute slot. Due posts
     // still enter the normal minute-level safety/publisher chain below.
