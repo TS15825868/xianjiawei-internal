@@ -1,6 +1,7 @@
 import {businessInquiryManagement,managementPath} from "../edge/business-inquiry-management.mjs";
 import {sweepExpiredBusinessNotifications} from "../edge/business-inquiries.mjs";
 import {businessInquiryIntake} from "../edge/business-inquiry-intake.mjs";
+import {deliverBusinessInquiryCrm} from "../edge/business-inquiry-crm.mjs";
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
@@ -307,6 +308,7 @@ export default{
     // still enter the normal minute-level safety/publisher chain below.
     const time=Number(controller?.scheduledTime||Date.now());
     if(Number.isFinite(time)&&new Date(time).getUTCMinutes()%15===0){
+      if(env.XJW_B2B_CRM_ENABLED==='true')ctx.waitUntil(deliverBusinessInquiryCrm(env).catch(()=>console.error('[XJW_B2B_CRM] delivery unavailable')));
       try{
         await ensureAiSchema(env);
         await syncMetricool(env,{gateState,fingerprint},new Date(time));

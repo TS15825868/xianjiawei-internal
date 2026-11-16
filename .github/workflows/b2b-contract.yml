@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'edge/business-inquir*.mjs'
+      - 'integrations/b2b-crm/**'
       - 'src/full-system-entry.js'
       - 'package.json'
       - '.github/workflows/b2b-contract.yml'
@@ -11,6 +12,7 @@ on:
     branches: [ops/b2b-inquiry-persistence]
     paths:
       - 'edge/business-inquir*.mjs'
+      - 'integrations/b2b-crm/**'
       - 'src/full-system-entry.js'
       - 'package.json'
       - '.github/workflows/b2b-contract.yml'
@@ -39,7 +41,7 @@ jobs:
           node-version: 22
       - name: ERP isolated B2B regressions
         working-directory: erp
-        run: node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs
+        run: node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
       - name: LINE signed intake and Access contracts against actual ERP handler
         working-directory: line
         run: node --test business-inquiry-intake.test.js business-inquiry-access.test.js
