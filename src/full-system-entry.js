@@ -1,3 +1,4 @@
+import {businessInquiryIntake} from "../edge/business-inquiry-intake.mjs";
 import publishingApp from './publishing-content-audit-entry.js';
 import productionApp,{verifyFastAccess} from './production-entry.js';
 import {socialAiDraft} from './social-ai-draft.js';
@@ -220,6 +221,7 @@ export default{
     const maintenance=maintenanceNoLogin(env);
 
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
+    if(path==='/api/internal/business-inquiries')return businessInquiryIntake(request,env);
     if(path==='/api/ai-ops/readiness')return aiOperationsReadiness(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/line-handoff'||path.startsWith('/api/line-handoff/'))return lineHandoffApi(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-ai/draft')return socialAiDraft(request,env,{authenticate:verifyFastAccess});
