@@ -1,4 +1,4 @@
-import { claimBusinessNotification, expireBusinessNotification, finishBusinessNotification, storeBusinessInquiry } from "./business-inquiries.mjs";
+import { accessBusinessDraft, claimBusinessNotification, expireBusinessNotification, finishBusinessNotification, storeBusinessInquiry } from "./business-inquiries.mjs";
 
 const encoder = new TextEncoder();
 const path = "/api/internal/business-inquiries";
@@ -52,6 +52,9 @@ export async function businessInquiryIntake(request, env, now = Date.now()) {
     let input;
     try { input = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(body)); }
     catch { return reply(400, { error: "invalid_body" }); }
+    if (["save-draft", "load-draft", "discard-draft"].includes(input?.action)) {
+      return reply(200, await accessBusinessDraft(env.DB, input, now));
+    }
     if (input?.action === "claim" || input?.action === "finish") {
       const { action, id, claimId, outcome } = input;
       if (typeof id !== "string" || !/^B2B-[a-f0-9-]{36}$/i.test(id) ||
