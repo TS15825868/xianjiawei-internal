@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           repository: TS15825868/TS-LINE
-          ref: 4f65c9fa801d278f0253a98ea6514ba825561b01
+          ref: fb105f7679457df289c76f9680de5067a1c71aea
           path: line
           persist-credentials: false
       - uses: actions/setup-node@v5
