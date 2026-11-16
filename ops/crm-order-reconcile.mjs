@@ -3,65 +3,152 @@ import { pathToFileURL } from "node:url";
 
 const knownTestOrderIds = new Set(["XJW20260707111258411131"]);
 const sheetFields = {
-  id: "訂單編號",
-  receivedAt: "時間",
-  orderStatus: "訂單狀態",
-  source: "來源",
-  amount: "訂單總額",
+  id: "訂單編號", receivedAt: "時間", orderStatus: "訂單狀態", source: "來源", amount: "訂單總額",
 };
+const comparedFields = ["receivedAt", "orderStatus", "paymentStatus", "shippingStatus", "source", "amount"];
+const clean = value => String(value ?? "").trim();
 
-export function reconcileCrmOrders(sheet, erpOrders) {
+function amountInCents(value) {
+  const formatted = clean(value).replace(/^(?:NT\$|TWD|\$)\s*/i, "").replace(/\s*元$/, "");
+  if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(formatted)) return null;
+  const [integer, decimals = ""] = formatted.replaceAll(",", "").split(".");
+  const cents = Number(integer) * 100 + Number(decimals.padEnd(2, "0"));
+  return Number.isSafeInteger(cents) ? cents : null;
+}
+
+function timestamp(value) {
+  const input = clean(value);
+  const local = /^(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T]+(?:(上午|下午)\s*)?(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(input);
+  if (local) {
+    const [, year, month, day, period, hour, minute, second = "00"] = local;
+    const h = Number(hour);
+    if (period && (h < 1 || h > 12)) return null;
+    const hour24 = period ? h % 12 + (period === "下午" ? 12 : 0) : h;
+    return timestamp(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${String(hour24).padStart(2, "0")}:${minute}:${second}+08:00`);
+  }
+  const iso = /^(\d{4}-\d{2}-\d{2})T(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/.exec(input);
+  if (!iso) return null;
+  const calendar = new Date(iso[1] + "T00:00:00Z");
+  if (!Number.isFinite(calendar.valueOf()) || calendar.toISOString().slice(0, 10) !== iso[1]) return null;
+  const millis = Date.parse(input);
+  return Number.isFinite(millis) ? millis : null;
+}
+
+function columnsFor(headers, fields) {
+  if (!Array.isArray(headers) || Object.values(fields).some(label => headers.filter(cell => cell === label).length !== 1)) {
+    throw new Error("CRM 工作表必要欄位缺漏或重複");
+  }
+  return Object.fromEntries(Object.entries(fields).map(([key, label]) => [key, headers.indexOf(label)]));
+}
+
+function stateIndex(sheet, label) {
+  const states = new Map();
+  if (sheet === undefined) return states;
+  if (!Array.isArray(sheet)) throw new Error("CRM 狀態工作表格式錯誤");
   const [headers, ...rows] = sheet;
-  const columns = Object.fromEntries(
-    Object.entries(sheetFields).map(([key, label]) => [key, headers?.indexOf(label) ?? -1]),
-  );
-  if (Object.values(columns).includes(-1)) throw new Error("CRM 訂單主表缺少必要欄位");
-  const report = { excludedTest: 0, malformed: 0, duplicate: 0, unmatched: 0, matched: 0, different: 0 };
+  const { id, status } = columnsFor(headers, { id: "訂單編號", status: label });
+  for (const row of rows) {
+    if (!Array.isArray(row)) throw new Error("CRM 狀態資料列格式錯誤");
+    const key = clean(row[id]);
+    if (!key) continue;
+    const values = states.get(key) ?? new Set();
+    values.add(clean(row[status]));
+    states.set(key, values);
+  }
+  return states;
+}
+
+function add(index, id, order) {
+  const entries = index.get(id) ?? [];
+  entries.push(order);
+  index.set(id, entries);
+}
+
+export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, testOrderIds = [] } = {}) {
+  if (![sheet, erpOrders, testOrderIds].every(Array.isArray)) throw new Error("對帳輸入必須使用陣列");
+  const testIds = new Set([...knownTestOrderIds, ...testOrderIds.map(clean).filter(Boolean)]);
+  const [headers, ...rows] = sheet;
+  const columns = columnsFor(headers, sheetFields);
+  const pay = stateIndex(payments, "核對狀態");
+  const ship = stateIndex(shipments, "出貨狀態");
+  const report = {
+    excludedTest: 0, excludedErpTest: 0, malformed: 0, malformedErp: 0, erpWithoutCrmId: 0,
+    duplicate: 0, duplicateCrm: 0, duplicateErp: 0, unmatched: 0, erpOnly: 0, matched: 0, different: 0, blocked: 0,
+    missingCrmSource: 0, missingErpSource: 0, conflictingPayment: 0, conflictingShipping: 0,
+    missingCrmPaymentStatus: 0, missingCrmShippingStatus: 0,
+    differences: Object.fromEntries(comparedFields.map(field => [field, 0])),
+    unavailable: Object.fromEntries(comparedFields.map(field => [field, 0])),
+  };
   const crm = new Map();
   for (const row of rows) {
-    if (!row.some(value => value !== "" && value != null)) continue;
-    const get = key => String(row[columns[key]] ?? "").trim();
+    if (!Array.isArray(row)) throw new Error("CRM 訂單資料列格式錯誤");
+    if (!row.some(value => clean(value))) continue;
+    const get = key => clean(row[columns[key]]);
     const id = get("id");
-    if (knownTestOrderIds.has(id)) {
-      report.excludedTest++;
-      continue;
-    }
-    const amountText = get("amount");
-    const amount = Number(amountText);
-    if (!id || !get("receivedAt") || !get("orderStatus") || !amountText ||
-        !Number.isFinite(amount) || amount < 0) {
-      report.malformed++;
-      continue;
-    }
-    const order = { amount, orderStatus: get("orderStatus"), source: get("source") };
-    const entries = crm.get(id) ?? [];
-    entries.push(order);
-    crm.set(id, entries);
+    if (testIds.has(id)) { report.excludedTest++; continue; }
+    const order = {
+      receivedAt: timestamp(get("receivedAt")), orderStatus: get("orderStatus"),
+      source: get("source"), amount: amountInCents(get("amount")),
+      paymentStatus: pay.get(id)?.size === 1 ? [...pay.get(id)][0] : "",
+      shippingStatus: ship.get(id)?.size === 1 ? [...ship.get(id)][0] : "",
+    };
+    if (!order.source) report.missingCrmSource++;
+    if (!order.paymentStatus) report.missingCrmPaymentStatus++;
+    if (!order.shippingStatus) report.missingCrmShippingStatus++;
+    const paymentConflict = (pay.get(id)?.size ?? 0) > 1;
+    const shippingConflict = (ship.get(id)?.size ?? 0) > 1;
+    if (paymentConflict) report.conflictingPayment++;
+    if (shippingConflict) report.conflictingShipping++;
+    const invalid = !id || order.receivedAt === null || !order.orderStatus || order.amount === null;
+    if (invalid) report.malformed++;
+    if (id) add(crm, id, { ...order, blocked: invalid || paymentConflict || shippingConflict });
   }
   const erp = new Map();
-  for (const order of erpOrders) {
-    if (!order.crmOrderId) continue;
-    const entries = erp.get(order.crmOrderId) ?? [];
-    entries.push(order);
-    erp.set(order.crmOrderId, entries);
+  for (const row of erpOrders) {
+    if (!row || typeof row !== "object" || Array.isArray(row)) { report.malformedErp++; continue; }
+    const id = clean(row.crmOrderId);
+    if (testIds.has(id) || row.isTest === true) { report.excludedErpTest++; continue; }
+    if (!id) { report.erpWithoutCrmId++; continue; }
+    const order = {
+      receivedAt: timestamp(row.receivedAt), orderStatus: clean(row.orderStatus), source: clean(row.source),
+      amount: amountInCents(row.amount), paymentStatus: clean(row.paymentStatus), shippingStatus: clean(row.shippingStatus),
+    };
+    if (!order.source) report.missingErpSource++;
+    const blocked = order.receivedAt === null || !order.orderStatus || order.amount === null;
+    if (blocked) report.malformedErp++;
+    add(erp, id, { ...order, blocked });
   }
-  for (const [id, entries] of crm) {
-    const existing = erp.get(id) ?? [];
-    if (entries.length !== 1 || existing.length > 1) {
-      report.duplicate++;
-    } else if (existing.length === 0) {
-      report.unmatched++;
-    } else if (Object.keys(entries[0]).every(key => entries[0][key] === existing[0][key])) {
-      report.matched++;
-    } else {
-      report.different++;
+  for (const id of new Set([...crm.keys(), ...erp.keys()])) {
+    const left = crm.get(id) ?? [];
+    const right = erp.get(id) ?? [];
+    if (left.length > 1) report.duplicateCrm++;
+    if (right.length > 1) report.duplicateErp++;
+    if (left.length > 1 || right.length > 1) { report.duplicate++; continue; }
+    if (left[0]?.blocked || right[0]?.blocked) { report.blocked++; continue; }
+    if (!right.length) { report.unmatched++; continue; }
+    if (!left.length) { report.erpOnly++; continue; }
+    let changed = false;
+    let unavailable = false;
+    for (const field of comparedFields) {
+      if (left[0][field] === "" || right[0][field] === "") {
+        report.unavailable[field]++;
+        unavailable = true;
+      } else if (left[0][field] !== right[0][field]) {
+        report.differences[field]++;
+        changed = true;
+      }
     }
+    if (changed) report.different++;
+    else if (unavailable) report.blocked++;
+    else report.matched++;
   }
   return report;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  if (process.argv.length !== 4) throw new Error("Usage: node crm-order-reconcile.mjs CRM_ROWS_JSON ERP_ORDER_PROJECTION_JSON");
-  const [sheet, erpOrders] = process.argv.slice(2).map(path => JSON.parse(readFileSync(path, "utf8")));
-  process.stdout.write(JSON.stringify(reconcileCrmOrders(sheet, erpOrders)) + "\n");
+  if (process.argv.length < 4 || process.argv.length > 5) {
+    throw new Error("Usage: node crm-order-reconcile.mjs CRM_ROWS_JSON ERP_ORDER_PROJECTION_JSON [CRM_AUXILIARY_JSON]");
+  }
+  const [sheet, erpOrders, auxiliary] = process.argv.slice(2).map(path => JSON.parse(readFileSync(path, "utf8")));
+  process.stdout.write(JSON.stringify(reconcileCrmOrders(sheet, erpOrders, auxiliary)) + "\n");
 }
