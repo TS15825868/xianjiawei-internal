@@ -7,6 +7,9 @@ on:
       - 'integrations/b2b-crm/**'
       - 'src/full-system-entry.js'
       - 'package.json'
+      - 'wrangler.jsonc'
+      - 'business-inquiries.html'
+      - 'assets/js/business-inquiry-management.js'
       - '.github/workflows/b2b-contract.yml'
   push:
     branches: [ops/b2b-inquiry-persistence]
@@ -15,6 +18,9 @@ on:
       - 'integrations/b2b-crm/**'
       - 'src/full-system-entry.js'
       - 'package.json'
+      - 'wrangler.jsonc'
+      - 'business-inquiries.html'
+      - 'assets/js/business-inquiry-management.js'
       - '.github/workflows/b2b-contract.yml'
 permissions:
   contents: read
@@ -48,3 +54,26 @@ jobs:
       - name: CRM order contract against checked-in Apps Script (offline only)
         working-directory: line
         run: node crm-order-contract.test.js
+  release-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install existing dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate full static ERP and existing publishing guards
+        run: |
+          npm run build:static
+          npm run guard:full
+          node --check assets/js/business-inquiry-management.js
+          test -f dist/business-inquiries.html
+          test -f dist/assets/js/business-inquiry-management.js
+      - name: Verify disabled B2B release defaults and bundle without deploying
+        run: |
+          node -e 'const fs=require("fs");const s=fs.readFileSync("wrangler.jsonc","utf8");for(const name of ["XJW_B2B_INTAKE_ENABLED","XJW_B2B_NOTIFICATION_RETRY_ENABLED","XJW_B2B_CRM_ENABLED"]){if(!s.includes(JSON.stringify(name)+": \"false\""))throw Error(name+" must be disabled in staged release");}'
+          npx --no-install wrangler deploy --dry-run --outdir "$RUNNER_TEMP/xjw-b2b-bundle"

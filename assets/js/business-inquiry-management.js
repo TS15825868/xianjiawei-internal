@@ -86,7 +86,23 @@ function notificationPanel(record, controls, save) {
   return panel;
 }
 
-function card(record, controls = {}) {
+function crmPanel(record, enabled) {
+  const panel = element("section");
+  const labels = { queued: enabled ? "待轉送" : "尚未啟用", retry: "等待重試", sending: "轉送中", sent: "已確認 CRM 收件", held: "暫停轉送・需查核" };
+  panel.append(element("p", "CRM 轉送：" + (labels[record.crm_delivery_state] ?? "待確認")));
+  if (!enabled && record.crm_delivery_state !== "queued") panel.append(element("p", "自動轉送目前未啟用。"));
+  if (Number.isSafeInteger(record.crm_delivery_attempts) && record.crm_delivery_attempts > 0) {
+    panel.append(element("p", "轉送嘗試：" + record.crm_delivery_attempts + " 次"));
+  }
+  if (record.crm_delivery_state === "sent" && record.crm_sent_at) panel.append(element("p", "收件時間：" + record.crm_sent_at));
+  if (record.crm_delivery_state === "retry" && Number.isFinite(record.crm_next_attempt_at) && record.crm_next_attempt_at > 0) {
+    panel.append(element("p", "下次可重試：" + new Date(record.crm_next_attempt_at).toLocaleString("zh-TW", {timeZone:"Asia/Taipei"})));
+  }
+  if (record.crm_delivery_state === "held") panel.append(element("p", "請核對 CRM 合作編號及實際收件紀錄；不會自動重設或重送。"));
+  return panel;
+}
+
+function card(record, controls = {}, crmEnabled = false) {
   const article = element("article");
   article.className = "loading-card";
   article.append(element("h2", record.category + "｜" + record.id));
@@ -131,7 +147,7 @@ function card(record, controls = {}) {
       save.disabled = false;
     }
   });
-  article.append(notificationPanel(record, controls, save), form);
+  article.append(notificationPanel(record, controls, save), crmPanel(record, crmEnabled), form);
   return article;
 }
 
@@ -147,7 +163,7 @@ async function load(offset, query) {
     const page = await response.json();
     if (version !== requestVersion) return;
     if (offset === 0) results.replaceChildren();
-    results.append(...page.inquiries.map(record => card(record, page.notificationControls ?? {})));
+    results.append(...page.inquiries.map(record => card(record, page.notificationControls ?? {}, page.crmDeliveryEnabled === true)));
     nextOffset = page.nextOffset;
     more.hidden = nextOffset === null;
     message.textContent = results.childElementCount ? "" : "沒有符合條件的合作紀錄。";

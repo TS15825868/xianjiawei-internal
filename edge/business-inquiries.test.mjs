@@ -10,10 +10,12 @@ import {
   expireBusinessNotification, sweepExpiredBusinessNotifications,
 } from "./business-inquiries.mjs";
 
+import { businessInquiryCrmSchema } from "./business-inquiry-crm.mjs";
+
 function fixture(t) {
   const sqlite = new DatabaseSync(":memory:");
   t.after(() => sqlite.close());
-  sqlite.exec(businessInquirySchema);
+  sqlite.exec(businessInquirySchema + businessInquiryCrmSchema);
   const db = { prepare: sql => ({ bind: (...args) => ({ first: async () => sqlite.prepare(sql).get(...args) }) }) };
   const data = { id: "B2B-" + randomUUID(), source: "LINE", receivedAt: new Date().toISOString(),
     category: "鹿角原料", businessContact: "隔離測試聯絡資料", details: "隔離測試需求" };
@@ -116,6 +118,16 @@ test("management scopes personal data and prevents stale or cross-origin updates
   assert.equal((await run("viewer")).status, 403);
   const matches = await (await run("sales", undefined, "?q=" + encodeURIComponent(data.businessContact))).json();
   assert.equal(matches.inquiries.length, 1);
+  assert.equal(matches.crmDeliveryEnabled, false);
+  assert.equal(matches.inquiries[0].crm_delivery_state, "queued");
+  assert.equal(matches.inquiries[0].crm_delivery_attempts, 0);
+  sqlite.prepare("INSERT INTO business_inquiry_crm_delivery (inquiry_id,state,attempts,claim,last_error) VALUES (?,?,?,?,?)")
+    .run(data.id, "held", 8, "private-claim", "private-error");
+  const held = await (await run("owner")).json();
+  assert.equal(held.inquiries[0].crm_delivery_state, "held");
+  assert.equal(held.inquiries[0].crm_delivery_attempts, 8);
+  assert.equal(JSON.stringify(held).includes("private-claim"), false);
+  assert.equal(JSON.stringify(held).includes("private-error"), false);
   const patch = { method: "PATCH", headers: { origin: "https://isolated.invalid", "content-type": "application/json" },
     body: JSON.stringify({ id: data.id, revision: 0, status: "洽談中", assignee: "業務", notes: "隔離測試" }) };
   assert.equal((await run("sales", { ...patch, headers: { ...patch.headers, origin: "https://untrusted.invalid" } })).status, 403);

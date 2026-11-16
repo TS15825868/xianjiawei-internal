@@ -21,15 +21,19 @@ export async function businessInquiryManagement(request, env, authenticate) {
         return reply(400, { error: "invalid_filter" });
       }
       const { results } = await env.DB.prepare(`
-        SELECT id, category, business_contact, details, source, origin, received_at,
-               consultation_status, assignee, consultation_notes, notification_status, revision
-        FROM business_inquiries
-        WHERE (? = '' OR consultation_status = ?)
-          AND (? = '' OR instr(id, ?) > 0 OR instr(business_contact, ?) > 0
-               OR instr(details, ?) > 0 OR instr(category, ?) > 0)
-        ORDER BY received_at DESC, id DESC LIMIT 51 OFFSET ?
+        SELECT b.id, b.category, b.business_contact, b.details, b.source, b.origin, b.received_at,
+               b.consultation_status, b.assignee, b.consultation_notes, b.notification_status, b.revision,
+               COALESCE(d.state, 'queued') AS crm_delivery_state,
+               COALESCE(d.attempts, 0) AS crm_delivery_attempts,
+               d.next_attempt_at AS crm_next_attempt_at, d.sent_at AS crm_sent_at
+        FROM business_inquiries b
+        LEFT JOIN business_inquiry_crm_delivery d ON d.inquiry_id = b.id
+        WHERE (? = '' OR b.consultation_status = ?)
+          AND (? = '' OR instr(b.id, ?) > 0 OR instr(b.business_contact, ?) > 0
+               OR instr(b.details, ?) > 0 OR instr(b.category, ?) > 0)
+        ORDER BY b.received_at DESC, b.id DESC LIMIT 51 OFFSET ?
       `).bind(status, status, keyword, keyword, keyword, keyword, keyword, offset).all();
-      return reply(200, { inquiries: results.slice(0, 50), nextOffset: results.length > 50 ? offset + 50 : null, notificationControls: notificationControls(env, profile) });
+      return reply(200, { inquiries: results.slice(0, 50), nextOffset: results.length > 50 ? offset + 50 : null, notificationControls: notificationControls(env, profile), crmDeliveryEnabled: env.XJW_B2B_CRM_ENABLED === "true" });
     }
     if (request.method !== "PATCH") return reply(405, { error: "method_not_allowed" });
     if (request.headers.get("origin") !== new URL(request.url).origin ||
