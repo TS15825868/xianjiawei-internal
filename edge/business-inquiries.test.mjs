@@ -97,3 +97,28 @@ test("signed intake rejects stale or altered requests and holds expired notifica
   assert.equal(conflict.status, 409);
   assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiries").get().count, 1);
 });
+
+test("management scopes personal data and prevents stale or cross-origin updates", async t => {
+  const { businessInquiryManagement } = await import("./business-inquiry-management.mjs");
+  const { db, data, sqlite } = fixture(t);
+  const env = { XJW_B2B_INTAKE_ENABLED: "true", DB: db };
+  db.prepare = sql => ({ bind: (...args) => ({
+    first: async () => sqlite.prepare(sql).get(...args),
+    all: async () => ({ results: sqlite.prepare(sql).all(...args) }),
+  }) });
+  await storeBusinessInquiry(db, data);
+  const run = (role, init, query = "") => businessInquiryManagement(
+    new Request("https://isolated.invalid/api/business-inquiries" + query, init), env,
+    async () => role ? { role } : null,
+  );
+  assert.equal((await run(null)).status, 401);
+  assert.equal((await run("viewer")).status, 403);
+  const matches = await (await run("sales", undefined, "?q=" + encodeURIComponent(data.businessContact))).json();
+  assert.equal(matches.inquiries.length, 1);
+  const patch = { method: "PATCH", headers: { origin: "https://isolated.invalid", "content-type": "application/json" },
+    body: JSON.stringify({ id: data.id, revision: 0, status: "洽談中", assignee: "業務", notes: "隔離測試" }) };
+  assert.equal((await run("sales", { ...patch, headers: { ...patch.headers, origin: "https://untrusted.invalid" } })).status, 403);
+  assert.equal((await run("sales", patch)).status, 200);
+  assert.equal((await run("sales", patch)).status, 409);
+  assert.equal((await (await run("owner", undefined, "?status=" + encodeURIComponent("洽談中"))).json()).inquiries.length, 1);
+});
