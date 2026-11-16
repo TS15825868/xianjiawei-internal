@@ -1,0 +1,35 @@
+name: Prepare B2B inquiry tables
+on: workflow_dispatch
+permissions:
+  contents: read
+concurrency:
+  group: xjw-business-inquiry-d1-migration
+  cancel-in-progress: false
+jobs:
+  migrate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify schema and isolate test data
+        run: |
+          node --test edge/business-inquiries.test.mjs
+          node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; process.stdout.write(businessInquirySchema)' > "$RUNNER_TEMP/business-inquiries.sql"
+      - name: Verify recovery capability and prepare only the B2B tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npm ci --ignore-scripts
+          npx --no-install wrangler d1 time-travel info xianjiawei-internal-db > "$RUNNER_TEMP/business-inquiries-recovery.txt"
+          grep -iq bookmark "$RUNNER_TEMP/business-inquiries-recovery.txt"
+          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --file "$RUNNER_TEMP/business-inquiries.sql"
+          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
