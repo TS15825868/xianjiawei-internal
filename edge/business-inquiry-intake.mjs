@@ -1,4 +1,4 @@
-import { expireBusinessNotification, storeBusinessInquiry } from "./business-inquiries.mjs";
+import { claimBusinessNotification, expireBusinessNotification, finishBusinessNotification, storeBusinessInquiry } from "./business-inquiries.mjs";
 
 const encoder = new TextEncoder();
 const path = "/api/internal/business-inquiries";
@@ -52,6 +52,19 @@ export async function businessInquiryIntake(request, env, now = Date.now()) {
     let input;
     try { input = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(body)); }
     catch { return reply(400, { error: "invalid_body" }); }
+    if (input?.action === "claim" || input?.action === "finish") {
+      const { action, id, claimId, outcome } = input;
+      if (typeof id !== "string" || !/^B2B-[a-f0-9-]{36}$/i.test(id) ||
+          typeof claimId !== "string" || !/^[a-f0-9-]{36}$/i.test(claimId) ||
+          (action === "finish" && !["delivered", "rejected", "unknown"].includes(outcome))) {
+        return reply(400, { error: "invalid_notification_action" });
+      }
+      await expireBusinessNotification(env.DB, id, now);
+      const applied = action === "claim"
+        ? await claimBusinessNotification(env.DB, id, claimId, now)
+        : await finishBusinessNotification(env.DB, id, claimId, outcome);
+      return reply(200, { id, action, applied });
+    }
     const receipt = await storeBusinessInquiry(env.DB, input);
     if (receipt.notificationStatus === "sending" && await expireBusinessNotification(env.DB, receipt.id, now)) {
       receipt.notificationStatus = "uncertain";
