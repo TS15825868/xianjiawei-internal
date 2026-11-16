@@ -1,0 +1,48 @@
+name: Isolated B2B cross-system contract
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'edge/business-inquir*.mjs'
+      - 'src/full-system-entry.js'
+      - 'package.json'
+      - '.github/workflows/b2b-contract.yml'
+  push:
+    branches: [ops/b2b-inquiry-persistence]
+    paths:
+      - 'edge/business-inquir*.mjs'
+      - 'src/full-system-entry.js'
+      - 'package.json'
+      - '.github/workflows/b2b-contract.yml'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-b2b-contract-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: erp
+          persist-credentials: false
+      - uses: actions/checkout@v5
+        with:
+          repository: TS15825868/TS-LINE
+          ref: 4f65c9fa801d278f0253a98ea6514ba825561b01
+          path: line
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: ERP isolated B2B regressions
+        working-directory: erp
+        run: node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs
+      - name: LINE signed intake and Access contracts against actual ERP handler
+        working-directory: line
+        run: node --test business-inquiry-intake.test.js business-inquiry-access.test.js
+      - name: CRM order contract against checked-in Apps Script (offline only)
+        working-directory: line
+        run: node crm-order-contract.test.js
