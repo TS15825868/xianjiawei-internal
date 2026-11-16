@@ -2,6 +2,11 @@ const notificationLeaseMs = 5 * 60 * 1000;
 const categories = new Set(["批發採購", "經銷", "通路寄賣", "產品開發", "鹿角原料", "品牌異業", "其他合作"]);
 
 export const businessInquirySchema = `
+  CREATE TABLE IF NOT EXISTS business_inquiry_drafts (
+    actor_key TEXT PRIMARY KEY,
+    payload TEXT NOT NULL,
+    expires_at INTEGER NOT NULL
+  );
   CREATE TABLE IF NOT EXISTS business_inquiries (
     id TEXT PRIMARY KEY,
     source TEXT NOT NULL CHECK (source = 'LINE'),
@@ -87,9 +92,32 @@ export async function expireBusinessNotification(db, inquiryId, now = Date.now()
 
 
 export async function sweepExpiredBusinessNotifications(db, now = Date.now()) {
+  await db.prepare("DELETE FROM business_inquiry_drafts WHERE expires_at <= ?").bind(now).run();
   await db.prepare(`
     UPDATE business_inquiries SET notification_status = 'uncertain',
         notification_claim = NULL, notification_started_at = NULL
     WHERE notification_status = 'sending' AND notification_started_at <= ?
   `).bind(now - notificationLeaseMs).run();
+}
+
+export async function accessBusinessDraft(db, input, now) {
+  if (typeof input.actorKey !== "string" || !/^[a-f0-9]{64}$/.test(input.actorKey)) {
+    throw new Error("Invalid business inquiry");
+  }
+  if (input.action === "discard-draft") {
+    await db.prepare("DELETE FROM business_inquiry_drafts WHERE actor_key = ?").bind(input.actorKey).run();
+    return {};
+  }
+  if (input.action === "save-draft") {
+    verifiedInquiry(input.payload);
+    await db.prepare(`
+      INSERT INTO business_inquiry_drafts (actor_key, payload, expires_at) VALUES (?, ?, ?)
+      ON CONFLICT(actor_key) DO UPDATE SET payload = excluded.payload, expires_at = excluded.expires_at
+    `).bind(input.actorKey, JSON.stringify(input.payload), now + 24 * 60 * 60 * 1000).run();
+    return { id: input.payload.id };
+  }
+  const row = await db.prepare("SELECT payload FROM business_inquiry_drafts WHERE actor_key = ? AND expires_at > ?")
+    .bind(input.actorKey, now).first();
+  const payload = row ? JSON.parse(row.payload) : null;
+  return { payload: payload?.id === input.id ? payload : null };
 }
