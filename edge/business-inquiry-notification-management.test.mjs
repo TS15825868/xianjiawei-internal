@@ -78,3 +78,23 @@ test('uncertain can be recorded as already accepted without sending another mess
   assert.equal(row().notification_attempts,0);
   assert.equal(audit().length,1);
 });
+test('management route preserves authentication, same-origin and feature flag guards', async t => {
+  const { businessInquiryManagement } = await import('./business-inquiry-management.mjs');
+  const { env, row, audit } = fixture(t,'uncertain');
+  const url = 'https://isolated.invalid/api/business-inquiries';
+  const run = (profile, origin = 'https://isolated.invalid', action = 'resolve-sent') => businessInquiryManagement(new Request(url, {
+    method: 'PATCH', headers: { origin, 'content-type': 'application/json' },
+    body: JSON.stringify({ id, revision: 0, notificationAction: action, reason: '隔離證據' }),
+  }),env,async()=>profile);
+  assert.equal((await run(owner)).status,404);
+  env.XJW_B2B_INTAKE_ENABLED = 'true';
+  assert.equal((await run(null)).status,401);
+  assert.equal((await run(sales)).status,403);
+  assert.equal((await run(owner,'https://other.invalid')).status,403);
+  env.XJW_B2B_NOTIFICATION_RETRY_ENABLED = 'false';
+  assert.equal((await run(owner,'https://isolated.invalid','retry')).status,503);
+  assert.equal(audit().length,0);
+  assert.equal((await run(owner)).status,200);
+  assert.equal(row().notification_status,'sent');
+  assert.equal(audit().length,1);
+});
