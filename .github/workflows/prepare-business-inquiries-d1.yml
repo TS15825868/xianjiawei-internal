@@ -1,5 +1,11 @@
 name: Prepare B2B inquiry tables
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Apply the migration after the backup and isolated rehearsal
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -22,14 +28,32 @@ jobs:
         run: |
           node --test edge/business-inquiries.test.mjs
           node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; process.stdout.write(businessInquirySchema)' > "$RUNNER_TEMP/business-inquiries.sql"
-      - name: Verify recovery capability and prepare only the B2B tables
+      - name: Export and rehearse migration against an isolated restore
         shell: bash
         run: |
           set -euo pipefail
+          umask 077
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           npm ci --ignore-scripts
-          npx --no-install wrangler d1 time-travel info xianjiawei-internal-db > "$RUNNER_TEMP/business-inquiries-recovery.txt"
-          grep -iq bookmark "$RUNNER_TEMP/business-inquiries-recovery.txt"
+          npx --no-install wrangler d1 time-travel info xianjiawei-internal-db --json > "$RUNNER_TEMP/business-inquiries-recovery.json"
+          npx --no-install wrangler d1 export xianjiawei-internal-db --remote --output "$RUNNER_TEMP/business-inquiries-backup.sql"
+          python3 tools/verify-business-inquiry-d1-restore.py \
+            "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries.sql" \
+            "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-preflight.json"
+      - name: Preserve recovery and rehearsal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: b2b-d1-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/business-inquiries-preflight.json
+          if-no-files-found: error
+      - name: Apply approved B2B schema and verify reads
+        if: inputs.apply
+        shell: bash
+        run: |
+          set -euo pipefail
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --file "$RUNNER_TEMP/business-inquiries.sql"
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
+      - name: Remove downloaded production data from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries-recovery.json"
