@@ -68,13 +68,19 @@ export async function businessInquiryIntake(request, env, now = Date.now()) {
         : await finishBusinessNotification(env.DB, id, claimId, outcome);
       return reply(200, { id, action, applied });
     }
-    const receipt = await storeBusinessInquiry(env.DB, input);
+    const confirming = input?.action === "confirm-draft";
+    if (confirming && (typeof input.actorKey !== "string" || !/^[a-f0-9]{64}$/.test(input.actorKey))) {
+      return reply(400, { error: "invalid_inquiry" });
+    }
+    const receipt = await storeBusinessInquiry(env.DB, confirming ? input.payload : input,
+      confirming ? { actorKey: input.actorKey, now } : null);
     if (receipt.notificationStatus === "sending" && await expireBusinessNotification(env.DB, receipt.id, now)) {
       receipt.notificationStatus = "uncertain";
     }
     return reply(receipt.duplicate ? 200 : 201, receipt);
   } catch (error) {
     if (error.message === "Invalid business inquiry") return reply(400, { error: "invalid_inquiry" });
+    if (error.message === "Inactive business draft") return reply(409, { error: "inactive_draft" });
     if (error.message === "Business inquiry ID conflict") return reply(409, { error: "id_conflict" });
     return reply(503, { error: "intake_unavailable" });
   }
