@@ -38,13 +38,18 @@ function verifiedInquiry(input) {
   return [id, source, receivedAt, category, businessContact.trim(), details.trim(), origin];
 }
 
-export async function storeBusinessInquiry(db, input) {
+export async function storeBusinessInquiry(db, input, draft = null) {
   const [id, ...fields] = verifiedInquiry(input);
+  const guard = draft ? `WHERE EXISTS (
+    SELECT 1 FROM business_inquiry_drafts
+    WHERE actor_key = ? AND payload = ? AND expires_at > ?
+  )` : "";
+  const draftArgs = draft ? [draft.actorKey, JSON.stringify(input), draft.now] : [];
   const saved = await db.prepare(`
     INSERT INTO business_inquiries (id, source, received_at, category, business_contact, details, origin)
-    VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING
+    SELECT ?, ?, ?, ?, ?, ?, ? ${guard || "WHERE 1=1"} ON CONFLICT(id) DO NOTHING
     RETURNING notification_status
-  `).bind(id, ...fields).first();
+  `).bind(id, ...fields, ...draftArgs).first();
   if (saved) return { id, notificationStatus: saved.notification_status, duplicate: false };
 
   const existing = await db.prepare(`
@@ -52,7 +57,7 @@ export async function storeBusinessInquiry(db, input) {
     WHERE id = ? AND source = ? AND received_at = ? AND category = ?
       AND business_contact = ? AND details = ? AND origin IS ?
   `).bind(id, ...fields).first();
-  if (!existing) throw new Error("Business inquiry ID conflict");
+  if (!existing) throw new Error(draft ? "Inactive business draft" : "Business inquiry ID conflict");
   return { id, notificationStatus: existing.notification_status, duplicate: true };
 }
 
