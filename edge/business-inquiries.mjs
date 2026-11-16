@@ -16,6 +16,9 @@ export const businessInquirySchema = `
     business_contact TEXT NOT NULL,
     details TEXT NOT NULL,
     consultation_status TEXT NOT NULL DEFAULT '待洽談',
+    assignee TEXT NOT NULL DEFAULT '',
+    consultation_notes TEXT NOT NULL DEFAULT '',
+    revision INTEGER NOT NULL DEFAULT 0,
     notification_status TEXT NOT NULL DEFAULT 'pending'
       CHECK (notification_status IN ('pending', 'sending', 'sent', 'uncertain')),
     notification_claim TEXT,
