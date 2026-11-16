@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   businessInquirySchema, claimBusinessNotification, finishBusinessNotification, storeBusinessInquiry,
+  expireBusinessNotification, sweepExpiredBusinessNotifications,
 } from "./business-inquiries.mjs";
 
 function fixture(t) {
@@ -132,4 +133,38 @@ test("additive migration leaves existing ERP records intact and can run twice", 
   assert.equal(sqlite.prepare("SELECT module FROM app_records WHERE id = 'isolated-order'").get().module, "orders");
   assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiries").get().count, 0);
   assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM business_inquiry_drafts").get().count, 0);
+});
+
+
+test("notification changes invalidate stale ERP revisions, including repeated pending cycles and sweeps", async t => {
+  const { db, data, sqlite } = fixture(t);
+  db.prepare = sql => ({ bind: (...args) => ({
+    first: async () => sqlite.prepare(sql).get(...args),
+    run: async () => sqlite.prepare(sql).run(...args),
+  }) });
+  await storeBusinessInquiry(db, data);
+  const row = () => sqlite.prepare("SELECT notification_status, revision FROM business_inquiries WHERE id = ?").get(data.id);
+  const rev = () => row().revision;
+  const now = Date.now();
+  assert.equal(rev(), 0);
+  assert.equal(await claimBusinessNotification(db, data.id, "first", now), true);
+  assert.equal(rev(), 1);
+  assert.equal(await finishBusinessNotification(db, data.id, "incorrect", "rejected"), false);
+  assert.equal(rev(), 1);
+  assert.equal(await finishBusinessNotification(db, data.id, "first", "rejected"), true);
+  assert.equal(rev(), 2);
+  assert.equal(row().notification_status, "pending");
+  const stale = sqlite.prepare("UPDATE business_inquiries SET consultation_status = '洽談中' WHERE id = ? AND revision = 0").run(data.id);
+  assert.equal(Number(stale.changes), 0);
+  assert.equal(await claimBusinessNotification(db, data.id, "second", now), true);
+  assert.equal(await expireBusinessNotification(db, data.id, now + 300001), true);
+  assert.equal(rev(), 4);
+  assert.equal(await expireBusinessNotification(db, data.id, now + 600000), false);
+  assert.equal(rev(), 4);
+  const other = { ...data, id: "B2B-" + randomUUID() };
+  await storeBusinessInquiry(db, other);
+  await claimBusinessNotification(db, other.id, "sweep", now);
+  await sweepExpiredBusinessNotifications(db, now + 300001);
+  assert.equal(sqlite.prepare("SELECT revision FROM business_inquiries WHERE id = ?").get(other.id).revision, 2);
+  assert.equal(rev(), 4);
 });

@@ -69,7 +69,7 @@ export async function claimBusinessNotification(db, inquiryId, claimId, now = Da
   const claimed = await db.prepare(`
     UPDATE business_inquiries
     SET notification_status = 'sending', notification_claim = ?, notification_started_at = ?,
-        notification_attempts = notification_attempts + 1
+        notification_attempts = notification_attempts + 1, revision = revision + 1
     WHERE id = ? AND notification_status = 'pending'
     RETURNING id
   `).bind(claimId, now, inquiryId).first();
@@ -81,7 +81,7 @@ export async function finishBusinessNotification(db, inquiryId, claimId, outcome
   const status = { delivered: "sent", rejected: "pending", unknown: "uncertain" }[outcome];
   if (!["sent", "pending", "uncertain"].includes(status)) throw new Error("Invalid notification outcome");
   const finished = await db.prepare(`
-    UPDATE business_inquiries SET notification_status = ?, notification_claim = NULL, notification_started_at = NULL
+    UPDATE business_inquiries SET notification_status = ?, notification_claim = NULL, notification_started_at = NULL, revision = revision + 1
     WHERE id = ? AND notification_status = 'sending' AND notification_claim = ?
     RETURNING id
   `).bind(status, inquiryId, claimId).first();
@@ -91,7 +91,7 @@ export async function finishBusinessNotification(db, inquiryId, claimId, outcome
 export async function expireBusinessNotification(db, inquiryId, now = Date.now()) {
   const expired = await db.prepare(`
     UPDATE business_inquiries SET notification_status = 'uncertain',
-        notification_claim = NULL, notification_started_at = NULL
+        notification_claim = NULL, notification_started_at = NULL, revision = revision + 1
     WHERE id = ? AND notification_status = 'sending' AND notification_started_at <= ?
     RETURNING id
   `).bind(inquiryId, now - notificationLeaseMs).first();
@@ -103,7 +103,7 @@ export async function sweepExpiredBusinessNotifications(db, now = Date.now()) {
   await db.prepare("DELETE FROM business_inquiry_drafts WHERE expires_at <= ?").bind(now).run();
   await db.prepare(`
     UPDATE business_inquiries SET notification_status = 'uncertain',
-        notification_claim = NULL, notification_started_at = NULL
+        notification_claim = NULL, notification_started_at = NULL, revision = revision + 1
     WHERE notification_status = 'sending' AND notification_started_at <= ?
   `).bind(now - notificationLeaseMs).run();
 }
