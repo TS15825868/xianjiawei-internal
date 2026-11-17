@@ -22,7 +22,7 @@ function fixture(t){
 function gas(clock=Date.now){
   const props={XJW_B2B_CRM_ENABLED:'true',XJW_B2B_CRM_SECRET:secret,XJW_B2B_CRM_SPREADSHEET_ID:'isolated'};
   const rows=[];
-  const sheet={getLastRow:()=>rows.length,setFrozenRows(){},getRange:(r,c,n,w)=>({getValues:()=>rows.slice(r-1,r-1+n).map(row=>row.slice(c-1,c-1+w)),setValues:values=>{for(let i=0;i<values.length;i++)rows[r-1+i]=values[i];}})};
+  const sheet={getLastRow:()=>rows.length,setFrozenRows(){},getRange:(r,c,n,w)=>({getValues:()=>rows.slice(r-1,r-1+n).map(row=>row.slice(c-1,c-1+w)),setValues:values=>{for(let i=0;i<values.length;i++)rows[r-1+i]=Array.from(values[i]);}})};
   const context=vm.createContext({
     Date:class extends Date{static now(){return clock();}},
     PropertiesService:{getScriptProperties:()=>({getProperty:k=>props[k]})},
