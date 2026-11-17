@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/current-scheduling-eligibility-audit.yml'
+      - 'ops/social-release-runway*.mjs'
 permissions:
   contents: read
 concurrency:
@@ -58,3 +59,12 @@ jobs:
           console.log('Text-only candidates are NOT automatically eligible: Facebook/Threads only after human review; Instagram needs media.');
           console.log('Audit is read only. Counts are not proof of real-time autoPublish settings.');
           NODE
+      - name: Verify Taiwan fixed-slot runway, current versions and actual original image bytes (read only)
+        run: |
+          node --test ops/social-release-runway.test.mjs
+          node ops/social-release-runway.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: social-runway-readonly-${{ github.run_id }}
+          path: /tmp/xjw-social-runway.json
+          retention-days: 7
