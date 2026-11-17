@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'edge/business-inquir*.mjs'
+      - '.github/workflows/deploy-cloudflare-publishing.yml'
       # The receipt-only backup is a separate Worker, not part of ERP deployment.
       - '!src/social-webhook-cloudflare-fallback.mjs'
       - '!src/social-webhook-cloudflare-fallback.test.mjs'

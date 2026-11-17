@@ -28,7 +28,11 @@ async function boundedBody(request) {
 }
 
 export async function businessInquiryIntake(request, env, now = Date.now()) {
-  if (env.XJW_B2B_INTAKE_ENABLED !== "true") return reply(404, { error: "not_found" });
+  const enabled = env.XJW_B2B_INTAKE_ENABLED === "true";
+  // Only the exact, independently signed, read-only readiness probe may enter
+  // this handler when the feature is disabled. It cannot write data or notify.
+  const probing = request.headers.get("x-xjw-readiness") === "1";
+  if (!enabled && !probing) return reply(404, { error: "not_found" });
   if (request.method !== "POST" || new URL(request.url).pathname !== path) return reply(405, { error: "method_not_allowed" });
   const secret = env.XJW_B2B_INTAKE_SECRET;
   if (!env.DB || typeof secret !== "string" || secret.length < 32) return reply(503, { error: "intake_unavailable" });
@@ -52,6 +56,18 @@ export async function businessInquiryIntake(request, env, now = Date.now()) {
     let input;
     try { input = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(body)); }
     catch { return reply(400, { error: "invalid_body" }); }
+    if (probing) {
+      if (!input || input.action !== "readiness" || Object.keys(input).length !== 2 ||
+          typeof input.nonce !== "string" || !/^[a-f0-9]{32}$/.test(input.nonce)) {
+        return reply(400, { error: "invalid_probe" });
+      }
+      const schema = await env.DB.prepare(
+        "SELECT COUNT(*) AS ready FROM sqlite_master WHERE type='table' AND name IN ('business_inquiries','business_inquiry_drafts','business_inquiry_crm_delivery')"
+      ).bind().first();
+      if (Number(schema?.ready) !== 3) return reply(503, { error: "intake_unavailable" });
+      return reply(200, { ok: true, action: "readiness", nonce: input.nonce, version: scope, enabled });
+    }
+    if (!enabled) return reply(404, { error: "not_found" });
     if (["save-draft", "load-draft", "discard-draft"].includes(input?.action)) {
       return reply(200, await accessBusinessDraft(env.DB, input, now));
     }
