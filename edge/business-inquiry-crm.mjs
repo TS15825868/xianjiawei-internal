@@ -35,8 +35,8 @@ function payloadFor(row) {
   return { id: row.id, source: row.source, receivedAt: row.received_at, origin: row.origin,
     category: row.category, businessContact: row.business_contact, details: row.details };
 }
-async function send(row, endpoint, secret, now, transport) {
-  const payload = JSON.stringify(payloadFor(row));
+async function signedRequest(input, endpoint, secret, now, transport) {
+  const payload = JSON.stringify(input);
   const timestamp = String(now);
   const key = await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
   const signature = hex(await crypto.subtle.sign('HMAC',key,encoder.encode(scope+'\n'+timestamp+'\n'+payload)));
@@ -45,16 +45,35 @@ async function send(row, endpoint, secret, now, transport) {
       headers:{'content-type':'application/json'},body:JSON.stringify({timestamp,payload,signature})});
     if ([302,303].includes(response.status)) {
       const next = contentRedirect(response.headers.get('location'));
-      if (!next) return 'unsafe_redirect';
+      if (!next) return {error:'unsafe_redirect'};
       // Google ContentService redirects to an output URL. Never forward the signed POST body.
       response = await transport(next,{method:'GET',redirect:'error',signal:AbortSignal.timeout(10000)});
     }
-    if (!response.ok) return 'http_failure';
-    const ack = await response.json();
+    if (!response.ok) return {error:'http_failure'};
+    return {ack:await response.json()};
+  } catch { return {error:'transport_unknown'}; }
+}
+async function send(row, endpoint, secret, now, transport) {
+  const result = await signedRequest(payloadFor(row), endpoint, secret, now, transport);
+  if (result.error) return result.error;
+  const ack = result.ack;
     if (ack?.id !== row.id || ack?.version !== scope) return 'invalid_ack';
     if (ack.ok === true && typeof ack.duplicate === 'boolean') return 'sent';
     return ack.error === 'id_conflict' ? 'id_conflict' : 'receiver_rejected';
-  } catch { return 'transport_unknown'; }
+}
+// Optional explicit preflight; not scheduled, does not touch D1 or write to Sheets.
+// The expected proof binds the signed response to the separately approved Sheet.
+export async function probeBusinessInquiryCrm(env, {transport=fetch, now=Date.now}={}) {
+  const endpoint=safeEndpoint(env.XJW_B2B_CRM_URL), secret=env.XJW_B2B_CRM_SECRET;
+  const expected=env.XJW_B2B_CRM_TARGET_PROOF;
+  if(!endpoint||typeof secret!=='string'||secret.length<32||typeof expected!=='string'||! /^[a-f0-9]{64}$/.test(expected)) return {verified:false,error:'not_configured'};
+  const nonce=hex(crypto.getRandomValues(new Uint8Array(16)));
+  const result=await signedRequest({action:'readiness',nonce},endpoint,secret,now(),transport);
+  if(result.error)return {verified:false,error:result.error};
+  const ack=result.ack;
+  if(ack?.ok!==true||ack.action!=='readiness'||ack.version!==scope||ack.nonce!==nonce||
+    ack.targetProof!==expected||typeof ack.enabled!=='boolean')return {verified:false,error:'invalid_ack'};
+  return {verified:true,receiverEnabled:ack.enabled};
 }
 export async function deliverBusinessInquiryCrm(env, {transport=fetch, now=Date.now, limit=3}={}) {
   const endpoint=safeEndpoint(env.XJW_B2B_CRM_URL);

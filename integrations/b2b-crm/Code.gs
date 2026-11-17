@@ -40,7 +40,8 @@ function doPost(e) {
   var spreadsheetId=props.getProperty('XJW_B2B_CRM_SPREADSHEET_ID');
   var lock=null;
   try {
-    if(props.getProperty('XJW_B2B_CRM_ENABLED')!=='true'||!secret||secret.length<32||!spreadsheetId) return b2bJson_({ok:false,error:'disabled'});
+    var enabled=props.getProperty('XJW_B2B_CRM_ENABLED')==='true';
+    if(!secret||secret.length<32||!spreadsheetId) return b2bJson_({ok:false,error:'disabled'});
     var raw=(e&&e.postData&&e.postData.contents)||'';
     if(raw.length>8192) return b2bJson_({ok:false,error:'invalid'});
     var envelope=JSON.parse(raw);
@@ -49,6 +50,16 @@ function doPost(e) {
     var expected=b2bHex_(Utilities.computeHmacSha256Signature(B2B_SCOPE+'\n'+envelope.timestamp+'\n'+envelope.payload,secret,Utilities.Charset.UTF_8));
     if(!b2bEqual_(expected,envelope.signature)) return b2bJson_({ok:false,error:'invalid'});
     var p=JSON.parse(envelope.payload);
+    // The exact signed read-only probe also works when receipt writes are disabled.
+    // Never reveal a spreadsheet ID, customer records, or spreadsheet values.
+    if(p && p.action==='readiness'){
+      if(Object.keys(p).length!==2||typeof p.nonce!=='string'||!/^[a-f0-9]{32}$/.test(p.nonce)) return b2bJson_({ok:false,error:'invalid'});
+      var target=b2bHex_(Utilities.computeHmacSha256Signature(B2B_SCOPE+'\nreadiness-target\n'+spreadsheetId,secret,Utilities.Charset.UTF_8));
+      var readySheet=SpreadsheetApp.openById(spreadsheetId).getSheetByName(B2B_TAB);
+      if(!readySheet||JSON.stringify(readySheet.getRange(1,1,1,B2B_HEADERS.length).getValues()[0])!==JSON.stringify(B2B_HEADERS)) return b2bJson_({ok:false,error:'sheet_unavailable'});
+      return b2bJson_({ok:true,action:'readiness',version:B2B_SCOPE,nonce:p.nonce,targetProof:target,enabled:enabled});
+    }
+    if(!enabled) return b2bJson_({ok:false,error:'disabled'});
     if(!b2bValid_(p)) return b2bJson_({ok:false,error:'invalid'});
     var digest=b2bHex_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,envelope.payload,Utilities.Charset.UTF_8));
     lock=LockService.getScriptLock();lock.waitLock(10000);

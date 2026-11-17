@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 import {createHmac,createHash} from 'node:crypto';
 import vm from 'node:vm';
 import {businessInquirySchema,storeBusinessInquiry} from './business-inquiries.mjs';
-import {businessInquiryCrmSchema,deliverBusinessInquiryCrm} from './business-inquiry-crm.mjs';
+import {businessInquiryCrmSchema,deliverBusinessInquiryCrm,probeBusinessInquiryCrm} from './business-inquiry-crm.mjs';
 const secret='isolated-crm-key-not-a-real-secret-123456';
 const scope='xjw-b2b-crm-v1';
 const endpoint='https://script.google.com/macros/s/isolated_test/exec';
@@ -109,4 +109,27 @@ test('concurrent schedules claim one sender; abandoned claims recover and exhaus
   await deliverBusinessInquiryCrm(env,{transport,now:()=>now});
   const held=await DB.prepare("SELECT state,last_error FROM business_inquiry_crm_delivery WHERE inquiry_id=?").bind(exhausted.id).first();
   assert.equal(held.state,'held');assert.equal(held.last_error,'retry_limit');assert.equal(calls,2);
+});
+
+test('signed CRM readiness verifies the intended spreadsheet while receiver writes are disabled',async t=>{
+  const {env,data,sqlite}=fixture(t);
+  const receiver=gas();
+  receiver.props.XJW_B2B_CRM_ENABLED='false';
+  const expected=createHmac('sha256',secret).update(scope+'\nreadiness-target\nisolated').digest('hex');
+  let calls=0;
+  const transport=async(_url,init)=>{calls++;return Response.json(receiver.post(init.body));};
+  assert.deepEqual(await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:expected},{transport}),{verified:true,receiverEnabled:false});
+  assert.equal(receiver.rows.length,1);
+  assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM business_inquiry_crm_delivery').get().n,0);
+  assert.equal((await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:'0'.repeat(64)},{transport})).verified,false);
+  assert.equal((await probeBusinessInquiryCrm(env,{transport})).error,'not_configured');
+  assert.equal(calls,2);
+  const timestamp=String(Date.now()), payload=JSON.stringify(data);
+  const signature=createHmac('sha256',secret).update(scope+'\n'+timestamp+'\n'+payload).digest('hex');
+  assert.equal(receiver.post(JSON.stringify({timestamp,payload,signature})).error,'disabled');
+  assert.equal(receiver.rows.length,1);
+  const fake=await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:expected},{transport:async()=>Response.json({ok:true,action:'readiness',version:scope,nonce:'wrong',targetProof:expected,enabled:false})});
+  assert.equal(fake.verified,false);
+  receiver.rows[0][0]='wrong';
+  assert.equal((await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:expected},{transport})).verified,false);
 });
