@@ -180,3 +180,30 @@ test("notification changes invalidate stale ERP revisions, including repeated pe
   assert.equal(sqlite.prepare("SELECT revision FROM business_inquiries WHERE id = ?").get(other.id).revision, 2);
   assert.equal(rev(), 4);
 });
+
+test("signed readiness while disabled is read-only and cannot unlock customer intake", async t => {
+  const { businessInquiryIntake } = await import("./business-inquiry-intake.mjs");
+  const { db, data, sqlite } = fixture(t);
+  const secret = "isolated-readiness-key-not-a-real-credential";
+  const env = { DB: db, XJW_B2B_INTAKE_ENABLED: "false", XJW_B2B_INTAKE_SECRET: secret };
+  const now = Date.now(), path = "/api/internal/business-inquiries";
+  const nonce = "a".repeat(32), probe = { action: "readiness", nonce };
+  function signed(input, { sign = secret, timestamp = now, header = true } = {}) {
+    const body = JSON.stringify(input);
+    const signature = createHmac("sha256", sign).update(`xjw-b2b-intake-v1\nPOST\n${path}\n${timestamp}\n${body}`).digest("hex");
+    return new Request("https://isolated.invalid" + path, { method: "POST", body,
+      headers: { "x-xjw-timestamp": String(timestamp), "x-xjw-signature": signature, ...(header ? {"x-xjw-readiness":"1"} : {}) } });
+  }
+  const success = await businessInquiryIntake(signed(probe), env, now);
+  assert.equal(success.status, 200);
+  assert.deepEqual(await success.json(), { ok: true, action: "readiness", nonce, version: "xjw-b2b-intake-v1", enabled: false });
+  assert.equal((await businessInquiryIntake(signed(probe, { sign: "wrong" }), env, now)).status, 401);
+  assert.equal((await businessInquiryIntake(signed(probe, { timestamp: now - 300001 }), env, now)).status, 401);
+  assert.equal((await businessInquiryIntake(signed(data), env, now)).status, 400);
+  assert.equal((await businessInquiryIntake(signed(probe, { header: false }), env, now)).status, 404);
+  assert.equal((await businessInquiryIntake(signed({ ...probe, details: "must not accept" }), env, now)).status, 400);
+  for (const table of ["business_inquiries", "business_inquiry_drafts", "business_inquiry_crm_delivery"])
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM " + table).get().count, 0);
+  sqlite.exec("DROP TABLE business_inquiry_crm_delivery");
+  assert.equal((await businessInquiryIntake(signed(probe), env, now)).status, 503);
+});
