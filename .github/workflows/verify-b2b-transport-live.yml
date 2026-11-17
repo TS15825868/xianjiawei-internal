@@ -1,0 +1,47 @@
+name: Verify live B2B authenticated transport (read-only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-b2b-transport-live.yml'
+permissions:
+  contents: read
+concurrency:
+  group: xjw-live-b2b-readiness
+  cancel-in-progress: true
+jobs:
+  verify-staged-transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Verify actual LINE runtime and signed read-only ERP readiness
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(curl -fsS --max-time 15 https://api.github.com/repos/TS15825868/TS-LINE/commits/main | jq -er .sha)"
+          # Readiness is computed asynchronously by the real Render runtime.
+          # One initial request plus bounded readback; no customer payload,
+          # credentials, or production write is issued from CI.
+          for attempt in 1 2 3 4; do
+            if curl -fsS --connect-timeout 10 --max-time 45 https://ts-line.onrender.com/healthz -o /tmp/xjw-b2b-health.json &&
+              jq -e --arg sha "$expected" '.deploymentCommit == $sha and .ok == true and .orderOpen == true and .credentialsConfigured == true and .b2bPersistenceEnabled == false and .b2bTransport.verified == true and .b2bTransport.intakeEnabled == false and ((.b2bTransport.checkedAt | sub("\\.[0-9]+Z$";"Z") | fromdateiso8601) > (now - 1200))' /tmp/xjw-b2b-health.json >/dev/null; then
+              jq '{deploymentCommit,ok,orderOpen,b2bPersistenceEnabled,b2bTransport}' /tmp/xjw-b2b-health.json
+              break
+            fi
+            if [ "$attempt" -eq 4 ]; then
+              echo 'Authenticated read-only readiness has not been confirmed for current LINE main.' >&2
+              if [ -s /tmp/xjw-b2b-health.json ]; then jq '{deploymentCommit,ok,orderOpen,b2bPersistenceEnabled,b2bTransport}' /tmp/xjw-b2b-health.json || true; fi
+              exit 1
+            fi
+            sleep 6
+          done
+      - name: Verify the protected path rejects unauthenticated probes
+        shell: bash
+        run: |
+          set -euo pipefail
+          code="$(curl -sS --connect-timeout 10 --max-time 20 -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -H 'x-xjw-readiness: 1' --data '{"action":"readiness","nonce":"00000000000000000000000000000000"}' 'https://xianjiawei-internal.tung314069.workers.dev/api/internal/business-inquiries')"
+          case "$code" in
+            302|303|401|403) echo "Unauthenticated probe blocked: HTTP $code";;
+            *) echo "Unexpected unauthorized response HTTP $code" >&2; exit 1;;
+          esac
