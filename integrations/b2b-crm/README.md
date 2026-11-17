@@ -8,6 +8,8 @@
 
 ## Read-only receiver acceptance before activation
 - The receiver supports an exact signed `{action:"readiness",nonce:"<32 lowercase hex>"}` request even when receipt writes are disabled. It returns only the nonce, protocol version, write-enabled flag, and HMAC target proof; it never returns a Sheet ID or row data.
-- Set `XJW_B2B_CRM_TARGET_PROOF` as a Worker secret only after the isolated and later formal target have been explicitly verified. It is the lowercase hexadecimal HMAC-SHA256 using the shared CRM secret over the UTF-8 string `xjw-b2b-crm-v1\nreadiness-target\n<approved spreadsheet ID>` (actual LF separators). Do not print the proof or key in CI logs.
+- Set `XJW_B2B_CRM_TARGET_PROOF` as a Worker secret only after the isolated and later formal target have been explicitly verified. It is the lowercase hexadecimal HMAC-SHA256 using the shared CRM secret over the UTF-8 string `xjw-b2b-crm-v2\nreadiness-target\n<approved spreadsheet ID>` (actual LF separators). Do not print the proof or key in CI logs.
 - Call `probeBusinessInquiryCrm` with the exact endpoint, shared secret and expected proof. Confirm a matching signed nonce, correct target and receiverEnabled=false. This function performs no D1 or spreadsheet writes; it is not scheduled or exposed as a public route.
 - This preflight does not replace the actual isolated Web App delivery, duplicate, retry, and row readback acceptance. Do not enable production delivery on the strength of preflight alone.
+
+- Protocol v2 is mandatory: each signed delivery includes the approved target proof, the receiver checks it before opening the write target, and successful/duplicate acknowledgments must echo it. A wrong target holds the event without writing; a missing proof prevents transport. Earlier protocol v1 is incompatible by design; no B2B receiver has been deployed. Do not use v1 for deployment.

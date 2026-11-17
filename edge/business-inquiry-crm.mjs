@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS business_inquiry_crm_delivery (
 const encoder = new TextEncoder();
 const maxAttempts = 8;
 const leaseMs = 60000;
-const scope = 'xjw-b2b-crm-v1';
+const scope = 'xjw-b2b-crm-v2';
 const hex = bytes => Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2,'0')).join('');
 const safeEndpoint = url => {
   try {
@@ -53,13 +53,15 @@ async function signedRequest(input, endpoint, secret, now, transport) {
     return {ack:await response.json()};
   } catch { return {error:'transport_unknown'}; }
 }
-async function send(row, endpoint, secret, now, transport) {
-  const result = await signedRequest(payloadFor(row), endpoint, secret, now, transport);
+async function send(row, endpoint, secret, targetProof, now, transport) {
+  const result = await signedRequest({...payloadFor(row),targetProof}, endpoint, secret, now, transport);
   if (result.error) return result.error;
   const ack = result.ack;
-    if (ack?.id !== row.id || ack?.version !== scope) return 'invalid_ack';
-    if (ack.ok === true && typeof ack.duplicate === 'boolean') return 'sent';
-    return ack.error === 'id_conflict' ? 'id_conflict' : 'receiver_rejected';
+  if (ack?.id !== row.id || ack?.version !== scope) return 'invalid_ack';
+  if (ack.ok === false && ack.error === 'target_mismatch') return 'target_mismatch';
+  if (ack.targetProof !== targetProof) return 'invalid_ack';
+  if (ack.ok === true && typeof ack.duplicate === 'boolean') return 'sent';
+  return ack.error === 'id_conflict' ? 'id_conflict' : 'receiver_rejected';
 }
 // Optional explicit preflight; not scheduled, does not touch D1 or write to Sheets.
 // The expected proof binds the signed response to the separately approved Sheet.
@@ -78,8 +80,10 @@ export async function probeBusinessInquiryCrm(env, {transport=fetch, now=Date.no
 export async function deliverBusinessInquiryCrm(env, {transport=fetch, now=Date.now, limit=3}={}) {
   const endpoint=safeEndpoint(env.XJW_B2B_CRM_URL);
   const secret=env.XJW_B2B_CRM_SECRET;
+  const targetProof=env.XJW_B2B_CRM_TARGET_PROOF;
   if(env.XJW_B2B_CRM_ENABLED !== 'true' || env.XJW_B2B_INTAKE_ENABLED !== 'true' ||
-     !endpoint || typeof secret !== 'string' || secret.length < 32 || !env.DB) return {enabled:false,processed:0};
+     !endpoint || typeof secret !== 'string' || secret.length < 32 ||
+     typeof targetProof !== 'string' || !/^[a-f0-9]{64}$/.test(targetProof) || !env.DB) return {enabled:false,processed:0};
   const db=env.DB;
   const at=now();
   // Exhausted interrupted attempts must not remain permanently marked sending.
@@ -99,9 +103,9 @@ export async function deliverBusinessInquiryCrm(env, {transport=fetch, now=Date.
       "WHERE attempts<? AND ((state='retry' AND next_attempt_at<=?) OR (state='sending' AND lease_until<=?)) RETURNING attempts"
     ).bind(row.id,claim,start+leaseMs,maxAttempts,start,start).first();
     if(!claimed) continue;
-    const result=await send(row,endpoint,secret,start,transport);
+    const result=await send(row,endpoint,secret,targetProof,start,transport);
     const done=now();
-    const status=result==='sent'?'sent':result==='id_conflict'||result==='unsafe_redirect'||claimed.attempts>=maxAttempts?'held':'retry';
+    const status=result==='sent'?'sent':result==='id_conflict'||result==='target_mismatch'||result==='unsafe_redirect'||claimed.attempts>=maxAttempts?'held':'retry';
     const backoff=Math.min(6*3600000,15*60000*2**(claimed.attempts-1));
     await db.prepare("UPDATE business_inquiry_crm_delivery SET state=?,claim=NULL,lease_until=NULL,next_attempt_at=?,last_error=?,sent_at=? WHERE inquiry_id=? AND state='sending' AND claim=?")
       .bind(status,status==='retry'?done+backoff:0,result==='sent'?null:result,result==='sent'?new Date(done).toISOString():null,row.id,claim).run();

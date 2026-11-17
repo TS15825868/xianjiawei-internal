@@ -7,15 +7,16 @@ import vm from 'node:vm';
 import {businessInquirySchema,storeBusinessInquiry} from './business-inquiries.mjs';
 import {businessInquiryCrmSchema,deliverBusinessInquiryCrm,probeBusinessInquiryCrm} from './business-inquiry-crm.mjs';
 const secret='isolated-crm-key-not-a-real-secret-123456';
-const scope='xjw-b2b-crm-v1';
+const scope='xjw-b2b-crm-v2';
 const endpoint='https://script.google.com/macros/s/isolated_test/exec';
+const targetProof=createHmac('sha256',secret).update(scope+'\nreadiness-target\nisolated').digest('hex');
 const source=readFileSync(new URL('../integrations/b2b-crm/Code.gs',import.meta.url),'utf8');
 function fixture(t){
   const sqlite=new DatabaseSync(':memory:');t.after(()=>sqlite.close());
   sqlite.exec(businessInquirySchema);sqlite.exec(businessInquiryCrmSchema);
   const DB={prepare:sql=>({bind:(...args)=>({first:async()=>sqlite.prepare(sql).get(...args),all:async()=>({results:sqlite.prepare(sql).all(...args)}),run:async()=>sqlite.prepare(sql).run(...args)})})};
   const data={id:'B2B-'+crypto.randomUUID(),source:'LINE',receivedAt:new Date().toISOString(),origin:null,category:'經銷',businessContact:'=HYPERLINK("test")',details:'隔離測試'};
-  const env={DB,XJW_B2B_CRM_ENABLED:'true',XJW_B2B_INTAKE_ENABLED:'true',XJW_B2B_CRM_URL:endpoint,XJW_B2B_CRM_SECRET:secret};
+  const env={DB,XJW_B2B_CRM_ENABLED:'true',XJW_B2B_INTAKE_ENABLED:'true',XJW_B2B_CRM_URL:endpoint,XJW_B2B_CRM_SECRET:secret,XJW_B2B_CRM_TARGET_PROOF:targetProof};
   const row=()=>sqlite.prepare('SELECT * FROM business_inquiry_crm_delivery WHERE inquiry_id=?').get(data.id);
   return {sqlite,DB,data,env,row};
 }
@@ -77,7 +78,7 @@ test('receiver holds a conflicting event ID and never writes a second row',async
   const {DB,data,env}=fixture(t);await storeBusinessInquiry(DB,data);const receiver=gas();
   const transport=async(_url,init)=>Response.json(receiver.post(init.body));
   await deliverBusinessInquiryCrm(env,{transport});
-  const payload=JSON.stringify({...data,details:'changed'});
+  const payload=JSON.stringify({...data,details:'changed',targetProof});
   const timestamp=String(Date.now());
   const signature=createHmac('sha256',secret).update(scope+'\n'+timestamp+'\n'+payload).digest('hex');
   const ack=receiver.post(JSON.stringify({timestamp,payload,signature}));
@@ -122,7 +123,7 @@ test('signed CRM readiness verifies the intended spreadsheet while receiver writ
   assert.equal(receiver.rows.length,1);
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM business_inquiry_crm_delivery').get().n,0);
   assert.equal((await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:'0'.repeat(64)},{transport})).verified,false);
-  assert.equal((await probeBusinessInquiryCrm(env,{transport})).error,'not_configured');
+  assert.equal((await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:''},{transport})).error,'not_configured');
   assert.equal(calls,2);
   const timestamp=String(Date.now()), payload=JSON.stringify(data);
   const signature=createHmac('sha256',secret).update(scope+'\n'+timestamp+'\n'+payload).digest('hex');
@@ -132,4 +133,23 @@ test('signed CRM readiness verifies the intended spreadsheet while receiver writ
   assert.equal(fake.verified,false);
   receiver.rows[0][0]='wrong';
   assert.equal((await probeBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:expected},{transport})).verified,false);
+});
+
+test('delivery binds the approved target on every write; missing or mismatched target cannot add a row',async t=>{
+  const {DB,data,env,row}=fixture(t);await storeBusinessInquiry(DB,data);
+  const receiver=gas();let calls=0;
+  const transport=async(_url,init)=>{calls++;return Response.json(receiver.post(init.body));};
+  assert.deepEqual(await deliverBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:''},{transport}),{enabled:false,processed:0});
+  assert.equal(calls,0);assert.equal(row(),undefined);
+  await deliverBusinessInquiryCrm({...env,XJW_B2B_CRM_TARGET_PROOF:'0'.repeat(64)},{transport});
+  assert.equal(calls,1);assert.equal(receiver.rows.length,1);
+  assert.equal(row().state,'held');assert.equal(row().last_error,'target_mismatch');
+  const payload=JSON.stringify({...data,targetProof}),timestamp=String(Date.now());
+  const oldSignature=createHmac('sha256',secret).update('xjw-b2b-crm-v1\n'+timestamp+'\n'+payload).digest('hex');
+  assert.equal(receiver.post(JSON.stringify({timestamp,payload,signature:oldSignature})).ok,false);
+  assert.equal(receiver.rows.length,1);
+  const other={...data,id:'B2B-'+crypto.randomUUID()};await storeBusinessInquiry(DB,other);
+  await deliverBusinessInquiryCrm(env,{transport:async()=>Response.json({ok:true,id:other.id,version:scope,duplicate:false})});
+  const missingProof=await DB.prepare('SELECT state,last_error FROM business_inquiry_crm_delivery WHERE inquiry_id=?').bind(other.id).first();
+  assert.equal(missingProof.state,'retry');assert.equal(missingProof.last_error,'invalid_ack');
 });
