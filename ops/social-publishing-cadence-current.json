@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-18-owner-confirmed-tagging-and-delivery-receipt-v13",
+  "version": "2026-11-18-owner-confirmed-nov20-schedule-v14",
   "timezone": "Asia/Taipei",
   "verifiedMetricoolThrough": "2026-10-14T19:45:00+08:00",
   "rule": "正式規則：每週固定台灣時間週二與週五10:00，每週2篇；有完整合格不重複的新內容，週日10:00可增加第3篇。使用者已授權條件式AI代審及自動排程／發文，不需逐篇再請人工確認；但只有現版16/16 PASS、真實產品/角色來源、完整跨平台歷史去重、平台/額度/遠端一致性及真正發布閘門驗收通過的稿件才能進入正式排程。pending_review和proposed_scheduled_at僅為候選，絕不是正式排程；Metricool draft=true不會自動發布。缺證據一律停送，不能假PASS或冒稱正式排程。",
@@ -205,7 +205,7 @@
       "proposed_scheduled_at": "2027-02-13T10:00:00+08:00"
     }
   ],
-  "updatedAt": "2026-11-18T12:41:00+08:00",
+  "updatedAt": "2026-11-18T15:05:00+08:00",
   "crossPlatformMode": "same_day_same_post",
   "crossPlatformNetworks": [
     "Facebook",
@@ -345,7 +345,7 @@
     "timezone": "Asia/Taipei"
   },
   "slotAuthority": {
-    "updatedAt": "2026-11-18T12:41:00+08:00",
+    "updatedAt": "2026-11-18T15:05:00+08:00",
     "previousSlotsArray": "legacy_historical_candidates_only__never_formal_schedule",
     "nextTargetSlots": [
       {
@@ -391,8 +391,22 @@
         "dateTime": "2026-11-20T10:00:00+08:00",
         "postId": "XJW-CONV-chat-buy-first-look",
         "title": "買食品前，把想確認的資訊記下來",
-        "status": "CANDIDATE_DATE_D1_VERIFIED_NOT_SCHEDULED",
-        "requiresWeatherRecheck": false
+        "status": "REMOTE_SCHEDULED_AWAITING_DELIVERY",
+        "requiresWeatherRecheck": false,
+        "remoteMetricoolId": 432456111,
+        "remoteUuid": "-5980520593101273157",
+        "scheduledPublicationAt": "2026-11-20T10:00:00+08:00",
+        "verifiedAt": "2026-11-18T15:05:00+08:00",
+        "providers": [
+          "facebook",
+          "instagram",
+          "threads"
+        ],
+        "autoPublish": true,
+        "draft": false,
+        "instagramTag": "ct314069",
+        "qualityScope": "single owner-directed release; historical DEFER preserved",
+        "receiptSource": "ops/receipts/20261120-owner-directed-scheduled.json"
       },
       {
         "dateTime": "2026-11-24T10:00:00+08:00",
@@ -754,15 +768,24 @@
           "minimumNativeDeliveries": 10
         }
       ],
-      "routeNote": "Do not reserve or schedule over verified monthly quota. Direct Meta FB/IG requires actual publish permission and per-platform ownership before hybrid routing; Threads remains Metricool. Do not activate until actual verified quota and safety."
+      "routeNote": "Do not reserve or schedule over verified monthly quota. Direct Meta FB/IG requires actual publish permission and per-platform ownership before hybrid routing; Threads remains Metricool. Do not activate until actual verified quota and safety.",
+      "latestKnownNovember": {
+        "publishedPlatforms": 12,
+        "scheduledPlatforms": 3,
+        "knownReserved": 15,
+        "remainingConservative": 5,
+        "remainingPlannedPlatforms": 6,
+        "minimumNativeOrUnscheduledPlatforms": 1,
+        "actualAccountCounterVerified": false
+      }
     },
     "latestLiveSnapshot": {
-      "observedAt": "2026-11-18T12:41:00+08:00",
+      "observedAt": "2026-11-18T15:05:00+08:00",
       "source": "D1 + Metricool",
       "publishedRecoveryId": 431713437,
-      "futureConfirmedSchedules": 0,
-      "nextUncoveredSlot": "2026-11-20T10:00:00+08:00",
-      "nextUncoveredPostId": "XJW-CONV-chat-buy-first-look"
+      "futureConfirmedSchedules": 1,
+      "nextUncoveredSlot": "2026-11-24T10:00:00+08:00",
+      "nextUncoveredPostId": "XJW-CONV-chat-recipe-or-feel"
     }
   },
   "personalAccountTagging": {

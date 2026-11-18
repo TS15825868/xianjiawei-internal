@@ -1,0 +1,21 @@
+{
+  "schema": "xjw-owner-directed-published-historical-audit-v1",
+  "postId": "XJW-CONV-chat-buy-first-look",
+  "metricoolId": 432456111,
+  "uuid": "-5980520593101273157",
+  "grantId": "XJW-OWNER-DIRECT-20261120-buy-first-look-v1",
+  "ownerAuthorizationRef": "owner-chat-2026-11-18-1504-nov20-single-release",
+  "reviewId": "AI-DEFER-11f60460a1c41f897ed2762a4f79160a35c4e1138271ae925d73be71f4d8d0c2",
+  "fingerprint": "19957fc8691d33d0f15a9308a1d29c2ab544afc90028675b97d996a4a2841527",
+  "imageSha256": "9c933fa3e74daa6e200b03ae9f48cc8707d6543483811a0a872de6da6d5b242d",
+  "publicationAt": "2026-11-20T10:00:00+08:00",
+  "noFutureAuthority": true,
+  "fullHistoricalDedupCertified": false,
+  "aiApproved": false,
+  "humanApproved": false,
+  "remoteScheduleVerified": true,
+  "publicationVerified": false,
+  "observedAt": "2026-11-18T15:05:00+08:00",
+  "instagramTag": "ct314069",
+  "source": "Metricool independent readback and D1 exact scoped grant; actual delivery URLs not yet known"
+}
