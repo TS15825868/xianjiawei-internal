@@ -1,0 +1,21 @@
+{
+  "schema": "xjw-owner-directed-published-historical-audit-v1",
+  "postId": "XJW-CONV-care-simple-checkin",
+  "metricoolId": 431713437,
+  "uuid": "-3880375554276833171",
+  "grantId": "XJW-OWNER-DIRECT-20261118-care-simple-checkin-v3",
+  "ownerAuthorizationRef": "owner-chat-2026-11-18-10am-single-approved-release",
+  "reviewId": "AI-DEFER-1825b6ba4e7e467eb2ce3df0e1add39d84b37ff345645f63683cd1ca63115936",
+  "fingerprint": "2c572eb360d181a76eed3e26f0b58349a278e18a82c17a93f14038ced5ea6217",
+  "imageSha256": "7ff37b482e1876251753ed157485290b2cac418a521be532214d221c9517cda0",
+  "publicationAt": "2026-11-18T10:00:00+08:00",
+  "urls": {
+    "facebook": "https://facebook.com/1475619177921633/posts/1544989294317954",
+    "instagram": "https://www.instagram.com/p/Df3YxlMiI10/",
+    "threads": "https://www.threads.com/@xianjiawei.tw/post/Df3Yz3iCj77"
+  },
+  "noFutureAuthority": true,
+  "fullHistoricalDedupCertified": false,
+  "aiApproved": false,
+  "humanApproved": false
+}
