@@ -81,6 +81,31 @@ export function metricoolChannels(row){
     return items;
   }catch{return null}
 }
+// Owner-confirmed metadata only. Never change the approved caption, image,
+// channel set or delivery ownership to satisfy a people-tag preference.
+const OWNER_INSTAGRAM_USERNAME='ct314069';
+export function ownerInstagramTagData(row,prior={}){
+  const existing=prior.instagramData||{};
+  // This handoff uses one image. Preserve the original active tags for that
+  // media item; never silently transfer a different image's tags.
+  const previousMedia=Array.isArray(prior.media)?prior.media:[];
+  const tags=existing.carouselTags||{};
+  if(Object.keys(tags).some(k=>k!=='0'&&Array.isArray(tags[k])&&tags[k].some(t=>!t.deleted)))
+    throw Error('舊輪播標註無法安全映射到單張正式圖片，須核對原媒體');
+  const list=Array.isArray(tags['0'])?tags['0'].map(t=>({...t})):[];
+  if(list.some(t=>!t.deleted)&&previousMedia.length&&
+      (previousMedia.length!==1||clean(previousMedia[0])!==clean(row.image_url)))
+    throw Error('舊媒體已有帳號標註，需先核對媒體映射，不得直接搬移標註');
+  const active=list.find(t=>!t.deleted&&clean(t.username).replace(/^@/,'').toLowerCase()===OWNER_INSTAGRAM_USERNAME);
+  const isImage=Number(row.image_width)>0&&Number(row.image_height)>0&&
+    /\.(?:png|jpe?g|webp|avif)(?:[?#].*)?$/i.test(clean(row.image_url));
+  if(isImage&&!active){
+    // Work must visually verify the unobstructive tag location before sending.
+    // Position is metadata, not burned into the approved product image.
+    list.push({username:OWNER_INSTAGRAM_USERNAME,x:0.88,y:0.88,deleted:false});
+  }
+  return {...existing,type:'POST',autoPublish:true,carouselTags:list.length?{'0':list}:{}};
+}
 export function metricoolBody(row,link,at){
   const channels=metricoolChannels(row);
   if(!channels)throw Error('貼文指定平台含未授權項目、重複平台或無有效平台，不能移交 Metricool');
@@ -100,7 +125,7 @@ export function metricoolBody(row,link,at){
   const dateTime=new Date(Date.parse(at)+8*3600000).toISOString().slice(0,19);
   const body={...prior,id:link?.metricool_id||undefined,uuid:link?.uuid||undefined,publicationDate:{dateTime,timezone:'Asia/Taipei'},text:row.copy,providers:channels.map(network=>({network})),media:[row.image_url],mediaAltText:[row.image_alt],saveExternalMediaFiles:true,draft:false,autoPublish:true};
   if(channels.includes('facebook'))body.facebookData={...(prior.facebookData||{}),type:'POST'};
-  if(channels.includes('instagram'))body.instagramData={...(prior.instagramData||{}),type:'POST',autoPublish:true};
+  if(channels.includes('instagram'))body.instagramData=ownerInstagramTagData(row,prior);
   if(channels.includes('threads'))body.threadsData={...(prior.threadsData||{}),type:'POST'};
   return body;
 }

@@ -13,6 +13,21 @@ assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z')),'2026-10-16T02:
 assert.equal(nextMetricoolSlot(new Date('2026-10-13T10:00:00Z'),['2026-10-16T10:00:00+08:00']),'2026-10-20T02:00:00.000Z');
 const body=metricoolBody(row,{uuid:'stable-uuid',metricool_id:1,template_json:'{"twitterData":{"type":"POST"}}'},'2026-10-16T10:00:00+08:00');
 assert.equal(body.uuid,'stable-uuid');assert.equal(body.publicationDate.dateTime,'2026-10-16T10:00:00');assert.equal(body.twitterData,undefined);assert.equal(body.instagramData.autoPublish,true);assert.deepEqual(body.providers.map(p=>p.network),['facebook','instagram','threads']);
+// People tags are owner-authorized Instagram metadata; shared copy stays
+// byte-for-byte unchanged. Threads-specific mentions require a separate
+// verified caption route; never add the username to all three networks.
+assert.equal(body.text,row.copy);
+assert.deepEqual(body.instagramData.carouselTags['0'],[{username:'ct314069',x:0.88,y:0.88,deleted:false}]);
+const withTags=metricoolBody(row,{uuid:'same',template_json:JSON.stringify({media:[row.image_url],instagramData:{carouselTags:{'0':[{username:'other-permitted',x:0.1,y:0.2},{username:'ct314069',x:0.2,y:0.7}]}}})},'2026-11-20T10:00:00+08:00');
+assert.equal(withTags.instagramData.carouselTags['0'].length,2);
+assert.equal(withTags.instagramData.carouselTags['0'][1].x,0.2);
+assert.throws(()=>metricoolBody(row,{template_json:JSON.stringify({media:['https://example.com/old.jpg'],instagramData:{carouselTags:{'0':[{username:'other-permitted'}]}}})},'2026-11-20T10:00:00+08:00'),/媒體映射/);
+assert.throws(()=>metricoolBody(row,{template_json:JSON.stringify({instagramData:{carouselTags:{'1':[{username:'other-permitted'}]}}})},'2026-11-20T10:00:00+08:00'),/輪播/);
+const noIG=metricoolBody({...row,platforms_json:'["Facebook","Threads"]'},{template_json:JSON.stringify({instagramData:{carouselTags:{'0':[{username:'ct314069'}]}}})},'2026-11-20T10:00:00+08:00');
+assert.equal(noIG.instagramData,undefined);assert.equal(noIG.text,row.copy);
+const threadOnly=metricoolBody({...row,platforms_json:'["Threads"]',copy:row.copy+'\n\n@ct314069'},null,'2026-11-20T10:00:00+08:00');
+assert.equal(threadOnly.text,row.copy+'\n\n@ct314069');
+console.log('PASS owner Instagram tagging metadata, preserve authorized existing tags, fail closed on media mismatch, unchanged shared caption');
 assert.equal(metricoolConfiguration({}).enabled,false);
 let unboundQueries=0;
 const unbound={METRICOOL_API_TOKEN:'unit-test-not-a-real-credential',DB:{prepare:sql=>({run:async()=>({}),first:async()=>null,all:async()=>{unboundQueries++;throw Error('Must not discover before existing UUIDs are bound')}})}};
