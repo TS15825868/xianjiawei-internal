@@ -21,8 +21,27 @@ export function requiredSlots(now=Date.now()){
  return slots;
 }
 const checks=['brand','product','specification','pricing_activity','season','weather','occasion','location','scene_environment','temperature','expression','action','mascot_companions','physical_scale','duplicate','compliance_final'];
+// A one-post owner exception is a scoped receipt, never a general AI approval.
+export function scopedRemoteSchedule(p){
+ let t;try{t=JSON.parse(p.metricool_template||'{}')}catch{return null}
+ const at=Date.parse(p.grant_publication_at), fp=postFingerprint(p);
+ const channels=(t.remote?.providers||[]).map(x=>String(x.network).toLowerCase()).sort();
+ const remoteAt=Date.parse((t.remote?.publicationDate?.dateTime||'')+'+08:00');
+ if(!Number.isFinite(at)||!p.grant_id||p.grant_schema!=='xjw-owner-directed-scoped-release-v1'||p.grant_revoked_at||
+   !(Date.parse(p.grant_expires_at)>=at)||p.grant_fingerprint!==fp||p.grant_review_id!==p.review_id||
+   p.review_fingerprint!==fp||p.grant_image_sha!==p.image_sha||p.liveImageVerified!==true||
+   p.exact_copy_or_url_count||p.exact_image_sha_count||
+   !p.metricool_id||!p.metricool_uuid||p.metricool_state!=='awaiting_verification'||
+   Date.parse(p.metricool_publication_at)!==at||t.schema!=='xjw-owner-directed-scoped-release-receipt-v1'||
+   t.authorizationId!==p.grant_id||t.postId!==p.id||t.fingerprint!==fp||t.externalScheduleVerified!==true||
+   t.publicationVerified!==false||t.remote?.autoPublish!==true||t.remote?.draft!==false||
+   String(t.remote?.id)!==String(p.metricool_id)||t.remote?.uuid!==p.metricool_uuid||
+   t.remote?.publicationDate?.timezone!=='Asia/Taipei'||remoteAt!==at||
+   JSON.stringify(channels)!==JSON.stringify(REQUIRED_CHANNELS))return null;
+ return at;
+}
 export function inspectSlot(at,posts,now=Date.now()){
- const candidates=posts.filter(p=>[p.proposed_scheduled_at,p.scheduled_at].some(t=>Date.parse(t)===at));
+ const candidates=posts.filter(p=>[p.proposed_scheduled_at,p.scheduled_at].some(t=>Date.parse(t)===at)||scopedRemoteSchedule(p)===at);
  const timing=at<now?'missed':at<=now+72*HOUR?'urgent':'future';
  if(candidates.length!==1)return {at:new Date(at+TAIPEI).toISOString().replace('Z','+08:00'),timing,state:candidates.length?'SLOT_COLLISION':'NO_CANDIDATE',candidateIds:candidates.map(p=>p.id),blockers:[candidates.length?'MULTIPLE_CANDIDATES':'NO_CURRENT_D1_CANDIDATE']};
  const p=candidates[0],fp=postFingerprint(p),proof=p.review_fingerprint===fp&&/^[a-f0-9]{64}$/.test(p.image_sha||'');
@@ -33,6 +52,16 @@ export function inspectSlot(at,posts,now=Date.now()){
  const blockers=[];
  if(p.status==='published'&&allReceipts&&p.published_at)return {at:new Date(at+TAIPEI).toISOString().replace('Z','+08:00'),timing,state:'D1_THREE_PLATFORM_RECEIPTS_RECORDED',id:p.id,title:p.title,receiptCount:3,blockers};
  if(receipts.size||p.status==='published'||p.published_at)blockers.push('RECONCILE_EXISTING_PUBLICATION_DO_NOT_RESEND');
+ const scopedAt=scopedRemoteSchedule(p);
+ if(scopedAt!==null&&!receipts.size&&!p.published_at&&p.status==='pending_review'){
+  const isOriginal=scopedAt!==at;
+  return {at:new Date(at+TAIPEI).toISOString().replace('Z','+08:00'),timing,
+    state:isOriginal?'RESCHEDULED_SCOPED_REMOTE_RECEIPT':scopedAt>now?'SCOPED_REMOTE_SCHEDULE_RECORDED':'SCOPED_REMOTE_DELIVERY_DUE',
+    id:p.id,title:p.title,status:p.status,reviewId:p.review_id,reviewDecision:p.review_decision,passes,
+    duplicate:evidence.checks?.duplicate?.result||'MISSING',currentVersion:proof,imageSha:p.image_sha,
+    liveImageVerified:true,receiptCount:0,rescheduledTo:new Date(scopedAt+TAIPEI).toISOString().replace('Z','+08:00'),
+    metricoolId:p.metricool_id,blockers:['LIVE_METRICOOL_READBACK_REQUIRED_DO_NOT_RESEND',...(scopedAt<=now?['VERIFY_THREE_PLATFORM_DELIVERY']:[])]};
+ }
  if(!proof)blockers.push('REVIEW_VERSION_OR_IMAGE_SHA_UNVERIFIED');
  if(p.review_decision!=='AI_APPROVED'||passes!==16)blockers.push('COMPLETE_AI_EVIDENCE_MISSING');
  if(evidence.checks?.duplicate?.result!=='PASS')blockers.push('HISTORICAL_DEDUP_NOT_COMPLETE');
@@ -47,8 +76,8 @@ export async function runAudit({execute,now=Date.now(),transport=fetch}){
  const read=async sql=>(await execute(sql)).flatMap(x=>x.results||[]);
  const rows=await read(`SELECT p.id,p.title,p.headline,p.copy,p.category,p.status,p.proposed_scheduled_at,p.scheduled_at,p.published_at,p.image_url,p.image_alt,p.image_source,p.image_width,p.image_height,p.image_quality_status,
  r.id AS review_id,r.decision AS review_decision,r.content_fingerprint AS review_fingerprint,r.image_sha256 AS image_sha,r.evidence_json,
- g.id AS grant_id,g.revoked_at AS grant_revoked_at,g.expires_at AS grant_expires_at,g.fingerprint AS grant_fingerprint,g.review_id AS grant_review_id,g.publication_at AS grant_publication_at,
- m.metricool_id,m.uuid AS metricool_uuid,
+ g.id AS grant_id,g.schema AS grant_schema,g.image_sha256 AS grant_image_sha,g.revoked_at AS grant_revoked_at,g.expires_at AS grant_expires_at,g.fingerprint AS grant_fingerprint,g.review_id AS grant_review_id,g.publication_at AS grant_publication_at,
+ m.metricool_id,m.uuid AS metricool_uuid,m.state AS metricool_state,m.publication_at AS metricool_publication_at,m.template_json AS metricool_template,
  (SELECT COUNT(*) FROM social_posts x WHERE x.id<>p.id AND (x.copy=p.copy OR x.image_url=p.image_url)) AS exact_copy_or_url_count,
  (SELECT COUNT(DISTINCT x.post_id) FROM social_post_quality_reviews x WHERE x.post_id<>p.id AND x.image_sha256=r.image_sha256) AS exact_image_sha_count
  FROM social_posts p LEFT JOIN social_post_quality_reviews r ON r.id=(SELECT id FROM social_post_quality_reviews WHERE post_id=p.id ORDER BY reviewed_at DESC,created_at DESC,id DESC LIMIT 1)
@@ -61,8 +90,10 @@ export async function runAudit({execute,now=Date.now(),transport=fetch}){
   if(!/^https:\/\/raw\.githubusercontent\.com\/TS15825868\/xianjiawei-internal\/main\/[A-Za-z0-9_./-]+$/.test(row.image_url||'')||!row.image_sha)continue;
   try{const response=await transport(row.image_url,{redirect:'error',signal:AbortSignal.timeout(20000)});if(response.ok)row.liveImageVerified=sha(Buffer.from(await response.arrayBuffer()))===row.image_sha}catch{}
  }
- const slots=requiredSlots(now).map(at=>inspectSlot(at,rows,now));
- return {schema:'xjw-social-runway-readonly-v1',checkedAt:new Date(now).toISOString(),readOnly:true,remoteScheduleVerified:false,liveMetricoolRequired:true,slots,missed:slots.filter(x=>x.timing==='missed'&&x.state!=='D1_THREE_PLATFORM_RECEIPTS_RECORDED').length,urgent:slots.filter(x=>x.timing==='urgent'&&x.state!=='D1_THREE_PLATFORM_RECEIPTS_RECORDED').length,publicationWrites:0,approvals:0};
+ const extra=rows.map(scopedRemoteSchedule).filter(at=>at!==null&&at>=now-72*HOUR&&at<=now+14*DAY);
+ const slots=[...new Set([...requiredSlots(now),...extra])].sort((a,b)=>a-b).map(at=>inspectSlot(at,rows,now));
+ const locallyCovered=new Set(['D1_THREE_PLATFORM_RECEIPTS_RECORDED','RESCHEDULED_SCOPED_REMOTE_RECEIPT','SCOPED_REMOTE_SCHEDULE_RECORDED']);
+ return {schema:'xjw-social-runway-readonly-v1',checkedAt:new Date(now).toISOString(),readOnly:true,remoteScheduleVerified:false,liveMetricoolRequired:true,slots,missed:slots.filter(x=>x.timing==='missed'&&!locallyCovered.has(x.state)).length,urgent:slots.filter(x=>x.timing==='urgent'&&!locallyCovered.has(x.state)).length,publicationWrites:0,approvals:0};
 }
 if(process.argv[1]&&fileURLToPath(import.meta.url)===process.argv[1]){
  const databaseId=fs.readFileSync('wrangler.jsonc','utf8').match(/"database_id"\s*:\s*"([a-f0-9-]+)"/)?.[1];
