@@ -10,6 +10,7 @@ import {collectMetaHistoryOnce} from './meta-history-readonly.js';
 import {collectNativeBrandRouteOnce} from './meta-native-readiness-audit.js';
 import {aiOperationsReadiness} from './ai-operations-readiness.js';
 import {lineHandoffApi} from './line-handoff.js';
+import {acquisitionDataReadiness,acquisitionPath} from './acquisition-data-readiness.js';
 import {socialFactSuggestion} from './social-fact-suggestion.js';
 import {publisherConfiguration} from './social-publisher.js';
 import {probePublisherConnections} from './platform-connection-probe.js';
@@ -226,6 +227,7 @@ export default{
     if(maintenance&&['POST','PUT','PATCH','DELETE'].includes(request.method)&&path.startsWith('/api/'))return maintenanceLocked(path);
     if(path===managementPath && !maintenance)return businessInquiryManagement(request,env,verifyFastAccess);
     if(path==='/api/internal/business-inquiries')return businessInquiryIntake(request,env);
+    if(path===acquisitionPath){if(maintenance)return maintenanceLocked(path,{privateRead:true});return acquisitionDataReadiness(request,env,{authenticate:verifyFastAccess});}
     if(path==='/api/ai-ops/readiness')return aiOperationsReadiness(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/line-handoff'||path.startsWith('/api/line-handoff/'))return lineHandoffApi(request,env,{authenticate:verifyFastAccess});
     if(path==='/api/social-ai/draft')return socialAiDraft(request,env,{authenticate:verifyFastAccess});
