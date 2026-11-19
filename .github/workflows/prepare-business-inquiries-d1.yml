@@ -43,7 +43,13 @@ jobs:
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           npx --no-install wrangler d1 time-travel info xianjiawei-internal-db --json > "$RUNNER_TEMP/business-inquiries-recovery.json"
-          npx --no-install wrangler d1 export xianjiawei-internal-db --remote --skip-confirmation --output "$RUNNER_TEMP/business-inquiries-backup.sql"
+          # Pinned Wrangler 4.0.0 does not accept --skip-confirmation.
+          # Remote export can emit a temporary signed download URL; never print it in public CI.
+          if ! npx --no-install wrangler d1 export xianjiawei-internal-db --remote --output "$RUNNER_TEMP/business-inquiries-backup.sql" > "$RUNNER_TEMP/business-inquiries-export-private.log" 2>&1; then
+            echo "::error::D1 export failed; private export output withheld."
+            exit 1
+          fi
+          test -s "$RUNNER_TEMP/business-inquiries-backup.sql"
           python3 tools/verify-business-inquiry-d1-restore.py \
             "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries.sql" \
             "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-preflight.json"
@@ -68,4 +74,4 @@ jobs:
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
       - name: Remove downloaded production data from runner
         if: always()
-        run: rm -f "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries-recovery.json"
+        run: rm -f "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-export-private.log" "$RUNNER_TEMP/business-inquiries.sql" "$RUNNER_TEMP/business-inquiries-preflight.json"
