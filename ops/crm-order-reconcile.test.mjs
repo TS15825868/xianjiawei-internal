@@ -64,3 +64,21 @@ test("holds cancellations with paid or shipped evidence and excludes unlinked ch
     [1, 1, 2, 1, 0],
   );
 });
+
+
+test("test-only data never counts as live conversion or successful synchronization", () => {
+  const marker="XJW20260707111258411131";
+  const r=reconcileCrmOrders([headers,row(marker)],[],auxiliary(marker));
+  assert.equal(r.excludedTest,1);assert.equal(r.nonExcludedCrmRows,0);
+  assert.equal(r.orphanPaymentIds,0);assert.equal(r.orphanShipmentIds,0);
+  assert.equal(r.coverage,"no_non_test_records");assert.equal(r.liveOrderSyncVerified,false);assert.equal(r.paidRevenueVerified,false);
+});
+test("orphan payment/shipment identifiers are counted without exposing their values",()=>{
+  const options=auxiliary("A","unlinked-private-reference");
+  const r=reconcileCrmOrders([headers,row("A")],[order("A")],options);
+  assert.equal(r.matched,1);assert.equal(r.orphanPaymentIds,1);assert.equal(r.orphanShipmentIds,1);
+  assert.equal(r.coverage,"matched_with_exceptions");assert.ok(!JSON.stringify(r).includes("unlinked-private-reference"));
+  const clean=reconcileCrmOrders([headers,row("A")],[order("A")],auxiliary("A"));
+  assert.equal(clean.coverage,"matched_no_detected_exceptions");assert.equal(clean.liveOrderSyncVerified,false);
+  assert.equal(reconcileCrmOrders([headers,row("A")],[],auxiliary("A")).coverage,"no_matched_records");
+});

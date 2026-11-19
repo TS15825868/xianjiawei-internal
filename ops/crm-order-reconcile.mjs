@@ -80,7 +80,8 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
   const pay = stateIndex(payments, "核對狀態");
   const ship = stateIndex(shipments, "出貨狀態");
   const report = {
-    excludedTest: 0, excludedErpTest: 0, malformed: 0, malformedErp: 0, erpWithoutCrmId: 0,
+    excludedTest: 0, excludedErpTest: 0, nonExcludedCrmRows: 0, nonExcludedErpRows: 0,
+    orphanPaymentIds: 0, orphanShipmentIds: 0, malformed: 0, malformedErp: 0, erpWithoutCrmId: 0,
     duplicate: 0, duplicateCrm: 0, duplicateErp: 0, unmatched: 0, erpOnly: 0, matched: 0, different: 0, blocked: 0,
     missingCrmSource: 0, missingErpSource: 0, conflictingPayment: 0, conflictingShipping: 0,
     missingCrmPaymentStatus: 0, missingCrmShippingStatus: 0,
@@ -95,6 +96,7 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
     const get = key => clean(row[columns[key]]);
     const id = get("id");
     if (testIds.has(id)) { report.excludedTest++; continue; }
+    report.nonExcludedCrmRows++;
     const order = {
       receivedAt: timestamp(get("receivedAt")), orderStatus: get("orderStatus"),
       source: get("source"), amount: amountInCents(get("amount")),
@@ -119,6 +121,7 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
     if (!row || typeof row !== "object" || Array.isArray(row)) { report.malformedErp++; continue; }
     const id = clean(row.crmOrderId);
     if (testIds.has(id) || row.isTest === true) { report.excludedErpTest++; continue; }
+    report.nonExcludedErpRows++;
     if (!id) { report.erpWithoutCrmId++; continue; }
     const order = {
       receivedAt: timestamp(row.receivedAt), orderStatus: clean(row.orderStatus), source: clean(row.source),
@@ -155,6 +158,18 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
     else if (unavailable) report.blocked++;
     else report.matched++;
   }
+  // Auxiliary rows with no CRM master must not silently disappear from reconciliation.
+  for (const id of pay.keys()) if (!testIds.has(id) && !crm.has(id)) report.orphanPaymentIds++;
+  for (const id of ship.keys()) if (!testIds.has(id) && !crm.has(id)) report.orphanShipmentIds++;
+  // A zero-difference empty dataset is not evidence of successful order synchronization.
+  const exceptions = report.malformed + report.malformedErp + report.erpWithoutCrmId +
+    report.duplicate + report.unmatched + report.erpOnly + report.different + report.blocked +
+    report.orphanPaymentIds + report.orphanShipmentIds;
+  report.coverage = report.matched > 0 ? (exceptions ? "matched_with_exceptions" : "matched_no_detected_exceptions")
+    : (report.nonExcludedCrmRows || report.nonExcludedErpRows || exceptions ? "no_matched_records" : "no_non_test_records");
+  // Read-only field equality cannot certify live ingestion, money received, or a conversion.
+  report.liveOrderSyncVerified = false;
+  report.paidRevenueVerified = false;
   return report;
 }
 
