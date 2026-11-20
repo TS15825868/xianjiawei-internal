@@ -18,5 +18,6 @@ test('owner attention states are separate and cannot imply publication or a comp
  assert.equal(response.status,200);const body=await response.json();
  assert.deepEqual(body.counts,live);assert.equal(body.crmOrderSyncVerified,false);assert.equal(body.paidRevenueVerified,false);
  for(const value of ['notification_status=\'pending\'','notification_status=\'uncertain\'','notification_status=\'sending\'','notification_started_at','state=\'held\'','state=\'retry\''])assert(countSql.includes(value));
- assert(!/https?:\\/\\/|business_contact|LINE_CHANNEL_ACCESS_TOKEN/i.test(countSql));
+ assert(!countSql.includes('https://') && !countSql.includes('http://'));
+ assert(!countSql.includes('business_contact') && !countSql.includes('LINE_CHANNEL_ACCESS_TOKEN'));
 });
