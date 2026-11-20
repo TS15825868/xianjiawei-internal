@@ -127,9 +127,15 @@ async function dashboard(){
 
 function acquisitionReadinessPanel(proof){
  const keys=[['ERP 客戶表','relationalCustomers'],['ERP 訂單表','relationalOrders'],['客戶管理有效紀錄','activeCustomerRecords'],['訂單管理有效紀錄','activeOrderRecords'],['B2B 洽詢紀錄','businessInquiries'],['B2B CRM 轉送紀錄','businessCrmDeliveryRows'],['LINE 接收紀錄','lineReceiptRows']];
- if(proof?.ok!==true||proof.scope!=='d1_storage_counts'||keys.some(([,k])=>!Number.isSafeInteger(proof.counts?.[k])||proof.counts[k]<0))return '<section class="card" style="padding:16px">正式資料來源核對暫無法讀取（不視為零）。</section>';
+ const attention=[['業主通知待處理','businessOwnerNotificationPending'],['通知送達待查','businessOwnerNotificationUncertain'],['通知逾時待查','businessOwnerNotificationStale'],['CRM 等待重試','businessCrmRetry'],['CRM 暫停轉送','businessCrmHeld']];
+ const needed=[...keys,...attention,['B2B 仍待洽談','businessOpenInquiries']];
+ if(proof?.ok!==true||proof.scope!=='d1_storage_counts'||needed.some(([,k])=>!Number.isSafeInteger(proof.counts?.[k])||proof.counts[k]<0))return '<section class="card" style="padding:16px">正式資料來源核對暫無法讀取（不視為零）。</section>';
  const cards=keys.map(([label,k])=>'<article class="card metric"><small>'+esc(label)+'</small><strong>'+proof.counts[k]+'</strong></article>').join('');
- return '<section class="card" style="padding:18px;margin:16px 0" data-acquisition-readiness><h2>正式資料來源核對</h2><p>Cloudflare D1 各資料表唯讀筆數，核對時間：'+esc(fmt(proof.checkedAt))+'。</p><div class="metric-grid">'+cards+'</div><p>不同資料表可能重疊，禁止加總成客戶數或訂單數。CRM 訂單同步與實收營收尚未由此檢查驗證；零筆僅代表該資料表目前沒有紀錄，不等於零客戶或零營收。</p></section>';
+ const outstanding=attention.filter(([,k])=>proof.counts[k]>0);
+ const notification=outstanding.length
+   ? '<p role="status"><strong>商家合作後續待核對：</strong>'+outstanding.map(([label,k])=>esc(label)+' '+proof.counts[k]+' 筆').join('｜')+'。</p>'
+   : '<p>目前沒有從這些資料表查到業主通知或 CRM 轉送異常；不等於已證明通知及 CRM 交付成功。</p>';
+ return '<section class="card" style="padding:18px;margin:16px 0" data-acquisition-readiness><h2>正式資料來源核對</h2><p>Cloudflare D1 各資料表唯讀筆數，核對時間：'+esc(fmt(proof.checkedAt))+'。</p><div class="metric-grid">'+cards+'</div><h3>商家合作待處理提醒（內部唯讀）</h3><p>仍待洽談 '+proof.counts.businessOpenInquiries+' 筆，異常通知與 CRM 轉送各自計算。</p>'+notification+'<a class="btn" href="/business-inquiries.html">前往商家合作管理</a><p>結果待查請先查明實際送達，不能直接重發；不會由此畫面自動重試或發訊息。</p><p>不同資料表可能重疊，禁止加總成客戶數或訂單數。CRM 訂單同步與實收營收尚未由此檢查驗證；零筆僅代表該資料表目前沒有紀錄，不等於零客戶或零營收。</p></section>';
 }
 
 function customerGrowthPanel(items,showRows){
