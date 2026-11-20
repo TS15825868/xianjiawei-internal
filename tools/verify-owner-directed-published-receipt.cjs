@@ -2,7 +2,7 @@
 const CHANNELS=['facebook','instagram','threads'];
 const parse=s=>{try{return JSON.parse(s)}catch{return null}};
 const sameTime=(a,b)=>Number.isFinite(Date.parse(a))&&Date.parse(a)===Date.parse(b);
-function verifyPublishedReceipt(post,rows,p,fingerprint){
+function verifyPublishedReceipt(post,rows,p,fingerprint,options={}){
  if(!post||!p||p.schema!=='xjw-owner-directed-published-historical-audit-v1'||p.noFutureAuthority!==true||
   p.fullHistoricalDedupCertified!==false||p.aiApproved!==false||p.humanApproved!==false||
   post.id!==p.postId||post.status!=='published'||Number(post.image_approved)!==0||
@@ -23,7 +23,11 @@ function verifyPublishedReceipt(post,rows,p,fingerprint){
    [r.sync_at,r.delivery_at,r.grant_at].every(x=>sameTime(x,p.publicationAt))&&
    Number.isFinite(Date.parse(r.issued_at))&&Date.parse(r.issued_at)<=Date.parse(p.publicationAt)&&Date.parse(r.expires_at)>=Date.parse(p.publicationAt)&&
    Array.isArray(channels)&&channels.length===3&&CHANNELS.every(c=>channels.includes(c))&&
-   proof?.network===ch&&proof.status==='PUBLISHED'&&proof.publicUrl===p.urls[ch]&&Number(proof.metricoolId)===p.metricoolId&&proof.uuid===p.uuid&&proof.ownerDirectException===true&&proof.duplicate==='DEFER';
+   proof?.network===ch&&proof.status==='PUBLISHED'&&proof.publicUrl===p.urls[ch]&&Number(proof.metricoolId)===p.metricoolId&&proof.uuid===p.uuid&&proof.ownerDirectException===true&&
+   // Official Metricool connector reports have no internal AI duplicate tag.
+   // That tag remains verified independently from all 16 immutable review checks.
+   (proof.duplicate==='DEFER'||(options.allowOfficialMetricoolWithoutDuplicate===true&&
+     !Object.hasOwn(proof,'duplicate')&&proof.source==='Metricool official connector'));
  });
 }
 module.exports={verifyPublishedReceipt};

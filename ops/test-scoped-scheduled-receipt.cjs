@@ -15,7 +15,7 @@ test('genuine late Metricool publication passes without manufacturing AI approva
  const source={...post,published_at:actual};
  const delivered=rows().map(r=>({
   ...r,delivery_at:actual,
-  response_json:JSON.stringify({...JSON.parse(r.response_json),source:'Metricool official connector',observedAt:actual})
+  response_json:JSON.stringify((()=>{const x={...JSON.parse(r.response_json),source:'Metricool official connector',observedAt:actual};delete x.duplicate;return x})())
  }));
  assert.equal(v(source,delivered,p,fp,t),true);
  assert.equal(source.published_at,actual);
@@ -27,6 +27,7 @@ test('genuine late Metricool publication passes without manufacturing AI approva
   r=>r.delivery_at=p.publicationAt,
   r=>r.delivery_at='2026-11-20T02:08:10.534Z',
   r=>{let j=JSON.parse(r.response_json);j.source='planner only';r.response_json=JSON.stringify(j)},
+  r=>{let j=JSON.parse(r.response_json);j.duplicate='PASS';r.response_json=JSON.stringify(j)},
   r=>{let j=JSON.parse(r.response_json);j.observedAt=p.publicationAt;r.response_json=JSON.stringify(j)},
   r=>{let j=JSON.parse(r.response_json);j.observedAt='2026-11-20T03:20:00.000Z';r.response_json=JSON.stringify(j)},
   r=>r.status='PENDING',

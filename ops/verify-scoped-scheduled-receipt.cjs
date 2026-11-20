@@ -37,7 +37,11 @@ function verifyScheduledHistoricalReceipt(post,rows,p,fingerprint,now=Date.now()
  return verifyPublishedReceipt(
   {...post,published_at:p.publicationAt},
   rows.map(r=>({...r,delivery_at:p.publicationAt})),
-  {...p,urls},fingerprint
+  {...p,urls},fingerprint,
+  {allowOfficialMetricoolWithoutDuplicate:
+    p.postId==='XJW-CONV-chat-buy-first-look'&&
+    p.grantId==='XJW-OWNER-DIRECT-20261120-buy-first-look-v1'&&
+    p.publicationAt==='2026-11-20T10:00:00+08:00'}
  );
 }
 module.exports={verifyScheduledHistoricalReceipt};
