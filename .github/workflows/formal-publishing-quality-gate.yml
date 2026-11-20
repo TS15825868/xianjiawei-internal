@@ -13,6 +13,8 @@ on:
       - 'src/**'
       - 'wrangler.jsonc'
       - 'ops/post-image-production-queue-current.json'
+      - 'ops/verify-scoped-scheduled-receipt.cjs'
+      - 'ops/test-scoped-scheduled-receipt.cjs'
       - '.github/workflows/formal-publishing-quality-gate.yml'
   schedule:
     - cron: '47 */6 * * *'
