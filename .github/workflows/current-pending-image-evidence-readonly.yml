@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/current-pending-image-evidence-readonly.yml'
+      - 'ops/build-current-near-pair-contact-sheets.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -51,6 +52,9 @@ jobs:
         id: visual
         continue-on-error: true
         run: python ops/current-vs-archived-visual-audit-20261108.py
+      - name: Generate aspect-ratio-preserved original near-pair review sheets
+        if: steps.visual.outcome == 'success'
+        run: python ops/build-current-near-pair-contact-sheets.py
       - name: Preserve separate exact-SHA and perceptual screening evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -59,6 +63,7 @@ jobs:
           path: |
             all-pending-current-image-sha-report.json
             current-vs-archived-visual-report.json
+            current-near-pair-contact-sheets/
           retention-days: 7
           if-no-files-found: warn
       - name: Confirm no publication, approval, database writes or misleading full-history clearance
