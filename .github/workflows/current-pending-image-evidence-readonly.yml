@@ -1,0 +1,86 @@
+name: 仙加味最新待審原圖與封存影像證據（唯讀）
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/current-pending-image-evidence-readonly.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-current-image-evidence-readonly
+  cancel-in-progress: false
+jobs:
+  audit:
+    if: github.repository == 'TS15825868/xianjiawei-internal'
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Require existing read credentials and read-only audit sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          python - <<'PY'
+          import json
+          for p in ('ops/request-all-pending-image-sha-audit-20261108.json','ops/request-current-vs-archived-image-visual-audit-20261108.json'):
+              d=json.load(open(p))
+              assert d.get('allowApproval') is False and d.get('allowPublication') is False
+              assert d.get('mutateD1') is False or d.get('readOnly') is True
+          print('Read-only current-source boundaries verified')
+          PY
+      - name: Verify latest D1 pending SHA against GitHub main original bytes
+        id: sha
+        continue-on-error: true
+        run: node ops/audit-all-pending-current-image-sha-20261108.mjs
+      - name: Install existing image analysis dependency
+        shell: bash
+        run: python -m pip install --quiet --disable-pip-version-check Pillow==11.3.0
+      - name: Screen current live pending originals against locally available archive and published references
+        id: visual
+        continue-on-error: true
+        run: python ops/current-vs-archived-visual-audit-20261108.py
+      - name: Preserve separate exact-SHA and perceptual screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xjw-current-pending-image-evidence-${{ github.run_id }}
+          path: |
+            all-pending-current-image-sha-report.json
+            current-vs-archived-visual-report.json
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Confirm no publication, approval, database writes or misleading full-history clearance
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os
+          a='all-pending-current-image-sha-report.json'
+          b='current-vs-archived-visual-report.json'
+          if not os.path.isfile(a) or not os.path.isfile(b):
+              raise SystemExit('Incomplete current-image evidence; keep all reviews blocked')
+          exact=json.load(open(a));visual=json.load(open(b))
+          count=next((int(x['count']) for x in visual['counts'] if x['status']=='pending_review'),0)
+          assert count>0 and count==visual['pendingScanned']==exact['checked']
+          assert exact['snapshotComplete'] is True
+          assert all(exact[k]==0 for k in ('aiApprovals','humanApprovals','d1Writes','schedules','publications'))
+          assert all(visual[k]==0 for k in ('d1Mutations','approvals','schedules','publications','deletions'))
+          print('CURRENT_PENDING_READONLY',json.dumps({'pending':count,'imageBytesVerified':exact['verified'],'imageByteIssues':exact['failed'],'exactDupGroups':exact['exactDuplicateGroups'],'referenceCoverage':visual['referenceBreakdown'],'nearPairs':len(visual['imageNearPairs']),'historicalCoverageComplete':False},ensure_ascii=False))
+          if exact['failed'] or exact['exactDuplicateGroups']:
+              raise SystemExit('Current image integrity issues need review; no posts released')
+          PY
+          test "${{ steps.sha.outcome }}" = success
+          test "${{ steps.visual.outcome }}" = success
