@@ -5,6 +5,8 @@ on:
       - 'tools/report-d1-expensive-queries.mjs'
       - 'tools/report-d1-expensive-queries.test.mjs'
       - 'src/social-missed-post-recovery.js'
+      - 'src/ai-operations-brain.js'
+      - 'tools/test-ai-operations-brain.mjs'
       - 'tools/test-social-missed-post-recovery.mjs'
       - '.github/workflows/d1-read-budget-offline.yml'
   workflow_dispatch:
@@ -23,5 +25,6 @@ jobs:
         run: |
           node --check tools/report-d1-expensive-queries.mjs
           node --check src/social-missed-post-recovery.js
+          node --check src/ai-operations-brain.js
       - name: Run offline D1 and missed-post recovery regression
-        run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs
+        run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs
