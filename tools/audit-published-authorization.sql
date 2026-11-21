@@ -19,7 +19,7 @@ WITH published AS (
       THEN 1 ELSE 0 END) AS version_bound_owner_ref,
     MAX(CASE WHEN action LIKE '%使用者明確發布%' OR action LIKE '單篇使用者指示%'
       THEN 1 ELSE 0 END) AS owner_instruction_audit
-  FROM audit_logs WHERE entity_type IS NULL OR entity_type<>'' OR entity_type=''
+  FROM audit_logs
   GROUP BY entity_id
 ), manual_gates AS (
   SELECT post_id, MAX(CASE WHEN reviewed_by IS NOT NULL AND TRIM(reviewed_by)<>''
