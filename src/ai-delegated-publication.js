@@ -1,10 +1,8 @@
-import {assessKnowledgeCard} from './ai-autopublish-policy.js';
+import {assessKnowledgeCard,isKnowledgePost} from './ai-autopublish-policy.js';
 // Knowledge cards require server-derived evidence at both grant and dispatch.
 // Browser-supplied flags cannot authorize publishing.
 async function verifyKnowledgeAtBoundary(env,post,verifyKnowledge){
-  const category=String(post?.category||'').trim().toLowerCase();
-  const knowledge=post?.knowledge_format!=null||['knowledge','knowledge_card','food_knowledge','ingredient_guide','recipe_steps','food_faq','ingredient_comparison','知識','知識圖卡','漢方知識','食材知識'].includes(category);
-  if(!knowledge)return {ok:true};
+  if(!isKnowledgePost(post))return {ok:true};
   if(typeof verifyKnowledge!=='function')return {ok:false,reason:'知識圖卡缺少伺服器端查證入口'};
   let checks;
   try{checks=await verifyKnowledge(env,post)}catch{return {ok:false,reason:'知識圖卡伺服器查證失敗'}}
