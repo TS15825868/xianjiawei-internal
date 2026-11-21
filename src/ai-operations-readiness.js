@@ -1,3 +1,5 @@
+import {decideOperations} from './ai-operations-brain.js';
+import {assessMissedSocialPost} from './social-missed-post-recovery.js';
 // Protected, read-only AI operations status. NEVER calls AI, publishes, or changes D1.
 const HEADERS = {'cache-control':'no-store','content-type':'application/json; charset=utf-8','x-content-type-options':'nosniff'};
 const respond = (value,status=200) => Response.json(value,{status,headers:HEADERS});
@@ -102,13 +104,40 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   }catch{
     // D1 query failure is unknown, never a healthy zero queue.
   }
+  const checkedAt=new Date().toISOString();
+  const requestedPost=new URL(request.url).searchParams.get('recoveryPost');
+  let recovery=null;
+  if(requestedPost!==null){
+    if(!/^[A-Za-z0-9_-]{1,120}$/.test(requestedPost))return denied('invalid_post_id',400);
+    try{
+      const post=await env.DB.prepare(
+        "SELECT scheduled_at,platforms_json FROM social_posts WHERE id=? AND status IN ('scheduled','failed','manual_required','published')"
+      ).bind(requestedPost).first();
+      if(!post)return denied('recovery_post_not_found',404);
+      const receipts=await env.DB.prepare(
+        'SELECT platform,status FROM social_publish_deliveries WHERE post_id=?'
+      ).bind(requestedPost).all();
+      recovery=assessMissedSocialPost({
+        scheduled_at:post.scheduled_at,platforms:JSON.parse(post.platforms_json)
+      },receipts.results,checkedAt);
+    }catch{return denied('recovery_evidence_unavailable',503);}
+  }
+  const tasks=[];
+  if(publicationQueue.staleSending>0||publicationQueue.publishedMissingRemoteId>0)
+    tasks.push({id:'social-receipts',system:'publishing',risk:'high',action:'investigate',
+      evidence_verified:true,reason:'核對平台正式回執與卡住的投遞紀錄'});
+  if(handoff.unassigned>0)
+    tasks.push({id:'line-unassigned',system:'line',risk:'medium',action:'investigate',
+      evidence_verified:true,reason:'核對尚未分派的 LINE 收件紀錄'});
+  const decisions=decideOperations(tasks,{now:checkedAt});
   const configured=env?.XJW_SOCIAL_AI_DRAFT_ENABLED==='true' &&
     env?.XJW_AI_FREE_ACCOUNT_CONFIRMED==='true' && typeof env?.AI?.run==='function';
   return respond({
     ok:true,readOnly:true,customerSend:false,writes:0,modelCalls:0,
-    checkedAt:new Date().toISOString(),
+    checkedAt,
     mode:'human_supervised_ai',allAutonomous:false,
     data:{d1:'query_succeeded',postStatusCounts:posts,publicationQueue,lineReceiptInbox:lineInbox,lineHandoff:handoff,metaReceiptInbox:metaInbox},
+    operations:{decisions,recovery},
     capabilities:{
       verifiedProductFacts:'staff_only_zero_neuron',
       generativeDraft:configured?'configured_not_live_inference_verified':'disabled_or_free_account_unconfirmed',

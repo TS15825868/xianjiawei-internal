@@ -302,13 +302,15 @@ export default{
     return response;
   },
   async scheduled(controller,env,ctx){
-    if(env.XJW_B2B_INTAKE_ENABLED==='true'){
+    // Housekeeping is not time-critical: avoid two D1 write scans every minute.
+    // Keep the minute-level publishing chain unchanged below.
+    const time=Number(controller?.scheduledTime||Date.now());
+    if(env.XJW_B2B_INTAKE_ENABLED==='true'&&Number.isFinite(time)&&new Date(time).getUTCMinutes()%15===0){
       ctx.waitUntil(sweepExpiredBusinessNotifications(env.DB).catch(()=>console.error('[XJW_B2B] notification sweep failed')));
     }
     // Metricool Free uses manual Work transfer, not a background publishing API.
     // Reconcile local evidence at most once per 15-minute slot. Due posts
     // still enter the normal minute-level safety/publisher chain below.
-    const time=Number(controller?.scheduledTime||Date.now());
     if(Number.isFinite(time)&&new Date(time).getUTCMinutes()%15===0){
       if(env.XJW_B2B_CRM_ENABLED==='true')ctx.waitUntil(deliverBusinessInquiryCrm(env).catch(()=>console.error('[XJW_B2B_CRM] delivery unavailable')));
       try{

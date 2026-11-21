@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {decideOperations as decide} from '../src/ai-operations-brain.js';
+const base={id:'1',system:'publishing',risk:'high',action:'investigate',evidence_verified:true};
+test('prioritizes critical customer issues and deduplicates',()=>{const r=decide([base,base,{...base,id:'2',risk:'critical',customer_impact:true}]);assert.deepEqual(r.actions.map(x=>x.id),['2','1']);assert.equal(r.blocked[0].reason,'duplicate_task')});
+test('never publishes without all proof',()=>{const r=decide([{...base,action:'publish',explicit_authorization:true,safety_gate_passed:true}]);assert.equal(r.actions.length,0);assert.equal(r.blocked[0].reason,'publication_proofs_missing')});
+test('never changes billing or bypasses zero cost',()=>assert.equal(decide([{...base,action:'change_billing',explicit_authorization:true}]).blocked[0].reason,'zero_cost_policy'));
+test('unknown external result is not retried',()=>assert.equal(decide([{...base,action:'retry',external_state_unknown:true,idempotent_verified:true}]).blocked[0].reason,'external_state_unknown'));
+test('retry requires idempotency evidence',()=>assert.equal(decide([{...base,action:'retry'}]).blocked[0].reason,'retry_safety_unverified'));
+test('replacement always requires review',()=>assert.equal(decide([{...base,action:'replace_content'}]).blocked[0].reason,'replacement_must_be_reviewed'));
+test('deployment requires latest main and authorization',()=>{assert.equal(decide([{...base,action:'deploy',explicit_authorization:true}]).blocked[0].reason,'latest_main_unverified');assert.equal(decide([{...base,action:'deploy',latest_main_verified:true}]).blocked[0].reason,'authorization_missing')});
+test('already completed is never repeated',()=>assert.equal(decide([{...base,already_completed:true}]).actions.length,0));

@@ -73,7 +73,7 @@ jobs:
           node --check assets/js/business-inquiry-management.js
           test -f dist/business-inquiries.html
           test -f dist/assets/js/business-inquiry-management.js
-      - name: Verify disabled B2B release defaults and bundle without deploying
+      - name: Verify approved B2B release flags and bundle without deploying
         run: |
-          node -e 'const fs=require("fs");const s=fs.readFileSync("wrangler.jsonc","utf8");for(const name of ["XJW_B2B_INTAKE_ENABLED","XJW_B2B_NOTIFICATION_RETRY_ENABLED","XJW_B2B_CRM_ENABLED"]){if(!s.includes(JSON.stringify(name)+": \"false\""))throw Error(name+" must be disabled in staged release");}'
+          node -e 'const fs=require("node:fs");const s=fs.readFileSync("wrangler.jsonc","utf8");for(const [name,expected] of Object.entries({XJW_B2B_INTAKE_ENABLED:"true",XJW_B2B_NOTIFICATION_RETRY_ENABLED:"false",XJW_B2B_CRM_ENABLED:"false"})){const values=[...s.matchAll(new RegExp("^\\s*"+JSON.stringify(name)+"\\s*:\\s*\"(true|false)\"\\s*,?\\s*$","gm"))];if(values.length!==1||values[0][1]!==expected)throw Error(name+" must have exactly one explicit release value: "+expected);}'
           npx --no-install wrangler deploy --dry-run --outdir "$RUNNER_TEMP/xjw-b2b-bundle"
