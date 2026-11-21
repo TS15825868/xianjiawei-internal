@@ -4,6 +4,8 @@ on:
     paths:
       - 'tools/report-d1-expensive-queries.mjs'
       - 'tools/report-d1-expensive-queries.test.mjs'
+      - 'tools/audit-social-dedup-offline.mjs'
+      - 'tools/audit-social-dedup-offline.test.mjs'
       - 'src/social-missed-post-recovery.js'
       - 'src/ai-operations-brain.js'
       - 'tools/test-ai-operations-brain.mjs'
@@ -24,7 +26,8 @@ jobs:
       - name: Check offline source syntax
         run: |
           node --check tools/report-d1-expensive-queries.mjs
+          node --check tools/audit-social-dedup-offline.mjs
           node --check src/social-missed-post-recovery.js
           node --check src/ai-operations-brain.js
       - name: Run offline D1 and missed-post recovery regression
-        run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs
+        run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs tools/audit-social-dedup-offline.test.mjs
