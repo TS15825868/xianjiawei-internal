@@ -8,7 +8,11 @@ const CHANNELS = new Set(['facebook','instagram','threads']);
 const KNOWLEDGE_FORMATS=new Set(['ingredient_guide','recipe_steps','food_faq','ingredient_comparison']);
 export function assessKnowledgeCard(post,checks={}){
   const reasons=[];
-  if(!post?.knowledge_format)return {ok:true,reasons,applicable:false};
+  const tagged=post?.knowledge_format!==undefined&&post?.knowledge_format!==null;
+  const category=String(post?.category||'').trim().toLowerCase();
+  const isKnowledge=tagged||['knowledge','knowledge_card','food_knowledge','ingredient_guide','recipe_steps','food_faq','ingredient_comparison','知識','知識圖卡','漢方知識','食材知識'].includes(category);
+  if(!isKnowledge)return {ok:true,reasons,applicable:false};
+  if(!tagged||!String(post.knowledge_format).trim())reasons.push('知識類貼文缺少明確圖卡形式');
   if(!KNOWLEDGE_FORMATS.has(post.knowledge_format))reasons.push('未知知識圖卡形式');
   for(const [key,label] of Object.entries({knowledgeSourceVerified:'可信來源',knowledgeBrandLinkVerified:'品牌與情境',knowledgeVisualTextVerified:'圖文一致',knowledgeOriginalityVerified:'原創及使用權',knowledgeNoUnverifiedRecipe:'未核准配伍與處方排除'})){
     if(checks[key]!==true)reasons.push('知識圖卡缺少'+label+'核對');
