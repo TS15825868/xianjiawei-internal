@@ -60,3 +60,15 @@ test('actual dispatch reads persisted grant, rechecks content, defaults off',asy
  stored.revoked_at=at;
  assert.equal((await verifyDelegatedDispatch(env,post,deps)).ok,false);
 });
+
+
+test('知識類委任授權缺少伺服器查證時預設阻擋',async()=>{
+  const post={id:'knowledge-1',status:'pending_review',category:'knowledge',updated_at:'v1'};
+  const deps={fingerprint:async()=>quality.fingerprint,verifyQuality:async()=>quality,checkContent:async()=>[],now};
+  const profile={role:'owner',email:'owner@example.com'};
+  await assert.rejects(()=>prepareDelegatedGrant({},post,at,profile,deps),/伺服器端查證入口/);
+  await assert.rejects(()=>prepareDelegatedGrant({},post,at,profile,{...deps,verifyKnowledge:async()=>({})}),/缺少明確圖卡形式/);
+  const result=await verifyDelegatedDispatch({XJW_AI_DELEGATED_PUBLICATION_ENABLED:'true'},post,deps);
+  assert.equal(result.ok,false);
+  assert.match(result.reason,/伺服器端查證入口/);
+});
