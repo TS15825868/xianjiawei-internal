@@ -321,7 +321,12 @@ export default{async fetch(request,env,ctx){
       if(!grant)return json({ok:true,post_id:id,authorization_present:false,auto_schedule:false,auto_publish:false});
       const quality=await verifyCurrentAiQuality(env,row,await fingerprint(row));
       const assessment=assessDelegatedPublication({grant,post:row,quality,publicationAt:grant.publication_at,enabled:true});
-      return json({ok:true,post_id:id,authorization_present:true,authorization_id:grant.id,publication_at:grant.publication_at,authorization_current:assessment.ok,blocker:assessment.ok?null:assessment.reason,auto_schedule:false,auto_publish:false});
+      // The actual grant and dispatch paths fail closed for knowledge posts until
+      // a trusted server-side verifier is wired. Readiness must not claim otherwise.
+      const {isKnowledgePost}=await import('./ai-autopublish-policy.js');
+      const knowledgeBlocked=isKnowledgePost(row);
+      const authorizationCurrent=assessment.ok&&!knowledgeBlocked;
+      return json({ok:true,post_id:id,authorization_present:true,authorization_id:grant.id,publication_at:grant.publication_at,authorization_current:authorizationCurrent,blocker:knowledgeBlocked?'知識圖卡缺少伺服器端查證入口':assessment.ok?null:assessment.reason,auto_schedule:false,auto_publish:false});
     }catch(error){return json({error:clean(error?.message||error),auto_schedule:false,auto_publish:false},409)}
   }
   const aiMatch=path.match(/^\/api\/posts\/([^/]+)\/ai-quality-review$/);
