@@ -4,6 +4,11 @@
 -- 缺少核准欄位不等於未經授權；需檢查個別指示與來源證據。
 -- 歷史大小寫不一致已正規化；0 筆回執代表本表缺資料，並非未發布。
 -- 2026-09-04 兩平台回執不應自動補造 Threads 回執。
+-- 2026-11-21 Metricool 已發布貼文唯讀查核：2026-08-03 品牌故事、08-06 試喝、09-04 週五早上均有 FB/IG 對應貼文。
+-- 2026-08-06 試喝貼文與 D1 POST-TRIAL-MAIN 的 published_at=08-19 不一致，僅作同主題歷史佐證。
+-- Metricool 2026-09 全月 Threads 8 筆，未見 09-04 週五早上；缺件不可視為未發布或擅自補發。
+-- IG 證據：品牌 https://www.instagram.com/p/DblHxYGoAdW/ ；試喝 https://www.instagram.com/p/Dbr1T8YIJuk/ ；週五 https://www.instagram.com/p/Dc3L479FavT/
+
 
 WITH published AS (
   SELECT id, title, published_at, approved_by, approved_at, image_approved
