@@ -19,7 +19,7 @@ export function nextD1FreeResetUtc(now=Date.now()) {
 export function isD1ReadQuotaExhausted(error) {
   if(Number(error?.code)===7500)return true;
   const message=String(error?.message||error||'');
-  return /\\b7500\\b/.test(message)&&/(D1|quota|rows?[_\\s-]*read|limit|exceed)/i.test(message);
+  return /\b7500\b/.test(message)&&/(D1|quota|rows?[_\s-]*read|limit|exceed)/i.test(message);
 }
 function quotaDenied(db) {
   const until=d1QuotaPause.get(db)||nextD1FreeResetUtc();
