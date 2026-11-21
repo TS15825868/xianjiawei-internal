@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessDelegatedPublication,DELEGATION_SCHEMA,DELEGATION_END,prepareDelegatedGrant,readDelegatedGrant,verifyDelegatedDispatch,STANDING_AUTHORIZATION_REF,DELEGATED_LATE_WINDOW_MS} from '../src/ai-delegated-publication.js';
@@ -71,4 +72,17 @@ test('知識類委任授權缺少伺服器查證時預設阻擋',async()=>{
   const result=await verifyDelegatedDispatch({XJW_AI_DELEGATED_PUBLICATION_ENABLED:'true'},post,deps);
   assert.equal(result.ok,false);
   assert.match(result.reason,/伺服器端查證入口/);
+});
+
+// Verify the production route's status endpoint cannot advertise a knowledge
+// authorization as current while the trusted verifier is not wired.
+test('production delegated readiness fails closed for knowledge cards',()=>{
+  const route=readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
+  assert.match(route,/const knowledgeBlocked=isKnowledgePost\(row\)/);
+  assert.match(route,/const authorizationCurrent=assessment\.ok&&!knowledgeBlocked/);
+  assert.match(route,/authorization_current:authorizationCurrent/);
+  // The grant and scheduled-dispatch boundaries must continue accepting the
+  // explicit verifier dependency, never silently defaulting to trusted flags.
+  assert.match(route,/verifyDelegatedDispatch\(env,row,/);
+  assert.match(route,/prepareDelegatedGrant\(env,row,/);
 });
