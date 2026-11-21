@@ -26,3 +26,10 @@
 | XJW-CONV-new-year-open-door | 1041033 | `57dba205793cc6c358200b6c3a02be0e3b30e979144ce72bdc4e10a614f64411` |
 
 **9/4 圖片版本不一致：** 從官網 Repository `TS15825868/xianjiawei` 最新 main 的 `images/posts/formal-v20260904/first-post-work-rest-qmascot.webp` 取得 **172548 bytes**，SHA-256 `0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2`，但 D1 的 `XJW-SOCIAL-20260904-0900-FIRST` 記錄 **317077 bytes**。不可將目前 GitHub 檔案視為當年發布的同一版本；應追查歷史 commit 或實際平台媒體。不得寫入 D1 或解除 `duplicate=DEFER`。
+
+## 9／4 來源追查補充
+
+- D1 `social_posts.image_source` 明確記錄「使用者人工指定｜identity-approved｜2026-09-04正式Q版小男生完整單一情境圖」，`image_bytes=317077`，`media_id=NULL`；`social_post_quality_reviews` 無該篇審核列。這是歷史標註，不代表目前 GitHub 同路徑圖片相同。
+- Metricool 2026-09-04 Facebook 與 Instagram 已發布貼文分析均有相同文案及平台媒體縮圖 URL。FB 貼文 ID `1471535304996687`、IG 連結 `https://www.instagram.com/p/Dc3L479FavT/`。平台 CDN 圖片可能是縮圖、轉碼或過期 URL，不可用其位元組大小直接判斷原始發布圖。
+- 搜尋官網 GitHub `first-post` 相關 commit，已找到數筆內容清單變更，但指定圖片路徑在這些 commit 中均為 404；目前尚未取得 317077 bytes 的歷史圖片版本。
+- 不回寫 D1，不推定 9／4 影像已被更換，也不因平台貼文存在就認定圖片視覺去重合格。
