@@ -230,7 +230,7 @@ test('既有未標示知識圖卡的貼文維持原審核規則',()=>{
 
 
 test('知識分類即使遺漏 knowledge_format 也不可繞過核對',()=>{
-  for(const category of ['knowledge','knowledge_card','food_knowledge','知識圖卡','食材知識']){
+  for(const category of ['knowledge','knowledge_card','food_knowledge','知識圖卡','食材知識','產品知識']){
     const result=assessAutopublishCandidate({...valid,category},checks);
     assert.equal(result.ok,false,category);
     assert.ok(result.reasons.some(x=>x.includes('缺少明確圖卡形式')),category);
