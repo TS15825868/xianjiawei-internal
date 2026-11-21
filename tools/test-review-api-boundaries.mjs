@@ -19,6 +19,15 @@ source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate
 source=source.replace("import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")},aiGate=async()=>({ok:false,reason:"No AI evidence in isolated tests"});');
 source=source.replace("import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';",'const publishedPlatformReceiptHold=(row)=>null; // isolated: external receipts exercised separately');
 const {default:gate,REQUIRED_CHECKS,fingerprint,invalidateEditedPost,productMatchErrors,gateState}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+// A knowledge-card format is part of its reviewed version. Legacy posts must
+// retain their previous fingerprint when the optional field is absent.
+const legacyMaterial={title:'仙加味茶飲',headline:'泡茶準備',copy:'日常茶飲',category:'knowledge',image_url:'https://example.invalid/tea.webp'};
+const legacyHash=await fingerprint(legacyMaterial);
+assert.equal(await fingerprint({...legacyMaterial,knowledge_format:null}),legacyHash);
+assert.notEqual(await fingerprint({...legacyMaterial,knowledge_format:'food_faq'}),legacyHash);
+assert.notEqual(await fingerprint({...legacyMaterial,knowledge_format:'ingredient_guide'}),await fingerprint({...legacyMaterial,knowledge_format:'food_faq'}));
+console.log('PASS knowledge-card format is version-bound without changing legacy fingerprints');
+
 const state={forwarded:0,writes:[],externalLink:null,casFail:false,row:{id:'ISOLATED',title:'萬華日常',headline:'店裡的一天',copy:'分享今天的生活',category:'品牌',status:'draft',image_url:'https://example.invalid/unique.png',image_alt:'萬華店裡的一天',image_width:1200,image_height:1200,image_quality_status:'ok'},review:null};
 globalThis.__reviewTest=state;
 const env={DB:{
