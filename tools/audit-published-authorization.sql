@@ -7,7 +7,7 @@ WITH published AS (
   FROM social_posts WHERE status='published'
 ), deliveries AS (
   SELECT post_id,
-    COUNT(DISTINCT CASE WHEN status='published' AND platform IN ('facebook','instagram','threads')
+    COUNT(DISTINCT CASE WHEN LOWER(TRIM(status))='published' AND LOWER(TRIM(platform)) IN ('facebook','instagram','threads')
       AND TRIM(COALESCE(remote_id,''))<>'' THEN platform END) AS platform_receipts
   FROM social_publish_deliveries GROUP BY post_id
 ), owner_traces AS (
