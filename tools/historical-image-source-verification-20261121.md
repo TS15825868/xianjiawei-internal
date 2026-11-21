@@ -13,3 +13,16 @@
 | XJW-SOCIAL-20260904-0900-FIRST | GitHub Pages / images/posts/formal-v20260904/first-post-work-rest-qmascot.webp | 直接讀取 HTTP 403，原圖 SHA-256 未核驗 |
 
 重要：Git Blob SHA 是 Git 物件識別碼，**不是**檔案 SHA-256。即使原圖 SHA-256 全部取得，仍須視覺／感知相似度及歷史素材覆蓋率驗證；不得自動將 `duplicate=DEFER` 改為 `PASS`。
+
+## 補充實測（2026-11-21）
+
+從正式 GitHub main 直接取得檔案內容、Base64 解碼並計算 SHA-256，四張封存圖片位元組與 D1 記錄相符：
+
+| 貼文 ID | 原始 bytes | SHA-256 |
+|---|---:|---|
+| XJW-CONV-brand-third-generation-note | 882825 | `f13103dba3309755a372e3bdf38f32c3579c55549c8121e48c4524406b6151b6` |
+| XJW-CONV-chat-customer-first-question | 642410 | `149f09686eb9880b0289b0d481369a407d70e247e38807b74d4dc2aa722cde32` |
+| XJW-CONV-live-hongludi-outing-20260929 | 874289 | `ecce9526a3c76898764b3f4f3ba49bc44be69114c36a39c879e906b18b84e110` |
+| XJW-CONV-new-year-open-door | 1041033 | `57dba205793cc6c358200b6c3a02be0e3b30e979144ce72bdc4e10a614f64411` |
+
+**9/4 圖片版本不一致：** 從官網 Repository `TS15825868/xianjiawei` 最新 main 的 `images/posts/formal-v20260904/first-post-work-rest-qmascot.webp` 取得 **172548 bytes**，SHA-256 `0c73c6cd5a4ac8942a89d160838789744a813f617536e8d8c26260867ccf14d2`，但 D1 的 `XJW-SOCIAL-20260904-0900-FIRST` 記錄 **317077 bytes**。不可將目前 GitHub 檔案視為當年發布的同一版本；應追查歷史 commit 或實際平台媒體。不得寫入 D1 或解除 `duplicate=DEFER`。
