@@ -210,3 +210,20 @@ test('Metricool 免費額度依候選貼文實際核准平台數計算，歷史�
   assert.equal(triple.ok,false);
   assert.equal(triple.withCandidate,21);
 });
+
+
+test('知識圖卡必須具備來源、品牌、圖文、原創與配伍核對',()=>{
+  const knowledge={...valid,knowledge_format:'food_faq'};
+  const required={knowledgeSourceVerified:true,knowledgeBrandLinkVerified:true,knowledgeVisualTextVerified:true,knowledgeOriginalityVerified:true,knowledgeNoUnverifiedRecipe:true};
+  assert.equal(assessAutopublishCandidate(knowledge,checks).ok,false);
+  assert.equal(assessAutopublishCandidate(knowledge,{...checks,...required}).ok,true);
+  for(const key of Object.keys(required)){
+    const bad={...checks,...required,[key]:false};
+    assert.equal(assessAutopublishCandidate(knowledge,bad).ok,false,key);
+  }
+  assert.equal(assessAutopublishCandidate({...knowledge,knowledge_format:'unknown'},{...checks,...required}).ok,false);
+  assert.equal(assessAutopublishCandidate({...knowledge,status:'pending_review'},{...checks,...required}).ok,false);
+});
+test('既有未標示知識圖卡的貼文維持原審核規則',()=>{
+  assert.equal(assessAutopublishCandidate(valid,checks).ok,true);
+});
