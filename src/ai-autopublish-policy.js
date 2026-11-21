@@ -5,6 +5,17 @@ const BANNED = /(治療|根治|預防疾病|改善疾病|降血壓|降血糖|降
 const HIGH_RISK = /(價格|售價|優惠|折扣|特價|促銷|免運|贈送|買一送一|預購|現貨|新品上市|藥品|醫療|許可證|颱風|豪雨|即時天氣)/;
 const ACTIVE = new Set(['approved','scheduled']);
 const CHANNELS = new Set(['facebook','instagram','threads']);
+const KNOWLEDGE_FORMATS=new Set(['ingredient_guide','recipe_steps','food_faq','ingredient_comparison']);
+export function assessKnowledgeCard(post,checks={}){
+  const reasons=[];
+  if(!post?.knowledge_format)return {ok:true,reasons,applicable:false};
+  if(!KNOWLEDGE_FORMATS.has(post.knowledge_format))reasons.push('未知知識圖卡形式');
+  for(const [key,label] of Object.entries({knowledgeSourceVerified:'可信來源',knowledgeBrandLinkVerified:'品牌與情境',knowledgeVisualTextVerified:'圖文一致',knowledgeOriginalityVerified:'原創及使用權',knowledgeNoUnverifiedRecipe:'未核准配伍與處方排除'})){
+    if(checks[key]!==true)reasons.push('知識圖卡缺少'+label+'核對');
+  }
+  return {ok:reasons.length===0,reasons,applicable:true};
+}
+
 export function assessAutopublishCandidate(post, checks = {}) {
   const reasons = [];
   const content = [post?.title,post?.headline,post?.copy,post?.image_alt].filter(Boolean).join(' ');
@@ -28,5 +39,6 @@ export function assessAutopublishCandidate(post, checks = {}) {
     if (checks[key] !== true) reasons.push('未通過 '+key);
   }
   if (!checks.reviewedAt || !Number.isFinite(Date.parse(checks.reviewedAt)) || Date.now()-Date.parse(checks.reviewedAt)>24*3600000 || Date.parse(checks.reviewedAt)>Date.now()+60000) reasons.push('AI 審核證據逾期或不合法');
+  reasons.push(...assessKnowledgeCard(post,checks).reasons);
   return {ok:reasons.length===0,decision:reasons.length===0?'ELIGIBLE_FOR_SCHEDULING':'BLOCKED',reasons,policyVersion:AUTOPUBLISH_POLICY_VERSION};
 }
