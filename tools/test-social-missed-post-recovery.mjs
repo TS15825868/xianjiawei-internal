@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assessMissedSocialPost as assess} from '../src/social-missed-post-recovery.js';
+const base={scheduled_at:'2026-11-23T02:00:00Z',platforms:['facebook','instagram','threads'],approved:true,image_verified:true,dedup_verified:true,authorization_valid:true,copy:'仙加味料理搭配與溫熱飲用'};
+const receipt=(f='failed',i='failed',t='failed')=>[{platform:'facebook',status:f},{platform:'instagram',status:i},{platform:'threads',status:t}];
+const opts={externalQuotaVerified:true,platformReady:true};
+test('uncertain result cannot be sent twice',()=>assert.equal(assess(base,receipt('published','unknown','failed'),'2026-11-23T03:00:00Z',opts).action,'VERIFY'));
+test('partial success proposes only failed platforms',()=>{const x=assess(base,receipt('published','failed','failed'),'2026-11-23T03:00:00Z',opts);assert.equal(x.action,'RESCHEDULE_REVIEW');assert.deepEqual(x.platforms,['instagram','threads']);});
+test('no receipt is not proof of failure',()=>assert.equal(assess(base,[],'2026-11-23T03:00:00Z',opts).action,'VERIFY'));
+test('within grace does not retry',()=>assert.equal(assess(base,receipt(),'2026-11-23T02:10:00Z',opts).action,'WAIT'));
+test('all delivered does not retry',()=>assert.equal(assess(base,receipt('published','success','delivered'),'2026-11-23T03:00:00Z',opts).action,'DONE'));
+test('quota unknown blocks retry',()=>assert.equal(assess(base,receipt(),'2026-11-23T03:00:00Z',{}).action,'HOLD'));
+test('old and dated content must be replaced and reviewed',()=>{assert.equal(assess({...base,copy:'仙加味元旦早餐'},receipt(),'2026-11-23T03:00:00Z',opts).action,'REPLACE_REVIEW');assert.equal(assess(base,receipt(),'2026-11-26T03:00:00Z',opts).action,'REPLACE_REVIEW')});
+test('unapproved cannot be retried',()=>assert.equal(assess({...base,approved:false},receipt(),'2026-11-23T03:00:00Z',opts).action,'HOLD'));
