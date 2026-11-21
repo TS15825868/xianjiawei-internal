@@ -6,11 +6,12 @@ const HIGH_RISK = /(價格|售價|優惠|折扣|特價|促銷|免運|贈送|買�
 const ACTIVE = new Set(['approved','scheduled']);
 const CHANNELS = new Set(['facebook','instagram','threads']);
 const KNOWLEDGE_FORMATS=new Set(['ingredient_guide','recipe_steps','food_faq','ingredient_comparison']);
+export const KNOWLEDGE_CATEGORIES=new Set(['knowledge','knowledge_card','food_knowledge','ingredient_guide','recipe_steps','food_faq','ingredient_comparison','知識','知識圖卡','漢方知識','食材知識']);
+export function isKnowledgePost(post){return post?.knowledge_format!=null||KNOWLEDGE_CATEGORIES.has(String(post?.category||'').trim().toLowerCase());}
 export function assessKnowledgeCard(post,checks={}){
   const reasons=[];
   const tagged=post?.knowledge_format!==undefined&&post?.knowledge_format!==null;
-  const category=String(post?.category||'').trim().toLowerCase();
-  const isKnowledge=tagged||['knowledge','knowledge_card','food_knowledge','ingredient_guide','recipe_steps','food_faq','ingredient_comparison','知識','知識圖卡','漢方知識','食材知識'].includes(category);
+  const isKnowledge=isKnowledgePost(post);
   if(!isKnowledge)return {ok:true,reasons,applicable:false};
   if(!tagged||!String(post.knowledge_format).trim())reasons.push('知識類貼文缺少明確圖卡形式');
   if(!KNOWLEDGE_FORMATS.has(post.knowledge_format))reasons.push('未知知識圖卡形式');
