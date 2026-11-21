@@ -1,3 +1,16 @@
+import {assessKnowledgeCard} from './ai-autopublish-policy.js';
+// Knowledge cards require server-derived evidence at both grant and dispatch.
+// Browser-supplied flags cannot authorize publishing.
+async function verifyKnowledgeAtBoundary(env,post,verifyKnowledge){
+  const category=String(post?.category||'').trim().toLowerCase();
+  const knowledge=post?.knowledge_format!=null||['knowledge','knowledge_card','food_knowledge','ingredient_guide','recipe_steps','food_faq','ingredient_comparison','知識','知識圖卡','漢方知識','食材知識'].includes(category);
+  if(!knowledge)return {ok:true};
+  if(typeof verifyKnowledge!=='function')return {ok:false,reason:'知識圖卡缺少伺服器端查證入口'};
+  let checks;
+  try{checks=await verifyKnowledge(env,post)}catch{return {ok:false,reason:'知識圖卡伺服器查證失敗'}}
+  const result=assessKnowledgeCard(post,checks);
+  return result.ok?{ok:true}:{ok:false,reason:result.reasons.join('；')};
+}
 // Independent owner-delegated publication authorization. No human approval is synthesized.
 // Only trusted server-side callers may supply persisted grants and verified quality.
 export const DELEGATION_SCHEMA='xjw-owner-social-delegation-v1';
@@ -44,10 +57,12 @@ export async function readDelegatedGrant(env,postId){
     return row?{...row,channels:JSON.parse(row.channels_json)}:null;
   }catch(error){if(/no such table/i.test(String(error)))return null;throw error;}
 }
-export async function prepareDelegatedGrant(env,post,publicationAt,profile,{fingerprint,verifyQuality,checkContent,now=Date.now()}={}){
+export async function prepareDelegatedGrant(env,post,publicationAt,profile,{fingerprint,verifyQuality,checkContent,verifyKnowledge,now=Date.now()}={}){
   if(!['owner','admin'].includes(profile?.role)||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile?.email||''))throw Error('需要正式管理者身分');
   if(post?.status!=='pending_review'||post.published_at||post.scheduled_at||post.approved_by||post.approved_at)throw Error('只接受未發布且未排程的AI品質候選');
   if(typeof fingerprint!=='function'||typeof verifyQuality!=='function'||typeof checkContent!=='function')throw Error('缺少伺服器驗證');
+  const knowledgeCheck=await verifyKnowledgeAtBoundary(env,post,verifyKnowledge);
+  if(!knowledgeCheck.ok)throw Error(knowledgeCheck.reason);
   const fp=await fingerprint(post);
   const quality=await verifyQuality(env,post,fp);
   const errors=await checkContent(env,post);
@@ -69,9 +84,11 @@ export async function prepareDelegatedGrant(env,post,publicationAt,profile,{fing
 
  // Actual dispatch verification always reads the persisted authorization, never
  // a browser-provided approval. No network send occurs in this function.
-export async function verifyDelegatedDispatch(env,post,{fingerprint,verifyQuality,checkContent,now=Date.now()}={}){
+export async function verifyDelegatedDispatch(env,post,{fingerprint,verifyQuality,checkContent,verifyKnowledge,now=Date.now()}={}){
   if(env?.XJW_AI_DELEGATED_PUBLICATION_ENABLED!=='true')return {ok:false,reason:'委任發布執行開關未啟用'};
   if(!post?.id||typeof fingerprint!=='function'||typeof verifyQuality!=='function'||typeof checkContent!=='function')return {ok:false,reason:'缺少正式發布驗證'};
+  const knowledgeCheck=await verifyKnowledgeAtBoundary(env,post,verifyKnowledge);
+  if(!knowledgeCheck.ok)return knowledgeCheck;
   const grant=await readDelegatedGrant(env,post.id);
   if(!grant||grant.owner_authorization_ref!==STANDING_AUTHORIZATION_REF)return {ok:false,reason:'沒有可查證的正式委任授權'};
   const fp=await fingerprint(post);
