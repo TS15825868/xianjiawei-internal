@@ -1,9 +1,11 @@
-name: D1 read-budget offline regression
+name: D1 and social recovery offline regression
 on:
   pull_request:
     paths:
       - 'tools/report-d1-expensive-queries.mjs'
       - 'tools/report-d1-expensive-queries.test.mjs'
+      - 'src/social-missed-post-recovery.js'
+      - 'tools/test-social-missed-post-recovery.mjs'
       - '.github/workflows/d1-read-budget-offline.yml'
   workflow_dispatch:
 permissions:
@@ -17,7 +19,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check offline report syntax
-        run: node --check tools/report-d1-expensive-queries.mjs
-      - name: Run offline D1 read-budget regression
-        run: node --test tools/report-d1-expensive-queries.test.mjs
+      - name: Check offline source syntax
+        run: |
+          node --check tools/report-d1-expensive-queries.mjs
+          node --check src/social-missed-post-recovery.js
+      - name: Run offline D1 and missed-post recovery regression
+        run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs
