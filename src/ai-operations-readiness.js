@@ -7,6 +7,34 @@ const denied = (code,status) => respond({ok:false,code,readOnly:true,customerSen
 const ROLES = new Set(['owner','admin','content','sales']);
 const POST_STATUS = new Set(['draft','pending_review','approved','scheduled','published','manual_required','failed','archived']);
 
+// D1 7500 is a free-tier exhaustion signal, not a missing table or healthy zero.
+// A per-isolate, per-binding pause avoids repeated futile scans; this is not a
+// persistent quota ledger and cannot prove an account-wide reset.
+const d1QuotaPause = new WeakMap();
+export function nextD1FreeResetUtc(now=Date.now()) {
+  if(!Number.isFinite(now))throw Error('invalid_now');
+  const date=new Date(now);
+  return Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate()+1);
+}
+export function isD1ReadQuotaExhausted(error) {
+  if(Number(error?.code)===7500)return true;
+  const message=String(error?.message||error||'');
+  return /\b7500\b/.test(message)&&/(D1|quota|rows?[_\s-]*read|limit|exceed)/i.test(message);
+}
+function quotaDenied(db) {
+  const until=d1QuotaPause.get(db)||nextD1FreeResetUtc();
+  return Response.json({
+    ok:false,code:'d1_free_read_quota_exhausted',readOnly:true,customerSend:false,
+    retryAfterUtc:new Date(until).toISOString(),writes:0,modelCalls:0
+  },{status:503,headers:{...HEADERS,'retry-after':String(Math.max(1,Math.ceil((until-Date.now())/1000)))}});
+}
+function holdOnQuotaError(error,db) {
+  if(!isD1ReadQuotaExhausted(error))return null;
+  d1QuotaPause.set(db,nextD1FreeResetUtc());
+  return quotaDenied(db);
+}
+
+
 export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   if(request?.method!=='GET')return denied('method_not_allowed',405);
   if(typeof authenticate!=='function')return denied('authentication_unavailable',503);
@@ -15,12 +43,13 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
   catch { return denied('access_required',401); }
   if(!ROLES.has(person?.role)||Number(person?.active)!==1)return denied('role_denied',403);
   if(typeof env?.DB?.prepare!=='function')return denied('d1_unavailable',503);
+  if((d1QuotaPause.get(env.DB)||0)>Date.now())return quotaDenied(env.DB);
   let rows;
   try {
     const data=await env.DB.prepare('SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status').all();
     if(!Array.isArray(data?.results))throw Error('invalid_result');
     rows=data.results;
-  }catch { return denied('d1_status_unavailable',503); }
+  }catch(error) { return holdOnQuotaError(error,env.DB)||denied('d1_status_unavailable',503); }
   const posts=Object.fromEntries([...POST_STATUS].map(status=>[status,0]));
   for(const row of rows){
     if(POST_STATUS.has(row?.status)&&Number.isSafeInteger(Number(row.total))&&Number(row.total)>=0)
@@ -44,7 +73,8 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     }
     lineInbox={schema:'available',receiptOnly:true,liveWebhookVerified:false,
       canReply:false,total,unhandled};
-  }catch{
+  }catch(error){
+    const blocked=holdOnQuotaError(error,env.DB);if(blocked)return blocked;
     // A missing table or read failure is not proof that LINE is operating.
   }
   // Staff-claim metadata is separate from LINE message payloads. Active
@@ -59,7 +89,8 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
       if(!Number.isSafeInteger(active)||active<0||active>lineInbox.unhandled)
         throw Error('invalid handoff count');
       handoff={schema:'available',activeClaims:active,unassigned:lineInbox.unhandled-active};
-    }catch{
+    }catch(error){
+      const blocked=holdOnQuotaError(error,env.DB);if(blocked)return blocked;
       // Missing or inconsistent claim history is never silently represented
       // as zero outstanding customer conversations.
     }
@@ -84,7 +115,8 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     }
     metaInbox={schema:'available',receiptOnly:true,liveWebhookVerified:false,
       canReply:false,total,platformCounts:platforms};
-  }catch{
+  }catch(error){
+    const blocked=holdOnQuotaError(error,env.DB);if(blocked)return blocked;
     // Existing production services remain independent; never infer a live callback.
   }
   // Staff-only aggregated delivery backlog. No post copy, customer data
@@ -101,7 +133,8 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
     if(waitingRetry+manualReview+staleSending+publishedMissingRemoteId>total)
       throw Error('inconsistent_publish_counts');
     publicationQueue={schema:'available',total,waitingRetry,manualReview,staleSending,publishedMissingRemoteId};
-  }catch{
+  }catch(error){
+    const blocked=holdOnQuotaError(error,env.DB);if(blocked)return blocked;
     // D1 query failure is unknown, never a healthy zero queue.
   }
   const checkedAt=new Date().toISOString();
@@ -120,7 +153,7 @@ export async function aiOperationsReadiness(request,env,{authenticate}={}) {
       recovery=assessMissedSocialPost({
         scheduled_at:post.scheduled_at,platforms:JSON.parse(post.platforms_json)
       },receipts.results,checkedAt);
-    }catch{return denied('recovery_evidence_unavailable',503);}
+    }catch(error){return holdOnQuotaError(error,env.DB)||denied('recovery_evidence_unavailable',503);}
   }
   const tasks=[];
   if(publicationQueue.staleSending>0||publicationQueue.publishedMissingRemoteId>0)

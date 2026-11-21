@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {aiOperationsReadiness} from '../src/ai-operations-readiness.js';
+import {aiOperationsReadiness,isD1ReadQuotaExhausted,nextD1FreeResetUtc} from '../src/ai-operations-readiness.js';
 const request=new Request('https://internal.example/api/ai-ops/readiness');
 const owner=async()=>({role:'owner',active:1});
 const fakeDB=(data=[{status:'pending_review',total:7},{status:'published',total:9}],line=[],meta=[])=>({prepare(sql){
@@ -220,4 +220,50 @@ test('bad or inconsistent publish backlog cannot be reported as a healthy zero',
   assert.equal(data.data.publicationQueue.manualReview,null);
   assert.ok(!JSON.stringify(data).includes('private D1 failure'));
  }
+});
+
+
+test('D1 7500 code is recognized but unrelated errors are not',()=>{
+ assert.equal(isD1ReadQuotaExhausted(Object.assign(Error('temporary'),{code:7500})),true);
+ assert.equal(isD1ReadQuotaExhausted(Error('D1 exceeded read limit 7500')),true);
+ assert.equal(isD1ReadQuotaExhausted(Error('some unrelated 7500 tag')),false);
+ assert.equal(isD1ReadQuotaExhausted(Error('no such table')),false);
+ assert.equal(nextD1FreeResetUtc(Date.parse('2026-11-22T13:59:59Z')),Date.parse('2026-11-23T00:00:00Z'));
+ assert.equal(nextD1FreeResetUtc(Date.parse('2026-11-22T00:00:00Z')),Date.parse('2026-11-23T00:00:00Z'));
+});
+test('quota exhausted status query pauses repeated calls without more D1 reads',async()=>{
+ let reads=0;
+ const DB={prepare(){return{all:async()=>{reads++;throw Object.assign(Error('D1_ERROR'),{code:7500});}}}};
+ const env={DB};
+ const first=await aiOperationsReadiness(request,env,{authenticate:owner});
+ assert.equal(first.status,503);const p=await first.json();
+ assert.equal(p.code,'d1_free_read_quota_exhausted');
+ assert.equal(p.readOnly,true);assert.equal(p.customerSend,false);
+ assert.equal(p.writes,0);assert.equal(p.modelCalls,0);
+ assert.ok(Number(first.headers.get('retry-after'))>0);
+ assert.ok(Date.parse(p.retryAfterUtc)>Date.now());
+ const second=await aiOperationsReadiness(request,env,{authenticate:owner});
+ assert.equal(second.status,503);assert.equal(reads,1);
+});
+test('quota exhausted optional LINE query halts later dashboard queries',async()=>{
+ let calls=0;
+ const DB={prepare(sql){
+    calls++;
+    if(sql==='SELECT status,COUNT(*) AS total FROM social_posts GROUP BY status')
+      return{all:async()=>({results:[{status:'pending_review',total:5}]})};
+    if(sql.includes('FROM xjw_line_receipt_inbox'))
+      return{all:async()=>{throw Error('D1 daily limit exceeded: 7500')}};
+    throw Error('unexpected query after quota failure');
+ }};
+ const resp=await aiOperationsReadiness(request,{DB},{authenticate:owner});
+ assert.equal(resp.status,503);assert.equal((await resp.json()).code,'d1_free_read_quota_exhausted');
+ assert.equal(calls,2);
+});
+test('quota pause is per database binding, not global for unrelated accounts',async()=>{
+ const DB={prepare(sql){
+    if(sql.includes('FROM social_posts'))return{all:async()=>({results:[]})};
+    return{all:async()=>({results:[]})};
+ }};
+ const response=await aiOperationsReadiness(request,{DB},{authenticate:owner});
+ assert.equal(response.status,200);
 });
