@@ -13,7 +13,7 @@ function proposedRecoverySlot(start,reservedDates=[]){
   const occupied=new Set();
   for(const value of reservedDates){
     const raw=String(value??'').trim();
-    if(/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)){occupied.add(raw);continue;}
+    if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){occupied.add(raw);continue;}
     const timestamp=Date.parse(raw);
     if(!Number.isFinite(timestamp))return null;
     occupied.add(localDate(timestamp));
