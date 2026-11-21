@@ -14,7 +14,7 @@ else {
     if(!Number.isFinite(reads)||reads<0)throw Error('Invalid rows_read');
     total+=reads;
     if(reads<threshold)continue;
-    const query=String(item.query||'').replace(/\\s+/g,' ').slice(0,160);
+    const query=String(item.query||'').replace(/\s+/g,' ').slice(0,160);
     console.log(JSON.stringify({rows_read:reads,executions,query,warning:'Review query plan and indexes; do not replay against production D1'}));
   }
   console.log(JSON.stringify({sampled_total_rows_read:total,queries:rows.length,warning_threshold:threshold,source:'D1 Insights estimates; not billing totals'}));
