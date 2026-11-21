@@ -2,6 +2,9 @@
 -- 使用 Cloudflare D1 SQLite；僅 SELECT，不會補造核准或修改發布狀態。
 -- 「owner-directed」稽核線索不等同 16 項人工核准，也不代表已驗證原始聊天。
 -- 缺少核准欄位不等於未經授權；需檢查個別指示與來源證據。
+-- 歷史大小寫不一致已正規化；0 筆回執代表本表缺資料，並非未發布。
+-- 2026-09-04 兩平台回執不應自動補造 Threads 回執。
+
 WITH published AS (
   SELECT id, title, published_at, approved_by, approved_at, image_approved
   FROM social_posts WHERE status='published'
