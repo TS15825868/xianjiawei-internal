@@ -69,6 +69,12 @@ test('知識類委任授權缺少伺服器查證時預設阻擋',async()=>{
   const profile={role:'owner',email:'owner@example.com'};
   await assert.rejects(()=>prepareDelegatedGrant({},post,at,profile,deps),/伺服器端查證入口/);
   await assert.rejects(()=>prepareDelegatedGrant({},post,at,profile,{...deps,verifyKnowledge:async()=>({})}),/缺少明確圖卡形式/);
+  // A correctly tagged card must still be denied if any server proof is absent.
+  const tagged={...post,knowledge_format:'food_faq'};
+  await assert.rejects(()=>prepareDelegatedGrant({},tagged,at,profile,{...deps,verifyKnowledge:async()=>({})}),/可信來源/);
+  const partial={knowledgeSourceVerified:true,knowledgeBrandLinkVerified:true,knowledgeVisualTextVerified:true,knowledgeOriginalityVerified:true};
+  await assert.rejects(()=>prepareDelegatedGrant({},tagged,at,profile,{...deps,verifyKnowledge:async()=>partial}),/未核准配伍與處方排除/);
+  await assert.rejects(()=>prepareDelegatedGrant({},tagged,at,profile,{...deps,verifyKnowledge:async()=>{throw Error('unavailable evidence')}}),/伺服器查證失敗/);
   const result=await verifyDelegatedDispatch({XJW_AI_DELEGATED_PUBLICATION_ENABLED:'true'},post,deps);
   assert.equal(result.ok,false);
   assert.match(result.reason,/伺服器端查證入口/);
