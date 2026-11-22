@@ -30,3 +30,17 @@ test('only valid dHash participates in comparison and threshold is checked',()=>
  assert.equal(r.asset_pairs.length,0);
  assert.throws(()=>auditSocialMediaOffline({},65),/Invalid dHash threshold/);
 });
+
+test('approved GitHub Pages URL matches recorded repository path only, never auto-releases', () => {
+ const inventory = {media:[{path:'images/posts/official-v20260818/01-work-30cc.webp',git_blob_sha:'a'.repeat(40)}]};
+ const r=auditSocialMediaOffline({posts:[
+  {id:'exact-path',status:'pending_review',image_url:'https://ts15825868.github.io/xianjiawei/images/posts/official-v20260818/01-work-30cc.webp?ref=old'},
+  {id:'fake-host',status:'pending_review',image_url:'https://ts15825868.github.io.evil.test/xianjiawei/images/posts/official-v20260818/01-work-30cc.webp'}
+ ],reviews:[],github_media_source_inventory:inventory});
+ assert.equal(r.known_github_media_paths,1);
+ assert.equal(r.pending[0].github_inventory_path_match,true);
+ assert.equal(r.pending[0].github_blob_sha,'a'.repeat(40));
+ assert.equal(r.pending[0].release_allowed,false);
+ assert.equal(r.pending[1].github_inventory_path_match,false);
+ assert.equal(r.pending[1].release_allowed,false);
+});
