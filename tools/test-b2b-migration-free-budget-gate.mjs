@@ -67,6 +67,19 @@ test('actual Cloudflare account-wide budget evaluation precedes remote export', 
   assert.ok(exportBlock.includes(guarded));
 });
 
+test('existing three B2B tables never trigger redundant remote SQL', () => {
+  const preflight=step('Verify schema and isolate test data');
+  assert.match(preflight,/businessInquiryCrmSchema/);
+  assert.match(preflight,/businessInquirySchema/);
+  const apply=step('Apply approved B2B schema and verify reads');
+  assert.match(apply,/requiresProductionSchemaApply/);
+  assert.match(apply,/isolatedRestoreAndSchemaRehearsal/);
+  assert.match(apply,/missingB2bTableCount/);
+  assert.match(apply,/exit 0/);
+  assert.ok(apply.indexOf('requiresProductionSchemaApply') <
+    apply.indexOf('npx --no-install wrangler d1 execute'));
+});
+
 test('raw backup never becomes a workflow artifact and is cleaned', () => {
   const upload = step('Preserve recovery and rehearsal evidence');
   assert.match(upload, /business-inquiries-preflight\.json/);
