@@ -29,7 +29,8 @@ class IsolatedB2BRestore(unittest.TestCase):
 
     def receipt(self, presence=("business_inquiry_drafts", "business_inquiries", "business_inquiry_crm_delivery"),
                 altered=False, corrupt=False, changed_literal=False,
-                partial_backup=False, incomplete_inventory=False):
+                partial_backup=False, incomplete_inventory=False,
+                orphan_foreign_key=False):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
             schema_file = base / "three-tables.sql"
@@ -43,6 +44,12 @@ class IsolatedB2BRestore(unittest.TestCase):
             try:
                 conn.execute("CREATE TABLE unrelated_erp_customer (id TEXT PRIMARY KEY)")
                 conn.execute("INSERT INTO unrelated_erp_customer VALUES (?)", ("private-customer-not-for-output",))
+                if orphan_foreign_key:
+                    conn.execute("CREATE TABLE unrelated_erp_order ("
+                                 "id TEXT PRIMARY KEY, customer_id TEXT "
+                                 "REFERENCES unrelated_erp_customer(id))")
+                    conn.execute("INSERT INTO unrelated_erp_order VALUES (?,?)",
+                                 ("private-order-id", "missing-customer-reference"))
                 parts = self.schema.split("CREATE TABLE IF NOT EXISTS")
                 for stmt in parts[1:]:
                     name = stmt.split("(", 1)[0].strip()
@@ -97,6 +104,9 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertEqual(receipt["missingB2bTableCount"], 0)
         self.assertEqual(receipt["existingB2bTableCount"], 3)
         self.assertTrue(receipt["fullLiveTableInventoryMatchesSnapshot"])
+        self.assertTrue(receipt["isolatedForeignKeyIntegrityPassed"])
+        self.assertTrue(receipt["isolatedAllExistingTableRowCountsPreserved"])
+        self.assertFalse(receipt["productionRowContentCompletenessCompared"])
         self.assertEqual(receipt["liveTableCount"], 4)
         self.assertEqual(receipt["snapshotTableCount"], 4)
         self.assertFalse(receipt["requiresProductionSchemaApply"])
@@ -134,6 +144,14 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIsNone(receipt)
         self.assertIn("Full D1 backup table inventory does not match", result.stderr)
+
+    def test_restored_orphaned_erp_foreign_key_fails_closed(self):
+        result, receipt = self.receipt(orphan_foreign_key=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIsNone(receipt)
+        self.assertIn("foreign-key integrity check", result.stderr)
+        self.assertNotIn("private-order-id", result.stderr)
+        self.assertNotIn("missing-customer-reference", result.stderr)
 
     def test_corrupt_or_nonrestorable_backup_fails_closed(self):
         result, receipt = self.receipt(corrupt=True)
