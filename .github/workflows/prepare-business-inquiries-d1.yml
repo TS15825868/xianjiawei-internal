@@ -34,7 +34,7 @@ jobs:
       - name: Verify schema and isolate test data
         run: |
           node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs
-          node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; process.stdout.write(businessInquirySchema)' > "$RUNNER_TEMP/business-inquiries.sql"
+          node --input-type=module -e 'import {businessInquirySchema} from "./edge/business-inquiries.mjs"; import {businessInquiryCrmSchema} from "./edge/business-inquiry-crm.mjs"; process.stdout.write(businessInquirySchema + "\n" + businessInquiryCrmSchema)' > "$RUNNER_TEMP/business-inquiries.sql"
       - name: Block migration if production export was not explicitly approved
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.apply == true && inputs.allow_production_d1_export != true }}
         run: |
@@ -93,6 +93,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # A validated full backup is necessary, but redundant table CREATE is not.
+          # Existing B2B schema was already confirmed live. Never issue remote SQL
+          # when the isolated rehearsal reports the three tables current.
+          if python3 -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"business-inquiries-preflight.json"; x=json.loads(p.read_text()); assert x.get("isolatedRestoreAndSchemaRehearsal")=="passed"; assert x.get("requiresProductionSchemaApply") is False'; then
+            echo 'All three B2B tables already present with verified schema; remote D1 apply skipped.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          # Fail-closed: only a successful isolated rehearsal with missing tables may apply.
+          python3 -c 'import json,os,pathlib,sys; x=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"business-inquiries-preflight.json").read_text()); sys.exit(0 if x.get("isolatedRestoreAndSchemaRehearsal")=="passed" and x.get("requiresProductionSchemaApply") is True and x.get("missingB2bTableCount") in (1,2,3) else 2)'
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --file "$RUNNER_TEMP/business-inquiries.sql"
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
       - name: Remove downloaded production data from runner
