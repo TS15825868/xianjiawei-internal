@@ -1,0 +1,116 @@
+name: 仙加味46篇候選圖片 GitHub 離線實體對照
+# Reconcile archived candidate SHA-256 against files already in ERP main; no production D1.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/reconcile-pending-46-images-offline.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xjw-offline-46-image-reconcile
+  cancel-in-progress: false
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image decoder for matched files only
+        run: python -m pip install --quiet 'Pillow==11.3.0'
+      - name: Match archived 46 image SHA values to existing ERP GitHub images
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          from PIL import Image,ImageOps
+          pending_path=Path('ops/social-pending-46-offline-evidence-source-v20261122.json')
+          history_path=Path('assets/data/github-social-media-fingerprints-v20261122.json')
+          pending=json.loads(pending_path.read_text('utf-8'))
+          history=json.loads(history_path.read_text('utf-8'))
+          if pending.get('remaining_candidate_count')!=46 or len(pending.get('candidates',[]))!=46:
+              raise SystemExit('46 archival candidate evidence changed; stop')
+          if history.get('source_files')!=169 or history.get('dhash_available')!=159:
+              raise SystemExit('169 public history fingerprints changed; stop')
+          candidateBySha={}
+          for row in pending['candidates']:
+              sha=row['image_sha256_20261112'].lower()
+              if len(sha)!=64 or any(x not in '0123456789abcdef' for x in sha):
+                  raise SystemExit('Invalid archival image SHA')
+              candidateBySha.setdefault(sha,[]).append(row)
+          paths=sorted(p for p in Path('assets/post-images').rglob('*') if p.is_file() and p.suffix.lower() in ('.png','.jpg','.jpeg','.webp','.avif','.gif'))
+          if len(paths)>5000: raise SystemExit('Unexpected media directory size; avoid excessive CI reads')
+          matches={row['post_id']:[] for row in pending['candidates']}
+          hist=[r for r in history['media'] if r.get('dhash')]
+          def dist(a,b):
+              return (int(a,16)^int(b,16)).bit_count()
+          hashed=0
+          for file in paths:
+              h=hashlib.sha256()
+              with file.open('rb') as stream:
+                  while True:
+                      chunk=stream.read(1024*1024)
+                      if not chunk:break
+                      h.update(chunk)
+              hashed+=1
+              digest=h.hexdigest()
+              if digest not in candidateBySha: continue
+              item={'file':file.as_posix(),'sha256':digest,'dhash':None,'visual_candidates':[],'image_decode':'unsupported'}
+              try:
+                  with Image.open(file) as im:
+                      im.load()
+                      im=ImageOps.exif_transpose(im)
+                      grey=im.convert('L').resize((9,8),Image.Resampling.LANCZOS)
+                      pix=list(grey.getdata())
+                      value=0
+                      for y in range(8):
+                          for x in range(8):value=(value<<1)|int(pix[y*9+x]>pix[y*9+x+1])
+                      item['dhash']=format(value,'016x')
+                      item['image_decode']='ok'
+                      item['visual_candidates']=[{'historical_path':r['path'],'distance':dist(item['dhash'],r['dhash'])} for r in hist if dist(item['dhash'],r['dhash'])<=8]
+              except (OSError,ValueError,Image.DecompressionBombError) as exc:
+                  item['image_decode']='unsupported_'+type(exc).__name__
+              for row in candidateBySha[digest]:matches[row['post_id']].append(item)
+          records=[{'post_id':r['post_id'],'expected_image_sha256':r['image_sha256_20261112'],
+                    'github_erp_exact_image_paths':matches[r['post_id']],
+                    'found_in_erp_repo':bool(matches[r['post_id']]),
+                    'current_live_d1_binding_verified':False,'release_allowed':False}
+                   for r in pending['candidates']]
+          out={'schema':'xjw-offline-46-erp-image-source-match-v1',
+            'source_post_evidence':str(pending_path),'source_historical_fingerprints':str(history_path),
+            'scope':'ERP GitHub assets/post-images only, not Cloudflare R2, D1, or all 178 historical originals',
+            'candidate_posts':46,'erp_image_files_hashed':hashed,
+            'candidate_posts_with_exact_erp_file':sum(r['found_in_erp_repo'] for r in records),
+            'candidate_posts_missing_erp_file':sum(not r['found_in_erp_repo'] for r in records),
+            'historical_visual_candidate_links':sum(len(i['visual_candidates']) for r in records for i in r['github_erp_exact_image_paths']),
+            'production_d1_queries':0,'approval_or_publication_permitted':False,
+            'warning':'Exact archival SHA source matching and visual candidates are evidence only. A missing match may exist in Cloudflare/R2; current live D1 and all 178 media remain unverified.',
+            'records':records}
+          path=Path('ops/social-46-offline-github-image-reconciliation-v20261122.json')
+          path.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'candidate_posts':46,'erp_images_hashed':hashed,'found':out['candidate_posts_with_exact_erp_file'],'missing':out['candidate_posts_missing_erp_file'],'visual_candidates':out['historical_visual_candidate_links'],'d1_queries':0},ensure_ascii=False))
+          PY
+      - name: Preserve read-only reconciliation as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xjw-46-offline-image-reconciliation
+          path: ops/social-46-offline-github-image-reconciliation-v20261122.json
+          retention-days: 7
+      - name: Store offline evidence only, no approval or publication
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f ops/social-46-offline-github-image-reconciliation-v20261122.json
+          if git diff --cached --quiet; then
+            echo 'Evidence unchanged.'
+            exit 0
+          fi
+          git commit -m 'data: reconcile historical 46 image SHA against existing ERP images offline'
+          git push origin HEAD:main
