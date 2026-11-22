@@ -28,13 +28,15 @@ except (ValueError, OSError):
     raise SystemExit("Live table inventory missing or invalid") from None
 live_names = inventory.get("table_names") if isinstance(inventory, dict) else None
 if (
-    inventory.get("schema") != "xjw-private-live-d1-table-inventory-v1"
+    not isinstance(inventory, dict)
+    or inventory.get("schema") != "xjw-private-live-d1-table-inventory-v1"
     or not isinstance(live_names, list)
-    or not (3 <= len(live_names) <= 500)
-    or len(set(live_names)) != len(live_names)
-    or inventory.get("table_count") != len(live_names)
+    or not (1 <= len(live_names) <= 500)
     or any(not isinstance(name, str) or
            not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) for name in live_names)
+    or len(set(live_names)) != len(live_names)
+    or inventory.get("table_count") != len(live_names)
+    or inventory.get("rows_written") != 0
 ):
     raise SystemExit("Live table inventory untrusted or incomplete")
 
