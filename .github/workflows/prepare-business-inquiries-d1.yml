@@ -110,7 +110,7 @@ jobs:
           # Fail-closed: only a successful isolated rehearsal with missing tables may apply.
           python3 -c 'import json,os,pathlib,sys; x=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"business-inquiries-preflight.json").read_text()); sys.exit(0 if x.get("isolatedRestoreAndSchemaRehearsal")=="passed" and x.get("requiresProductionSchemaApply") is True and x.get("missingB2bTableCount") in (1,2,3) else 2)'
           npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --file "$RUNNER_TEMP/business-inquiries.sql"
-          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0;"
+          npx --no-install wrangler d1 execute xianjiawei-internal-db --remote --command "SELECT id, revision, notification_started_at FROM business_inquiries WHERE 0; SELECT actor_key, expires_at FROM business_inquiry_drafts WHERE 0; SELECT 1 FROM business_inquiry_crm_delivery WHERE 0;"
       - name: Remove downloaded production data from runner
         if: always()
         run: rm -f "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-export-private.log" "$RUNNER_TEMP/business-inquiries.sql" "$RUNNER_TEMP/business-inquiries-preflight.json" "$RUNNER_TEMP/business-inquiries-live-table-inventory.json"
