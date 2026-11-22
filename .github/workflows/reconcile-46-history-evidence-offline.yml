@@ -1,0 +1,64 @@
+name: 仙加味46篇歷史審核與132篇公開貼文離線交叉驗證
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/reconcile-46-history-evidence-offline-20261122.mjs'
+      - '.github/workflows/reconcile-46-history-evidence-offline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+concurrency:
+  group: xjw-archival-46-132-evidence
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Check syntax and saved 46/132/88 archival cross-evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check ops/reconcile-46-history-evidence-offline-20261122.mjs
+          node ops/reconcile-46-history-evidence-offline-20261122.mjs
+          node --input-type=module <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const result=JSON.parse(readFileSync('ops/receipts/20261122-46-cross-history-offline-readiness.json','utf8'));
+          assert.equal(result.counts.posts,46);
+          assert.equal(result.counts.original_image_sha256_confirmed,46);
+          assert.equal(result.counts.caption_sha256_matches_review_receipt,46);
+          assert.equal(result.counts.posts_with_duplicate_defer,46);
+          assert.equal(result.counts.cross_reference_visual_candidate_pairs,6);
+          assert.equal(result.counts.explicit_editorial_topic_hold_posts,1);
+          assert.equal(result.cloudflare_d1_queries,0);
+          assert.equal(result.release_allowed,false);
+          assert.equal(result.historical_178_media_full_content_coverage,false);
+          console.log('PASS archived 46/132/88 proof. No production database or release authorization.');
+          NODE
+      - name: Save proof as an expiring review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xjw-46-132-88-offline-cross-evidence
+          path: ops/receipts/20261122-46-cross-history-offline-readiness.json
+          retention-days: 30
+      - name: Persist only sanitized, non-publishing proof to latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f ops/receipts/20261122-46-cross-history-offline-readiness.json
+          if git diff --cached --quiet; then
+            echo 'Historical proof unchanged; no commit necessary.'
+            exit 0
+          fi
+          git commit -m 'data: persist archival 46-to-132 social history review evidence'
+          git pull --rebase origin main
+          git push origin HEAD:main
