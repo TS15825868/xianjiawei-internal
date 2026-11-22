@@ -1,0 +1,37 @@
+{
+  "schema": "xjw-b2b-live-schema-source-match-v1",
+  "date_taipei": "2026-11-22",
+  "source": "Cloudflare D1 production sqlite_master metadata-only SELECT (name, sql) limited to three B2B tables",
+  "repository": "TS15825868/xianjiawei-internal",
+  "verified_against_main_at_check": "908d69c9db93366df1584ac0ae5c55bdb5ab984b",
+  "source_files": [
+    {
+      "path": "edge/business-inquiries.mjs",
+      "github_blob_sha": "e5d982386c3d475d9f9bd50a7fe08ee294cd372f"
+    },
+    {
+      "path": "edge/business-inquiry-crm.mjs",
+      "github_blob_sha": "55aaceca1ea850e584fcdb845e17b5f95300b2d9"
+    }
+  ],
+  "database": "xianjiawei-internal-db",
+  "source_schema_extractions": 3,
+  "live_table_names": [
+    "business_inquiries",
+    "business_inquiry_drafts",
+    "business_inquiry_crm_delivery"
+  ],
+  "live_table_count": 3,
+  "normalized_exact_sqlite_create_table_matches": 3,
+  "normalized_exact_schema_match": true,
+  "live_query_type": "sqlite_master table-name and table-definition metadata only",
+  "live_sql_rows_read": 117,
+  "live_sql_rows_written": 0,
+  "user_business_record_values_retrieved": 0,
+  "d1_schema_migration_required": false,
+  "full_database_sql_backup_verified": false,
+  "isolated_full_database_restore_verified": false,
+  "crm_production_receiver_e2e_verified": false,
+  "permission_to_enable_automated_customer_messages": false,
+  "important": "This verifies current D1 table definitions against GitHub sources, not a full data backup, old production data integrity, CRM receiver delivery or purchase order. Avoid applying the B2B schema again simply because an old backlog says migration incomplete."
+}
