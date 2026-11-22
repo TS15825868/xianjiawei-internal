@@ -5,6 +5,12 @@ on:
     paths:
       - '.github/workflows/audit-cloudflare-receipt-d1-readonly.yml'
   workflow_dispatch:
+    inputs:
+      allow_production_d1_scan:
+        description: '確認 Cloudflare 帳戶 D1 Rows Read 有足夠剩餘額度後才查詢正式回執'
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 jobs:
@@ -19,7 +25,11 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Note remote D1 audit skipped to protect free quota
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_scan != true }}
+        run: echo 'Formal D1 receipt audit SKIPPED; no production receipt state has been verified.' >> "$GITHUB_STEP_SUMMARY"
       - name: Read remote D1 schema and count only
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           set -euo pipefail
