@@ -1,0 +1,80 @@
+{
+  "schema": "xjw-organic-social-metricool-baseline-v1",
+  "captured_date_taipei": "2026-11-23",
+  "period": {
+    "from": "2026-10-26T00:00:00+08:00",
+    "to": "2026-11-22T23:59:59+08:00",
+    "daily_rows": 28
+  },
+  "source": "Metricool connected brand 6889683 getAnalyticsDataByMetrics, verified field IDs and provider descriptions; read only",
+  "aggregation": {
+    "facebook_feed_posts": {
+      "field_id": "FBEV04",
+      "total": 7,
+      "non_null_days": 7
+    },
+    "facebook_feed_post_clicks": {
+      "field_id": "FBEV16",
+      "total": 31,
+      "non_null_days": 5,
+      "warning": "All clicks on feed posts, NOT proven outbound website or LINE clicks"
+    },
+    "instagram_feed_posts": {
+      "field_id": "IGEV04",
+      "total": 6,
+      "non_null_days": 6
+    },
+    "instagram_sum_of_reported_daily_account_reach": {
+      "field_id": "IGEV06",
+      "total": 149,
+      "non_null_days": 27,
+      "warning": "Sum of daily account reach, NOT 28-day deduplicated people reached"
+    },
+    "instagram_feed_post_saves": {
+      "field_id": "IGEV15",
+      "reported_sum": 0,
+      "non_null_days": 1,
+      "data_sufficient_for_conclusion": false,
+      "warning": "Missing for 27 days; do not infer no saves"
+    },
+    "threads_posts": {
+      "field_id": "THEV02",
+      "total": 7,
+      "non_null_days": 7
+    },
+    "threads_post_views": {
+      "field_id": "THEV06",
+      "total": 306,
+      "non_null_days": 7
+    }
+  },
+  "existing_website_tracking": {
+    "google_analytics_measurement": "Already configured in site-analytics.js (do not duplicate)",
+    "events": [
+      "page_view",
+      "line_click",
+      "trial_page_click",
+      "trial_click",
+      "b2b_click",
+      "view_item",
+      "view_item_list"
+    ],
+    "cross_page_organic_campaign_attribution": "2026-11-23 code update on official website main; 30-minute same-tab white-listed source labels",
+    "post_approved_only_links": "content/organic-social-to-line-links-v20261123.json",
+    "topic_variants": 6,
+    "platform_links": 18
+  },
+  "evaluation_rules": [
+    "Do not treat clicks on Facebook posts as clicks to the website.",
+    "Do not treat GA4 LINE button clicks as actual new LINE friends, customer inquiries or orders.",
+    "Do not interpret missing metrics as zero.",
+    "Compare only compatible metrics and periods after enough approved distinct posts; no unapproved social publication.",
+    "All social images must use approved correct product artwork and mascot scenes.",
+    "Use zero new paid services; only currently available Metricool and GA4 instrumentation."
+  ],
+  "recommended_next_measurement": "For approved social posts, compare GA4 campaign_name/campaign_content page_view and separate LINE/trial CTA clicks, with manual LINE self-report and actual orders as independent source. Preserve historic 46-post review authorization gates.",
+  "external_posts_created": 0,
+  "external_posts_published": 0,
+  "live_d1_queries": 0,
+  "charges_added": 0
+}
