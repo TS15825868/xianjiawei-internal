@@ -1,0 +1,63 @@
+{
+  "schema": "xjw-b2b-crm-receiver-readiness-sources-v1",
+  "as_of_taipei": "2026-11-22",
+  "sources": [
+    "Cloudflare official GET /accounts/{account_id}/workers/scripts/{script_name}/settings (binding names and enable flags only)",
+    "Connected Google Drive search, Google Sheets metadata and a bounded A1:H1 header read",
+    "ERP GitHub main edge/business-inquiry-crm.mjs and integrations/b2b-crm/Code.gs"
+  ],
+  "privacy": {
+    "cloudflare_account_id_included": false,
+    "cloudflare_script_secret_or_url_values_included": false,
+    "google_sheet_id_or_url_included": false,
+    "customer_values_read": false,
+    "contact_data_read": false,
+    "production_d1_sql_queries": 0,
+    "customer_message_sent": false
+  },
+  "worker": {
+    "script_name": "xianjiawei-internal",
+    "binding_count_observed": 24,
+    "b2b_intake_enabled": true,
+    "crm_delivery_enabled": false,
+    "notification_retry_enabled": false,
+    "crm_url_binding_present": false,
+    "crm_secret_binding_present": false,
+    "crm_target_proof_binding_present": false
+  },
+  "isolated_sheet": {
+    "title": "仙加味 B2B CRM 隔離驗收",
+    "found_via_connected_google_drive": true,
+    "visible_tab": "B2B商家合作",
+    "frozen_header_rows": 1,
+    "header_columns_verified": 8,
+    "headers_equal_github_receiver_source": true,
+    "header_labels": [
+      "合作編號",
+      "事件雜湊",
+      "收件時間",
+      "來源",
+      "入口",
+      "合作類型",
+      "商家與聯絡方式",
+      "需求"
+    ],
+    "data_rows_examined": 0
+  },
+  "receiver_app_script": {
+    "source_code_present_in_github": true,
+    "standalone_apps_script_deployment_verified": false,
+    "remote_signed_readiness_probe_completed": false,
+    "receiver_enabled_state_confirmed": false
+  },
+  "end_to_end": {
+    "isolation_sheet_ready_for_readonly_header_check": true,
+    "production_receiver_configured": false,
+    "crm_delivery_safely_disabled": true,
+    "signed_nonce_target_proof_live_verified": false,
+    "production_sender_to_receiver_integration_verified": false,
+    "enabled_for_customer_data": false
+  },
+  "next_safe_step": "Locate or deploy existing standalone Google Apps Script receiver, configure its script properties and corresponding Cloudflare URL/secret/target proof as a matched set, then execute signed readiness-only nonce probe and confirm exact isolated spreadsheet proof before allowing any CRM transfer. Do not use the separate retail CRM or send synthetic traffic to customer endpoints.",
+  "warning": "A correctly headed isolated sheet does not prove Google Apps Script is deployed or that its HMAC credentials are configured. No CRM, D1 or social posting was activated."
+}
