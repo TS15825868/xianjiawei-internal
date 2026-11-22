@@ -40,6 +40,12 @@ jobs:
         run: |
           echo '::error::Production D1 backup-and-rehearsal consent is required before any B2B schema apply.'
           exit 1
+      - name: Validate account-wide D1 free Rows Read budget without production SQL
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_export == true }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node tools/check-d1-free-budget-before-export.mjs
       - name: Record offline-only B2B migration preflight
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_export != true }}
         run: echo 'B2B schema and isolated unit tests only; production D1 not accessed or migrated.' >> "$GITHUB_STEP_SUMMARY"
