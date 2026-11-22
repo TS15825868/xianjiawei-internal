@@ -1,0 +1,862 @@
+{
+  "schema": "xjw-contact-sheet-thumbnail-12-missing-original-visual-check-v1",
+  "source": "11/10 GitHub contact sheets, not current original images",
+  "gallery_pages_hash_verified": 5,
+  "thumbnails_checked": 12,
+  "historical_comparison_images": 159,
+  "erp_current_comparison_images": 34,
+  "historical_pairs_distance_le8": 0,
+  "erp_current_pairs_distance_le8": 0,
+  "thumbnail_internal_pairs_distance_le8": 0,
+  "original_12_bytes_available": false,
+  "cloudflare_178_full_history_verified": false,
+  "current_live_46_D1_binding_verified": false,
+  "ai_review_approved": 0,
+  "publication_scheduled_or_sent": 0,
+  "production_D1_queries": 0,
+  "release_allowed": false,
+  "warning": "JPEG gallery thumbnails are derivative previews: false positives and false negatives are possible. Findings are only similarity candidates. Do not approve, schedule or publish.",
+  "thumbnail_pairs": [],
+  "records": [
+    {
+      "post_id": "XJW-CAND-20261211",
+      "archival_original_sha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20261211.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 1,
+      "thumbnail_dhash": "89e14109301643d3",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/temperature-coat.webp",
+          "distance": 19,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-warm.jpg",
+          "distance": 23,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-storage-basics.jpg",
+          "distance": 23,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/storage.webp",
+          "distance": 24,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/08-home-out.webp",
+          "distance": 24,
+          "classification": "history_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-no-standard-answer",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+          "distance": 21
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-opening-prep",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-pre-clean",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-weather-rain-chat",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-eve-welcome-home",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+          "distance": 25
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20261222",
+      "archival_original_sha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20261222.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 2,
+      "thumbnail_dhash": "496129451593780e",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/posts/remainder66-v20260817/POST-DRINK.webp",
+          "distance": 23,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-choose-by-routine-first.webp",
+          "distance": 23,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-six-products-overview.jpg",
+          "distance": 23,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-GUILU-jiao-hot-water.webp",
+          "distance": 24,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-ingredient-info-clear.jpg",
+          "distance": 24,
+          "classification": "legacy_review_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-FEST-2027-newyear-breakfast",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+          "distance": 16
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-childhood-now",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+          "distance": 22
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-family-old-object",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-fridge-clean",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-new-year-warm-cup-share",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+          "distance": 24
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20261225",
+      "archival_original_sha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20261225.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 3,
+      "thumbnail_dhash": "00c188345513034f",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/temperature-coat.webp",
+          "distance": 19,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/self-care-family-2.webp",
+          "distance": 22,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/self-care-family.webp",
+          "distance": 22,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/daily-hydration.webp",
+          "distance": 23,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/hot-weather-hydration-2.webp",
+          "distance": 23,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-tradition-today",
+          "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+          "distance": 21
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-luerong-intro",
+          "path": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "distance": 22
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-childhood-now",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+          "distance": 22
+        },
+        {
+          "other_post_id": "XJW-CONV-weather-rain-chat",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-last-bowl",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+          "distance": 25
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270105",
+      "archival_original_sha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270105.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 4,
+      "thumbnail_dhash": "904493326a588ce5",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/posts/approved-v412/guilu-drink-trial-evergreen.jpg",
+          "distance": 25,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/social/approved-202610/2026-10-18-cooking-prep.avif",
+          "distance": 25,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/hot-weather-hydration.webp",
+          "distance": 26,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-tangkuai-vs-jiao.webp",
+          "distance": 26,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/choose-by-routine.webp",
+          "distance": 27,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-cny-must-have-dish",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-luerong-intro",
+          "path": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-reopen",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-season-more-soup",
+          "path": "assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-picture-or-text",
+          "path": "assets/post-images/2026-11-12/formal-production/wanhua-copper-pot-sketch.jpg",
+          "distance": 27
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270115",
+      "archival_original_sha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270115.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 5,
+      "thumbnail_dhash": "21674f9436734b5b",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/rainy-warm.webp",
+          "distance": 21,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/candidates-20260805/weather-rain.webp",
+          "distance": 21,
+          "classification": "candidate_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/temperature-coat.webp",
+          "distance": 24,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-GUILU-drink180-made-order.webp",
+          "distance": 24,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-GUILU-drink30-made-order.webp",
+          "distance": 24,
+          "classification": "history_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-weather-rain-chat",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+          "distance": 17
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-tradition-today",
+          "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-elder-kitchen-habit",
+          "path": "assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-luerong-intro",
+          "path": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-receive-package",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+          "distance": 25
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270119",
+      "archival_original_sha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270119.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 6,
+      "thumbnail_dhash": "9089a00f495c3433",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/social/approved-202610/2026-10-18-cooking-prep.avif",
+          "distance": 24,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/04-tangkuai-soup.webp",
+          "distance": 25,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/remainder66-v20260817/XJW-GUILU-trial-first.webp",
+          "distance": 25,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/hot-weather-hydration-2.webp",
+          "distance": 26,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/work-break.webp",
+          "distance": 26,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-tradition-today",
+          "path": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-pre-clean",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-fixed-storage",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-fixed-storage-audit-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-gift-choice",
+          "path": "assets/post-images/2026-11-12/formal-production/new-year-greeting-card.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-dayoff-cook",
+          "path": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+          "distance": 27
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270126",
+      "archival_original_sha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270126.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 7,
+      "thumbnail_dhash": "074d4f9c6c6f6d40",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/posts/smallboss-v20260815/post-gao-100.jpg",
+          "distance": 26,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-gao-half-spoon-start.jpg",
+          "distance": 27,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/08-home-out.webp",
+          "distance": 28,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/13-brand-story-wanhua-published.webp",
+          "distance": 28,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-guilu-gao-routine.jpg",
+          "distance": 28,
+          "classification": "legacy_review_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-new-year-slow-start",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-luerong-intro",
+          "path": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-new-year-warm-cup-share",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-weather-rain-chat",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-newyear-breakfast",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+          "distance": 26
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270129",
+      "archival_original_sha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270129.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 8,
+      "thumbnail_dhash": "296c48161d795e7f",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/posts/official-v20260818/04-tangkuai-soup.webp",
+          "distance": 19,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/self-care-family-2.webp",
+          "distance": 21,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/hot-weather-hydration-2.webp",
+          "distance": 22,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/warm-rhythm.webp",
+          "distance": 22,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/work-break-2.webp",
+          "distance": 22,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-luerong-intro",
+          "path": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "distance": 21
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-fridge-clean",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-elder-kitchen-habit",
+          "path": "assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-family-old-object",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-childhood-now",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+          "distance": 25
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270305",
+      "archival_original_sha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270305.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 9,
+      "thumbnail_dhash": "0d3d6c0f276dabb3",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/posts/official-v20260818/05-jiao-600g.webp",
+          "distance": 23,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/09-organize-cabinet.webp",
+          "distance": 23,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/08-home-out.webp",
+          "distance": 25,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/work-break.webp",
+          "distance": 26,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/10-office-warm-drink.webp",
+          "distance": 26,
+          "classification": "history_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-last-bowl",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+          "distance": 20
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-eve-welcome-home",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+          "distance": 22
+        },
+        {
+          "other_post_id": "XJW-CONV-new-year-slow-start",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-new-year-warm-cup-share",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-quiet-work",
+          "path": "assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+          "distance": 24
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270312",
+      "archival_original_sha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270312.webp",
+      "thumbnail_page": 1,
+      "thumbnail_cell": 10,
+      "thumbnail_dhash": "a363ca09358eb2f6",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/warm-water.webp",
+          "distance": 20,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-gao-half-spoon-start.jpg",
+          "distance": 21,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-guilu-gao-routine.jpg",
+          "distance": 22,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-tangkuai-thermos-soup.jpg",
+          "distance": 22,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/warm-rhythm.webp",
+          "distance": 23,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-no-standard-answer",
+          "path": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-lantern-riceballs",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-newyear-breakfast",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-weather-cool-drink",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
+          "distance": 27
+        },
+        {
+          "other_post_id": "XJW-CONV-year-end-small-win",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
+          "distance": 27
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270323",
+      "archival_original_sha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270323.webp",
+      "thumbnail_page": 2,
+      "thumbnail_cell": 1,
+      "thumbnail_dhash": "10b12009374f2c9e",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/work-break.webp",
+          "distance": 21,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/hot-weather-hydration.webp",
+          "distance": 24,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+          "distance": 24,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-guilu-modern-tradition.jpg",
+          "distance": 24,
+          "classification": "legacy_review_only"
+        },
+        {
+          "historical_path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-30-outside.jpg",
+          "distance": 24,
+          "classification": "legacy_review_only"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-dayoff-cook",
+          "path": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+          "distance": 18
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-receive-package",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+          "distance": 20
+        },
+        {
+          "other_post_id": "XJW-FEST-2027-newyear-breakfast",
+          "path": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+          "distance": 20
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-pre-clean",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+          "distance": 23
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-family-old-object",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+          "distance": 24
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    },
+    {
+      "post_id": "XJW-CAND-20270330",
+      "archival_original_sha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "archival_original_path": "media/social-candidates/20261106/XJW-CAND-20270330.webp",
+      "thumbnail_page": 2,
+      "thumbnail_cell": 2,
+      "thumbnail_dhash": "786ccc4c34366333",
+      "thumbnail_size": [
+        298,
+        298
+      ],
+      "original_bytes_verified": false,
+      "historical_nearest": [
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/self-care-family-2.webp",
+          "distance": 24,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/rainy-home.webp",
+          "distance": 26,
+          "classification": "userzip3_scene_reference"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/04-tangkuai-soup.webp",
+          "distance": 26,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/posts/official-v20260818/09-organize-cabinet.webp",
+          "distance": 26,
+          "classification": "history_only"
+        },
+        {
+          "historical_path": "images/post-library/userzip3-v20260811/daily-hydration.webp",
+          "distance": 27,
+          "classification": "userzip3_scene_reference"
+        }
+      ],
+      "historical_candidates_distance_le8": [],
+      "current_34_nearest": [
+        {
+          "other_post_id": "XJW-CONV-chat-elder-kitchen-habit",
+          "path": "assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+          "distance": 24
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-quiet-work",
+          "path": "assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-cny-pre-clean",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+          "distance": 25
+        },
+        {
+          "other_post_id": "XJW-CONV-new-year-slow-start",
+          "path": "assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+          "distance": 26
+        },
+        {
+          "other_post_id": "XJW-CONV-chat-last-bowl",
+          "path": "assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+          "distance": 27
+        }
+      ],
+      "current_34_candidates_distance_le8": [],
+      "needs_original_image_and_final_review": true
+    }
+  ]
+}
