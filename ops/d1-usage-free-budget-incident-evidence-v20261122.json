@@ -1,0 +1,54 @@
+{
+  "schema": "xjw-d1-free-usage-analytics-and-expensive-statement-evidence-v1",
+  "capture_date_taipei": "2026-11-22",
+  "source": "Cloudflare official D1 Insights read-only HTTP GET /accounts/{account_id}/d1/insights/databases and /d1/insights/queries",
+  "report_scope": "Single production xianjiawei-internal-db, no production SQL executed to gather data",
+  "account_id_included": false,
+  "sql_statement_literals_included": false,
+  "previous_billing_window": {
+    "from_utc": "2026-11-21T00:00:00Z",
+    "until_utc": "2026-11-22T00:00:00Z",
+    "rows_read": 27766805,
+    "rows_written": 0,
+    "queries": 5389
+  },
+  "two_highest_cost_statements": [
+    {
+      "category": "pending vs historical content cross-match with per-row latest review",
+      "executions": 1,
+      "estimated_rows_read": 22945428,
+      "rows_returned": 0
+    },
+    {
+      "category": "latest-reviewed-image-hash vs historical post cross-match",
+      "executions": 1,
+      "estimated_rows_read": 3783386,
+      "rows_returned": 0
+    }
+  ],
+  "top_two_estimated_rows_read": 26728814,
+  "top_two_percent_of_previous_window_read": 96.26,
+  "top_statement_estimate_caveat": "Per-statement D1 Insights estimates are sampled and may be lower or higher than exact billing totals; do not claim query text identifies the caller.",
+  "current_window_snapshot": {
+    "from_utc": "2026-11-22T00:00:00Z",
+    "until_utc": "2026-11-22T07:51:32.511Z",
+    "rows_read": 24978,
+    "rows_written": 0,
+    "queries": 1289
+  },
+  "confirmed_cause": "Two one-off correlated latest-review/cross-history queries dominated previous read usage; this is not proof which person or automation originated them.",
+  "key_risks": [
+    "Do not execute any production all-post x all-history join with correlated latest-review subqueries.",
+    "Do not repeat a full-library COUNT/PRAGMA or graph matching SQL merely because daily free quota reset.",
+    "Do not initiate D1 export-and-rehearsal or B2B apply until independently verifying account budget and approved safety preflight.",
+    "Do not infer all 178 historical media are cleared from 46 offline image matches."
+  ],
+  "existing_protections": [
+    ".github/workflows/prepare-business-inquiries-d1.yml now requires explicit allow_production_d1_export=true before export and apply",
+    ".github/workflows/d1-read-budget-offline.yml runs B2B/CRM tests with zero production SQL",
+    "archived 46 post images and 132 post history reviewed offline"
+  ],
+  "releases_or_post_mutations": 0,
+  "production_d1_sql_executed_by_this_analytics_check": 0,
+  "followup": "Use offline GitHub evidence and existing current D1 Insights API (not SQL) to monitor; source ownership of the two costly queries remains unverified."
+}
