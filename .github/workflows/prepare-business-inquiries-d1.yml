@@ -46,6 +46,13 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node tools/check-d1-free-budget-before-export.mjs
+      - name: Capture full live D1 table names for backup completeness (metadata only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_export == true }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          LIVE_D1_TABLE_INVENTORY_PATH: ${{ runner.temp }}/business-inquiries-live-table-inventory.json
+        run: node tools/capture-d1-live-table-inventory.mjs
       - name: Record offline-only B2B migration preflight
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_export != true }}
         run: echo 'B2B schema and isolated unit tests only; production D1 not accessed or migrated.' >> "$GITHUB_STEP_SUMMARY"
@@ -73,7 +80,7 @@ jobs:
           test -s "$RUNNER_TEMP/business-inquiries-backup.sql"
           python3 tools/verify-business-inquiry-d1-restore.py \
             "$RUNNER_TEMP/business-inquiries-backup.sql" "$RUNNER_TEMP/business-inquiries.sql" \
-            "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-preflight.json"
+            "$RUNNER_TEMP/business-inquiries-recovery.json" "$RUNNER_TEMP/business-inquiries-preflight.json" "$RUNNER_TEMP/business-inquiries-live-table-inventory.json"
       - name: Redact recovery identifier from the public-repository artifact
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_export == true }}
         run: |
