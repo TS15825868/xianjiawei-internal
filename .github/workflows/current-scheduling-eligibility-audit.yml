@@ -1,6 +1,12 @@
 name: 仙加味貼文核准與外部排程唯讀稽核
 on:
   workflow_dispatch:
+    inputs:
+      allow_production_d1_scan:
+        description: '確認 Cloudflare 帳戶層級 D1 Rows Read 額度有餘額後才執行正式查詢'
+        type: boolean
+        required: true
+        default: false
   push:
     branches: [main]
     paths:
@@ -24,7 +30,11 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Note skipped live D1 queries (safe offline verification continues)
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_scan != true }}
+        run: echo 'Live D1 audit deliberately skipped to preserve free Rows Read budget; this workflow does not certify production approval state.' >> "$GITHUB_STEP_SUMMARY"
       - name: Read D1 status and human approval flags without post content or mutation
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           set -euo pipefail
