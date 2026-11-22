@@ -19,6 +19,9 @@ on:
       - '!tools/test-audit-social-media-offline.mjs'
       # The B2B migration budget/CRM test runs in offline CI, not a production deployment.
       - '!tools/test-b2b-migration-free-budget-gate.mjs'
+      # B2B offline snapshot restore verifier and fixtures are not Worker runtime files.
+      - '!tools/verify-business-inquiry-d1-restore.py'
+      - '!tools/test-verify-business-inquiry-d1-restore.py'
       # Standalone Cloudflare account budget preflight is verified in offline CI only.
       - '!tools/check-d1-free-budget-before-export.mjs'
       - '!tools/check-d1-free-budget-before-export.test.mjs'
