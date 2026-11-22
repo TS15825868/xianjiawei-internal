@@ -57,7 +57,7 @@ class IsolatedB2BRestore(unittest.TestCase):
                     conn.execute(
                         "INSERT INTO business_inquiries "
                         "(id,source,received_at,category,business_contact,details) VALUES (?,?,?,?,?,?)",
-                        ("B2B-isolated", "LINE", "2026-01-01T00:00:00.000Z",
+                        ("B2B-isolated", "line" if changed_literal else "LINE", "2026-01-01T00:00:00.000Z",
                          "經銷", "private-contact-test", "private-details-test"),
                     )
                 conn.commit()
