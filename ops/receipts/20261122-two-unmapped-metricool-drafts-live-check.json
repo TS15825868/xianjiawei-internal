@@ -1,0 +1,57 @@
+{
+  "schema": "xjw-two-live-external-metricool-drafts-unmapped-proof-v1",
+  "checked_date_taipei": "2026-11-22",
+  "source": "Metricool getScheduledPosts connector + Cloudflare D1 three bounded read-only indexed/exact lookup queries",
+  "brand_id": "6889683",
+  "parent_eight_draft_evidence": {
+    "path": "ops/metricool-eight-drafts-live-offline-reconciliation-v20261122.json",
+    "github_blob_sha": "2e74f8185ec28b99ab4679c4d29e1dc5fd8490ae"
+  },
+  "brand_drafts_found": 8,
+  "unmapped_drafts_checked": 2,
+  "d1_sync_metricool_id_match_count": 0,
+  "d1_sync_uuid_match_count": 0,
+  "d1_social_post_exact_full_copy_match_count": 0,
+  "d1_query_rows_read_total": 183,
+  "d1_query_rows_written_total": 0,
+  "metricool_data_changes": 0,
+  "new_drafts_created": 0,
+  "live_schedules_created": 0,
+  "posts_published": 0,
+  "read_only_conclusion": "Both drafts are still remote-only pending; no exact D1 copy or direct mapping found. This does not prove there is no related archived or semantically similar post.",
+  "next_action": "Preserve external drafts without forced mapping; only change them after explicit source ownership, image/branding and cross-platform publishing authorization are established.",
+  "items": [
+    {
+      "metricool_id": 409190019,
+      "metricool_uuid": "9095248166936789919",
+      "product": "鹿茸粉75g",
+      "draft": true,
+      "auto_publish": false,
+      "platforms_pending": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "exact_d1_post_copy_match": false,
+      "remote_d1_id_mapping_exists": false,
+      "remote_d1_uuid_mapping_exists": false,
+      "release_eligible": false
+    },
+    {
+      "metricool_id": 415295632,
+      "metricool_uuid": "2100266406683036682",
+      "product": "龜鹿飲30cc無貼紙玻璃罐",
+      "draft": true,
+      "auto_publish": false,
+      "platforms_pending": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "exact_d1_post_copy_match": false,
+      "remote_d1_id_mapping_exists": false,
+      "remote_d1_uuid_mapping_exists": false,
+      "release_eligible": false
+    }
+  ]
+}
