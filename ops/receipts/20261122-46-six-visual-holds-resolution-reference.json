@@ -1,0 +1,120 @@
+{
+  "schema": "xjw-46-image-neighbors-archived-manual-verdict-bridge-v1",
+  "date_taipei": "2026-11-22",
+  "source_report": {
+    "path": "ops/receipts/20261122-46-cross-history-offline-readiness.json",
+    "sha": "fb6b2cf5c1d0ff1f995003ce0ff01137da1a9c77"
+  },
+  "original_manual_source": {
+    "path": "ops/visual-review/20261112-ten-pairs-actual-visual-findings.json",
+    "sha": "0ae58b5c1e4c7d36a7caab7643b9f2f806168bce",
+    "manual_date": "2026-11-12",
+    "review_method": "Direct side-by-side visual inspection of original image files, not hash-only inference",
+    "ten_pairs_inspected": 10
+  },
+  "six_archived_visual_candidates_relinked": 6,
+  "six_confirmed_distinct_in_available_pairs": 6,
+  "distinct_image_does_not_certify_editorial_uniqueness": true,
+  "topic_similarity_still_requires_independent_review": [
+    "XJW-CONV-chat-family-old-object"
+  ],
+  "independent_historical_editorial_hold": [
+    {
+      "post_id": "XJW-CONV-chat-photo-size",
+      "reason": "Similarity with 2026-08-06 original 30cc tasting-related published post; manual editorial angle review still needed"
+    }
+  ],
+  "missing_15_prior_historical_media_still_unverified": true,
+  "current_live_D1_binding_not_revalidated": true,
+  "approval_eligible": false,
+  "d1_queries": 0,
+  "remote_post_writes": 0,
+  "publication_writes": 0,
+  "notes": "Reuses previously completed 11/12 manual review findings for six image candidates without repeating inspection or changing source images. Visual differences are scene-specific and cannot replace missing published-history media or publication approval.",
+  "evidence": [
+    {
+      "current_id": "XJW-CAND-20270115",
+      "reference_id": "XJW-CAND-20270326",
+      "reference_status": "archived",
+      "archival_image_distance": {
+        "dhash64": 11,
+        "averageHash64": 24
+      },
+      "original_manual_finding": "左圖在餐桌前展示乾果食材，右圖在門口掛衣物與雨傘；動作、場景功能與物件明顯不同。",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": false,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    },
+    {
+      "current_id": "XJW-CONV-chat-family-old-object",
+      "reference_id": "XJW-CONV-brand-third-generation-note",
+      "reference_status": "archived",
+      "archival_image_distance": {
+        "dhash64": 18,
+        "averageHash64": 11
+      },
+      "original_manual_finding": "同為懷舊老店木桌及照片，但左圖低頭思考桌面舊相片，右圖手持舊照片搭配筆記；題材接近，需再核對文案角度，畫面並非同一張。",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": true,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    },
+    {
+      "current_id": "XJW-CONV-chat-no-standard-answer",
+      "reference_id": "XJW-CONV-cny-childhood-now",
+      "reference_status": "pending_review",
+      "archival_image_distance": {
+        "dhash64": 27,
+        "averageHash64": 11
+      },
+      "original_manual_finding": "左圖與成人顧客對坐挑選小卡，右圖春節桌面翻看老照片；角色、季節佈置及互動不同。",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": false,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    },
+    {
+      "current_id": "XJW-CONV-chat-pantry-memory",
+      "reference_id": "XJW-CONV-chat-photo-size",
+      "reference_status": "pending_review",
+      "archival_image_distance": {
+        "dhash64": 20,
+        "averageHash64": 12
+      },
+      "original_manual_finding": "左圖整理透明食材罐，右圖以手機拍攝30cc玻璃罐；活動及主體物件不同。",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": false,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    },
+    {
+      "current_id": "XJW-CAND-20261225",
+      "reference_id": "XJW-CONV-chat-luerong-intro",
+      "reference_status": "pending_review",
+      "archival_image_distance": {
+        "dhash64": 22,
+        "averageHash64": 12
+      },
+      "original_manual_finding": "左圖節慶餐桌與小老闆說明料理，右圖鹿茸粉實物罐與長形器具；商品及行為不同。",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": false,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    },
+    {
+      "current_id": "XJW-CAND-20261211",
+      "reference_id": "XJW-CONV-chat-luerong-intro",
+      "reference_status": "pending_review",
+      "archival_image_distance": {
+        "dhash64": 34,
+        "averageHash64": 12
+      },
+      "original_manual_finding": "左圖桌上筆記本與小老闆整理紀錄，右圖鹿茸粉實物罐與長形器具；動作與產品主體不同.",
+      "manual_conclusion": "DISTINCT_IMAGE_IN_AVAILABLE_PAIR",
+      "editorial_topic_hold": false,
+      "full_178_history_cleared": false,
+      "release_allowed": false
+    }
+  ]
+}
