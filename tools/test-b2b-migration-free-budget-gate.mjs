@@ -75,6 +75,7 @@ test('existing three B2B tables never trigger redundant remote SQL', () => {
   assert.match(apply,/requiresProductionSchemaApply/);
   assert.match(apply,/isolatedRestoreAndSchemaRehearsal/);
   assert.match(apply,/missingB2bTableCount/);
+  assert.match(apply,/SELECT 1 FROM business_inquiry_crm_delivery WHERE 0/);
   assert.match(apply,/exit 0/);
   assert.ok(apply.indexOf('requiresProductionSchemaApply') <
     apply.indexOf('npx --no-install wrangler d1 execute'));
