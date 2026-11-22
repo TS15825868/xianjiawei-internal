@@ -22,10 +22,14 @@ on:
       - 'tools/d1-http-transport.mjs'
       - 'tools/test-d1-http-transport.mjs'
       - 'ops/historical-media-source-link-gaps-20261108.json'
-  schedule:
-    # 每6小時一次；GitHub Actions 使用 UTC；亦可手動執行最新唯讀快照。
-    - cron: '31 */6 * * *'
+  # Remote D1 sweeps are not allowed on a recurring timer; use the owner-controlled manual audit.
   workflow_dispatch:
+    inputs:
+      allow_production_d1_scan:
+        description: '需先人工確認正式 D1 可用額度，才能執行昂貴的唯讀巡檢'
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: read
@@ -57,12 +61,14 @@ jobs:
           node --test tools/test-formal-media-retired-safety.mjs
           node tools/test-review-api-boundaries.mjs
       - name: Require Cloudflare read credentials
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
       - name: Export current social posts and structural health from D1 (read only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -80,6 +86,7 @@ jobs:
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status='pending_review' AND (approved_by IS NOT NULL OR approved_at IS NOT NULL OR published_at IS NOT NULL OR scheduled_at IS NOT NULL)" > pending-state.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS count FROM social_posts WHERE status='scheduled' AND scheduled_at IS NULL" > scheduled-state.json
       - name: Verify D1 invariants without changing content
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -121,6 +128,7 @@ jobs:
           console.log('PASS scheduled human approval',scheduled.map(p=>p.id));
           NODE
       - name: Categorize every live social post without skipping hidden or archived rows
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -181,10 +189,13 @@ jobs:
           console.log('FULL_D1_QUEUE',JSON.stringify({total,counts,activeToProcess:active.length,byAction,byIssue}));
           NODE
       - name: Triage every current pending post using existing 16-check evidence and actual version binding
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         run: node tools/report-pending-review-actual-checks.cjs
       - name: Run complete pending batch triage (read only, no automatic approval)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         run: node tools/ai-batch-triage.mjs pending-review-full-inventory.json ai-batch-triage.json ops/historical-media-source-link-gaps-20261108.json
       - name: Upload read-only evidence
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         if: always()
         uses: actions/upload-artifact@v4
         with:
