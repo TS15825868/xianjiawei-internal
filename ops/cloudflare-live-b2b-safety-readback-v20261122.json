@@ -1,0 +1,35 @@
+{
+  "schema": "xjw-cloudflare-live-worker-and-d1-safety-readback-v1",
+  "source": "Cloudflare official read-only HTTP API (Worker Script and Version Settings, D1 Database metadata, Time Travel Bookmark)",
+  "capture_date_taipei": "2026-11-22",
+  "worker_script": "xianjiawei-internal",
+  "production_d1_name": "xianjiawei-internal-db",
+  "production_d1_metadata": {
+    "file_size_bytes": 13975552,
+    "table_count": 41,
+    "database_version": "production"
+  },
+  "production_binding_snapshots": {
+    "XJW_B2B_INTAKE_ENABLED": true,
+    "XJW_B2B_NOTIFICATION_RETRY_ENABLED": false,
+    "XJW_B2B_CRM_ENABLED": false,
+    "XJW_SOCIAL_AI_DRAFT_ENABLED": false,
+    "XJW_AI_DELEGATED_PUBLICATION_ENABLED": false,
+    "XJW_SOCIAL_CONTENT_DRAFT_ENABLED": false
+  },
+  "time_travel_current_bookmark_available": true,
+  "time_travel_raw_bookmark_not_saved": true,
+  "bookmark_does_not_equal_full_sql_export": true,
+  "b2b_schema_migrated_or_validated_in_production": false,
+  "b2b_crm_delivery_live_verified": false,
+  "public_customer_outbound_automatic_send_enabled": false,
+  "publishing_auto_approval_enabled": false,
+  "D1_SQL_queries_performed_for_this_snapshot": 0,
+  "D1_mutations_performed_for_this_snapshot": 0,
+  "remarks": [
+    "Source settings reflect live Worker bindings at snapshot time; do not infer unexposed secrets or specific authenticated production data.",
+    "B2B intake enabled only proves deployed feature flag; persistence/notification and live data correctness still require separate safe authenticated tests.",
+    "A Time Travel bookmark exists but is not a downloadable complete SQL backup or proof of isolated restore.",
+    "Do not enable customer-facing automation, CRM delivery, AI publication or D1 migration before separate safety acceptance."
+  ]
+}
