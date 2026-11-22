@@ -195,8 +195,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         run: node tools/ai-batch-triage.mjs pending-review-full-inventory.json ai-batch-triage.json ops/historical-media-source-link-gaps-20261108.json
       - name: Upload read-only evidence
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
-        if: always()
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         uses: actions/upload-artifact@v4
         with:
           name: current-social-posts-${{ github.run_id }}
