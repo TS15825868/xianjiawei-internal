@@ -35,7 +35,7 @@ test('apply also requires main, opt-in and explicit apply=true', () => {
   const block = step('Apply approved B2B schema and verify reads');
   assert.match(block, /github\.ref == 'refs\/heads\/main'/);
   assert.match(block, /inputs\.apply == true/);
-  assert.ok(block.includes(approval));
+  assert.match(block, /inputs\.allow_production_d1_export == true/);
   assert.ok(step('Block migration if production export was not explicitly approved').includes('exit 1'));
 });
 
@@ -45,7 +45,12 @@ test('all remote D1 operations are within opt-in steps', () => {
   for (const section of sections) {
     if (!/wrangler d1 (?:time-travel|export|execute)/.test(section)) continue;
     count++;
-    assert.ok(section.includes(approval), 'Unguarded D1 operation in step: ' + section.slice(0, 110));
+    const isApply = section.includes('- name: Apply approved B2B schema and verify reads');
+    if (isApply) {
+      assert.match(section, /if:.*github\.event_name == 'workflow_dispatch'.*github\.ref == 'refs\/heads\/main'.*inputs\.apply == true.*inputs\.allow_production_d1_export == true/);
+    } else {
+      assert.ok(section.includes(guarded), 'Unguarded D1 operation in step: ' + section.slice(0, 110));
+    }
   }
   assert.equal(count, 2, 'Expected exactly export/rehearsal and apply operation steps');
 });
