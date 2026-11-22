@@ -1,5 +1,5 @@
 name: 仙加味46篇候選圖片 GitHub 離線實體對照
-# Reconcile archived candidate SHA-256 against files already in ERP main; no production D1.
+# Reconcile archived candidate SHA-256 against both ERP image trees; no production D1.
 on:
   push:
     branches: [main]
@@ -44,7 +44,12 @@ jobs:
               if len(sha)!=64 or any(x not in '0123456789abcdef' for x in sha):
                   raise SystemExit('Invalid archival image SHA')
               candidateBySha.setdefault(sha,[]).append(row)
-          paths=sorted(p for p in Path('assets/post-images').rglob('*') if p.is_file() and p.suffix.lower() in ('.png','.jpg','.jpeg','.webp','.avif','.gif'))
+          roots=[Path('assets/post-images'),Path('media/social-candidates/20261106')]
+          if any(not root.is_dir() for root in roots):
+              raise SystemExit('Required historical candidate media directory missing; do not infer images absent')
+          paths=sorted(p for root in roots for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.png','.jpg','.jpeg','.webp','.avif','.gif'))
+          if len({p.as_posix() for p in paths})!=len(paths):
+              raise SystemExit('Duplicate traversal path')
           if len(paths)>5000: raise SystemExit('Unexpected media directory size; avoid excessive CI reads')
           matches={row['post_id']:[] for row in pending['candidates']}
           hist=[r for r in history['media'] if r.get('dhash')]
@@ -82,15 +87,15 @@ jobs:
                     'found_in_erp_repo':bool(matches[r['post_id']]),
                     'current_live_d1_binding_verified':False,'release_allowed':False}
                    for r in pending['candidates']]
-          out={'schema':'xjw-offline-46-erp-image-source-match-v1',
+          out={'schema':'xjw-offline-46-erp-and-candidate-source-match-v2',
             'source_post_evidence':str(pending_path),'source_historical_fingerprints':str(history_path),
-            'scope':'ERP GitHub assets/post-images only, not Cloudflare R2, D1, or all 178 historical originals',
-            'candidate_posts':46,'erp_image_files_hashed':hashed,
+            'scope':'ERP GitHub assets/post-images AND media/social-candidates/20261106; not D1, Cloudflare R2, or all 178 historical originals',
+            'candidate_posts':46,'erp_image_files_hashed':hashed,'scanned_image_roots':[str(p) for p in roots],
             'candidate_posts_with_exact_erp_file':sum(r['found_in_erp_repo'] for r in records),
             'candidate_posts_missing_erp_file':sum(not r['found_in_erp_repo'] for r in records),
             'historical_visual_candidate_links':sum(len(i['visual_candidates']) for r in records for i in r['github_erp_exact_image_paths']),
             'production_d1_queries':0,'approval_or_publication_permitted':False,
-            'warning':'Exact archival SHA source matching and visual candidates are evidence only. A missing match may exist in Cloudflare/R2; current live D1 and all 178 media remain unverified.',
+            'warning':'Both known ERP GitHub image locations were scanned using archival SHA; visual candidates are not confirmed duplicates. Current live D1 bindings and all 178 historical media remain unverified, so no publication permission.',
             'records':records}
           path=Path('ops/social-46-offline-github-image-reconciliation-v20261122.json')
           path.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -112,5 +117,6 @@ jobs:
             echo 'Evidence unchanged.'
             exit 0
           fi
-          git commit -m 'data: reconcile historical 46 image SHA against existing ERP images offline'
+          git commit -m 'data: reconcile archived 46 originals across both GitHub image directories'
+          git pull --rebase origin main
           git push origin HEAD:main
