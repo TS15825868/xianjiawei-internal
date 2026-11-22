@@ -13,6 +13,9 @@ on:
       # n8n-only changes run the dependency-free safety suite instead.
       # This full check remains for ERP/site changes and its weekly schedule.
       - 'tools/**'
+      # Offline evidence-only code has its own zero-D1 CI workflow.
+      - '!tools/audit-social-media-offline.mjs'
+      - '!tools/test-audit-social-media-offline.mjs'
       # Pure approval rollback tooling runs the dedicated zero-network gate.
       - '!tools/apply-post-copy-correction.cjs'
       - '!tools/test-post-copy-review-rollback.cjs'
@@ -132,36 +135,17 @@ jobs:
       - name: Validate ecosystem authority explicitly
         run: node tools/validate-ecosystem-authority.mjs
 
-      - name: Verify remote D1 integrity without fixed record counts
+      # Production D1 quota protection: no recurring SQL on push or weekly runs.
+      # Previous full-table COUNT, JOIN and PRAGMA scans could exhaust the free Rows Read cap.
+      # Live D1 data integrity must be verified only by a separately authorized, bounded
+      # audit with known budget; this CI's success is NOT a D1 data-integrity receipt.
+      - name: Record remote D1 verification as intentionally not executed
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$CLOUDFLARE_API_TOKEN"
-          test -n "$CLOUDFLARE_ACCOUNT_ID"
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status ORDER BY status" > d1-status.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS total FROM social_posts" > d1-total.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status NOT IN ('draft','pending_review','approved','scheduled','published','manual_required','failed','archived')" > d1-invalid-status.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status IN ('pending_review','approved','scheduled','published') AND TRIM(COALESCE(image_url,''))=''" > d1-ready-missing-image.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT COUNT(*) AS bad FROM social_posts WHERE status='scheduled' AND (scheduled_at IS NULL OR TRIM(scheduled_at)='')" > d1-scheduled-missing-time.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.id,p.status,p.image_url FROM social_posts p LEFT JOIN media_assets m ON m.id=substr(p.image_url,instr(p.image_url,'/media/')+7) WHERE p.status IN ('draft','pending_review','approved','scheduled') AND (substr(p.image_url,1,7)='/media/' OR substr(p.image_url,1,length('https://xianjiawei-internal.tung314069.workers.dev/media/'))='https://xianjiawei-internal.tung314069.workers.dev/media/') AND (m.id IS NULL OR TRIM(COALESCE(m.data_base64,''))='')" > d1-broken-media-refs.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,status,image_url FROM social_posts WHERE status IN ('draft','pending_review','approved','scheduled') AND TRIM(COALESCE(image_url,''))<>'' ORDER BY status,id" > d1-active-image-refs.json
-          npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "PRAGMA foreign_key_check" > d1-fk.json
-          node - <<'NODE'
-          const fs=require('fs');
-          const rows=f=>{const d=JSON.parse(fs.readFileSync(f,'utf8'));return (Array.isArray(d)?d[0]?.results:d?.results)||[]};
-          const total=Number(rows('d1-total.json')[0]?.total||0);
-          const st=Object.fromEntries(rows('d1-status.json').map(r=>[r.status,Number(r.count||0)]));
-          if(total<1)throw new Error('D1沒有貼文資料');
-          const sum=Object.values(st).reduce((a,b)=>a+b,0);
-          if(sum!==total)throw new Error(`狀態加總 ${sum} 與總數 ${total} 不一致`);
-          for(const file of ['d1-invalid-status.json','d1-ready-missing-image.json','d1-scheduled-missing-time.json']){
-            const bad=Number(rows(file)[0]?.bad||0);if(bad!==0)throw new Error(`${file} bad=${bad}`);
-          }
-          const brokenMedia=rows('d1-broken-media-refs.json');
-          if(brokenMedia.length)throw new Error('D1存在失效的貼文媒體參照：'+JSON.stringify(brokenMedia));
-          if(rows('d1-fk.json').length!==0)throw new Error('D1 foreign_key_check 失敗');
-          console.log('PASS D1 dynamic integrity',total,st);
-          NODE
+          echo 'Remote production D1 SQL: SKIPPED (quota safety, no full scans).'
+          echo 'Production D1 data integrity: NOT VERIFIED by this workflow.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Do not claim production D1 integrity from this CI result.' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify live boundary for current maintenance mode
         shell: bash
