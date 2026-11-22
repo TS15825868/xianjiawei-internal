@@ -7,9 +7,13 @@ on:
       - 'tools/test-b2b-migration-free-budget-gate.mjs'
       - 'tools/check-d1-free-budget-before-export.mjs'
       - 'tools/check-d1-free-budget-before-export.test.mjs'
+      - 'tools/test-live-v2-post-image-sha.mjs'
+      - 'ops/receipts/20261122-live-46-latest-review-version-delta.json'
       - '.github/workflows/d1-read-budget-offline.yml'
   pull_request:
     paths:
+      - 'tools/test-live-v2-post-image-sha.mjs'
+      - 'ops/receipts/20261122-live-46-latest-review-version-delta.json'
       - 'tools/check-d1-free-budget-before-export.mjs'
       - 'tools/check-d1-free-budget-before-export.test.mjs'
       - 'tools/report-d1-expensive-queries.mjs'
@@ -49,3 +53,5 @@ jobs:
         run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs tools/audit-social-dedup-offline.test.mjs tools/test-ai-operations-readiness.mjs
       - name: Verify B2B migration budget gating and CRM safety (no production D1)
         run: node --test tools/test-b2b-migration-free-budget-gate.mjs tools/check-d1-free-budget-before-export.test.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
+      - name: Verify two current v2 image bytes without D1 queries
+        run: node --test tools/test-live-v2-post-image-sha.mjs
