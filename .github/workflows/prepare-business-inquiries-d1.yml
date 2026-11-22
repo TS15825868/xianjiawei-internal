@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       allow_production_d1_export:
-        description: Confirm Cloudflare free D1 Rows Read budget and authorize one production SQL export / isolated restore rehearsal
+        description: Authorize live D1 export which may interrupt queries; verify free budget and off-peak maintenance window first
         type: boolean
         required: true
         default: false
