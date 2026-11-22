@@ -25,6 +25,9 @@ on:
       # Standalone Cloudflare account budget preflight is verified in offline CI only.
       - '!tools/check-d1-free-budget-before-export.mjs'
       - '!tools/check-d1-free-budget-before-export.test.mjs'
+      # Live schema inventory is a private backup preflight helper, not Worker runtime.
+      - '!tools/capture-d1-live-table-inventory.mjs'
+      - '!tools/capture-d1-live-table-inventory.test.mjs'
       # Offline verification of two existing images must not redeploy the Worker.
       - '!tools/test-live-v2-post-image-sha.mjs'
       # Pure approval rollback tooling runs the dedicated zero-network gate.
