@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/prepare-business-inquiries-d1.yml'
+      - 'tools/verify-business-inquiry-d1-restore.py'
+      - 'tools/test-verify-business-inquiry-d1-restore.py'
       - 'tools/test-b2b-migration-free-budget-gate.mjs'
       - 'tools/check-d1-free-budget-before-export.mjs'
       - 'tools/check-d1-free-budget-before-export.test.mjs'
@@ -18,6 +20,8 @@ on:
       - 'tools/check-d1-free-budget-before-export.test.mjs'
       - 'tools/report-d1-expensive-queries.mjs'
       - '.github/workflows/prepare-business-inquiries-d1.yml'
+      - 'tools/verify-business-inquiry-d1-restore.py'
+      - 'tools/test-verify-business-inquiry-d1-restore.py'
       - 'tools/test-b2b-migration-free-budget-gate.mjs'
       - 'tools/report-d1-expensive-queries.test.mjs'
       - 'tools/audit-social-dedup-offline.mjs'
@@ -53,5 +57,7 @@ jobs:
         run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs tools/audit-social-dedup-offline.test.mjs tools/test-ai-operations-readiness.mjs
       - name: Verify B2B migration budget gating and CRM safety (no production D1)
         run: node --test tools/test-b2b-migration-free-budget-gate.mjs tools/check-d1-free-budget-before-export.test.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
+      - name: Test isolated D1 SQL snapshot restore with existing and missing B2B schema
+        run: python3 -m unittest tools/test-verify-business-inquiry-d1-restore.py
       - name: Verify two current v2 image bytes without D1 queries
         run: node --test tools/test-live-v2-post-image-sha.mjs
