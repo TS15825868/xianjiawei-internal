@@ -28,7 +28,7 @@ class IsolatedB2BRestore(unittest.TestCase):
         assert cls.schema.count("CREATE TABLE IF NOT EXISTS") == 3
 
     def receipt(self, presence=("business_inquiry_drafts", "business_inquiries", "business_inquiry_crm_delivery"),
-                altered=False, corrupt=False):
+                altered=False, corrupt=False, changed_literal=False):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
             schema_file = base / "three-tables.sql"
@@ -48,6 +48,10 @@ class IsolatedB2BRestore(unittest.TestCase):
                         sql = "CREATE TABLE IF NOT EXISTS " + stmt.split(";", 1)[0] + ";"
                         if altered and name == "business_inquiries":
                             sql = "CREATE TABLE business_inquiries (id TEXT PRIMARY KEY)"
+                        elif changed_literal and name == "business_inquiries":
+                            sql = sql.replace("source = 'LINE'", "source = 'line'")
+                            if "source = 'line'" not in sql:
+                                raise AssertionError("Expected quoted constraint literal")
                         conn.execute(sql)
                 if "business_inquiries" in presence and not altered:
                     conn.execute(
@@ -91,6 +95,12 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertIsNone(receipt)
         self.assertIn("Unexpected existing schema for business_inquiries", result.stderr)
         self.assertNotIn("private-customer-not-for-output", result.stderr)
+
+    def test_sensitive_quoted_constraint_literal_mismatch_fails_closed(self):
+        result, receipt = self.receipt(changed_literal=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIsNone(receipt)
+        self.assertIn("Unexpected existing schema for business_inquiries", result.stderr)
 
     def test_corrupt_or_nonrestorable_backup_fails_closed(self):
         result, receipt = self.receipt(corrupt=True)
