@@ -1,4 +1,7 @@
-"""Verify the exported D1 snapshot and rehearse B2B schema changes offline."""
+"""Verify a full exported D1 SQL snapshot and rehearse B2B changes in isolated SQLite.
+
+Never prints customer rows, secrets, a Time Travel bookmark, or SQL backup content.
+"""
 import hashlib
 import json
 from pathlib import Path
@@ -6,18 +9,32 @@ import re
 import sqlite3
 import sys
 
+if len(sys.argv) != 5:
+    raise SystemExit("Expected four file paths for isolated D1 verification")
 backup_path, schema_path, bookmark_path, receipt_path = map(Path, sys.argv[1:])
-bookmark = json.loads(bookmark_path.read_text()).get("bookmark", "")
-if not re.fullmatch(r"[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{32}", bookmark, re.I):
+bookmark = json.loads(bookmark_path.read_text(encoding="utf-8")).get("bookmark", "")
+if not isinstance(bookmark, str) or not re.fullmatch(
+    r"[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{32}", bookmark, re.I
+):
     raise SystemExit("Unable to parse a D1 recovery bookmark")
 
 backup = backup_path.read_bytes()
-schema = schema_path.read_text()
+schema = schema_path.read_text(encoding="utf-8")
+if not backup or not schema:
+    raise SystemExit("Missing complete D1 export or B2B schema source")
+
+
+def canonical(sql):
+    """Normalize only SQLite's harmless CREATE IF NOT EXISTS/spacing differences."""
+    sql = re.sub(r"\bIF\s+NOT\s+EXISTS\b", "", sql, flags=re.I)
+    sql = re.sub(r"\s+", " ", sql).strip()
+    sql = re.sub(r"\s*([(),=])\s*", r"\1", sql)
+    return sql.rstrip(";").strip().casefold()
 
 
 def catalog(db):
     return {
-        name: (kind, " ".join(sql.split()))
+        name: (kind, canonical(sql))
         for kind, name, sql in db.execute(
             "SELECT type, name, sql FROM sqlite_schema WHERE sql IS NOT NULL"
         )
@@ -26,9 +43,9 @@ def catalog(db):
 
 with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as expected:
     try:
-        restored.executescript(backup.decode())
-    except sqlite3.Error as error:
-        raise SystemExit(f"D1 snapshot could not be restored: {error.sqlite_errorname}") from None
+        restored.executescript(backup.decode("utf-8"))
+    except (UnicodeDecodeError, sqlite3.Error) as error:
+        raise SystemExit("D1 snapshot could not be restored as a valid SQL export") from None
     if restored.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise SystemExit("Restored D1 snapshot failed SQLite integrity check")
     expected.executescript(schema)
@@ -36,31 +53,52 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
     if not before:
         raise SystemExit("The D1 snapshot did not contain the production schema")
     desired = catalog(expected)
+    required_tables = {
+        "business_inquiries", "business_inquiry_drafts", "business_inquiry_crm_delivery"
+    }
+    if not required_tables.issubset(desired) or len(desired) != len(required_tables):
+        raise SystemExit("B2B source must contain exactly the three required tables")
     for name, definition in desired.items():
         if name in before and before[name] != definition:
-            raise SystemExit(f"Unexpected existing schema for {name}")
+            raise SystemExit("Unexpected existing schema for " + name)
+    missing = sorted(set(desired) - set(before))
     baseline = {}
     for name in desired:
-        quoted_name = '"' + name.replace('"', '""') + '"'
+        safe_name = '"' + name.replace('"', '""') + '"'
         baseline[name] = (
-            restored.execute(f"SELECT COUNT(*) FROM {quoted_name}").fetchone()[0]
+            restored.execute(f"SELECT COUNT(*) FROM {safe_name}").fetchone()[0]
             if name in before else None
         )
     restored.executescript(schema)
-    for name in baseline:
-        expected_indexes = expected.execute("SELECT * FROM pragma_index_list(?)", (name,)).fetchall()
-        restored_indexes = restored.execute("SELECT * FROM pragma_index_list(?)", (name,)).fetchall()
+    if restored.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
+        raise SystemExit("Migration rehearsal failed integrity check")
+    for name in desired:
+        expected_indexes = expected.execute(
+            "SELECT * FROM pragma_index_list(?)", (name,)
+        ).fetchall()
+        restored_indexes = restored.execute(
+            "SELECT * FROM pragma_index_list(?)", (name,)
+        ).fetchall()
         if restored_indexes != expected_indexes:
-            raise SystemExit(f"Unexpected indexes for {name}")
-    after = catalog(restored)
-    if after != before | desired:
+            raise SystemExit("Unexpected indexes for " + name)
+        safe_name = '"' + name.replace('"', '""') + '"'
+        updated_count = restored.execute(
+            f"SELECT COUNT(*) FROM {safe_name}"
+        ).fetchone()[0]
+        if baseline[name] is not None and updated_count != baseline[name]:
+            raise SystemExit("B2B table row count changed in isolated rehearsal")
+    if catalog(restored) != (before | desired):
         raise SystemExit("Migration rehearsal produced unexpected schema changes")
     receipt_path.write_text(json.dumps({
         "bookmark": bookmark,
         "backupSha256": hashlib.sha256(backup).hexdigest(),
         "backupBytes": len(backup),
-        "schemaSha256": hashlib.sha256(schema.encode()).hexdigest(),
+        "schemaSha256": hashlib.sha256(schema.encode("utf-8")).hexdigest(),
         "restoredObjectCount": len(before),
         "b2bRowCountsBeforeMigration": baseline,
-        "isolatedRestoreAndSchemaRehearsal": "passed",
-    }, indent=2) + "\n")
+        "existingB2bTableCount": len(desired) - len(missing),
+        "missingB2bTableCount": len(missing),
+        "missingB2bTableNames": missing,
+        "requiresProductionSchemaApply": bool(missing),
+        "isolatedRestoreAndSchemaRehearsal": "passed"
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
