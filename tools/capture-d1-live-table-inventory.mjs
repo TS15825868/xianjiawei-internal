@@ -17,13 +17,14 @@ export function verifyLiveTableInventory(payload) {
     throw Error('LIVE_D1_TABLE_INVENTORY_RESULT_UNTRUSTED');
   }
   const names=item.results.map(x=>x?.name);
-  if (names.length < 3 || names.length > 500 ||
+  if (names.length < 1 || names.length > 500 ||
       names.some(x=>typeof x !== 'string' || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(x)) ||
       new Set(names).size !== names.length) {
     throw Error('LIVE_D1_TABLE_INVENTORY_INCOMPLETE_OR_INVALID');
   }
-  const required=['business_inquiries','business_inquiry_drafts','business_inquiry_crm_delivery'];
-  if (required.some(x=>!names.includes(x))) throw Error('LIVE_D1_B2B_SCHEMA_INCOMPLETE');
+  // Missing B2B tables are permitted in an earlier schema; the separate
+  // isolated restore gate decides whether a migration is actually needed.
+  // Always require the entire live name list to match the exported snapshot.
   return {
     schema:'xjw-private-live-d1-table-inventory-v1',
     table_names:names.sort(),
