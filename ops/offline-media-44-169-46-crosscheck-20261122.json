@@ -1,0 +1,49 @@
+{
+  "schema": "xjw-offline-historical-media-crosscheck-v1",
+  "created_date_taipei": "2026-11-22",
+  "provenance": [
+    {
+      "path": "assets/data/github-social-media-fingerprints-v20261122.json",
+      "blob_sha": "b228149368f1ad3128f20dd28e1754898d384a1b"
+    },
+    {
+      "path": "ops/social-pending-46-offline-evidence-source-v20261122.json",
+      "blob_sha": "d3cdd88c873802fd82aa318b52acd55a18e50d44"
+    },
+    {
+      "source": "user-provided local three ZIP inventory",
+      "count": 44,
+      "upload_performed": false
+    }
+  ],
+  "count": {
+    "local_original_assets": 44,
+    "github_source_files": 169,
+    "github_visual_hashes": 159,
+    "github_hashes_unavailable": 10,
+    "pending_from_archival_49_minus_3": 46,
+    "pending_exact_image_sha_matches_to_github169": 0,
+    "local_to_github_dhash_pairs_distance_le8": 1
+  },
+  "visual_candidate": {
+    "local_source_reference": "local original user archive item #21 (zero-based index 20)",
+    "local_dhash": "8fef2f1b1b390d0f",
+    "historical_path": "images/posts/official-v20260818/13-brand-story-wanhua-published.webp",
+    "historical_sha256": "dad70a2120e5630e733c341993ef477c28bc5e06eef203a5c780bda72780f9cd",
+    "historical_dhash": "8fef2f1b1b390d0f",
+    "hamming_distance": 0,
+    "judgement": "candidate_only_not_confirmed_duplicate"
+  },
+  "production_d1_queries": 0,
+  "ai_or_human_approvals": 0,
+  "external_schedules": 0,
+  "external_publications": 0,
+  "release_eligible": false,
+  "limitations": [
+    "44 local files vs 159 usable GitHub visual hashes does not cover all 178 recovered Cloudflare media or carousel children",
+    "46 images have archival SHA256 but not verified current visual dHash or actual current D1 image binding",
+    "dHash=0 is not proof of byte equality or duplicate publication and needs actual image/context review",
+    "10 GitHub objects lack visual dHash (nine SVG, one undecodable WebP)"
+  ],
+  "next_evidence": "Map 46 live image URLs/hashes to persisted archival IDs, then compare their actual pixels against recovered 178 historical image contents without running production D1 scans."
+}
