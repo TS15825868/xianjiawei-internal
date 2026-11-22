@@ -26,10 +26,15 @@ if not backup or not schema:
 
 def canonical(sql):
     """Normalize only SQLite's harmless CREATE IF NOT EXISTS/spacing differences."""
-    sql = re.sub(r"\bIF\s+NOT\s+EXISTS\b", "", sql, flags=re.I)
-    sql = re.sub(r"\s+", " ", sql).strip()
-    sql = re.sub(r"\s*([(),=])\s*", r"\1", sql)
-    return sql.rstrip(";").strip().casefold()
+    # SQL string literals (including CHECK constraints and defaults) are case-
+    # and whitespace-sensitive. Normalize syntax outside quotes only.
+    parts = re.split(r"('(?:''|[^'])*')", sql)
+    for i in range(0, len(parts), 2):
+        part = re.sub(r"\bIF\s+NOT\s+EXISTS\b", "", parts[i], flags=re.I)
+        part = re.sub(r"\s+", " ", part)
+        part = re.sub(r"\s*([(),=])\s*", r"\1", part)
+        parts[i] = part.casefold()
+    return "".join(parts).rstrip(";").strip()
 
 
 def catalog(db):
