@@ -1,0 +1,70 @@
+name: 仙加味12張缺件圖片總覽離線視覺核對
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/audit-social-gallery-missing-originals.py'
+      - '.github/workflows/audit-social-missing-originals-contact-sheets-offline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xjw-missing-originals-contact-sheet-offline
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Checkout ERP saved historical proof and gallery pages
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - name: Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install offline PNG/JPEG support
+        run: python -m pip install --quiet 'Pillow==11.3.0'
+      - name: Verify saved pages and compare 12 thumbnail candidates without D1
+        run: python tools/audit-social-gallery-missing-originals.py
+      - name: Check outcome cannot be misinterpreted as approval
+        run: |
+          python - <<'PY'
+          import json
+          p='ops/social-12-contact-sheet-visual-evidence-v20261122.json'
+          d=json.load(open(p,encoding='utf-8'))
+          assert d['thumbnails_checked']==12
+          assert d['gallery_pages_hash_verified']==5
+          assert d['production_D1_queries']==0
+          assert d['release_allowed'] is False
+          assert d['original_12_bytes_available'] is False
+          assert d['current_live_46_D1_binding_verified'] is False
+          assert d['historical_comparison_images']==159
+          assert d['erp_current_comparison_images']==34
+          assert len(d['records'])==12
+          print('PASS read-only preview-based history comparison; no approval')
+          PY
+      - name: Preserve 12-image review evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xjw-missing-12-gallery-visual-evidence
+          path: ops/social-12-contact-sheet-visual-evidence-v20261122.json
+          retention-days: 30
+      - name: Save only verified non-sensitive evidence to latest ERP main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f ops/social-12-contact-sheet-visual-evidence-v20261122.json
+          if git diff --cached --quiet; then
+            echo 'No new evidence change'
+            exit 0
+          fi
+          git commit -m 'data: persist safe thumbnail-only missing 12 visual candidate evidence'
+          git pull --rebase origin main
+          git push origin HEAD:main
