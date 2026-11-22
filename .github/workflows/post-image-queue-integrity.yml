@@ -10,9 +10,14 @@ on:
     paths:
       - 'ops/post-image-production-queue-current.json'
       - '.github/workflows/post-image-queue-integrity.yml'
-  schedule:
-    - cron: '17 */6 * * *'
+  # D1-backed queue checks require an explicit budget approval; no recurring full scans.
   workflow_dispatch:
+    inputs:
+      allow_production_d1_scan:
+        description: '確認 D1 免費 Rows Read 餘額充足後才執行正式草稿 SQL'
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: read
@@ -32,7 +37,13 @@ jobs:
           node-version: 22
       - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
 
+      - name: Record D1 queue verification as intentionally skipped
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_scan != true }}
+        run: |
+          echo 'Production D1 queue reconciliation was NOT performed; no approval or scheduling authorized.' >> "$GITHUB_STEP_SUMMARY"
+
       - name: Export live draft posts
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         run: npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT id,title,copy,status,image_url FROM social_posts WHERE status='draft' AND TRIM(COALESCE(image_url,''))='' ORDER BY id" > active-drafts.json
 
       - name: Fetch website formal media authority
@@ -49,6 +60,7 @@ jobs:
         run: node --test tools/current-formal-product-media.test.cjs
 
       - name: Verify active one-to-one image production queue
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         shell: bash
         run: |
           node - <<'NODE'
@@ -119,6 +131,7 @@ jobs:
           NODE
 
       - uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         with:
           name: post-image-queue-integrity-${{ github.run_id }}
           path: |
