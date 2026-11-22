@@ -20,6 +20,16 @@ const source = (asset, i) => ({
   archive: str(asset?.archive || asset?.source_zip),
   path: str(asset?.file || asset?.source_path)
 });
+// URL provenance is evidence of a GitHub path only, not image equality or approval.
+const githubMediaPath = value => {
+  try {
+    const url = new URL(str(value));
+    const prefix = '/xianjiawei/images/';
+    if (url.protocol !== 'https:' || url.hostname !== 'ts15825868.github.io' || !url.pathname.startsWith(prefix)) return '';
+    const path = decodeURIComponent(url.pathname.slice('/xianjiawei/'.length));
+    return path.startsWith('images/') && !path.includes('..') && !path.includes('\\') ? path : '';
+  } catch { return ''; }
+};
 const stamp = review => {
   const value = Date.parse(review?.created_at || review?.reviewed_at || '');
   return Number.isFinite(value) ? value : -Infinity;
@@ -50,6 +60,9 @@ export function auditSocialMediaOffline(input, threshold = 8) {
     if (!id || !Number.isFinite(t)) continue;
     if (!prev || t > prev.time || (t === prev.time && str(review.id) > str(prev.review.id))) latest.set(id, { review, time: t });
   }
+  const inventory = input?.github_media_source_inventory;
+  if (inventory && !Array.isArray(inventory.media)) throw Error('github_media_source_inventory.media must be an array');
+  const knownGithubMedia = new Map((inventory?.media ?? []).map(item => [str(item?.path), str(item?.git_blob_sha)]));
   const pending = [];
   for (const post of posts) {
     if (str(post?.status) !== 'pending_review') continue;
@@ -64,8 +77,12 @@ export function auditSocialMediaOffline(input, threshold = 8) {
         if (n <= threshold) matches.push({ asset: asset.key, type: 'visual_candidate', distance: n });
       }
     }
+    const githubSourcePath = githubMediaPath(post?.image_url);
     pending.push({
       post_id: id,
+      github_source_path: githubSourcePath || null,
+      github_inventory_path_match: githubSourcePath ? knownGithubMedia.has(githubSourcePath) : false,
+      github_blob_sha: githubSourcePath && knownGithubMedia.has(githubSourcePath) ? knownGithubMedia.get(githubSourcePath) : null,
       has_dated_review: !!review,
       has_image_sha256: !!imageSha,
       has_image_dhash: !!imageDhash,
@@ -77,6 +94,7 @@ export function auditSocialMediaOffline(input, threshold = 8) {
   }
   return {
     mode: 'offline_read_only', production_d1_queries: 0, publication_writes: 0,
+    known_github_media_paths: knownGithubMedia.size,
     assets_checked: assets.length, assets_with_sha256: assets.filter(x => x.sha256).length,
     assets_with_dhash: assets.filter(x => x.dhash).length,
     similarity_threshold: threshold, asset_pairs: assetPairs,
@@ -90,6 +108,8 @@ export function auditSocialMediaOffline(input, threshold = 8) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     if (!process.argv[2]) throw Error('Usage: node tools/audit-social-media-offline.mjs <sanitized-manifest.json>');
-    console.log(JSON.stringify(auditSocialMediaOffline(JSON.parse(readFileSync(process.argv[2], 'utf8'))), null, 2));
+    const input = JSON.parse(readFileSync(process.argv[2], 'utf8'));
+    if (process.argv[3]) input.github_media_source_inventory = JSON.parse(readFileSync(process.argv[3], 'utf8'));
+    console.log(JSON.stringify(auditSocialMediaOffline(input), null, 2));
   } catch (error) { console.error('Offline media audit failed: ' + error.message); process.exitCode = 2; }
 }
