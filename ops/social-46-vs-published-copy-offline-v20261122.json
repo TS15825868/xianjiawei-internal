@@ -1,0 +1,36 @@
+{
+  "schema": "xjw-46-vs-20261105-instagram-threads-published-copy-screen-v1",
+  "evidence_date_taipei": "2026-11-22",
+  "source_blobs": [
+    {
+      "path": "ops/social-pending-46-offline-evidence-source-v20261122.json",
+      "sha": "d3cdd88c873802fd82aa318b52acd55a18e50d44"
+    },
+    {
+      "path": "ops/request-20261112-49-visual-evidence-write.json",
+      "sha": "512c8edf0e8960b987a4bdb50f66bbed7c1ab115"
+    },
+    {
+      "path": "ops/metricool-instagram-threads-published-history-20261105.json",
+      "sha": "602c46219e7cf936668edd63299aa7e3d5be845f"
+    }
+  ],
+  "candidate_count": 46,
+  "historical_instagram_posts": 35,
+  "historical_threads_posts": 23,
+  "post_pairs_compared": 2668,
+  "exact_copy_matches": 0,
+  "threegram_jaccard_ge012_count": 0,
+  "maximum_threegram_jaccard": 0.0602,
+  "exact_pairs": [],
+  "near_pairs": [],
+  "current_d1_binding_checked": false,
+  "facebook_published_history_checked": false,
+  "nov06_to_nov22_new_publications_checked": false,
+  "carousel_child_media_checked": false,
+  "full_178_media_visual_dedup_checked": false,
+  "no_approval_from_text_score": true,
+  "zero_production_d1_queries": true,
+  "release_allowed": false,
+  "note": "35 IG and 23 Threads post captions from 2026-11-05 historical snapshot only. False negatives remain possible for semantic paraphrases. Zero copied text matches cannot certify full history, visual uniqueness, or publication authorization."
+}
