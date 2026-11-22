@@ -1,110 +1,210 @@
 {
-  "schema": "xjw-offline-46-erp-image-source-match-v1",
+  "schema": "xjw-offline-46-erp-and-candidate-source-match-v2",
   "source_post_evidence": "ops/social-pending-46-offline-evidence-source-v20261122.json",
   "source_historical_fingerprints": "assets/data/github-social-media-fingerprints-v20261122.json",
-  "scope": "ERP GitHub assets/post-images only, not Cloudflare R2, D1, or all 178 historical originals",
+  "scope": "ERP GitHub assets/post-images AND media/social-candidates/20261106; not D1, Cloudflare R2, or all 178 historical originals",
   "candidate_posts": 46,
-  "erp_image_files_hashed": 135,
-  "candidate_posts_with_exact_erp_file": 34,
-  "candidate_posts_missing_erp_file": 12,
+  "erp_image_files_hashed": 158,
+  "scanned_image_roots": [
+    "assets/post-images",
+    "media/social-candidates/20261106"
+  ],
+  "candidate_posts_with_exact_erp_file": 46,
+  "candidate_posts_missing_erp_file": 0,
   "historical_visual_candidate_links": 0,
   "production_d1_queries": 0,
   "approval_or_publication_permitted": false,
-  "warning": "Exact archival SHA source matching and visual candidates are evidence only. A missing match may exist in Cloudflare/R2; current live D1 and all 178 media remain unverified.",
+  "warning": "Both known ERP GitHub image locations were scanned using archival SHA; visual candidates are not confirmed duplicates. Current live D1 bindings and all 178 historical media remain unverified, so no publication permission.",
   "records": [
     {
       "post_id": "XJW-CAND-20261211",
       "expected_image_sha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20261211.webp",
+          "sha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+          "dhash": "89e14109301643d3",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20261222",
       "expected_image_sha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20261222.webp",
+          "sha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+          "dhash": "49612d451593780e",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20261225",
       "expected_image_sha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20261225.webp",
+          "sha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+          "dhash": "00c188345513034f",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270105",
       "expected_image_sha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270105.webp",
+          "sha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+          "dhash": "904493326a588ce5",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270115",
       "expected_image_sha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270115.webp",
+          "sha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+          "dhash": "21674f9436734b5b",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270119",
       "expected_image_sha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270119.webp",
+          "sha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+          "dhash": "9089a00f495c3433",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270126",
       "expected_image_sha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270126.webp",
+          "sha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+          "dhash": "074d4f9c6c6f6d40",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270129",
       "expected_image_sha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270129.webp",
+          "sha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+          "dhash": "296c48161d795e7f",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270305",
       "expected_image_sha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270305.webp",
+          "sha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+          "dhash": "0d3d6c0f276dabb3",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270312",
       "expected_image_sha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270312.webp",
+          "sha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+          "dhash": "a363ca09358fb2f6",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270323",
       "expected_image_sha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270323.webp",
+          "sha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+          "dhash": "10b12009374f2c9e",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
     {
       "post_id": "XJW-CAND-20270330",
       "expected_image_sha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
-      "github_erp_exact_image_paths": [],
-      "found_in_erp_repo": false,
+      "github_erp_exact_image_paths": [
+        {
+          "file": "media/social-candidates/20261106/XJW-CAND-20270330.webp",
+          "sha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+          "dhash": "786ccc4c34366333",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
       "current_live_d1_binding_verified": false,
       "release_allowed": false
     },
