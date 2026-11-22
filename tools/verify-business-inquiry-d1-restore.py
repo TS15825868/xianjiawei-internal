@@ -70,6 +70,13 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         raise SystemExit("D1 snapshot could not be restored as a valid SQL export") from None
     if restored.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise SystemExit("Restored D1 snapshot failed SQLite integrity check")
+    # An internally consistent SQLite file can still contain orphaned relations.
+    # Never expose the violating row or any customer value in public CI logs.
+    try:
+        if restored.execute("PRAGMA foreign_key_check").fetchone() is not None:
+            raise SystemExit("Restored D1 snapshot failed foreign-key integrity check")
+    except sqlite3.Error:
+        raise SystemExit("Restored D1 snapshot foreign-key check unavailable") from None
     expected.executescript(schema)
     snapshot_names = sorted(name for (name,) in restored.execute(
         "SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'"
@@ -79,6 +86,19 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
     before = catalog(restored)
     if not before:
         raise SystemExit("The D1 snapshot did not contain the production schema")
+    # This count pass is on the isolated in-memory restore only: never on live D1.
+    def snapshot_counts(names):
+        counts = {}
+        for name in names:
+            quoted = '"' + name.replace('"', '""') + '"'
+            try:
+                counts[name] = restored.execute(
+                    f"SELECT COUNT(*) FROM {quoted}"
+                ).fetchone()[0]
+            except sqlite3.Error:
+                raise SystemExit("Isolated snapshot table count unavailable") from None
+        return counts
+    preserved_counts = snapshot_counts(snapshot_names)
     desired = catalog(expected)
     required_tables = {
         "business_inquiries", "business_inquiry_drafts", "business_inquiry_crm_delivery"
@@ -99,6 +119,13 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
     restored.executescript(schema)
     if restored.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise SystemExit("Migration rehearsal failed integrity check")
+    try:
+        if restored.execute("PRAGMA foreign_key_check").fetchone() is not None:
+            raise SystemExit("Migration rehearsal failed foreign-key integrity check")
+    except sqlite3.Error:
+        raise SystemExit("Migration rehearsal foreign-key check unavailable") from None
+    if snapshot_counts(snapshot_names) != preserved_counts:
+        raise SystemExit("Migration rehearsal modified existing ERP table row counts")
     for name in desired:
         expected_indexes = expected.execute(
             "SELECT * FROM pragma_index_list(?)", (name,)
@@ -123,6 +150,9 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         "schemaSha256": hashlib.sha256(schema.encode("utf-8")).hexdigest(),
         "restoredObjectCount": len(before),
         "fullLiveTableInventoryMatchesSnapshot": True,
+        "isolatedForeignKeyIntegrityPassed": True,
+        "isolatedAllExistingTableRowCountsPreserved": True,
+        "productionRowContentCompletenessCompared": False,
         "liveTableCount": len(live_names),
         "snapshotTableCount": len(snapshot_names),
         "liveTableNamesSha256": hashlib.sha256(
