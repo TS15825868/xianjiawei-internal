@@ -5,9 +5,13 @@ on:
     paths:
       - '.github/workflows/prepare-business-inquiries-d1.yml'
       - 'tools/test-b2b-migration-free-budget-gate.mjs'
+      - 'tools/check-d1-free-budget-before-export.mjs'
+      - 'tools/check-d1-free-budget-before-export.test.mjs'
       - '.github/workflows/d1-read-budget-offline.yml'
   pull_request:
     paths:
+      - 'tools/check-d1-free-budget-before-export.mjs'
+      - 'tools/check-d1-free-budget-before-export.test.mjs'
       - 'tools/report-d1-expensive-queries.mjs'
       - '.github/workflows/prepare-business-inquiries-d1.yml'
       - 'tools/test-b2b-migration-free-budget-gate.mjs'
@@ -36,6 +40,7 @@ jobs:
       - name: Check offline source syntax
         run: |
           node --check tools/report-d1-expensive-queries.mjs
+          node --check tools/check-d1-free-budget-before-export.mjs
           node --check tools/audit-social-dedup-offline.mjs
           node --check src/social-missed-post-recovery.js
           node --check src/ai-operations-brain.js
@@ -43,4 +48,4 @@ jobs:
       - name: Run offline D1 and missed-post recovery regression
         run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs tools/audit-social-dedup-offline.test.mjs tools/test-ai-operations-readiness.mjs
       - name: Verify B2B migration budget gating and CRM safety (no production D1)
-        run: node --test tools/test-b2b-migration-free-budget-gate.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
+        run: node --test tools/test-b2b-migration-free-budget-gate.mjs tools/check-d1-free-budget-before-export.test.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
