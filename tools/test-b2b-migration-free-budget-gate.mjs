@@ -55,6 +55,18 @@ test('all remote D1 operations are within opt-in steps', () => {
   assert.equal(count, 2, 'Expected exactly export/rehearsal and apply operation steps');
 });
 
+test('actual Cloudflare account-wide budget evaluation precedes remote export', () => {
+  const budgetName='Validate account-wide D1 free Rows Read budget without production SQL';
+  const budget=step(budgetName);
+  const exportStep='Export and rehearse migration against an isolated restore';
+  assert.ok(budget.includes(guarded));
+  assert.match(budget,/node tools\/check-d1-free-budget-before-export\.mjs/);
+  assert.ok(config.indexOf('      - name: '+budgetName) <
+    config.indexOf('      - name: '+exportStep));
+  const exportBlock=step(exportStep);
+  assert.ok(exportBlock.includes(guarded));
+});
+
 test('raw backup never becomes a workflow artifact and is cleaned', () => {
   const upload = step('Preserve recovery and rehearsal evidence');
   assert.match(upload, /business-inquiries-preflight\.json/);
