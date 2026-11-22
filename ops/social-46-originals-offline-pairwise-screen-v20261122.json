@@ -1,0 +1,47 @@
+{
+  "schema": "xjw-46-originals-offline-similarity-screen-v1",
+  "asof": "2026-11-22",
+  "sources": [
+    {
+      "path": "ops/social-46-offline-github-image-reconciliation-v20261122.json",
+      "blob_sha": "d79a06392ab551b61d983449ca3a82865525e402"
+    },
+    {
+      "path": "assets/data/github-social-media-fingerprints-v20261122.json",
+      "blob_sha": "b228149368f1ad3128f20dd28e1754898d384a1b"
+    },
+    {
+      "path": "ops/request-20261112-49-visual-evidence-write.json",
+      "blob_sha": "512c8edf0e8960b987a4bdb50f66bbed7c1ab115"
+    }
+  ],
+  "images_matched_exact_sha256": 46,
+  "images_with_valid_dhash": 46,
+  "post_pairs_compared": 1035,
+  "historical_github_images_with_dhash": 159,
+  "historical_pairs_compared": 7314,
+  "pairwise_min_dhash_distance": 15,
+  "historical_min_dhash_distance": 18,
+  "pairwise_dhash_le8_count": 0,
+  "historical_dhash_le8_count": 0,
+  "editorial_jaccard3_ge015_count": 0,
+  "near_image_pairs_le16": [
+    {
+      "post_a": "XJW-CONV-chat-photo-size",
+      "post_b": "XJW-CONV-year-end-small-win",
+      "distance": 15
+    }
+  ],
+  "near_historical_pairs_le12": [],
+  "near_text_pairs_ge015": [],
+  "no_confirmed_duplicate_not_same_as_full_history_clear": true,
+  "complete_178_published_media_history_covered": false,
+  "all_current_d1_post_bindings_verified": false,
+  "production_d1_queries": 0,
+  "post_status_writes": 0,
+  "approvals": 0,
+  "schedules": 0,
+  "publications": 0,
+  "release_allowed": false,
+  "notice": "These are offline geometric and character-trigram candidates, not a semantic similarity certification. The 178 original historical Meta assets and live D1 record binding are not covered; publication remains blocked."
+}
