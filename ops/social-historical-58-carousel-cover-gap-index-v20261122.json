@@ -1,0 +1,110 @@
+{
+  "schema": "xjw-historical-social-media-gap-20261122-v1",
+  "source": "ops/metricool-instagram-threads-published-history-20261105.json",
+  "source_blob_sha": "602c46219e7cf936668edd63299aa7e3d5be845f",
+  "source_snapshot_date": "2026-11-05",
+  "generated_date_taipei": "2026-11-22",
+  "source_records": {
+    "instagram": 35,
+    "threads": 23
+  },
+  "gap_entries": [
+    {
+      "network": "instagram",
+      "postId": "3989496223409399275_78424002938",
+      "permalink": "https://www.instagram.com/p/Dddia2NFGXr/",
+      "mediaType": "FEED_CAROUSEL_ALBUM",
+      "coverAvailable": true,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "instagram",
+      "postId": "3894500319577819666_78424002938",
+      "permalink": "https://www.instagram.com/p/DYMC2geFMoS/",
+      "mediaType": "FEED_CAROUSEL_ALBUM",
+      "coverAvailable": true,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18134578774670909",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DediDBZmRpo",
+      "mediaType": "REPOST_FACADE",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "17943975108090377",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DediA0nGRmL",
+      "mediaType": "REPOST_FACADE",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18118587503057312",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dedh-abGZER",
+      "mediaType": "REPOST_FACADE",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18067710335609465",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dedh90wmT0S",
+      "mediaType": "REPOST_FACADE",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18428277010150275",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/Dddim6yihGV",
+      "mediaType": "CAROUSEL_ALBUM",
+      "coverAvailable": true,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "17957985588234021",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdNjDIWDBUt",
+      "mediaType": "TEXT_POST",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18118653349731629",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdIgVUDit3N",
+      "mediaType": "TEXT_POST",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "17861434386689511",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdG1zfxiMpf",
+      "mediaType": "TEXT_POST",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    },
+    {
+      "network": "threads",
+      "postId": "18098217644144885",
+      "permalink": "https://www.threads.com/@xianjiawei.tw/post/DdEKJwxCJbn",
+      "mediaType": "TEXT_POST",
+      "coverAvailable": false,
+      "carouselChildrenAvailable": false
+    }
+  ],
+  "scope": "Historical 58 post records only; not the full 178 recovered Cloudflare media objects",
+  "caveats": [
+    "Carousel child URLs and actual bytes unavailable in this snapshot",
+    "Missing cover does not imply missing media for text or repost records",
+    "CDN cover URLs may expire; use permalinks to retrieve legally accessible media",
+    "No production D1 query performed",
+    "No image uniqueness or publication authorization inferred"
+  ],
+  "release_allowed": false
+}
