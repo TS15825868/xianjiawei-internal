@@ -1,0 +1,1094 @@
+{
+  "schema": "xjw-github-media-source-inventory-v1",
+  "snapshot_date_taipei": "2026-11-22",
+  "source_repository": "TS15825868/xianjiawei",
+  "source_main_sha": "73c26cf2dc8f802218c176408106a18cf14f1758",
+  "scope": "Historical GitHub object inventory only; not the asserted 178 Cloudflare recovered media set",
+  "counts_by_directory": {
+    "images/posts/approved-v412": {
+      "repo_entries": 1,
+      "media_files": 1,
+      "classification": "history_only"
+    },
+    "images/posts/approved-v413": {
+      "repo_entries": 1,
+      "media_files": 1,
+      "classification": "history_only"
+    },
+    "images/posts/candidates-20260805": {
+      "repo_entries": 2,
+      "media_files": 2,
+      "classification": "candidate_only"
+    },
+    "images/posts/final-published": {
+      "repo_entries": 2,
+      "media_files": 2,
+      "classification": "historical_receipt_reference"
+    },
+    "images/posts/formal-v20260904": {
+      "repo_entries": 1,
+      "media_files": 1,
+      "classification": "history_only"
+    },
+    "images/posts/official-v20260818": {
+      "repo_entries": 15,
+      "media_files": 13,
+      "classification": "history_only"
+    },
+    "images/posts/remainder66-v20260817": {
+      "repo_entries": 67,
+      "media_files": 66,
+      "classification": "history_only"
+    },
+    "images/posts/smallboss-v20260815": {
+      "repo_entries": 59,
+      "media_files": 59,
+      "classification": "legacy_review_only"
+    },
+    "images/posts/userzip3-v20260811": {
+      "repo_entries": 2,
+      "media_files": 0,
+      "classification": "metadata_only"
+    },
+    "images/post-library/userzip3-v20260811": {
+      "repo_entries": 15,
+      "media_files": 15,
+      "classification": "userzip3_scene_reference"
+    },
+    "images/publishing/generated-v20260815": {
+      "repo_entries": 6,
+      "media_files": 6,
+      "classification": "generated_review_only"
+    },
+    "images/social/approved-202610": {
+      "repo_entries": 4,
+      "media_files": 3,
+      "classification": "history_only"
+    }
+  },
+  "total_github_media_files": 169,
+  "userzip3_scene_references_verified": 15,
+  "userzip3_product_cards_review_only": 5,
+  "git_blob_sha_is_not_file_sha256": true,
+  "sha256_and_dhash_available": false,
+  "pending_post_mapping_verified": 0,
+  "complete_178_historical_media_coverage_verified": false,
+  "formal_publication_authorized": false,
+  "source_rule": "GitHub blob hashes identify exact repository objects; only locally verified image SHA-256 and perceptual hashes may be used for image comparisons.",
+  "media": [
+    {
+      "path": "images/posts/approved-v412/guilu-drink-trial-evergreen.jpg",
+      "git_blob_sha": "97948c38b5485cf0c5522d9d1ad383221556b717",
+      "bytes": 33589,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/approved-v413/guilu-drink-trial-60.svg",
+      "git_blob_sha": "6faf7c448b31f87f15ee8f7dfdec0b89e326236b",
+      "bytes": 1198,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/candidates-20260805/weather-hot.webp",
+      "git_blob_sha": "ece7b55f191313ba71fa1e4249de2f8737dff78f",
+      "bytes": 14997,
+      "classification": "candidate_only"
+    },
+    {
+      "path": "images/posts/candidates-20260805/weather-rain.webp",
+      "git_blob_sha": "360921b01919e8392c83296e852e2c9c5c3261b2",
+      "bytes": 12122,
+      "classification": "candidate_only"
+    },
+    {
+      "path": "images/posts/final-published/guilu-drink-trial-final-20260808-preview.svg",
+      "git_blob_sha": "89e0abee08d896194817ab77c38a683bb6abf21a",
+      "bytes": 4079,
+      "classification": "historical_receipt_reference"
+    },
+    {
+      "path": "images/posts/final-published/guilu-drink-trial-final-20260808-web.svg",
+      "git_blob_sha": "bcf86410652ec078eacff3e9a394d8f2d2e1983f",
+      "bytes": 10032,
+      "classification": "historical_receipt_reference"
+    },
+    {
+      "path": "images/posts/formal-v20260904/first-post-work-rest-qmascot.webp",
+      "git_blob_sha": "42faf8b1bafcd00c394790bc64dd5012ccbe4d87",
+      "bytes": 172548,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/01-work-30cc.webp",
+      "git_blob_sha": "07644ff16cd14a48b50d53d427ac7a2730acbbee",
+      "bytes": 49620,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/02-home-180cc.webp",
+      "git_blob_sha": "9d8d51bff94067a50e90e02c1b1824831a18eeb0",
+      "bytes": 53070,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/03-gao-storage.webp",
+      "git_blob_sha": "0c8f4485bb40ccd62a1d9ab21d2f767aad372d68",
+      "bytes": 47502,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/04-tangkuai-soup.webp",
+      "git_blob_sha": "fbb2f680ee09ea935252ec4ee246b573b5b0b0ce",
+      "bytes": 50334,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/05-jiao-600g.webp",
+      "git_blob_sha": "92fdd9915380b5d0bab252c53b7f7e150d67b764",
+      "bytes": 48654,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/06-lurong-75g.webp",
+      "git_blob_sha": "a3d73633291e062cb27b2872510b9e7c3a5ea955",
+      "bytes": 46950,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/07-line-consult.webp",
+      "git_blob_sha": "454033542ba4761a42b0a08fb5bdce7f061dd658",
+      "bytes": 52640,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/08-home-out.webp",
+      "git_blob_sha": "19ca4fb4e409c3775bd4648b9b27fbcb47f3561b",
+      "bytes": 50190,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/09-organize-cabinet.webp",
+      "git_blob_sha": "8c77bc771802e99898598bc39bbc92eaf82b860d",
+      "bytes": 49092,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/10-office-warm-drink.webp",
+      "git_blob_sha": "65ee223e4429a0190f3e849b0c2b4cfd0b049dce",
+      "bytes": 49882,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/11-audience-needs.webp",
+      "git_blob_sha": "8142d2b49197bef6b5fbc79674a6d349af6ee1c0",
+      "bytes": 50280,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/12-trial-group-published.webp",
+      "git_blob_sha": "62e0c2154a5a70c1235ace7dff8094273e75b419",
+      "bytes": 57232,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/official-v20260818/13-brand-story-wanhua-published.webp",
+      "git_blob_sha": "640c30910a552732eface436f102cdc1661daeaf",
+      "bytes": 27672,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-COMBO.webp",
+      "git_blob_sha": "8d09c9a94c27431ca52e3a03273da2265cbe1e4b",
+      "bytes": 215044,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-DRINK.webp",
+      "git_blob_sha": "9da3dd96ad64a0ddf777fb26bf62ba02747f220f",
+      "bytes": 233250,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-GAO-100.webp",
+      "git_blob_sha": "5b837269e723ac75a3ef90aa418fa191764d9b8f",
+      "bytes": 225576,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-INGREDIENT-PRINCIPLE.webp",
+      "git_blob_sha": "3afe7268bbdc506bfc426ce260ccaeaaf71338af",
+      "bytes": 201208,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-LUERONG.webp",
+      "git_blob_sha": "9a7c7b604a9c919a0ecb5ef88982590f57f65af8",
+      "bytes": 229730,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-SEASONS-RHYTHM.webp",
+      "git_blob_sha": "e14135efaf59261e869132e75448e5bc4877bf18",
+      "bytes": 206910,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-STORE.webp",
+      "git_blob_sha": "7456bf6aa8df26c2764fef06aa31234d0ee1b27c",
+      "bytes": 223282,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-WEATHER-HOT.webp",
+      "git_blob_sha": "959226e99fbd8c258d28f296d21c485b16b53e18",
+      "bytes": 208116,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-WEATHER-RAIN.webp",
+      "git_blob_sha": "ccca58234dedc1889de28e56c0172a869186def9",
+      "bytes": 203110,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/POST-WEATHER-TEMP.webp",
+      "git_blob_sha": "e2783fda3e07e43999cf5fe5ff41ac37df8056ea",
+      "bytes": 226206,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink180-made-order.webp",
+      "git_blob_sha": "5a2b9ad1d182f20c2bedb882938a23f0858d4ef4",
+      "bytes": 256292,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink180-pouch.webp",
+      "git_blob_sha": "8fdf7d52cbbb4fe07cd6e2589b61df2644c74a89",
+      "bytes": 226014,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink180-storage.webp",
+      "git_blob_sha": "8fdf7d52cbbb4fe07cd6e2589b61df2644c74a89",
+      "bytes": 226014,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink180-warm.webp",
+      "git_blob_sha": "a323567cc10605bcf365dfcd5d766dee3bfe8801",
+      "bytes": 217592,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink30-made-order.webp",
+      "git_blob_sha": "8272301dbe881fbdbc8b4499efc899263add82bd",
+      "bytes": 253518,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink30-small-jar.webp",
+      "git_blob_sha": "dd95544bee979e60f277d574f05c4ec6aefe06bd",
+      "bytes": 198250,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink30-storage.webp",
+      "git_blob_sha": "56f27fa6e6428cb7fd13a765b3555ccde74cca00",
+      "bytes": 222008,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-drink30-warm.webp",
+      "git_blob_sha": "e2783fda3e07e43999cf5fe5ff41ac37df8056ea",
+      "bytes": 226206,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-gao-100g.webp",
+      "git_blob_sha": "ca8b3f620c4f2e89b2ecfee98ee0c7adb005ab7e",
+      "bytes": 226354,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-gao-first-half.webp",
+      "git_blob_sha": "5b837269e723ac75a3ef90aa418fa191764d9b8f",
+      "bytes": 225576,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-gao-routine.webp",
+      "git_blob_sha": "90fc49708797d6b9d08c2543940b248fb40c28cb",
+      "bytes": 225992,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-gao-warm-water.webp",
+      "git_blob_sha": "f64bb468050b433d059d3a82f5c98ce4e6a78d78",
+      "bytes": 230830,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-guilu-first-three.webp",
+      "git_blob_sha": "0ff8a5386b18a25b70acda3172a82bd1bc57929b",
+      "bytes": 222740,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-guilu-forms.webp",
+      "git_blob_sha": "ce48c08bcb5b8d356be5f7885970afd5f464c70f",
+      "bytes": 226340,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-jiao-detail-weight.webp",
+      "git_blob_sha": "b04641163a998e80b03bf52c1a582bbd3ba35c34",
+      "bytes": 204270,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-jiao-family.webp",
+      "git_blob_sha": "9ecc7e58c75bf543984c00c4df980031617336f0",
+      "bytes": 220004,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-jiao-hot-water.webp",
+      "git_blob_sha": "b256ddad27b6a0edd600c8a382b123c3e47365ea",
+      "bytes": 219432,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-luerong-single-material.webp",
+      "git_blob_sha": "ffd9ad0537cb6e768186d70966579d56bf3d54fd",
+      "bytes": 201348,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-luerong-storage.webp",
+      "git_blob_sha": "366f32ad22d0fd22db46c916a73d0a03e1f45337",
+      "bytes": 203168,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-modern-tradition.webp",
+      "git_blob_sha": "ca8b3f620c4f2e89b2ecfee98ee0c7adb005ab7e",
+      "bytes": 226354,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-tangkuai-75g.webp",
+      "git_blob_sha": "aa755c456a8b5faa61c9d170453d323ecbfc6fcd",
+      "bytes": 227608,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-tangkuai-hot-water.webp",
+      "git_blob_sha": "f6a7f6f277bd480df90bc497228ebbc2c7294e5a",
+      "bytes": 219164,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-trial-first.webp",
+      "git_blob_sha": "1d3d606bf9168f9f4a9917cf5cf9c1a22935eef2",
+      "bytes": 216674,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-trial-shipping.webp",
+      "git_blob_sha": "8272301dbe881fbdbc8b4499efc899263add82bd",
+      "bytes": 253518,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-warm-food-culture.webp",
+      "git_blob_sha": "f6a7f6f277bd480df90bc497228ebbc2c7294e5a",
+      "bytes": 219164,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-GUILU-why-guilu-daily.webp",
+      "git_blob_sha": "8d7664cbc19f87ed89fc6d4404146d5fc9dcdd20",
+      "bytes": 205906,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-brand-rhythm.webp",
+      "git_blob_sha": "a60a99716e46c2b4c2abfcbbbf526e5ee5af1124",
+      "bytes": 216980,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-daily-cooking.webp",
+      "git_blob_sha": "aa755c456a8b5faa61c9d170453d323ecbfc6fcd",
+      "bytes": 227608,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-product-drink-180.webp",
+      "git_blob_sha": "954b7938592482461dad9f20f5a18b571b581e9b",
+      "bytes": 230166,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-product-drink-30.webp",
+      "git_blob_sha": "959226e99fbd8c258d28f296d21c485b16b53e18",
+      "bytes": 208116,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-product-guilu-gao.webp",
+      "git_blob_sha": "ca8b3f620c4f2e89b2ecfee98ee0c7adb005ab7e",
+      "bytes": 226354,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-product-guilu-jiao.webp",
+      "git_blob_sha": "b4db5515c94b7a15abd2d5c5a7bac707d2b28e22",
+      "bytes": 233156,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-six-products-overview.webp",
+      "git_blob_sha": "fd4ea4c2de3dca47f0af2e52cefbad8187c525f9",
+      "bytes": 221002,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-trial-first.webp",
+      "git_blob_sha": "6f65389c1f1e3c4526ae2fe9742781cdc30246bd",
+      "bytes": 198198,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-01-usage-personal-routine.webp",
+      "git_blob_sha": "c7efc20fb2b373aebbdd55e1d9007fe316a25eff",
+      "bytes": 214300,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-choose-by-routine-first.webp",
+      "git_blob_sha": "0e317e130618a299ae9baa35d339fe6f867c0e19",
+      "bytes": 220768,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-drink-180-home.webp",
+      "git_blob_sha": "a323567cc10605bcf365dfcd5d766dee3bfe8801",
+      "bytes": 217592,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-drink-30-outside.webp",
+      "git_blob_sha": "959226e99fbd8c258d28f296d21c485b16b53e18",
+      "bytes": 208116,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-drink-30-vs-180.webp",
+      "git_blob_sha": "ff620ccf88ea5d4f7d5d85ce422645b25f354be8",
+      "bytes": 204960,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-drink-made-to-order.webp",
+      "git_blob_sha": "26f0609adbadfb163f9a2a567fd91bf30180fd8f",
+      "bytes": 204964,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-faq-flexible-time.webp",
+      "git_blob_sha": "eae07e0783c29d78cc5ef1c4260f4f1ec4d561da",
+      "bytes": 198272,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-jiao-family-cooking.webp",
+      "git_blob_sha": "9ecc7e58c75bf543984c00c4df980031617336f0",
+      "bytes": 220004,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-luerong-daily-drink.webp",
+      "git_blob_sha": "e8c770cdfdee77d7faaaf13ad8ee5b849d9b07e5",
+      "bytes": 229704,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-tangkuai-thermos-soup.webp",
+      "git_blob_sha": "f6a7f6f277bd480df90bc497228ebbc2c7294e5a",
+      "bytes": 219164,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-02-tangkuai-vs-jiao.webp",
+      "git_blob_sha": "450b80928aa27da902d7557a663c549debeb3410",
+      "bytes": 232016,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-ask-line-before-order.webp",
+      "git_blob_sha": "c32b205b5e7d614978d28b40b5bcf4ae6d367489",
+      "bytes": 213534,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-craft-time-and-heat.webp",
+      "git_blob_sha": "d2d2d050d6ae5bf0f99437785ffc260ee537716b",
+      "bytes": 260854,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-four-generation-work.webp",
+      "git_blob_sha": "d2d2d050d6ae5bf0f99437785ffc260ee537716b",
+      "bytes": 260854,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-gao-half-spoon-start.webp",
+      "git_blob_sha": "015b80ec1c30121c5080f5bad6813b3c07142535",
+      "bytes": 202382,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-ingredient-info-clear.webp",
+      "git_blob_sha": "84c80c5e7cfc6ac75d94570d1dc8782d4f2e59ea",
+      "bytes": 209278,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-thirty-cc-package-detail.webp",
+      "git_blob_sha": "6f65389c1f1e3c4526ae2fe9742781cdc30246bd",
+      "bytes": 198198,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-trial-first-then-decide.webp",
+      "git_blob_sha": "dd95544bee979e60f277d574f05c4ec6aefe06bd",
+      "bytes": 198250,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-wanhua-visit-brand.webp",
+      "git_blob_sha": "0ff8a5386b18a25b70acda3172a82bd1bc57929b",
+      "bytes": 222740,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-warm-not-iced.webp",
+      "git_blob_sha": "68e5ca9cebcead38fc72e6aa148bf2b07ae957b5",
+      "bytes": 229526,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-SOCIAL-20260815-03-why-exact-specs.webp",
+      "git_blob_sha": "ea2b176fe5ede3a9797d74afcd03460740d2b743",
+      "bytes": 204846,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/remainder66-v20260817/XJW-WORK-REST-001.webp",
+      "git_blob_sha": "8272301dbe881fbdbc8b4499efc899263add82bd",
+      "bytes": 253518,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/post-combo.jpg",
+      "git_blob_sha": "ab07eca6ac379cf0492180360b9f905cca82b618",
+      "bytes": 154621,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/post-drink.jpg",
+      "git_blob_sha": "b50847445d0b64baee4fbe46f2126f50d2d8ec05",
+      "bytes": 188834,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/post-gao-100.jpg",
+      "git_blob_sha": "e29fd4c5ee9ef9926902a082ec52a67846bfbfb9",
+      "bytes": 177033,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/post-luerong.jpg",
+      "git_blob_sha": "036897bce449f8e645062b94b11f7d715b8454c3",
+      "bytes": 176278,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/post-seasons-rhythm.jpg",
+      "git_blob_sha": "923e9b05e320011faad91865e166e7cc2083bd88",
+      "bytes": 138693,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-choose-by-place.jpg",
+      "git_blob_sha": "0af51480fa10e48917022886177732775171e102",
+      "bytes": 170093,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink180-home.jpg",
+      "git_blob_sha": "f09a3401151abac44582af1b31f172d25b534287",
+      "bytes": 218817,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink180-made-order.jpg",
+      "git_blob_sha": "eab3eaba34af430b888f054be9fe8c6b5d40da8b",
+      "bytes": 210956,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink180-pouch.jpg",
+      "git_blob_sha": "bbf3b01d55b5affb2fd69a9605ffb6747d77ef65",
+      "bytes": 202941,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink180-storage.jpg",
+      "git_blob_sha": "c944c953fe6ce336b5b1cd2f7153d5e23a17a55f",
+      "bytes": 202333,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink180-warm.jpg",
+      "git_blob_sha": "788f1118c084cdf109b832500aa7e3bfe1421a3a",
+      "bytes": 213722,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-made-order.jpg",
+      "git_blob_sha": "39ae852f4c8c7302a963e629772b0d55c3241169",
+      "bytes": 187658,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-small-jar.jpg",
+      "git_blob_sha": "42e303527ee934a2d0ae4d99b9e365007d4dad00",
+      "bytes": 177834,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-storage.jpg",
+      "git_blob_sha": "3afdfa100cfb0bb8033b81b4254f8f7ded516982",
+      "bytes": 199232,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-warm.jpg",
+      "git_blob_sha": "44b14b7bba43b7305efb784659b264c9b958c8b7",
+      "bytes": 189802,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-drink30-work-break.jpg",
+      "git_blob_sha": "96cd6d3928dc15c6bcb7d299d90acdc38b4f2ba1",
+      "bytes": 191549,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-gao-100g.jpg",
+      "git_blob_sha": "d0567715bff093b0ccf4f191c637a7eb56be9b9e",
+      "bytes": 194916,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-gao-first-half.jpg",
+      "git_blob_sha": "7c8296cade919f26ea0c307bb831874af38a9ea1",
+      "bytes": 187006,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-gao-routine.jpg",
+      "git_blob_sha": "4575f77c455b0ea7f00bcc5d65d3e7a1fe16f597",
+      "bytes": 182664,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-gao-storage.jpg",
+      "git_blob_sha": "6159b54a13e43667d0ba4be844cf2ca817382862",
+      "bytes": 182999,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-gao-warm-water.jpg",
+      "git_blob_sha": "18deb72765730a35bc1d98b40a54550db8387346",
+      "bytes": 180914,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-guilu-first-three.jpg",
+      "git_blob_sha": "abf1dfad70bba4dd547a4d0be381d7a96d43f24b",
+      "bytes": 165547,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-guilu-forms.jpg",
+      "git_blob_sha": "31f6e2958228d3005a7f31232cd57ff346529519",
+      "bytes": 197049,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-jiao-600g.jpg",
+      "git_blob_sha": "0bfa8e132bfd55419d5656d68ba5272bb0602591",
+      "bytes": 199207,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-jiao-detail-weight.jpg",
+      "git_blob_sha": "0dfd58abb65519434f49064caf7ddf159da5dc26",
+      "bytes": 188311,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-jiao-family.jpg",
+      "git_blob_sha": "95425e53114af38292257c66eab84925c517b551",
+      "bytes": 200462,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-jiao-hot-water.jpg",
+      "git_blob_sha": "a2b400e313422c1c346d49c200b40ef9aa7b266d",
+      "bytes": 195155,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-luerong-75g.jpg",
+      "git_blob_sha": "f151cabf625a4e4d6bd0a43349d4fdd239374654",
+      "bytes": 189899,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-luerong-single-material.jpg",
+      "git_blob_sha": "439cd2070fddd2f3a18382ed8680a0404d2b8dbf",
+      "bytes": 192386,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-luerong-storage.jpg",
+      "git_blob_sha": "918953608aa02a70ec22f3b43af5f839444877ba",
+      "bytes": 183527,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-modern-tradition.jpg",
+      "git_blob_sha": "847961cdd838060a5fbb630c03c78de8d484c79f",
+      "bytes": 156499,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-tangkuai-75g.jpg",
+      "git_blob_sha": "8e23a9b58c9f82bc7e4a45211446a354fc008bbe",
+      "bytes": 198766,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-tangkuai-hot-water.jpg",
+      "git_blob_sha": "754888fae5211950645d7ed973b6efaf202ed419",
+      "bytes": 194476,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-tangkuai-soup.jpg",
+      "git_blob_sha": "aaf12beff521eb84c0fc2239b290f056dece5f2b",
+      "bytes": 191391,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-warm-food-culture.jpg",
+      "git_blob_sha": "26fd8bbf4e452281216f2eae2e2bf6c43c701f0a",
+      "bytes": 171709,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-guilu-why-guilu-daily.jpg",
+      "git_blob_sha": "091280e5c89f1ca364d4a0007f95ddda0be77d75",
+      "bytes": 155618,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-daily-cooking.jpg",
+      "git_blob_sha": "6e2312fcac93dfe224a50e8d95c400d6633c6dfb",
+      "bytes": 154575,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-product-drink-180.jpg",
+      "git_blob_sha": "c87273092c7f1b709737acf277abac1c2d01bb11",
+      "bytes": 206928,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-product-drink-30.jpg",
+      "git_blob_sha": "0a8ebc5c254a922b873db49a56078176843fd9db",
+      "bytes": 185895,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-product-guilu-gao.jpg",
+      "git_blob_sha": "81153f947af9ea00295c42c7f89739decb08f16e",
+      "bytes": 183300,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-product-guilu-jiao.jpg",
+      "git_blob_sha": "4a2d86114e94eb90cd774e97251f83861122c8df",
+      "bytes": 181505,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-01-six-products-overview.jpg",
+      "git_blob_sha": "2abc2a5927a95724720bad71e56098b2b4b7480d",
+      "bytes": 198251,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-180-home.jpg",
+      "git_blob_sha": "d4ef527d61f54bac9788c972be3c5d91b2d654c0",
+      "bytes": 212582,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-30-outside.jpg",
+      "git_blob_sha": "13e9d7d05c6ed627e1288d3550f9bfeb600e5ea9",
+      "bytes": 192311,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-30-vs-180.jpg",
+      "git_blob_sha": "4bc59f41b28188211c44b0146e730ccc9f289ffc",
+      "bytes": 201529,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-drink-made-to-order.jpg",
+      "git_blob_sha": "49bbc4a84f65baad1582e69d0ca374e6b55956c6",
+      "bytes": 193318,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-jiao-family-cooking.jpg",
+      "git_blob_sha": "58a082532a9465a835a956638edf3a66a4851f77",
+      "bytes": 194155,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-luerong-daily-drink.jpg",
+      "git_blob_sha": "98c303e10568cb49d5497b169bc87b1a197f10f3",
+      "bytes": 200370,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-tangkuai-thermos-soup.jpg",
+      "git_blob_sha": "c319d5379ab7b581ece6b396c75c371650801ea2",
+      "bytes": 192480,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-02-tangkuai-vs-jiao.jpg",
+      "git_blob_sha": "533f0ea53d1b1d6a73e8de55b4eb72e6e2dc4396",
+      "bytes": 204837,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-ask-line-before-order.jpg",
+      "git_blob_sha": "abf57cec842c89dc56808c3a84161f5d0d7b0a95",
+      "bytes": 149036,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-craft-time-and-heat.jpg",
+      "git_blob_sha": "1c76df8b0bc29efaf608031f2cf904d5a0b32c17",
+      "bytes": 159103,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-gao-half-spoon-start.jpg",
+      "git_blob_sha": "e41c04cb9116fa0cd60afe1653cebad0600462c5",
+      "bytes": 181480,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-ingredient-info-clear.jpg",
+      "git_blob_sha": "c0f1e013400fe105e86546f14d8eb40ff698f7b3",
+      "bytes": 174416,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-storage-basics.jpg",
+      "git_blob_sha": "bc9625635b323f8ad106222f09bfb0ba901f168f",
+      "bytes": 192427,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-thirty-cc-package-detail.jpg",
+      "git_blob_sha": "f7f25c4814862fb5e094ab4173be0ce580af68b8",
+      "bytes": 185042,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-wanhua-visit-brand.jpg",
+      "git_blob_sha": "844bdf5666a96aae4e07fdf22d3535e47afaef31",
+      "bytes": 162250,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-warm-not-iced.jpg",
+      "git_blob_sha": "e9ab17c101df6fa33e7e3296139aa793f2a24418",
+      "bytes": 193432,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/posts/smallboss-v20260815/xjw-social-20260815-03-why-exact-specs.jpg",
+      "git_blob_sha": "3b2c66de2815b76df821cf7c9ea5cff08be4e155",
+      "bytes": 162427,
+      "classification": "legacy_review_only"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/choose-by-routine.webp",
+      "git_blob_sha": "a5ab6beab71e28869307d1e12282ca54f91caa23",
+      "bytes": 80884,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/daily-hydration.webp",
+      "git_blob_sha": "106166ccf6a2ee4127253afb4f6092dd694c5336",
+      "bytes": 92454,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/hot-weather-hydration-2.webp",
+      "git_blob_sha": "428867709e719818d5ca108842d08dbe7ebc72d3",
+      "bytes": 90304,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/hot-weather-hydration.webp",
+      "git_blob_sha": "1fb724c0c24b63845ff12891265ec326ec6ba771",
+      "bytes": 74600,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/rainy-home.webp",
+      "git_blob_sha": "ab7c97a7c3241d1ff2d9906076b14c9f3881fbb8",
+      "bytes": 97930,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/rainy-warm.webp",
+      "git_blob_sha": "61bba971507a96120105a4c2bf2d2b38b26edec5",
+      "bytes": 86978,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/self-care-family-2.webp",
+      "git_blob_sha": "d509c49a9598fdeee11edc7d61721a77a5351fd5",
+      "bytes": 86578,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/self-care-family.webp",
+      "git_blob_sha": "893eb7625cd4c642561f05c3c8e0a542a8577494",
+      "bytes": 81242,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/storage.webp",
+      "git_blob_sha": "4a052e9afba64372e45fa6a0751ffa04feb49340",
+      "bytes": 81482,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/temperature-coat-2.webp",
+      "git_blob_sha": "f109bff8696d7a02f04898edae1ca674eafb2903",
+      "bytes": 89986,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/temperature-coat.webp",
+      "git_blob_sha": "27bd32862fdf65be09cac8b280bacf6c4557779b",
+      "bytes": 79656,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/warm-rhythm.webp",
+      "git_blob_sha": "546be61f306a09f9f9c793834b986450e897ed8a",
+      "bytes": 83770,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/warm-water.webp",
+      "git_blob_sha": "d7e66aaea1a394ee798d01d0e64b608db2150f33",
+      "bytes": 82326,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/work-break-2.webp",
+      "git_blob_sha": "1a64542f6a7b1fde3079a917dfd1db9b071c44f1",
+      "bytes": 88638,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/post-library/userzip3-v20260811/work-break.webp",
+      "git_blob_sha": "c6b00162da51298c0047d58b683e6edd78c76cbb",
+      "bytes": 77118,
+      "classification": "userzip3_scene_reference"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/choose-by-place.svg",
+      "git_blob_sha": "a307b032fb1bf6c4757304b0aaef7538d310440a",
+      "bytes": 3060,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/guilu-first-three.svg",
+      "git_blob_sha": "d8cfe5ef3760cc46ba301101816f3e5a2d792e44",
+      "bytes": 3589,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/guilu-forms.svg",
+      "git_blob_sha": "ddc491cc55935c5610b9699447015662789d2798",
+      "bytes": 3395,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/modern-tradition.svg",
+      "git_blob_sha": "8b0d8e203a1933dfbbb850c2c208fb4c8c589b69",
+      "bytes": 3792,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/warm-food-culture.svg",
+      "git_blob_sha": "ff2a072e2a5c9e74644fa34ed419e166548ec7e1",
+      "bytes": 3175,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/publishing/generated-v20260815/why-guilu-daily.svg",
+      "git_blob_sha": "6fd929415ad1ca681261e3c3b427b5974f185d86",
+      "bytes": 3153,
+      "classification": "generated_review_only"
+    },
+    {
+      "path": "images/social/approved-202610/2026-10-18-cooking-prep.avif",
+      "git_blob_sha": "33fdda30999fa8f7475077f033f82beb7dc1f57a",
+      "bytes": 33877,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/social/approved-202610/2026-10-24-tangkuai-cooking.avif",
+      "git_blob_sha": "69daec55da6f7b7b76d2558c151d6fc6263021fc",
+      "bytes": 32613,
+      "classification": "history_only"
+    },
+    {
+      "path": "images/social/approved-202610/2026-10-31-drink-comparison.avif",
+      "git_blob_sha": "b522417da3639e712e58b40196dedc2e709c98e8",
+      "bytes": 21569,
+      "classification": "history_only"
+    }
+  ]
+}
