@@ -1,0 +1,46 @@
+name: 仙加味離線社群素材證據檢查
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/audit-social-media-offline.mjs'
+      - 'tools/test-audit-social-media-offline.mjs'
+      - 'assets/data/github-social-media-source-inventory-v*.json'
+      - '.github/workflows/offline-social-media-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-offline-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate offline matcher without D1 or Cloudflare credentials
+        run: node --test tools/test-audit-social-media-offline.mjs
+      - name: Validate snapshot counts and forbid approval claims
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const path = 'assets/data/github-social-media-source-inventory-v20261122.json';
+          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+          assert.equal(data.media.length, data.total_github_media_files);
+          assert.equal(data.formal_publication_authorized, false);
+          assert.equal(data.complete_178_historical_media_coverage_verified, false);
+          assert.equal(data.sha256_and_dhash_available, false);
+          assert.equal(data.pending_post_mapping_verified, 0);
+          for (const item of data.media) {
+            assert.match(item.git_blob_sha, /^[a-f0-9]{40}$/);
+            assert.ok(item.path.startsWith('images/'));
+            assert.ok(Number.isSafeInteger(item.bytes) && item.bytes >= 0);
+          }
+          console.log(`PASS offline-only inventory: ${data.media.length} GitHub media objects; no release authorization`);
+          NODE
