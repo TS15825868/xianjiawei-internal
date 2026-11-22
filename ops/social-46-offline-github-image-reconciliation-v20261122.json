@@ -1,0 +1,656 @@
+{
+  "schema": "xjw-offline-46-erp-image-source-match-v1",
+  "source_post_evidence": "ops/social-pending-46-offline-evidence-source-v20261122.json",
+  "source_historical_fingerprints": "assets/data/github-social-media-fingerprints-v20261122.json",
+  "scope": "ERP GitHub assets/post-images only, not Cloudflare R2, D1, or all 178 historical originals",
+  "candidate_posts": 46,
+  "erp_image_files_hashed": 135,
+  "candidate_posts_with_exact_erp_file": 34,
+  "candidate_posts_missing_erp_file": 12,
+  "historical_visual_candidate_links": 0,
+  "production_d1_queries": 0,
+  "approval_or_publication_permitted": false,
+  "warning": "Exact archival SHA source matching and visual candidates are evidence only. A missing match may exist in Cloudflare/R2; current live D1 and all 178 media remain unverified.",
+  "records": [
+    {
+      "post_id": "XJW-CAND-20261211",
+      "expected_image_sha256": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20261222",
+      "expected_image_sha256": "5e8692696bdd087d017abc5d5bb7d6b2f844bd6260f9fb68cb46ba4bad2a268a",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20261225",
+      "expected_image_sha256": "275a2a85a81b75ebe2d273015d4d1257388ae20c0e6c70da4f362adeff79b99e",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270105",
+      "expected_image_sha256": "bfa28a97d1bf296c2fc0bccb85d8c209448f09948208a0d0cd5759bcff102110",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270115",
+      "expected_image_sha256": "98411f36db9ef1d62f609a9d6709b5120154e98978e340cab779923985d493e8",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270119",
+      "expected_image_sha256": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270126",
+      "expected_image_sha256": "3ca7c0b17975e258b0a2186452523c3518875cbcdffc3df8c60467c7b1a7cdab",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270129",
+      "expected_image_sha256": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270305",
+      "expected_image_sha256": "892fee3e469a3a0cf1032386ba2ea3b5a6d85cdd44e2c9461aefa3321097d704",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270312",
+      "expected_image_sha256": "c7c95f6a9dfaf5a684acbd6c7b5214e8f13fa694256a7f27e3ed02b3d20ac4ac",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270323",
+      "expected_image_sha256": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CAND-20270330",
+      "expected_image_sha256": "452b5c7f0aa88c3cf47c10710de4c4f83cf5982ef9e57e93924d82cc85e4513b",
+      "github_erp_exact_image_paths": [],
+      "found_in_erp_repo": false,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-dayoff-cook",
+      "expected_image_sha256": "8d8a7274b619a155ea6d1ce8aafcbf67bab025a5e86f0363d6b482e663d177a6",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-dayoff-cook-scene-v2.jpg",
+          "sha256": "8d8a7274b619a155ea6d1ce8aafcbf67bab025a5e86f0363d6b482e663d177a6",
+          "dhash": "3031210c558d85ac",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-elder-kitchen-habit",
+      "expected_image_sha256": "dd30eaea035ef2b57b5eede9eb150b926501a76a99f1b9a522b73f9290a27589",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-10/formal-production/XJW-CONV-chat-elder-kitchen-habit-scene-v4.jpg",
+          "sha256": "dd30eaea035ef2b57b5eede9eb150b926501a76a99f1b9a522b73f9290a27589",
+          "dhash": "70e06956a966795b",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-family-old-object",
+      "expected_image_sha256": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-09-23/XJW-CONV-chat-family-old-object.jpg",
+          "sha256": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+          "dhash": "39306e4f551e9c1d",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-fixed-storage",
+      "expected_image_sha256": "d35515ad1c0ed02dad9865decfb10f41aa6dc27a626dd99e9872f5a2a82af7b8",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-fixed-storage-audit-v1.jpg",
+          "sha256": "d35515ad1c0ed02dad9865decfb10f41aa6dc27a626dd99e9872f5a2a82af7b8",
+          "dhash": "db59344f53e87b26",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-glass-vs-pouch-storage",
+      "expected_image_sha256": "babcfef72467c0ff38be1d942115e34187f3f10e967320f997d2b35aa8458601",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-11-12/formal-production/wanhua-rain-shopfront.jpg",
+          "sha256": "babcfef72467c0ff38be1d942115e34187f3f10e967320f997d2b35aa8458601",
+          "dhash": "6a336d6f79793979",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-last-bowl",
+      "expected_image_sha256": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-09-23/XJW-CONV-chat-last-bowl.jpg",
+          "sha256": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+          "dhash": "8db9ac4c57716be5",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-luerong-intro",
+      "expected_image_sha256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-luerong-intro-reviewed-v2.jpg",
+          "sha256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+          "dhash": "2445581455609cc9",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-no-standard-answer",
+      "expected_image_sha256": "4991b10381f397522363d42772f902806833810270ae33ec844af28638676000",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-no-standard-answer-scene-v1.jpg",
+          "sha256": "4991b10381f397522363d42772f902806833810270ae33ec844af28638676000",
+          "dhash": "a591194b353691c6",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-opening-prep",
+      "expected_image_sha256": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-chat-opening-prep-audit-v1.jpg",
+          "sha256": "fd1e0e9db869c82b3b5fa427f40cf0a2acef96246793896fd27474d3dd9ee370",
+          "dhash": "203035292c37d192",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-pantry-memory",
+      "expected_image_sha256": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-pantry-memory-scene-v1.jpg",
+          "sha256": "0bd405f938d8a5c285970b946d5ec1e05fec9edfe24c024549140641e7b56334",
+          "dhash": "30601434c6ce3819",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-photo-size",
+      "expected_image_sha256": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-11-11/formal-production/XJW-CONV-chat-photo-size-reviewed-v2.jpg",
+          "sha256": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+          "dhash": "60601111cb83e079",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-picture-or-text",
+      "expected_image_sha256": "3530f50ac3338e4c444cfb9f191d99b5c86ea9a95bf12bc9dfcb9f0627a91676",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-11-12/formal-production/wanhua-copper-pot-sketch.jpg",
+          "sha256": "3530f50ac3338e4c444cfb9f191d99b5c86ea9a95bf12bc9dfcb9f0627a91676",
+          "dhash": "43c6974b3b1b1e33",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-quiet-work",
+      "expected_image_sha256": "caa172f0d85559667c1420008a09ce2c6331759bd75ae335ada4b55fbe4fa17f",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-20/2d-candidates/XJW-CONV-chat-quiet-work-2d-candidate-20261020.jpg",
+          "sha256": "caa172f0d85559667c1420008a09ce2c6331759bd75ae335ada4b55fbe4fa17f",
+          "dhash": "7d7a664e6af9693f",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-receive-package",
+      "expected_image_sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-09-23/XJW-CONV-chat-receive-package.jpg",
+          "sha256": "b143b3059aeb60b0482e09f32e3f5ae348023819fc9201b9889aeb4fe1d576ce",
+          "dhash": "33b3ad9c76cb3d97",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-recipe-or-feel",
+      "expected_image_sha256": "ac23cb985a1d80c9dda4ff8fd758dedd9f7c3aec674df6ad662388a754c37a4e",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-09-23/XJW-CONV-chat-recipe-or-feel.jpg",
+          "sha256": "ac23cb985a1d80c9dda4ff8fd758dedd9f7c3aec674df6ad662388a754c37a4e",
+          "dhash": "77726c9b73311909",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-small-things-work",
+      "expected_image_sha256": "7fa4563e0290a539e321f72fce5189463b44d6cd6359b93b253d1d3898904a99",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-09/quality-upgrade/XJW-CONV-chat-small-things-work-scene-v2.jpg",
+          "sha256": "7fa4563e0290a539e321f72fce5189463b44d6cd6359b93b253d1d3898904a99",
+          "dhash": "f6f32c5653397338",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-tradition-today",
+      "expected_image_sha256": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-09-21/XJW-ACTIVE-IMG-036.png",
+          "sha256": "05345abf0a493883c5412d8e3e5f5bed374a87a288742b3f5a493fa5e3f6f179",
+          "dhash": "8193a28656333313",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-chat-traditional-image",
+      "expected_image_sha256": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-chat-traditional-image-scene-v1.jpg",
+          "sha256": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+          "dhash": "a4a470982bc7d0b3",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-childhood-now",
+      "expected_image_sha256": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-childhood-now-scene-v1.jpg",
+          "sha256": "cc28bc21273606f083b4ac5b62900abab2a0d868ec0b9f1a484e934620324bb6",
+          "dhash": "2465345565231e4e",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-family-choice",
+      "expected_image_sha256": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-13/festival/XJW-CONV-cny-family-choice-scene-v1.jpg",
+          "sha256": "e9c306f47fa2c39f51d78bd5da8130455eb9f4a0109f0080a4782ed387f4e710",
+          "dhash": "3232360e1c35720e",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-fridge-clean",
+      "expected_image_sha256": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-fridge-clean-scene-v1.jpg",
+          "sha256": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+          "dhash": "7971622628995a32",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-gift-choice",
+      "expected_image_sha256": "4905bcaab77381f53f3ab5ede77c9b5f06951b22f6cc97f610af9d025f61c7c0",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-11-12/formal-production/new-year-greeting-card.jpg",
+          "sha256": "4905bcaab77381f53f3ab5ede77c9b5f06951b22f6cc97f610af9d025f61c7c0",
+          "dhash": "9cdc8eceedcd1b22",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-must-have-dish",
+      "expected_image_sha256": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-must-have-dish-scene-v1.jpg",
+          "sha256": "71f738baf1ab4185a211e266a79c00295314bc9978194a203c362a3cc24e3512",
+          "dhash": "20e199a94b2d9d85",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-pre-clean",
+      "expected_image_sha256": "9790f1ca7766b43b99de629872fa8b6e79a19f2a5b919e108ca746849d35b836",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-cny-pre-clean-audit-v1.jpg",
+          "sha256": "9790f1ca7766b43b99de629872fa8b6e79a19f2a5b919e108ca746849d35b836",
+          "dhash": "80b1a12c34a46527",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-cny-reopen",
+      "expected_image_sha256": "d8702b0d1546026cb7175d5792a89f1ce4e98b1a350163d03e51cd19507dbfbf",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-cny-reopen-scene-v1.jpg",
+          "sha256": "d8702b0d1546026cb7175d5792a89f1ce4e98b1a350163d03e51cd19507dbfbf",
+          "dhash": "d4e43434d2d24260",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-new-year-slow-start",
+      "expected_image_sha256": "22b5ec499b3b45156cb450ff44ad3d283fd8fe781cd067a851cd8b66627bc808",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-new-year-slow-start-audit-v1.jpg",
+          "sha256": "22b5ec499b3b45156cb450ff44ad3d283fd8fe781cd067a851cd8b66627bc808",
+          "dhash": "5571438f26662129",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-new-year-warm-cup-share",
+      "expected_image_sha256": "1da90695f31d6129086c0945f4760226a67fd3029ee24bffaf1f933ac1ccc532",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-11/formal-production/XJW-CONV-new-year-warm-cup-share-scene-v1.jpg",
+          "sha256": "1da90695f31d6129086c0945f4760226a67fd3029ee24bffaf1f933ac1ccc532",
+          "dhash": "2531299d25a62f2d",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-season-more-soup",
+      "expected_image_sha256": "db76be5d7368af28baec5fc66748dba6a8c6b171a5a17be8a326dd1ea911b83a",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-31/cooking-safety/XJW-CONV-season-more-soup-safety-v1.png",
+          "sha256": "db76be5d7368af28baec5fc66748dba6a8c6b171a5a17be8a326dd1ea911b83a",
+          "dhash": "c8c8db3767d55814",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-weather-cool-drink",
+      "expected_image_sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-cool-drink-audit-v1.jpg",
+          "sha256": "f98d6c1cd1a5ae37fa76deaa476df4bcebf174e880a8c3ef5dac767ad7c6c682",
+          "dhash": "a8e1d99b37097d38",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-weather-rain-chat",
+      "expected_image_sha256": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-weather-rain-chat-audit-v1.jpg",
+          "sha256": "995203821d4835e9df60aa6b65ca2baf80075ed7507cd421fe2cbaab5110e9f4",
+          "dhash": "81e7cdcd1767194b",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-CONV-year-end-small-win",
+      "expected_image_sha256": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-12/formal-production/XJW-CONV-year-end-small-win-audit-v1.jpg",
+          "sha256": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+          "dhash": "a061d9294be3d069",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-FEST-2027-eve-welcome-home",
+      "expected_image_sha256": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-eve-welcome-home-scene-v1.jpg",
+          "sha256": "55880970b22bce40eb2cd7cd6b2dd6808d0adf374b111d1d37865e9f6a822509",
+          "dhash": "d9f9c91b6f632b99",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-FEST-2027-lantern-riceballs",
+      "expected_image_sha256": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-lantern-riceballs-scene-v1.jpg",
+          "sha256": "eedc34d3280996794aed134547eeff19201a7ed9dcf9f875cee7f958ddd99771",
+          "dhash": "0c33284c55a6b699",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    },
+    {
+      "post_id": "XJW-FEST-2027-newyear-breakfast",
+      "expected_image_sha256": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+      "github_erp_exact_image_paths": [
+        {
+          "file": "assets/post-images/2026-10-13/festival/XJW-FEST-2027-newyear-breakfast-scene-v1.jpg",
+          "sha256": "d9e0da80db8e8da7a57a8cc607cfee9f00f77fdea10db41c2816cd18f3d76d46",
+          "dhash": "1931690d75c36864",
+          "visual_candidates": [],
+          "image_decode": "ok"
+        }
+      ],
+      "found_in_erp_repo": true,
+      "current_live_d1_binding_verified": false,
+      "release_allowed": false
+    }
+  ]
+}
