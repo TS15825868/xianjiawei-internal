@@ -31,7 +31,8 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'wrangler.jsonc'
-      - '.github/workflows/current-product-d1-audit.yml'
+      # D1 product-audit workflow changes are not ERP runtime changes.
+      # Its own CI checks run separately and do not trigger a production deploy.
   workflow_dispatch:
 
 permissions:
