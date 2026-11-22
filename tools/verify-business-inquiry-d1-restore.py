@@ -9,9 +9,9 @@ import re
 import sqlite3
 import sys
 
-if len(sys.argv) != 5:
-    raise SystemExit("Expected four file paths for isolated D1 verification")
-backup_path, schema_path, bookmark_path, receipt_path = map(Path, sys.argv[1:])
+if len(sys.argv) != 6:
+    raise SystemExit("Expected five file paths for isolated D1 and live table inventory verification")
+backup_path, schema_path, bookmark_path, receipt_path, inventory_path = map(Path, sys.argv[1:])
 bookmark = json.loads(bookmark_path.read_text(encoding="utf-8")).get("bookmark", "")
 if not isinstance(bookmark, str) or not re.fullmatch(
     r"[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{8}-[a-f0-9]{32}", bookmark, re.I
@@ -22,6 +22,21 @@ backup = backup_path.read_bytes()
 schema = schema_path.read_text(encoding="utf-8")
 if not backup or not schema:
     raise SystemExit("Missing complete D1 export or B2B schema source")
+try:
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+except (ValueError, OSError):
+    raise SystemExit("Live table inventory missing or invalid") from None
+live_names = inventory.get("table_names") if isinstance(inventory, dict) else None
+if (
+    inventory.get("schema") != "xjw-private-live-d1-table-inventory-v1"
+    or not isinstance(live_names, list)
+    or not (3 <= len(live_names) <= 500)
+    or len(set(live_names)) != len(live_names)
+    or inventory.get("table_count") != len(live_names)
+    or any(not isinstance(name, str) or
+           not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) for name in live_names)
+):
+    raise SystemExit("Live table inventory untrusted or incomplete")
 
 
 def canonical(sql):
@@ -54,6 +69,11 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
     if restored.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise SystemExit("Restored D1 snapshot failed SQLite integrity check")
     expected.executescript(schema)
+    snapshot_names = sorted(name for (name,) in restored.execute(
+        "SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+    ))
+    if snapshot_names != sorted(live_names):
+        raise SystemExit("Full D1 backup table inventory does not match live database")
     before = catalog(restored)
     if not before:
         raise SystemExit("The D1 snapshot did not contain the production schema")
@@ -100,6 +120,12 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         "backupBytes": len(backup),
         "schemaSha256": hashlib.sha256(schema.encode("utf-8")).hexdigest(),
         "restoredObjectCount": len(before),
+        "fullLiveTableInventoryMatchesSnapshot": True,
+        "liveTableCount": len(live_names),
+        "snapshotTableCount": len(snapshot_names),
+        "liveTableNamesSha256": hashlib.sha256(
+            json.dumps(sorted(live_names), separators=(",", ":")).encode("utf-8")
+        ).hexdigest(),
         "b2bRowCountsBeforeMigration": baseline,
         "existingB2bTableCount": len(desired) - len(missing),
         "missingB2bTableCount": len(missing),
