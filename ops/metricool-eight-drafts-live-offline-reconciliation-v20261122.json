@@ -1,0 +1,165 @@
+{
+  "schema": "xjw-live-metricool-eight-offline-mapping-20261122-v1",
+  "source": "Metricool getScheduledPosts live connector and previously verified GitHub archival evidence",
+  "brand_id": "6889683",
+  "timezone": "Asia/Taipei",
+  "check_date_taipei": "2026-11-22",
+  "archival_49_source_sha": "512c8edf0e8960b987a4bdb50f66bbed7c1ab115",
+  "archived_hold_source_sha": "365508ca737a065511bd7c2bf42d510b016bb102",
+  "total_remote_drafts": 8,
+  "actual_scheduled_posts": 0,
+  "exact_49_copy_mapped": 5,
+  "known_archived_hold": 1,
+  "unmapped_remote_drafts": 2,
+  "production_d1_queries": 0,
+  "remote_mutations": 0,
+  "post_publications": 0,
+  "approval_granted": false,
+  "notes": "Draft placeholder dates are not scheduled posts. Five exact historical copy matches are not current D1 authorization readbacks. The archived hold must not be published; the two unmatched drafts need D1 authority confirmation. No approval, deletion, scheduling or publication performed.",
+  "items": [
+    {
+      "remote_metricool_id": 395780595,
+      "remote_uuid": "-4666029736018688758",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-01-01T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": "XJW-FEST-2027-newyear-breakfast",
+      "review_category": "matches_archival_49_but_not_live_release_verified",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 395780663,
+      "remote_uuid": "-2388141536229897403",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-02-03T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": "XJW-CONV-cny-childhood-now",
+      "review_category": "matches_archival_49_but_not_live_release_verified",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 395780722,
+      "remote_uuid": "4739607617070649128",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-02-05T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": "XJW-FEST-2027-eve-welcome-home",
+      "review_category": "matches_archival_49_but_not_live_release_verified",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 395780855,
+      "remote_uuid": "7059549514727835567",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-02-08T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": null,
+      "review_category": "archived_held_no_approval",
+      "owner_archive_hold_source": "ops/request-spring-walk-linked-safe-hold-20261109.json",
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 409190019,
+      "remote_uuid": "9095248166936789919",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2026-11-28T10:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": null,
+      "review_category": "unmapped_requires_current_d1_verification",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 415295632,
+      "remote_uuid": "2100266406683036682",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2026-11-25T10:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": null,
+      "review_category": "unmapped_requires_current_d1_verification",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 425177099,
+      "remote_uuid": "8803367464274840026",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-02-06T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": "XJW-CONV-cny-family-choice",
+      "review_category": "matches_archival_49_but_not_live_release_verified",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    },
+    {
+      "remote_metricool_id": 425177186,
+      "remote_uuid": "-4565812021150200465",
+      "draft": true,
+      "auto_publish": false,
+      "draft_placeholder_date": "2027-02-20T09:00:00",
+      "provider_networks": [
+        "facebook",
+        "instagram",
+        "threads"
+      ],
+      "provider_pending": true,
+      "archival_49_exact_copy_match_post_id": "XJW-FEST-2027-lantern-riceballs",
+      "review_category": "matches_archival_49_but_not_live_release_verified",
+      "owner_archive_hold_source": null,
+      "mapped_to_live_D1_now": false,
+      "release_allowed": false
+    }
+  ]
+}
