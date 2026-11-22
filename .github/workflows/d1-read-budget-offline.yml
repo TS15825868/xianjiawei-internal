@@ -1,8 +1,16 @@
 name: D1 and social recovery offline regression
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prepare-business-inquiries-d1.yml'
+      - 'tools/test-b2b-migration-free-budget-gate.mjs'
+      - '.github/workflows/d1-read-budget-offline.yml'
   pull_request:
     paths:
       - 'tools/report-d1-expensive-queries.mjs'
+      - '.github/workflows/prepare-business-inquiries-d1.yml'
+      - 'tools/test-b2b-migration-free-budget-gate.mjs'
       - 'tools/report-d1-expensive-queries.test.mjs'
       - 'tools/audit-social-dedup-offline.mjs'
       - 'tools/audit-social-dedup-offline.test.mjs'
@@ -34,3 +42,5 @@ jobs:
           node --check src/ai-operations-readiness.js
       - name: Run offline D1 and missed-post recovery regression
         run: node --test tools/report-d1-expensive-queries.test.mjs tools/test-social-missed-post-recovery.mjs tools/test-ai-operations-brain.mjs tools/audit-social-dedup-offline.test.mjs tools/test-ai-operations-readiness.mjs
+      - name: Verify B2B migration budget gating and CRM safety (no production D1)
+        run: node --test tools/test-b2b-migration-free-budget-gate.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
