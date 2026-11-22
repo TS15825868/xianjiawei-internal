@@ -28,7 +28,8 @@ class IsolatedB2BRestore(unittest.TestCase):
         assert cls.schema.count("CREATE TABLE IF NOT EXISTS") == 3
 
     def receipt(self, presence=("business_inquiry_drafts", "business_inquiries", "business_inquiry_crm_delivery"),
-                altered=False, corrupt=False, changed_literal=False):
+                altered=False, corrupt=False, changed_literal=False,
+                partial_backup=False, incomplete_inventory=False):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
             schema_file = base / "three-tables.sql"
@@ -37,6 +38,7 @@ class IsolatedB2BRestore(unittest.TestCase):
             bookmark_file.write_text(json.dumps({"bookmark": BOOKMARK}), encoding="utf-8")
             backup_file = base / "realistic-isolated-backup.sql"
             output = base / "sanitized-receipt.json"
+            inventory_file = base / "current-live-schema-tables.json"
             conn = sqlite3.connect(":memory:")
             try:
                 conn.execute("CREATE TABLE unrelated_erp_customer (id TEXT PRIMARY KEY)")
@@ -61,13 +63,29 @@ class IsolatedB2BRestore(unittest.TestCase):
                          "經銷", "private-contact-test", "private-details-test"),
                     )
                 conn.commit()
-                backup_file.write_text("\n".join(conn.iterdump()) if not corrupt else
+                actual_names = sorted(name for (name,) in conn.execute(
+                    "SELECT name FROM sqlite_schema WHERE type='table' "
+                    "AND name NOT LIKE 'sqlite_%'"
+                ))
+                live_names = actual_names[:-1] if incomplete_inventory else actual_names
+                inventory_file.write_text(json.dumps({
+                    "schema": "xjw-private-live-d1-table-inventory-v1",
+                    "table_names": live_names, "table_count": len(live_names),
+                    "rows_read": 10, "rows_written": 0
+                }), encoding="utf-8")
+                backup_lines = list(conn.iterdump())
+                if partial_backup:
+                    backup_lines = [
+                        line for line in backup_lines
+                        if "unrelated_erp_customer" not in line
+                    ]
+                backup_file.write_text("\n".join(backup_lines) if not corrupt else
                     "CREATE TABLE business_inquiries (bad unfinished;", encoding="utf-8")
             finally:
                 conn.close()
             result = subprocess.run(
                 [sys.executable, str(SCRIPT), str(backup_file), str(schema_file),
-                 str(bookmark_file), str(output)], cwd=ROOT,
+                 str(bookmark_file), str(output), str(inventory_file)], cwd=ROOT,
                 capture_output=True, text=True
             )
             return result, json.loads(output.read_text()) if output.exists() else None
@@ -78,6 +96,9 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertEqual(receipt["isolatedRestoreAndSchemaRehearsal"], "passed")
         self.assertEqual(receipt["missingB2bTableCount"], 0)
         self.assertEqual(receipt["existingB2bTableCount"], 3)
+        self.assertTrue(receipt["fullLiveTableInventoryMatchesSnapshot"])
+        self.assertEqual(receipt["liveTableCount"], 4)
+        self.assertEqual(receipt["snapshotTableCount"], 4)
         self.assertFalse(receipt["requiresProductionSchemaApply"])
         self.assertEqual(receipt["b2bRowCountsBeforeMigration"]["business_inquiries"], 1)
         self.assertNotIn("private-contact-test", result.stdout + json.dumps(receipt))
@@ -101,6 +122,18 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIsNone(receipt)
         self.assertIn("Unexpected existing schema for business_inquiries", result.stderr)
+
+    def test_partial_backup_with_all_b2b_tables_fails_closed(self):
+        result, receipt = self.receipt(partial_backup=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIsNone(receipt)
+        self.assertIn("Full D1 backup table inventory does not match", result.stderr)
+
+    def test_truncated_live_inventory_fails_closed(self):
+        result, receipt = self.receipt(incomplete_inventory=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIsNone(receipt)
+        self.assertIn("Full D1 backup table inventory does not match", result.stderr)
 
     def test_corrupt_or_nonrestorable_backup_fails_closed(self):
         result, receipt = self.receipt(corrupt=True)
