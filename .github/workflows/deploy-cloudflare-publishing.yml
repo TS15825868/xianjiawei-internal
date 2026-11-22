@@ -19,6 +19,9 @@ on:
       - '!tools/test-audit-social-media-offline.mjs'
       # The B2B migration budget/CRM test runs in offline CI, not a production deployment.
       - '!tools/test-b2b-migration-free-budget-gate.mjs'
+      # Standalone Cloudflare account budget preflight is verified in offline CI only.
+      - '!tools/check-d1-free-budget-before-export.mjs'
+      - '!tools/check-d1-free-budget-before-export.test.mjs'
       # Pure approval rollback tooling runs the dedicated zero-network gate.
       - '!tools/apply-post-copy-correction.cjs'
       - '!tools/test-post-copy-review-rollback.cjs'
