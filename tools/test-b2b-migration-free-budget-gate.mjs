@@ -80,6 +80,20 @@ test('existing three B2B tables never trigger redundant remote SQL', () => {
     apply.indexOf('npx --no-install wrangler d1 execute'));
 });
 
+test('complete live table inventory is captured and verified before full backup is accepted', () => {
+  const captureName='Capture full live D1 table names for backup completeness (metadata only)';
+  const capture=step(captureName);
+  const exportName='Export and rehearse migration against an isolated restore';
+  assert.ok(capture.includes(guarded));
+  assert.match(capture,/node tools\/capture-d1-live-table-inventory\.mjs/);
+  assert.ok(config.indexOf('      - name: Validate account-wide D1 free Rows Read budget') <
+            config.indexOf('      - name: '+captureName));
+  assert.ok(config.indexOf('      - name: '+captureName) <
+            config.indexOf('      - name: '+exportName));
+  assert.match(step(exportName),/business-inquiries-live-table-inventory\.json/);
+  assert.match(step('Remove downloaded production data from runner'),/business-inquiries-live-table-inventory\.json/);
+});
+
 test('raw backup never becomes a workflow artifact and is cleaned', () => {
   const upload = step('Preserve recovery and rehearsal evidence');
   assert.match(upload, /business-inquiries-preflight\.json/);
