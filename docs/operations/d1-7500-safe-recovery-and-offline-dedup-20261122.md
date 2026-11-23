@@ -50,3 +50,12 @@ node tools/audit-social-dedup-offline.mjs /secure/path/sanitized-social-export.j
 - AI 測試實際成功回執：[GitHub Actions 45215922447](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45215922447)。該次 `push` 的 D1 預算查詢、增量建表、資料讀取與 artifact 上傳步驟均 `skipped`；不得把此來源測試當作正式 D1 全庫驗收。
 - Metricool 回填與候選同步的新增預算閘門已提交 GitHub 並讀回原始碼，但截至本次紀錄未另外觸發正式 D1 工作流。保留必要時的獨立驗收，不為驗收耗用生產 SQL 或新增費用。
 - 本次三個修正的程式提交：`9dad8505`、`90684256`、`542b6e6d`。保留三套正式 main 版本順序，不將過時的 `ef7a6044` 當成新的 ERP HEAD。
+
+## 2026-11-24 三項遺留建表觸發補強（已實際提交與測試）
+
+- `prepare-ai-delegated-publication-d1.yml`、`prepare-line-handoff-d1.yml`、`prepare-line-receipt-d1.yml` 原先均在 workflow 檔案 push 時可連線至正式 D1 執行建表或讀回。已改為 push 只執行既有離線檢查；必須透過 GitHub `workflow_dispatch` 明確勾選 `allow_production_schema_apply=true` 才能觸發正式資料庫操作，預設 false。
+- 以上三項正式 D1 作業在任何遠端操作前，額外檢查 `tools/check-d1-free-budget-before-export.mjs` 的官方 Insights 免費帳戶級額度與保留量；缺少憑證、額度不足、資料過期或不完整即 fail-closed。手動授權只是必要條件，並非准許新增費用或保證無停機風險。
+- 正式提交：委任發布 `91273959`、LINE 人工接手 `876ca720`、LINE 備援收件 `2fb98e15`。三項 `push` GitHub Actions [45217977554](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45217977554)、[45218061483](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45218061483)、[45218120018](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45218120018) 均 SUCCESS；實際遠端 D1 操作步驟均 SKIPPED。
+- 新增離線保護回歸測試 `ops/tests/test-d1-unattended-workflow-guards.mjs`，監督上述三項建表、AI 品質審核雙授權、Metricool 證據回填與貼文候選同步的正式 D1 額度門檻；`d1-read-budget-offline.yml` 已將相關流程變更加入 CI 觸發，避免日後恢復無人值守正式 D1 寫入。提交 `8b6e4a82`、`8841447f`。
+- 離線 CI [45218793523](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45218793523) SUCCESS，包括新加安全閘門回歸測試；沒有動正式 D1。這些是**來源安全/CI 驗收**，不是新版完整 SQL 備份、隔離還原、B2B CRM Web App 或社群發布的正式完成證據。
+- 後續仍要處理：新版完整 D1 備份與隔離還原、獨立 B2B Apps Script 接收器簽章驗證、歷史媒體缺口及 46 篇待審去重與授權；不得因本次守門員測試通過而自動開啟 CRM 發送或社群發布。
