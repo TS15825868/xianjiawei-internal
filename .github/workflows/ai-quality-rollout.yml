@@ -4,6 +4,17 @@ on:
     branches: [main]
     paths: ['src/ai-quality-review.js','src/ai-quality-evidence.cjs','.github/workflows/ai-quality-rollout.yml']
   workflow_dispatch:
+    inputs:
+      allow_production_d1_scan:
+        description: '人工確認必要性、D1免費讀取額度及服務風險後，才允許正式D1唯讀稽核；一般push不查D1'
+        type: boolean
+        required: true
+        default: false
+      allow_production_schema_apply:
+        description: '另外明確授權正式D1增量建表；必須同時勾選正式D1稽核，預設禁止寫入'
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -26,7 +37,23 @@ jobs:
           node tools/test-ai-quality-evidence.cjs
           node tools/test-metricool-human-review.mjs
           node tools/test-metricool-free-evidence.cjs
-      - name: Append safe schema only; no approval, publication or content overwrite
+      - name: Record unattended run is source-only (no production D1 SQL)
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_d1_scan != true }}
+        run: echo 'AI source tests only; production D1 was not queried, migrated or exported.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Reject schema authorization without live D1 scan authorization
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true && inputs.allow_production_d1_scan != true }}
+        run: |
+          echo '::error::A D1 schema change requires separate explicit scan and schema authorization.'
+          exit 1
+      - name: Verify official account-wide D1 free budget before any SQL
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          node tools/check-d1-free-budget-before-export.mjs
+      - name: Apply additive AI schema only with separate explicit authorization
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true && inputs.allow_production_schema_apply == true }}
         run: |
           set -euo pipefail
           node --input-type=module - <<'NODE'
@@ -35,12 +62,17 @@ jobs:
           await ensureAiSchema({DB:{prepare:sql=>({run:async()=>fs.writeFileSync('/tmp/ai-quality-schema.sql',sql)})}});
           NODE
           npx wrangler d1 execute xianjiawei-internal-db --remote --file /tmp/ai-quality-schema.sql
+      - name: Read current AI quality state only when explicitly requested
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
+        run: |
+          set -euo pipefail
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT status,COUNT(*) AS count FROM social_posts GROUP BY status" > ai-live-counts.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT p.*,m.metricool_id,m.uuid,m.state AS metricool_state FROM social_posts p JOIN social_metricool_sync m ON p.id=m.post_id" > ai-live-eight.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_review_gates WHERE post_id IN (SELECT post_id FROM social_metricool_sync)" > ai-live-human-gates.json
           npx wrangler d1 execute xianjiawei-internal-db --remote --json --command "SELECT * FROM social_post_quality_reviews ORDER BY reviewed_at DESC LIMIT 100" > ai-live-evidence.json
+          echo 'Explicitly authorized D1 state audit completed; no approval or publication was granted.' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_d1_scan == true }}
         with:
           name: ai-quality-live-${{ github.run_id }}
           path: |
@@ -49,3 +81,4 @@ jobs:
             ai-live-human-gates.json
             ai-live-evidence.json
           retention-days: 7
+          if-no-files-found: error
