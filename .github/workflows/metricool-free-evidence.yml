@@ -28,6 +28,14 @@ jobs:
       - uses: actions/setup-node@v5
         with: {node-version: 22}
       - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Fail closed on stale or exhausted Cloudflare D1 free read budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          # Official D1 Insights GET only; refuse remote SQL if metadata is stale, incomplete or above reserve.
+          node tools/check-d1-free-budget-before-export.mjs
       - name: Select one receipt
         run: |
           node - <<'NODE'
