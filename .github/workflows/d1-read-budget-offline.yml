@@ -13,6 +13,13 @@ on:
       - 'tools/check-d1-free-budget-before-export.test.mjs'
       - 'tools/test-live-v2-post-image-sha.mjs'
       - 'ops/receipts/20261122-live-46-latest-review-version-delta.json'
+      - 'ops/tests/test-d1-unattended-workflow-guards.mjs'
+      - '.github/workflows/prepare-ai-delegated-publication-d1.yml'
+      - '.github/workflows/prepare-line-handoff-d1.yml'
+      - '.github/workflows/prepare-line-receipt-d1.yml'
+      - '.github/workflows/ai-quality-rollout.yml'
+      - '.github/workflows/metricool-free-evidence.yml'
+      - '.github/workflows/sync-social-schedule-candidates.yml'
       - '.github/workflows/d1-read-budget-offline.yml'
   pull_request:
     paths:
@@ -36,6 +43,13 @@ on:
       - 'tools/test-ai-operations-readiness.mjs'
       - 'tools/test-ai-operations-brain.mjs'
       - 'tools/test-social-missed-post-recovery.mjs'
+      - 'ops/tests/test-d1-unattended-workflow-guards.mjs'
+      - '.github/workflows/prepare-ai-delegated-publication-d1.yml'
+      - '.github/workflows/prepare-line-handoff-d1.yml'
+      - '.github/workflows/prepare-line-receipt-d1.yml'
+      - '.github/workflows/ai-quality-rollout.yml'
+      - '.github/workflows/metricool-free-evidence.yml'
+      - '.github/workflows/sync-social-schedule-candidates.yml'
       - '.github/workflows/d1-read-budget-offline.yml'
   workflow_dispatch:
 permissions:
@@ -64,5 +78,7 @@ jobs:
         run: node --test tools/test-b2b-migration-free-budget-gate.mjs tools/check-d1-free-budget-before-export.test.mjs tools/capture-d1-live-table-inventory.test.mjs edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
       - name: Test isolated D1 SQL snapshot restore with existing and missing B2B schema
         run: python3 -m unittest tools/test-verify-business-inquiry-d1-restore.py
+      - name: Guard unattended D1 schema and publishing workflows without network access
+        run: node --test ops/tests/test-d1-unattended-workflow-guards.mjs
       - name: Verify two current v2 image bytes without D1 queries
         run: node --test tools/test-live-v2-post-image-sha.mjs
