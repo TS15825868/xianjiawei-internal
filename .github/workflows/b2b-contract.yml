@@ -12,7 +12,7 @@ on:
       - 'assets/js/business-inquiry-management.js'
       - '.github/workflows/b2b-contract.yml'
   push:
-    branches: [ops/b2b-inquiry-persistence]
+    branches: [main, ops/b2b-inquiry-persistence]
     paths:
       - 'edge/business-inquir*.mjs'
       - 'integrations/b2b-crm/**'
@@ -39,12 +39,21 @@ jobs:
       - uses: actions/checkout@v5
         with:
           repository: TS15825868/TS-LINE
-          ref: 6f498a0a9ec2c1cf3544c226c5b6b1c32bffcd49
+          # Use the CURRENT official LINE OA main instead of a stale snapshot.
+          ref: main
           path: line
           persist-credentials: false
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Record actual formal ERP and LINE contract versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '### B2B isolated contract source authority' >> "$GITHUB_STEP_SUMMARY"
+          printf 'ERP checked-out SHA: `%s`\n' "$(git -C erp rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          printf 'LINE current main SHA: `%s`\n' "$(git -C line rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          # Source-only: no production D1, CRM receivers, customer sends or deployments.
       - name: ERP isolated B2B regressions
         working-directory: erp
         run: node --test edge/business-inquiries.test.mjs edge/business-inquiry-notification-management.test.mjs edge/business-inquiry-crm.test.mjs
