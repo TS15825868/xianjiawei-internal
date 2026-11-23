@@ -1,0 +1,98 @@
+{
+  "schema": "xjw-two-owner-directed-published-timing-reconciliation-v1",
+  "checked_date_taipei": "2026-11-24",
+  "brand_id": "6889683",
+  "timezone_interpretation": {
+    "metricool_field_family": "Data Studio post date-with-time fields FBPO02 / IGPO02 / THPO02",
+    "timestamp_format": "YYYYMMDDHHmmss",
+    "timestamp_zone": "UTC",
+    "authoritative_timezone_source": "https://help.metricool.com/how-to-adjust-the-time-zone-of-your-data-in-data-studio-bqugr",
+    "note": "Provider publication time is separate from scheduled target and D1 post-hoc observation time."
+  },
+  "source_files": [
+    {
+      "path": "ops/receipts/20261120-owner-directed-scheduled.json",
+      "git_blob_sha": "d810d129a0e62e0fa30ad400339c1a062be5a042"
+    },
+    {
+      "path": "ops/owner-directed-metricool-release-20261110.json",
+      "git_blob_sha": "104be6ac6b182fdd09e2f926faac4f08e1dc66e3"
+    },
+    {
+      "path": "ops/request-reconcile-owner-direct-published-20261110.json",
+      "git_blob_sha": "1b400ba9980580ac7ef29b526af34b3c6772c61a"
+    }
+  ],
+  "november_20": {
+    "post_id": "XJW-CONV-chat-buy-first-look",
+    "metricool_id": 432456111,
+    "owner_grant_id": "XJW-OWNER-DIRECT-20261120-buy-first-look-v1",
+    "owner_grant_issued_at": "2026-11-18T07:05:15.694Z",
+    "owner_grant_expired_at": "2026-11-20T10:00:00+08:00",
+    "grant_target_publication_at": "2026-11-20T10:00:00+08:00",
+    "remote_schedule_previously_verified_at": "2026-11-18T15:05:00+08:00",
+    "metricool_provider_published_utc": {
+      "facebook": "2026-11-20T02:01:56Z",
+      "instagram": "2026-11-20T02:02:20Z",
+      "threads": "2026-11-20T02:03:08Z"
+    },
+    "metricool_provider_published_taipei": {
+      "facebook": "2026-11-20T10:01:56+08:00",
+      "instagram": "2026-11-20T10:02:20+08:00",
+      "threads": "2026-11-20T10:03:08+08:00"
+    },
+    "publication_delay_seconds_from_scheduled_time": {
+      "facebook": 116,
+      "instagram": 140,
+      "threads": 188
+    },
+    "production_d1_receipt_observed_at": "2026-11-20T02:07:10.534Z",
+    "source_of_receipt_time": "social_publish_deliveries.last_attempt_at/published_at/created_at/updated_at are exactly equal for all three rows; likely the shared reconciliation write, NOT independent provider event timestamps",
+    "actual_server_side_metricool_submit_at": "unknown",
+    "risk_assessment": "EXACT_SCHEDULE_AUTHORIZED_BUT_PROVIDER_LATER; NOT_ENOUGH_TO_ASSERT_UNAUTHORIZED_LATE_DISPATCH",
+    "remaining_check": "Find direct scheduling/dispatch event time if legal deadline enforcement requires delivery before rather than scheduling at 10:00; do not alter historic grant or re-publish",
+    "facebook_url_alias_discrepancy": {
+      "prior_d1_receipt_post_id_suffix": "1547018447448372",
+      "metricool_analytics_post_id_suffix": "1547018490781701",
+      "proven_duplicate": false,
+      "note": "Distinct identifiers for Facebook publishing receipt versus analytics feed; do not treat as separate posts without provider-level identity proof"
+    }
+  },
+  "november_10": {
+    "post_id": "XJW-CONV-chat-wanhua-morning",
+    "metricool_id": 422664301,
+    "archival_owner_instruction_quoted_in_git": "今天的先發佈；然後繼續完成待審。",
+    "archival_owner_instruction_source": "ops/owner-directed-metricool-release-20261110.json",
+    "original_user_message_retrieved_independently": false,
+    "approval_source_quality": "EXISTING_ARCHIVAL_SELF_REPORT_NOT_PRIMARY_USER_MESSAGE",
+    "archive_single_post_exception_only": true,
+    "remote_schedule_at": "2026-11-10T11:00:00+08:00",
+    "metricool_provider_published_taipei": {
+      "facebook": "2026-11-10T11:02:12+08:00",
+      "instagram": "2026-11-10T11:02:32+08:00",
+      "threads": "2026-11-10T11:03:16+08:00"
+    },
+    "production_d1_receipt_observed_at": "2026-11-10T03:09:16.098Z",
+    "original_review_decision": "NEEDS_HUMAN_REVIEW",
+    "full_quality_16_pass_implied": false,
+    "independent_owner_chat_verification_remaining": true,
+    "risk_assessment": "ARCHIVAL_ONE_OFF_DIRECTION_FOUND; ORIGINAL_CHAT_AUTHORITATIVE_PROOF_UNVERIFIED"
+  },
+  "production_d1_methods": {
+    "operations": "read-only, three tiny indexed/metadata checks",
+    "schema_names_row_reads": 116,
+    "grant_row_reads": 3,
+    "pragma_row_reads": 0,
+    "post_delivery_row_reads": 10,
+    "sync_row_reads": 4,
+    "rows_written": 0,
+    "customer_values_read": 0
+  },
+  "metricool_mutations": 0,
+  "production_d1_writes": 0,
+  "publication_or_schedule_actions": 0,
+  "new_approvals": 0,
+  "never_convert_receipt_observation_time_to_provider_publication_time": true,
+  "no_automated_authorization_backfill": true,
+  "not_authorized_to_republish": true
+}
