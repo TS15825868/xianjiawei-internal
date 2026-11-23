@@ -5,6 +5,12 @@ on:
     paths:
       - '.github/workflows/prepare-line-handoff-d1.yml'
   workflow_dispatch:
+    inputs:
+      allow_production_schema_apply:
+        description: 'LINE人工接手表僅在手動確認必要性與D1免費額度後允許正式建表；push只做離線檢查'
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -38,7 +44,16 @@ jobs:
           for(const name of ['XJW_LINE_RECEIPT_ENABLED','XJW_LINE_VERIFY_ONLY_ENABLED','XJW_LINE_E2E_VERIFIED','XJW_LINE_EXCLUSIVE_CALLBACK_CONFIRMED'])
             if(c.vars[name]!=='false')throw Error('LINE standby must be disabled');
           NODE
+      - name: Source-only check; production LINE handoff schema unchanged
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_schema_apply != true }}
+        run: echo 'No production D1 query or table write was run.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Guard production D1 budget before touching remote schema
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
+        run: |
+          set -euo pipefail
+          node tools/check-d1-free-budget-before-export.mjs
       - name: Confirm D1 recovery bookmark before creating new table
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -46,10 +61,13 @@ jobs:
           grep -Eiq 'bookmark|current' /tmp/xjw-line-handoff-recovery.txt
           echo 'PASS D1 restore capability; bookmark withheld'
       - name: Check existing LINE inbox schema before linking claims
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --command "SELECT name FROM sqlite_master WHERE type='table' AND name='xjw_line_receipt_inbox'"
       - name: Create idempotent human-handoff table and unique active-claim index
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --file docs/cloudflare-line-handoff-schema.sql
       - name: Verify handoff table and unique active-index without reading customer messages
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         shell: bash
         run: |
           set -euo pipefail
