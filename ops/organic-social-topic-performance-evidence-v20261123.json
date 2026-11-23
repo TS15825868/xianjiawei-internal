@@ -1,0 +1,236 @@
+{
+  "schema": "xjw-platform-post-level-organic-evidence-v1",
+  "brand": "仙加味",
+  "captured_at_date_taipei": "2026-11-23",
+  "metricool_brand_id": "6889683",
+  "period": {
+    "from": "2026-10-26T00:00:00+08:00",
+    "to": "2026-11-22T23:59:59+08:00"
+  },
+  "method": "Read-only Metricool per-post analytics, compared only within platform; no new posts or image changes",
+  "field_ids": {
+    "facebook": [
+      "FBPO02",
+      "FBPO03",
+      "FBPO06",
+      "FBPO09",
+      "FBPO12",
+      "FBPO14",
+      "FBPO23"
+    ],
+    "instagram": [
+      "IGPO02",
+      "IGPO03",
+      "IGPO06",
+      "IGPO14",
+      "IGPO15",
+      "IGPO27"
+    ],
+    "threads": [
+      "THPO02",
+      "THPO03",
+      "THPO06",
+      "THPO08",
+      "THPO09",
+      "THPO10"
+    ]
+  },
+  "coverage": {
+    "facebook_feed_posts": 7,
+    "instagram_feed_posts": 6,
+    "threads_posts": 7,
+    "nov21_text_not_returned_by_metricool": true
+  },
+  "data": {
+    "facebook": [
+      {
+        "date": "2026-10-28",
+        "angle": "original product cooking context",
+        "reported_post_reach": 163,
+        "reported_post_clicks": 7,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-03",
+        "angle": "home-style chicken soup preparation",
+        "reported_post_reach": 144,
+        "reported_post_clicks": 0,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-10",
+        "angle": "Wanhua morning brand memory",
+        "reported_post_reach": 218,
+        "reported_post_clicks": 0,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-13",
+        "angle": "shop food preparation and tool organization",
+        "reported_post_reach": 310,
+        "reported_post_clicks": 12,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-18",
+        "angle": "work-break family check-in",
+        "reported_post_reach": 240,
+        "reported_post_clicks": 2,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-20",
+        "angle": "label and ingredient information check",
+        "reported_post_reach": 250,
+        "reported_post_clicks": 1,
+        "reported_link_clicks": 0
+      },
+      {
+        "date": "2026-11-21",
+        "angle": "content not returned by Metricool",
+        "reported_post_reach": 62,
+        "reported_post_clicks": 9,
+        "reported_link_clicks": 0
+      }
+    ],
+    "instagram": [
+      {
+        "date": "2026-10-28",
+        "angle": "original product cooking context",
+        "reported_post_reach": 39
+      },
+      {
+        "date": "2026-11-03",
+        "angle": "home-style chicken soup preparation",
+        "reported_post_reach": 34
+      },
+      {
+        "date": "2026-11-10",
+        "angle": "Wanhua morning brand memory",
+        "reported_post_reach": 37
+      },
+      {
+        "date": "2026-11-13",
+        "angle": "shop food preparation and tool organization",
+        "reported_post_reach": 8
+      },
+      {
+        "date": "2026-11-18",
+        "angle": "work-break family check-in",
+        "reported_post_reach": 9
+      },
+      {
+        "date": "2026-11-20",
+        "angle": "label and ingredient information check",
+        "reported_post_reach": 8
+      }
+    ],
+    "threads": [
+      {
+        "date": "2026-10-28",
+        "angle": "original product cooking context",
+        "reported_post_views": 92
+      },
+      {
+        "date": "2026-11-03",
+        "angle": "home-style chicken soup preparation",
+        "reported_post_views": 68
+      },
+      {
+        "date": "2026-11-10",
+        "angle": "Wanhua morning brand memory",
+        "reported_post_views": 46
+      },
+      {
+        "date": "2026-11-13",
+        "angle": "shop food preparation and tool organization",
+        "reported_post_views": 29
+      },
+      {
+        "date": "2026-11-18",
+        "angle": "work-break family check-in",
+        "reported_post_views": 57
+      },
+      {
+        "date": "2026-11-20",
+        "angle": "label and ingredient information check",
+        "reported_post_views": 14
+      },
+      {
+        "date": "2026-11-21",
+        "angle": "text unavailable in Metricool result",
+        "reported_post_views": 5
+      }
+    ]
+  },
+  "observations": {
+    "facebook_all_seven_post_link_click_metric_zero": true,
+    "facebook_all_seven_reported_post_clicks": 31,
+    "note": "Post clicks are not outbound website clicks. FBPO09 reports zero link-clicks for seven fetched Facebook posts; this does not prove total external site traffic was zero.",
+    "instagram_top_three_reach": [
+      {
+        "date": "2026-10-28",
+        "angle": "original product cooking context",
+        "reach": 39
+      },
+      {
+        "date": "2026-11-10",
+        "angle": "Wanhua morning brand memory",
+        "reach": 37
+      },
+      {
+        "date": "2026-11-03",
+        "angle": "home-style chicken soup preparation",
+        "reach": 34
+      }
+    ],
+    "threads_top_three_views": [
+      {
+        "date": "2026-10-28",
+        "angle": "original product cooking context",
+        "views": 92
+      },
+      {
+        "date": "2026-11-03",
+        "angle": "home-style chicken soup preparation",
+        "views": 68
+      },
+      {
+        "date": "2026-11-18",
+        "angle": "work-break family check-in",
+        "views": 57
+      }
+    ]
+  },
+  "priority_for_new_distinct_approved_content": [
+    {
+      "tag": "料理與實際商品型態",
+      "current_landing": "recipes.html",
+      "basis": "Instagram/Threads relative engagement among known published content; do not repeat 2026-10-28 or 2026-11-03 topic angles or images"
+    },
+    {
+      "tag": "萬華家族工藝與生活場景",
+      "current_landing": "brand.html",
+      "basis": "2026-11-10 post relatively strong on Instagram and Threads; future angle must differ and have unique approved scene"
+    },
+    {
+      "tag": "使用選擇與正式包裝比較",
+      "current_landing": "choose.html",
+      "basis": "Proven product-form interest; no inference of purchase rate without verified inquiries"
+    }
+  ],
+  "guards": {
+    "do_not_treat_link_click_as_order": true,
+    "do_not_use_cross_network_metrics_as_same_measure": true,
+    "do_not_assume_post_engagement_caused_sales": true,
+    "do_not_infer_null_saves_zero": true,
+    "do_not_copy_old_published_post": true,
+    "require_correct_live_product_images": true,
+    "require_current_dedup_proof": true,
+    "require_human_or_delegated_authority_before_publish": true,
+    "new_posts_created": 0,
+    "metricool_mutations": 0,
+    "d1_queries": 0,
+    "added_cost": 0
+  }
+}
