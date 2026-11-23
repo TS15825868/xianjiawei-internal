@@ -1,6 +1,12 @@
 name: 仙加味獨立委任發布正式 D1 安全建置
 on:
   workflow_dispatch:
+    inputs:
+      allow_production_schema_apply:
+        description: '僅人工確認正式 D1 免費額度與增量表必要性後才允許套用；push 只跑離線測試'
+        type: boolean
+        required: true
+        default: false
   push:
     branches: [main]
     paths: ['.github/workflows/prepare-ai-delegated-publication-d1.yml']
@@ -22,7 +28,19 @@ jobs:
         with: {node-version: 22}
       - name: Verify isolated delegation safety tests
         run: node --test tools/test-ai-delegated-publication.mjs
+      - name: Unattended run remains offline; never touch production D1
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_schema_apply != true }}
+        run: echo 'Source tests only; remote D1 migration/readback intentionally skipped.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Require healthy Cloudflare D1 free quota before manually authorized schema change
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          node tools/check-d1-free-budget-before-export.mjs
+
       - name: Create only independent authorization schema and verify live readback
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
