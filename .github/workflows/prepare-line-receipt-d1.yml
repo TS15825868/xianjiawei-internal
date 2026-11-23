@@ -5,6 +5,12 @@ on:
     paths:
       - '.github/workflows/prepare-line-receipt-d1.yml'
   workflow_dispatch:
+    inputs:
+      allow_production_schema_apply:
+        description: 'LINE備援收件表必須明確手動授權；push僅執行離線安全配置驗證'
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -38,7 +44,16 @@ jobs:
           const guards=['XJW_LINE_RECEIPT_ENABLED','XJW_LINE_VERIFY_ONLY_ENABLED','XJW_LINE_E2E_VERIFIED','XJW_LINE_EXCLUSIVE_CALLBACK_CONFIRMED'];
           if(guards.some(k=>cfg.vars[k]!=='false'))throw Error('Do not migrate after enabling standby');
           NODE
+      - name: Unattended runs validate source only and keep formal D1 untouched
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.allow_production_schema_apply != true }}
+        run: echo 'Production LINE inbox schema untouched; offline safeguards checked.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Guard Cloudflare D1 free account quota before remote SQL
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
+        run: |
+          set -euo pipefail
+          node tools/check-d1-free-budget-before-export.mjs
       - name: Check Cloudflare D1 recovery point before schema change
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -46,8 +61,10 @@ jobs:
           grep -Eiq 'bookmark|current' /tmp/xjw-line-before-bookmark.txt || { echo 'D1 Time Travel recovery point unavailable; migration cancelled'; exit 1; }
           echo 'PASS: Cloudflare automatic D1 Time Travel bookmark exists; content withheld.'
       - name: Create only the LINE isolated inbox and index
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         run: npx --yes wrangler@4 d1 execute xianjiawei-internal-db --remote --file docs/cloudflare-line-receipt-schema.sql
       - name: Read back schema only and verify empty inbox
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_production_schema_apply == true }}
         shell: bash
         run: |
           set -euo pipefail
