@@ -1,0 +1,246 @@
+{
+  "schema": "xjw-latest-published-20261112-20261124-to-pending46-caption-delta-v1",
+  "as_of_taipei": "2026-11-24T00:35:00+08:00",
+  "source": "Metricool connected official analytics, brand 6889683, 3 network posts connectors (public post metadata only)",
+  "network_field_sets": [
+    {
+      "platform": "facebook",
+      "fields": [
+        "FBPO01",
+        "FBPO03",
+        "FBPO04",
+        "FBPO05",
+        "FBPO06",
+        "FBPO07"
+      ]
+    },
+    {
+      "platform": "instagram",
+      "fields": [
+        "IGPO01",
+        "IGPO03",
+        "IGPO04",
+        "IGPO05",
+        "IGPO06",
+        "IGPO07"
+      ]
+    },
+    {
+      "platform": "threads",
+      "fields": [
+        "THPO01",
+        "THPO03",
+        "THPO04",
+        "THPO05",
+        "THPO06",
+        "THPO07"
+      ]
+    }
+  ],
+  "history_window_start_taipei": "2026-11-12T00:00:00+08:00",
+  "history_window_end_taipei": "2026-11-24T00:35:00+08:00",
+  "current_46_authority": {
+    "path": "ops/social-pending-46-offline-evidence-source-v20261122.json",
+    "blob_sha": "d3cdd88c873802fd82aa318b52acd55a18e50d44",
+    "candidates": 46
+  },
+  "archived_copy_authority": {
+    "path": "ops/request-owner-history-gap-acceptance-20261112.json",
+    "blob_sha": "60146893c6e7abbdae7d4683718ce8c7da532dc1",
+    "matched_post_ids": 46
+  },
+  "prior_archival_screen": {
+    "path": "ops/receipts/20261122-46-cross-history-offline-readiness.json",
+    "blob_sha": "fb6b2cf5c1d0ff1f995003ce0ff01137da1a9c77",
+    "history_snapshot_at": "2026-11-12T04:34:20.903Z"
+  },
+  "screen_method": "Normalize NFKC, remove punctuation/whitespace/symbols, character trigrams, Jaccard intersection/union; 0.15 is a screening threshold only, not final editorial proof",
+  "counts": {
+    "facebook": 4,
+    "instagram": 3,
+    "threads": 4,
+    "platform_rows": 11,
+    "caption_rows_screened": 9,
+    "missing_caption_rows": 2,
+    "possible_overlap_pairs_ge_0_15": 0,
+    "exact_caption_collision_rows": 0,
+    "compared_pending_candidates": 46
+  },
+  "records": [
+    {
+      "platform": "facebook",
+      "published_day": "20261121",
+      "provider_post_id": "411869648852531_1548747287275488",
+      "public_permalink": "https://facebook.com/1475619177921633/posts/1548747287275488",
+      "post_type": "link",
+      "caption_characters": 0,
+      "has_media_link": false,
+      "can_screen_caption": false,
+      "best_candidate_id": null,
+      "best_caption_jaccard3": null,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "facebook",
+      "published_day": "20261120",
+      "provider_post_id": "411869648852531_1547018490781701",
+      "public_permalink": "https://facebook.com/1475619177921633/posts/1547018490781701",
+      "post_type": "photo",
+      "caption_characters": 77,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-new-year-warm-cup-share",
+      "best_caption_jaccard3": 0.0963,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "facebook",
+      "published_day": "20261118",
+      "provider_post_id": "411869648852531_1544989327651284",
+      "public_permalink": "https://facebook.com/1475619177921633/posts/1544989327651284",
+      "post_type": "photo",
+      "caption_characters": 72,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CAND-20261211",
+      "best_caption_jaccard3": 0.10236,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "facebook",
+      "published_day": "20261113",
+      "provider_post_id": "411869648852531_1539568108193406",
+      "public_permalink": "https://facebook.com/1475619177921633/posts/1539568108193406",
+      "post_type": "photo",
+      "caption_characters": 116,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-chat-family-old-object",
+      "best_caption_jaccard3": 0.0398,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "instagram",
+      "published_day": "20261120",
+      "provider_post_id": "4034250282073874612_78424002938",
+      "public_permalink": "https://www.instagram.com/p/Df8iUHWCGC0/",
+      "post_type": "FEED_IMAGE",
+      "caption_characters": 77,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-new-year-warm-cup-share",
+      "best_caption_jaccard3": 0.0963,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "instagram",
+      "published_day": "20261118",
+      "provider_post_id": "4032800951642918260_78424002938",
+      "public_permalink": "https://www.instagram.com/p/Df3YxlMiI10/",
+      "post_type": "FEED_IMAGE",
+      "caption_characters": 72,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CAND-20261211",
+      "best_caption_jaccard3": 0.10236,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "instagram",
+      "published_day": "20261113",
+      "provider_post_id": "4029264086314790120_78424002938",
+      "public_permalink": "https://www.instagram.com/p/Dfq0larCCzo/",
+      "post_type": "FEED_IMAGE",
+      "caption_characters": 116,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-chat-family-old-object",
+      "best_caption_jaccard3": 0.0398,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "threads",
+      "published_day": "20261121",
+      "provider_post_id": "18031079927696870",
+      "public_permalink": "https://www.threads.com/@xianjiawei.tw/post/DgAeViZGS1b",
+      "post_type": "TEXT_POST",
+      "caption_characters": 0,
+      "has_media_link": false,
+      "can_screen_caption": false,
+      "best_candidate_id": null,
+      "best_caption_jaccard3": null,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "threads",
+      "published_day": "20261120",
+      "provider_post_id": "17920140729264352",
+      "public_permalink": "https://www.threads.com/@xianjiawei.tw/post/Df8iWOUCsPR",
+      "post_type": "IMAGE",
+      "caption_characters": 77,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-new-year-warm-cup-share",
+      "best_caption_jaccard3": 0.0963,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "threads",
+      "published_day": "20261118",
+      "provider_post_id": "18143952862619572",
+      "public_permalink": "https://www.threads.com/@xianjiawei.tw/post/Df3Yz3iCj77",
+      "post_type": "IMAGE",
+      "caption_characters": 72,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CAND-20261211",
+      "best_caption_jaccard3": 0.10236,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    },
+    {
+      "platform": "threads",
+      "published_day": "20261113",
+      "provider_post_id": "18165681304498422",
+      "public_permalink": "https://www.threads.com/@xianjiawei.tw/post/Dfq0neWjfH9",
+      "post_type": "IMAGE",
+      "caption_characters": 116,
+      "has_media_link": true,
+      "can_screen_caption": true,
+      "best_candidate_id": "XJW-CONV-chat-family-old-object",
+      "best_caption_jaccard3": 0.0398,
+      "exact_copy_collision": false,
+      "possible_overlap_candidate_ids": []
+    }
+  ],
+  "unscreened_not_false_negative": [
+    {
+      "platform": "facebook",
+      "public_permalink": "https://facebook.com/1475619177921633/posts/1548747287275488"
+    },
+    {
+      "platform": "threads",
+      "public_permalink": "https://www.threads.com/@xianjiawei.tw/post/DgAeViZGS1b"
+    }
+  ],
+  "recovered_178_historical_media_completeness_claimed": false,
+  "missing_15_historical_binary_identities_recovered": false,
+  "full_visual_or_semantic_dedup_passed": false,
+  "current_live_D1_bindings_rechecked": false,
+  "approvals": 0,
+  "schedules": 0,
+  "publishing": 0,
+  "production_D1_queries": 0,
+  "production_D1_writes": 0,
+  "metricool_mutations": 0,
+  "release_allowed": false
+}
