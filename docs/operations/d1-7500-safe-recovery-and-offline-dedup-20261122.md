@@ -41,3 +41,12 @@ node tools/audit-social-dedup-offline.mjs /secure/path/sanitized-social-export.j
 - LINE 進線、試喝、訂單、成交與回購的真實轉換證據。
 
 以上證據缺失時，維持待核對，不宣稱已結案。
+
+## 2026-11-24 安全閘門實際修復（承接，不重跑正式 D1）
+
+- `ai-quality-rollout.yml` 已改為 **push 只執行離線 AI 審核測試**。正式 D1 唯讀稽核只有手動勾選 `allow_production_d1_scan` 才執行；建表則須另外明確勾選 `allow_production_schema_apply`，缺任何必要授權即不執行正式 SQL。
+- 正式 SQL 前先使用既有 `tools/check-d1-free-budget-before-export.mjs` 核對 Cloudflare 官方 D1 Insights 帳戶級用量；資料過期、不完整、或超過原保守預留門檻時直接失敗，不嘗試 D1 遠端查詢。
+- `metricool-free-evidence.yml` 與 `sync-social-schedule-candidates.yml` 亦已在原有正式 D1 SQL 之前增加相同免費用量閘門，保留既有來源觸發及業務流程；不是新的每小時 D1 掃描。
+- AI 測試實際成功回執：[GitHub Actions 45215922447](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45215922447)。該次 `push` 的 D1 預算查詢、增量建表、資料讀取與 artifact 上傳步驟均 `skipped`；不得把此來源測試當作正式 D1 全庫驗收。
+- Metricool 回填與候選同步的新增預算閘門已提交 GitHub 並讀回原始碼，但截至本次紀錄未另外觸發正式 D1 工作流。保留必要時的獨立驗收，不為驗收耗用生產 SQL 或新增費用。
+- 本次三個修正的程式提交：`9dad8505`、`90684256`、`542b6e6d`。保留三套正式 main 版本順序，不將過時的 `ef7a6044` 當成新的 ERP HEAD。
