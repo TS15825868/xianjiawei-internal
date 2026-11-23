@@ -49,22 +49,29 @@
     "production_d1_receipt_observed_at": "2026-11-20T02:07:10.534Z",
     "source_of_receipt_time": "social_publish_deliveries.last_attempt_at/published_at/created_at/updated_at are exactly equal for all three rows; likely the shared reconciliation write, NOT independent provider event timestamps",
     "actual_server_side_metricool_submit_at": "unknown",
-    "risk_assessment": "EXACT_SCHEDULE_AUTHORIZED_BUT_PROVIDER_LATER; NOT_ENOUGH_TO_ASSERT_UNAUTHORIZED_LATE_DISPATCH",
-    "remaining_check": "Find direct scheduling/dispatch event time if legal deadline enforcement requires delivery before rather than scheduling at 10:00; do not alter historic grant or re-publish",
+    "risk_assessment": "PRIMARY_OWNER_AUTHORIZATION_AND_2_DAYS_EARLIER_FORMAL_SCHEDULE_CONFIRMED; PROVIDER_POSTED_WITHIN_3M08S_AFTER_TARGET; NO_EVIDENCE_OF_NEW_UNAUTHORIZED_DISPATCH",
+    "remaining_check": "Provider lag relative to scheduled 10:00 confirmed (1m56s–3m08s). No strict provider completion deadline was found. Never misclassify 10:07 receipt as actual platform publication; do not change grants or republish.",
     "facebook_url_alias_discrepancy": {
       "prior_d1_receipt_post_id_suffix": "1547018447448372",
       "metricool_analytics_post_id_suffix": "1547018490781701",
       "proven_duplicate": false,
       "note": "Distinct identifiers for Facebook publishing receipt versus analytics feed; do not treat as separate posts without provider-level identity proof"
-    }
+    },
+    "original_user_chat_utc": "2026-11-18T07:04:00Z",
+    "original_user_chat_scope": "Owner explicitly authorized 2026-11-20 10:00 Taiwan post '買食品前，把想確認的資訊記下來' on Facebook, Instagram and Threads; accepted unresolved historical media evidence, requested Instagram @ct314069 tag and schedule receipts.",
+    "user_wording_explicit_hard_deadline_for_provider_completion": false,
+    "original_user_scheduled_time_authorized": true,
+    "schedule_verified_prior_to_target": true,
+    "owner_grant_expiration_matches_scheduled_target": true,
+    "authorization_audit_interpretation": "ONE_OFF_AUTHORIZATION_CONFIRMED; delivery timing variance is documented separately, not a proven grant violation"
   },
   "november_10": {
     "post_id": "XJW-CONV-chat-wanhua-morning",
     "metricool_id": 422664301,
     "archival_owner_instruction_quoted_in_git": "今天的先發佈；然後繼續完成待審。",
     "archival_owner_instruction_source": "ops/owner-directed-metricool-release-20261110.json",
-    "original_user_message_retrieved_independently": false,
-    "approval_source_quality": "EXISTING_ARCHIVAL_SELF_REPORT_NOT_PRIMARY_USER_MESSAGE",
+    "original_user_message_retrieved_independently": true,
+    "approval_source_quality": "PRIMARY_USER_DIRECTIVE_FOUND_WITH_CONTEMPORANEOUS_THREAD_POST_MAPPING; formal D1 delegated grant not present and must not be fabricated",
     "archive_single_post_exception_only": true,
     "remote_schedule_at": "2026-11-10T11:00:00+08:00",
     "metricool_provider_published_taipei": {
@@ -75,8 +82,15 @@
     "production_d1_receipt_observed_at": "2026-11-10T03:09:16.098Z",
     "original_review_decision": "NEEDS_HUMAN_REVIEW",
     "full_quality_16_pass_implied": false,
-    "independent_owner_chat_verification_remaining": true,
-    "risk_assessment": "ARCHIVAL_ONE_OFF_DIRECTION_FOUND; ORIGINAL_CHAT_AUTHORITATIVE_PROOF_UNVERIFIED"
+    "independent_owner_chat_verification_remaining": false,
+    "risk_assessment": "PRIMARY_OWNER_CHAT_RECOVERED_FOR_SINGLE_DAY_OF_POST; FORMAL_GRANT_ABSENT_AND_NOT_BACKFILLED",
+    "original_user_message_utc": "2026-11-10T02:48:47Z",
+    "original_user_message_taipei": "2026-11-10T10:48:47+08:00",
+    "primary_user_message_excerpt": "今天的先發佈 然後 繼續完成待審",
+    "contemporaneous_assistant_followup_utc": "2026-11-10T02:52:33Z",
+    "contemporaneous_assistant_association": "In the same conversation, the assistant associated the owner's 'today's first' instruction with XJW-CONV-chat-wanhua-morning, Metricool 422664301, 11:00 Asia/Taipei and Facebook/Instagram/Threads.",
+    "owner_explicitly_named_post_id_in_that_message": false,
+    "owner_explicitly_named_three_networks_in_that_message": false
   },
   "production_d1_methods": {
     "operations": "read-only, three tiny indexed/metadata checks",
@@ -94,5 +108,6 @@
   "new_approvals": 0,
   "never_convert_receipt_observation_time_to_provider_publication_time": true,
   "no_automated_authorization_backfill": true,
-  "not_authorized_to_republish": true
+  "not_authorized_to_republish": true,
+  "privacy_note": "Only publication IDs, intended times and platform event timestamps retained. No customer rows, secrets or unrelated chats."
 }
