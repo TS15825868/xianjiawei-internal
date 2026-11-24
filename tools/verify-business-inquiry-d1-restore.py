@@ -98,6 +98,24 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
             except sqlite3.Error:
                 raise SystemExit("Isolated snapshot table count unavailable") from None
         return counts
+    # Compare typed row multisets, including duplicate rows and BLOBs, entirely
+    # inside the isolated restore. Never emit individual row hashes or values.
+    def snapshot_fingerprints(names):
+        fingerprints = {}
+        for name in names:
+            quoted = '"' + name.replace('"', '""') + '"'
+            try:
+                hashes = []
+                for row in restored.execute(f"SELECT * FROM {quoted}"):
+                    typed = [(type(v).__name__, v.hex() if isinstance(v, bytes) else v)
+                             for v in row]
+                    encoded = json.dumps(typed, ensure_ascii=True, separators=(",", ":")).encode()
+                    hashes.append(hashlib.sha256(encoded).digest())
+                fingerprints[name] = hashlib.sha256(b"".join(sorted(hashes))).digest()
+            except (sqlite3.Error, ValueError, TypeError):
+                raise SystemExit("Isolated snapshot row fingerprint unavailable") from None
+        return fingerprints
+    preserved_fingerprints = snapshot_fingerprints(snapshot_names)
     preserved_counts = snapshot_counts(snapshot_names)
     desired = catalog(expected)
     required_tables = {
@@ -126,6 +144,8 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         raise SystemExit("Migration rehearsal foreign-key check unavailable") from None
     if snapshot_counts(snapshot_names) != preserved_counts:
         raise SystemExit("Migration rehearsal modified existing ERP table row counts")
+    if snapshot_fingerprints(snapshot_names) != preserved_fingerprints:
+        raise SystemExit("Migration rehearsal modified existing ERP row contents")
     for name in desired:
         expected_indexes = expected.execute(
             "SELECT * FROM pragma_index_list(?)", (name,)
@@ -152,6 +172,7 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         "fullLiveTableInventoryMatchesSnapshot": True,
         "isolatedForeignKeyIntegrityPassed": True,
         "isolatedAllExistingTableRowCountsPreserved": True,
+        "isolatedAllExistingTableRowContentsPreserved": True,
         "productionRowContentCompletenessCompared": False,
         "liveTableCount": len(live_names),
         "snapshotTableCount": len(snapshot_names),
