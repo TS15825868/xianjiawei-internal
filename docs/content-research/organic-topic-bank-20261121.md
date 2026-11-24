@@ -8,7 +8,7 @@
 | k-soup-portions-02 | [PTT 小家庭湯品分裝問題](https://www.ptt.cc/bbs/cookclub/M.1749888915.html) | [食藥署剩菜冷藏與儘速食用](https://www.fda.gov.tw/TC/csmnewsContent.aspx?id=t623389&mid=267) | 晚餐上桌前先分出今晚用量。比對既有「家常湯」和備料筆記，主題限定餐後分量安排與保存。 |
 | k-soup-shopping-03 | [YouTube 下班暖湯選題](https://www.youtube.com/watch?v=0RoSSCV4D4U)、[愛料理簡單家常雞湯](https://icook.tw/recipes/256291) | [食藥署辨明標示與生熟食處理](https://www.fda.gov.tw/TC/newsContent.aspx?cid=4&id=11967) | 下班買菜前先看冰箱已有的材料，聚焦購物清單，避開已發家常湯選擇題。與備料筆記有較高近似風險，補證前暫緩。 |
 
-| k-thaw-meat-04 | 冷凍生肉能否在室溫退冰一整晚（一般料理問答，非熱榜證據） | [食藥署冷凍食品停看聽](https://www.fda.gov.tw/TC/siteListContent.aspx?id=51141&sid=13694) | [11/24 原創三平台候選](./frozen-meat-thaw-candidate-20261124.md)：聚焦烹調前冷藏退冰及防滴液污染；圖片、完整歷史去重、16項審核及授權待核，不排程。 |
+| k-thaw-meat-04 | 冷凍生肉能否在室溫退冰一整晚（一般料理問答，非熱榜證據） | [食藥署冷凍食品停看聽](https://www.fda.gov.tw/TC/siteListContent.aspx?id=51141&sid=13694) | [11/24 原創三平台候選](./frozen-meat-thaw-candidate-20261124.md)：聚焦烹調前冷藏退冰及防滴液污染；圖文候選已備妥，完整歷史去重、16項審核及授權待核，不排程。 |
 
 食品廣告以[食藥署食品廣告合規輔導指引](https://www.fda.gov.tw/tc/includes/GetFile.ashx?id=f639147208057524649)核查。TikTok 公開網頁受存取限制。Facebook、Instagram、Threads 以自家 Metricool 回執建立表現基準，公開搜尋仍未取得足以驗證的站內熱門排名。
 
