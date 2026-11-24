@@ -30,7 +30,7 @@ class IsolatedB2BRestore(unittest.TestCase):
     def receipt(self, presence=("business_inquiry_drafts", "business_inquiries", "business_inquiry_crm_delivery"),
                 altered=False, corrupt=False, changed_literal=False,
                 partial_backup=False, incomplete_inventory=False,
-                orphan_foreign_key=False):
+                orphan_foreign_key=False, typed_rows=False):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
             schema_file = base / "three-tables.sql"
@@ -44,6 +44,10 @@ class IsolatedB2BRestore(unittest.TestCase):
             try:
                 conn.execute("CREATE TABLE unrelated_erp_customer (id TEXT PRIMARY KEY)")
                 conn.execute("INSERT INTO unrelated_erp_customer VALUES (?)", ("private-customer-not-for-output",))
+                if typed_rows:
+                    conn.execute("CREATE TABLE typed_erp_values (value)")
+                    conn.executemany("INSERT INTO typed_erp_values VALUES (?)",
+                                     [(None,), (1,), (1.0,), ("1",), (b"\x00\xff",), ("1",)])
                 if orphan_foreign_key:
                     conn.execute("CREATE TABLE unrelated_erp_order ("
                                  "id TEXT PRIMARY KEY, customer_id TEXT "
@@ -106,12 +110,19 @@ class IsolatedB2BRestore(unittest.TestCase):
         self.assertTrue(receipt["fullLiveTableInventoryMatchesSnapshot"])
         self.assertTrue(receipt["isolatedForeignKeyIntegrityPassed"])
         self.assertTrue(receipt["isolatedAllExistingTableRowCountsPreserved"])
+        self.assertTrue(receipt["isolatedAllExistingTableRowContentsPreserved"])
         self.assertFalse(receipt["productionRowContentCompletenessCompared"])
         self.assertEqual(receipt["liveTableCount"], 4)
         self.assertEqual(receipt["snapshotTableCount"], 4)
         self.assertFalse(receipt["requiresProductionSchemaApply"])
         self.assertEqual(receipt["b2bRowCountsBeforeMigration"]["business_inquiries"], 1)
         self.assertNotIn("private-contact-test", result.stdout + json.dumps(receipt))
+
+    def test_typed_values_and_duplicate_rows_preserved(self):
+        result, receipt = self.receipt(typed_rows=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(receipt["isolatedAllExistingTableRowContentsPreserved"])
+        self.assertFalse(receipt["productionRowContentCompletenessCompared"])
 
     def test_only_missing_crm_table_would_require_explicit_migration(self):
         result, receipt = self.receipt(presence=("business_inquiry_drafts", "business_inquiries"))
