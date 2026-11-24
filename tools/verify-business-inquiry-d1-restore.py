@@ -81,7 +81,11 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
     snapshot_names = sorted(name for (name,) in restored.execute(
         "SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'"
     ))
-    if snapshot_names != sorted(live_names):
+    # Cloudflare manages _cf_KV separately from application schema and data.
+    # Ignore only that exact platform catalog name on both sides of the comparison.
+    snapshot_names = [name for name in snapshot_names if name != "_cf_KV"]
+    live_application_names = sorted(name for name in live_names if name != "_cf_KV")
+    if snapshot_names != live_application_names:
         raise SystemExit("Full D1 backup table inventory does not match live database")
     before = catalog(restored)
     if not before:
@@ -174,10 +178,11 @@ with sqlite3.connect(":memory:") as restored, sqlite3.connect(":memory:") as exp
         "isolatedAllExistingTableRowCountsPreserved": True,
         "isolatedAllExistingTableRowContentsPreserved": True,
         "productionRowContentCompletenessCompared": False,
-        "liveTableCount": len(live_names),
+        "liveTableCount": len(live_application_names),
+        "cloudflareManagedTableExcluded": "_cf_KV" in live_names,
         "snapshotTableCount": len(snapshot_names),
         "liveTableNamesSha256": hashlib.sha256(
-            json.dumps(sorted(live_names), separators=(",", ":")).encode("utf-8")
+            json.dumps(live_application_names, separators=(",", ":")).encode("utf-8")
         ).hexdigest(),
         "b2bRowCountsBeforeMigration": baseline,
         "existingB2bTableCount": len(desired) - len(missing),
