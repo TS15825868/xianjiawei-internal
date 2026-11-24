@@ -1,5 +1,13 @@
 # B2B CRM independent delivery (staged, disabled)
 
+## 2026-11-24 最小權限接收器
+
+正式備份及原有隔離測試沿用既有回執。新接收器使用 [service-account/Code.gs](./service-account/Code.gs) 及同目錄的明確 OAuth 資訊清單，部署時使用整套來源。Apps Script 擁有者只授予指令碼對外發送 HTTP 請求的 scope。Sheets API 的資料權限由全新專用服務帳戶的檔案共用設定控制。只共用指定驗收試算表，不授予 Google Cloud 專案角色，不使用全網域委派，也不重用具有其他 Drive 權限的帳戶。
+
+服務帳戶憑證以 Script Properties 的 `XJW_B2B_SHEETS_SERVICE_EMAIL` 與 `XJW_B2B_SHEETS_SERVICE_PRIVATE_KEY` 設定。試算表仍使用 `XJW_B2B_CRM_SPREADSHEET_ID`，Worker 既有 v2 HMAC、時間戳、目標證明與回執格式延用。寫入使用 RAW 值，避免公式解析，並在 Apps Script 鎖內檢查事件 ID 與摘要。切換前保留原專案與來源。
+
+本機模擬測試已驗證 JWT 不委派、固定目標 URL、RAW 寫入、403 及未確認寫入時拒絕。Google Cloud Console 在 Work 瀏覽器無法開啟，尚無服務帳戶、正式憑證或部署回執。正式驗收需以該帳戶對指定檔讀取表頭成功，並對另一份不共用的無敏感測試檔取得拒絕。正式寫入、轉送及對客通知在驗收前維持停用。
+
 ## 2026-11-24 接收器與正式備份驗收狀態
 
 - 獨立 B2B Apps Script 專案已建立，沿用本目錄的 `Code.gs`，綁定既有驗收工作表，寫入旗標為 false。本機隔離驗證 8 項通過，包含簽章、時間戳、目標、重複寫入及公式字元處理。
