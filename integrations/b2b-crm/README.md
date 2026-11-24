@@ -1,5 +1,11 @@
 # B2B CRM independent delivery (staged, disabled)
 
+## 2026-11-24 接收器與正式備份驗收狀態
+
+- 獨立 B2B Apps Script 專案已建立，沿用本目錄的 `Code.gs`，綁定既有驗收工作表，寫入旗標為 false。本機隔離驗證 8 項通過，包含簽章、時間戳、目標、重複寫入及公式字元處理。
+- 已在 Google 提交 Web App 部署設定。Google OAuth 顯示應用程式尚未驗證，且獨立指令碼使用 `SpreadsheetApp.openById` 要求 `spreadsheets` OAuth 範圍，無法將該授權限定在單一試算表。現有專案授權只涵蓋指定試算表，因此未授予 OAuth 權限。尚無部署成功回執、正式金鑰設定、已部署端點拒絕回執或正式簽章唯讀驗收。自動轉送及對客通知仍停用。
+- D1 正式備份與隔離還原已在 [Actions #6](https://github.com/TS15825868/xianjiawei-internal/actions/runs/45412018779) 通過：11,815,053 bytes、41 張業務表比對一致、外鍵及隔離演練逐筆保留檢查通過。正式庫逐筆指紋比對未執行，正式遷移未套用。
+
 ## 2026-11-23 confirmed live state (read-only)
 
 - Cloudflare D1 lists all three expected B2B tables. Bounded production `COUNT(*)` checks returned **0 inquiries, 0 drafts, and 0 CRM deliveries**, with 0 rows written. This is a current snapshot, not a guarantee of future activity.
@@ -18,7 +24,7 @@
 - Create or locate the separate Apps Script project from integrations/b2b-crm/Code.gs, initially bound by XJW_B2B_CRM_SPREADSHEET_ID to the **existing verified isolated spreadsheet**, not the production spreadsheet or its backup. Set XJW_B2B_CRM_SECRET to a securely generated shared secret of at least 32 characters. Run setupB2bCrmSheet manually. Enable XJW_B2B_CRM_ENABLED only in the isolated project and verify deployment and signed readback before any production target is configured.
 - Worker secrets: XJW_B2B_CRM_URL (standalone script.google.com/macros/s/.../exec), XJW_B2B_CRM_SECRET. Leave XJW_B2B_CRM_ENABLED unset or false until approved production acceptance. Existing intake flag is also required. No existing retail endpoint, contact notification, or customer message is used.
 - Stable inquiry ID + payload digest provides receiver deduplication, including lost acknowledgments. Mismatched IDs never count as success. D1 leases, backoff, bounded attempts, and held status guard concurrency and prevent retry storms. Held records require operator evidence; no automatic reset.
-- Acceptance still required: actual standalone Apps Script deployment, isolated signed delivery/readback/retry/duplicate verification, production credentials, and end-to-end acceptance. **The current D1 table migration is not outstanding**; the latest full-database backup/restore acceptance remains a separate open safety gate. Retail order synchronization/v46 acceptance remains separate.
+- Acceptance still required: actual standalone Apps Script deployment, isolated signed delivery/readback/retry/duplicate verification, production credentials, and end-to-end acceptance. **The current D1 table migration is not outstanding**; the latest full-database backup/restore acceptance is documented in the November 24 section. Retail order synchronization/v46 acceptance remains separate.
 
 ## Read-only receiver acceptance before activation
 - The receiver supports an exact signed `{action:"readiness",nonce:"<32 lowercase hex>"}` request even when receipt writes are disabled. It returns only the nonce, protocol version, write-enabled flag, and HMAC target proof; it never returns a Sheet ID or row data.
