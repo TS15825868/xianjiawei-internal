@@ -1,0 +1,186 @@
+{
+  "schema": "xjw-revised-ten-editorial-scoped-v1",
+  "date_taipei": "2026-11-24",
+  "source_head": "bf98427cfaddeee51d18804f46397454b35b2ed7",
+  "history_sources": [
+    "ops/metricool-instagram-threads-published-history-20261105.json",
+    "D1 published records from a bounded live query"
+  ],
+  "usable_historical_captions": 55,
+  "exact_revised_caption_matches": 0,
+  "scope": "Current source images downloaded and visually inspected against new captions. Nearest normalized trigram scores cover only available nonempty captions; visuals and scores do not certify full historical deduplication or the 16 gates.",
+  "revised_posts": [
+    {
+      "id": "XJW-CAND-20261211",
+      "sha": "5940f9c45db937f230f60965cd0edaa6057777e30e9e8ef15a7080ed3477ed69",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.1032
+      },
+      "visual_observation": "兩本筆記、小老闆及兩位夥伴與現版一致",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "sha": "9bfcf2276fd6c5e26870dc4709977fb707ffa46c2245a96ee4b4a322f5c200d5",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-chat-buy-first-look",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0252
+      },
+      "visual_observation": "青菜與素面菜單紙對應年菜搭配",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "sha": "e15a53a03a5d16ca9f7e6b8583385cf89020c5c63f62e00d5963ce6d14c2cc0f",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0244
+      },
+      "visual_observation": "擦拭青花碗及餐具櫃對應歸位",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "sha": "5f76152af9f95b5249cadd57c5d8ae0d1d2fcf02a857a1de24f010c4329550c7",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0833
+      },
+      "visual_observation": "製作筆記、手寫動作及老器具對應工藝",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "sha": "d7d900260ecfc033e494b4b64b882c3f74487c340ae60d9940deb77fa3b276b5",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-chat-buy-first-look",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0376
+      },
+      "visual_observation": "石磨與萬華工作桌對應老器具",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "sha": "58902982ef4d9963bcdc70a4270f9da67aca6d6cf1c0270d626afa33526f52c7",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-chat-buy-first-look",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0667
+      },
+      "visual_observation": "湯鍋、餐桌與捧碗動作對應晚餐",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "sha": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.064
+      },
+      "visual_observation": "木尺與白蓋罐對應品項，縮圖不足以核對包裝文字",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "sha": "d51cd98f566e102ae1bccc7f962fdc385d7d91a7d819a78ce0a8e13fc9419f08",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0672
+      },
+      "visual_observation": "手機架與裸罐對應拍照，保留試喝相關歷史主題待核",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "sha": "757c78b3337c519892aba29bdd8b18cc99b9d9b58c888a133bc1de9e09917352",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-care-simple-checkin",
+        "source": "D1",
+        "exact": false,
+        "score": 0.0813
+      },
+      "visual_observation": "翻閱相簿對應萬華街坊回憶",
+      "decision": "defer_full_history_and_quality_gate"
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "sha": "2eef2cbaba5d43325cfa8b60054aebf7d9a32a397fe4c2d2973041b905e7d4e1",
+      "matches_saved_image_sha": true,
+      "nearest": {
+        "id": "XJW-CONV-chat-buy-first-look",
+        "source": "D1",
+        "exact": false,
+        "score": 0.1172
+      },
+      "visual_observation": "食材抽屜與夕陽對應乾貨清點",
+      "decision": "defer_full_history_and_quality_gate"
+    }
+  ],
+  "thaw": {
+    "candidate": "k-thaw-meat-04",
+    "published_d1_images_compared": 5,
+    "minimum_dhash_distance": 24,
+    "compared": [
+      [
+        "XJW-CONV-chat-shop-organizing",
+        24,
+        false
+      ],
+      [
+        "XJW-CONV-chat-buy-first-look",
+        29,
+        false
+      ],
+      [
+        "XJW-CONV-chat-wanhua-morning",
+        25,
+        false
+      ],
+      [
+        "XJW-20913aa0-9cfb-49f0-acae-15005a51bbaa",
+        35,
+        false
+      ],
+      [
+        "XJW-CONV-care-simple-checkin",
+        31,
+        false
+      ]
+    ],
+    "full_history_clear": false
+  },
+  "n8n": {
+    "live_deploy_commit": "1fdd1ffac4fe6668486f3eb687381989b55dfe4f",
+    "observed_startup_logs_taipei": "2026-11-24 23:35–23:37",
+    "process_ready_and_three_workflows_activated_in_logs": true,
+    "external_readiness": "15-second timeout",
+    "monitor_execution_verified": false
+  },
+  "d1_writes": 0,
+  "publications": 0
+}
