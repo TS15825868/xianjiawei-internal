@@ -1,0 +1,51 @@
+{
+  "schema": "xjw-product-source-and-n8n-startup-review-v1",
+  "date_taipei": "2026-11-25",
+  "source_head": "08076d60ad6258285989199b9bb053aee77602d3",
+  "posts": [
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "live_image_sha256": "b83a80b550361c8c3bef33c498e4880c3c79f3f633a7f0b34135b7cb86ceb2db",
+      "approved_source_refs": [
+        {
+          "archive": "產品原圖&原物料(10).zip",
+          "name": "IMG_3177.JPG",
+          "sha256": "2b37c12d9005631bca5513419199c027ada113c85618dd7470acabe681d6f804"
+        },
+        {
+          "archive": "仙加味產品圖&新DM(20260809-182058).zip",
+          "name": "227100AA-3CB0-4EB8-BC8A-3E809CC0F868.PNG",
+          "sha256": "42b84d8ee11332c06c5e3c08677722f8c68a6faa536a863a2663b0a69277371f"
+        }
+      ],
+      "visual_observation": "白色罐蓋、雪地鹿群與金色邊線、三字直式品名及罐身比例與原圖吻合，無明顯裁切或拉伸。新品 DM 標示 75g。情境圖細字不足以逐字核對。",
+      "decision": "product_identity_pass_full_quality_gate_unverified"
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "published_reference": "https://www.instagram.com/p/Dbr1T8YIJuk/",
+      "caption_conclusion": "兩者都涉及30cc小玻璃罐。歷史貼文為試喝申請、交期及包裝介紹，目前候選為窗邊架手機拍實物的店務情境。可見文案範圍未確認重複角度。",
+      "full_visual_dedup": "unverified; original Instagram CDN returned HTTP 403",
+      "decision": "keep_existing_candidate_defer_full_history"
+    }
+  ],
+  "n8n": {
+    "plan": "free",
+    "render_http_health_check_path_configured": false,
+    "listener_reported": ":: port 10000",
+    "initializing_utc": "2026-11-24T15:52:22Z",
+    "database_ping_timeout_utc": "2026-11-24T15:53:20Z",
+    "database_recovered_utc": "2026-11-24T15:53:52Z",
+    "three_monitors_loaded_utc": "2026-11-24T15:54:17Z",
+    "external_root_probe": "connect timeout before TCP/TLS completed from runner",
+    "cause_not_established": [
+      "public network routing",
+      "IPv4/IPv6 binding behavior",
+      "cold start attribution",
+      "memory exhaustion in this startup"
+    ],
+    "changed_runtime_or_deployed": false
+  },
+  "d1_writes": 0,
+  "publications": 0
+}
