@@ -1,0 +1,96 @@
+{
+  "schema": "xjw-live-pending-version-and-thaw-screen-v1",
+  "date_taipei": "2026-11-24",
+  "live_source": "D1 pending_review bounded read-only query",
+  "archival_source": "ops/request-20261112-49-visual-evidence-write.json",
+  "related_history_receipt": "ops/receipts/20261122-46-cross-history-offline-readiness.json",
+  "current_ids_matched": 46,
+  "current_captions_exact": 36,
+  "current_titles_exact": 41,
+  "changed_posts": [
+    {
+      "id": "XJW-CONV-chat-family-old-object",
+      "known": true,
+      "copy": false,
+      "title": false
+    },
+    {
+      "id": "XJW-CONV-chat-luerong-intro",
+      "known": true,
+      "copy": false,
+      "title": true
+    },
+    {
+      "id": "XJW-CONV-chat-traditional-image",
+      "known": true,
+      "copy": false,
+      "title": false
+    },
+    {
+      "id": "XJW-CONV-chat-photo-size",
+      "known": true,
+      "copy": false,
+      "title": true
+    },
+    {
+      "id": "XJW-CONV-chat-last-bowl",
+      "known": true,
+      "copy": false,
+      "title": false
+    },
+    {
+      "id": "XJW-CONV-year-end-small-win",
+      "known": true,
+      "copy": false,
+      "title": false
+    },
+    {
+      "id": "XJW-CAND-20261211",
+      "known": true,
+      "copy": false,
+      "title": false
+    },
+    {
+      "id": "XJW-CAND-20270119",
+      "known": true,
+      "copy": false,
+      "title": true
+    },
+    {
+      "id": "XJW-CAND-20270129",
+      "known": true,
+      "copy": false,
+      "title": true
+    },
+    {
+      "id": "XJW-CAND-20270323",
+      "known": true,
+      "copy": false,
+      "title": true
+    }
+  ],
+  "thaw": {
+    "candidate": "k-thaw-meat-04",
+    "sha256": "b8fef768cb7da3e2afcd9737d0bfdb5c95ab13b950f8a7ca460726e599da7d3b",
+    "pending_images_compared": 46,
+    "exact_matches": 0,
+    "lowest_64bit_dhash_distance": 19,
+    "history_completeness_verified": false
+  },
+  "unmapped_metricool": [
+    {
+      "id": 409190019,
+      "auto_publish": false,
+      "status": "pending",
+      "live_evidence": "No matching caption excerpt or original media URL in the bounded D1 checks; nearest archived candidates lack attached media."
+    },
+    {
+      "id": 415295632,
+      "auto_publish": false,
+      "status": "pending",
+      "live_evidence": "No matching caption excerpt or original media URL in the bounded D1 checks; nearest archived candidate depicts a mascot scene, rather than the draft's standalone product image."
+    }
+  ],
+  "approval_or_publication": false,
+  "d1_writes": 0
+}
