@@ -1,0 +1,32 @@
+{
+  "schema": "xjw-shared-historical-media-evidence-index-v1",
+  "date_taipei": "2026-11-25",
+  "sources": [
+    {
+      "path": "ops/receipts/20261122-46-cross-history-offline-readiness.json",
+      "blob_sha": "fb6b2cf5c1d0ff1f995003ce0ff01137da1a9c77"
+    },
+    {
+      "path": "ops/social-historical-58-carousel-gap-evidence-bridge-v20261122.json",
+      "blob_sha": "d7d5d31c6b18edbd64bb5f38fcf1f7dbc5fe8be6"
+    }
+  ],
+  "known_coverage": {
+    "archival_caption_records": 132,
+    "archival_image_references": 88,
+    "metricool_carousel_parents_reconciled": 3,
+    "verified_carousel_child_links": 20,
+    "unique_encoded_child_shas": 11,
+    "text_only_records": 4,
+    "repost_facades_origin_unknown": 4,
+    "unavailable_original_media": 15
+  },
+  "scope_warning": "來源視窗及媒體範圍不同。輪播補證、純文字及轉發記錄不得自15筆缺件扣除，不得直接視為現版去重通過。",
+  "delta": {
+    "post_id": "XJW-CONV-chat-luerong-intro",
+    "non_duplicate_gates_pass": 15,
+    "duplicate": "DEFER",
+    "d1_readback": true
+  },
+  "approval_or_publication": false
+}
