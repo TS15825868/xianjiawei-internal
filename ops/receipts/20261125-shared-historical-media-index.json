@@ -28,5 +28,55 @@
     "duplicate": "DEFER",
     "d1_readback": true
   },
-  "approval_or_publication": false
+  "approval_or_publication": false,
+  "instagram_mirror_supplement": {
+    "source_gap_record": "ops/historical-media-source-link-gaps-20261108.json",
+    "source_commit": "ea456240a97191617e50f76f3385fa32594d896e",
+    "media": [
+      {
+        "id": "4003809463882866913_78424002938",
+        "sha256": "b25f76805c3637883769d514a3e0428f87f2e0032902c311c86ae27ecdceeb90",
+        "path": "assets/historical-published/instagram/2026-10-09/4003809463882866913_78424002938.jpg"
+      },
+      {
+        "id": "4003900963899413608_78424002938",
+        "sha256": "151266c7d292d9d50e1bd13568781d5a9f0c8dbc3c7227be0d6056e0ba55594a",
+        "path": "assets/historical-published/instagram/2026-10-09/4003900963899413608_78424002938.jpg"
+      }
+    ],
+    "method": "EXIF orientation, grayscale 9×8 LANCZOS, 64-bit horizontal dHash; array order matches media",
+    "comparisons": [
+      {
+        "post_id": "XJW-CONV-cny-fridge-clean",
+        "sha256": "24d377c706a8a84daa691b19612d3aa9cefa71b35b61892b7391bc792c44ac5a",
+        "distance": [
+          32,
+          34
+        ],
+        "visual": "同為冰箱情境，候選為年前整理冰箱，歷史圖以龜鹿膏保存位置為主。"
+      },
+      {
+        "post_id": "XJW-CAND-20270309",
+        "scope": "repository candidate asset",
+        "sha256": "c19e4fcd03799606b29d1e4745bebca9088e5fde471c3a536c498778b06bdac7",
+        "distance": [
+          36,
+          30
+        ],
+        "visual": "候選在展示架前，無歷史圖的冰箱資訊版面。"
+      },
+      {
+        "post_id": "k-thaw-meat-04",
+        "scope": "existing candidate PNG",
+        "sha256": "b8fef768cb7da3e2afcd9737d0bfdb5c95ab13b950f8a7ca460726e599da7d3b",
+        "distance": [
+          34,
+          28
+        ],
+        "visual": "候選是蹲姿取裝有食材的透明保鮮盒，歷史圖以龜鹿膏保存位置為主。"
+      }
+    ],
+    "exact_matches": 0,
+    "scope": "僅兩筆 GitHub 鏡像，未釐清是否屬共同索引的15筆，不調整缺件數或審核狀態。"
+  }
 }
