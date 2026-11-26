@@ -15,7 +15,7 @@ function fakeDb(platform,prior=null,overrides={}){
    async first(){
     if(sql.includes('FROM social_metricool_sync'))return null;
     if(sql.includes('FROM social_posts'))return {...post(platform),...overrides};
-    if(sql.includes('FROM social_post_review_gates'))return verifiedHumanGate;
+    if(sql.includes('FROM social_post_review_gates'))return {...verifiedHumanGate,content_fingerprint:await fingerprint({...post(platform),...overrides})};
     if(sql.includes('FROM social_publish_deliveries'))return prior;
     throw Error('unknown DB read');
    },
@@ -191,12 +191,7 @@ test('Facebook Reel finish returned HTTP 200 success false must not publish',asy
   throw Error('unexpected extra POST');
  };
  try{
-  const db=fakeDb('Facebook'),originalPrepare=db.DB.prepare;
-  db.DB.prepare=function(sql){
-   const statement=originalPrepare.call(this,sql);
-   if(sql.includes('FROM social_posts'))statement.first=async()=>fixture;
-   return statement;
-  };
+  const db=fakeDb('Facebook',null,fixture);
   const report=await publishPostById({DB:db.DB,...env},fixture.id,new Date('2026-10-26T00:00:00Z'));
   assert.equal(calls,3);
   assert.equal(report.results[0].ok,false);
