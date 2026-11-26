@@ -28,6 +28,15 @@ assert.equal(await fingerprint({...legacyMaterial,knowledge_format:null}),legacy
 assert.notEqual(await fingerprint({...legacyMaterial,knowledge_format:'food_faq'}),legacyHash);
 assert.notEqual(await fingerprint({...legacyMaterial,knowledge_format:'ingredient_guide'}),await fingerprint({...legacyMaterial,knowledge_format:'food_faq'}));
 console.log('PASS knowledge-card format is version-bound without changing legacy fingerprints');
+const videoMaterial={...legacyMaterial,video_url:'https://example.test/review.mp4',video_sha256:'a'.repeat(64),cover_sha256:'b'.repeat(64)};
+const videoHash=await fingerprint(videoMaterial);
+assert.notEqual(videoHash,legacyHash);
+for(const change of [{video_url:'https://example.test/replacement.mp4'},{video_sha256:'c'.repeat(64)},{image_url:'https://example.test/cover.jpg'},{cover_sha256:'d'.repeat(64)}]){
+  assert.notEqual(await fingerprint({...videoMaterial,...change}),videoHash);
+}
+assert.notEqual(await fingerprint({...legacyMaterial,media_url:'https://example.test/review.mp4'}),legacyHash);
+console.log('PASS video and cover changes invalidate the prior fingerprint');
+
 
 const state={forwarded:0,writes:[],externalLink:null,casFail:false,row:{id:'ISOLATED',title:'萬華日常',headline:'店裡的一天',copy:'分享今天的生活',category:'品牌',status:'draft',image_url:'https://example.invalid/unique.png',image_alt:'萬華店裡的一天',image_width:1200,image_height:1200,image_quality_status:'ok'},review:null};
 globalThis.__reviewTest=state;

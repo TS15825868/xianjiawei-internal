@@ -54,7 +54,14 @@ let schemaPromise=null;
 async function authorize(request,env,ctx){const url=new URL('/api/me',request.url);return app.fetch(new Request(url,{method:'GET',headers:request.headers}),env,ctx)}
 async function ensureSchema(env){if(!env?.DB)throw new Error('D1 資料庫尚未綁定');if(schemaPromise)return schemaPromise;schemaPromise=env.DB.exec(`CREATE TABLE IF NOT EXISTS social_post_review_gates(post_id TEXT PRIMARY KEY,content_fingerprint TEXT NOT NULL,checklist_json TEXT NOT NULL DEFAULT '{}',copy_image_match INTEGER NOT NULL DEFAULT 0,reviewed_by TEXT NOT NULL DEFAULT '',reviewed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);`).catch(error=>{schemaPromise=null;throw error});return schemaPromise}
 async function postRow(env,id){return env.DB.prepare('SELECT * FROM social_posts WHERE id=? LIMIT 1').bind(id).first()}
-function postMaterial(row){const material={title:clean(row?.title),headline:clean(row?.headline),copy:clean(row?.copy),category:clean(row?.category),image_url:clean(row?.image_url),image_alt:clean(row?.image_alt),image_source:clean(row?.image_source),image_width:Number(row?.image_width||0),image_height:Number(row?.image_height||0),image_quality_status:clean(row?.image_quality_status)};if(row?.knowledge_format!=null)material.knowledge_format=clean(row.knowledge_format);return material}
+function postMaterial(row){const material={title:clean(row?.title),headline:clean(row?.headline),copy:clean(row?.copy),category:clean(row?.category),image_url:clean(row?.image_url),image_alt:clean(row?.image_alt),image_source:clean(row?.image_source),image_width:Number(row?.image_width||0),image_height:Number(row?.image_height||0),image_quality_status:clean(row?.image_quality_status)};if(row?.knowledge_format!=null)material.knowledge_format=clean(row.knowledge_format);
+const videoUrl=clean(row?.video_url);
+const mediaUrl=clean(row?.media_url);
+const mediaType=clean(row?.media_type).toLowerCase();
+if(videoUrl||['video','reel','reels','short_video'].includes(mediaType)||/\.(?:mp4|mov|m4v|webm)(?:$|[?#])/i.test(mediaUrl||material.image_url)){
+  material.video={type:mediaType,url:videoUrl||mediaUrl||material.image_url,sha256:clean(row?.video_sha256),cover_sha256:clean(row?.cover_sha256)};
+}
+return material}
 async function fingerprint(row){const bytes=new TextEncoder().encode(JSON.stringify(postMaterial(row)));const digest=await crypto.subtle.digest('SHA-256',bytes);return[...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('')}
 const REVIEW_PRODUCT_NAMES=['龜鹿膏','龜鹿飲30cc','龜鹿飲180cc','鹿茸粉','參仲四物飲','龜鹿活力飲','四珍寶','二珍寶','玫瑰果茶','懈悠活養生茶','武大漢丹參茶','纖體茶','白茶丹參飲','丹參舒活茶'];
 function reviewProductSegments(value,target){const source=String(value||''),segments=[];let start=0;while(target){const pos=source.indexOf(target,start);if(pos<0)break;let end=source.length,after=pos+target.length;for(const name of REVIEW_PRODUCT_NAMES){const next=source.indexOf(name,after);if(next>=0)end=Math.min(end,next)}segments.push(source.slice(pos,end));start=after}return segments}
