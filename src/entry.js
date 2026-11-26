@@ -1,5 +1,5 @@
 import app from './worker.js';
-import { uploadMedia, serveMedia } from './media-upload.js';
+import { uploadMedia, serveMedia, serveReviewVideo } from './media-upload.js';
 import { reconcileOfficialPostMedia } from './post-image-reconciler.js';
 import { validateProductRecord, validatePostPayload, PRODUCT_AUTHORITY } from './product-authority.js';
 
@@ -176,6 +176,13 @@ export default{
     if(request.method==='GET'&&mediaMatch){
       try{return await serveMedia(request,compatibleEnv(env),decodeURIComponent(mediaMatch[1]));}
       catch{return new Response('Not Found',{status:404,headers:{'cache-control':'no-store'}});}
+    }
+    if(request.method==='GET'&&path==='/api/media-upload'){
+      const authorization=await authorize(request,env,ctx);
+      if(!authorization.ok)return authorization;
+      const profile=await authorization.json();
+      try{return await serveReviewVideo(request,compatibleEnv(env),profile,new URL(request.url).searchParams.get('video')||'');}
+      catch{return json({error:'影片素材暫時無法讀取'},503);}
     }
     if(request.method==='POST'&&path==='/api/media-upload'){
       const authorization=await authorize(request,env,ctx);

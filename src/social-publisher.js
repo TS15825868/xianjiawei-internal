@@ -256,6 +256,7 @@ async function dispatchWebhook(env,post,platform,config){
 async function dispatchPlatform(env,post,platform){
   const config=PLATFORM_CONFIG[platform];
   if(!config) return{platform,ok:false,retryable:false,error:'不支援的發布平台'};
+  if(platform==='Threads'&&isVideoPost(post))return{platform,ok:false,retryable:false,manual_required:true,error:'Threads 影片須先驗收 Metricool API 媒體欄位，再啟用自動發布。'};
   if(config.manual) return{platform,ok:false,retryable:false,manual_required:true,error:config.manualReason};
   if(config.direct&&directReadiness(env,config.direct)){
     let directResult=null;

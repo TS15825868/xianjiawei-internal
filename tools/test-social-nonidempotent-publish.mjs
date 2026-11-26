@@ -8,13 +8,13 @@ const post=(platform)=>({id:'P-20261026-UNIQUE',status:'approved',
  image_quality_status:'ok',approved_by:'owner@example.com',approved_at:'2026-10-26T00:00:00Z',
  platforms_json:JSON.stringify([platform])});
 const verifiedHumanGate={content_fingerprint:await fingerprint(post('Facebook')),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(key=>[key,true]))),copy_image_match:1,reviewed_by:'owner@example.com',reviewed_at:'2026-10-26T00:00:00Z'};
-function fakeDb(platform,prior=null){
+function fakeDb(platform,prior=null,overrides={}){
  const state={writes:[]};
  const DB={exec:async()=>({}),prepare(sql){let binds=[];
   return {bind(...a){binds=a;return this},
    async first(){
     if(sql.includes('FROM social_metricool_sync'))return null;
-    if(sql.includes('FROM social_posts'))return post(platform);
+    if(sql.includes('FROM social_posts'))return {...post(platform),...overrides};
     if(sql.includes('FROM social_post_review_gates'))return verifiedHumanGate;
     if(sql.includes('FROM social_publish_deliveries'))return prior;
     throw Error('unknown DB read');
@@ -23,12 +23,12 @@ function fakeDb(platform,prior=null){
  }};
  return {DB,state};
 }
-async function simulate(platform,env,respond,{prior=null}={}){
+async function simulate(platform,env,respond,{prior=null,overrides={}}={}){
  const saved=globalThis.fetch;
  const requests=[];
  globalThis.fetch=async(url,opt)=>{requests.push({url:String(url),method:opt.method});return respond(url,opt)};
  try{
-  const db=fakeDb(platform,prior),merged={...env,DB:db.DB};
+  const db=fakeDb(platform,prior,overrides),merged={...env,DB:db.DB};
   const report=await publishPostById(merged,post(platform).id,new Date('2026-10-26T00:00:00Z'));
   return {report,requests,db};
  }finally{globalThis.fetch=saved}
@@ -266,4 +266,14 @@ test('late scheduled post with mixed invalid platforms goes to manual review wit
   assert.equal(mutationCount,1);
   assert.equal(externalCalls,0);
  }finally{globalThis.fetch=saved}
+});
+
+test('Threads video stays held even when a Metricool webhook is configured',async()=>{
+ const {report,requests,db}=await simulate('Threads',{
+  THREADS_PUBLISH_WEBHOOK_URL:'https://metricool.example.test/publish',
+  THREADS_PUBLISH_WEBHOOK_TOKEN:'isolated-test'
+ },()=>{throw Error('unexpected outbound call')},{overrides:{media_type:'video',video_url:'https://assets.example.test/video.mp4'}});
+ assert.equal(requests.length,0);
+ assert.notEqual(report.status,'published');
+ assert.ok(db.state.writes.some(({binds})=>binds.some(value=>String(value).includes('Metricool API 媒體欄位'))));
 });

@@ -7,6 +7,17 @@ const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'
 const norm=(v='')=>String(v).toLowerCase().replace(/\s+/g,'');
 const fmt=v=>v?new Date(v).toLocaleString('zh-TW',{hour12:false,timeZone:'Asia/Taipei'}):'—';
 
+function postMediaPreview(post){
+  const media=post.video_url||post.media_url||post.image_url;
+  const video=post.video_url||['video','reel','reels','short_video'].includes(String(post.media_type||'').toLowerCase())||/\.mp4(?:$|[?#])/i.test(String(media||''));
+  if(video){
+    if(!/^https:\/\//i.test(String(media||'')))return '<p>影片網址須使用 HTTPS。</p>';
+    const poster=post.image_url&&post.image_url!==media&&/^https:\/\//i.test(post.image_url)?` poster="${esc(post.image_url)}"`:'';
+    return `<video class="xjw-image-preview" controls playsinline preload="none" src="${esc(media)}"${poster} aria-label="${esc(post.title||'貼文影片')}"></video>`;
+  }
+  return post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:'';
+}
+
 function localInput(value){
   if(!value)return'';
   const d=new Date(value);
@@ -188,7 +199,7 @@ function card(post){
     <div class="xjw-meta"><span>${esc((post.platforms||[]).join('／')||'未指定平台')}</span>${post.scheduled_at?`<span>排程：${esc(fmt(post.scheduled_at))}</span>`:(post.proposed_scheduled_at?`<span>候選時段（尚未排程）：${esc(fmt(post.proposed_scheduled_at))}</span>`:'')}</div>
     ${post.headline?`<h4>${esc(post.headline)}</h4>`:''}
     <div class="public-copy-label">客戶實際會看到的文案</div><div class="xjw-copy">${esc(post.copy||'尚無文案')}</div>
-    ${post.image_url?`<img class="xjw-image-preview" src="${esc(post.image_url)}" alt="${esc(post.image_alt||post.title||'貼文圖片')}" loading="lazy" decoding="async" fetchpriority="low">`:''}
+    ${postMediaPreview(post)}
     <div class="xjw-${a.level}"><strong>內部檢查（不會發布）</strong><br>${esc(a.text)}</div>
     ${aiNeedsHuman?'<div class="xjw-warning"><strong>AI 已完成品質初審，但不是人工核准。</strong><br>原文案、圖片及預審證據已保留；品質由AI維護，對外發布仍須另行授權。</div>':''}
     <div class="xjw-actions">
@@ -552,7 +563,7 @@ async function openPostView(post,button){
     root.innerHTML=`<div class="xjw-modal"><div class="xjw-modal-bg" data-close-modal></div><div class="xjw-modal-card">
       <h2>${esc(p.title||'貼文')}</h2>
       <div class="xjw-meta"><span class="status-pill ${esc(p.status)}">${esc(statusLabel(p.status))}</span><span>${esc((p.platforms||[]).join('／'))}</span></div>
-      ${p.image_url?`<img class="xjw-image-preview" src="${esc(p.image_url)}" alt="${esc(p.image_alt||p.title||'貼文圖片')}">`:''}
+      ${postMediaPreview(p)}
       <h3>文案</h3><div class="xjw-copy">${esc(p.copy||'')}</div>
       <h3>各平台發布結果</h3>
       ${rows.length?`<div class="delivery-list">${rows.map(r=>`<div class="delivery-row"><strong>${esc(r.platform)}</strong><span>${esc(statusLabel(r.status))}</span><small>${esc(r.remote_id||r.error_text||'')}</small></div>`).join('')}</div>`:'<p class="muted">尚無發布紀錄。</p>'}
