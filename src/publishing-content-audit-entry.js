@@ -1,6 +1,7 @@
 import {productEqualityErrors} from './product-equality-policy.js';
 import app from './publishing-only-entry.js';
 import { productMatchErrors, duplicatePostErrors, fingerprint, validOriginalImageReview } from './publishing-review-gate-entry.js';
+import { REGENERATION_ROLES } from './publishing-review-gate-entry.js';
 import { imageHash } from './ai-quality-review.js';
 import { classifyAiQualityFlow } from './ai-quality-flow.js';
 import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';
@@ -199,6 +200,9 @@ async function batchAudit(request,env,ctx){
 async function readBody(request){try{return await request.clone().json()}catch{return{}}}
 async function enforceBeforeWrite(request,env,ctx,id){
   const authorization=await authorize(request,env,ctx);if(!authorization.ok)return authorization;
+  // Check write authority before loading the target or scanning the post library.
+  const profile=await authorization.json().catch(()=>null);
+  if(!REGENERATION_ROLES.has(clean(profile?.role)))return json({error:'沒有貼文審核或發布權限'},403);
   const row=await postRow(env,id);if(!row)return json({error:'找不到貼文'},404);
   const result=await auditOne(env,row,await liveRows(env));
   if(!result.ok)return json({error:'圖文完整檢查未通過，不能送審／核准／排程／發布',details:result.errors,content_audit_version:VERSION},409);
