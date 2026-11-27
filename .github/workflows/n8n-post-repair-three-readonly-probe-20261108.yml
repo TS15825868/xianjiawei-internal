@@ -3,13 +3,13 @@ on:
   push:
     branches: [main]
     paths:
-      - ops/request-n8n-post-repair-live-probe-20261108.json
+      - ops/request-n8n-post-repair-live-probe-20261127.json
 permissions:
   contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 9
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -18,16 +18,27 @@ jobs:
       - name: Verify request and fail closed without any publication permissions
         run: |
           node - <<'NODE'
-          const r=require('./ops/request-n8n-post-repair-live-probe-20261108.json');
-          if(r.scope!=='three-previously-active-n8n-readonly-monitors-post-repair'||r.testedDeployId!=='dep-dbo50vs9v7es73ea86g0'||r.allowApproval!==false||r.allowPublishing!==false||r.allowCommentReply!==false||r.allowDatabaseWrites!==false||r.onlyGet!==true||r.activeWorkflowNames?.length!==3)throw Error('Unexpected monitor probe request');
+          const r=require('./ops/request-n8n-post-repair-live-probe-20261127.json');
+          if(r.scope!=='three-previously-active-n8n-readonly-monitors-post-repair'||r.testedDeployId!=='dep-dc4okm15efls73a5bn8g'||r.allowApproval!==false||r.allowPublishing!==false||r.allowCommentReply!==false||r.allowDatabaseWrites!==false||r.onlyGet!==true||r.activeWorkflowNames?.length!==3)throw Error('Unexpected monitor probe request');
           console.log('N8N_POST_REPAIR_PROBE_POLICY_PASS',JSON.stringify({onlyGet:true,monitorCount:3,deploy:r.testedDeployId}));
           NODE
       - name: Confirm actual n8n readiness without bypassing health check
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsS --retry 0 --connect-timeout 12 --max-time 40 "https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness" -o /tmp/xjw-n8n-ready.json
-          node -e "const r=require('/tmp/xjw-n8n-ready.json');if(r.status!=='ok')process.exit(1);console.log('N8N_READINESS_VERIFIED',r.status)"
+          ready=false
+          for attempt in 1 2 3 4; do
+            if curl -fsS --retry 0 --connect-timeout 7 --max-time 20 "https://xianjiawei-n8n-longterm.onrender.com/healthz/readiness" -o /tmp/xjw-n8n-ready.json &&
+               node -e "const r=require('/tmp/xjw-n8n-ready.json');if(r.status!=='ok')process.exit(1);console.log('N8N_READINESS_VERIFIED',r.status)"; then
+              ready=true
+              break
+            fi
+            if [ "$attempt" -lt 4 ]; then sleep 60; fi
+          done
+          if [ "$ready" != true ]; then
+            echo 'N8N_READINESS_NOT_VERIFIED; no workflow invoked'
+            exit 1
+          fi
       - name: Check all three existing read-only monitors by safe GET only
         shell: bash
         run: |
