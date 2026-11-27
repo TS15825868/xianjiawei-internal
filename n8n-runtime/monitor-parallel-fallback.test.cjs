@@ -47,7 +47,7 @@ test('broken Render readiness is bounded and never masks primary failure',()=>{
  assert.match(primary,/timeout-minutes: 9/);
  assert.match(primary,/for attempt in 1 2 3 4; do/);
  assert.match(primary,/--connect-timeout 7 --max-time 20/);
- assert.match(primary,/if \[ "\$attempt" -lt 4 \]; then sleep 5; fi/);
+ assert.match(primary,/if \[ "\$attempt" -lt 4 \]; then sleep 60; fi/);
  assert.doesNotMatch(primary,/for attempt in 1 2 3 4 5 6 7 8 9 10 11 12 13 14/);
  assert.match(primary,/n8n readiness unavailable; no monitor webhooks were invoked/);
  assert.match(primary,/exit 1/);
@@ -73,4 +73,20 @@ test('manual run stays independent by default and requires explicit n8n opt-in',
  assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
  assert.doesNotMatch(backup,/^\s{4}if:/m);
  assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
+});
+
+
+test('manual-only readiness covers the observed 149s cold start within the existing job budget',()=>{
+ const primary=parts[0];
+ const attempts=4,probeSeconds=20,gapSeconds=60,workflowRequests=3,workflowSeconds=60;
+ assert.match(primary,/for attempt in 1 2 3 4; do/);
+ assert.ok(primary.includes('--retry 0 --connect-timeout 7 --max-time 20'));
+ assert.ok(primary.includes('then sleep 60; fi'));
+ assert.ok(primary.includes('--retry 0 --connect-timeout 15 --max-time 60'));
+ assert.equal(attempts*probeSeconds+(attempts-1)*gapSeconds,260);
+ assert.ok((attempts-1)*gapSeconds>149);
+ assert.ok(attempts*probeSeconds+(attempts-1)*gapSeconds+workflowRequests*workflowSeconds<9*60);
+ assert.ok(!primary.includes('--retry 2'));
+ assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
+ assert.ok(parts[1].includes('n8n-runtime/monitor-parallel-fallback.test.cjs'));
 });
