@@ -84,6 +84,21 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
   if(lineHealthSlow)
     errors.push('LINE OA 健康檢查超過 8 秒：疑似 Render 冷啟動或網路壅塞，請優先查核即時客服。');
   const now=Date.now();
+  // Reuse the existing LINE GET. This is transport readiness, not actual CRM writes.
+  const b2b = line.body?.b2bTransport;
+  const b2bCheckedAt = Date.parse(String(b2b?.checkedAt || ''));
+  const b2bFresh = Number.isFinite(b2bCheckedAt) && b2bCheckedAt <= now + 60000
+    && now - b2bCheckedAt <= 20 * 60 * 1000;
+  const b2bEnabled = line.body?.b2bPersistenceEnabled === true && b2b?.intakeEnabled === true;
+  const b2bTransportReady = line.ok === true && line.body?.ok === true
+    && deploymentCurrentVerified && line.body?.credentialsConfigured === true
+    && line.body?.orderOpen === true && b2b?.verified === true && b2bFresh && b2bEnabled;
+  // A cached/missing probe after cold start is not evidence of an outage or successful writes.
+  const b2bState = b2bTransportReady ? 'verified_readonly' :
+    !b2b || !b2bFresh ? 'unverified_or_stale' :
+    !deploymentCurrentVerified ? 'deployment_unverified' :
+    !b2bEnabled ? 'intake_not_confirmed_enabled' : 'transport_unverified';
+
   const lastWebhookAt=Date.parse(String(line.body?.lastWebhookAt||''));
   const lastReplySuccessAt=Date.parse(String(line.body?.lastReplySuccessAt||''));
   const recentWebhook=Number.isFinite(lastWebhookAt)&&lastWebhookAt<=now+60000
@@ -217,7 +232,10 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
       deploymentDriftDetected,
       // Live customer acceptance AND current production code must both pass
       // independent acceptance before anyone can certify a LINE release.
-      lineReleaseReady:false
+      lineReleaseReady:false,
+      b2bTransport:{state:b2bState,readOnlyReady:b2bTransportReady,checkedAtFresh:b2bFresh,
+        persistenceEnabled:line.body?.b2bPersistenceEnabled===true,intakeEnabled:b2b?.intakeEnabled===true,
+        actualOrderWriteVerified:false,googleCrmWriteVerified:false}
     },
     master: { status: master.status, version: m.version, productCount: m.productCount },
     ai: { status: ai.status, version: ai.body?.version },

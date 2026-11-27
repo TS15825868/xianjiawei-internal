@@ -83,6 +83,9 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Isolated fallback contract tests for changed code only
+        if: github.event_name == 'push'
+        run: node --test n8n-runtime/smoke-readonly.test.cjs
       - name: Identify latest LINE OA main without builds or secrets
         shell: bash
         run: |

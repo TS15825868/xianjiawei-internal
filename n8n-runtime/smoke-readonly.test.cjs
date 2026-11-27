@@ -411,3 +411,21 @@ test('the hourly monitor only resolves LINE main via read-only git; never deploy
  assert.match(yaml,/XJW_LINE_EXPECTED_SHA=/);
  assert.doesNotMatch(yaml,/render\.com\/deploy\/|trigger_deploy\(|cloudflare deploy/);
 });
+
+test('B2B ready uses existing GET, current LINE SHA and fresh signed receipt; no writes certified',async()=>{
+ const latest='a'.repeat(40);
+ const x=await exercise(r=>Object.assign(r[lineUrl].body,{deploymentCommit:latest,b2bPersistenceEnabled:true,b2bTransport:{verified:true,intakeEnabled:true,checkedAt:new Date().toISOString()}}),{expectedLineSha:latest});
+ assert.equal(x.report.line.b2bTransport.state,'verified_readonly');
+ assert.equal(x.report.line.b2bTransport.readOnlyReady,true);
+ assert.equal(x.report.line.b2bTransport.actualOrderWriteVerified,false);
+ assert.equal(x.report.line.b2bTransport.googleCrmWriteVerified,false);
+ assert.equal(x.requests.length,7);
+});
+test('B2B missing, stale, future, unsigned, disabled or wrong deployment never certify readiness',async()=>{
+ const latest='a'.repeat(40);
+ for(const patch of [{b2bTransport:undefined},{b2bTransport:{verified:true,intakeEnabled:true,checkedAt:new Date(Date.now()-21*60000).toISOString()}},{b2bTransport:{verified:true,intakeEnabled:true,checkedAt:new Date(Date.now()+120000).toISOString()}},{b2bTransport:{verified:false,intakeEnabled:true,checkedAt:new Date().toISOString()}},{b2bPersistenceEnabled:false},{deploymentCommit:'b'.repeat(40)},{ok:false},{credentialsConfigured:false},{orderOpen:false}]){
+  const x=await exercise(r=>Object.assign(r[lineUrl].body,{deploymentCommit:latest,b2bPersistenceEnabled:true,b2bTransport:{verified:true,intakeEnabled:true,checkedAt:new Date().toISOString()}},patch),{expectedLineSha:latest});
+  assert.equal(x.report.line.b2bTransport.readOnlyReady,false);
+  assert.equal(x.report.line.b2bTransport.googleCrmWriteVerified,false);
+ }
+});
