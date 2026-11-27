@@ -1,0 +1,27 @@
+name: CRM order reconciliation (offline only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/crm-order-reconcile.mjs'
+      - 'ops/crm-order-reconcile.test.mjs'
+      - '.github/workflows/crm-order-reconcile-offline.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: xjw-crm-order-reconcile-offline
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify isolated order reconciliation; no live CRM, D1, or customer writes
+        run: node --test ops/crm-order-reconcile.test.mjs

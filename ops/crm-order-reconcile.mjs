@@ -43,19 +43,24 @@ function columnsFor(headers, fields) {
 
 function stateIndex(sheet, label) {
   const states = new Map();
-  if (sheet === undefined) return states;
+  let missingOrderId = 0;
+  if (sheet === undefined) return { states, missingOrderId };
   if (!Array.isArray(sheet)) throw new Error("CRM 狀態工作表格式錯誤");
   const [headers, ...rows] = sheet;
   const { id, status } = columnsFor(headers, { id: "訂單編號", status: label });
   for (const row of rows) {
     if (!Array.isArray(row)) throw new Error("CRM 狀態資料列格式錯誤");
     const key = clean(row[id]);
-    if (!key) continue;
+    if (!key) {
+      // Blank spreadsheet rows are harmless; populated rows without an ID cannot be reconciled.
+      if (row.some(value => clean(value))) missingOrderId++;
+      continue;
+    }
     const values = states.get(key) ?? new Set();
     values.add(clean(row[status]));
     states.set(key, values);
   }
-  return states;
+  return { states, missingOrderId };
 }
 
 function hasStatusConflict({ orderStatus, paymentStatus, shippingStatus }) {
@@ -77,11 +82,15 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
   const testIds = new Set([...knownTestOrderIds, ...testOrderIds.map(clean).filter(Boolean)]);
   const [headers, ...rows] = sheet;
   const columns = columnsFor(headers, sheetFields);
-  const pay = stateIndex(payments, "核對狀態");
-  const ship = stateIndex(shipments, "出貨狀態");
+  const paymentIndex = stateIndex(payments, "核對狀態");
+  const shipmentIndex = stateIndex(shipments, "出貨狀態");
+  const pay = paymentIndex.states;
+  const ship = shipmentIndex.states;
   const report = {
     excludedTest: 0, excludedErpTest: 0, nonExcludedCrmRows: 0, nonExcludedErpRows: 0,
-    orphanPaymentIds: 0, orphanShipmentIds: 0, malformed: 0, malformedErp: 0, erpWithoutCrmId: 0,
+    orphanPaymentIds: 0, orphanShipmentIds: 0,
+    missingPaymentOrderId: paymentIndex.missingOrderId, missingShipmentOrderId: shipmentIndex.missingOrderId,
+    malformed: 0, malformedErp: 0, erpWithoutCrmId: 0,
     duplicate: 0, duplicateCrm: 0, duplicateErp: 0, unmatched: 0, erpOnly: 0, matched: 0, different: 0, blocked: 0,
     missingCrmSource: 0, missingErpSource: 0, conflictingPayment: 0, conflictingShipping: 0,
     missingCrmPaymentStatus: 0, missingCrmShippingStatus: 0,
@@ -164,7 +173,7 @@ export function reconcileCrmOrders(sheet, erpOrders, { payments, shipments, test
   // A zero-difference empty dataset is not evidence of successful order synchronization.
   const exceptions = report.malformed + report.malformedErp + report.erpWithoutCrmId +
     report.duplicate + report.unmatched + report.erpOnly + report.different + report.blocked +
-    report.orphanPaymentIds + report.orphanShipmentIds;
+    report.orphanPaymentIds + report.orphanShipmentIds + report.missingPaymentOrderId + report.missingShipmentOrderId;
   report.coverage = report.matched > 0 ? (exceptions ? "matched_with_exceptions" : "matched_no_detected_exceptions")
     : (report.nonExcludedCrmRows || report.nonExcludedErpRows || exceptions ? "no_matched_records" : "no_non_test_records");
   // Read-only field equality cannot certify live ingestion, money received, or a conversion.

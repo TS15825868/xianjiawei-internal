@@ -82,3 +82,26 @@ test("orphan payment/shipment identifiers are counted without exposing their val
   assert.equal(clean.coverage,"matched_no_detected_exceptions");assert.equal(clean.liveOrderSyncVerified,false);
   assert.equal(reconcileCrmOrders([headers,row("A")],[],auxiliary("A")).coverage,"no_matched_records");
 });
+
+
+test("populated auxiliary rows without order IDs prevent clean reconciliation; blank rows are ignored", () => {
+  const options = auxiliary("A");
+  options.payments.push(["", "已收款"], ["  ", "待匯款"], ["", ""], []);
+  options.shipments.push(["", "已出貨"], ["", ""]);
+  const r = reconcileCrmOrders([headers, row("A")], [order("A")], options);
+  assert.equal(r.matched, 1);
+  assert.equal(r.missingPaymentOrderId, 2);
+  assert.equal(r.missingShipmentOrderId, 1);
+  assert.equal(r.coverage, "matched_with_exceptions");
+  assert.equal(r.liveOrderSyncVerified, false);
+  assert.equal(r.paidRevenueVerified, false);
+});
+
+test("unidentified auxiliary data alone is not an empty dataset or successful sync", () => {
+  const r = reconcileCrmOrders([headers], [], { payments: [["訂單編號", "核對狀態"], ["", "已收款"]], shipments: [["訂單編號", "出貨狀態"], ["", ""]] });
+  assert.equal(r.missingPaymentOrderId, 1);
+  assert.equal(r.missingShipmentOrderId, 0);
+  assert.equal(r.coverage, "no_matched_records");
+  assert.equal(r.paidRevenueVerified, false);
+  assert.equal(reconcileCrmOrders([headers], [], { payments: [["訂單編號", "核對狀態"], ["", ""]] }).coverage, "no_non_test_records");
+});
