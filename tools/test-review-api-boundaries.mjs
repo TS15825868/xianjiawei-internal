@@ -15,7 +15,7 @@ assert.match(source,/AI品質審核不能代替使用者人工核准/, 'AI revie
 assert.match(source,/reviewer_type:'HUMAN'/, 'Only a verified HUMAN review gate may authorize publication');
 assert.match(source,/auto_schedule:false,queued_for_work:/,
   'Local Work queue must never claim a remote scheduled publication');
-source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
+source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async request=>new URL(request.url).pathname==='/api/me'?Response.json({email:'reviewer@example.com',role:globalThis.__reviewTest.role??'owner'}):(globalThis.__reviewTest.forwarded++,Response.json({ok:true}))};`);
 source=source.replace("import {enqueueMetricool,metricoolOwns,metricoolImmediate} from './metricool-sync.js';",'const enqueueMetricool=async()=>({ok:true}),metricoolOwns=async()=>Boolean(globalThis.__reviewTest.externalLink),metricoolImmediate=async()=>{throw Error("unexpected publish")};');
 source=source.replace("import {imageHash,recordAiReview,aiGate,ensureAiSchema} from './ai-quality-review.js';",'const imageHash=()=>"isolated",recordAiReview=()=>{throw Error("unexpected AI write")},aiGate=async()=>({ok:false,reason:"No AI evidence in isolated tests"});');
 source=source.replace("import { publishedPlatformReceiptHold } from './external-published-receipt-holds.js';",'const publishedPlatformReceiptHold=(row)=>null; // isolated: external receipts exercised separately');
@@ -78,6 +78,42 @@ assert.equal((await post('status',{status:'approved',review_checklist:{},copy_im
 assert.equal(state.forwarded,0);assert.equal(state.writes.length,0);
 state.row={...state.row,status:'approved',approved_by:'reviewer@example.com',approved_at:new Date().toISOString(),scheduled_at:'2026-10-27T02:00:00Z'};
 state.review={content_fingerprint:await fingerprint(state.row),checklist_json:JSON.stringify(Object.fromEntries(REQUIRED_CHECKS.map(key=>[key,true]))),copy_image_match:1,reviewed_by:'reviewer@example.com',reviewed_at:new Date().toISOString()};
+// The outer review gate must enforce the SAME write roles as the underlying
+// Worker BEFORE saving/clearing approval or entering the Metricool handoff.
+// Use a fully reviewed fixture so that an unrelated quality failure cannot
+// disguise a missing role check. No real API, account or production data.
+{
+  const validRow={...state.row};
+  const validReview={...state.review};
+  const checklist=Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true]));
+  const initialWrites=state.writes.length,initialForwarded=state.forwarded;
+  for(const role of ['viewer','sales','warehouse','accounting','unknown','']){
+    state.role=role;
+    state.row={...validRow,status:'pending_review',approved_by:null,approved_at:null,scheduled_at:null};
+    assert.equal((await post('status',{status:'approved',review_checklist:checklist,copy_image_match:true})).status,403,'unauthorized approval: '+role);
+    state.row={...validRow};
+    state.review={...validReview};
+    for(const externalLink of [null,{metricool_id:99,state:'scheduled'}]){
+      state.externalLink=externalLink;
+      assert.equal((await post('publish-now')).status,403,'unauthorized immediate publication: '+role);
+      assert.equal((await post('status',{status:'scheduled',scheduled_at:'2026-10-27T02:00:00Z'})).status,403);
+      assert.equal((await post('status',{status:'draft'})).status,403);
+      for(const method of ['PUT','PATCH']){
+        const response=await gate.fetch(new Request('https://isolated.invalid/api/posts/ISOLATED',{method,headers:{'content-type':'application/json'},body:JSON.stringify({copy:'unauthorized edit'})}),env,{});
+        assert.equal(response.status,403);
+      }
+    }
+    assert.equal(state.writes.length,initialWrites,'denial must precede review writes: '+role);
+    assert.equal(state.forwarded,initialForwarded,'denial must precede downstream publisher: '+role);
+  }
+  delete state.role;
+  state.row=validRow;
+  state.review=validReview;
+  state.externalLink=null;
+  assert.equal((await gateState(env,state.row)).ok,true,'authorized reviewed fixture remains valid');
+}
+console.log('PASS low-privilege roles cannot approve, schedule, edit or queue immediate publication, including Metricool-linked posts');
+
 // Explicitly rejected or needs_rework images must not pass 16-point
 // approval, scheduled publishing or immediate publish through API bypasses.
 const approvedSnapshot={...state.row};
