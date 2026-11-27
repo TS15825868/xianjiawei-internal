@@ -73,7 +73,7 @@ test('manual run stays independent by default and requires explicit n8n opt-in',
  const [primary,backup]=parts;
  assert.ok(primary.includes("workflow_dispatch:\n    inputs:\n      probe_n8n:"));
  assert.ok(primary.includes("default: false"));
- assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
+ assert.ok(primary.includes("    if: (github.event_name == 'schedule' && github.event.schedule == '23 0 * * *') || (github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true)"));
  assert.doesNotMatch(backup,/^\s{4}if:/m);
  assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
 });
@@ -90,7 +90,7 @@ test('bounded readiness covers the observed 149s cold start within the existing 
  assert.ok((attempts-1)*gapSeconds>149);
  assert.ok(attempts*probeSeconds+(attempts-1)*gapSeconds+workflowRequests*workflowSeconds<9*60);
  assert.ok(!primary.includes('--retry 2'));
- assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
+ assert.ok(primary.includes("    if: (github.event_name == 'schedule' && github.event.schedule == '23 0 * * *') || (github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true)"));
  assert.ok(parts[1].includes('n8n-runtime/monitor-parallel-fallback.test.cjs'));
 });
 
