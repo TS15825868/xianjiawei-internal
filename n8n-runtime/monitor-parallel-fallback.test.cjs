@@ -11,7 +11,8 @@ test('read-only fallback starts in parallel and never waits for broken n8n',()=>
  assert.equal(parts.length,2,'Both monitor and backup jobs must exist');
  const [primary,backup]=parts;
  assert.match(primary,/\n  monitor:\n/);
- assert.match(primary,/cron:\s*'23 \* \* \* \*'/);
+ assert.match(primary,/cron:\s*'23 0 \* \* \*'/);
+ assert.match(primary,/cron:\s*'23 1-23 \* \* \*'/);
  assert.doesNotMatch(backup,/^\s{4}needs:/m);
  assert.doesNotMatch(backup,/^\s{4}if:/m);
  assert.match(backup,/runs-on: ubuntu-latest/);
@@ -55,10 +56,12 @@ test('broken Render readiness is bounded and never masks primary failure',()=>{
  assert.match(parts[1],/node n8n-runtime\/smoke-readonly\.js/);
 });
 
-test('known-stale Render n8n is never auto-woken by schedules or pushes while public fallback continues',()=>{
+test('verified Render n8n resumes one daily scheduled check; pushes and other hours remain backup-only',()=>{
  const [primary,backup]=parts;
- assert.match(primary,/\n  monitor:\n    if: github\.event_name == 'workflow_dispatch' && inputs\.probe_n8n == true\n/);
- assert.match(primary,/cron:\s*'23 \* \* \* \*'/);
+ assert.ok(primary.includes("    if: (github.event_name == 'schedule' && github.event.schedule == '23 0 * * *') || (github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true)"));
+ assert.ok(!primary.includes("github.event_name == 'push' &&"));
+ assert.match(primary,/cron:\s*'23 0 \* \* \*'/);
+ assert.match(primary,/cron:\s*'23 1-23 \* \* \*'/);
  assert.doesNotMatch(backup,/^\s{4}if:/m);
  assert.doesNotMatch(backup,/^\s{4}needs:/m);
  assert.match(backup,/node n8n-runtime\/smoke-readonly\.js/);
@@ -76,7 +79,7 @@ test('manual run stays independent by default and requires explicit n8n opt-in',
 });
 
 
-test('manual-only readiness covers the observed 149s cold start within the existing job budget',()=>{
+test('bounded readiness covers the observed 149s cold start within the existing job budget',()=>{
  const primary=parts[0];
  const attempts=4,probeSeconds=20,gapSeconds=60,workflowRequests=3,workflowSeconds=60;
  assert.match(primary,/for attempt in 1 2 3 4; do/);
@@ -89,4 +92,17 @@ test('manual-only readiness covers the observed 149s cold start within the exist
  assert.ok(!primary.includes('--retry 2'));
  assert.ok(primary.includes("if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true"));
  assert.ok(parts[1].includes('n8n-runtime/monitor-parallel-fallback.test.cjs'));
+});
+
+
+test('daily primary and remaining 23 hourly backup slots are disjoint and preserve all 24 hours',()=>{
+ const [primary,backup]=parts;
+ const schedules=Array.from(primary.matchAll(/- cron: '23 ([^']+) \* \* \*'/g),m=>m[1]);
+ assert.deepEqual(schedules,['0','1-23']);
+ const hours=schedules.flatMap(slot=>slot==='0'?[0]:Array.from({length:23},(_,i)=>i+1));
+ assert.equal(hours.length,24);
+ assert.equal(new Set(hours).size,24);
+ assert.ok(primary.includes("    if: (github.event_name == 'schedule' && github.event.schedule == '23 0 * * *') || (github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true)"));
+ assert.doesNotMatch(backup,/^\s{4}needs:/m);
+ assert.doesNotMatch(backup,/^\s{4}if:/m);
 });

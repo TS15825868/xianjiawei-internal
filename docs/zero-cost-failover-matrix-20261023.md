@@ -97,3 +97,11 @@ Supabase 官方 2026 文件建議：持續連線的 IPv4 後端使用 **shared S
 收件僅執行 `INSERT ... ON CONFLICT DO NOTHING` 的原子持久化，不會在主機端自動發送。遇到 PostgreSQL 執行失敗時，Edge **不會重送當次未知結果的 INSERT**；會關閉並淘汰有問題的 `pg.Pool`，回傳 HTTP 503、`sent:false`。Meta 若對同一原始事件重送，才從受保護環境重新取得目前的資料庫設定，建立新的專用帳號連線；若第一次實際已寫入，主鍵可防止重複收件。這不是已完成真實主備 E2E 的證明。
 
 此機制同時適用 TLS 斷線與服務端安全輪替專用密碼，不新增付款資源；現場仍須使用官方 Meta Webhook 及正式專用帳號驗證外部重送語意。
+
+
+## 2026-11-27 唯讀監控主備恢復（本節更新舊版暫停主線狀態）
+
+- Render 正式部署 `dc806db`（`dep-dc4okm15efls73a5bn8g`）LIVE，啟動日誌確認 `0.0.0.0:10000`、JS Task Runner 及三條監控啟用。
+- [遠端驗收 #46011248481](https://github.com/TS15825868/xianjiawei-internal/actions/runs/46011248481)：HTTPS readiness 及 LINE、AI/GEO、系統健康三條 GET 監控均取得成功回執。
+- 在既有排程中保守恢復每日 UTC 00:23（台北 08:23）主線唯讀檢查；其他 23 小時只執行 GitHub Actions 獨立備援。兩個互斥 cron 合計維持每小時一次備援，不另外建立排程服務；主線失敗不阻斷備援，禁止自動部署及每小時喚醒 Render。首次定時執行回執尚待取得。
+- 此項恢復只涵蓋三條唯讀監控，不涵蓋 Meta 收件、PostgreSQL 專用帳號 TLS、ERP 交易寫回、發布或任何對客發送。原有安全關閉旗標全部保留；不因 HTTPS 成功而開啟其他路徑。

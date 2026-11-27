@@ -2,7 +2,9 @@ name: 仙加味 n8n 三條唯讀監控正式排程
 
 on:
   schedule:
-    - cron: '23 * * * *'
+    # Keep exactly one backup check each hour; only the UTC 00:23 run also wakes n8n.
+    - cron: '23 0 * * *'
+    - cron: '23 1-23 * * *'
   push:
     branches: [main]
     paths:
@@ -25,12 +27,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Render latest live version is stale and its 512 MiB n8n repeatedly fails
-  # readiness/OOM after waking. Do not probe/wake it hourly while unchanged.
-  # Manual dispatch defaults to the independent backup; opt in to a probe only after confirmed new LIVE deploy.
-  # The independent public GET fallback continues hourly without n8n.
+  # 2026-11-27: Render dc806db / dep-dc4okm15efls73a5bn8g is live;
+  # external HTTPS readiness and all three GET-only monitors passed run 46011248481.
+  # Resume one bounded primary check daily (08:23 Taipei), not hourly wakeups.
+  # Manual dispatch still defaults to backup only; pushes never wake n8n.
+  # Independent backup continues every hour, even if primary fails.
   monitor:
-    if: github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true
+    if: (github.event_name == 'schedule' && github.event.schedule == '23 0 * * *') || (github.event_name == 'workflow_dispatch' && inputs.probe_n8n == true)
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -48,8 +51,8 @@ jobs:
           # 2026-11-25 Render logs: start 16:22:12 UTC, all three monitors
           # active at 16:24:41 UTC (149s). Four probes at five-second gaps
           # allowed at most 95s, even on a legitimate cold start. Keep the
-          # four-request cap but space manual-only probes by 60s; worst-case
-          # readiness budget is 4*20+3*60=260s, no scheduled n8n wakeups.
+          # four-request cap but space bounded probes by 60s; worst-case
+          # readiness budget is 4*20+3*60=260s, no hourly n8n wakeups.
           # A successful internal startup is not external HTTP readiness.
           # Successful readiness still runs all three official GET monitors.
           for attempt in 1 2 3 4; do
@@ -80,7 +83,7 @@ jobs:
 
   # Independent public GET backup starts in PARALLEL with the n8n wakeup,
   # so the site's safety coverage is not delayed by Render's cold start / OOM.
-  # Backup success never certifies n8n readiness: the paused primary is UNVERIFIED.
+  # Backup success never certifies n8n readiness: primary result stays independent.
   # Public repo standard GitHub-hosted runners carry no additional minute charge.
   fallback-readonly:
     runs-on: ubuntu-latest
