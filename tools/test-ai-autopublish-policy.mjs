@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessAutopublishCandidate} from '../src/ai-autopublish-policy.js';
-import {aiApprovedChannels,approvedAiImageSource} from '../src/ai-quality-review.js';
+import {aiApprovedChannels,approvedAiImageSource,ensureAiSchema} from '../src/ai-quality-review.js';
 import {aiScheduleFresh,metricoolChannels,metricoolBody,metricoolScheduleCapacity} from '../src/metricool-sync.js';
 import {recordAiReview,aiGate} from '../src/ai-quality-review.js';
 import qualityEvidence from '../src/ai-quality-evidence.cjs';
@@ -184,7 +184,10 @@ test('AI影像僅接受仙加味正式儲存來源',()=>{
   assert.equal(approvedAiImageSource('https://ts15825868.github.io/xianjiawei/images/product.jpg'),true);
   assert.equal(approvedAiImageSource('https://raw.githubusercontent.com/TS15825868/xianjiawei/main/images/product.jpg'),true);
   assert.equal(approvedAiImageSource('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/main/assets/photo.png'),true);
+  assert.equal(approvedAiImageSource('https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/318994bc6f608376ab477d54980a17361ea0542d/assets/post-images/2026-11-25/formal-production/XJW-CONV-chat-luerong-intro-label-v3.jpg'),true);
   for(const invalid of [
+    'https://raw.githubusercontent.com/TS15825868/xianjiawei-internal/unreviewed-branch/photo.jpg',
+    'https://raw.githubusercontent.com/elsewhere/other/318994bc6f608376ab477d54980a17361ea0542d/photo.jpg',
     'http://ts15825868.github.io/xianjiawei/images/product.jpg',
     'https://other.github.io/xianjiawei/images/product.jpg',
     'https://raw.githubusercontent.com/elsewhere/other/main/photo.jpg',
@@ -236,4 +239,22 @@ test('知識分類即使遺漏 knowledge_format 也不可繞過核對',()=>{
     assert.ok(result.reasons.some(x=>x.includes('缺少明確圖卡形式')),category);
   }
   assert.equal(assessAutopublishCandidate({...valid,category:'生活情境'},checks).ok,true);
+});
+
+
+test('quality review index exists on new or existing schema and latest review uses indexed deterministic lookup',async()=>{
+  const {DatabaseSync}=await import('node:sqlite');
+  const db=new DatabaseSync(':memory:');
+  try{
+    const env={DB:{prepare(sql){return {async run(){return db.prepare(sql).run()}}}}};
+    await ensureAiSchema(env);await ensureAiSchema(env);
+    const index=db.prepare("PRAGMA index_list('social_post_quality_reviews')").all();
+    assert.ok(index.some(x=>x.name==='idx_social_quality_latest'));
+    const sql='SELECT id FROM social_post_quality_reviews WHERE post_id=? ORDER BY reviewed_at DESC,created_at DESC,id DESC LIMIT 1';
+    const plan=db.prepare('EXPLAIN QUERY PLAN '+sql).all('p1').map(r=>r.detail).join(' ');
+    assert.match(plan,/SEARCH.*idx_social_quality_latest/);assert.doesNotMatch(plan,/USE TEMP B-TREE/);
+    const insert=db.prepare("INSERT INTO social_post_quality_reviews(id,post_id,reviewer_type,decision,content_fingerprint,image_url,image_sha256,evidence_json,model,policy_version,authorized_by,reviewed_at,old_status,new_status,created_at) VALUES (?,?,'AI','NEEDS_HUMAN_REVIEW','','','','{}','','','','2026-11-28T00:00:00Z','pending_review','pending_review','2026-11-28T00:00:00Z')");
+    insert.run('a','p1');insert.run('b','p1');insert.run('c','p2');
+    assert.equal(db.prepare(sql).get('p1').id,'b');
+  }finally{db.close()}
 });
