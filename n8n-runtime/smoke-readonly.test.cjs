@@ -7,6 +7,8 @@ const vm=require('node:vm');
 const script=readFileSync(join(__dirname,'smoke-readonly.js'),'utf8');
 const base='https://ts15825868.github.io/xianjiawei/';
 const lineUrl='https://ts-line.onrender.com/healthz';
+const policyUrl=base+'config/public-content-policy.json';
+const fixtureService={publicMode:'line_individual_confirmation',publicStorefrontHours:false,storefront:null,closed:null,lineOA:'歡迎透過官方 LINE 留言，我們將依序回覆您的訊息。',weekendFulfillment:'配送、取貨或面交依實際需求由官方 LINE 客服個別確認；不得承諾未確認的服務。'};
 const supabaseUrl='https://iphexhvjhsmelbgwzhhr.supabase.co/functions/v1/xjw-social-receipt';
 const cloudflareUrl='https://xianjiawei-social-receipt-fallback.tung314069.workers.dev/';
 function fixtures(){
@@ -16,7 +18,8 @@ function fixtures(){
  ];
  return {
   [lineUrl]:{status:200,body:{ok:true,credentialsConfigured:true,orderOpen:true,
-    productCount:4,publicProductAuthority:{products:products.map(p=>({...p}))}}},
+    productCount:4,storeHours:fixtureService.lineOA,storeHolidayNote:fixtureService.weekendFulfillment,publicProductAuthority:{products:products.map(p=>({...p}))}}},
+  [policyUrl]:{status:200,body:{authority:'user-confirmed-current',brandNaming:{publicBrandName:'仙加味'},version:'fixture',serviceHours:{...fixtureService}}},
   [base+'public-product-master.json']:{status:200,body:{authority:'user-confirmed-current',
     brand:{name:'仙加味'},productCount:4,version:'fixture',products}},
   [base+'ai-answers.json']:{status:200,body:{sourceOfTruth:'public-product-master.json',version:'fixture'}},
@@ -58,7 +61,7 @@ async function exercise(mutate,options={}){
  const record=output.find(line=>line.startsWith('[readonly-smoke] '));
  assert.ok(record,'Expected a structured read-only health report');
  const report=JSON.parse(record.slice('[readonly-smoke] '.length));
- assert.equal(requests.length,7,'Only the seven known public GET destinations are allowed');
+ assert.equal(requests.length,8,'Only the eight known public GET destinations are allowed');
  assert.ok(requests.includes(supabaseUrl)&&requests.includes(cloudflareUrl));
  return {report,exits,errors,requests};
 }
@@ -160,7 +163,7 @@ test('LINE transport outage cannot hide successful independent Supabase/Cloudfla
  assert.equal(x.report.metaReceipts.supabase.safelyBlocked,true);
  assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,true);
  assert.ok(x.report.errors.some(e=>e.includes('LINE healthz')));
- assert.equal(x.requests.length,7);
+ assert.equal(x.requests.length,8);
  assert.doesNotMatch(JSON.stringify(x.report),/simulated transport error|secret|token/i);
 });
 test('independent receiver outage is reported while remaining health checks still complete',async()=>{
@@ -172,7 +175,7 @@ test('independent receiver outage is reported while remaining health checks stil
  assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,true);
  assert.equal(x.report.line.bodyOk,true);
  assert.ok(x.report.errors.some(e=>e.includes('Supabase Meta 收件備援')));
- assert.equal(x.requests.length,7);
+ assert.equal(x.requests.length,8);
 });
 test('both failed providers still produce a complete nonpassing safety report',async()=>{
  const x=await exercise(r=>{r[lineUrl].transportFailure=true;r[cloudflareUrl].transportFailure=true;});
@@ -180,7 +183,7 @@ test('both failed providers still produce a complete nonpassing safety report',a
  assert.equal(x.report.metaReceipts.supabase.safelyBlocked,true);
  assert.equal(x.report.metaReceipts.cloudflare.safelyBlocked,false);
  assert.equal(x.report.metaReceipts.cloudflare.transportFailure,true);
- assert.equal(x.requests.length,7);
+ assert.equal(x.requests.length,8);
  assert.ok(x.report.errors.some(e=>e.includes('Cloudflare Meta 收件備援')));
 });
 
@@ -419,7 +422,7 @@ test('B2B ready uses existing GET, current LINE SHA and fresh signed receipt; no
  assert.equal(x.report.line.b2bTransport.readOnlyReady,true);
  assert.equal(x.report.line.b2bTransport.actualOrderWriteVerified,false);
  assert.equal(x.report.line.b2bTransport.googleCrmWriteVerified,false);
- assert.equal(x.requests.length,7);
+ assert.equal(x.requests.length,8);
 });
 test('B2B missing, stale, future, unsigned, disabled or wrong deployment never certify readiness',async()=>{
  const latest='a'.repeat(40);
@@ -427,5 +430,30 @@ test('B2B missing, stale, future, unsigned, disabled or wrong deployment never c
   const x=await exercise(r=>Object.assign(r[lineUrl].body,{deploymentCommit:latest,b2bPersistenceEnabled:true,b2bTransport:{verified:true,intakeEnabled:true,checkedAt:new Date().toISOString()}},patch),{expectedLineSha:latest});
   assert.equal(x.report.line.b2bTransport.readOnlyReady,false);
   assert.equal(x.report.line.b2bTransport.googleCrmWriteVerified,false);
+ }
+});
+
+
+test('public service policy checks live LINE against the latest website authority without publishing or writing',async()=>{
+ const x=await exercise();
+ assert.equal(x.report.line.publicServicePolicy.readOnlyVerified,true);
+ assert.ok(x.requests.includes(policyUrl));
+ assert.equal(x.report.line.customerReplyE2EVerified,false);
+ for(const key of ['storeHours','storeHolidayNote']){
+  const y=await exercise(r=>{r[lineUrl].body[key]='舊固定營業時間';});
+  assert.equal(y.report.ok,false);assert.equal(y.report.line.publicServicePolicy.state,'runtime_mismatch');
+ }
+});
+test('a new approved service wording is accepted without freezing legacy hours',async()=>{
+ const x=await exercise(r=>{
+  r[policyUrl].body.serviceHours.lineOA='新版正式客服服務說明';
+  r[lineUrl].body.storeHours='新版正式客服服務說明';
+ });
+ assert.equal(x.report.ok,true);assert.equal(x.report.line.publicServicePolicy.readOnlyVerified,true);
+});
+test('missing or unsupported website authority is never a verified public service policy',async()=>{
+ for(const patch of [{status:403},{body:'<html>not found</html>'},{body:{authority:'old',serviceHours:fixtureService}},{body:{authority:'user-confirmed-current',brandNaming:{publicBrandName:'仙加味'},serviceHours:{...fixtureService,publicStorefrontHours:true}}}]){
+  const x=await exercise(r=>Object.assign(r[policyUrl],patch));
+  assert.equal(x.report.ok,false);assert.equal(x.report.line.publicServicePolicy.state,'authority_unverified');
  }
 });

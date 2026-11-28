@@ -43,15 +43,16 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
         { status: 400, code: 'invalid_event' }] }
   ];
 
-  // Start all seven read-only GETs together. A Render cold-start or endpoint
+  // Start all eight read-only GETs together. A Render cold-start or endpoint
   // timeout cannot hide the Supabase/Cloudflare fail-closed status. The maximum
-  // wait is bounded by the slowest GET, not the sum of seven independent waits.
-  const [line, master, ai, geo, pages, ...receiptChecks] = await Promise.all([
+  // wait is bounded by the slowest GET, not the sum of eight independent waits.
+  const [line, master, ai, geo, pages, publicPolicy, ...receiptChecks] = await Promise.all([
     observeResource(lineUrl,{},20000),
     observeResource('https://ts15825868.github.io/xianjiawei/public-product-master.json'),
     observeResource('https://ts15825868.github.io/xianjiawei/ai-answers.json'),
     observeResource('https://ts15825868.github.io/xianjiawei/geo-data.json'),
     observeResource('https://ts15825868.github.io/xianjiawei/sitemap.xml'),
+    observeResource('https://ts15825868.github.io/xianjiawei/config/public-content-policy.json'),
     ...receiptEndpoints.map(item => observeResource(item.url, {}, 25000))
   ]);
   // A 200 HTML/login page or missing ok flag is NOT a healthy LINE API.
@@ -77,6 +78,26 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
     warnings.push('LINE Render 線上版本落後於正式 GitHub main；程式 CI 通過不代表已部署。');
   else if(validCommit(expectedLineCommit)&&!validCommit(deployedLineCommit))
     warnings.push('LINE Render 未提供有效正式部署 SHA，無法確認是否已套用最新版。');
+  // Independently read current public service authority, not an old timetable.
+  // Compare only public health fields; never echo addresses or internal configuration.
+  const service = publicPolicy.body?.serviceHours;
+  const supportedServicePolicy = publicPolicy.ok === true &&
+    publicPolicy.body?.authority === 'user-confirmed-current' &&
+    publicPolicy.body?.brandNaming?.publicBrandName === '仙加味' &&
+    service?.publicMode === 'line_individual_confirmation' &&
+    service.publicStorefrontHours === false && service.storefront === null && service.closed === null &&
+    typeof service.lineOA === 'string' && service.lineOA.trim().length > 0 &&
+    typeof service.weekendFulfillment === 'string' && service.weekendFulfillment.trim().length > 0;
+  const servicePolicyMatches = supportedServicePolicy &&
+    line.ok === true && line.body?.ok === true &&
+    line.body.storeHours === service.lineOA &&
+    line.body.storeHolidayNote === service.weekendFulfillment;
+  const servicePolicyState = !supportedServicePolicy ? 'authority_unverified' :
+    servicePolicyMatches ? 'verified_readonly' : 'runtime_mismatch';
+  if (!supportedServicePolicy)
+    errors.push('官網目前公開服務政策無法驗證；不得宣稱跨系統服務資訊一致。');
+  else if (!servicePolicyMatches)
+    errors.push('LINE 線上公開服務資訊與官網最新權威不一致。');
   // A successful HTTP 200 can still mean users waited for a full Render
   // cold start. The read-only heartbeat is a proxy, not a real LINE reply test.
   const lineHealthLatencyMs = Number(line.latencyMs);
@@ -230,6 +251,7 @@ async function observeResource(url, headers = {}, timeoutMs = TIMEOUT_MS) {
       latestMainCommit:validCommit(expectedLineCommit)?expectedLineCommit.slice(0,7):null,
       deploymentCurrentVerified,
       deploymentDriftDetected,
+      publicServicePolicy:{state:servicePolicyState,readOnlyVerified:servicePolicyMatches,authorityVersion:supportedServicePolicy?publicPolicy.body.version||null:null},
       // Live customer acceptance AND current production code must both pass
       // independent acceptance before anyone can certify a LINE release.
       lineReleaseReady:false,
