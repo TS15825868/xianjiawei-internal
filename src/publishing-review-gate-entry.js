@@ -1,3 +1,4 @@
+import {hasUnconfirmedPublicServiceClaim} from './public-service-claim-policy.js';
 import {classifyAiQualityFlow} from './ai-quality-flow.js';
 import {productEqualityErrors} from './product-equality-policy.js';
 import {recordAiDeferral} from './ai-review-deferral.js';
@@ -68,7 +69,7 @@ function reviewProductSegments(value,target){const source=String(value||''),segm
 function publicNorm(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/仙加味[｜|]?補養，是一種節奏。?/g,'').replace(/[^\p{L}\p{N}]+/gu,'')}
 function imageNorm(value){try{const u=new URL(String(value||''),'https://xjw.invalid');u.search='';u.hash='';return `${u.origin}${u.pathname}`.toLowerCase()}catch{return String(value||'').split(/[?#]/)[0].trim().toLowerCase()}}
 function diceSimilarity(a,b){if(!a||!b)return 0;if(a===b)return 1;const grams=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);m.set(k,(m.get(k)||0)+1)}return m},A=grams(a),B=grams(b);let ai=0,bi=0,hit=0;for(const n of A.values())ai+=n;for(const n of B.values())bi+=n;for(const [k,n] of A)hit+=Math.min(n,B.get(k)||0);return ai+bi?2*hit/(ai+bi):0}
-function customerCopyErrors(row){const text=[row?.title,row?.headline,row?.copy,row?.image_alt].filter(Boolean).join(' ');const hits=CUSTOMER_INTERNAL_TERMS.filter(term=>text.toLowerCase().includes(term.toLowerCase()));return hits.map(term=>`顧客文案含內部作業用語「${term}」`)}
+function customerCopyErrors(row){const text=[row?.title,row?.headline,row?.copy,row?.image_alt].filter(Boolean).join(' ');const hits=CUSTOMER_INTERNAL_TERMS.filter(term=>text.toLowerCase().includes(term.toLowerCase()));const errors=hits.map(term=>`顧客文案含內部作業用語「${term}」`);if(hasUnconfirmedPublicServiceClaim(text))errors.push('公開文案含未確認的固定門市、取貨或製造服務宣稱；請改由官方 LINE 個別確認');return errors}
 function officialProductMedia(row){const image=`${row?.image_url||''} ${row?.image_source||''}`.toLowerCase();return /catalog-owner-final-v20261017|catalog-user-original-v20261017|products-v3|customer-display-v20260812|official[-_ ]?(?:product|v3)|正式產品/.test(image)}
 function mentionedProducts(row){const text=[row?.title,row?.headline,row?.copy,row?.category].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.terms.some(term=>text.includes(term.toLowerCase())))}
 function visualProducts(row){const image=[row?.image_url,row?.image_alt,row?.image_source].filter(Boolean).join(' ').toLowerCase();return PRODUCT_RULES.filter(rule=>rule.image.some(term=>image.includes(term.toLowerCase())))}

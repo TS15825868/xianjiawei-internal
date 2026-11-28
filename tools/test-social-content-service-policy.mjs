@@ -32,3 +32,15 @@ test('valid preview preserves all existing approval and publication boundaries',
  const {env,calls}=fakeEnv(safe);const res=await socialContentDraft(request(input),env,{authenticate:auth});const body=await res.json();
  assert.equal(res.status,200);assert.equal(calls(),1);assert.equal(body.persisted,false);assert.equal(body.draft.humanApprovalRequired,true);assert.equal(body.draft.humanApproved,false);assert.equal(body.draft.published,false);assert.equal(body.draft.scheduled,false);assert.equal(body.draft.autoPublish,false);
 });
+
+import {customerCopyErrors} from '../src/publishing-review-gate-entry.js';
+
+test('existing imported or manually edited drafts obey the same current public service policy',()=>{
+ const row={title:'仙加味日常餐桌',copy:safe.copy,image_alt:safe.imageAlt};
+ assert.deepEqual(customerCopyErrors(row),[]);
+ for(const claim of [...claims,'09:30－18:30','10:00－20:00'])for(const field of ['title','headline','copy','image_alt']){
+  const r={...row,[field]:String(row[field]||'')+' '+claim};
+  assert.ok(customerCopyErrors(r).some(e=>e.includes('未確認')),field+': '+claim);
+ }
+ for(const text of ['在萬華工作桌整理筆記','商品諮詢、訂購及配送，歡迎透過官方 LINE 聯繫。','家族傳承的鹿角與熬膠工藝','仙加味商行｜統一編號：00702569'])assert.deepEqual(customerCopyErrors({...row,copy:text}),[]);
+});
