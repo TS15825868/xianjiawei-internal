@@ -1,0 +1,196 @@
+{
+  "schema": "xjw-metricool-live-reconciliation-v20261128",
+  "observed_date_taipei": "2026-11-28",
+  "source": "Metricool brand 6889683 scheduled-post connector and bounded production D1 read-only queries",
+  "query_range": {
+    "from": "2026-11-01",
+    "to": "2027-02-28",
+    "timezone": "Asia/Taipei"
+  },
+  "erp_source_sha": "28cf73977ebeda0ca01a22c49ffeac10e6d26cb5",
+  "remote_records": 19,
+  "remote_drafts": 14,
+  "remote_published": 5,
+  "actual_scheduled_in_result": 0,
+  "linked_pending_review": [
+    {
+      "id": 395780595,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 395780663,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 395780722,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 413610813,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 413610902,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 425177099,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 425177186,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    }
+  ],
+  "linked_archived_hold": [
+    {
+      "id": 395780855,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_state": "cancel_required",
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 413610864,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_state": "cancel_required",
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    }
+  ],
+  "historical_provider_published": [
+    {
+      "id": 415226845,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_status": "published",
+      "provider_status_reported": "PUBLISHED for Facebook, Instagram and Threads",
+      "public_url_independently_verified": false,
+      "do_not_republish": true
+    },
+    {
+      "id": 422664301,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_status": "published",
+      "provider_status_reported": "PUBLISHED for Facebook, Instagram and Threads",
+      "public_url_independently_verified": false,
+      "do_not_republish": true
+    },
+    {
+      "id": 426543853,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_status": "published",
+      "provider_status_reported": "PUBLISHED for Facebook, Instagram and Threads",
+      "public_url_independently_verified": false,
+      "do_not_republish": true
+    },
+    {
+      "id": 431713437,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_status": "published",
+      "provider_status_reported": "PUBLISHED for Facebook, Instagram and Threads",
+      "public_url_independently_verified": false,
+      "do_not_republish": true
+    },
+    {
+      "id": 432456111,
+      "uuid_and_id_match": true,
+      "exact_copy_match": true,
+      "local_status": "published",
+      "provider_status_reported": "PUBLISHED for Facebook, Instagram and Threads",
+      "public_url_independently_verified": false,
+      "do_not_republish": true
+    }
+  ],
+  "unmapped_drafts": [
+    {
+      "id": 409115861,
+      "uuid": "-3392347560393946949",
+      "exact_copy_match_in_production_D1": false,
+      "uuid_mapping_found": false,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 409149617,
+      "uuid": "-1550277316695077790",
+      "exact_copy_match_in_production_D1": false,
+      "uuid_mapping_found": false,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 409190019,
+      "uuid": "9095248166936789919",
+      "related_local_candidate": "XJW-CONV-chat-luerong-intro",
+      "exact_copy_match_in_production_D1": false,
+      "uuid_mapping_found": false,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 415295632,
+      "uuid": "2100266406683036682",
+      "related_local_candidate": "XJW-CONV-chat-photo-size",
+      "exact_copy_match_in_production_D1": false,
+      "uuid_mapping_found": false,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    },
+    {
+      "id": 425468095,
+      "uuid": "-1546358116532992876",
+      "exact_copy_match_in_production_D1": false,
+      "uuid_mapping_found": false,
+      "remote_draft": true,
+      "auto_publish": false,
+      "release_allowed": false
+    }
+  ],
+  "limitations": [
+    "Remote media URL equality not established; byte identity was not tested. Different URLs alone do not prove different images.",
+    "Related local candidate is a topic association only, not verified identity. Do not bind, overwrite, delete or publish unmatched drafts without source-version and image-byte evidence.",
+    "Range-limited observation, not a global inventory. Provider status is not independent public URL verification.",
+    "No approval granted, no remote mutations, no D1 writes, no post publications."
+  ],
+  "next_action": "Reuse this dated evidence for incremental reconciliation; resolve unmatched identities using verified history or explicit draft disposition. Do not recreate the two recovered draft IDs or autoPublish them."
+}
