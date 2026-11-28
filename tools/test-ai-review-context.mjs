@@ -7,6 +7,7 @@ let row={id:'POST-1',title:'萬華日常',copy:'仙加味工作間日常',status
 let reviews=[];const writes=[];
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
 source=source.replace(/^import .*;$/gm,'');
+source=`import {hasUnconfirmedPublicServiceClaim} from ${JSON.stringify(new URL('../src/public-service-claim-policy.js',import.meta.url).href)};\n${source}`;
 source=`import {classifyAiQualityFlow} from ${JSON.stringify(new URL('../src/ai-quality-flow.js',import.meta.url).href)};\n${source}`;
 source=`const app={fetch:request=>globalThis.__contextAuth()};const assessAutopublishCandidate=()=>null,publishedPlatformReceiptHold=()=>null,enqueueMetricool=()=>null,metricoolOwns=()=>null,metricoolImmediate=()=>null,imageHash=()=>null,recordAiReview=()=>null,aiGate=()=>null;\n`+source;
 globalThis.__contextAuth=()=>authorized?Response.json(profile):Response.json({error:'unauthorized'},{status:401});

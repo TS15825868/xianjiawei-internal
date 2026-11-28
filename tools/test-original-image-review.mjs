@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 let source=fs.readFileSync(new URL('../src/publishing-review-gate-entry.js',import.meta.url),'utf8');
 source=source.replace("'./product-equality-policy.js'",JSON.stringify(new URL('../src/product-equality-policy.js',import.meta.url).href));
+source=source.replace("'./public-service-claim-policy.js'",JSON.stringify(new URL('../src/public-service-claim-policy.js',import.meta.url).href));
 source=source.replace("'./ai-quality-flow.js'",JSON.stringify(new URL('../src/ai-quality-flow.js',import.meta.url).href));
 source=source.replace("import {recordAiDeferral} from './ai-review-deferral.js';",'const recordAiDeferral=()=>{throw Error("unexpected defer write")};');
 source=source.replace("import app from './flexible-publish-entry.js';",`const app={fetch:async()=>Response.json(globalThis.imageTestProfile)};`)
