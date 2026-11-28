@@ -6,6 +6,7 @@ const MODEL='@cf/google/gemma-4-26b-a4b-it';
 const HEADERS={'cache-control':'no-store','content-type':'application/json; charset=utf-8'};
 const CATEGORIES=new Set(['生活','產品','料理','食材','閒聊','關心','節慶','品牌','互動','氣候','季節']);
 const BLOCKED=/台興山產|龜鹿膠|龜鹿湯塊|柒玄茶|治療|治癒|改善疾病|預防疾病|降血壓|降血糖|關節|卡卡|疲勞|精神不濟|補氣|生津|膠原蛋白|鈣質|保證功效|優惠價|特價|下單送|批發價/iu;
+const PUBLIC_SERVICE_CLAIM=/營業時間|門市時間|門市營業|實體門市|門市地址|店面地址|門市導航|門市自取|到店取貨|到店自取|現場販售|預約取貨|預約面交|固定取貨|固定自取|歡迎來店|歡迎到店|歡迎到門市|週日公休|週六.{0,8}(?:取貨|自取|面交)|10[:：]00\s*[-–—~～至]\s*20[:：]00|(?:可|能|歡迎|接受|開放|支援|安排|提供)(?:以|預約|現場|到店|門市|直接|親自){0,2}(?:自取|面交|取貨)|自行製造|自家工廠|自有工廠|食品製造工廠/u;
 const PRIVATE=/09\d{8}|[A-Z][12]\d{8}|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|密碼|api.?key|access.?token|system prompt|ignore previous|無視指令|https?:\/\//iu;
 const send=(data,status=200)=>Response.json(data,{status,headers:HEADERS});
 const deny=(code,status=403)=>send({ok:false,code,published:false,scheduled:false,approved:false,humanApprovalRequired:true},status);
@@ -25,7 +26,7 @@ function validateOutput(result,product){
     !safeString(result.sceneBrief,220)||result.sceneBrief.length<20||
     !safeString(result.imageAlt,160)||result.imageAlt.length<12)return false;
  const all=[result.copy,result.sceneBrief,result.imageAlt].join(' ');
- if(productEqualityErrors({copy:result.copy,sceneBrief:result.sceneBrief,image_alt:result.imageAlt}).length||BLOCKED.test(all)||PRIVATE.test(all)||!result.copy.includes('仙加味'))return false;
+ if(productEqualityErrors({copy:result.copy,sceneBrief:result.sceneBrief,image_alt:result.imageAlt}).length||BLOCKED.test(all)||PUBLIC_SERVICE_CLAIM.test(all.normalize('NFKC'))||PRIVATE.test(all)||!result.copy.includes('仙加味'))return false;
  if(product&&!result.copy.includes(product.name))return false;
  if(PRODUCTS.some(p=>p.id!==product?.id&&result.copy.includes(p.name)))return false;
  if(/(?:今天|明天)(?:必定|一定)?(?:會下雨|有寒流|高溫|豪雨)/u.test(result.copy))return false;
@@ -49,14 +50,14 @@ export async function socialContentDraft(request,env,{authenticate}={}){
     Object.keys(body).some(k=>!['topic','category','sceneBrief','candidateDate','productId','persist'].includes(k)))
   return deny('invalid_payload',400);
  const {topic,category,sceneBrief,candidateDate,productId,persist=false}=body;
- if(!safeString(topic,100)||!safeString(sceneBrief,220)||!CATEGORIES.has(category)||PRIVATE.test(topic+' '+sceneBrief)||BLOCKED.test(topic+' '+sceneBrief)||productEqualityErrors({title:topic,sceneBrief}).length||
+ if(!safeString(topic,100)||!safeString(sceneBrief,220)||!CATEGORIES.has(category)||PRIVATE.test(topic+' '+sceneBrief)||BLOCKED.test(topic+' '+sceneBrief)||PUBLIC_SERVICE_CLAIM.test((topic+' '+sceneBrief).normalize('NFKC'))||productEqualityErrors({title:topic,sceneBrief}).length||
     (candidateDate!=null&&(!/^20\d{2}-\d{2}-\d{2}$/.test(candidateDate)||Number.isNaN(Date.parse(candidateDate+'T00:00:00Z'))))||
     (persist!==true&&persist!==false))return deny('unverified_content_scope',422);
  const product=productId==null?null:PRODUCTS.find(p=>p.id===productId);
  if(productId!=null&&!product)return deny('unverified_or_retired_product',422);
  if(persist&&!candidateDate)return deny('candidate_date_required',422);
  const facts=product?{name:product.name,allowedSpecs:product.allowedSpecs,usage:'只可說明產品形式，不臆測用量、功效、價格或成分'}:null;
- const system=PRODUCT_EQUALITY_GUIDANCE+' '+ '你是「仙加味」內部社群文案產稿器。只輸出嚴格JSON物件，鍵為copy、sceneBrief、imageAlt，使用繁體中文。copy 80~200字，描述具體生活場景、自然提及仙加味、最後可加入一個互動問題。不得醫療療效宣稱、價格、虛構優惠、即時天氣、杜撰節日。情境需可繪製為正式Q版小老闆（短黑髮、米白中式上衣、深橄欖綠圍裙、紅色仙加味印章），小鹿與小烏龜分開。產品只能引用官方真實原圖，絕不要求生成新包裝。JSON外不得有文字或Markdown。產品資訊僅能使用提供的正式事實。';
+ const system=PRODUCT_EQUALITY_GUIDANCE+' '+ '你是「仙加味」內部社群文案產稿器。只輸出嚴格JSON物件，鍵為copy、sceneBrief、imageAlt，使用繁體中文。copy 80~200字，描述具體生活場景、自然提及仙加味、最後可加入一個互動問題。不得醫療療效宣稱、價格、虛構優惠、即時天氣、杜撰節日。情境需可繪製為正式Q版小老闆（短黑髮、米白中式上衣、深橄欖綠圍裙、紅色仙加味印章），小鹿與小烏龜分開。產品只能引用官方真實原圖，絕不要求生成新包裝。JSON外不得有文字或Markdown。產品資訊僅能使用提供的正式事實。對外定位為現代漢方生活品牌、龜鹿系列及漢方食品；1978年為家族工藝傳承起點，不是商行登記年份。公開內容簡潔，商品諮詢、試喝、訂購及配送可導向官方 LINE，由客服依實際需求提供必要資訊。不主動宣傳固定營業時間、實體門市、自取、取貨、面交或未確認的製造資格，不加入內部營業主體分工、帳務或供應商安排；不省略依法必須揭露的交易資訊。';
  let raw;
  try{raw=await env.AI.run(MODEL,{messages:[{role:'system',content:system},{role:'user',content:JSON.stringify({topic,category,sceneBrief,date:candidateDate||null,verifiedProductFacts:facts})}],max_tokens:550,chat_template_kwargs:{enable_thinking:false}});}catch{return deny('model_unavailable',503);}
  const result=parseResult(modelText(raw));
