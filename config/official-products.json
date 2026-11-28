@@ -79,7 +79,7 @@
       "name": "柒玄茶・龜鹿調飲粉",
       "spec": "2g／小包；20g／包（10小包）",
       "publicVisible": false,
-      "rule": "保留 ERP 內部資料；目前不加入官網、官網 AI/GEO、公開貼文或六項公開產品計數。未有正式成分表與正式產品原圖時不得自行補寫成分或生成產品包裝。"
+      "rule": "保留 ERP 內部資料；目前不加入官網、官網 AI/GEO、公開貼文或公開產品計數。未有正式成分表與正式產品原圖時不得自行補寫成分或生成產品包裝。"
     }
   ],
   "fulfillmentRules": {
@@ -103,8 +103,8 @@
   "guardRules": [
     "對外商品名單必須由publicAuthority products與partnerAuthority中public=true紀錄動態合併，不得以歷史固定數量限制新增合格商品",
     "partnerAuthority中public不為true的商品不得公開；暫緩商品不得由舊資料重新啟用",
-    "龜鹿湯塊主規格只顯示75g／盒｜8塊裝；每塊約9.375g只放詳細資料",
-    "龜鹿膠主規格只顯示600g （1斤）／盒｜32塊裝；每塊約18.75g只放詳細資料",
+    "歷史龜鹿湯塊規格僅供內部核對，不得公開推薦。",
+    "歷史龜鹿膠規格僅供內部核對，不得公開推薦。",
     "龜鹿膠與龜鹿湯塊不得互換規格或包裝",
     "30cc龜鹿飲只稱玻璃罐，不稱瓶",
     "龜鹿飲5～7個工作天交期只適用30cc與180cc",
@@ -143,5 +143,18 @@
     },
     "activationPolicy": "僅供命名核對；未完成銷售資料、正式圖、審核與通路驗證不得自動開啟 LINE 下單或對客發送。",
     "selfProducedNamesUnaffected": true
+  },
+  "currentSupplyPolicy": {
+    "effectiveDate": "2026-11-28",
+    "primaryPromotionProductId": "guilu-gao",
+    "retiredSelfProducedProductIds": [
+      "guilu-jiao",
+      "guilu-tangkuai"
+    ],
+    "demandLedPartnerProductIds": [
+      "royalherb-erzhenbao-64",
+      "uboss-sizhenbao"
+    ],
+    "rule": "龜鹿膏為日常主動推廣核心。自製龜鹿膠、龜鹿膠塊／龜鹿湯塊已停止製作及現行銷售推薦；歷史資料與正式原圖保留，不得自動回流。二珍寶、四珍寶依顧客需求確認原廠供貨與交易條件後批進轉售，不自行生產、不主動大量備貨、不承諾未核實現貨或交期；保留既有公開及交易限制。"
   }
 }
